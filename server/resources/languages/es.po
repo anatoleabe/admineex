@@ -1,0 +1,614 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.8\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: app/controllers/account.js:295
+msgid ":"
+msgstr ":"
+
+#: public/js/controllers/ConfigurationCtrl.js:35
+#: public/js/controllers/users/UserCtrl.js:17
+#: public/js/controllers/users/UsersCtrl.js:48
+msgid "?"
+msgstr "?"
+
+#: app/controllers/account.js:293
+msgid "A new account has been created."
+msgstr "Se ha creado una nueva cuenta."
+
+#: public/templates/about.html:2
+msgid "About"
+msgstr "Acerca de"
+
+#: resources/languages/extraDictionary.html:7
+msgid "Account"
+msgstr "Cuenta"
+
+#: public/templates/recovery/recovery.html:1
+msgid "Account Recovery"
+msgstr "Recuperar mi cuenta"
+
+#: public/js/controllers/sign/SigninCtrl.js:57
+msgid "Account not activated"
+msgstr ""
+
+#: public/templates/users/main.html:18
+msgid "Activate"
+msgstr "Activar"
+
+#: public/templates/users/main.html:37
+msgid "Active accounts"
+msgstr "Cuentas activas"
+
+#: public/js/appFilters.js:143 resources/languages/extraDictionary.html:6
+msgid "Administration"
+msgstr "Administración"
+
+#: public/templates/installation/second.html:13
+msgid "Administrator Account"
+msgstr ""
+
+#: app/controllers/account.js:302
+msgid "Alics notification"
+msgstr "Notificación Alics"
+
+#: public/js/controllers/sign/SigninCtrl.js:33
+msgid ""
+"An email has been sent to your email address that includes a password reset "
+"link."
+msgstr ""
+
+#: public/js/controllers/SettingsCtrl.js:50
+#: public/js/controllers/recovery/LostCtrl.js:26
+#: public/js/controllers/recovery/ResetCtrl.js:42
+#: public/js/controllers/users/UserCtrl.js:116
+#: public/js/controllers/users/UserCtrl.js:46
+#: public/js/controllers/users/UserCtrl.js:75
+msgid "An error occurred, please try again later"
+msgstr "Se ha producido un error, por favor inténtelo mas tarde"
+
+#: public/js/appFilters.js:5 public/js/appFilters.js:58
+msgid "April"
+msgstr "Abril"
+
+#: public/js/controllers/users/UsersCtrl.js:48
+msgid "Are you sure you want to delete the account of"
+msgstr "Está seguro de que desea eliminar la cuenta de"
+
+#: public/templates/audit.html:5 resources/languages/extraDictionary.html:5
+msgid "Audit"
+msgstr "Auditoría"
+
+#: public/js/appFilters.js:62 public/js/appFilters.js:9
+msgid "August"
+msgstr "Agosto"
+
+#: public/templates/settings/main.html:6 public/templates/users/profile.html:9
+msgid "Avatar"
+msgstr "Avatar"
+
+#: public/templates/installation/second.html:44
+#: public/templates/recovery/lost.html:16
+#: public/templates/recovery/reset.html:25
+#: public/templates/settings/dashboard.html:21
+#: public/templates/sign/signin.html:23 public/templates/users/profile.html:2
+#: public/templates/users/profile.html:64
+msgid "Back"
+msgstr "Atrás"
+
+#: public/js/controllers/users/UsersCtrl.js:50
+#: public/templates/profile/email.html:10 public/templates/profile/name.html:26
+#: public/templates/profile/phone.html:10
+#: public/templates/settings/avatar.html:13
+#: public/templates/settings/language.html:14
+#: public/templates/settings/notifications.html:25
+#: public/templates/settings/password.html:20
+#: public/templates/users/edit.html:54
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: public/templates/settings/avatar.html:3
+msgid "Choose a color for your avatar"
+msgstr "Elija un color para el avatar"
+
+#: resources/languages/extraDictionary.html:8
+msgid "Configuration"
+msgstr "Configuración"
+
+#: public/js/controllers/ConfigurationCtrl.js:22
+msgid "Configuration has been saved"
+msgstr "La configuración ha sido guardada"
+
+#: public/templates/installation/second.html:9
+msgid "Configuration is almost done, please setup your administrator account"
+msgstr ""
+"La configuración esta casi terminada, por favor defina su cuenta de "
+"administrador"
+
+#: public/templates/installation/second.html:38
+#: public/templates/recovery/reset.html:21 public/templates/users/edit.html:49
+msgid "Confirmation"
+msgstr "Confirmación"
+
+#: public/js/controllers/MenuCtrl.js:72
+msgid "Core Unreachable."
+msgstr ""
+
+#: public/templates/users/profile.html:51
+msgid "Created"
+msgstr "Creada"
+
+#: public/templates/settings/password.html:6
+msgid "Current"
+msgstr "Actual"
+
+#: public/templates/settings/main.html:32
+#: resources/languages/extraDictionary.html:1
+msgid "Dashboard"
+msgstr "Tablero de mando"
+
+#: public/js/appFilters.js:13 public/js/appFilters.js:66
+msgid "December"
+msgstr "Diciembre"
+
+#: public/templates/users/main.html:30 public/templates/users/main.html:58
+msgid "Delete"
+msgstr "Eliminar"
+
+#: public/js/controllers/users/UsersCtrl.js:47
+msgid "Delete this account"
+msgstr "Eliminar esta cuenta"
+
+#: public/templates/profile/email.html:11 public/templates/profile/name.html:27
+#: public/templates/profile/phone.html:11
+#: public/templates/settings/avatar.html:14
+#: public/templates/settings/language.html:15
+#: public/templates/settings/notifications.html:26
+#: public/templates/settings/password.html:21
+#: public/templates/users/edit.html:55
+msgid "Done"
+msgstr "Guardar"
+
+#: public/templates/users/main.html:24 public/templates/users/main.html:52
+msgid "Edit"
+msgstr "Editar"
+
+#: public/templates/installation/second.html:28
+#: public/templates/profile/email.html:5 public/templates/profile/main.html:12
+#: public/templates/recovery/lost.html:12 public/templates/sign/signin.html:14
+#: public/templates/users/edit.html:25 public/templates/users/profile.html:23
+msgid "Email"
+msgstr "Correo electrónico"
+
+#: public/js/controllers/DashboardCtrl.js:5
+msgid "Empty dashboard"
+msgstr "Tablero de mando vacío"
+
+#: public/templates/settings/dashboard.html:4
+msgid "Enable widgets you want to see on dashbaord."
+msgstr "Active los complementos que desea ver en el tablero de mando."
+
+#: public/js/appFilters.js:167
+msgid "English"
+msgstr "Inglés"
+
+#: public/templates/recovery/reset.html:8
+msgid "Enter a new password for your Core account."
+msgstr ""
+
+#: public/js/appFilters.js:3 public/js/appFilters.js:56
+msgid "February"
+msgstr "Febrero"
+
+#: public/js/controllers/SettingsCtrl.js:184
+#: public/js/controllers/recovery/ResetCtrl.js:29
+msgid "Fill out the form correctly"
+msgstr "Diligencie  el formulario correctamente"
+
+#: public/templates/installation/second.html:18
+#: public/templates/profile/name.html:10 public/templates/profile/name.html:16
+#: public/templates/users/edit.html:10 public/templates/users/edit.html:16
+msgid "First name"
+msgstr "Nombre"
+
+#: public/js/appFilters.js:164
+msgid "French"
+msgstr "Francés"
+
+#: public/js/appFilters.js:51
+msgid "Friday"
+msgstr "Viernes"
+
+#: public/templates/profile/main.html:6 public/templates/users/profile.html:17
+msgid "Full name"
+msgstr "Nombre completo"
+
+#: public/templates/recovery/lost.html:8
+msgid ""
+"Give us your email address and we will send you a link to reset your "
+"password."
+msgstr ""
+"Escriba su correo electrónico y recibirá un vinculo para reiniciar su "
+"contraseña."
+
+#: public/js/controllers/MenuCtrl.js:61
+#: public/js/controllers/SettingsCtrl.js:74
+#: public/js/controllers/sign/SigninCtrl.js:18
+#: public/js/controllers/sign/SigninCtrl.js:35
+msgid "Got it!"
+msgstr "¡Entendido!"
+
+#: public/templates/recovery/lost.html:7
+msgid "Having trouble signing in?"
+msgstr "Problemas para entrar?"
+
+#: public/js/appFilters.js:2 public/js/appFilters.js:55
+msgid "January"
+msgstr "Enero"
+
+#: public/js/appFilters.js:61 public/js/appFilters.js:8
+msgid "July"
+msgstr "Julio"
+
+#: public/js/appFilters.js:60 public/js/appFilters.js:7
+msgid "June"
+msgstr "Junio"
+
+#: public/templates/settings/language.html:5
+#: public/templates/settings/main.html:26 public/templates/users/edit.html:37
+#: public/templates/users/profile.html:45
+msgid "Language"
+msgstr "Idioma"
+
+#: public/templates/installation/second.html:23
+#: public/templates/profile/name.html:20 public/templates/profile/name.html:6
+#: public/templates/users/edit.html:20 public/templates/users/edit.html:6
+msgid "Last name"
+msgstr "Apellido"
+
+#: public/js/appFilters.js:4 public/js/appFilters.js:57
+msgid "March"
+msgstr "Marzo"
+
+#: public/js/appFilters.js:59 public/js/appFilters.js:6
+msgid "May"
+msgstr "Mayo"
+
+#: public/js/appFilters.js:47
+msgid "Monday"
+msgstr "Lunes"
+
+#: public/templates/sign/signin.html:21
+msgid "Need help?"
+msgstr "Necesita ayuda?"
+
+#: public/js/controllers/users/UserCtrl.js:83
+#: public/templates/settings/password.html:10
+#: public/templates/users/main.html:72
+msgid "New"
+msgstr "Nuevo"
+
+#: public/js/controllers/users/UserCtrl.js:33
+msgid "New Password"
+msgstr "Nueva contraseña"
+
+#: public/js/controllers/ConfigurationCtrl.js:37
+msgid "No"
+msgstr "No"
+
+#: public/js/controllers/recovery/LostCtrl.js:15
+msgid "No account found with that email address"
+msgstr "El correo electrónico no corresponde a ninguna cuenta"
+
+#: public/js/controllers/users/UsersCtrl.js:5
+msgid "No user"
+msgstr "Sin usuario"
+
+#: public/js/controllers/MenuCtrl.js:9
+msgid "Nothing to report!"
+msgstr "¡Sin notificaciones!"
+
+#: app/controllers/notifications.js:177
+msgid "Notification"
+msgstr "Notificación"
+
+#: public/js/controllers/MenuCtrl.js:60
+#: public/js/controllers/SettingsCtrl.js:73 public/templates/menu/menu.html:31
+#: public/templates/menu/menu.html:69 public/templates/settings/main.html:38
+msgid "Notifications"
+msgstr "Notificaciones"
+
+#: public/templates/settings/notifications.html:17
+msgid "Notify me by SMS"
+msgstr "Notificarme por SMS"
+
+#: public/templates/settings/notifications.html:11
+msgid "Notify me by email"
+msgstr "Notificarme por correo electrónico"
+
+#: public/js/appFilters.js:12 public/js/appFilters.js:65
+msgid "November"
+msgstr "Noviembre"
+
+#: public/js/controllers/ConfigurationCtrl.js:2
+#: public/js/controllers/SettingsCtrl.js:2
+msgid "OFF"
+msgstr "DESACTIVO"
+
+#: public/js/controllers/InstallationCtrl.js:74
+#: public/js/controllers/users/UsersCtrl.js:49
+msgid "OK"
+msgstr "OK"
+
+#: public/js/controllers/ConfigurationCtrl.js:3
+#: public/js/controllers/SettingsCtrl.js:3
+msgid "ON"
+msgstr "ACTIVO"
+
+#: public/js/appFilters.js:11 public/js/appFilters.js:64
+msgid "October"
+msgstr "Octubre"
+
+#: public/js/controllers/sign/SigninCtrl.js:17
+#: public/js/controllers/sign/SigninCtrl.js:34
+#: public/js/controllers/users/UserCtrl.js:84
+#: public/templates/installation/second.html:33
+#: public/templates/recovery/reset.html:12
+#: public/templates/settings/main.html:20 public/templates/sign/signin.html:18
+msgid "Password"
+msgstr "Contraseña"
+
+#: app/controllers/account.js:62
+msgid "Password reset"
+msgstr "Reiniciar contraseña"
+
+#: public/js/controllers/sign/SigninCtrl.js:15
+msgid "Password resetted"
+msgstr ""
+
+#: public/js/controllers/SettingsCtrl.js:173
+msgid "Passwords don't match."
+msgstr "Contraseña no coincide."
+
+#: public/templates/users/main.html:1
+msgid "Pending accounts"
+msgstr "Cuentas pendientes"
+
+#: public/templates/profile/main.html:18 public/templates/profile/phone.html:5
+#: public/templates/users/profile.html:57
+msgid "Phone number"
+msgstr "Número de teléfono"
+
+#: public/js/controllers/users/UserCtrl.js:142
+msgid "Please fill all required fields"
+msgstr "Por favor diligencie todos los campos requeridos"
+
+#: app/controllers/account.js:296
+msgid "Please go to « <i>Users</i> » page to review his/her request."
+msgstr ""
+"Por favor diríjase a la pagina  « <i>Usuario</i> » para revisar su solicitud."
+
+#: public/js/appFilters.js:176
+msgid "Portuguese"
+msgstr "Portugues "
+
+#: resources/languages/extraDictionary.html:4
+msgid "Profile"
+msgstr "Perfil"
+
+#: public/templates/configuration.html:6
+msgid "Public access"
+msgstr "Accesso publico"
+
+#: public/templates/settings/password.html:14
+msgid "Re-type new"
+msgstr "Repita la nueva contraseña"
+
+#: public/js/controllers/sign/SigninCtrl.js:32
+msgid "Reset password"
+msgstr ""
+
+#: public/templates/recovery/reset.html:7
+msgid "Reset your password"
+msgstr "Reiniciar contraseña"
+
+#: public/templates/settings/main.html:14 public/templates/users/edit.html:29
+#: public/templates/users/profile.html:29
+msgid "Role"
+msgstr "Rol"
+
+#: public/js/appFilters.js:170
+msgid "Russian"
+msgstr "Ruso"
+
+#: public/js/appFilters.js:52
+msgid "Saturday"
+msgstr "Sábado"
+
+#: public/templates/configuration.html:20
+#: public/templates/installation/second.html:46
+msgid "Save"
+msgstr "Guardar"
+
+#: public/js/appFilters.js:10 public/js/appFilters.js:63
+msgid "September"
+msgstr "Septiembre"
+
+#: public/templates/configuration.html:12
+msgid "Server URL"
+msgstr "Servidor URL"
+
+#: resources/languages/extraDictionary.html:2
+msgid "Settings"
+msgstr "Ajustes"
+
+#: public/templates/sign/signin.html:25
+msgid "Sign in"
+msgstr "Conectarse"
+
+#: resources/languages/extraDictionary.html:3
+msgid "Sign out"
+msgstr "Desconectarse"
+
+#: public/js/controllers/ErrorCtrl.js:6
+msgid "Sorry, this content isn't available right now"
+msgstr "Lo sentimos, este contenido no está disponible por ahora"
+
+#: public/js/controllers/ErrorCtrl.js:10
+msgid "Sorry, this page isn't available"
+msgstr "Lo sentimos, esta pagina no está disponible"
+
+#: public/js/appFilters.js:173
+msgid "Spanish"
+msgstr "Español"
+
+#: public/templates/installation/first.html:16
+msgid "Start"
+msgstr ""
+
+#: public/templates/recovery/lost.html:18
+#: public/templates/recovery/reset.html:27
+msgid "Submit"
+msgstr "Enviar"
+
+#: public/js/appFilters.js:46
+msgid "Sunday"
+msgstr "Domingo"
+
+#: public/js/controllers/SettingsCtrl.js:143
+msgid "The current password you entered is incorrect"
+msgstr "La contraseña es incorrecta"
+
+#: public/js/controllers/sign/SigninCtrl.js:85
+msgid "The email or password is empty."
+msgstr ""
+
+#: public/js/controllers/sign/SigninCtrl.js:69
+msgid "The email or password you entered is incorrect."
+msgstr ""
+
+#: public/js/controllers/recovery/ResetCtrl.js:19
+msgid "The link has expired"
+msgstr "El vinculo ha caducado"
+
+#: public/js/controllers/ErrorCtrl.js:11
+msgid "The link you followed may be broken, or the page may have been removed."
+msgstr ""
+"El vinculo puede haber caducado o la página puede haber sido eliminada."
+
+#: public/js/controllers/ErrorCtrl.js:7
+msgid ""
+"The link you followed may have expired, or the page may only be visible to "
+"an audience you're not in."
+msgstr ""
+"El vinculo puede haber caducado o la página puede ser accesible para público "
+"al cual usted no pertenece."
+
+#: public/js/controllers/users/UserCtrl.js:102
+msgid "The user has been created"
+msgstr "El usuario ha sido creado"
+
+#: public/js/controllers/users/UsersCtrl.js:37
+msgid "The user has been deleted"
+msgstr "El usuario ha sido suprimido"
+
+#: public/js/controllers/users/UserCtrl.js:67
+msgid "The user has been updated"
+msgstr "El usuario ha sido actualizado"
+
+#: public/js/controllers/SettingsCtrl.js:133
+#: public/js/controllers/users/UserCtrl.js:135
+#: public/js/controllers/users/UserCtrl.js:56
+msgid "These passwords don't match"
+msgstr "La contraseña no corresponde"
+
+#: public/js/controllers/users/UserCtrl.js:110
+msgid "This email is already used"
+msgstr "El correo electrónico ya se ha utilizado"
+
+#: public/templates/installation/first.html:12
+msgid "This wizard will help you configure Core."
+msgstr ""
+
+#: public/js/appFilters.js:50
+msgid "Thursday"
+msgstr "Jueves"
+
+#: public/templates/settings/notifications.html:5
+msgid "To turn off a specific feature, just click the toggle."
+msgstr "Para realizar algún cambio haga clic en el botón."
+
+#: public/js/appFilters.js:48
+msgid "Tuesday"
+msgstr "Martes"
+
+#: public/templates/recovery/reset.html:16
+#: public/templates/settings/password.html:4
+msgid "Use at least 6 characters"
+msgstr "Escriba al menos 6 caracteres"
+
+#: public/js/controllers/SettingsCtrl.js:165
+#: public/js/controllers/users/UserCtrl.js:126
+msgid "Use at least 6 characters for your password"
+msgstr "Utilice  al menos 6 caracteres para su contraseña"
+
+#: public/js/controllers/ConfigurationCtrl.js:34
+#: public/js/controllers/SettingsCtrl.js:71
+msgid "Warning"
+msgstr "Aviso"
+
+#: public/js/appFilters.js:49
+msgid "Wednesday"
+msgstr "Miércoles"
+
+#: public/templates/sign/signin.html:10
+msgid "Welcome to"
+msgstr ""
+
+#: public/js/controllers/ConfigurationCtrl.js:35
+msgid "Would you like to save the new configuration"
+msgstr "Desea guardar esta nueva configuración"
+
+#: public/js/controllers/ConfigurationCtrl.js:36
+msgid "Yes"
+msgstr "Si"
+
+#: public/js/appFilters.js:44
+msgid "Yesterday"
+msgstr "Ayer"
+
+#: public/js/controllers/SettingsCtrl.js:153
+msgid "Your password has been changed"
+msgstr "La contraseña ha sido modificada"
+
+#: public/js/controllers/sign/SigninCtrl.js:16
+msgid "Your password has been changed with success. You can now sign in."
+msgstr ""
+
+#: app/controllers/account.js:294
+msgid "created an account with the email"
+msgstr "se ha creado una cuenta con el correo electrónico"
+
+#: public/templates/configuration.html:12
+msgid "e.g."
+msgstr "por ejemplo"
+
+#: public/js/appFilters.js:134 public/js/appFilters.js:140
+#: public/js/appFilters.js:155 public/js/appFilters.js:179
+#: public/js/appFilters.js:186 public/js/appFilters.js:25
+msgid "unknown"
+msgstr "desconocido"
+
+#: public/templates/settings/main.html:33
+msgid "widgets"
+msgstr "widgets"

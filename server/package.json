@@ -1,0 +1,38 @@
+{
+  "name": "core-backend",
+  "main": "app.js",
+  "dependencies": {
+    "aes-cross": "1.0.9",
+    "aes-decrypter": "3.0.0",
+    "bcryptjs": "2.4.3",
+    "body-parser": "1.18.3",
+    "bristol": "0.4.0",
+    "express": "4.16.3",
+    "express-jwt": "5.3.1",
+    "generate-key": "0.0.6",
+    "formidable": "1.2.1",
+    "jsonwebtoken": "8.3.0",
+    "method-override": "3.0.0",
+    "mongodb": "3.0.0",
+    "mongoose": "5.0.10",
+    "mongoose-unique-validator": "2.0.1",
+    "nconf": "0.10.0",
+    "nodemailer": "4.6.7",
+    "serve-favicon": "2.5.0",
+    "underscore": "1.9.1",
+    "moment": "2.22.2",
+    "node-gettext": "2.0.0",
+    "rand-token": "0.4.0",
+    "gettext-parser": "2.0.0",
+    "helmet": "3.13.0",
+    "rate-limiter-flexible": "0.16.6",
+    "archiver": "~2.1.1",
+    "line-by-line": "0.1.6",
+    "xlsx-style": "0.8.13"
+  },
+  "devDependencies": {
+    "grunt": "1.0.3",
+    "grunt-angular-gettext": "2.3.11",
+    "grunt-wiredep": "3.0.1"
+  }
+}

@@ -1,0 +1,84 @@
+<div layout="row" layout-xs="column">
+    <div flex>
+        <h3 class="md-headline" style="margin: 10px 10px 10px 10px;" translate>Import</h3>
+        <form ng-submit="upload();">
+            <md-card style="min-height: 212px;">
+                <md-card-content>
+                    <div class="md-dialog-content" oc-lazy-load="'node_modules/ng-file-upload/dist/ng-file-upload.min.js'">
+                        <p><span translate>Here you can upload a <i>.csv</i> file</span>.</p>
+                        <p><strong style="color:red;" translate>The time required to perform this task depends on the file size.</strong></p>
+                        <div>
+                            <input type="file" ng-model="uploader.file" ngf-select ngf-pattern="'.csv'" ngf-accept="'.csv'" ngf-max-size="500MB" aria-label="file"/>
+                        </div>
+                        <br>
+                        <md-button type="button" style="margin:0;" ng-click="doc=!doc;">
+                            <span translate>Documentation <md-icon>{{doc == true ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon></span>
+                        </md-button>
+                        <div ng-hide="!doc">
+                            <p>
+                                CSV format if the line is a project:<br>
+                                <strong>
+                                    <code>1;[project name];[enablers (users) ID "+" separated];[value];[payment date (ddMMyyyy)];[success proba];[status code];[funders (organizations) ID "+" separated];[providers (organizations) ID "+" separated];[revenue type code];[countries alpha3 code "+" separated];[sicknesses code "+" separated];[product code]
+                                    </code>
+                                </strong>
+                            </p>
+                            <span translate>Mapping:</span>
+                            <ul class="mapping">
+                                <li><span translate>EnablerID:</span> <span class="diy-chip">UserID</span> <span translate>to be find in Users > User profile</span></li>
+                                <li><span translate>Success Probaility:</span> <span class="diy-chip" translate>Number</span> <span translate>from 0 to 100</span></li>
+                                <li><span translate>List of status codes:</span> <span class="diy-chip" ng-repeat="status in ['1','2','3','4','5','6']">{{status}} <span translate>:</span> {{status | projectStatus}}</span></li>
+                                <li><span translate>FunderID:</span> <span class="diy-chip">OrganizationID</span> <span translate>to be found in Organizations > Organization profile</span></li>
+                                <li><span translate>ProviderID:</span> <span class="diy-chip">OrganizationID</span> <span translate>to be found in Organizations > Organization profile</span></li>
+                                <li><span translate>List of revenue type codes:</span> <span class="diy-chip" ng-repeat="type in ['1','2','3','4']">{{type}} <span translate>:</span> {{type | revenueType}}</span></li>
+                                <li><span translate>Country:</span> The 3 letters code of a country, e.g. for Belgium = <span class="diy-chip">BEL</span></li>
+                                <li><span translate>List of sicknesses codes:</span> <span class="diy-chip" ng-repeat="sickness in ['0','1','2','3','4']">{{sickness}} <span translate>:</span> {{sickness | sickness}}</span></li>
+                                <li><span translate>List of product codes:</span> <span class="diy-chip" ng-repeat="product in ['1','2','3','4']">{{product}} <span translate>:</span> {{product | product}}</span></li>
+                            </ul>
+                            <p>
+                                CSV format if the line is an organization:<br>
+                                <strong>
+                                    <code>2;[organization name];[organization type code]
+                                    </code>
+                                </strong>
+                            </p>
+                            <span translate>Mapping:</span>
+                            <ul class="mapping">
+                                <li><span translate>List of organization types codes:</span> <span class="diy-chip" ng-repeat="type in ['1','2','3','4','5','6','7','8','9','10']">{{type}} <span translate>:</span> {{type | organizationType}}</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </md-card-content>
+            </md-card>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button class="md-raised md-accent" type="submit" ng-disabled="!uploader.file"><span translate>Import</span></md-button>
+            </md-card-actions>
+        </form>
+    </div>
+    <div flex>
+        <h3 class="md-headline" style="margin: 10px 10px 10px 10px;" translate>Export</h3>
+        <form ng-submit="export();">
+            <md-card style="min-height: 212px;">
+                <md-card-content>
+                    <div class="md-dialog-content">
+                        <p><span translate>Here you can download a list of projects as an Excel <i>(.xls)</i> file</span>.</p>
+                        <p><strong style="color:red;" translate>The time required to perform this task depends on the file size.</strong></p>
+                        <md-input-container>
+                            <label translate>From</label>
+                            <md-datepicker ng-model="exportRange.from" md-min-date="exportRange.min" md-max-date="exportRange.max"></md-datepicker>
+                        </md-input-container>
+                        <md-icon style="padding-left: 10px;" class="material-icons">keyboard_arrow_right</md-icon>
+                        <md-input-container>
+                            <label translate>To</label>
+                            <md-datepicker ng-model="exportRange.to" md-min-date="exportRange.min" md-max-date="exportRange.max"></md-datepicker>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+            </md-card>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button class="md-raised md-accent" type="submit" ng-disabled="!exportRange.from || !exportRange.to">
+                    <span translate>Export</span>
+                </md-button>
+            </md-card-actions>
+        </form>
+    </div>
+</div>

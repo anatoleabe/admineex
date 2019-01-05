@@ -1,0 +1,49 @@
+<div class="loading-general" layout="row" layout-sm="column" layout-align="space-around" ng-if="loading">
+    <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
+</div>
+<div flex="50" flex-offset="25" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0">
+    <form ng-submit="submitNext(2);">
+        <div style="text-align: center;">
+            <img src="{{kernel.logo.large}}" style="width:121px;height:103px;margin-top: 10px;">
+        </div>
+        <h3 class="md-subhead" style="text-align:center" translate>Configuration is almost done, please setup your administrator account</h3>
+        <md-card>
+            <md-card-title style="padding-bottom: 0;">
+                <md-card-title-text>
+                    <span class="md-headline" translate>Administrator Account</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <md-input-container class="md-block" style="margin-bottom: 0;">
+                    <label translate>First name</label>
+                    <input type="firstname" ng-model="user.firstname" required>
+                </md-input-container>
+
+                <md-input-container class="md-block" style="margin-bottom: 0;">
+                    <label translate>Last name</label>
+                    <input type="lastname" ng-model="user.lastname" required>
+                </md-input-container>
+
+                <md-input-container class="md-block" style="margin-bottom: 0;">
+                    <label translate>Email</label>
+                    <input type="email" ng-model="user.email" required>
+                </md-input-container>
+
+                <md-input-container class="md-block" style="margin-bottom: 0;">
+                    <label translate>Password</label>
+                    <input type="password" ng-model="user.password" name="password" required>
+                </md-input-container>
+
+                <md-input-container class="md-block" style="margin-bottom: 0;">
+                    <label translate>Confirmation</label>
+                    <input type="password" ng-model="user.newPasswordConfirmation" required>
+                </md-input-container>
+            </md-card-content>
+        </md-card>
+        <div layout="row" layout-align="center center">
+            <md-button class="md-raised" ui-sref="installation.first"><span translate>Back</span></md-button>
+            <div flex="flex"></div>
+            <md-button class="md-raised md-accent" type="submit" ng-disabled="loading"><span translate>Save</span></md-button>
+        </div>
+    </form>
+</div>

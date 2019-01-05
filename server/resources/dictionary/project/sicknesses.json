@@ -1,0 +1,32 @@
+[
+    {
+        "id": "0",
+        "en": "Generic",
+        "fr": "Générique"
+    },
+    {
+        "id": "1",
+        "en": "Tuberculosis",
+        "fr": "Tuberculose"
+    },
+    {
+        "id": "2",
+        "en": "HIV",
+        "fr": "VIH"
+    },
+    {
+        "id": "3",
+        "en": "Ebola",
+        "fr": "Ebola"
+    },
+    {
+        "id": "4",
+        "en": "Malaria",
+        "fr": "Paludisme"
+    },
+    {
+        "id": "5",
+        "en": "HCV",
+        "fr": "Hépatite C"
+    }
+]

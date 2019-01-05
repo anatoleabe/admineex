@@ -1,0 +1,78 @@
+<h3 data-ng-if="users.length > 0" class="md-headline" style="margin: 10px 0px 10px 0px;" translate>Pending accounts</h3>
+<div layout="column" layout-align="center center" data-ng-if="helperNA.length !== 0" style="opacity:0.2;">
+    <h2 class="md-title" style="margin: 0;">{{helperNA.title}}</h2>
+</div>
+<md-card data-ng-if="helperNA.length === 0 && helper.length === 0" style="margin: 0;">
+    <md-card-content>
+        <md-list ng-cloak>
+            <md-list-item data-ng-repeat="user in users | filter:filterNotActivated" ui-sref="home.users.profile({id:user._id})">
+                <md-truncate flex>
+                    <div class="avatar avatar-md md-avatar" ng-style="{'background-color': user.avatar}">
+                        {{user.firstname.substr(0, 1).toUpperCase()}}
+                    </div>
+                    {{kernel.namingOrder === 'lf' ? user.lastname + ' ' + user.firstname : user.firstname + ' ' + user.lastname}}
+                    <md-button class="md-secondary md-icon-button" aria-label="Status" ng-click="activate(user)" ng-if="account.role == '1'">
+                        <md-icon aria-label="Status" style="color: #F44336">
+                            radio_button_unchecked
+                        </md-icon>
+                        <md-tooltip>
+                            <span translate>Activate</span>
+                        </md-tooltip>
+                    </md-button>
+                    <md-button class="md-secondary md-icon-button" aria-label="Edit" ng-click="edit({id:user._id})" ng-if="account.role == '1'">
+                        <md-icon aria-label="Edit">edit</md-icon>
+                        <md-tooltip>
+                            <span translate>Edit</span>
+                        </md-tooltip>
+                    </md-button>
+                    <md-button class="md-secondary md-icon-button" aria-label="Delete" ng-click="showConfirm(user)" ng-if="account.role == '1'">
+                        <md-icon aria-label="Delete">delete</md-icon>
+                        <md-tooltip>
+                            <span translate>Delete</span>
+                        </md-tooltip>
+                    </md-button>
+                </md-truncate>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>
+<h3 data-ng-if="users.length > 0" class="md-headline" style="margin: 30px 0px 10px 0px;" translate>Active accounts</h3>
+<div layout="column" layout-align="center center" data-ng-if="helperA.length !== 0" style="opacity:0.2;">
+    <h2 class="md-title" style="margin: 0;">{{helperA.title}}</h2>
+</div>
+<md-card data-ng-if="helperA.length === 0 && helper.length === 0" style="margin: 0;">
+    <md-card-content>
+        <md-list ng-cloak>
+            <md-list-item data-ng-repeat="user in users | filter:filterActivated" ui-sref="home.users.profile({id:user._id})">
+                <md-truncate flex>
+                    <div class="avatar avatar-md md-avatar" ng-style="{'background-color': user.avatar}">
+                        {{user.firstname.substr(0, 1).toUpperCase()}}
+                    </div>
+                    {{kernel.namingOrder === 'lf' ? user.lastname + ' ' + user.firstname : user.firstname + ' ' + user.lastname}} <small class="diy-chip">{{user.email}}</small><small class="diy-chip">{{user.role | role}}</small>
+                    <md-button class="md-secondary md-icon-button" aria-label="Edit" ng-click="edit({id:user._id})" ng-if="account.role == '1'">
+                        <md-icon aria-label="Edit">edit</md-icon>
+                        <md-tooltip>
+                            <span translate>Edit</span>
+                        </md-tooltip>
+                    </md-button>
+                    <md-button class="md-secondary md-icon-button" aria-label="Delete" ng-click="showConfirm(user)" ng-if="account.role == '1'">
+                        <md-icon aria-label="Delete">delete</md-icon>
+                        <md-tooltip>
+                            <span translate>Delete</span>
+                        </md-tooltip>
+                    </md-button>
+                </md-truncate>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>
+<div layout="column" layout-align="center center" data-ng-if="helper.length !== 0" style="opacity:0.2;">
+    <md-icon aria-label="{{helper.title}}" class="material-icons" style="font-size: 120px;height: 120px;width: 120px;">{{helper.icon}}</md-icon>
+    <h2 class="md-title">{{helper.title}}</h2>
+</div>
+<md-button class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ui-sref="home.users.new" ng-if="account.role == '1'">
+    <md-icon class="material-icons">add</md-icon>
+    <md-tooltip md-direction="top">
+        <span translate>New</span>
+    </md-tooltip>
+</md-button>

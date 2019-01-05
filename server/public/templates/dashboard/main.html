@@ -1,0 +1,18 @@
+<div layout="column" layout-align="center center" data-ng-if="helper.length !== 0" style="opacity:0.2;">
+    <md-icon aria-label="{{helper.title}}" class="material-icons" style="font-size: 120px;height: 120px;width: 120px;">{{helper.icon}}</md-icon>
+    <h2 class="md-title">{{helper.title}}</h2>
+</div>
+<div layout-xs="column" layout="row" layout-wrap>
+    <div flex-xs="100" flex-gt-xs="100" flex-sm="{{charts.length == 1 ? 100 : 50}}" 
+         flex-gt-sm="{{charts.length == 1 ? 100 : 50}}" flex-md="{{charts.length == 1 ? 100 : 33}}" 
+         flex-gt-md="{{charts.length == 1 ? 50 : 33}}" data-ng-repeat="chart in charts" 
+         data-ng-include="'templates/dashboard/charts/' + chart.name + '.html'">
+    </div>
+</div>
+<div style="margin-bottom: 100px"></div>
+<md-button class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ui-sref="home.projects.new">
+    <md-icon class="material-icons">add</md-icon>
+    <md-tooltip md-direction="top">
+        <span translate>New</span>
+    </md-tooltip>
+</md-button>

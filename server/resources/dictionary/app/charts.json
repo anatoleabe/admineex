@@ -1,0 +1,8 @@
+[
+    {
+        "name": "chart1",
+        "title": "Forecast Income by probability (next 12 months)",
+        "priority": 1,
+        "roles": [1,2,3]
+    }
+]

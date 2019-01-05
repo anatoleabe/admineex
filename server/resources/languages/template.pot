@@ -1,0 +1,899 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+
+#: app/controllers/account.js:298
+msgid ":"
+msgstr ""
+
+#: public/js/controllers/ConfigurationCtrl.js:35
+#: public/js/controllers/organizations/OrganizationsCtrl.js:49
+#: public/js/controllers/projects/ProjectsCtrl.js:49
+#: public/js/controllers/users/UsersCtrl.js:104
+msgid "?"
+msgstr ""
+
+#: app/controllers/account.js:296
+msgid "A new account has been created."
+msgstr ""
+
+#: public/templates/about.html:2
+msgid "About"
+msgstr ""
+
+#: public/js/appFilters.js:222
+#: public/js/controllers/projects/ProjectCtrl.js:8
+msgid "Accepted"
+msgstr ""
+
+#: resources/languages/extraDictionary.html:7
+msgid "Account"
+msgstr ""
+
+#: public/templates/recovery/recovery.html:1
+msgid "Account Recovery"
+msgstr ""
+
+#: public/js/controllers/sign/SigninCtrl.js:57
+msgid "Account not activated"
+msgstr ""
+
+#: public/templates/users/main.html:18
+msgid "Activate"
+msgstr ""
+
+#: public/templates/users/main.html:37
+msgid "Active accounts"
+msgstr ""
+
+#: resources/languages/extraDictionary.html:6
+msgid "Administration"
+msgstr ""
+
+#: public/templates/installation/second.html:13
+msgid "Administrator Account"
+msgstr ""
+
+#: app/controllers/account.js:305
+msgid "Alics notification"
+msgstr ""
+
+#: public/js/controllers/sign/SigninCtrl.js:33
+msgid "An email has been sent to your email address that includes a password reset link."
+msgstr ""
+
+#: public/js/controllers/organizations/OrganizationCtrl.js:109
+#: public/js/controllers/organizations/OrganizationCtrl.js:39
+#: public/js/controllers/organizations/OrganizationCtrl.js:62
+#: public/js/controllers/organizations/OrganizationCtrl.js:84
+#: public/js/controllers/projects/ProjectCtrl.js:108
+#: public/js/controllers/projects/ProjectCtrl.js:133
+#: public/js/controllers/projects/ProjectCtrl.js:57
+#: public/js/controllers/projects/ProjectCtrl.js:80
+#: public/js/controllers/recovery/LostCtrl.js:26
+#: public/js/controllers/recovery/ResetCtrl.js:42
+#: public/js/controllers/users/UserCtrl.js:117
+#: public/js/controllers/users/UserCtrl.js:47
+#: public/js/controllers/users/UserCtrl.js:76
+#: public/js/controllers/users/UsersCtrl.js:94
+msgid "An error occurred, please try again later"
+msgstr ""
+
+#: public/js/appFilters.js:5
+#: public/js/appFilters.js:58
+msgid "April"
+msgstr ""
+
+#: public/js/controllers/users/UsersCtrl.js:104
+msgid "Are you sure you want to delete the account of"
+msgstr ""
+
+#: public/js/controllers/organizations/OrganizationsCtrl.js:49
+msgid "Are you sure you want to delete the organization"
+msgstr ""
+
+#: public/js/controllers/projects/ProjectsCtrl.js:49
+msgid "Are you sure you want to delete the project"
+msgstr ""
+
+#: public/templates/audit.html:5
+#: resources/languages/extraDictionary.html:5
+msgid "Audit"
+msgstr ""
+
+#: public/js/appFilters.js:62
+#: public/js/appFilters.js:9
+msgid "August"
+msgstr ""
+
+#: public/templates/organizations/profile.html:33
+#: public/templates/projects/profile.html:88
+msgid "Author"
+msgstr ""
+
+#: public/templates/settings/main.html:6
+#: public/templates/users/profile.html:9
+msgid "Avatar"
+msgstr ""
+
+#: public/templates/installation/second.html:44
+#: public/templates/organizations/profile.html:2
+#: public/templates/organizations/profile.html:40
+#: public/templates/projects/profile.html:2
+#: public/templates/projects/profile.html:95
+#: public/templates/recovery/lost.html:16
+#: public/templates/recovery/reset.html:25
+#: public/templates/users/profile.html:2
+#: public/templates/users/profile.html:64
+msgid "Back"
+msgstr ""
+
+#: public/js/controllers/organizations/OrganizationsCtrl.js:51
+#: public/js/controllers/projects/ProjectsCtrl.js:51
+#: public/js/controllers/users/UsersCtrl.js:106
+#: public/templates/organizations/edit.html:19
+#: public/templates/profile/email.html:10
+#: public/templates/profile/name.html:26
+#: public/templates/profile/phone.html:10
+#: public/templates/projects/edit.html:83
+#: public/templates/settings/avatar.html:13
+#: public/templates/settings/language.html:14
+#: public/templates/settings/notifications.html:19
+#: public/templates/settings/password.html:20
+#: public/templates/users/edit.html:54
+msgid "Cancel"
+msgstr ""
+
+#: public/templates/settings/avatar.html:3
+msgid "Choose a color for your avatar"
+msgstr ""
+
+#: public/js/appFilters.js:238
+msgid "Community"
+msgstr ""
+
+#: public/js/appFilters.js:228
+#: public/js/controllers/projects/ProjectCtrl.js:10
+msgid "Completed"
+msgstr ""
+
+#: resources/languages/extraDictionary.html:8
+msgid "Configuration"
+msgstr ""
+
+#: public/js/controllers/ConfigurationCtrl.js:22
+msgid "Configuration has been saved"
+msgstr ""
+
+#: public/templates/installation/second.html:9
+msgid "Configuration is almost done, please setup your administrator account"
+msgstr ""
+
+#: public/templates/installation/second.html:38
+#: public/templates/recovery/reset.html:21
+#: public/templates/users/edit.html:49
+msgid "Confirmation"
+msgstr ""
+
+#: public/js/controllers/MenuCtrl.js:72
+msgid "Core Unreachable."
+msgstr ""
+
+#: public/templates/projects/edit.html:67
+#: public/templates/projects/profile.html:64
+msgid "Countries"
+msgstr ""
+
+#: public/templates/organizations/profile.html:27
+#: public/templates/projects/profile.html:82
+#: public/templates/users/profile.html:51
+msgid "Created"
+msgstr ""
+
+#: public/templates/settings/password.html:6
+msgid "Current"
+msgstr ""
+
+#: resources/languages/extraDictionary.html:1
+msgid "Dashboard"
+msgstr ""
+
+#: public/js/appFilters.js:13
+#: public/js/appFilters.js:66
+msgid "December"
+msgstr ""
+
+#: public/js/controllers/users/UsersCtrl.js:105
+#: public/templates/organizations/main.html:25
+#: public/templates/projects/main.html:25
+#: public/templates/users/main.html:30
+#: public/templates/users/main.html:58
+msgid "Delete"
+msgstr ""
+
+#: public/js/controllers/users/UsersCtrl.js:103
+msgid "Delete this account"
+msgstr ""
+
+#: public/js/controllers/organizations/OrganizationsCtrl.js:48
+msgid "Delete this organization"
+msgstr ""
+
+#: public/js/controllers/projects/ProjectsCtrl.js:48
+msgid "Delete this project"
+msgstr ""
+
+#: public/js/appFilters.js:241
+msgid "Developed Country NGO"
+msgstr ""
+
+#: public/js/appFilters.js:244
+msgid "Developing Country NGO"
+msgstr ""
+
+#: public/templates/organizations/edit.html:20
+#: public/templates/profile/email.html:11
+#: public/templates/profile/name.html:27
+#: public/templates/profile/phone.html:11
+#: public/templates/projects/edit.html:84
+#: public/templates/settings/avatar.html:14
+#: public/templates/settings/language.html:15
+#: public/templates/settings/notifications.html:20
+#: public/templates/settings/password.html:21
+#: public/templates/users/edit.html:55
+msgid "Done"
+msgstr ""
+
+#: public/js/appFilters.js:247
+msgid "Donors"
+msgstr ""
+
+#: public/templates/organizations/main.html:13
+#: public/templates/projects/main.html:13
+msgid "Duplicate"
+msgstr ""
+
+#: public/js/appFilters.js:291
+#: public/js/controllers/projects/ProjectCtrl.js:19
+msgid "Ebola"
+msgstr ""
+
+#: public/templates/organizations/main.html:19
+#: public/templates/projects/main.html:19
+#: public/templates/users/main.html:24
+#: public/templates/users/main.html:52
+msgid "Edit"
+msgstr ""
+
+#: public/templates/installation/second.html:28
+#: public/templates/profile/email.html:5
+#: public/templates/profile/main.html:12
+#: public/templates/recovery/lost.html:12
+#: public/templates/sign/signin.html:14
+#: public/templates/users/edit.html:25
+#: public/templates/users/profile.html:23
+msgid "Email"
+msgstr ""
+
+#: public/js/controllers/DashboardCtrl.js:5
+msgid "Empty dashboard"
+msgstr ""
+
+#: public/js/appFilters.js:170
+msgid "English"
+msgstr ""
+
+#: public/templates/recovery/reset.html:8
+msgid "Enter a new password for your Core account."
+msgstr ""
+
+#: public/js/appFilters.js:3
+#: public/js/appFilters.js:56
+msgid "February"
+msgstr ""
+
+#: public/js/controllers/SettingsCtrl.js:138
+#: public/js/controllers/recovery/ResetCtrl.js:29
+msgid "Fill out the form correctly"
+msgstr ""
+
+#: public/templates/installation/second.html:18
+#: public/templates/profile/name.html:10
+#: public/templates/profile/name.html:16
+#: public/templates/users/edit.html:10
+#: public/templates/users/edit.html:16
+msgid "First name"
+msgstr ""
+
+#: public/js/appFilters.js:250
+msgid "Foundation"
+msgstr ""
+
+#: public/js/appFilters.js:167
+msgid "French"
+msgstr ""
+
+#: public/js/appFilters.js:51
+msgid "Friday"
+msgstr ""
+
+#: public/templates/profile/main.html:6
+#: public/templates/users/profile.html:17
+msgid "Full name"
+msgstr ""
+
+#: public/templates/projects/edit.html:50
+#: public/templates/projects/profile.html:52
+msgid "Fund Provider"
+msgstr ""
+
+#: public/js/appFilters.js:262
+#: public/templates/projects/edit.html:42
+#: public/templates/projects/profile.html:46
+msgid "Funder"
+msgstr ""
+
+#: public/templates/recovery/lost.html:8
+msgid "Give us your email address and we will send you a link to reset your password."
+msgstr ""
+
+#: public/js/controllers/MenuCtrl.js:61
+#: public/js/controllers/sign/SigninCtrl.js:18
+#: public/js/controllers/sign/SigninCtrl.js:35
+msgid "Got it!"
+msgstr ""
+
+#: public/js/appFilters.js:259
+msgid "Government"
+msgstr ""
+
+#: public/js/controllers/projects/ProjectCtrl.js:21
+msgid "HCV"
+msgstr ""
+
+#: public/js/appFilters.js:288
+#: public/js/controllers/projects/ProjectCtrl.js:18
+msgid "HIV"
+msgstr ""
+
+#: public/templates/recovery/lost.html:7
+msgid "Having trouble signing in?"
+msgstr ""
+
+#: public/js/appFilters.js:216
+#: public/js/controllers/projects/ProjectCtrl.js:6
+msgid "In talks"
+msgstr ""
+
+#: public/js/appFilters.js:2
+#: public/js/appFilters.js:55
+msgid "January"
+msgstr ""
+
+#: public/js/appFilters.js:61
+#: public/js/appFilters.js:8
+msgid "July"
+msgstr ""
+
+#: public/js/appFilters.js:60
+#: public/js/appFilters.js:7
+msgid "June"
+msgstr ""
+
+#: public/templates/settings/language.html:5
+#: public/templates/settings/main.html:26
+#: public/templates/users/edit.html:37
+#: public/templates/users/profile.html:45
+msgid "Language"
+msgstr ""
+
+#: public/templates/organizations/profile.html:21
+#: public/templates/projects/profile.html:76
+msgid "Last Modified"
+msgstr ""
+
+#: public/templates/installation/second.html:23
+#: public/templates/profile/name.html:20
+#: public/templates/profile/name.html:6
+#: public/templates/users/edit.html:20
+#: public/templates/users/edit.html:6
+msgid "Last name"
+msgstr ""
+
+#: public/js/appFilters.js:294
+#: public/js/controllers/projects/ProjectCtrl.js:20
+msgid "Malaria"
+msgstr ""
+
+#: public/js/appFilters.js:4
+#: public/js/appFilters.js:57
+msgid "March"
+msgstr ""
+
+#: public/js/appFilters.js:59
+#: public/js/appFilters.js:6
+msgid "May"
+msgstr ""
+
+#: public/js/appFilters.js:47
+msgid "Monday"
+msgstr ""
+
+#: public/templates/sign/signin.html:19
+msgid "Need help?"
+msgstr ""
+
+#: public/js/controllers/organizations/OrganizationCtrl.js:70
+#: public/js/controllers/projects/ProjectCtrl.js:88
+#: public/js/controllers/users/UserCtrl.js:84
+#: public/templates/dashboard/main.html:16
+#: public/templates/organizations/main.html:40
+#: public/templates/projects/main.html:40
+#: public/templates/settings/password.html:10
+#: public/templates/users/main.html:72
+msgid "New"
+msgstr ""
+
+#: public/js/controllers/users/UserCtrl.js:34
+msgid "New Password"
+msgstr ""
+
+#: public/js/controllers/ConfigurationCtrl.js:37
+msgid "No"
+msgstr ""
+
+#: public/js/controllers/recovery/LostCtrl.js:15
+msgid "No account found with that email address"
+msgstr ""
+
+#: public/js/controllers/users/UsersCtrl.js:13
+msgid "No active account"
+msgstr ""
+
+#: public/js/controllers/organizations/OrganizationsCtrl.js:5
+msgid "No organization"
+msgstr ""
+
+#: public/js/controllers/users/UsersCtrl.js:10
+msgid "No pending account"
+msgstr ""
+
+#: public/js/controllers/projects/ProjectsCtrl.js:5
+msgid "No project"
+msgstr ""
+
+#: public/js/controllers/users/UsersCtrl.js:5
+msgid "No user"
+msgstr ""
+
+#: public/js/controllers/MenuCtrl.js:9
+msgid "Nothing to report!"
+msgstr ""
+
+#: app/controllers/notifications.js:177
+msgid "Notification"
+msgstr ""
+
+#: public/js/controllers/MenuCtrl.js:60
+#: public/templates/menu/menu.html:31
+#: public/templates/menu/menu.html:69
+#: public/templates/settings/main.html:32
+msgid "Notifications"
+msgstr ""
+
+#: public/templates/settings/notifications.html:11
+msgid "Notify me by email"
+msgstr ""
+
+#: public/js/appFilters.js:12
+#: public/js/appFilters.js:65
+msgid "November"
+msgstr ""
+
+#: public/js/controllers/ConfigurationCtrl.js:2
+#: public/js/controllers/SettingsCtrl.js:2
+msgid "OFF"
+msgstr ""
+
+#: public/js/controllers/InstallationCtrl.js:74
+#: public/js/controllers/organizations/OrganizationsCtrl.js:50
+#: public/js/controllers/projects/ProjectsCtrl.js:50
+msgid "OK"
+msgstr ""
+
+#: public/js/controllers/ConfigurationCtrl.js:3
+#: public/js/controllers/SettingsCtrl.js:3
+msgid "ON"
+msgstr ""
+
+#: public/js/appFilters.js:11
+#: public/js/appFilters.js:64
+msgid "October"
+msgstr ""
+
+#: public/templates/organizations/edit.html:6
+#: public/templates/organizations/profile.html:9
+msgid "Organization Name"
+msgstr ""
+
+#: public/templates/organizations/edit.html:10
+#: public/templates/organizations/profile.html:15
+msgid "Organization Type"
+msgstr ""
+
+#: public/templates/organizations/main.html:2
+msgid "Organizations"
+msgstr ""
+
+#: public/js/controllers/sign/SigninCtrl.js:17
+#: public/js/controllers/sign/SigninCtrl.js:34
+#: public/js/controllers/users/UserCtrl.js:85
+#: public/templates/installation/second.html:33
+#: public/templates/recovery/reset.html:12
+#: public/templates/settings/main.html:20
+#: public/templates/sign/signin.html:17
+msgid "Password"
+msgstr ""
+
+#: app/controllers/account.js:62
+msgid "Password reset"
+msgstr ""
+
+#: public/js/controllers/sign/SigninCtrl.js:15
+msgid "Password resetted"
+msgstr ""
+
+#: public/js/controllers/SettingsCtrl.js:127
+msgid "Passwords don't match."
+msgstr ""
+
+#: public/templates/users/main.html:1
+msgid "Pending accounts"
+msgstr ""
+
+#: public/templates/profile/main.html:18
+#: public/templates/profile/phone.html:5
+#: public/templates/users/profile.html:57
+msgid "Phone number"
+msgstr ""
+
+#: public/js/controllers/users/UserCtrl.js:143
+msgid "Please fill all required fields"
+msgstr ""
+
+#: app/controllers/account.js:299
+msgid "Please go to « <i>Users</i> » page to review his/her request."
+msgstr ""
+
+#: public/js/appFilters.js:179
+msgid "Portuguese"
+msgstr ""
+
+#: public/js/appFilters.js:253
+msgid "Private Sector"
+msgstr ""
+
+#: public/templates/projects/edit.html:27
+#: public/templates/projects/profile.html:34
+msgid "Probability of Success"
+msgstr ""
+
+#: resources/languages/extraDictionary.html:4
+msgid "Profile"
+msgstr ""
+
+#: public/js/appFilters.js:146
+#: public/js/controllers/users/UserCtrl.js:17
+msgid "Progress"
+msgstr ""
+
+#: public/templates/projects/edit.html:6
+#: public/templates/projects/profile.html:9
+msgid "Project Name"
+msgstr ""
+
+#: public/templates/projects/edit.html:34
+msgid "Project Status"
+msgstr ""
+
+#: public/templates/projects/edit.html:18
+#: public/templates/projects/profile.html:21
+msgid "Project Value"
+msgstr ""
+
+#: public/templates/projects/edit.html:10
+#: public/templates/projects/profile.html:15
+msgid "Project enabled by"
+msgstr ""
+
+#: public/templates/projects/main.html:2
+msgid "Projects"
+msgstr ""
+
+#: public/js/appFilters.js:219
+#: public/js/controllers/projects/ProjectCtrl.js:7
+msgid "Proposal sent"
+msgstr ""
+
+#: public/templates/configuration.html:6
+msgid "Public access"
+msgstr ""
+
+#: public/templates/settings/password.html:14
+msgid "Re-type new"
+msgstr ""
+
+#: public/js/controllers/sign/SigninCtrl.js:32
+msgid "Reset password"
+msgstr ""
+
+#: public/templates/recovery/reset.html:7
+msgid "Reset your password"
+msgstr ""
+
+#: public/templates/projects/edit.html:58
+#: public/templates/projects/profile.html:58
+msgid "Revenue Type"
+msgstr ""
+
+#: public/templates/settings/main.html:14
+#: public/templates/users/edit.html:29
+#: public/templates/users/profile.html:29
+msgid "Role"
+msgstr ""
+
+#: public/js/appFilters.js:173
+msgid "Russian"
+msgstr ""
+
+#: public/js/appFilters.js:149
+#: public/js/appFilters.js:272
+#: public/js/controllers/users/UserCtrl.js:18
+msgid "Sales"
+msgstr ""
+
+#: public/js/appFilters.js:52
+msgid "Saturday"
+msgstr ""
+
+#: public/templates/configuration.html:20
+#: public/templates/installation/second.html:46
+msgid "Save"
+msgstr ""
+
+#: public/js/appFilters.js:10
+#: public/js/appFilters.js:63
+msgid "September"
+msgstr ""
+
+#: public/templates/configuration.html:12
+msgid "Server URL"
+msgstr ""
+
+#: resources/languages/extraDictionary.html:2
+msgid "Settings"
+msgstr ""
+
+#: public/templates/projects/edit.html:75
+#: public/templates/projects/profile.html:70
+msgid "Sicknesses"
+msgstr ""
+
+#: public/templates/sign/signin.html:20
+msgid "Sign in"
+msgstr ""
+
+#: resources/languages/extraDictionary.html:3
+msgid "Sign out"
+msgstr ""
+
+#: public/js/appFilters.js:225
+#: public/js/controllers/projects/ProjectCtrl.js:9
+msgid "Signed"
+msgstr ""
+
+#: public/js/controllers/ErrorCtrl.js:6
+msgid "Sorry, this content isn't available right now"
+msgstr ""
+
+#: public/js/controllers/ErrorCtrl.js:10
+msgid "Sorry, this page isn't available"
+msgstr ""
+
+#: public/js/appFilters.js:176
+msgid "Spanish"
+msgstr ""
+
+#: public/templates/installation/first.html:16
+msgid "Start"
+msgstr ""
+
+#: public/templates/projects/edit.html:22
+#: public/templates/projects/profile.html:28
+msgid "Start Date"
+msgstr ""
+
+#: public/templates/projects/profile.html:40
+msgid "Status"
+msgstr ""
+
+#: public/templates/recovery/lost.html:18
+#: public/templates/recovery/reset.html:27
+msgid "Submit"
+msgstr ""
+
+#: public/js/appFilters.js:275
+msgid "Subsidy"
+msgstr ""
+
+#: public/js/appFilters.js:46
+msgid "Sunday"
+msgstr ""
+
+#: public/js/appFilters.js:143
+msgid "System Administrator"
+msgstr ""
+
+#: public/js/appFilters.js:285
+#: public/js/controllers/projects/ProjectCtrl.js:17
+msgid "TB"
+msgstr ""
+
+#: public/js/appFilters.js:256
+msgid "Technical Agency"
+msgstr ""
+
+#: public/js/controllers/SettingsCtrl.js:97
+msgid "The current password you entered is incorrect"
+msgstr ""
+
+#: public/js/controllers/sign/SigninCtrl.js:85
+msgid "The email or password is empty."
+msgstr ""
+
+#: public/js/controllers/sign/SigninCtrl.js:69
+msgid "The email or password you entered is incorrect."
+msgstr ""
+
+#: public/js/controllers/recovery/ResetCtrl.js:19
+msgid "The link has expired"
+msgstr ""
+
+#: public/js/controllers/ErrorCtrl.js:11
+msgid "The link you followed may be broken, or the page may have been removed."
+msgstr ""
+
+#: public/js/controllers/ErrorCtrl.js:7
+msgid "The link you followed may have expired, or the page may only be visible to an audience you're not in."
+msgstr ""
+
+#: public/js/controllers/organizations/OrganizationCtrl.js:101
+msgid "The organization has been created"
+msgstr ""
+
+#: public/js/controllers/organizations/OrganizationsCtrl.js:38
+msgid "The organization has been deleted"
+msgstr ""
+
+#: public/js/controllers/organizations/OrganizationCtrl.js:54
+msgid "The organization has been updated"
+msgstr ""
+
+#: public/js/controllers/projects/ProjectCtrl.js:125
+msgid "The project has been created"
+msgstr ""
+
+#: public/js/controllers/projects/ProjectsCtrl.js:38
+msgid "The project has been deleted"
+msgstr ""
+
+#: public/js/controllers/projects/ProjectCtrl.js:72
+msgid "The project has been updated"
+msgstr ""
+
+#: public/js/controllers/users/UsersCtrl.js:86
+msgid "The user has been activated"
+msgstr ""
+
+#: public/js/controllers/users/UserCtrl.js:103
+msgid "The user has been created"
+msgstr ""
+
+#: public/js/controllers/users/UsersCtrl.js:69
+msgid "The user has been deleted"
+msgstr ""
+
+#: public/js/controllers/users/UserCtrl.js:68
+msgid "The user has been updated"
+msgstr ""
+
+#: public/js/controllers/SettingsCtrl.js:87
+#: public/js/controllers/users/UserCtrl.js:136
+#: public/js/controllers/users/UserCtrl.js:57
+msgid "These passwords don't match"
+msgstr ""
+
+#: public/js/controllers/users/UserCtrl.js:111
+msgid "This email is already used"
+msgstr ""
+
+#: public/templates/installation/first.html:12
+msgid "This wizard will help you configure Core."
+msgstr ""
+
+#: public/js/appFilters.js:50
+msgid "Thursday"
+msgstr ""
+
+#: public/templates/settings/notifications.html:5
+msgid "To turn off a specific feature, just click the toggle."
+msgstr ""
+
+#: public/js/appFilters.js:48
+msgid "Tuesday"
+msgstr ""
+
+#: public/templates/recovery/reset.html:16
+#: public/templates/settings/password.html:4
+msgid "Use at least 6 characters"
+msgstr ""
+
+#: public/js/controllers/SettingsCtrl.js:119
+#: public/js/controllers/users/UserCtrl.js:127
+msgid "Use at least 6 characters for your password"
+msgstr ""
+
+#: public/js/controllers/ConfigurationCtrl.js:34
+msgid "Warning"
+msgstr ""
+
+#: public/js/appFilters.js:49
+msgid "Wednesday"
+msgstr ""
+
+#: public/templates/sign/signin.html:10
+msgid "Welcome to"
+msgstr ""
+
+#: public/js/controllers/ConfigurationCtrl.js:35
+msgid "Would you like to save the new configuration"
+msgstr ""
+
+#: public/js/controllers/ConfigurationCtrl.js:36
+msgid "Yes"
+msgstr ""
+
+#: public/js/appFilters.js:44
+msgid "Yesterday"
+msgstr ""
+
+#: public/js/controllers/SettingsCtrl.js:107
+msgid "Your password has been changed"
+msgstr ""
+
+#: public/js/controllers/sign/SigninCtrl.js:16
+msgid "Your password has been changed with success. You can now sign in."
+msgstr ""
+
+#: app/controllers/account.js:297
+msgid "created an account with the email"
+msgstr ""
+
+#: public/templates/configuration.html:12
+msgid "e.g."
+msgstr ""
+
+#: public/js/appFilters.js:134
+#: public/js/appFilters.js:140
+#: public/js/appFilters.js:158
+#: public/js/appFilters.js:182
+#: public/js/appFilters.js:189
+#: public/js/appFilters.js:213
+#: public/js/appFilters.js:235
+#: public/js/appFilters.js:25
+#: public/js/appFilters.js:269
+#: public/js/appFilters.js:282
+msgid "unknown"
+msgstr ""

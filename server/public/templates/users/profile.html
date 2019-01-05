@@ -1,0 +1,71 @@
+<md-button class="md-raised md-primary" ng-click="href('home.users.main');">
+    <md-icon>keyboard_arrow_left</md-icon> <span translate>Back</span>
+</md-button>
+<md-card>
+    <md-card-content>
+        <md-list>
+            <md-list-item>
+                <md-icon>vpn_key</md-icon>
+                <p class="md-body-2" translate>User ID</p>  
+                <p class="md-body-1 md-secondary">{{user._id}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-icon>account_circle</md-icon>
+                <p class="md-body-2" translate>Avatar</p>
+                <div class="avatar avatar-md md-secondary" ng-style="{'background-color': user.preferences.avatar}">
+                    {{user.firstname.substr(0, 1).toUpperCase()}}
+                </div>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-icon>face</md-icon>
+                <p class="md-body-2" translate>Full name</p>
+                <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{kernel.namingOrder === 'lf' ? user.lastname + ' ' + user.firstname : user.firstname + ' ' + user.lastname}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-icon>email</md-icon>
+                <p class="md-body-2" translate>Email</p>
+                <p class="md-body-1 md-secondary">{{user.email}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-icon>security</md-icon>
+                <p class="md-body-2" translate>Role</p>
+                <p class="md-body-1 md-secondary">{{user.role| role}}</p>
+            </md-list-item>
+            <md-list-item ng-if="user.role === '3'">
+                <p class="md-body-1 md-secondary">
+                    <span ng-repeat="state in states | filter: myFilter">{{state | state}}<span ng-if="!$last">; </span></span>
+                </p>
+            </md-list-item>
+            <md-list-item ng-if="user.role === '4'">
+                <p class="md-body-1 md-secondary">
+                    <span ng-repeat="lab in laboratories | filter: myFilter">{{lab.name}}<span ng-if="!$last">; </span></span>
+                </p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-icon>language</md-icon>
+                <p class="md-body-2" translate>Language</p>
+                <p class="md-body-1 md-secondary">{{user.language| language}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-icon>event</md-icon>
+                <p class="md-body-2" translate>Created</p>
+                <p class="md-body-1 md-secondary">{{user.created | date:'dd/MM/yyyy'}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-icon>phone</md-icon>
+                <p class="md-body-2" translate>Phone number</p>
+                <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{user.phone}}</p>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>
+<md-button class="md-raised md-primary" ng-click="href('home.users.main');">
+    <md-icon>keyboard_arrow_left</md-icon> <span translate>Back</span>
+</md-button>

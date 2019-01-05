@@ -1,0 +1,24 @@
+<div flex="50" flex-offset="25" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0">
+    <form ng-submit="submit();">
+        <md-card>
+            <md-card-title style="padding-bottom: 0;">
+                <md-card-title-text>
+                    <span class="md-headline" translate>Public access</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content style="padding-bottom: 0;">
+                <md-input-container class="md-block" style="margin-bottom: 0;">
+                    <label>
+                        <span translate>Server URL</span> <span>(</span><span translate>e.g.</span> <span>http://core.savics.org</span><span>)</span>
+                    </label>
+                    <input ng-model="config.server.name" required>
+                </md-input-container>
+            </md-card-content>
+        </md-card>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button class="md-raised md-accent" type="submit">
+                <span translate>Save</span>
+            </md-button>
+        </md-card-actions>
+    </form>
+</div>

@@ -1,0 +1,30 @@
+<form ng-submit="update();">
+    <md-card>
+        <md-card-content>
+            <div ng-if="kernel.namingOrder === 'lf'">
+                <md-input-container class="md-block">
+                    <label translate>Last name</label>
+                    <input ng-model="profile.lastname" required>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>First name</label>
+                    <input ng-model="profile.firstname" required>
+                </md-input-container>
+            </div>
+            <div ng-if="kernel.namingOrder !== 'lf'">
+                <md-input-container class="md-block">
+                    <label translate>First name</label>
+                    <input ng-model="profile.firstname" required>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>Last name</label>
+                    <input ng-model="profile.lastname" required>
+                </md-input-container>
+            </div>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button ui-sref="home.profile.main"><span translate>Cancel</span></md-button>
+            <md-button class="md-raised md-accent" type="submit"><span translate>Done</span></md-button>
+        </md-card-actions>
+    </md-card>
+</form>

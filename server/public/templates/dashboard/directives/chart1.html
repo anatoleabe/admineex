@@ -1,0 +1,29 @@
+<md-card class="widget">
+    <md-card-title>
+        <md-card-title-text layout="row">
+            <span class="md-headline">
+                <span>{{title}}</span>
+            </span>
+            <span flex></span>
+            <md-menu md-offset="0 -7" md-position-mode="target-right target">
+                <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                    <md-icon>more_vert</md-icon>
+                </md-button>
+                <md-menu-content width="2">
+                    <md-menu-item>
+                        <md-button ng-click="$parent.$parent.exportPNG('forecast_income', title);"><md-icon md-menu-align-target>photo</md-icon> <span translate>Export</span> <small>(png)</small></md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div class="loading" data-ng-if="loadingChart">
+            <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
+        </div>
+        <div ng-class="{'opacity1': loadingChart}">
+            <canvas id="forecast_income" class="chart chart-bar" chart-data="data" chart-options="options" 
+                    chart-labels="labels" chart-series="series" chart-colors="colors"></canvas>
+        </div>
+    </md-card-content>
+</md-card>

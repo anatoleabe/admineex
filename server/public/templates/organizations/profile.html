@@ -1,0 +1,47 @@
+<md-button class="md-raised md-primary" ng-click="href('home.organizations.main');">
+    <md-icon>keyboard_arrow_left</md-icon> <span translate>Back</span>
+</md-button>
+<md-card>
+    <md-card-content>
+        <md-list>
+            <md-list-item>
+                <md-icon>vpn_key</md-icon>
+                <p class="md-body-2" translate>Organization ID</p>  
+                <p class="md-body-1 md-secondary">{{organization._id}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-icon>account_balance</md-icon>
+                <p class="md-body-2" translate>Organization Name</p>  
+                <p class="md-body-1 md-secondary">{{organization.name}}</p>
+            </md-list-item>
+            <md-divider></md-divider>      
+            <md-list-item>
+                <md-icon>people_outline</md-icon>
+                <p class="md-body-2" translate>Organization Type</p>  
+                <p class="md-body-1 md-secondary">{{organization.type | organizationType}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-icon>event</md-icon>
+                <p class="md-body-2" translate>Last Modified</p>
+                <p class="md-body-1 md-secondary">{{organization.lastModified | date:'dd/MM/yyyy'}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-icon>event</md-icon>
+                <p class="md-body-2" translate>Created</p>
+                <p class="md-body-1 md-secondary">{{organization.created | date:'dd/MM/yyyy'}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item>
+                <md-icon>edit</md-icon>
+                <p class="md-body-2" translate>Author</p>
+                <p class="md-body-1 md-secondary">{{organization.authorID}}</p>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>
+<md-button class="md-raised md-primary" ng-click="href('home.organizations.main');">
+    <md-icon>keyboard_arrow_left</md-icon> <span translate>Back</span>
+</md-button>

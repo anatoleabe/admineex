@@ -1,0 +1,18 @@
+<form ng-submit="changeLanguage();">
+    <md-card>
+        <md-card-content>
+            <md-input-container class="md-block">
+                <label translate>Language</label>
+                <md-select ng-model="profile.language">
+                    <md-option ng-repeat="language in languagesList" value="{{language.value}}">
+                    {{language.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button ui-sref="home.settings.main"><span translate>Cancel</span></md-button>
+            <md-button class="md-raised md-accent" type="submit"><span translate>Done</span></md-button>
+        </md-card-actions>
+    </md-card>
+</form>

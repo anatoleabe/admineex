@@ -1,0 +1,58 @@
+<form ng-submit="submit();">
+    <md-card>
+        <md-card-content>
+            <div ng-if="kernel.namingOrder === 'lf'">
+                <md-input-container class="md-block">
+                    <label translate>Last name</label>
+                    <input ng-model="user.lastname" required>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>First name</label>
+                    <input ng-model="user.firstname" required>
+                </md-input-container>
+            </div>
+            <div ng-if="kernel.namingOrder !== 'lf'">
+                <md-input-container class="md-block">
+                    <label translate>First name</label>
+                    <input ng-model="user.firstname" required>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>Last name</label>
+                    <input ng-model="user.lastname" required>
+                </md-input-container>
+            </div>
+            <md-input-container class="md-block">
+                <label translate>Email</label>
+                <input type="email" ng-model="user.email" required>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label translate>Role</label>
+                <md-select ng-model="user.role" required>
+                    <md-option ng-repeat="role in rolesList" value="{{role.value}}">
+                        {{role.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label translate>Language</label>
+                <md-select ng-model="user.language" required>
+                    <md-option ng-repeat="language in languagesList" value="{{language.value}}">
+                        {{language.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>{{passwordTitle}}</label>
+                <input type="password" ng-model="user.password" ng-required="new">
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label translate>Confirmation</label>
+                <input type="password" ng-model="user.passwordConfirmation" ng-required="new">
+            </md-input-container>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button ui-sref="home.users.main"><span translate>Cancel</span></md-button>
+            <md-button class="md-raised md-accent" type="submit"><span translate>Done</span></md-button>
+        </md-card-actions>
+    </md-card>
+</form>

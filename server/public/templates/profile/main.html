@@ -1,0 +1,23 @@
+<md-card>
+    <md-card-content>
+        <md-list ng-cloak>
+            <md-list-item ui-sref="home.profile.name">
+                <md-icon>face</md-icon>
+                <p class="md-body-2" translate>Full name</p>
+                <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{kernel.namingOrder === 'lf' ? profile.lastname + ' ' + profile.firstname : profile.firstname + ' ' + profile.lastname }}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item ui-sref="home.profile.email">
+                <md-icon>email</md-icon>
+                <p class="md-body-2" translate>Email</p>
+                <p class="md-body-1 md-secondary">{{profile.email}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item ui-sref="home.profile.phone">
+                <md-icon>phone</md-icon>
+                <p class="md-body-2" translate>Phone number</p>
+                <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{profile.phone | unknown}}</p>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>

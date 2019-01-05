@@ -1,0 +1,25 @@
+<div class="loading-general" layout="row" layout-sm="column" layout-align="space-around" ng-if="loading">
+    <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
+</div>
+<div layout="column" layout-align="center center">
+    <md-card class="loginBox md-whiteframe-z1" style="margin-top: 50px;">
+        <md-card-content>
+            <div style="text-align: center;">
+                <img src="{{kernel.logo.small}}" style="width:115px;height:120px;margin-top: 10px;">
+            </div>
+            <h3 class="md-subhead" style="text-align:center"><span translate>Welcome to</span> {{kernel.title}}</h3>
+            <form ng-submit="signin();">
+                <div layout="column">
+                    <md-input-container style="margin-bottom: 0;" md-no-float>
+                        <input type="email" ng-model="email" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="{{'Email' | translate}}" required>
+                    </md-input-container>
+                    <md-input-container style="margin-bottom: 0;" md-no-float>
+                        <input type="password" ng-model="password" name="password" placeholder="{{'Password' | translate}}" required>
+                    </md-input-container>
+                    <md-button ui-sref="recovery.lost" md-no-ink="md-no-ink"><span translate>Need help?</span></md-button>
+                    <md-button class="md-raised md-accent" type="submit"><span translate>Sign in</span></md-button>
+                </div>
+            </form>
+        </md-card-content>
+    </md-card>
+</div>

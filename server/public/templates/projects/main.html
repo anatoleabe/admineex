@@ -1,0 +1,56 @@
+<div layout="row" ng-show="projects.length > 0">
+    <div flex>
+        <h3 class="md-headline" style="margin: 10px 0px 10px 0px;" translate>Projects</h3>
+    </div>
+    <div flex style="text-align: right;">
+        <md-button style="margin-top: 6px;margin-right: 0;" class="md-icon-button" aria-label="search" ng-click="search = !search ;$parent.setFocus('search');">
+            <md-icon class="material-icons">search</md-icon>
+            <md-tooltip>
+                <span translate>Search</span>
+            </md-tooltip>
+        </md-button>
+        <md-input-container style="margin: 5px 0;" md-no-float>
+            <input type="search" name="search" placeholder="{{'Search' | translate}}" ng-model="searchText">
+        </md-input-container>
+    </div>
+</div>
+<md-card style="margin: 0;" data-ng-if="projects.length > 0">
+    <md-card-content>
+        <md-list ng-cloak>
+            <md-list-item data-ng-repeat="project in projects | orderBy:'-paymentDate' | filter:searchText" ui-sref="home.projects.profile({id:project._id})">
+                <md-truncate flex>
+                    {{project.name}} <small class="diy-chip">{{project.value | currency:"€":0}}</small><small class="diy-chip">{{project.paymentDate | date:'MM/yyyy'}}</small><small class="diy-chip" ng-class="{'green': project.successProbability >= 50, 'red': project.successProbability < 50}">P: {{project.successProbability + "%"}}</small><small class="diy-chip">{{project.status | projectStatus}}</small>
+                </md-truncate>
+                <md-button class="md-secondary md-icon-button" aria-label="Duplicate" ui-sref="home.projects.new({duplicateID:project._id})">
+                    <md-icon aria-label="Duplicate">content_copy</md-icon>
+                    <md-tooltip>
+                        <span translate>Duplicate</span>
+                    </md-tooltip>
+                </md-button>
+                <md-button class="md-secondary md-icon-button" aria-label="Edit" ng-click="edit({id:project._id})">
+                    <md-icon aria-label="Edit">edit</md-icon>
+                    <md-tooltip>
+                        <span translate>Edit</span>
+                    </md-tooltip>
+                </md-button>
+                <md-button class="md-secondary md-icon-button" aria-label="Delete" ng-click="showConfirm(project)">
+                    <md-icon aria-label="Delete">delete</md-icon>
+                    <md-tooltip>
+                        <span translate>Delete</span>
+                    </md-tooltip>
+                </md-button>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>
+<div layout="column" layout-align="center center" data-ng-if="helper.length !== 0" style="opacity:0.2;">
+    <md-icon aria-label="{{helper.title}}" class="material-icons" style="font-size: 120px;height: 120px;width: 120px;">{{helper.icon}}</md-icon>
+    <h2 class="md-title">{{helper.title}}</h2>
+</div>
+<div style="margin-bottom: 100px"></div>
+<md-button class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ui-sref="home.projects.new">
+    <md-icon class="material-icons">add</md-icon>
+    <md-tooltip md-direction="top">
+        <span translate>New</span>
+    </md-tooltip>
+</md-button>

@@ -1,0 +1,37 @@
+<md-card>
+    <md-card-content>
+        <md-list ng-cloak>
+            <md-list-item ui-sref="home.settings.avatar">
+                <md-icon>account_circle</md-icon>
+                <p class="md-body-2" translate>Avatar</p>
+                <div class="avatar avatar-md md-secondary" ng-style="{'background-color': profile.preferences.avatar}">
+                    {{profile.firstname.substr(0, 1).toUpperCase()}}
+                </div>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item ng-disabled="true" style="opacity:0.3;">
+                <md-icon>work</md-icon>
+                <p class="md-body-2" translate>Role</p>
+                <p class="md-body-1 md-secondary">{{profile.role | role}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item ui-sref="home.settings.password">
+                <md-icon>security</md-icon>
+                <p class="md-body-2" translate>Password</p>
+                <p class="md-body-1 md-secondary">********</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item ui-sref="home.settings.language">
+                <md-icon>language</md-icon>
+                <p class="md-body-2" translate>Language</p>
+                <p class="md-body-1 md-secondary">{{profile.language | language}}</p>
+            </md-list-item>
+            <md-divider></md-divider>
+            <md-list-item ui-sref="home.settings.notifications">
+                <md-icon>notifications</md-icon>
+                <p class="md-body-2" translate>Notifications</p>
+                <p class="md-body-1 md-secondary"  style="white-space: nowrap;"><md-icon>keyboard_arrow_right</md-icon></p>
+            </md-list-item>
+        </md-list>
+    </md-card-content>
+</md-card>

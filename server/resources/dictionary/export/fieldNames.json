@@ -1,0 +1,51 @@
+[
+    {
+        "id": "name",
+        "en": "Name",
+        "fr": "Nom"
+    },{
+        "id": "enablers",
+        "en": "Enablers",
+        "fr": "Facilitateurs"
+    },{
+        "id": "value",
+        "en": "Value",
+        "fr": "Valeur"
+    },{
+        "id": "paymentDate",
+        "en": "Payment Date",
+        "fr": "Date de paiement"
+    },{
+        "id": "successProbability",
+        "en": "Probability of Success",
+        "fr": "Probabilité de succès"
+    },{
+        "id": "status",
+        "en": "Status",
+        "fr": "Statut"
+    },{
+        "id": "finance.funders",
+        "en": "Funders",
+        "fr": "Bailleurs de fonds"
+    },{
+        "id": "finance.providers",
+        "en": "Fund Providers",
+        "fr": "Fournisseurs de fonds"
+    },{
+        "id": "finance.revenueType",
+        "en": "Revenue Type",
+        "fr": "Type de revenu"
+    },{
+        "id": "context.countries",
+        "en": "Countries",
+        "fr": "Pays"
+    },{
+        "id": "context.sicknesses",
+        "en": "Sicknesses",
+        "fr": "Maladies"
+    },{
+        "id": "context.product",
+        "en": "Product",
+        "fr": "Produit"
+    }
+]

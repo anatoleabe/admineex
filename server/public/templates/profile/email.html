@@ -1,0 +1,14 @@
+<form ng-submit="update();">
+    <md-card>
+        <md-card-content>
+            <md-input-container class="md-block">
+                <label translate>Email</label>
+                <input ng-model="profile.email" type="email" required>
+            </md-input-container>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button ui-sref="home.profile.main"><span translate>Cancel</span></md-button>
+            <md-button class="md-raised md-accent" type="submit"><span translate>Done</span></md-button>
+        </md-card-actions>
+    </md-card>
+</form>

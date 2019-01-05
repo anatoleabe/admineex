@@ -1,0 +1,26 @@
+[
+    {
+        "id": "1",
+        "en": "In talks"
+    },
+    {
+        "id": "2",
+        "en": "Proposal Sent"
+    },
+    {
+        "id": "3",
+        "en": "Accepted"
+    },
+    {
+        "id": "4",
+        "en": "Signed"
+    },
+    {
+        "id": "5",
+        "en": "Completed"
+    },
+    {
+        "id": "6",
+        "en": "Canceled"
+    }
+]

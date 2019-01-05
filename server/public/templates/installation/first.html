@@ -1,0 +1,20 @@
+<div class="loading-general" layout="row" layout-sm="column" layout-align="space-around" ng-if="loading">
+    <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
+</div>
+<div layout="column" layout-align="center center">
+    <md-card>
+        <form ng-submit="submitNext(1)">
+            <div style="text-align: center;">
+                <img src="{{kernel.logo.large}}" style="width:121px;height:103px;margin-top: 10px;">
+            </div>
+            <md-card-content style="padding-bottom: 0;">
+                <h3 class="md-subhead" style="text-align:center">
+                    <span translate>This wizard will help you configure Core.</span>
+                </h3>
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="center">
+                <md-button class="md-raised md-accent" type="submit" ng-disabled="loading"><span translate>Start</span></md-button>
+            </md-card-actions>   
+        </form>   
+    </md-card>
+</div>

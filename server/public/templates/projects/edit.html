@@ -1,0 +1,96 @@
+<form ng-submit="submit();">
+    <md-card>
+        <md-card-content>
+            <div >
+                <md-input-container class="md-block">
+                    <label translate>Project Name</label>
+                    <input ng-model="project.name" required>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>Project enabled by</label>                
+                    <md-select ng-model="project.enablersID" multiple required>
+                        <md-option ng-repeat="user in users" value="{{user._id}}">
+                            {{user.firstname + " " + user.lastname}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label><span translate>Project Value</span> <span>(in €)</span></label>
+                    <input ng-model="project.value" type="number" required>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>Payment Date</label>
+                    <md-datepicker ng-model="project.paymentDate" required></md-datepicker>
+                </md-input-container>
+                <div layout="row" ng-hide="project.status == '6'">
+                    <md-input-container flex=40 class="md-block">
+                        <label><span translate>Probability of Success</span> <span>(in %)</span></label>
+                        <input ng-model="project.successProbability" type="number" min="0" max="100" ng-maxlength="3" ng-maxlength="1" required>
+                    </md-input-container>
+                    <md-slider flex min="0" max="100" ng-model="project.successProbability" aria-label="successProbability" id="successProbability">
+                    </md-slider>
+                </div>
+                <md-input-container class="md-block">
+                    <label translate>Project Status</label>
+                    <md-select ng-model="project.status" ng-change="onStatusChange();" required>
+                        <md-option ng-repeat="status in statusesList" value="{{status.value}}">
+                            {{status.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>Funder</label>
+                    <md-select ng-model="project.finance.fundersID" multiple>
+                        <md-option ng-repeat="funder in organizations | orderBy:'name'" value="{{funder._id}}">
+                            {{funder.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>Fund Provider</label>
+                    <md-select ng-model="project.finance.providersID" multiple>
+                        <md-option ng-repeat="provider in organizations | orderBy:'name'" value="{{provider._id}}">
+                            {{provider.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>Revenue Type</label>
+                    <md-select ng-model="project.finance.revenueType" required>
+                        <md-option ng-repeat="revenueType in revenueTypesList | orderBy:'name'" value="{{revenueType.value}}">
+                            {{revenueType.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <md-input-container class="md-block">
+                <label translate>Countries</label>
+                <md-select ng-model="project.context.countries" multiple>
+                    <md-option ng-repeat="country in countriesList | orderBy:'value'" value="{{country.id}}">
+                        {{country.value}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label translate>Sicknesses</label>
+                <md-select ng-model="project.context.sicknesses" ng-change="onSicknessesChange();" multiple>
+                    <md-option ng-repeat="sickness in sicknessesList | orderBy:'name'" value="{{sickness.value}}" ng-disabled="sickness.value != '0' && project.context.sicknesses[0] == '0'">
+                        {{sickness.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container class="md-block">
+                    <label translate>Product</label>
+                    <md-select ng-model="project.context.product">
+                        <md-option ng-repeat="product in productsList" value="{{product.value}}">
+                            {{product.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button ui-sref="home.projects.main"><span translate>Cancel</span></md-button>
+                <md-button class="md-raised md-accent" type="submit"><span translate>Done</span></md-button>
+            </md-card-actions>
+        </md-card-content>
+    </md-card>
+</form>

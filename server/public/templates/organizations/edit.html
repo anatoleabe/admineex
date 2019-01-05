@@ -1,0 +1,24 @@
+<form ng-submit="submit();">
+    <md-card>
+        <md-card-content>
+            <div >
+                <md-input-container class="md-block">
+                    <label translate>Organization Name</label>
+                    <input ng-model="organization.name" required>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>Organization Type</label>
+                    <md-select ng-model="organization.type" required>
+                        <md-option ng-repeat="type in typesList" value="{{type.value}}">
+                            {{type.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button ui-sref="home.organizations.main"><span translate>Cancel</span></md-button>
+                <md-button class="md-raised md-accent" type="submit"><span translate>Done</span></md-button>
+            </md-card-actions>
+        </md-card-content>
+    </md-card>
+</form>

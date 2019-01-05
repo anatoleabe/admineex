@@ -1,0 +1,64 @@
+<div oc-lazy-load="'node_modules/angular-material-data-table/dist/md-data-table.min.js'">
+    <md-card>
+        <md-toolbar class="md-table-toolbar md-default" ng-show="!filter.show">
+            <div class="md-toolbar-tools">
+                <span translate>Audit</span>
+                <div flex></div>
+                <md-button class="md-icon-button" ng-click="filter.show = true" aria-label="filter">
+                    <md-icon class="material-icons">date_range</md-icon>
+                </md-button>
+                <md-button class="md-icon-button" ng-click="load()">
+                    <md-icon class="material-icons">refresh</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-toolbar class="md-table-toolbar md-default" ng-show="filter.show">
+            <div class="md-toolbar-tools" style="padding-left: 10px;">
+                <md-datepicker ng-model="filter.from" md-placeholder="Enter date" md-min-date="filter.min" md-max-date="filter.max" ng-change="load()">
+                </md-datepicker>
+                <md-icon style="padding-left: 10px;" class="material-icons">keyboard_arrow_right</md-icon>
+                <md-datepicker ng-model="filter.to" md-placeholder="Enter date" md-min-date="filter.min" md-max-date="filter.max" ng-change="load()">
+                </md-datepicker>
+                <div flex></div>
+                <md-button class="md-icon-button" ng-click="filter.show = false" aria-label="close">
+                    <md-icon class="material-icons">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-table-container>
+            <table md-table md-progress="promise">
+                <thead md-head md-order="query.order">
+                    <tr md-row>
+                        <th md-column md-order-by="date"><span>Time</span></th>
+                        <th md-column md-order-by="actor"><span>Actor</span></th>
+                        <th md-column md-order-by="origin" md-desc><span>Origin</span></th>
+                        <th md-column md-order-by="action"><span>Action</span></th>
+                        <th md-column md-order-by="status"><span>Status</span></th>
+                        <th md-column md-order-by="label"><span>Label</span></th>
+                        <th md-column md-order-by="object"><span>Object</span></th>
+                        <th md-column md-order-by="description"><span>Description</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row ng-repeat="log in logs.data | filter: filter.search | orderBy: query.order | limitTo: query.limit : (query.page -1) * query.limit">
+                        <td md-cell>{{log.date | date:'dd/MM/yyyy HH:mm:ss.sss'}}</td>
+                        <td md-cell>{{log.actor}}</td>
+                        <td md-cell>{{log.origin}}</td>
+                        <td md-cell>{{log.action}}</td>
+                        <td md-cell>
+                            <md-tooltip md-direction="left">
+                                {{log.status}}
+                            </md-tooltip>
+                            <md-icon ng-style="{color: (log.status=='succeed'?'#8BC34A':'#F44336')}" class="material-icons">fiber_manual_record</md-icon>
+                        </td>
+                        <td md-cell>{{log.label}}</td>
+                        <td md-cell>{{log.object}}</td>
+                        <td md-cell>{{log.description}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination md-limit="query.limit" md-limit-options="options.limit" md-page="query.page" md-total="{{logs.count}}" md-page-select="true">
+        </md-table-pagination>
+    </md-card>
+</div>

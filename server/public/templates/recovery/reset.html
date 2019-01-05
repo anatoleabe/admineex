@@ -1,0 +1,33 @@
+<div class="loading" layout="row" layout-sm="column" layout-align="space-around" ng-if="loading">
+    <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
+</div>
+<div layout="column" layout-align="center center">
+    <md-card class="signupBox md-whiteframe-z1" style="margin-top: 10px;">
+        <md-card-content>
+            <h3 class="md-title" style="text-align:center;" translate>Reset your password</h3>
+            <h3 class="md-subhead" translate>Enter a new password for your Core account.</h3>
+            <form ng-submit="submit();" name="reset">
+                <div layout="column">
+                    <md-input-container class="md-block" style="margin: 0;">
+                        <label translate>Password</label>
+                        <input type="password" md-minlength="6" ng-model="newPassword" name="newPassword" required>
+                        <div ng-messages="reset.newPassword.$error">
+                            <div ng-message="md-minlength">
+                                <span translate>Use at least 6 characters</span><span>.</span>
+                            </div>
+                        </div>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label translate>Confirmation</label>
+                        <input type="password" ng-model="newPasswordConfirmation" required>
+                    </md-input-container>
+                    <div layout="row" layout-align="center center">
+                        <md-button class="md-raised" ui-sref="signin"><span translate>Back</span></md-button>
+                        <div flex="flex"></div>
+                        <md-button class="md-raised md-accent" type="submit" ng-disabled="loading"><span translate>Submit</span></md-button>
+                    </div>
+                </div>
+            </form>
+        </md-card-content>
+    </md-card>
+</div>

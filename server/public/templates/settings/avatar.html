@@ -1,0 +1,16 @@
+<md-card>
+    <md-card-content>
+        <p><span translate>Choose a color for your avatar</span>.</p>
+        <div style="text-align:left;padding: 5px 0px;">
+            <a href data-ng-repeat="c in colorsList" data-ng-click="selectColor(c);" class="avatar avatar-lg" 
+               style="margin: 5px 10px 5px 0px;text-decoration: none;text-transform: none;"
+               data-ng-style="{'background-color': c}" data-ng-class="{'selected-icon': c == color}">
+                {{profile.firstname.substr(0, 1).toUpperCase()}}
+            </a>
+        </div>
+    </md-card-content>
+    <md-card-actions layout="row" layout-align="end center">
+        <md-button ui-sref="home.settings.main"><span translate>Cancel</span></md-button>
+        <md-button class="md-raised md-accent" data-ng-click="updateAvatar();"><span translate>Done</span></md-button>
+    </md-card-actions>
+</md-card>

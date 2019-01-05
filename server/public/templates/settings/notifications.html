@@ -1,0 +1,23 @@
+<form ng-submit="changeNotification();">
+    <md-card>
+        <md-card-title>
+            <md-card-title-text>
+                <span class="md-subhead" translate>To turn off a specific feature, just click the toggle.</span>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <md-list>
+                <md-list-item>
+                    <p translate>Notify me by email</p>
+                    <md-switch class="md-secondary" ng-model="profile.preferences.notification.email" aria-label="Email">
+                        {{profile.preferences.notification.email?('ON'):('OFF')}}
+                    </md-switch>
+                </md-list-item>
+            </md-list>
+        </md-card-content>
+        <md-card-actions layout="row" layout-align="end center">
+            <md-button ui-sref="home.settings.main"><span translate>Cancel</span></md-button>
+            <md-button class="md-raised md-accent" type="submit"><span translate>Done</span></md-button>
+        </md-card-actions>
+    </md-card>
+</form>
