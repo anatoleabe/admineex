@@ -1,0 +1,14 @@
+.DS_Store
+._.DS_Store
+
+*.seed
+*.log
+*.dat
+*.out
+*.pid
+*.gz
+
+logs/*
+package-lock.json
+node_modules
+tmp
