@@ -1,0 +1,20 @@
+[
+    {
+        "id": "1",
+        "code": "SC",
+        "en": "Services centraux",
+        "fr": "Services centraux"
+    },
+    {
+        "id": "2",
+        "code": "SD",
+        "en": "Services déconcentrés",
+        "fr": "Services déconcentrés"
+    },
+    {
+        "id": "3",
+        "code": "SE",
+        "en": "Services exterieurs",
+        "fr": "Services exterieurs"
+    }
+]
