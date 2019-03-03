@@ -8,8 +8,9 @@ var PositionSchema = new Schema({
     identifier: { type: String, required: true },
     name: { type: String, required: true },
     code: { type: String, required: true },
-    corpsID: { type: ObjectId, required: false },
-    categoryID: { type: ObjectId, required: false },
+    corps: { type: String, required: true },
+    category: { type: String, required: false },
+    priority: { type: String, required: false },
     lastModified: { type: Date, default: Date.now, required: true },
     created: { type: Date, default: Date.now, required: true }
 });
