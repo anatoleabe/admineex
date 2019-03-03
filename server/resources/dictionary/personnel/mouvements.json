@@ -1,0 +1,18 @@
+
+[
+    {
+        "id": "1",
+        "en": "Nomination",
+        "fr": "Nomination"
+    },
+    {
+        "id": "2",
+        "en": "Assignation",
+        "fr": "Affectation"
+    },
+    {
+        "id": "3",
+        "en": "Integration",
+        "fr": "Intégration"
+    }
+]

@@ -1,0 +1,57 @@
+[
+      {
+        "id": "1",
+        "en": "Congé",
+        "fr": "Congé"
+      },
+      {
+        "id": "2",
+        "en": "Permission",
+        "fr": "Permission"
+      },
+      {
+        "id": "3",
+        "en": "Retraite",
+        "fr": "Retraite"
+      },
+      {
+        "id": "4",
+        "en": "Mise en Stage",
+        "fr": "Mise en Stage"
+      },
+      {
+        "id": "5",
+        "en": "Révocation",
+        "fr": "Révocation"
+      },
+      {
+        "id": "6",
+        "en": "Suspension",
+        "fr": "Suspension"
+      },
+      {
+        "id": "7",
+        "en": "En poste",
+        "fr": "En poste"
+      },
+      {
+        "id": "8",
+        "en": "Décès",
+        "fr": "Décès"
+      },
+      {
+        "id": "9",
+        "en": "Maladie",
+        "fr": "Maladie"
+      },
+      {
+        "id": "10",
+        "en": "Abandon",
+        "fr": "Abandon"
+      },
+      {
+        "id": "11",
+        "en": "Rallongé",
+        "fr": "Rallongé"
+      }
+    ]

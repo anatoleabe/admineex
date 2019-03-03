@@ -1,0 +1,37 @@
+[
+    {
+        "id": "1",
+        "en": "Arrêté",
+        "fr": "Arrêté"
+    },
+    {
+        "id": "2",
+        "en": "Décret",
+        "fr": "Décret"
+    },
+    {
+        "id": "3",
+        "en": "Décision",
+        "fr": "Décision"
+    },
+    {
+        "id": "4",
+        "en": "Circulaire",
+        "fr": "Circulaire"
+    },
+    {
+        "id": "5",
+        "en": "Note",
+        "fr": "Note"
+    },
+    {
+        "id": "6",
+        "en": "Directive",
+        "fr": "Directive"
+    },
+    {
+        "id": "7",
+        "en": "Contrat",
+        "fr": "Contrat"
+    }
+]

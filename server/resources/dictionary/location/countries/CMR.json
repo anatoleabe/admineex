@@ -1,0 +1,53 @@
+[
+    {
+        "id": "1",
+        "code": "ad",
+        "fr": "Adamoua",
+        "en": "Adamoua"
+    },{
+        "id": "2",
+        "code": "ce",
+        "fr": "Centre",
+        "en": "Center"
+    },{
+        "id": "3",
+        "code": "es",
+        "fr": "Est",
+        "en": "East"
+    },{
+        "id": "4",
+        "code": "en",
+        "fr": "Extreme-Nord",
+        "en": "Extrem-North"
+    },{
+        "id": "5",
+        "code": "lt",
+        "fr": "Littoral",
+        "en": "Littoral"
+    },{
+        "id": "6",
+        "code": "no",
+        "fr": "Nord",
+        "en": "North"
+    },{
+        "id": "7",
+        "code": "ou",
+        "fr": "Ouest",
+        "en": "West"
+    },{
+        "id": "8",
+        "code": "su",
+        "fr": "Sud",
+        "en": "South"
+    },{
+        "id": "9",
+        "code": "nw",
+        "fr": "Nord-Ouest",
+        "en": "North-West"
+    },{
+        "id": "10",
+        "code": "sw",
+        "fr": "Sud-Ouest",
+        "en": "South-West"
+    }
+]

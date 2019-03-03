@@ -1,0 +1,86 @@
+[
+    {
+      "id": "1",
+      "fr": "Corps des Enseignants",
+      "en": "Corps des Enseignants",
+      "priorite": null
+    },
+    {
+      "id": "2",
+      "fr": "Corps des Régies Financières Trésor",
+      "en": "Corps des Régies Financières Trésor",
+      "priorite": "1"
+    },
+    {
+      "id": "4",
+      "fr": "Autre Corps de Metier",
+      "en": "Autre Corps de Metier",
+      "priorite": "1000"
+    },
+    {
+      "id": "5",
+      "fr": "Corps des Non Fonctionnaires",
+      "en": "Corps des Non Fonctionnaires",
+      "priorite": null
+    },
+    {
+      "id": "6",
+      "fr": "Corps des Administrateurs",
+      "en": "Corps des Administrateurs",
+      "priorite": "2"
+    },
+    {
+      "id": "7",
+      "fr": "Régies Financières Impot",
+      "en": "Régies Financières Impot",
+      "priorite": "3"
+    },
+    {
+      "id": "8",
+      "fr": "Corps des Informaticiens",
+      "en": "Corps des Informaticiens",
+      "priorite": null
+    },
+    {
+      "id": "9",
+      "fr": "Corps des Statistitiens",
+      "en": "Corps des Statistitiens",
+      "priorite": null
+    },
+    {
+      "id": "10",
+      "fr": "Corps des Comptables Matière",
+      "en": "Corps des Comptables Matière",
+      "priorite": null
+    },
+    {
+      "id": "11",
+      "fr": "Corps des Magistrats",
+      "en": "Corps des Magistrats",
+      "priorite": null
+    },
+    {
+      "id": "12",
+      "fr": "Corps des Prix Poids et Mesures",
+      "en": "Corps des Prix Poids et Mesures",
+      "priorite": null
+    },
+    {
+      "id": "13",
+      "fr": "Corps des Documentalistes",
+      "en": "Corps des Documentalistes",
+      "priorite": null
+    },
+    {
+      "id": "14",
+      "fr": "Corps des Télécommunications",
+      "en": "Corps des Télécommunications",
+      "priorite": null
+    },
+    {
+      "id": "16",
+      "fr": "Corps des Forces de l\\'Ordre",
+      "en": "Corps des Forces de l\\'Ordre",
+      "priorite": null
+    }
+  ]
