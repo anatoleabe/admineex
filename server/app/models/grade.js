@@ -8,6 +8,7 @@ var PositionSchema = new Schema({
     identifier: { type: String, required: true },
     name: { type: String, required: true },
     code: { type: String, required: true },
+    status: { type: String, required: true },//Official (Fonctionnaire) or not
     corps: { type: String, required: true },
     category: { type: String, required: false },
     priority: { type: String, required: false },

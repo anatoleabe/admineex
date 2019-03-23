@@ -28,7 +28,7 @@ var PersonnelSchema = new Schema({
         identifier: String,
         date: Date,
         city: String,
-        by:String,
+        by:String
     },
     preferences: {
         notification: {
@@ -36,14 +36,27 @@ var PersonnelSchema = new Schema({
             sms: {type: Boolean, required: false, default: false}
         }
     },
-    school: [
+    positionsHistory: [
+        {
+            actID: { type: ObjectId, required: true },
+            positionID: { type: ObjectId, required: true },
+            lastPositionID: { type: ObjectId, required: false },
+            startDate: Date,
+            endDateDate: Date,
+            mouvements: String,
+            lastModified: { type: Date, default: Date.now, required: true }
+        }
+    ],
+    schools: [
         {
             diploma: String,
             year: Date,
             organization: String,
+            lastModified: { type: Date, default: Date.now, required: true }
         }
     ],
-    trainning: [{}],
+    trainnings: [{}],
+    notations:[{}],
     retirement: {type: Boolean, required: false, default: false},
     lastModified: { type: Date, default: Date.now, required: true },
     created: { type: Date, default: Date.now, required: true }
