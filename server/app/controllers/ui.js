@@ -94,11 +94,35 @@ function buildNav(user, callback){
         name: 'Personnal data'
     };
     var administration = {
-        href: 'home.organizations.main',
-        icon: 'account_balance',
+        href: 'home.administration.positions',
+        icon: 'folder',
         label: 'Administration',
-        name: 'Administration'
+        name: 'Administration',
+        items: []
     };
+    
+    // Administration tabs
+    var administrationTab1 = {
+        href: 'home.administration.positions',
+        label: 'Positions',
+        name: 'Positions'
+    };
+    var administrationTab2 = {
+        href: 'home.administration.structures',
+        label: 'Structures',
+        name: 'Structures'
+    };
+    var administrationTab3 = {
+        href: 'home.administration.export',
+        label: 'Export',
+        name: 'Export'
+    };
+    var administrationTab4 = {
+        href: 'home.administration.duplicates',
+        label: 'Duplicates',
+        name: 'Duplicates'
+    };
+    
     var statistics = {
         href: 'home.statistics.main',
         icon: 'chart',
@@ -160,15 +184,25 @@ function buildNav(user, callback){
     //END DIAMA MENU
     // Build the nav
     nav.left[0].items.push(dashboard);
-    nav.left[0].items.push(personnalData);
-    nav.left[0].items.push(statistics);
-    nav.left[0].items.push(reports);
-    nav.left[0].items.push(administration);
-    nav.left[0].items.push(users);
-    nav.left[0].items.push(import_export);
+    
+    //nav.left[0].items.push(import_export);
     switch(user.role){
         case '1':
+            // LEFT MENU STATISTICS
+            nav.left[0].items.push(personnalData);
+            // LEFT MENU STATISTICS
+            nav.left[0].items.push(statistics);
+            // LEFT MENU ADMINISTRATION
+            nav.left[0].items.push(administration);
+            // LEFT MENU TABS FOR ADMINISTRATION
+            nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab1);
+            nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab2);
+            nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab3);
+            nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab4);
+            //LEFT MENU REPORTS
+            nav.left[0].items.push(reports);
             // PREFERNCES
+            nav.left[0].items.push(users);
             nav.left[1].items.push(configuration);
             nav.left[1].items.push(audit);
             break;

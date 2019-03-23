@@ -215,22 +215,39 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
             }]
         },
         breadcrumbs: ["Projects","New"]
-    }).state('home.organizations', {
+    }).state('home.administration', {
         abstract: true,
-        url: 'organizations',
-        templateUrl: 'templates/organizations/organizations.html',
-        access: { requiredAuthentication: true},
-    }).state('home.organizations.main', {
-        url: '',
-        templateUrl: 'templates/organizations/main.html',
-        controller: 'OrganizationsController',
-        access: { requiredAuthentication: true},
+        url: 'administration',
+        controller: 'AdministrationController',
+        templateUrl: 'templates/administration/administration.html',
+        access: { requiredAuthentication: true },
         resolve: {
             loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                return $ocLazyLoad.load('js/controllers/organizations/OrganizationsCtrl.js');
+                return $ocLazyLoad.load('js/controllers/AdministrationCtrl.js');
+            }]
+        }
+    }).state('home.administration.positions', {
+        url: '/contacts',
+        templateUrl: 'templates/administration/positions/main.html',
+        controller: 'PositionsController',
+        access: { requiredAuthentication: true },
+        resolve: {
+            loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                return $ocLazyLoad.load('js/controllers/administration/positions/PositionsCtrl.js');
             }]
         },
-        breadcrumbs: ["Organizations"]
+        breadcrumbs: ["Administration", "Positions"]
+    }).state('home.administration.structures', {
+        url: '/structures',
+        templateUrl: 'templates/administration/structures/main.html',
+        controller: 'StructuresController',
+        access: { requiredAuthentication: true },
+        resolve: {
+            loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                return $ocLazyLoad.load('js/controllers/administration/structures/StructuresCtrl.js');
+            }]
+        },
+        breadcrumbs: ["Administration", "Structures"]
     }).state('home.organizations.edit', {
         url: '/edit/:id',
         templateUrl: 'templates/organizations/edit.html',
