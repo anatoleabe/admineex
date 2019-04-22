@@ -87,12 +87,41 @@ function buildNav(user, callback){
         label: 'Dashboard',
         name: 'Dashboard'
     };
-    var personnalData = {
-        href: 'home.projects.main',
+    var staffManagement = {
+        href: 'home.staffs.staffmanagement',
         icon: 'class',
-        label: 'Personnal data',
-        name: 'Personnal data'
+        label: 'Staff management',
+        name: 'Staff management',
+        items: []
     };
+    
+    // Staff Management tabs
+    var staffManagementTab1 = {
+        href: 'home.staffs.personnalrecords',
+        label: 'Personnal records',
+        name: 'Personnal records'
+    };
+    var staffManagementTab2 = {
+        href: 'home.staffs.staffmanagement',
+        label: 'Staff management',
+        name: 'Staff management'
+    };
+    var staffManagementTab3 = {
+        href: 'home.staffs.movement.main',
+        label: 'Appointements & promotions',
+        name: 'Appointements & promotions'
+    };
+    var staffManagementTab4 = {
+        href: 'home.staffs.status.main',
+        label: 'Status',
+        name: 'Status'
+    };
+    var staffManagementTab5 = {
+        href: 'home.staffs.discipline.main',
+        label: 'Discipline',
+        name: 'Discipline'
+    };
+    
     var administration = {
         href: 'home.administration.positions',
         icon: 'folder',
@@ -125,7 +154,7 @@ function buildNav(user, callback){
     
     var statistics = {
         href: 'home.statistics.main',
-        icon: 'chart',
+        icon: 'bar_chart',
         label: 'Statistics',
         name: 'Statistics'
     };
@@ -134,12 +163,6 @@ function buildNav(user, callback){
         icon: 'save_alt',
         label: 'Reports',
         name: 'Reports'
-    };
-    var import_export = {
-        href: 'home.import_export',
-        icon: 'import_export',
-        label: 'Import-Export',
-        name: 'Import-Export'
     };
     var users = {
         href: 'home.users.main',
@@ -189,9 +212,15 @@ function buildNav(user, callback){
     switch(user.role){
         case '1':
             // LEFT MENU STATISTICS
-            nav.left[0].items.push(personnalData);
-            // LEFT MENU STATISTICS
             nav.left[0].items.push(statistics);
+            // LEFT MENU STAFF MANAGEMENT
+            nav.left[0].items.push(staffManagement);
+            // LEFT MENU TABS FOR STAFF MANAGEMENT
+            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab1);
+            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab2);
+            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab3);
+            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab4);
+            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab5);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
             // LEFT MENU TABS FOR ADMINISTRATION
@@ -199,10 +228,10 @@ function buildNav(user, callback){
             nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab2);
             nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab3);
             nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab4);
-            //LEFT MENU REPORTS
-            nav.left[0].items.push(reports);
+//            //LEFT MENU REPORTS
+//            nav.left[0].items.push(reports);
             // PREFERNCES
-            nav.left[0].items.push(users);
+            nav.left[1].items.push(users);
             nav.left[1].items.push(configuration);
             nav.left[1].items.push(audit);
             break;
