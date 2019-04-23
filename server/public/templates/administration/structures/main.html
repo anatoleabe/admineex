@@ -1,0 +1,106 @@
+<div flex="100" flex-md="100" flex-offset-md="20" flex-sm="100" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" ui-view style="height:100%; margin-bottom: 100px;" >
+<md-toolbar class="toolbar-filter">
+    <div class="md-toolbar-tools md-default">
+        <div flex >
+            <span style="display: inline-block;margin-top: 18px;" >
+                <md-input-container flex>
+                    <label translate>Directions</label>
+                    <md-select ng-model="filters.direction" md-selected-text="getSelectedDirectionCode()" style="min-width: 150px;">
+                        <md-optgroup label="{{'Filtre by Directions' | translate}}">
+                            <md-option ng-repeat="dir in directions" value="{{dir}}" >
+                                {{dir.nom}}
+                            </md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex>
+                    <label translate>Sub-directions</label>
+                    <md-select ng-model="filters.sdirection" md-selected-text="getSelectedsDirectionCode()" style="min-width: 150px;">
+                        <md-optgroup label="{{'Filtre by Sub-directions' | translate}}">
+                            <md-option ng-repeat="sdir in sousDirections" value="{{sdir}}">
+                                {{sdir.nom}}
+                            </md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex>
+                    <label translate>Services</label>
+                    <md-select ng-model="filters.service">
+                        <md-optgroup label="{{'Filtre by Services' | translate}}">
+                            <md-option ng-repeat="serv in services" value="{{serv.id}}">
+                                {{serv.nom}}
+                            </md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+            </span>
+        </div>
+        <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
+            <md-icon class="material-icons" >search</md-icon>
+            <md-tooltip>
+                <span translate>Search</span>
+            </md-tooltip>
+        </md-button>
+    </div>
+</md-toolbar>
+
+<md-card>
+    <md-toolbar class="md-table-toolbar md-default" ng-show="search">
+        <div class="md-toolbar-tools">
+            <md-icon>search</md-icon>
+            <form flex>
+                <input type="text" name="search" ng-model="structureFilter" placeholder="{{ 'Search...' | translate }}">
+            </form>
+            <md-button class="md-icon-button" ng-click="search = false" aria-label="close">
+                <md-icon class="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-toolbar class="md-table-toolbar md-default" ng-show="!search" >
+        <div flex >
+
+        </div>
+<!--        <md-button class="btn-filter-red">
+            postes vacants: inconue
+        </md-button>-->
+    </md-toolbar>
+    <md-table-container>
+        <table md-table md-progress="promise">
+            <thead md-head md-order="query.order">
+                <tr md-row>
+                    <th md-column md-order-by="id" translate>System Id </th>
+                    <th md-column md-order-by="nom" translate style="min-width: 200px">Name</th>
+                    <th md-column md-order-by="code" translate>Code</th>
+                    <th md-column md-order-by="rang[0].intitule" translate>Hierarchical rank</th>
+                    <th md-column md-order-by="pere[0].nom" translate style="min-width: 200px">Rattached to</th>
+                    <th md-column md-order-by="region[0].intitule" translate>Region</th>
+                    <th md-column md-order-by="departement[0].nom" translate>Division</th>
+                    <th md-column md-order-by="modification" translate>Last update</th>
+                </tr>
+            </thead>
+            <tbody md-body>
+                <tr md-row data-ng-repeat="structure in structuresList| filter:structureFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="read(structure)">
+                    <td md-cell>{{structure.id}}</td>
+                    <td md-cell style="min-width: 200px">{{structure.nom}} </td>
+                    <td md-cell>{{structure.code| uppercase | unknown}}</td>
+                    <td md-cell>{{structure.rang[0].intitule | unknown}}</td>
+                    <td md-cell style="min-width: 200px">{{structure.pere[0].nom | unknown}}</td>
+                    <td md-cell>{{structure.region[0].intitule | unknown}}</td>
+                    <td md-cell>{{structure.departement[0].nom | unknown}}</td>
+                    <td md-cell>{{structure.modification| date:'dd/MM/yyyy'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </md-table-container>
+    <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 50, 100]" md-page="query.page" md-total="{{structuresList.length}}" 
+                          md-page-select="true" md-label="{{label}}" >
+
+</md-card>
+</div>
+<div style="margin-bottom: 100px"></div>
+<md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" href="#!structures/add" >
+    <md-icon>add</md-icon>
+    <md-tooltip md-direction="top">
+        <span translate>New</span>
+    </md-tooltip>
+</md-button>

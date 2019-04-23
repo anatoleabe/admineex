@@ -1,0 +1,93 @@
+<div flex="90" flex-offset="5" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" style="height:100%;"> 
+
+    <md-toolbar class="toolbar-filter">
+        <div class="md-toolbar-tools md-default">
+            <div flex >
+                <span style="display: inline-block;margin-top: 18px;" >
+                    <md-input-container flex>
+                        <label translate>Directions</label>
+                        <md-select ng-model="filters.direction" md-selected-text="getSelectedDirectionCode()" style="min-width: 150px;">
+                            <md-optgroup label="{{'Filtre by Directions'| translate}}">
+                                <md-option ng-repeat="dir in directions" value="{{dir}}" >
+                                    {{dir.nom}}
+                                </md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex>
+                        <label translate>Sub-directions</label>
+                        <md-select ng-model="filters.sdirection" md-selected-text="getSelectedsDirectionCode()" style="min-width: 150px;">
+                            <md-optgroup label="{{'Filtre by Sub-directions'| translate}}">
+                                <md-option ng-repeat="sdir in sousDirections" value="{{sdir}}">
+                                    {{sdir.nom}}
+                                </md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                    <md-input-container flex>
+                        <label translate>Services</label>
+                        <md-select ng-model="filters.service">
+                            <md-optgroup label="{{'Filtre by Services'| translate}}">
+                                <md-option ng-repeat="serv in services" value="{{serv.id}}">
+                                    {{serv.nom}}
+                                </md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                </span>
+            </div>
+            <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
+                <md-icon class="material-icons" >search</md-icon>
+                <md-tooltip>
+                    <span translate>Search</span>
+                </md-tooltip>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <md-card>
+        <md-toolbar class="md-table-toolbar md-default" ng-show="search">
+            <div class="md-toolbar-tools">
+                <md-icon>search</md-icon>
+                <form flex>
+                    <input type="text" name="search" ng-model="posteFilter" placeholder="{{ 'Search...' | translate }}">
+                </form>
+                <md-button class="md-icon-button" ng-click="search = false" aria-label="close">
+                    <md-icon class="material-icons">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-table-container>
+            <table md-table md-progress="promise">
+                <thead md-head md-order="query.order">
+                    <tr md-row>
+                        <th md-column md-order-by="id" translate>System id </th>
+                        <th md-column md-order-by="nom" translate>name</th>
+                        <th md-column md-order-by="code" translate>Code</th>
+                        <th md-column md-order-by="structure[0].nom" translate>Structure</th>
+                        <th md-column md-order-by="modification" translate>Last update</th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row data-ng-repeat="poste in postes| filter:posteFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="read(poste)">
+                        <td md-cell>{{poste.id}}</td>
+                        <td md-cell>{{poste.nom}} </td>
+                        <td md-cell>{{poste.code| uppercase | unknown}}</td>
+                        <td md-cell>{{poste.structure[0].nom| unknown}}</td>
+                        <td md-cell>{{poste.modification| date:'dd/MM/yyyy'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 50, 100]" md-page="query.page" md-total="{{postes.length}}" 
+                              md-page-select="true" md-label="{{label}}" >
+
+    </md-card>
+    <div style="margin-bottom: 100px"></div>
+    <md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" href="#!postes/add" >
+        <md-icon>add</md-icon>
+        <md-tooltip md-direction="top">
+            <span translate>New</span>
+        </md-tooltip>
+    </md-button>
+</div>

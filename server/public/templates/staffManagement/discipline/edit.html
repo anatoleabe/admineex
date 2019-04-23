@@ -1,5 +1,100 @@
-<form ng-submit="submit();">
-    <md-card>
-        
-    </md-card>
-</form>
+<div ui-view >
+    <div flex="70" flex-offset="15" flex-md="50" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" style="height:100%;"> 
+        <md-card>
+            <form ng-submit="submit();">
+                <md-card>
+                    <md-card-title style="padding-bottom: 0;">
+                        <md-card-title-text>
+                            <span class="md-headline" translate>Discipline</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <div layout="row" >
+                            <md-input-container class="md-block" flex>
+                                <label translate>Type of discipline</label>
+                                <md-select name="idTypeDiscipline" ng-model="discipline.idTypeDiscipline" required >
+                                    <md-option ng-repeat="typem in typedisciplines" value="{{typem.id}}" >
+                                        {{typem.libelle}} 
+                                    </md-option>
+                                </md-select>
+                                <div ng-messages="idTypediscipline.$error">
+                                    <div ng-message="required">
+                                        This field is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div layout="row" >
+                            <md-input-container class="md-block" flex>
+                                <label translate>Personnel concerned</label>
+                                <md-select name="idTPersonnel" ng-model="discipline.idPersonnel" required >
+                                    <md-option ng-repeat="personnel in personnels" value="{{personnel.id}}" >
+                                        {{personnel.nom}} {{personnel.prenom}}
+                                    </md-option>
+                                </md-select>
+                                <div ng-messages="idTPersonnel.$error">
+                                    <div ng-message="required">
+                                        This field is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                    </md-card-content>
+                </md-card>
+                <md-card>
+                    <md-card-title style="padding-bottom: 0;">
+                        <md-card-title-text>
+                            <span class="md-headline" translate>Administrative act</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <div layout="row" >
+                            <md-input-container class="md-block" flex>
+                                <label translate>Nature</label>
+                                <md-select name="acte.idNature" ng-model="discipline.acte.idNature" required >
+                                    <md-option ng-repeat="natureacte in natturesActe" value="{{natureacte.id}}" >
+                                        {{natureacte.libelle}} 
+                                    </md-option>
+                                </md-select>
+                                <div ng-messages="acte.idNature.$error">
+                                    <div ng-message="required">
+                                        This field is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex>
+                                <label translate>Number</label>
+                                <input name="number" ng-model="discipline.acte.numero" required>
+                                <div ng-messages="number.$error">
+                                    <div ng-message="required">
+                                        This field is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div layout="row" >
+                            <md-input-container class="datepicker-xl" flex style="width: 200px;">
+                                <label translate>Date</label>
+                                <md-datepicker name="date" class="md-block"  ng-model="discipline.acte.date" md-max-date="max" required style="width: 200px;"></md-datepicker>
+                                <div ng-messages="acte.date">
+                                    <div ng-message="required">
+                                       This field is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        
+                            <md-input-container class="md-block" flex>
+                                <label translate>Description</label>
+                                <input name="acte.description" ng-model="discipline.acte.description" >
+                            </md-input-container>
+                        </div>
+                    </md-card-content>
+                </md-card>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button ng-click="goToTab('staff/status');"><span translate>Cancel</span></md-button>
+                    <md-button class="md-raised md-accent" type="submit"><span translate>Save</span></md-button>
+                </md-card-actions>
+            </form>
+        </md-card>
+    </div>
+</div>

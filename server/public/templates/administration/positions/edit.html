@@ -1,0 +1,65 @@
+<div ui-view >
+    <div flex="70" flex-offset="15" flex-md="50" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" style="height:100%;"> 
+        <md-card>
+            <form ng-submit="submit();">
+                <md-card>
+                    <md-card-title style="padding-bottom: 0;">
+                        <md-card-title-text>
+                            <span class="md-headline" translate>Poste informations</span>
+                        </md-card-title-text>
+                    </md-card-title>
+                    <md-card-content>
+                        <div layout="row" >
+                            <md-input-container class="md-block" flex>
+                                <label translate>Name</label>
+                                <input name="nom" ng-model="poste.nom" required>
+                                <div ng-messages="nom.$error">
+                                    <div ng-message="required">
+                                        This field is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div layout="row" >
+                            <md-input-container class="md-block" flex>
+                                <label translate>Poste code</label>
+                                <input name="code" ng-model="poste.code" required>
+                                <div ng-messages="code.$error">
+                                    <div ng-message="required">
+                                        This field is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div layout="row">
+                            <md-input-container class="md-block" flex >
+                                <label translate>Position's structure</label>
+                                <md-select name="idStructure" ng-model="poste.idStructure" required data-md-container-class="selectdemoSelectHeader">
+                                    <md-select-header class="demo-select-header">
+                                        <input ng-model="searchTerm1" ng-keydown="stopPropagation($event)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                                               type="search"
+                                               placeholder="Rechercher une structure (nom ou sigle) ..."
+                                               class="demo-header-searchbox md-text">
+                                    </md-select-header>
+                                    <md-option ng-repeat="structure in structures|filter:searchTerm1" value="{{structure.id}}">
+                                        {{structure.nom| uppercase}} ({{structure.code| uppercase}})
+                                    </md-option>
+                                </md-select>
+                                <div ng-messages="idStructure.$error">
+                                    <div ng-message="required">
+                                        This is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        
+                    </md-card-content>
+                </md-card>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button ng-click="goToTab('postes');"><span translate>Cancel</span></md-button>
+                    <md-button class="md-raised md-accent" type="submit"><span translate>Done</span></md-button>
+                </md-card-actions>
+            </form>
+        </md-card>
+    </div>
+</div>

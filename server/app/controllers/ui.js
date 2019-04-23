@@ -211,8 +211,6 @@ function buildNav(user, callback){
     //nav.left[0].items.push(import_export);
     switch(user.role){
         case '1':
-            // LEFT MENU STATISTICS
-            nav.left[0].items.push(statistics);
             // LEFT MENU STAFF MANAGEMENT
             nav.left[0].items.push(staffManagement);
             // LEFT MENU TABS FOR STAFF MANAGEMENT
@@ -221,6 +219,8 @@ function buildNav(user, callback){
             nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab3);
             nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab4);
             nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab5);
+            // LEFT MENU STATISTICS
+            nav.left[0].items.push(statistics);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
             // LEFT MENU TABS FOR ADMINISTRATION
