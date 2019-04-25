@@ -11,7 +11,7 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
         $scope.query = {
             limit: 50,
             page: 1,
-            order: "-lastModified"
+            order: "id"
         };
 
         $scope.edit = function (params) {
@@ -27,7 +27,6 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
                 }
                 $rootScope.kernel.loading = 100;
                 $scope.structures = data;
-                console.log(data);
             }).catch(function (response) {
                 console.error(response);
             });

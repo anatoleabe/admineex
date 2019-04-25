@@ -21,8 +21,8 @@ exports.api.upsert = function (req, res) {
 
 exports.api.list = function (req, res) {
     if (req.actor) {
-        var positions = dictionary.getJSONList("../../resources/dictionary/structure/structures.json", req.actor.language);
-        beautify({actor: req.actor, language: req.actor.language, beautify: true}, positions, function (err, objects) {
+        var structures = dictionary.getJSONList("../../resources/dictionary/structure/positions.json", req.actor.language);
+        beautify({actor: req.actor, language: req.actor.language, beautify: false}, structures, function (err, objects) {
             if (err) {
                 return res.status(500).send(err);
             } else {
@@ -60,16 +60,7 @@ function beautify(options, objects, callback) {
     language = language.toLowerCase();
     var gt = dictionary.translator(language);
     if (options.beautify && options.beautify === true) {
-        function objectsLoop(o) {
-            if (o < objects.length) {
-                objects[o].typeValue= dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);
-                objects[o].rankValue= dictionary.getValueFromJSON('../../resources/dictionary/structure/ranks.json', objects[o].rank, language);
-                objectsLoop(o+1);
-            }else{
-                callback(null, objects);
-            }
-        }
-        objectsLoop(0);
+        
     } else {
         callback(null, objects);
     }

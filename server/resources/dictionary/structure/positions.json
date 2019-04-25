@@ -1072,10 +1072,10 @@
     },
     {
         "id": "154",
-        "fr": "Le Sous-Directeur des Agréments ",
-        "en": " de la Coopération et du Contentieux",
-        "code": "Le Sous-Directeur des Agréments ",
-        "requiredEffective": " de la Coopération et du Contentieux"
+        "fr": "Le Sous-Directeur des Agréments , de la Coopération et du Contentieux",
+        "en": "Le Sous-Directeur des Agréments , de la Coopération et du Contentieux",
+        "code": "203-P31",
+        "requiredEffective": "1"
     },
     {
         "id": "155",

@@ -7,6 +7,12 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function($
         };
 
         $scope.organizations = [], $scope.helper = [];
+        $scope.search = false;
+        $scope.query = {
+            limit: 50,
+            page: 1,
+            order: "id"
+        };
 
         $scope.edit = function (params) {
             $state.go("home.organizations.edit", params);
@@ -20,7 +26,7 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function($
                     $scope.helper = helper;
                 }
                 $rootScope.kernel.loading = 100;
-                $scope.organizations = data;
+                $scope.positions = data;
             }).catch(function(response) {
                 console.error(response);
             });

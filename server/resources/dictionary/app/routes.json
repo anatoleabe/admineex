@@ -226,5 +226,11 @@
         "uri": "/api/structures",
         "method": "GET",
         "roles": [1,2,3]
+    },
+    {
+        "id": 40,
+        "uri": "/api/positions",
+        "method": "GET",
+        "roles": [1,2,3]
     }
 ]
