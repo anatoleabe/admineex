@@ -7,6 +7,7 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
         };
 
         $scope.organizations = [], $scope.helper = [];
+        $scope.search = false;
 
         $scope.edit = function (params) {
             $state.go("home.organizations.edit", params);
@@ -20,7 +21,8 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
                     $scope.helper = helper;
                 }
                 $rootScope.kernel.loading = 100;
-                $scope.organizations = data;
+                $scope.structures = data;
+                console.log(data);
             }).catch(function(response) {
                 console.error(response);
             });

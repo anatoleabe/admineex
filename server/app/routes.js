@@ -20,6 +20,7 @@ controllers.audit = require('./controllers/auditLogs');
 controllers.account = require('./controllers/account');
 controllers.users = require('./controllers/users');
 controllers.projects = require('./controllers/projects');
+controllers.structures = require('./controllers/structures');
 controllers.organizations = require('./controllers/organizations');
 controllers.import_export = require('./controllers/import_export');
 controllers.ui = require('./controllers/ui');
@@ -261,6 +262,15 @@ var routes = [
         httpMethod: _.findWhere(aclRoutes, {id: 24}).method,
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.projects.api.delete],
         access: _.findWhere(aclRoutes, {id: 24}).roles
+    },
+    
+    // === STRUCTURES ROUTES ==========================================================
+    // Get structures
+    {
+        path: _.findWhere(aclRoutes, {id: 39}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 39}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.structures.api.list],
+        access: _.findWhere(aclRoutes, {id: 39}).roles
     },
     
     // === ORGANIZATION ROUTES ==========================================================

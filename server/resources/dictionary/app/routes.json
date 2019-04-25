@@ -220,5 +220,11 @@
         "uri": "/api/export/from/:from/to/:to",
         "method": "GET",
         "roles": [1,2,3]
+    },
+    {
+        "id": 39,
+        "uri": "/api/structures",
+        "method": "GET",
+        "roles": [1,2,3]
     }
 ]
