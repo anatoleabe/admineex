@@ -57,6 +57,9 @@ var PersonnelSchema = new Schema({
     ],
     trainnings: [{}],
     notations:[{}],
+    profiles: [{}],//Codes of existing profil, list of string
+    skills: [{}],//Code of existing profiles taken from a global lists
+    trainingNeeds: [{}],
     retirement: {type: Boolean, required: false, default: false},
     lastModified: { type: Date, default: Date.now, required: true },
     created: { type: Date, default: Date.now, required: true }

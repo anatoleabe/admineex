@@ -5,10 +5,9 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 // Position schema
 var PositionSchema = new Schema({
-    identifier: { type: String, required: true },
-    name: { type: String, required: true },
-    code: { type: String, required: true },
-    structureID: { type: ObjectId, required: true },
+    positionId: { type: String, required: true },//From json resource
+    requiredProfiles: [{}],//Code of existing profiles taken from a global lists
+    requiredSkills: [{}],
     lastModified: { type: Date, default: Date.now, required: true },
     created: { type: Date, default: Date.now, required: true }
 });

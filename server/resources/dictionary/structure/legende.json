@@ -1,0 +1,47 @@
+[
+ {
+   "id": "CEA",
+   "en": "Chargé d'Etude Assistant",
+   "fr": "Chargé d'Etude Assistant"
+ },
+ {
+   "id": "CB",
+   "en": "Controleur de Brigade",
+   "fr": "Controleur de Brigade"
+ },
+ {
+   "id": "IA",
+   "en": "Inspecteur des Assurances",
+   "fr": "Inspecteur des Assurances"
+ },
+ {
+   "id": "CA",
+   "en": "Controleur des Assurances",
+   "fr": "Controleur des Assurances"
+ },
+ {
+   "id": "IV",
+   "en": "Inspecteur Vérificateur",
+   "fr": "Inspecteur Vérificateur"
+ },
+ {
+   "id": "BVP",
+   "en": "Brigade de Vérification et des Poursuites",
+   "fr": "Brigade de Vérification et des Poursuites"
+ },
+ {
+   "id": "HT",
+   "en": "Les Huissiers du Trésor",
+   "fr": "Les Huissiers du Trésor"
+ },
+ {
+   "id": "IS ",
+   "en": "Inspecteur des Services",
+   "efrn": "Inspecteur des Services"
+ },
+ {
+   "id": "IA",
+   "en": "Inspecteur des Assurances",
+   "fr": "Inspecteur des Assurances"
+ }
+]

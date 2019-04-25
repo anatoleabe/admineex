@@ -1,0 +1,98 @@
+[
+    {
+        "id": "1",
+        "name": "DGTCFM/CABINET DGTCFM",
+        "code": "190",
+        "father": "0",
+        "rank": "1",
+        "type": "1"
+    },
+    {
+        "id": "2",
+        "name": "SERVICE D'ORDRE",
+        "code": "191",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "3",
+        "name": "INSPECTION DES SERVICES DU TRESOR",
+        "code": "192",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "4",
+        "name": "CELLULE DE LA LEGISLATION ET DE LA CODIFICATION",
+        "code": "193",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "5",
+        "name": "DIVISION DE L'INFORMATIQUE",
+        "code": "194",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "6",
+        "name": "DIVISION DE LA MICRO FINANCE",
+        "code": "198",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "7",
+        "name": "DIRECTION DES ASSURANCES",
+        "code": "203",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "8",
+        "name": "DIRECTION DE LA COMPTABILITE PUBLIQUE",
+        "code": "212",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "9",
+        "name": "DIRECTION DE LA TRESORERIE",
+        "code": "227",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "10",
+        "name": "DIRECTION DE LA COOPERATION FINANCIERE ET MONETAIRE",
+        "code": "238",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "11",
+        "name": "DIRECTION DES AFFAIRES GENERALES",
+        "code": "247",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "12",
+        "name": "PAIERIE GENERALE DU TRESOR",
+        "code": "398",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    }
+]
