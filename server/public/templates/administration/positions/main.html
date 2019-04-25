@@ -66,7 +66,7 @@
                         <th md-column md-order-by="code" translate>Code</th>
                         <th md-column md-order-by="structure" translate>Structure</th>
                         <th md-column md-order-by="requiredEffective" translate>Required effective</th>
-                        <th md-column md-order-by="modification" translate>Last update</th>
+                        <th md-column md-order-by="actualEffective" translate>Actual effective</th>
                     </tr>
                 </thead>
                 <tbody md-body>
@@ -74,9 +74,9 @@
                         <td md-cell>{{position.id}}</td>
                         <td md-cell>{{position.value}} </td>
                         <td md-cell>{{position.code| uppercase | unknown}}</td>
-                        <td md-cell>{{position.structure| unknown}}</td>
+                        <td md-cell>{{position.structure.name| unknown}}</td>
                         <td md-cell>{{position.requiredEffective| unknown}}</td>
-                        <td md-cell>{{position.modification| date:'dd/MM/yyyy'}}</td>
+                        <td md-cell>{{position.actualEffective | unknown}}</td>
                     </tr>
                 </tbody>
             </table>

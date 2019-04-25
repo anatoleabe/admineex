@@ -22,7 +22,7 @@ exports.api.upsert = function (req, res) {
 exports.api.list = function (req, res) {
     if (req.actor) {
         var structures = dictionary.getJSONList("../../resources/dictionary/structure/positions.json", req.actor.language);
-        beautify({actor: req.actor, language: req.actor.language, beautify: false}, structures, function (err, objects) {
+        beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
             if (err) {
                 return res.status(500).send(err);
             } else {
@@ -60,7 +60,15 @@ function beautify(options, objects, callback) {
     language = language.toLowerCase();
     var gt = dictionary.translator(language);
     if (options.beautify && options.beautify === true) {
-        
+        function objectsLoop(o) {
+            if (o < objects.length) {
+                objects[o].structure= dictionary.getStructureFromJSONByCode('../../resources/dictionary/structure/structures.json', objects[o].code.substring(0, objects[o].code.indexOf('-')), language);
+                objectsLoop(o+1);
+            }else{
+                callback(null, objects);
+            }
+        }
+        objectsLoop(0);
     } else {
         callback(null, objects);
     }
