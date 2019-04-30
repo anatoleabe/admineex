@@ -21,7 +21,7 @@ exports.api.upsert = function (req, res) {
 
 exports.api.list = function (req, res) {
     if (req.actor) {
-        var structures = dictionary.getJSONList("../../resources/dictionary/structure/positions.json", req.actor.language);
+        var structures = dictionary.getJSONListByCode("../../resources/dictionary/structure/positions.json", req.actor.language, req.params.id);
         beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
             if (err) {
                 return res.status(500).send(err);

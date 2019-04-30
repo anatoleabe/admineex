@@ -229,7 +229,7 @@
     },
     {
         "id": 40,
-        "uri": "/api/positions",
+        "uri": "/api/positions/id/:id",
         "method": "GET",
         "roles": [1,2,3]
     }

@@ -170,6 +170,31 @@ var getJSONList = function (file, language) {
 };
 exports.getJSONList = getJSONList;
 
+/**
+ * build json list from json file
+ */
+var getJSONListByCode = function (file, language, code) {
+    if (file && file !== "") {
+        var data = require(file);
+        language = language.toLowerCase();
+        var result = [];
+        function myLoopA(i) {
+            if (i < data.length) {
+                var item = data[i];
+                if (code == "-1" || item.code.indexOf(code+"-") > -1 ){
+                    data[i].value = ((language && language !== "" && data[i][language] !== undefined && data[i][language] !== "") ? data[i][language] : data[i]['en']);
+                    result.push(data[i]);
+                }
+                
+                myLoopA(i + 1);
+            }
+        }
+        myLoopA(0);
+        return result;
+    }
+};
+exports.getJSONListByCode = getJSONListByCode;
+
 
 var searchInJSON = function (json, query, language) {
     var values = [];

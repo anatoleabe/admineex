@@ -1,7 +1,7 @@
 angular.module('PositionService', []).factory('Position', function($http) {
     return {
-        list: function() {
-            return $http.get('/api/positions');
+        list: function(filter) {
+            return $http.get('/api/positions/id/' + filter.id);
         },
         read: function(info) {
             return $http.get('/api/positions/' + info.id);
