@@ -4,7 +4,7 @@ angular.module('PositionService', []).factory('Position', function($http) {
             return $http.get('/api/positions/id/' + filter.id);
         },
         read: function(info) {
-            return $http.get('/api/positions/' + info.id);
+            return $http.get('/api/positions/read/' + info.id);
         },
         upsert: function(info) {
             return $http.put('/api/positions', info);

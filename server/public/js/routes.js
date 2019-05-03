@@ -368,7 +368,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             }
         }).state('home.administration.positions', {
-            url: '/contacts',
+            url: '/positions',
             templateUrl: 'templates/administration/positions/main.html',
             controller: 'PositionsController',
             access: {requiredAuthentication: true},
@@ -378,6 +378,17 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Administration", "Positions"]
+        }).state('home.administration.details', {
+            url: '/positions/details/:id',
+            templateUrl: 'templates/administration/positions/details.html',
+            controller: 'PositionDetailsController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/administration/positions/PositionDetailsCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Administration", "Positions", "Details"]
         }).state('home.administration.structures', {
             url: '/structures',
             templateUrl: 'templates/administration/structures/main.html',

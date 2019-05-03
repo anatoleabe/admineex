@@ -8,6 +8,8 @@ var PositionSchema = new Schema({
     positionId: { type: String, required: true },//From json resource
     requiredProfiles: [{}],//Code of existing profiles taken from a global lists
     requiredSkills: [{}],
+    activities: [{}],//Code of existing profiles taken from a global lists
+    tasks: [{}],
     lastModified: { type: Date, default: Date.now, required: true },
     created: { type: Date, default: Date.now, required: true }
 });

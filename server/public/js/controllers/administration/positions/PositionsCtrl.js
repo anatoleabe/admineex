@@ -18,8 +18,8 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                 order: "code"
             };
 
-            $scope.edit = function (params) {
-                $state.go("home.organizations.edit", params);
+            $scope.details = function (params) {
+                $state.go("home.administration.details", params);
             };
 
             function getPositions(idStructure) {
@@ -48,7 +48,7 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
             $scope.$watch('filters.structure', function (newval, oldval) {
                 if (newval) {
                     newval = JSON.parse(newval).code;
-                    getPositions(newval?newval:"-1");
+                    getPositions(newval ? newval : "-1");
                 }
             });
 

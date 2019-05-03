@@ -330,6 +330,67 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
                    }
         return toReturn;
     }
+}).filter('uppercase', function () {
+    return function (str) {
+        if (str)
+            return str.toUpperCase();
+        return str;
+    }
+}).filter('matricule', function () {
+    return function (str) {
+        if (str && str != null) {
+            return str.toUpperCase();
+        } else {
+            return "";
+        }
+
+    }
+}).filter('translate', function (gettextCatalog) {
+    return function (str) {
+        return gettextCatalog.getString(str);
+    }
+}).filter('gender', function(gettextCatalog) {
+    return function (gender) {
+        var toReturn = "";
+        switch(gender){
+            case 'F':
+                toReturn = gettextCatalog.getString("Female");
+                break;
+            case 'M':
+                toReturn = gettextCatalog.getString("Male");
+                break;
+            default:
+                toReturn = gettextCatalog.getString("unknown");
+                break;
+        }
+        return toReturn;
+    }
+}).filter('dateHuman', function(gettextCatalog, $filter) {
+    return function (str) {
+        var toReturn = gettextCatalog.getString("unknown");
+        if(str && str != ""){
+            toReturn = $filter('date')(str, "dd/MM/yyyy");
+        }
+        return toReturn;
+    }
+}).filter('dateOnlyYear', function(gettextCatalog, $filter) {
+    return function (str) {
+        var toReturn = "";
+        if(str && str != ""){
+            toReturn = $filter('date')(str, "yyyy");
+        }
+        return toReturn;
+    }
+}).filter('truncateTexte', function(gettextCatalog, $filter) {
+    return function (str) {
+        var toReturn = "";
+        if(str && str != "" && str.length > 60){
+            toReturn = str.substring(0,60) + "...";
+        }else{
+            return str;
+        }
+        return toReturn;
+    }
 });
 
 

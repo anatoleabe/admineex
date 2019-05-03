@@ -232,5 +232,11 @@
         "uri": "/api/positions/id/:id",
         "method": "GET",
         "roles": [1,2,3]
+    },
+    {
+        "id": 41,
+        "uri": "/api/positions/read/:id",
+        "method": "GET",
+        "roles": [1,2,3]
     }
 ]

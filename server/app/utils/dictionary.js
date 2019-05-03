@@ -105,6 +105,28 @@ var getValueFromJSON = function (file, id, language) {
 };
 exports.getValueFromJSON = getValueFromJSON;
 
+var getPositionFromIdJSON = function (file, id, language) {
+    var value = id;
+    if (id && id !== "") {
+        var found = _.findWhere(require(file), {id: id});
+        if (found) {
+            if (language === "" || language === null || language === undefined) {
+                value = found['en'];
+            } else if (language !== "en" && language !== "fr") {
+                value = found[language]
+            } else {
+                value = ((language !== "" && found[language] !== undefined && found[language] !== "") ? found[language] : found['en']);
+            }
+        }
+    }
+    
+    console.log(language)
+    console.log(found[language])
+    found.value = value;
+    return found;
+};
+exports.getPositionFromIdJSON = getPositionFromIdJSON;
+
 var getStructureFromJSONByCode = function (file, code, language) {
     if (code && code !== "") {
         var found = _.findWhere(require(file), {code: code});

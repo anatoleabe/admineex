@@ -21,8 +21,8 @@ exports.api.upsert = function (req, res) {
 
 exports.api.list = function (req, res) {
     if (req.actor) {
-        var structures = dictionary.getJSONListByCode("../../resources/dictionary/structure/positions.json", req.actor.language, req.params.id);
-        beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
+        var positions = dictionary.getJSONListByCode("../../resources/dictionary/structure/positions.json", req.actor.language.toLowerCase(), req.params.id);
+        beautify({actor: req.actor, language: req.actor.language, beautify: true}, positions, function (err, objects) {
             if (err) {
                 return res.status(500).send(err);
             } else {
@@ -37,6 +37,22 @@ exports.api.list = function (req, res) {
 
 exports.api.read = function (req, res) {
     if (req.actor) {
+        if (req.params.id === undefined) {
+            audit.logEvent(req.actor.id, 'Position', 'Read', '', '', 'failed',
+                    'The actor could not read the position because one or more params of the request was not defined');
+            return res.sendStatus(400);
+        } else {
+            console.log("Read " + req.params.id);
+            var position = dictionary.getPositionFromIdJSON("../../resources/dictionary/structure/positions.json", req.params.id, req.actor.language.toLowerCase());
+            beautify({actor: req.actor, language: req.actor.language, beautify: true}, [position], function (err, objects) {
+                if (err) {
+                    return res.status(500).send(err);
+                } else {
+                    console.log(objects);
+                    return res.json(objects[0]);
+                }
+            });
+        }
 
     } else {
         audit.logEvent('[anonymous]', 'Projects', 'Read', '', '', 'failed', 'The actor was not authenticated');
@@ -62,9 +78,9 @@ function beautify(options, objects, callback) {
     if (options.beautify && options.beautify === true) {
         function objectsLoop(o) {
             if (o < objects.length) {
-                objects[o].structure= dictionary.getStructureFromJSONByCode('../../resources/dictionary/structure/structures.json', objects[o].code.substring(0, objects[o].code.indexOf('-')), language);
-                objectsLoop(o+1);
-            }else{
+                objects[o].structure = dictionary.getStructureFromJSONByCode('../../resources/dictionary/structure/structures.json', objects[o].code.substring(0, objects[o].code.indexOf('-')), language.toLowerCase());
+                objectsLoop(o + 1);
+            } else {
                 callback(null, objects);
             }
         }

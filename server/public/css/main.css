@@ -425,3 +425,24 @@ table.md-table tbody.md-body > tr.md-row:hover {
     margin: 0 0 10px 0;
 }
 .md-errors-spacer:empty { display: none; }
+
+.card-container {
+  /*  not needed styles to reflect it 
+  background: #ccc;*/ 
+  padding: 10px;
+  /*color: white;*/
+  /* needed styles below */
+  display: flex;
+  justify-content: space-between;
+  font-size: 2rem;
+    line-height: 1.4;
+    font-weight: 400;
+    color:black;
+}
+
+.card-container-right {
+ text-align: right
+}
+.card-container-left {
+ text-align: left
+}

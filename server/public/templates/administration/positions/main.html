@@ -59,7 +59,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row data-ng-repeat="position in positions| filter:positionFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="read(position)">
+                    <tr md-row data-ng-repeat="position in positions| filter:positionFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="details(position)">
                         <td md-cell>{{position.id}}</td>
                         <td md-cell>{{position.value}} </td>
                         <td md-cell>{{position.code| uppercase | unknown}}</td>

@@ -282,6 +282,13 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.positions.api.list],
         access: _.findWhere(aclRoutes, {id: 40}).roles
     },
+    // Read position
+    {
+        path: _.findWhere(aclRoutes, {id: 41}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 41}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.positions.api.read],
+        access: _.findWhere(aclRoutes, {id: 41}).roles
+    },
     
     // === ORGANIZATION ROUTES ==========================================================
     // Create an org
