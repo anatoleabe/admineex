@@ -78,20 +78,6 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
 //            });
 //        }
 
-            $scope.showConfirm = function (organization) {
-                var confirm = $mdDialog.confirm()
-                        .title(gettextCatalog.getString("Delete this organization"))
-                        .textContent(gettextCatalog.getString("Are you sure you want to delete the organization") + " " + organization.name + gettextCatalog.getString("?"))
-                        .ok(gettextCatalog.getString("OK"))
-                        .cancel(gettextCatalog.getString("Cancel"));
-
-                $mdDialog.show(confirm).then(function () {
-                    // Delete
-                    deletePosition(organization._id)
-                }, function () {
-                    // Cancel
-                });
-            }
         });
     });
 });

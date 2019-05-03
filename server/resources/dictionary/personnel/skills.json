@@ -8,5 +8,15 @@
         "id": "2",
         "en": "Accounting",
         "fr": "Comptabilité"
+    },
+    {
+        "id": "3",
+        "en": "Management",
+        "fr": "Gestion"
+    },
+    {
+        "id": "4",
+        "en": "Administration",
+        "fr": "Administration"
     }
 ]

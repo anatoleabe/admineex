@@ -8,5 +8,25 @@
         "id": "2",
         "en": "Inspector of the Treasury",
         "fr": "Principal du trésor"
+    },
+    {
+        "id": "3",
+        "en": "Class A public agent",
+        "fr": "Agent public de catégorie A"
+    },
+    {
+        "id": "4",
+        "en": "Class B public agent",
+        "fr": "Agent public de catégorie B"
+    },
+    {
+        "id": "5",
+        "en": "Inspector of Class A Financial Boards",
+        "fr": "Inspecteur de régies Financière de catégorie A"
+    },
+    {
+        "id": "6",
+        "en": "Public official category A, B or similar without position of responsibility",
+        "fr": "Agent public de catégorie A, B ou assimilé sans poste de responsabilité"
     }
 ]
