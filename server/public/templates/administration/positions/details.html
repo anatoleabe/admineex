@@ -70,7 +70,7 @@
                 </md-card-title-text>
                 <md-card-actions layout="row" >
                     <span flex></span>
-                    <md-button ng-click="add(position)" aria-label="Edit" >
+                    <md-button ng-click="add(position, 'requiredProfiles', 'profiles')" aria-label="Edit" >
                         <md-icon>edit</md-icon>
                         <span translate>Add or edit profiles</span>
                     </md-button>
@@ -84,6 +84,9 @@
                         </md-list-item>
                         <md-divider></md-divider>
                     </div>
+                    <div layout="row" layout-align="center center" data-ng-if="requiredProfiles && requiredProfiles.length <= 0" style="opacity:0.2; margin-top: -40px">
+                        <h2 class="md-title">{{helper.title}}</h2>
+                    </div>
                 </md-list>
             </md-card-content>
         </md-card>
@@ -91,35 +94,27 @@
         <md-card>
             <md-card-title class="card-container">
                 <md-card-title-text class="card-container-left">
-                    <span class="md-headline" translate>Required skills</span>
+                    <span class="md-headline" translate>Required skill</span>
                 </md-card-title-text>
                 <md-card-actions layout="row" >
                     <span flex></span>
-                    <md-button  aria-label="Add" >
-                        <md-icon>add</md-icon>
-                        <span translate>Add</span>
-                    </md-button>
-                    <md-button  aria-label="Edit" >
+                    <md-button ng-click="add(position, 'requiredSkills', 'skills')" aria-label="Edit" >
                         <md-icon>edit</md-icon>
-                        <span translate>Edit</span>
+                        <span translate>Add or edit skills</span>
                     </md-button>
-
                 </md-card-actions>
             </md-card-title>
             <md-card-content>
                 <md-list ng-cloak>
-                    <md-list-item ui-sref="#">
-                        <p class="md-body-2" >Administrateur Public</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item ui-sref="#">
-                        <p class="md-body-2" >Management des Etablissements public</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item ui-sref="#">
-                        <p class="md-body-2" >Comptabilité général des entreprises privées</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
+                    <div  ng-repeat="reqSkill in requiredSkills">
+                        <md-list-item ui-sref="#">
+                            <p class="md-body-2" >{{reqSkill.name}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </div>
+                    <div layout="row" layout-align="center center" data-ng-if="requiredSkills && requiredSkills.length <= 0" style="opacity:0.2; margin-top: -40px">
+                        <h2 class="md-title">{{helper.title}}</h2>
+                    </div>
                 </md-list>
             </md-card-content>
         </md-card>
@@ -129,34 +124,12 @@
                 <md-card-title-text class="card-container-left">
                     <span class="md-headline" translate>Position activities</span>
                 </md-card-title-text>
-                <md-card-actions layout="row" >
-                    <span flex></span>
-                    <md-button  aria-label="Add" >
-                        <md-icon>add</md-icon>
-                        <span translate>Add</span>
-                    </md-button>
-                    <md-button  aria-label="Edit" >
-                        <md-icon>edit</md-icon>
-                        <span translate>Edit</span>
-                    </md-button>
 
-                </md-card-actions>
             </md-card-title>
             <md-card-content>
-                <md-list ng-cloak>
-                    <md-list-item ui-sref="#">
-                        <p class="md-body-2" >Administrateur Public</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item ui-sref="#">
-                        <p class="md-body-2" >Management des Etablissements public</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item ui-sref="#">
-                        <p class="md-body-2" >Comptabilité général des entreprises privées</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                </md-list>
+                <div layout="row" layout-align="center center"  style="opacity:0.2; margin-top: -40px">
+                    <h2 class="md-title">{{helper.title}}</h2>
+                </div>
             </md-card-content>
         </md-card>
         <!--required Activities-->
@@ -165,34 +138,12 @@
                 <md-card-title-text class="card-container-left">
                     <span class="md-headline" translate>Position tasks</span>
                 </md-card-title-text>
-                <md-card-actions layout="row" >
-                    <span flex></span>
-                    <md-button  aria-label="Add" >
-                        <md-icon>add</md-icon>
-                        <span translate>Add</span>
-                    </md-button>
-                    <md-button  aria-label="Edit" >
-                        <md-icon>edit</md-icon>
-                        <span translate>Edit</span>
-                    </md-button>
 
-                </md-card-actions>
             </md-card-title>
             <md-card-content>
-                <md-list ng-cloak>
-                    <md-list-item ui-sref="#">
-                        <p class="md-body-2" >Administrateur Public</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item ui-sref="#">
-                        <p class="md-body-2" >Management des Etablissements public</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item ui-sref="#">
-                        <p class="md-body-2" >Comptabilité général des entreprises privées</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                </md-list>
+                <div layout="row" layout-align="center center"  style="opacity:0.2; margin-top: -40px">
+                    <h2 class="md-title">{{helper.title}}</h2>
+                </div>
             </md-card-content>
         </md-card>
 
@@ -205,32 +156,6 @@
             </md-card-title>
             <md-card-content>
                 <md-list ng-cloak>
-                    <md-list-item ui-sref="#">
-                        <div class="avatar avatar-md md-avatar" >
-                            {{"J".toUpperCase()}}
-                        </div>
-                        <p class="md-body-2" >John Ndoe</p>
-                        <md-button class="md-secondary md-icon-button" aria-label="See" ng-click="edit({id: user._id})">
-                            <md-icon aria-label="pageview">pageview</md-icon>
-                            <md-tooltip>
-                                <span translate>Consult</span>
-                            </md-tooltip>
-                        </md-button>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item ui-sref="#">
-                        <div class="avatar avatar-md md-avatar" >
-                            {{"N".toUpperCase()}}
-                        </div>
-                        <p class="md-body-2" translate>Ndoe John</p>
-                        <md-button class="md-secondary md-icon-button" aria-label="See" ng-click="edit({id: user._id})">
-                            <md-icon aria-label="pageview">pageview</md-icon>
-                            <md-tooltip>
-                                <span translate>Consult</span>
-                            </md-tooltip>
-                        </md-button>
-                    </md-list-item>
-                    <md-divider></md-divider>
                     <md-list-item ui-sref="#">
                         <div class="avatar avatar-md md-avatar" >
                             {{"J".toUpperCase()}}
