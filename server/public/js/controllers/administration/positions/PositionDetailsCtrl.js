@@ -15,85 +15,133 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
 
 
 
+
     $ocLazyLoad.load('js/services/PositionService.js').then(function () {
         var Position = $injector.get('Position');
         $rootScope.kernel.loading = 100;
+
 
         Position.read({id: id}).then(function (response) {
             var data = response.data;
             $scope.position = data;
 
 
-            $scope.add = function (id) {
-                var p;
+
+
+
+            $scope.add = function (position) {
+
+
+
+
+
+
+
+
+                var positionDetail = position.details;
                 $mdDialog.show({
-                    controller: ['$scope', '$mdDialog', 'p', '$q', function ($scope, $mdDialog, p, $q) {
-                            $scope.contact = p;
-                            $scope.selectedProfiles = [];
+                    controller: ['$scope', '$mdDialog', 'positionDetail', '$q', function ($scope, $mdDialog, positionDetail, $q) {
+                            $scope.dictionary = {};
 
-                            $scope.profilesList = [
-                                {
-                                    'name': 'Broccoli',
-                                    'type': 'Brassica'
-                                },
-                                {
-                                    'name': 'Cabbage',
-                                    'type': 'Brassica'
-                                },
-                                {
-                                    'name': 'Carrot',
-                                    'type': 'Umbelliferous'
-                                },
-                                {
-                                    'name': 'Lettuce',
-                                    'type': 'Composite'
-                                },
-                                {
-                                    'name': 'Spinach',
-                                    'type': 'Goosefoot'
-                                }
-                            ];
+                            $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
+                                var Dictionary = $injector.get('Dictionary');
+                                Dictionary.jsonList({dictionary: "personnel", levels: ['profile']}).then(function (response) {
+                                    $scope.dictionary.profiles = response.data.jsonList;
+                                    $scope.positionDetail = positionDetail;
 
-                            $scope.querySearchInProfiles = function (text) {
-                                var deferred = $q.defer();
-                                if (text) {
-                                    var profile = $.grep($scope.profilesList, function (c, i) {
-                                        return c.name.toLowerCase().includes(text.toLowerCase());
-                                    });
-                                    deferred.resolve(profile);
-                                } else {
-                                    deferred.resolve($scope.profilesList);
-                                }
-                                return deferred.promise;
-                            }
-                            
-                            $scope.transformChip = function (chip) {
-                                // If it is an object, it's already a known chip
-                                if (angular.isObject(chip)) {
-                                    return chip;
-                                }
-                                // Otherwise, return null;
-                                return null;
-                            }
+                                    function getDictionaryItemByValue(dictionaryList, itemValue) {
+                                        var items = $.grep(dictionaryList, function (c, i) {
+                                            return c.value === itemValue;
+                                        });
+                                        if (items && items.length > 0) {
+                                            return items[0];
+                                        } else {
+                                            return undefined;
+                                        }
+                                    }
 
-                            ;
-                            $scope.close = function () {
-                                $mdDialog.hide();
-                            }
-                            $scope.cancel = function () {
-                                $mdDialog.cancel();
-                            };
-                            $scope.save = function (params) {
-                                $mdDialog.hide();
-                                console.log($scope.selectedProfiles);
-                            };
+                                    function prepareDetailsForAngular() {
+                                        if ($scope.positionDetail) {
+                                            if ($scope.positionDetail.requiredProfiles) {
+                                                for (i = 0; i < $scope.positionDetail.requiredProfiles.length; i++) {
+                                                    if ($scope.positionDetail.requiredProfiles [i]) {
+                                                        $scope.selectedProfiles.push(getDictionaryItemByValue($scope.dictionary.profiles, $scope.positionDetail.requiredProfiles[i]));
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
 
+                                    function prepareDetailsForServer() {
+                                        if ($scope.positionDetail) {
+                                            $scope.positionDetail.requiredProfiles = [];
+                                            for (i = 0; i < $scope.selectedProfiles.length; i++) {
+                                                if ($scope.selectedProfiles[i]) {
+                                                    $scope.positionDetail.requiredProfiles.push($scope.selectedProfiles[i].id);
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    $scope.selectedProfiles = [];
+                                    prepareDetailsForAngular();
+
+                                    $scope.querySearchInProfiles = function (text) {
+                                        var deferred = $q.defer();
+                                        if (text) {
+                                            var profile = $.grep($scope.dictionary.profiles, function (c, i) {
+                                                return c.name.toLowerCase().includes(text.toLowerCase());
+                                            });
+                                            deferred.resolve(profile);
+                                        } else {
+                                            deferred.resolve($scope.dictionary.profiles);
+                                        }
+                                        return deferred.promise;
+                                    }
+
+                                    $scope.transformChip = function (chip) {
+                                        // If it is an object, it's already a known chip
+                                        if (angular.isObject(chip)) {
+                                            return chip;
+                                        }
+                                        // Otherwise, return null;
+                                        return null;
+                                    }
+
+                                    ;
+                                    $scope.close = function () {
+                                        $mdDialog.hide();
+                                    }
+                                    $scope.cancel = function () {
+                                        $mdDialog.cancel();
+                                    };
+                                    $scope.save = function (params) {
+                                        $scope.positionDetail.requiredProfiles = $scope.selectedProfiles;
+                                        prepareDetailsForServer();
+                                        Position.upsert($scope.positionDetail).then(function (response) {
+                                            $mdDialog.hide();
+                                            $rootScope.kernel.alerts.push({
+                                                type: 3,
+                                                msg: gettextCatalog.getString('The profile has been edited'),
+                                                priority: 4
+                                            });
+                                        }).catch(function (response) {
+                                            $rootScope.kernel.loading = 100;
+                                            $rootScope.kernel.alerts.push({
+                                                type: 1,
+                                                msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                priority: 2
+                                            });
+                                        });
+                                    };
+                                });
+                            });
                         }],
                     templateUrl: '../templates/dialogs/profile.html',
                     parent: angular.element(document.body),
                     clickOutsideToClose: true,
                     locals: {
-                        p: p
+                        positionDetail: positionDetail
                     }
                 }).then(function (answer) {
 
@@ -105,6 +153,7 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
         }).catch(function (response) {
             console.error(response);
         });
+
 
 
 

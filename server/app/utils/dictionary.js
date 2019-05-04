@@ -119,9 +119,6 @@ var getPositionFromIdJSON = function (file, id, language) {
             }
         }
     }
-    
-    console.log(language)
-    console.log(found[language])
     found.value = value;
     return found;
 };
@@ -181,9 +178,10 @@ var getJSONList = function (file, language) {
         function myLoopA(i) {
             if (i < data.length) {
                 var item = data[i];
-                data[i].value = ((language && language !== "" && data[i][language] !== undefined && data[i][language] !== "") ? data[i][language] : data[i]['en']);
+                data[i].name = ((language && language !== "" && data[i][language] != undefined && data[i][language] != "") ? data[i][language] : data[i]['en']);
+                data[i].value = data[i].id;
                 result.push(data[i]);
-                myLoopA(i + 1);
+                myLoopA(i+1);
             }
         }
         myLoopA(0);
