@@ -1,7 +1,7 @@
 <md-dialog flex="50">
     <md-toolbar class="md-accent">
         <div class="md-toolbar-tools">
-            <h2>Add new profiles <small class="md-caption"></small></h2>
+            <h2>Add new {{detailDescription.name}}<small class="md-caption"></small></h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="cancel()">
                 <md-icon>close</md-icon>
@@ -10,16 +10,16 @@
     </md-toolbar>
     <md-dialog-content>
         <div class="md-dialog-content">
-            <label id="toLabel">Select profiles (You can add up to 05 skills):</label>
+            <label id="toLabel">{{detailDescription.title}}</label>
             
-            <md-chips ng-model="selectedProfiles" md-max-chips="5" md-autocomplete-snap="" md-transform-chip="transformChip($chip)">
-                <md-autocomplete md-selected-item="selectedProfile"
+            <md-chips ng-model="selectedDetails" md-max-chips="5" md-autocomplete-snap="" md-transform-chip="transformChip($chip)">
+                <md-autocomplete md-selected-item="selectedDetail"
                                  md-search-text="searchProfileText"
-                                 md-items="profile in querySearchInProfiles(searchProfileText)"
-                                 md-item-text="profile.name"
-                                 placeholder="{{'Choose profile'| translate}}"
-                                 ng-hide="selectedProfiles.length == 5">
-                    <span md-highlight-text="searchTopicText">{{profile.name}}</span>
+                                 md-items="item in querySearchInProfiles(searchProfileText)"
+                                 md-item-text="item.name"
+                                 placeholder="{{detailDescription.placeholder}}"
+                                 ng-hide="selectedDetails.length == 5">
+                    <span md-highlight-text="searchTopicText">{{item.name}}</span>
                     <md-not-found>
                         <div class="chip-not-found" ng-click="ctrl.notFound(ctrl.searchText)">Not found.</div>
                     </md-not-found>

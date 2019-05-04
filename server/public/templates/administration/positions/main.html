@@ -35,11 +35,11 @@
     </md-toolbar>
 
     <md-card>
-        <md-toolbar class="md-table-toolbar md-default" ng-show="search">
+        <md-toolbar class="md-table-toolbar md-default" >
             <div class="md-toolbar-tools">
                 <md-icon>search</md-icon>
                 <form flex>
-                    <input type="text" name="search" ng-model="positionFilter" placeholder="{{ 'Search...' | translate }}">
+                    <input type="text" name="search" ng-model="positionFilter" placeholder="{{ 'search among workstations...' | translate }}">
                 </form>
                 <md-button class="md-icon-button" ng-click="search = false" aria-label="close">
                     <md-icon class="material-icons">close</md-icon>
@@ -51,8 +51,8 @@
                 <thead md-head md-order="query.order">
                     <tr md-row>
                         <th md-column md-order-by="id" translate># </th>
-                        <th md-column md-order-by="value" translate>name</th>
-                        <th md-column md-order-by="code" translate>Code</th>
+                        <th md-column md-order-by="value" translate>Code</th>
+                        <th md-column md-order-by="code" translate>Position name</th>
                         <th md-column md-order-by="structure" translate>Structure</th>
                         <th md-column md-order-by="requiredEffective" translate>Required effective</th>
                         <th md-column md-order-by="actualEffective" translate>Actual effective</th>
@@ -61,8 +61,8 @@
                 <tbody md-body>
                     <tr md-row data-ng-repeat="position in positions| filter:positionFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="details(position)">
                         <td md-cell>{{position.id}}</td>
-                        <td md-cell>{{position.value}} </td>
                         <td md-cell>{{position.code| uppercase | unknown}}</td>
+                        <td md-cell>{{position.value}} </td>
                         <td md-cell>{{position.structure.name| unknown}}</td>
                         <td md-cell>{{position.requiredEffective| unknown}}</td>
                         <td md-cell>{{position.actualEffective | unknown}}</td>
