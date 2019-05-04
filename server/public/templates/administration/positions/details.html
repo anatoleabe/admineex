@@ -2,6 +2,10 @@
 <div flex="70" flex-offset="15" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" ui-view style="height:100%;">
     <md-content layout-padding layout="column" flex>
         <md-card-actions layout="row" >
+            <md-button ng-click="back()" class="md-raised md-primary" aria-label="Edit" >
+                <md-icon>arrow_back_ios</md-icon>
+                <span translate>Back</span>
+            </md-button>
             <span flex></span>
             <md-button  class="md-raised md-primary" aria-label="Edit" >
                 <md-icon>edit</md-icon>
@@ -72,7 +76,7 @@
                     <span flex></span>
                     <md-button ng-click="add(position, 'requiredProfiles', 'profiles')" aria-label="Edit" >
                         <md-icon>edit</md-icon>
-                        <span translate>Add or edit profiles</span>
+                        <span translate>Add or edit required profiles</span>
                     </md-button>
                 </md-card-actions>
             </md-card-title>
@@ -100,7 +104,7 @@
                     <span flex></span>
                     <md-button ng-click="add(position, 'requiredSkills', 'skills')" aria-label="Edit" >
                         <md-icon>edit</md-icon>
-                        <span translate>Add or edit skills</span>
+                        <span translate>Add or edit required skills</span>
                     </md-button>
                 </md-card-actions>
             </md-card-title>
@@ -186,6 +190,10 @@
         </md-card>
 
         <md-card-actions layout="row" >
+            <md-button ng-click="back()" class="md-raised md-primary" aria-label="Edit" >
+                <md-icon>arrow_back_ios</md-icon>
+                <span translate>Back</span>
+            </md-button>
             <span flex></span>
             <md-button  class="md-raised md-primary" aria-label="Edit" >
                 <md-icon>edit</md-icon>

@@ -71,6 +71,9 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                         
                         prepareRequiredItems();
 
+                        $scope.back = function () {
+                            $state.go("home.administration.positions");
+                        }
                         $scope.add = function (position, detailField, resourcesDistionary) {
                             var positionDetail = position.details;
                             
