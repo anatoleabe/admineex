@@ -12,65 +12,55 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
     $scope.cities = [];
     $scope.states = [];
     $scope.position = {};
-
-
+    $scope.requiredProfiles = [];
+    var dictionary = {};
 
 
     $ocLazyLoad.load('js/services/PositionService.js').then(function () {
         var Position = $injector.get('Position');
         $rootScope.kernel.loading = 100;
+        $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
+            var Dictionary = $injector.get('Dictionary');
+            Dictionary.jsonList({dictionary: "personnel", levels: ['profile']}).then(function (response) {
+                dictionary.profiles = response.data.jsonList;
 
+                Position.read({id: id}).then(function (response) {
+                    var data = response.data;
+                    $scope.position = data;
+                    
+                    function getDictionaryItemByValue(dictionaryList, itemValue) {
+                        var items = $.grep(dictionaryList, function (c, i) {
+                            return c.value === itemValue;
+                        });
+                        if (items && items.length > 0) {
+                            return items[0];
+                        } else {
+                            return undefined;
+                        }
+                    }
 
-        Position.read({id: id}).then(function (response) {
-            var data = response.data;
-            $scope.position = data;
+                    function prepareDetailsForAngular() {
+                        var requiredProfiles = [];
+                        if ($scope.position.details) {
+                            if ($scope.position.details.requiredProfiles) {
+                                for (i = 0; i < $scope.position.details.requiredProfiles.length; i++) {
+                                    if ($scope.position.details.requiredProfiles [i]) {
+                                        requiredProfiles.push(getDictionaryItemByValue(dictionary.profiles, $scope.position.details.requiredProfiles[i]));
+                                    }
+                                }
+                            }
+                        }
+                        return requiredProfiles;
+                    }
 
+                    $scope.requiredProfiles = prepareDetailsForAngular();
 
+                    $scope.add = function (position) {
+                        var positionDetail = position.details;
 
-
-
-            $scope.add = function (position) {
-
-
-
-
-
-
-
-
-                var positionDetail = position.details;
-                $mdDialog.show({
-                    controller: ['$scope', '$mdDialog', 'positionDetail', '$q', function ($scope, $mdDialog, positionDetail, $q) {
-                            $scope.dictionary = {};
-
-                            $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
-                                var Dictionary = $injector.get('Dictionary');
-                                Dictionary.jsonList({dictionary: "personnel", levels: ['profile']}).then(function (response) {
-                                    $scope.dictionary.profiles = response.data.jsonList;
+                        $mdDialog.show({
+                            controller: ['$scope', '$mdDialog', 'positionDetail', '$q', 'dictionary', function ($scope, $mdDialog, positionDetail, $q, dictionary) {
                                     $scope.positionDetail = positionDetail;
-
-                                    function getDictionaryItemByValue(dictionaryList, itemValue) {
-                                        var items = $.grep(dictionaryList, function (c, i) {
-                                            return c.value === itemValue;
-                                        });
-                                        if (items && items.length > 0) {
-                                            return items[0];
-                                        } else {
-                                            return undefined;
-                                        }
-                                    }
-
-                                    function prepareDetailsForAngular() {
-                                        if ($scope.positionDetail) {
-                                            if ($scope.positionDetail.requiredProfiles) {
-                                                for (i = 0; i < $scope.positionDetail.requiredProfiles.length; i++) {
-                                                    if ($scope.positionDetail.requiredProfiles [i]) {
-                                                        $scope.selectedProfiles.push(getDictionaryItemByValue($scope.dictionary.profiles, $scope.positionDetail.requiredProfiles[i]));
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
 
                                     function prepareDetailsForServer() {
                                         if ($scope.positionDetail) {
@@ -82,19 +72,17 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                                             }
                                         }
                                     }
-
-                                    $scope.selectedProfiles = [];
-                                    prepareDetailsForAngular();
+                                    $scope.selectedProfiles = prepareDetailsForAngular();
 
                                     $scope.querySearchInProfiles = function (text) {
                                         var deferred = $q.defer();
                                         if (text) {
-                                            var profile = $.grep($scope.dictionary.profiles, function (c, i) {
+                                            var profile = $.grep(dictionary.profiles, function (c, i) {
                                                 return c.name.toLowerCase().includes(text.toLowerCase());
                                             });
                                             deferred.resolve(profile);
                                         } else {
-                                            deferred.resolve($scope.dictionary.profiles);
+                                            deferred.resolve(dictionary.profiles);
                                         }
                                         return deferred.promise;
                                     }
@@ -134,28 +122,29 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                                             });
                                         });
                                     };
-                                });
-                            });
-                        }],
-                    templateUrl: '../templates/dialogs/profile.html',
-                    parent: angular.element(document.body),
-                    clickOutsideToClose: true,
-                    locals: {
-                        positionDetail: positionDetail
+
+                                }],
+                            templateUrl: '../templates/dialogs/profile.html',
+                            parent: angular.element(document.body),
+                            clickOutsideToClose: true,
+                            locals: {
+                                positionDetail: positionDetail,
+                                dictionary: dictionary
+                            }
+                        }).then(function (answer) {
+
+                        }, function () {
+
+                        });
+
                     }
-                }).then(function (answer) {
-
-                }, function () {
-
+                }).catch(function (response) {
+                    console.error(response);
                 });
 
-            }
-        }).catch(function (response) {
-            console.error(response);
+
+            });
         });
-
-
-
 
     });
 });
