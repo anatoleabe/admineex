@@ -22,6 +22,7 @@ controllers.users = require('./controllers/users');
 controllers.projects = require('./controllers/projects');
 controllers.structures = require('./controllers/structures');
 controllers.positions = require('./controllers/positions');
+controllers.personnel = require('./controllers/personnel');
 controllers.organizations = require('./controllers/organizations');
 controllers.import_export = require('./controllers/import_export');
 controllers.ui = require('./controllers/ui');
@@ -295,6 +296,29 @@ var routes = [
         httpMethod: _.findWhere(aclRoutes, {id: 42}).method,
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.positions.api.upsert],
         access: _.findWhere(aclRoutes, {id: 42}).roles
+    },
+
+    // === STAFF MANAGEMENT ROUTES ==========================================================
+    // Get staff
+    {
+        path: _.findWhere(aclRoutes, {id: 45}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 45}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.list],
+        access: _.findWhere(aclRoutes, {id: 45}).roles
+    },
+    // Read staff
+    {
+        path: _.findWhere(aclRoutes, {id: 44}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 44}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.read],
+        access: _.findWhere(aclRoutes, {id: 44}).roles
+    },
+    // Upsert staff
+    {
+        path: _.findWhere(aclRoutes, {id: 43}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 43}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.upsert],
+        access: _.findWhere(aclRoutes, {id: 43}).roles
     },
     
     // === ORGANIZATION ROUTES ==========================================================

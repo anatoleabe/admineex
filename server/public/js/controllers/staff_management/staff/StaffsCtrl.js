@@ -1,41 +1,41 @@
 angular.module('StaffsCtrl', []).controller('StaffsController', function($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope) {
-    $ocLazyLoad.load('js/services/ProjectService.js').then(function() {
-        var Project = $injector.get('Project');
+    $ocLazyLoad.load('js/services/StaffService.js').then(function() {
+        var StaffAgent = $injector.get('Staff');
         var helper = {
             title: gettextCatalog.getString("No project"),
             icon: "class"
         };
 
-        $scope.projects = [], $scope.helper = [];
+        $scope.personnels = [], $scope.helper = [];
 
         $scope.edit = function (params) {
             $state.go("home.staffs.edit", params);
         };
 
-        function getProjects(){
+        function getAgents(){
             $scope.helper = [];
-            Project.list().then(function(response){
+            StaffAgent.list().then(function(response){
                 var data = response.data;
                 if(data.length == 0 && $scope.helper.length == 0){
                     $scope.helper = helper;
                 }
                 $rootScope.kernel.loading = 100;
-                $scope.projects = data;
+                $scope.personnels = data;
             }).catch(function(response) {
                 console.log(response);
             });
         }
-        getProjects();
+        getAgents();
 
         
-        function deleteProject(id){
-            Project.delete({
+        function deleteAgent(id){
+            StaffAgent.delete({
                 id : id
             }).then(function(response){
-                getProjects();
+                getAgents();
                 $rootScope.kernel.alerts.push({
                     type: 3,
-                    msg: gettextCatalog.getString('The project has been deleted'),
+                    msg: gettextCatalog.getString('The Agent has been deleted'),
                     priority: 4
                 });
             }).catch(function(response) {
@@ -43,16 +43,16 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function($scope,
             });
         }
 
-        $scope.showConfirm = function(project){
+        $scope.showConfirm = function(agent){
             var confirm = $mdDialog.confirm()
-            .title(gettextCatalog.getString("Delete this project"))
-            .textContent(gettextCatalog.getString("Are you sure you want to delete the project") + " " + project.name + gettextCatalog.getString("?"))
+            .title(gettextCatalog.getString("Delete this Agent"))
+            .textContent(gettextCatalog.getString("Are you sure you want to delete the Agent") + " " + agent.name. + gettextCatalog.getString("?"))
             .ok(gettextCatalog.getString("OK"))
             .cancel(gettextCatalog.getString("Cancel"));
 
             $mdDialog.show(confirm).then(function() {
                 // Delete
-                deleteProject(project._id)
+                deleteAgent(agent._id)
             }, function() {
                 // Cancel
             });

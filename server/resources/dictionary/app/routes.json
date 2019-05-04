@@ -244,5 +244,23 @@
         "uri": "/api/positions",
         "method": "PUT",
         "roles": [1,2,3]
+    },
+    {
+        "id": 43,
+        "uri": "/api/personnel/id/:id",
+        "method": "GET",
+        "roles": [1,2,3]
+    },
+    {
+        "id": 44,
+        "uri": "/api/personnel/read/:id",
+        "method": "GET",
+        "roles": [1,2,3]
+    },
+    {
+        "id": 45,
+        "uri": "/api/personnel",
+        "method": "GET",
+        "roles": [1,2,3]
     }
 ]
