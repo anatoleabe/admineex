@@ -17,7 +17,7 @@
             <md-card-title>
                 <md-card-title-text>
                     <span class="md-headline" translate>Position details: {{position.value}}</span>
-                    <md-header class="md-no-sticky">{{position.structure.name}}</md-header>
+                    <md-header class="md-no-sticky">{{position.structure.value}}</md-header>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content>
@@ -57,7 +57,7 @@
                         <p class="md-body-2" translate>Structure code </p>
                         <p class="md-body-1 md-secondary">{{position.structure.code}}</p>
                     </md-list-item>
-                    
+
                 </md-list>
             </md-card-content>
         </md-card>
@@ -70,31 +70,20 @@
                 </md-card-title-text>
                 <md-card-actions layout="row" >
                     <span flex></span>
-                    <md-button ng-click="add()" aria-label="Add" >
-                        <md-icon>add</md-icon>
-                        <span translate>Add</span>
-                    </md-button>
-                    <md-button  aria-label="Edit" >
+                    <md-button ng-click="add(position)" aria-label="Edit" >
                         <md-icon>edit</md-icon>
-                        <span translate>Edit</span>
+                        <span translate>Add or edit profiles</span>
                     </md-button>
-                    
                 </md-card-actions>
             </md-card-title>
             <md-card-content>
                 <md-list ng-cloak>
-                    <md-list-item ui-sref="#">
-                        <p class="md-body-2" >Administrateur Public</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item ui-sref="#">
-                        <p class="md-body-2" >Management des Etablissements public</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item ui-sref="#">
-                        <p class="md-body-2" >Comptabilité général des entreprises privées</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
+                    <div  ng-repeat="reqProfile in requiredProfiles">
+                        <md-list-item ui-sref="#">
+                            <p class="md-body-2" >{{reqProfile.name}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </div>
                 </md-list>
             </md-card-content>
         </md-card>
@@ -114,7 +103,7 @@
                         <md-icon>edit</md-icon>
                         <span translate>Edit</span>
                     </md-button>
-                    
+
                 </md-card-actions>
             </md-card-title>
             <md-card-content>
@@ -150,7 +139,7 @@
                         <md-icon>edit</md-icon>
                         <span translate>Edit</span>
                     </md-button>
-                    
+
                 </md-card-actions>
             </md-card-title>
             <md-card-content>
@@ -186,7 +175,7 @@
                         <md-icon>edit</md-icon>
                         <span translate>Edit</span>
                     </md-button>
-                    
+
                 </md-card-actions>
             </md-card-title>
             <md-card-content>

@@ -22,6 +22,7 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
             $scope.helper = [];
             Structure.list().then(function (response) {
                 var data = response.data;
+                console.log(data)
                 if (data.length == 0 && $scope.helper.length == 0) {
                     $scope.helper = helper;
                 }

@@ -1,7 +1,8 @@
 [
     {
         "id": "1",
-        "name": "DGTCFM/CABINET DGTCFM",
+        "fr": "DGTCFM/CABINET DGTCFM",
+        "en": "DGTCFM/CABINET DGTCFM",
         "code": "190",
         "father": "0",
         "rank": "1",
@@ -9,7 +10,8 @@
     },
     {
         "id": "2",
-        "name": "SERVICE D'ORDRE",
+        "fr": "SERVICE D'ORDRE",
+        "en": "SERVICE D'ORDRE",
         "code": "191",
         "father": "1",
         "rank": "2",
@@ -17,7 +19,8 @@
     },
     {
         "id": "3",
-        "name": "INSPECTION DES SERVICES DU TRESOR",
+        "fr": "INSPECTION DES SERVICES DU TRESOR",
+        "en": "INSPECTION DES SERVICES DU TRESOR",
         "code": "192",
         "father": "1",
         "rank": "2",
@@ -25,7 +28,8 @@
     },
     {
         "id": "4",
-        "name": "CELLULE DE LA LEGISLATION ET DE LA CODIFICATION",
+        "fr": "CELLULE DE LA LEGISLATION ET DE LA CODIFICATION",
+        "en": "CELLULE DE LA LEGISLATION ET DE LA CODIFICATION",
         "code": "193",
         "father": "1",
         "rank": "2",
@@ -33,7 +37,8 @@
     },
     {
         "id": "5",
-        "name": "DIVISION DE L'INFORMATIQUE",
+        "fr": "DIVISION DE L'INFORMATIQUE",
+        "en": "DIVISION DE L'INFORMATIQUE",
         "code": "194",
         "father": "1",
         "rank": "2",
@@ -41,7 +46,8 @@
     },
     {
         "id": "6",
-        "name": "DIVISION DE LA MICRO FINANCE",
+        "fr": "DIVISION DE LA MICRO FINANCE",
+        "en": "DIVISION DE LA MICRO FINANCE",
         "code": "198",
         "father": "1",
         "rank": "2",
@@ -49,7 +55,8 @@
     },
     {
         "id": "7",
-        "name": "DIRECTION DES ASSURANCES",
+        "fr": "DIRECTION DES ASSURANCES",
+        "en": "DIRECTION DES ASSURANCES",
         "code": "203",
         "father": "1",
         "rank": "2",
@@ -57,7 +64,8 @@
     },
     {
         "id": "8",
-        "name": "DIRECTION DE LA COMPTABILITE PUBLIQUE",
+        "fr": "DIRECTION DE LA COMPTABILITE PUBLIQUE",
+        "en": "DIRECTION DE LA COMPTABILITE PUBLIQUE",
         "code": "212",
         "father": "1",
         "rank": "2",
@@ -65,7 +73,8 @@
     },
     {
         "id": "9",
-        "name": "DIRECTION DE LA TRESORERIE",
+        "fr": "DIRECTION DE LA TRESORERIE",
+        "en": "DIRECTION DE LA TRESORERIE",
         "code": "227",
         "father": "1",
         "rank": "2",
@@ -73,7 +82,8 @@
     },
     {
         "id": "10",
-        "name": "DIRECTION DE LA COOPERATION FINANCIERE ET MONETAIRE",
+        "fr": "DIRECTION DE LA COOPERATION FINANCIERE ET MONETAIRE",
+        "en": "DIRECTION DE LA COOPERATION FINANCIERE ET MONETAIRE",
         "code": "238",
         "father": "1",
         "rank": "2",
@@ -81,7 +91,8 @@
     },
     {
         "id": "11",
-        "name": "DIRECTION DES AFFAIRES GENERALES",
+        "fr": "DIRECTION DES AFFAIRES GENERALES",
+        "en": "DIRECTION DES AFFAIRES GENERALES",
         "code": "247",
         "father": "1",
         "rank": "2",
@@ -89,7 +100,8 @@
     },
     {
         "id": "12",
-        "name": "PAIERIE GENERALE DU TRESOR",
+        "fr": "PAIERIE GENERALE DU TRESOR",
+        "en": "PAIERIE GENERALE DU TRESOR",
         "code": "398",
         "father": "1",
         "rank": "2",
