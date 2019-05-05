@@ -15,6 +15,7 @@ exports.api = {};
 var controllers = {
     configuration: require('./configuration'),
     users: require('./users'),
+    positions: require('./positions')
 };
 
 exports.upsert = function (fields, callback) {
@@ -50,39 +51,70 @@ exports.upsert = function (fields, callback) {
 
 exports.api.list = function (req, res) {
     if (req.actor) {
-        var structures = dictionary.getJSONList("../../resources/dictionary/structure/structures.json", req.actor.language);
+        var language = req.actor.language.toLowerCase();
+        filter = {$and: []};
+        if (req.params.code) {
+            filter.$and.push({
+                "code": req.params.code
+            });
+        }
 
-        function loopA(a) {
-            if (a < structures.length) {
-                var positions = dictionary.getJSONListByCode("../../resources/dictionary/structure/positions.json", req.actor.language.toLowerCase(), structures[a].code);
-                structures[a].workstationsNb = positions.length;
-                var requiredEffective = 0;
-                var actualEffective = 0;
+        Structure.find({}, function (err, result) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[mongodb]', 'Structures', 'List', '', '', 'failed', 'Mongodb attempted to retrieve structures list');
+                return res.status(500).send(err);
+            } else {
+                var structures = JSON.parse(JSON.stringify(result));
+                function loopA(a) {
+                    if (a < structures.length) {
+                        structures[a].name = ((language && language !== "" && structures[a][language] != undefined && structures[a][language] != "") ? structures[a][language] : structures[a]['en']);
+                        console.log(structures[a].code);
+                        controllers.positions.findPositionsByStructureCode(structures[a].code, function (err, positions) {
+                            if (err) {
+                                return res.status(500).send(err);
+                            } else {
+                                if (positions) {
+                                    structures[a].workstationsNb = positions.length;
+                                } else {
+                                    structures[a].workstationsNb = 0;
+                                }
 
-                function LoopB(b) {
-                    if (b < positions.length) {
-                        //TODO compute real effective
-                        requiredEffective += positions[b].requiredEffective;
-                        LoopB(b + 1);
+                                var requiredEffective = 0;
+                                var actualEffective = 0;
+                                
+                                function LoopB(b) {
+                                    if (b < positions.length) {
+                                        
+                                        //TODO compute real effective
+                                        requiredEffective += Number(positions[b].requiredEffective);
+                                        
+                                        LoopB(b + 1);
+                                    } else {
+                                        structures[a].requiredEffective = requiredEffective;
+                                        structures[a].actualEffective = actualEffective;
+                                        structures[a].vacancies = requiredEffective - actualEffective;
+
+                                        loopA(a + 1);
+                                    }
+                                }
+                                LoopB(0);
+                            }
+                        });
+
                     } else {
-                        structures[a].requiredEffective = requiredEffective;
-                        structures[a].actualEffective = actualEffective;
-                        structures[a].vacancies = requiredEffective - actualEffective;
-                        loopA(a + 1);
+                        beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
+                            if (err) {
+                                return res.status(500).send(err);
+                            } else {
+                                return res.json(objects);
+                            }
+                        });
                     }
                 }
-                LoopB(0)
-            } else {
-                beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
-                    if (err) {
-                        return res.status(500).send(err);
-                    } else {
-                        return res.json(objects);
-                    }
-                });
+                loopA(0);
             }
-        }
-        loopA(0);
+        });
     } else {
         audit.logEvent('[anonymous]', 'Projects', 'List', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);
@@ -110,7 +142,7 @@ exports.api.delete = function (req, res) {
 
 exports.initialize = function (callback) {
     var initialize = controllers.configuration.getConf().initialize;
-    
+
     if (initialize.structures == "0") {
         var structures = dictionary.getJSONList("../../resources/dictionary/structure/structures.json", "en");
         var avoidedStructuresCode = [];
@@ -136,13 +168,13 @@ exports.initialize = function (callback) {
                     } else {
                         if (structure != null) {// If this structure already exist
                             avoidedStructuresCode.push(structures[a].code);
-                            loopA(a+1);
+                            loopA(a + 1);
                         } else {
                             exports.upsert(fields, function (err, contact) {
                                 if (err) {
                                     log.error(err);
                                 } else {
-                                    loopA(a+1);
+                                    loopA(a + 1);
                                 }
                             });
                         }
@@ -175,7 +207,7 @@ exports.findStructureByCode = function (code, callback) {
         } else {
             if (structure != null) {
                 callback(null, structure);
-            }else{
+            } else {
                 callback(null);
             }
         }

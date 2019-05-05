@@ -244,6 +244,23 @@ exports.findPositionByCode = function (code, callback) {
     });
 }
 
+exports.findPositionsByStructureCode = function (code, callback) {
+    Position.find({
+        code: {'$regex': code+"-"}
+    }).lean().exec(function (err, positions) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            if (positions != null) {
+                callback(null, positions);
+            }else{
+                callback(null);
+            }
+        }
+    });
+}
+
 exports.find = function (positionId, callback) {
     Position.findOne({
         positionId: positionId
