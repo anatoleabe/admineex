@@ -21,31 +21,19 @@ exports.api.upsert = function (req, res) {
 
 
 exports.api.list = function (req, res) {
-    /*if (req.actor) {
-        var positions = dictionary.getJSONListByCode("../../resources/dictionary/personnel/positions.json", req.actor.language.toLowerCase(), req.params.id);
-        beautify({actor: req.actor, language: req.actor.language, beautify: true}, positions, function (err, objects) {
-            if (err) {
-                return res.status(500).send(err);
-            } else {
-                return res.json(objects);
-            }
-        });
-    } else {
-        audit.logEvent('[anonymous]', 'Projects', 'List', '', '', 'failed', 'The actor was not authenticated');
-        return res.send(401);
-    }*/
+ 
     if(req.actor){
-        Personnel.find({}, function (err, personnel) {
+        Personnel.find({}, function (err, personnels) {
             if (err) {
                 log.error(err);
                 audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
                 return res.status(500).send(err);
             } else {
-                return res.json(personnel);
+                return res.json(personnels);
             }
         });
     } else {
-        audit.logEvent('[anonymous]', 'Organizations', 'List', '', '', 'failed','The actor was not authenticated');
+        audit.logEvent('[anonymous]', 'Personnel', 'List', '', '', 'failed','The actor was not authenticated');
         return res.send(401);
     }
 }

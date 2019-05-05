@@ -155,14 +155,14 @@
             </thead>
             <tbody md-body>
                 <tr md-row data-ng-repeat="personnel in personnels| filter:contactsFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="read(personnel)">
-                    <td md-cell>{{personnel.nom}} {{personnel.prenom}}</td>
-                    <td md-cell style="max-width: 50px">{{personnel.matricule| uppercase | unknown}}</td>
-                    <td md-cell style="max-width: 30px">{{personnel.sexe| uppercase | unknown}}</td>
+                    <td md-cell>{{personnel.name.prefix[0]}} {{personnel.name.suffix[0]}}</td>
+                    <td md-cell style="max-width: 50px">{{personnel.identifier| uppercase | unknown}}</td>
+                    <td md-cell style="max-width: 30px">{{personnel.gender| uppercase | unknown}}</td>
                     <td md-cell>{{personnel.posteActuel[0].nom| unknown}}</td>
                     <td md-cell>{{personnel.posteActuel[0].structure[0].nom| unknown}} <span style="color: #999999" ng-if="personnel.posteActuel[0].structure[0]"> - {{personnel.posteActuel[0].structure[0].code}} </span></td>
                     <td md-cell style="max-width: 50px">{{personnel.posteActuel[0].acte[0].dateCreation| date:'dd/MM/yyyy'}}</td>
                     <td md-cell>{{personnel.telephone| unknown}}</td>
-                    <td md-cell>{{personnel.miseajour| date:'dd/MM/yyyy'}}</td>
+                    <td md-cell>{{personnel.lastModified| date:'dd/MM/yyyy'}}</td>
                 </tr>
             </tbody>
         </table>

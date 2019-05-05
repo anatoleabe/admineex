@@ -21,6 +21,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function($scope,
                 }
                 $rootScope.kernel.loading = 100;
                 $scope.personnels = data;
+                console.log(JSON.stringify($scope.personnels))
             }).catch(function(response) {
                 console.log(response);
             });
@@ -46,7 +47,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function($scope,
         $scope.showConfirm = function(agent){
             var confirm = $mdDialog.confirm()
             .title(gettextCatalog.getString("Delete this Agent"))
-            .textContent(gettextCatalog.getString("Are you sure you want to delete the Agent") + " " + agent.name. + gettextCatalog.getString("?"))
+            .textContent(gettextCatalog.getString("Are you sure you want to delete the Agent") + " " + agent.name.use + gettextCatalog.getString("?"))
             .ok(gettextCatalog.getString("OK"))
             .cancel(gettextCatalog.getString("Cancel"));
 
