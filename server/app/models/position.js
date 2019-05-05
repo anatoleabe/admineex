@@ -3,9 +3,13 @@ var mongoose        = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
-// PositionDetail schema
-var PositionDetailSchema = new Schema({
-    positionId: { type: String, required: true },//From json resource
+// Position schema
+var PositionSchema = new Schema({
+    identifier: { type: String, required: true },
+    code: { type: String, required: true },
+    en: { type: String, required: true },
+    fr: { type: String, required: false },
+    requiredEffective: { type: String, required: false },
     requiredProfiles: [],//Code of existing profiles taken from a global lists
     requiredSkills: [],
     activities: [],//Code of existing profiles taken from a global lists
@@ -15,7 +19,7 @@ var PositionDetailSchema = new Schema({
 });
 
 //Define Models
-var PositionDetail = mongoose.model('PositionDetail', PositionDetailSchema);
+var Position = mongoose.model('Position', PositionSchema);
 
 // Export Models
-exports.PositionDetail = PositionDetail;
+exports.Position = Position;

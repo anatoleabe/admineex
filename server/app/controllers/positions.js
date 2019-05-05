@@ -1,4 +1,6 @@
-var PositionDetail = require('../models/positionDetail').PositionDetail;
+var Position = require('../models/position').Position;
+var nconf = require('nconf');
+nconf.file("config/server.json");
 var audit = require('../utils/audit-log');
 var log = require('../utils/log');
 var mail = require('../utils/mail');
@@ -11,8 +13,37 @@ var formidable = require("formidable");
 exports.api = {};
 
 var controllers = {
-    configuration: require('./configuration'),
-    users: require('./users'),
+    configuration: require('./configuration')
+};
+
+exports.upsert = function (fields, callback) {
+    // Parse received fields
+    var id = fields._id || '';
+    var identifier = fields.identifier || '';
+
+    var filter = {$and: []};
+    if (id !== '') {
+        filter.$and.push({
+            "_id": id
+        });
+    } else if (identifier !== '') {
+        filter.$and.push({
+            "identifier": identifier
+        });
+    } else {
+        filter = fields;
+    }
+
+    fields.lastModified = new Date();
+    Position.findOneAndUpdate(filter, fields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Position', 'Upsert', "", "", 'failed', "Mongodb attempted to update position");
+            callback(err);
+        } else {
+            callback(null, result);
+        }
+    });
 };
 
 exports.api.upsert = function (req, res) {
@@ -38,7 +69,7 @@ exports.api.upsert = function (req, res) {
                     });
                 }
 
-                PositionDetail.findOne(filter, function (err, position) {
+                Position.findOne(filter, function (err, position) {
                     if (err) {
                         log.error(err);
                         audit.logEvent('[mongodb]', 'Positions', 'Upsert', "", "", 'failed', "Mongodb attempted to find a position");
@@ -48,7 +79,7 @@ exports.api.upsert = function (req, res) {
                             fields.created = new Date();
                         }
                         fields.lastModified = new Date();
-                        PositionDetail.findOneAndUpdate(filter, fields, {upsert: true, new : true}, function (err, result) {
+                        Position.findOneAndUpdate(filter, fields, {upsert: true, new : true}, function (err, result) {
                             if (err) {
                                 log.error(err);
                                 audit.logEvent('[mongodb]', 'Position', 'Upsert', "", "", 'failed', "Mongodb attempted to upsert a Position");
@@ -139,8 +170,82 @@ exports.api.read = function (req, res) {
     }
 }
 
+exports.initialize = function (callback) {
+    var initialize = controllers.configuration.getConf().initialize;
+    
+    if (initialize.positions == "0") {
+        var positions = dictionary.getJSONList("../../resources/dictionary/structure/positions.json", "en");
+        var avoidedPositionsCode = [];
+        function loopA(a) {
+            if (a < positions.length) {
+                var fields = {
+                    identifier: positions[a].id,
+                    code: positions[a].code,
+                    en: positions[a].en,
+                    fr: positions[a].fr,
+                    rank: positions[a].rank,
+                    requiredEffective: positions[a].requiredEffective,
+                    type: positions[a].type,
+                    activities: positions[a].activities | [],
+                    tasks: positions[a].tasks | [],
+                    lastModified: new Date(),
+                    created: new Date()
+                }
+                exports.findPositionByCode(positions[a].code, function (err, position) {
+                    if (err) {
+                        log.error(err);
+                        callback(err);
+                    } else {
+                        if (position != null) {// If this position already exist
+                            avoidedPositionsCode.push(positions[a].code);
+                            loopA(a+1);
+                        } else {
+                            exports.upsert(fields, function (err) {
+                                if (err) {
+                                    log.error(err);
+                                } else {
+                                    loopA(a+1);
+                                }
+                            });
+                        }
+                    }
+                });
+
+            } else {
+                nconf.set("initialize:positions", "1");
+                nconf.save(function (err) {
+                    if (err) {
+                        log.error(err);
+                        audit.logEvent('[nconf]', 'Position', 'Update', "", "", 'failed', "nconf attempted to save configuration");
+                    } else {
+                        callback(null, avoidedPositionsCode);
+                    }
+                });
+            }
+        }
+        loopA(0);
+    }
+}
+
+exports.findPositionByCode = function (code, callback) {
+    Position.findOne({
+        code: code
+    }).lean().exec(function (err, position) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            if (position != null) {
+                callback(null, position);
+            }else{
+                callback(null);
+            }
+        }
+    });
+}
+
 exports.find = function (positionId, callback) {
-    PositionDetail.findOne({
+    Position.findOne({
         positionId: positionId
     }).lean().exec(function (err, positionDetails) {
         if (err) {
