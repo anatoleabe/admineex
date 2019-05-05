@@ -72,7 +72,8 @@ exports.getConf = function () {
         server: nconf.get('server'),
         token: nconf.get('token'),
         mongo: nconf.get('mongo'),
-        mailer: nconf.get('mailer')
+        mailer: nconf.get('mailer'),
+        initialize: nconf.get('initialize')
     });
 }
 

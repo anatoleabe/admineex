@@ -54,6 +54,10 @@ nconf.load(function (err, result) {
         changed |= setDefault("rateLimiter:points", 200);
         changed |= setDefault("rateLimiter:duration", 1);
         changed |= setDefault("rateLimiter:blockDuration", 60);
+        
+        //model initialization from json
+        changed |= setDefault("initialize:structures", 0);//0 = not done, 1 = done
+        changed |= setDefault("initialize:positions", 0);//0 = not done, 1 = done
 
         // write the config changes to disk and run the server
         if (changed) {

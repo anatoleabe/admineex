@@ -35,6 +35,7 @@ controllers.angular = function (req, res) {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 };
 
+startBot();
 
 //Routes
 var routes = [
@@ -47,7 +48,7 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.audit.api.listByDate],
         access: _.findWhere(aclRoutes, {id: 1}).roles
     },
-    
+
     // === INSTALLATION ROUTES ==========================================================
     // Read configuration without token
     {
@@ -191,7 +192,7 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.ui.api.charts],
         access: _.findWhere(aclRoutes, {id: 17}).roles
     },
-    
+
     // === CHARTS ROUTES ==========================================================
     // Build chart
     {
@@ -218,7 +219,6 @@ var routes = [
         access: _.findWhere(aclRoutes, {id: 32}).roles
     },
 
-
     // === CONFIGURATION ROUTES ==========================================================
     // Read config
     {
@@ -235,7 +235,7 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.configuration.api.update],
         access: _.findWhere(aclRoutes, {id: 25}).roles
     },
-    
+
     // === PROJECT ROUTES ==========================================================
     // Create a project
     {
@@ -265,7 +265,7 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.projects.api.delete],
         access: _.findWhere(aclRoutes, {id: 24}).roles
     },
-    
+
     // === STRUCTURES ROUTES ==========================================================
     // Get structures
     {
@@ -274,7 +274,7 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.structures.api.list],
         access: _.findWhere(aclRoutes, {id: 39}).roles
     },
-    
+
     // === POSITIONS ROUTES ==========================================================
     // Get positions
     {
@@ -320,7 +320,7 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.upsert],
         access: _.findWhere(aclRoutes, {id: 43}).roles
     },
-    
+
     // === ORGANIZATION ROUTES ==========================================================
     // Create an org
     {
@@ -350,7 +350,7 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.organizations.api.delete],
         access: _.findWhere(aclRoutes, {id: 36}).roles
     },
-    
+
     // === IMPORT_EXPORT ROUTES ==========================================================
     // Import
     {
@@ -359,14 +359,14 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.import_export.api.import],
         access: _.findWhere(aclRoutes, {id: 37}).roles
     },
-    
+
     {
         path: _.findWhere(aclRoutes, {id: 38}).uri,
         httpMethod: _.findWhere(aclRoutes, {id: 38}).method,
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.import_export.api.export],
         access: _.findWhere(aclRoutes, {id: 38}).roles
     },
-    
+
     // === OTHER ROUTES ==========================================================
     // Search In Dictionary
     {
@@ -477,7 +477,7 @@ function ensureAuthorized(req, res, next) {
                                 } else {
                                     console.log('Forbidden for his role');
                                     audit.logEvent(user._id, 'Routes', 'Ensure authorized', 'route', req.route.path, 'failed',
-                                                   'The user tried to access a route which is forbidden for his role');
+                                            'The user tried to access a route which is forbidden for his role');
                                     return res.sendStatus(403);
                                 }
                             } else {// typeof allowedRoles is undefined
@@ -501,4 +501,20 @@ function ensureAuthorized(req, res, next) {
             return res.sendStatus(401);
         }
     }
+}
+
+function startBot() {
+    controllers.structures.initialize(function (err, avoided) {
+        if (err) {
+            log.error(err);
+            console.log(err);
+        } else {
+            var avoidedmsg = "";
+            if (avoided && avoided.length>0){
+                avoidedmsg = "Skipped structure: "+avoided;
+                log.warn(avoidedmsg);
+            }
+            audit.logEvent('[anonymous]', 'Routes', 'startBot', "", "", 'Success', "Initialization of structures succesful done. "+avoidedmsg);
+        }
+    });
 }

@@ -1,3 +1,6 @@
+var Structure = require('../models/structure').Structure;
+var nconf = require('nconf');
+nconf.file("config/server.json");
 var audit = require('../utils/audit-log');
 var log = require('../utils/log');
 var mail = require('../utils/mail');
@@ -14,8 +17,34 @@ var controllers = {
     users: require('./users'),
 };
 
-exports.api.upsert = function (req, res) {
+exports.upsert = function (fields, callback) {
+    // Parse received fields
+    var id = fields._id || '';
+    var identifier = fields.identifier || '';
 
+    var filter = {$and: []};
+    if (id !== '') {
+        filter.$and.push({
+            "_id": id
+        });
+    } else if (identifier !== '') {
+        filter.$and.push({
+            "identifier": identifier
+        });
+    } else {
+        filter = fields;
+    }
+
+    fields.lastModified = new Date();
+    Structure.findOneAndUpdate(filter, fields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Structure', 'Upsert', "", "", 'failed', "Mongodb attempted to update a structure");
+            callback(err);
+        } else {
+            callback(null, result);
+        }
+    });
 };
 
 
@@ -78,6 +107,83 @@ exports.api.delete = function (req, res) {
         return res.send(401);
     }
 }
+
+exports.initialize = function (callback) {
+    var initialize = controllers.configuration.getConf().initialize;
+    
+    if (initialize.structures == "0") {
+        var structures = dictionary.getJSONList("../../resources/dictionary/structure/structures.json", "en");
+        var avoidedStructuresCode = [];
+        function loopA(a) {
+            if (a < structures.length) {
+                var fields = {
+                    identifier: structures[a].id,
+                    code: structures[a].code,
+                    en: structures[a].en,
+                    fr: structures[a].fr,
+                    fatherIdentifier: structures[a].father,
+                    rank: structures[a].rank,
+                    type: structures[a].type,
+                    activities: structures[a].activities | [],
+                    tasks: structures[a].tasks | [],
+                    lastModified: new Date(),
+                    created: new Date()
+                }
+                exports.findStructureByCode(structures[a].code, function (err, structure) {
+                    if (err) {
+                        log.error(err);
+                        callback(err);
+                    } else {
+                        if (structure != null) {// If this structure already exist
+                            avoidedStructuresCode.push(structures[a].code);
+                            loopA(a+1);
+                        } else {
+                            exports.upsert(fields, function (err, contact) {
+                                if (err) {
+                                    log.error(err);
+                                } else {
+                                    loopA(a+1);
+                                }
+                            });
+                        }
+                    }
+                });
+
+            } else {
+                nconf.set("initialize:structures", "1");
+                nconf.save(function (err) {
+                    if (err) {
+                        log.error(err);
+                        audit.logEvent('[nconf]', 'Configuration', 'Update', "", "", 'failed', "nconf attempted to save configuration");
+                    } else {
+                        callback(null, avoidedStructuresCode);
+                    }
+                });
+            }
+        }
+        loopA(0);
+    }
+}
+
+exports.findStructureByCode = function (code, callback) {
+    Structure.findOne({
+        code: code
+    }).lean().exec(function (err, structure) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            if (structure != null) {
+                callback(null, structure);
+            }else{
+                callback(null);
+            }
+        }
+    });
+}
+
+
+
 
 
 function beautify(options, objects, callback) {
