@@ -37,7 +37,6 @@
             <table md-table md-progress="promise">
                 <thead md-head md-order="query.order">
                     <tr md-row>
-                        <th md-column md-order-by="id" translate># </th>
                         <th md-column md-order-by="code" translate>Code</th>
                         <th md-column md-order-by="name" translate style="min-width: 200px">Name</th>
                         <th md-column md-order-by="rankValue" translate>Hierarchical rank</th>
@@ -49,7 +48,6 @@
                 </thead>
                 <tbody md-body>
                     <tr md-row data-ng-repeat="structure in structures| filter:structureFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="read(structure)">
-                        <td md-cell>{{structure.id}}</td>
                         <td md-cell>{{structure.code| uppercase | unknown}}</td>
                         <td md-cell style="min-width: 200px">{{structure.name}} </td>
                         <td md-cell>{{structure.rankValue| unknown}}</td>

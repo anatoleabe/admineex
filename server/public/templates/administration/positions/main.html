@@ -50,7 +50,6 @@
             <table md-table md-progress="promise">
                 <thead md-head md-order="query.order">
                     <tr md-row>
-                        <th md-column md-order-by="id" translate># </th>
                         <th md-column md-order-by="value" translate>Code</th>
                         <th md-column md-order-by="code" translate>Position name</th>
                         <th md-column md-order-by="structure" translate>Structure</th>
@@ -61,7 +60,6 @@
                 </thead>
                 <tbody md-body>
                     <tr md-row data-ng-repeat="position in positions| filter:positionFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
-                        <td md-cell ng-click="details(position)">{{position.id}}</td>
                         <td md-cell ng-click="details(position)">{{position.code| uppercase | unknown}}</td>
                         <td md-cell ng-click="details(position)">{{position.name}} </td>
                         <td md-cell ng-click="details(position)">{{position.structure.name| unknown}}</td>
