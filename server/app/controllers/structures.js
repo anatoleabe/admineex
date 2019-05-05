@@ -69,7 +69,6 @@ exports.api.list = function (req, res) {
                 function loopA(a) {
                     if (a < structures.length) {
                         structures[a].name = ((language && language !== "" && structures[a][language] != undefined && structures[a][language] != "") ? structures[a][language] : structures[a]['en']);
-                        console.log(structures[a].code);
                         controllers.positions.findPositionsByStructureCode(structures[a].code, function (err, positions) {
                             if (err) {
                                 return res.status(500).send(err);
@@ -161,7 +160,7 @@ exports.initialize = function (callback) {
                     lastModified: new Date(),
                     created: new Date()
                 }
-                exports.findStructureByCode(structures[a].code, function (err, structure) {
+                exports.findStructureByCode(structures[a].code, "en", function (err, structure) {
                     if (err) {
                         log.error(err);
                         callback(err);
@@ -197,15 +196,18 @@ exports.initialize = function (callback) {
     }
 }
 
-exports.findStructureByCode = function (code, callback) {
+exports.findStructureByCode = function (code, language, callback) {
     Structure.findOne({
         code: code
-    }).lean().exec(function (err, structure) {
+    }).lean().exec(function (err, result) {
         if (err) {
             log.error(err);
             callback(err);
         } else {
+            var structure = JSON.parse(JSON.stringify(result));
+            
             if (structure != null) {
+                structure.name = ((language && language !== "" && structure[language] != undefined && structure[language] != "") ? structure[language] : structure['en']);
                 callback(null, structure);
             } else {
                 callback(null);
