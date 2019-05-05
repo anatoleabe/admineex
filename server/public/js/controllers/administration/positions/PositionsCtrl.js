@@ -22,6 +22,10 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                 $state.go("home.administration.details", params);
             };
 
+            $scope.edit = function (params) {
+                console.log("params");
+            };
+
             function getPositions(idStructure) {
                 $scope.helper = [];
                 var deferred = $q.defer();

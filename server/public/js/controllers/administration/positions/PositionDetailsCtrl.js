@@ -14,6 +14,14 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
     $scope.position = {};
     $scope.requiredProfiles = [];
     $scope.requiredSKills = [];
+    $scope.affectedStaffs = [
+        {
+            name: "John Ndoe"
+        },
+        {
+            name: "Ndoe John"
+        },
+    ];
     var dictionary = {};
     $scope.helper = {
         icon: 'event_note',

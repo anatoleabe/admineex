@@ -44,6 +44,7 @@
                         <th md-column md-order-by="typeValue" translate style="min-width: 200px">Type</th>
                         <th md-column md-order-by="workstations" translate >Workstations </th>
                         <th md-column md-order-by="vacancies" translate >Vacancies</th>
+                        <th md-column translate>Actions</th>
                     </tr>
                 </thead>
                 <tbody md-body>
@@ -55,6 +56,15 @@
                         <td md-cell>{{structure.typeValue| unknown}}</td>
                         <td md-cell><span class="diy-chip" ng-class="{'green': true}">{{structure.workstationsNb}} <small translate>positions</small></span></td>
                         <td md-cell><small class="diy-chip" ng-class="{'red': structure.vacancies > 0}">{{structure.vacancies}}</small></td>
+                        <td md-cell >
+                            <md-button ng-click="edit(position)" aria-label="Edit" >
+                                <md-icon>edit</md-icon>
+                                <md-tooltip md-direction="top">
+                                    <span translate>Edit</span>
+                                </md-tooltip>
+                                <span translate>Edit</span>
+                            </md-button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

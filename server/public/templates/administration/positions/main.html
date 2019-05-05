@@ -9,7 +9,7 @@
                         <md-select ng-model="filters.structure"  style="min-width: 150px;">
                             <md-optgroup label="{{'Filtre by structure'| translate}}">
                                 <md-option value="-1" >
-                                   {{'All structures' | translate}}
+                                    {{'All structures'| translate}}
                                 </md-option>
                                 <md-option ng-repeat="struc in structures" value="{{struc}}" >
                                     {{struc.name}}
@@ -54,19 +54,29 @@
                         <th md-column md-order-by="value" translate>Code</th>
                         <th md-column md-order-by="code" translate>Position name</th>
                         <th md-column md-order-by="structure" translate>Structure</th>
-                        <th md-column md-order-by="requiredEffective" translate>Effective</th>
-                        <th md-column md-order-by="vancancies" translate>Vacancies</th>
+                        <th md-column md-order-by="requiredEffective" style="min-width: 100px" translate>Effective</th>
+                        <!--<th md-column md-order-by="vancancies" style="min-width: 100px" translate>Vacancies</th>-->
+                        <th md-column translate>Actions</th>
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row data-ng-repeat="position in positions| filter:positionFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="details(position)">
-                        <td md-cell>{{position.id}}</td>
-                        <td md-cell>{{position.code| uppercase | unknown}}</td>
-                        <td md-cell>{{position.value}} </td>
-                        <td md-cell>{{position.structure.name| unknown}}</td>
-                        <td md-cell><span class="diy-chip" ng-class="{'green': position.actualEffective >= position.requiredEffective, 'red': position.actualEffective < position.requiredEffective}">{{position.actualEffective}} / {{position.requiredEffective}} <small translate>positions</small></span></td>
-                       <td md-cell><small class="diy-chip" ng-class="{'red': structure.vacancies > 0}">{{position.vacancies}} positions</small></td>
-                    </tr>
+                    <tr md-row data-ng-repeat="position in positions| filter:positionFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                        <td md-cell ng-click="details(position)">{{position.id}}</td>
+                        <td md-cell ng-click="details(position)">{{position.code| uppercase | unknown}}</td>
+                        <td md-cell ng-click="details(position)">{{position.value}} </td>
+                        <td md-cell ng-click="details(position)">{{position.structure.name| unknown}}</td>
+                        <td md-cell ng-click="details(position)"><span class="diy-chip" ng-class="{'green': position.actualEffective >= position.requiredEffective, 'red': position.actualEffective < position.requiredEffective}">{{position.actualEffective}} / {{position.requiredEffective}} <small translate>positions</small></span></td>
+                        <!--<td md-cell ng-click="details(position)"><small class="diy-chip" ng-class="{'red': structure.vacancies > 0}">{{position.vacancies}} positions</small></td>-->
+                        <td md-cell >
+                            <md-button ng-click="edit(position)" aria-label="Edit" >
+                                <md-icon>edit</md-icon>
+                                <md-tooltip md-direction="top">
+                                    <span translate>Edit</span>
+                                </md-tooltip>
+                                <span translate>Edit</span>
+                            </md-button>
+                        </td>
+                </tr>
                 </tbody>
             </table>
         </md-table-container>

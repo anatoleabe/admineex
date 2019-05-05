@@ -160,32 +160,39 @@
             </md-card-title>
             <md-card-content>
                 <md-list ng-cloak>
-                    <md-list-item ui-sref="#">
-                        <div class="avatar avatar-md md-avatar" >
-                            {{"J".toUpperCase()}}
-                        </div>
-                        <p class="md-body-2" >John Ndoe</p>
-                        <md-button class="md-secondary md-icon-button" aria-label="See" ng-click="edit({id: user._id})">
-                            <md-icon aria-label="pageview">pageview</md-icon>
-                            <md-tooltip>
+                    <div ng-repeat="staff in affectedStaffs">
+                        <md-list-item ui-sref="#" >
+                            <div class="avatar avatar-md md-avatar" >
+                                {{"J".toUpperCase()}}
+                            </div>
+                            <p class="md-body-2" >{{staff.name}}</p>
+                            <md-button class="md-secondary " aria-label="Consult" ng-click="edit({id: user._id})">
+                                <md-icon aria-label="pageview">pageview</md-icon>
+                                <md-tooltip>
+                                    <span translate>Consult</span>
+                                </md-tooltip>
                                 <span translate>Consult</span>
-                            </md-tooltip>
-                        </md-button>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item ui-sref="#">
-                        <div class="avatar avatar-md md-avatar" >
-                            {{"N".toUpperCase()}}
-                        </div>
-                        <p class="md-body-2" translate>Ndoe John</p>
-                        <md-button class="md-secondary md-icon-button" aria-label="See" ng-click="edit({id: user._id})">
-                            <md-icon aria-label="pageview">pageview</md-icon>
-                            <md-tooltip>
-                                <span translate>Consult</span>
-                            </md-tooltip>
-                        </md-button>
-                    </md-list-item>
+                            </md-button>
+                            <md-button class="md-secondary " ng-class="{'red':true}" aria-label="Remove" ng-click="edit({id: user._id})">
+                                <md-icon style="color: white;" aria-label="remove_circle_outline">remove_circle_outline</md-icon>
+                                <md-tooltip>
+                                    <span translate>Remove</span>
+                                </md-tooltip>
+                                <span translate>Remove</span>
+                            </md-button>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </div>
                 </md-list>
+                <div layout="row" layout-align="center center"  >
+                    <md-button class="md-secondary" ng-class="{'green':true}" aria-label="See" ng-click="edit({id: user._id})">
+                        <md-icon aria-label="person_add">person_add</md-icon>
+                        <md-tooltip>
+                            <span translate>Affect staff to this position</span>
+                        </md-tooltip>
+                        <span>Affect staff to this position</span>
+                    </md-button>
+                </div>
             </md-card-content>
         </md-card>
 
