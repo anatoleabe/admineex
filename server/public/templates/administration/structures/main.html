@@ -1,4 +1,4 @@
-<div flex="70" flex-offset="15" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" ui-view style="height:100%;">    
+<div flex="90" flex-offset="5" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" ui-view style="height:100%;">    
     <md-toolbar class="toolbar-filter">
         <div class="md-toolbar-tools md-default">
             <div flex >
@@ -38,19 +38,23 @@
                 <thead md-head md-order="query.order">
                     <tr md-row>
                         <th md-column md-order-by="id" translate># </th>
-                        <th md-column md-order-by="name" translate style="min-width: 200px">Name</th>
                         <th md-column md-order-by="code" translate>Code</th>
+                        <th md-column md-order-by="name" translate style="min-width: 200px">Name</th>
                         <th md-column md-order-by="rankValue" translate>Hierarchical rank</th>
                         <th md-column md-order-by="typeValue" translate style="min-width: 200px">Type</th>
+                        <th md-column md-order-by="workstations" translate >Workstations </th>
+                        <th md-column md-order-by="vacancies" translate >Vacancies</th>
                     </tr>
                 </thead>
                 <tbody md-body>
                     <tr md-row data-ng-repeat="structure in structures| filter:structureFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="read(structure)">
                         <td md-cell>{{structure.id}}</td>
-                        <td md-cell style="min-width: 200px">{{structure.name}} </td>
                         <td md-cell>{{structure.code| uppercase | unknown}}</td>
+                        <td md-cell style="min-width: 200px">{{structure.name}} </td>
                         <td md-cell>{{structure.rankValue| unknown}}</td>
                         <td md-cell>{{structure.typeValue| unknown}}</td>
+                        <td md-cell><span class="diy-chip" ng-class="{'green': true}">{{structure.workstationsNb}} <small translate>positions</small></span></td>
+                        <td md-cell><small class="diy-chip" ng-class="{'red': structure.vacancies > 0}">{{structure.vacancies}}</small></td>
                     </tr>
                 </tbody>
             </table>

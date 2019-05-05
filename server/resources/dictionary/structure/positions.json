@@ -4,2561 +4,2561 @@
         "fr": "DGTCFM",
         "en": "DGTCFM",
         "code": "190-P1",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "2",
         "fr": "Secrétaire de Direction",
         "en": "Secrétaire de Direction",
         "code": "190-P2",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "3",
         "fr": "Ass. De Direction",
         "en": "Ass. De Direction",
         "code": "190-P3",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "4",
         "fr": "AB/Dép. Parapheurs",
         "en": "AB/Dép. Parapheurs",
         "code": "190-P4",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "5",
         "fr": "Analyste concept° Proj",
         "en": "Analyste concept° Proj",
         "code": "190-P5",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "6",
         "fr": "Agent de Bureau",
         "en": "Agent de Bureau",
         "code": "190-P6",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "7",
         "fr": "Agent de sécurité",
         "en": "Agent de sécurité",
         "code": "190-P7",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "8",
         "fr": "Chauffeur",
         "en": "Chauffeur",
         "code": "190-P8",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "9",
         "fr": "Le Chef du Service d'Ordre",
         "en": "Le Chef du Service d'Ordre",
         "code": "191-P1",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "10",
         "fr": "Le Chef du Bureau du Courrier et de Liaison",
         "en": "Le Chef du Bureau du Courrier et de Liaison",
         "code": "191-P2",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "11",
         "fr": "Le Chef du Bureau de l'Accueil et de l'Information",
         "en": "Le Chef du Bureau de l'Accueil et de l'Information",
         "code": "191-P3",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "12",
         "fr": "Le Chef du Bureau des Archives",
         "en": "Le Chef du Bureau des Archives",
         "code": "191-P4",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "13",
         "fr": "Agent de Bureau1",
         "en": "Agent de Bureau1",
         "code": "191-P5",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "14",
         "fr": "Agent de Bureau2",
         "en": "Agent de Bureau2",
         "code": "191-P6",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "15",
         "fr": "L'Inspecteur des Services du Trésor",
         "en": "L'Inspecteur des Services du Trésor",
         "code": "192-P1",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "16",
         "fr": "IS1",
         "en": "IS1",
         "code": "192-P2",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "17",
         "fr": "IS2",
         "en": "IS2",
         "code": "192-P3",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "18",
         "fr": "IS3",
         "en": "IS3",
         "code": "192-P4",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "19",
         "fr": "IS4",
         "en": "IS4",
         "code": "192-P5",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "20",
         "fr": "IS5",
         "en": "IS5",
         "code": "192-P6",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "21",
         "fr": "IS6",
         "en": "IS6",
         "code": "192-P7",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "22",
         "fr": "IS7",
         "en": "IS7",
         "code": "192-P8",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "23",
         "fr": "IS8",
         "en": "IS8",
         "code": "192-P9",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "24",
         "fr": "IS9",
         "en": "IS9",
         "code": "192-P10",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "25",
         "fr": "IS10",
         "en": "IS10",
         "code": "192-P11",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "26",
         "fr": "Secrétariat 1/Saisie Rapport MISSION",
         "en": "Secrétariat 1/Saisie Rapport MISSION",
         "code": "192-P12",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "27",
         "fr": "Secrétariat 2/Traitement courrier",
         "en": "Secrétariat 2/Traitement courrier",
         "code": "192-P13",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "28",
         "fr": "CADRES/Suivi CF EST",
         "en": "CADRES/Suivi CF EST",
         "code": "192-P14",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "29",
         "fr": "CADRES/exploitation PV",
         "en": "CADRES/exploitation PV",
         "code": "192-P15",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "30",
         "fr": "CADRES/Contrôle de gestion",
         "en": "CADRES/Contrôle de gestion",
         "code": "192-P16",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "31",
         "fr": "CADRES/Contrôles des services DGTCFM",
         "en": "CADRES/Contrôles des services DGTCFM",
         "code": "192-P17",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "32",
         "fr": "CADRES/Suivi des débets",
         "en": "CADRES/Suivi des débets",
         "code": "192-P18",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "33",
         "fr": "CADRES/Elaboration carto risques",
         "en": "CADRES/Elaboration carto risques",
         "code": "192-P19",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "34",
         "fr": "CADRES/contrôle du respect des procédures",
         "en": "CADRES/contrôle du respect des procédures",
         "code": "192-P20",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "35",
         "fr": "CADRES/Audit des EPA",
         "en": "CADRES/Audit des EPA",
         "code": "192-P21",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "36",
         "fr": "CADRES/Audit des EPA des CTD",
         "en": "CADRES/Audit des EPA des CTD",
         "code": "192-P22",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "37",
         "fr": "CADRES/Suivi des PC",
         "en": "CADRES/Suivi des PC",
         "code": "192-P23",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "38",
         "fr": "CADRES/Suivi des PC",
         "en": "CADRES/Suivi des PC",
         "code": "192-P24",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "39",
         "fr": "CADRES/Suivi des PC",
         "en": "CADRES/Suivi des PC",
         "code": "192-P25",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "40",
         "fr": "CADRES/Suivi des PC",
         "en": "CADRES/Suivi des PC",
         "code": "192-P26",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "41",
         "fr": "CADRES/Suivi des PC",
         "en": "CADRES/Suivi des PC",
         "code": "192-P27",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "42",
         "fr": "CADRES/Suivi CF Nord",
         "en": "CADRES/Suivi CF Nord",
         "code": "192-P28",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "43",
         "fr": "CADRES/Suivi des CF",
         "en": "CADRES/Suivi des CF",
         "code": "192-P29",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "44",
         "fr": "Chauffeur IST",
         "en": "Chauffeur IST",
         "code": "192-P30",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "45",
         "fr": "Le Chef de la Cellule de la Legislation et de la Codification",
         "en": "Le Chef de la Cellule de la Legislation et de la Codification",
         "code": "193-P1",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "46",
         "fr": "CEA1 CLC",
         "en": "CEA1 CLC",
         "code": "193-P2",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "47",
         "fr": "CEA2 CLC",
         "en": "CEA2 CLC",
         "code": "193-P3",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "48",
         "fr": "CEA3 CLC",
         "en": "CEA3 CLC",
         "code": "193-P4",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "49",
         "fr": "CEA4 CLC",
         "en": "CEA4 CLC",
         "code": "193-P5",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "50",
         "fr": "CEA5 CLC",
         "en": "CEA5 CLC",
         "code": "193-P6",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "51",
         "fr": "CEA6 CLC",
         "en": "CEA6 CLC",
         "code": "193-P7",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "52",
         "fr": "Cadre 1/Elaboration des Instructions",
         "en": "Cadre 1/Elaboration des Instructions",
         "code": "193-P8",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "53",
         "fr": "Cadre 2/création des comptes",
         "en": "Cadre 2/création des comptes",
         "code": "193-P9",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "54",
         "fr": "Cadre3/Traduction documents",
         "en": "Cadre3/Traduction documents",
         "code": "193-P10",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "55",
         "fr": "Cadre4/Formation des comptables",
         "en": "Cadre4/Formation des comptables",
         "code": "193-P11",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "56",
         "fr": "Chef de la Division Informatique",
         "en": "Chef de la Division Informatique",
         "code": "194-P1",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "57",
         "fr": "Chef de Service de la Maintenance",
         "en": "Chef de Service de la Maintenance",
         "code": "194-P2",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "58",
         "fr": "Chef d'Atelier de Maintenance",
         "en": "Chef d'Atelier de Maintenance",
         "code": "194-P3",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "59",
         "fr": "Chef de Bureau du Suivi des Contrats de Maintenance",
         "en": "Chef de Bureau du Suivi des Contrats de Maintenance",
         "code": "194-P4",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "60",
         "fr": "Chef de Bureau de la Gestion du Matériel",
         "en": "Chef de Bureau de la Gestion du Matériel",
         "code": "194-P5",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "61",
         "fr": "Chef de la Cellule d'Exploitation",
         "en": "Chef de la Cellule d'Exploitation",
         "code": "194-P6",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "62",
         "fr": "CEA1 CE",
         "en": "CEA1 CE",
         "code": "194-P7",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "63",
         "fr": "CEA2 CE",
         "en": "CEA2 CE",
         "code": "194-P8",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "64",
         "fr": "CEA3 CE",
         "en": "CEA3 CE",
         "code": "194-P9",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "65",
         "fr": "CEA4 CE",
         "en": "CEA4 CE",
         "code": "194-P10",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "66",
         "fr": "CEA5 CE",
         "en": "CEA5 CE",
         "code": "194-P11",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "67",
         "fr": "Chef de la Cellule des Réseaux de Communication",
         "en": "Chef de la Cellule des Réseaux de Communication",
         "code": "194-P12",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "68",
         "fr": "CEA1 CRC",
         "en": "CEA1 CRC",
         "code": "194-P13",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "69",
         "fr": "CEA2 CRC",
         "en": "CEA2 CRC",
         "code": "194-P14",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "70",
         "fr": "CEA3 CRC",
         "en": "CEA3 CRC",
         "code": "194-P15",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "71",
         "fr": "CEA4 CRC",
         "en": "CEA4 CRC",
         "code": "194-P16",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "72",
         "fr": "CEA5 CRC",
         "en": "CEA5 CRC",
         "code": "194-P17",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "73",
         "fr": "CEA6 CRC",
         "en": "CEA6 CRC",
         "code": "194-P18",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "74",
         "fr": "CEA7 CRC",
         "en": "CEA7 CRC",
         "code": "194-P19",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "75",
         "fr": "Pool de la maintenance d'energie",
         "en": "Pool de la maintenance d'energie",
         "code": "194-P20",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "76",
         "fr": "Pool de la maintenance hardware",
         "en": "Pool de la maintenance hardware",
         "code": "194-P21",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "77",
         "fr": "Pool de la maintenance SGBD",
         "en": "Pool de la maintenance SGBD",
         "code": "194-P22",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "78",
         "fr": "Pool d'exploitation des applications",
         "en": "Pool d'exploitation des applications",
         "code": "194-P23",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "79",
         "fr": "Pool de la maintenance des applications",
         "en": "Pool de la maintenance des applications",
         "code": "194-P24",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "80",
         "fr": "Pool de l'administration des BD",
         "en": "Pool de l'administration des BD",
         "code": "194-P25",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "81",
         "fr": "Pool de backup",
         "en": "Pool de backup",
         "code": "194-P26",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "82",
         "fr": "Pool de surveillance des réseaux",
         "en": "Pool de surveillance des réseaux",
         "code": "194-P27",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "83",
         "fr": "Pool de gestion des réseaux locaux",
         "en": "Pool de gestion des réseaux locaux",
         "code": "194-P28",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "84",
         "fr": "Pool de gestion des réseaux MAN et WAN",
         "en": "Pool de gestion des réseaux MAN et WAN",
         "code": "194-P29",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "85",
         "fr": "Pool de gestion des droits d'accès",
         "en": "Pool de gestion des droits d'accès",
         "code": "194-P30",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "86",
         "fr": "Pool de sécurité et évolution des réseaux",
         "en": "Pool de sécurité et évolution des réseaux",
         "code": "194-P31",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "87",
         "fr": "Pool de gestion des stocks des équipements",
         "en": "Pool de gestion des stocks des équipements",
         "code": "194-P32",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "88",
         "fr": "Secretaire de Direction CDI",
         "en": "Secretaire de Direction CDI",
         "code": "194-P33",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "89",
         "fr": "Agent de Bureau CDI",
         "en": "Agent de Bureau CDI",
         "code": "194-P34",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "90",
         "fr": "Le Chef de la Division de la Micro-finance",
         "en": "Le Chef de la Division de la Micro-finance",
         "code": "198-P1",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "91",
         "fr": "Le Chef du Service des Agréments",
         "en": "Le Chef du Service des Agréments",
         "code": "198-P2",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "92",
         "fr": "Le Chef de Bureau des Agréments",
         "en": "Le Chef de Bureau des Agréments",
         "code": "198-P3",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "93",
         "fr": "Le Chef de Bureau de la Carte et du Fichier des Etablissements de Micro finances",
         "en": "Le Chef de Bureau de la Carte et du Fichier des Etablissements de Micro finances",
         "code": "198-P4",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "94",
         "fr": "Le Chef de la Cellule de la Promotion et de l'Encadrement",
         "en": "Le Chef de la Cellule de la Promotion et de l'Encadrement",
         "code": "198-P5",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "95",
         "fr": "CEA1 CPET",
         "en": "CEA1 CPET",
         "code": "198-P6",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "96",
         "fr": "CEA2 CPET",
         "en": "CEA2 CPET",
         "code": "198-P7",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "97",
         "fr": "CEA3 CPET",
         "en": "CEA3 CPET",
         "code": "198-P8",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "98",
         "fr": "CEA4 CPET",
         "en": "CEA4 CPET",
         "code": "198-P9",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "99",
         "fr": "CEA5 CPET",
         "en": "CEA5 CPET",
         "code": "198-P10",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "100",
         "fr": "CEA6 CPET",
         "en": "CEA6 CPET",
         "code": "198-P11",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "101",
         "fr": "Le Chef de la Cellule des Projets et des Etudes",
         "en": "Le Chef de la Cellule des Projets et des Etudes",
         "code": "198-P12",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "102",
         "fr": "CEA1 CPE",
         "en": "CEA1 CPE",
         "code": "198-P13",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "103",
         "fr": "CEA2 CPE",
         "en": "CEA2 CPE",
         "code": "198-P14",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "104",
         "fr": "CEA3 CPE",
         "en": "CEA3 CPE",
         "code": "198-P15",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "105",
         "fr": "CEA4 CPE",
         "en": "CEA4 CPE",
         "code": "198-P16",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "106",
         "fr": "CEA5 CPE",
         "en": "CEA5 CPE",
         "code": "198-P17",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "107",
         "fr": "Le Chef de la Brigade de Contrôle des Etablissements de Micro-finances ",
         "en": "Le Chef de la Brigade de Contrôle des Etablissements de Micro-finances ",
         "code": "198-P18",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "108",
         "fr": "CB1 EM",
         "en": "CB1 EM",
         "code": "198-P19",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "109",
         "fr": "CB2 EM",
         "en": "CB2 EM",
         "code": "198-P20",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "110",
         "fr": "CB3 EM",
         "en": "CB3 EM",
         "code": "198-P21",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "111",
         "fr": "CB4E M",
         "en": "CB4E M",
         "code": "198-P22",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "112",
         "fr": "CB5 EM",
         "en": "CB5 EM",
         "code": "198-P23",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "113",
         "fr": "CB6 EM",
         "en": "CB6 EM",
         "code": "198-P24",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "114",
         "fr": "CB7 EM",
         "en": "CB7 EM",
         "code": "198-P25",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "115",
         "fr": "CB8 EM",
         "en": "CB8 EM",
         "code": "198-P26",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "116",
         "fr": "CB9 EM",
         "en": "CB9 EM",
         "code": "198-P27",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "117",
         "fr": "CB10 EM",
         "en": "CB10 EM",
         "code": "198-P28",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "118",
         "fr": "CB11 EM",
         "en": "CB11 EM",
         "code": "198-P29",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "119",
         "fr": "CB12 EM",
         "en": "CB12 EM",
         "code": "198-P30",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "120",
         "fr": "CB13 EM",
         "en": "CB13 EM",
         "code": "198-P31",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "121",
         "fr": "CB14 EM",
         "en": "CB14 EM",
         "code": "198-P32",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "122",
         "fr": "CB15 EM",
         "en": "CB15 EM",
         "code": "198-P33",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "123",
         "fr": "Secrétaire de Direction CDMF",
         "en": "Secrétaire de Direction CDMF",
         "code": "198-P34",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "124",
         "fr": "Le Directeur des Assurances",
         "en": "Le Directeur des Assurances",
         "code": "203-P1",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "125",
         "fr": "Le Chef d'Inspection des Assurances et des Professions Connexes",
         "en": "Le Chef d'Inspection des Assurances et des Professions Connexes",
         "code": "203-P2",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "126",
         "fr": "IA1",
         "en": "IA1",
         "code": "203-P3",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "127",
         "fr": "IA2",
         "en": "IA2",
         "code": "203-P4",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "128",
         "fr": "IA3",
         "en": "IA3",
         "code": "203-P5",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "129",
         "fr": "IA4",
         "en": "IA4",
         "code": "203-P6",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "130",
         "fr": "IA5",
         "en": "IA5",
         "code": "203-P7",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "131",
         "fr": "IA6",
         "en": "IA6",
         "code": "203-P8",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "132",
         "fr": "CA1",
         "en": "CA1",
         "code": "203-P9",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "133",
         "fr": "CA2",
         "en": "CA2",
         "code": "203-P10",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "134",
         "fr": "CA3",
         "en": "CA3",
         "code": "203-P11",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "135",
         "fr": "CA4",
         "en": "CA4",
         "code": "203-P12",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "136",
         "fr": "CA5",
         "en": "CA5",
         "code": "203-P13",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "137",
         "fr": "CA6",
         "en": "CA6",
         "code": "203-P14",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "138",
         "fr": "CA7",
         "en": "CA7",
         "code": "203-P15",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "139",
         "fr": "CA8",
         "en": "CA8",
         "code": "203-P16",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "140",
         "fr": "CA9",
         "en": "CA9",
         "code": "203-P17",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "141",
         "fr": "CA10",
         "en": "CA10",
         "code": "203-P18",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "142",
         "fr": "CA11",
         "en": "CA11",
         "code": "203-P19",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "143",
         "fr": "CA12",
         "en": "CA12",
         "code": "203-P20",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "144",
         "fr": "CA13",
         "en": "CA13",
         "code": "203-P21",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "145",
         "fr": "CA14",
         "en": "CA14",
         "code": "203-P22",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "146",
         "fr": "CA15",
         "en": "CA15",
         "code": "203-P23",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "147",
         "fr": "Le Sous-Directeur des Statistiques et des Synthèses",
         "en": "Le Sous-Directeur des Statistiques et des Synthèses",
         "code": "203-P24",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "148",
         "fr": "Le Chef de Service des Statistiques",
         "en": "Le Chef de Service des Statistiques",
         "code": "203-P25",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "149",
         "fr": "Le Chef de Bureau des Statistiques des Compagnies d'Assurances",
         "en": "Le Chef de Bureau des Statistiques des Compagnies d'Assurances",
         "code": "203-P26",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "150",
         "fr": "Le Chef de Bureau des Statistiques des Intermediaires d'Assurances",
         "en": "Le Chef de Bureau des Statistiques des Intermediaires d'Assurances",
         "code": "203-P27",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "151",
         "fr": "Le Chef de Service des Sythèses",
         "en": "Le Chef de Service des Sythèses",
         "code": "203-P28",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "152",
         "fr": "Le Chef de Bureau des Placements",
         "en": "Le Chef de Bureau des Placements",
         "code": "203-P29",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "153",
         "fr": "Le Chef de Bureau des Rapports",
         "en": "Le Chef de Bureau des Rapports",
         "code": "203-P30",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "154",
         "fr": "Le Sous-Directeur des Agréments , de la Coopération et du Contentieux",
         "en": "Le Sous-Directeur des Agréments , de la Coopération et du Contentieux",
         "code": "203-P31",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "155",
         "fr": "Le Chef de Service de la Coopération Internationale ",
         "en": "Le Chef de Service de la Coopération Internationale ",
         "code": "203-P32",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "156",
         "fr": "Le Chef de Bureau des Relations avec les Organisations Internationales d'Assurances ",
         "en": "Le Chef de Bureau des Relations avec les Organisations Internationales d'Assurances ",
         "code": "203-P33",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "157",
         "fr": "Le Chef de Bureau du Suivi des Intérêts de l'Etat",
         "en": "Le Chef de Bureau du Suivi des Intérêts de l'Etat",
         "code": "203-P34",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "158",
         "fr": "Le Chef de Service des Agréments",
         "en": "Le Chef de Service des Agréments",
         "code": "203-P35",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "159",
         "fr": "Le Chef de Bureau des Agréments des Compagnies d'Assurances",
         "en": "Le Chef de Bureau des Agréments des Compagnies d'Assurances",
         "code": "203-P36",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "160",
         "fr": "Le Chef de Bureau des Agréments des Intermédiares d'Assurances et des Professions Connexes",
         "en": "Le Chef de Bureau des Agréments des Intermédiares d'Assurances et des Professions Connexes",
         "code": "203-P37",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "161",
         "fr": "Le Chef de Service des Assurances Administratives et du Contentieux",
         "en": "Le Chef de Service des Assurances Administratives et du Contentieux",
         "code": "203-P38",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "162",
         "fr": "Le Chef de Bureau des Assurances Administratives",
         "en": "Le Chef de Bureau des Assurances Administratives",
         "code": "203-P39",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "163",
         "fr": "Le Chef de Bureau du Contentieux",
         "en": "Le Chef de Bureau du Contentieux",
         "code": "203-P40",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "164",
         "fr": "Secrétaire de Direction DA",
         "en": "Secrétaire de Direction DA",
         "code": "203-P41",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "165",
         "fr": "Secrétariat SDSS",
         "en": "Secrétariat SDSS",
         "code": "203-P42",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "166",
         "fr": "Secrétariat SDACC",
         "en": "Secrétariat SDACC",
         "code": "203-P43",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "167",
         "fr": "Le Directeur de la Comptabilité Publique",
         "en": "Le Directeur de la Comptabilité Publique",
         "code": "212-P1",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "168",
         "fr": "Le Chef de la Cellule Informatique",
         "en": "Le Chef de la Cellule Informatique",
         "code": "212-P2",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "169",
         "fr": "CEA1 CI ",
         "en": "CEA1 CI ",
         "code": "212-P3",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "170",
         "fr": "CEA2 CI ",
         "en": "CEA2 CI ",
         "code": "212-P4",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "171",
         "fr": "CEA3 CI ",
         "en": "CEA3 CI ",
         "code": "212-P5",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "172",
         "fr": "CEA4 CI ",
         "en": "CEA4 CI ",
         "code": "212-P6",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "173",
         "fr": "CEA5 CI ",
         "en": "CEA5 CI ",
         "code": "212-P7",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "174",
         "fr": "Le Sous-Directeur du Règlement du Budget de l'Etat et des Comptes",
         "en": "Le Sous-Directeur du Règlement du Budget de l'Etat et des Comptes",
         "code": "212-P8",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "175",
         "fr": "Le Chef de Service de l'Exploitation et de l'Analyse des Résultats Comptables",
         "en": "Le Chef de Service de l'Exploitation et de l'Analyse des Résultats Comptables",
         "code": "212-P9",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "176",
         "fr": "Le Chef de Bureau du Pilotage du Réseau",
         "en": "Le Chef de Bureau du Pilotage du Réseau",
         "code": "212-P10",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "177",
         "fr": "Le Chef de Bureau de l'Analyse des Résulats Comptables",
         "en": "Le Chef de Bureau de l'Analyse des Résulats Comptables",
         "code": "212-P11",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "178",
         "fr": "Le Chef de Service du Règlement du Budget de l'Etat",
         "en": "Le Chef de Service du Règlement du Budget de l'Etat",
         "code": "212-P12",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "179",
         "fr": "Le Chef de Bureau du Suivi du Règlement de la Solde et des Pensions",
         "en": "Le Chef de Bureau du Suivi du Règlement de la Solde et des Pensions",
         "code": "212-P13",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "180",
         "fr": "Le Chef de Bureau du Suivi de l'Execution Budgétaire et Comptable",
         "en": "Le Chef de Bureau du Suivi de l'Execution Budgétaire et Comptable",
         "code": "212-P14",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "181",
         "fr": "Le Chef de Service des Comptes de Gestion",
         "en": "Le Chef de Service des Comptes de Gestion",
         "code": "212-P15",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "182",
         "fr": "Le Chef de Bureau des Comptes de Gestion de l'Etat",
         "en": "Le Chef de Bureau des Comptes de Gestion de l'Etat",
         "code": "212-P16",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "183",
         "fr": "Le Chef de Bureau des Comptes de Gestion des Collectivités Territoriales Décentralisées",
         "en": "Le Chef de Bureau des Comptes de Gestion des Collectivités Territoriales Décentralisées",
         "code": "212-P17",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "184",
         "fr": "Le Chef de Bureau des Comptes de Gestion des Etabilssements Publics Administratifs",
         "en": "Le Chef de Bureau des Comptes de Gestion des Etabilssements Publics Administratifs",
         "code": "212-P18",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "185",
         "fr": "L'Agent Comptable Centrale du Trésor",
         "en": "L'Agent Comptable Centrale du Trésor",
         "code": "212-P19",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "186",
         "fr": "Le Chef de Bureau du Courrier",
         "en": "Le Chef de Bureau du Courrier",
         "code": "212-P20",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "187",
         "fr": "Le Fondé de Pouvoir",
         "en": "Le Fondé de Pouvoir",
         "code": "212-P21",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "188",
         "fr": "Le Chef de Brigade de Vérification et de Contrôle",
         "en": "Le Chef de Brigade de Vérification et de Contrôle",
         "code": "212-P22",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "189",
         "fr": "IV1 BVC",
         "en": "IV1 BVC",
         "code": "212-P23",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "190",
         "fr": "IV2 BVC",
         "en": "IV2 BVC",
         "code": "212-P24",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "191",
         "fr": "IV3 BVC",
         "en": "IV3 BVC",
         "code": "212-P25",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "192",
         "fr": "Le Sous-Directeur de la Comptabilité et du Système de Paiement",
         "en": "Le Sous-Directeur de la Comptabilité et du Système de Paiement",
         "code": "212-P26",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "193",
         "fr": "Le Chef de Service de la Comptabilté ",
         "en": "Le Chef de Service de la Comptabilté ",
         "code": "212-P27",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "194",
         "fr": "Le Chef de Bureau de la Comptabilité",
         "en": "Le Chef de Bureau de la Comptabilité",
         "code": "212-P28",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "195",
         "fr": "Le Chef de Bureau de la Dépense",
         "en": "Le Chef de Bureau de la Dépense",
         "code": "212-P29",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "196",
         "fr": "Le Chef de Bureau de Compte de Gestion ",
         "en": "Le Chef de Bureau de Compte de Gestion ",
         "code": "212-P30",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "197",
         "fr": "Le Chef de Service de la Gestion du Réseau du Système de Paiement",
         "en": "Le Chef de Service de la Gestion du Réseau du Système de Paiement",
         "code": "212-P31",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "198",
         "fr": "Le Chef de Bureau des Relation avec le Réseau Comptable",
         "en": "Le Chef de Bureau des Relation avec le Réseau Comptable",
         "code": "212-P32",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "199",
         "fr": "Le Chef de Bureau des Relations avec la BEAC",
         "en": "Le Chef de Bureau des Relations avec la BEAC",
         "code": "212-P33",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "200",
         "fr": "Le Sous-Directeur de la Consolidation des Opérations Budgétaires et Comptables",
         "en": "Le Sous-Directeur de la Consolidation des Opérations Budgétaires et Comptables",
         "code": "212-P34",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "201",
         "fr": "Le Chef de Service de l'Appurement des Balances",
         "en": "Le Chef de Service de l'Appurement des Balances",
         "code": "212-P35",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "202",
         "fr": "Le Chef de Bureau des Vérifications",
         "en": "Le Chef de Bureau des Vérifications",
         "code": "212-P36",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "203",
         "fr": "Le Chef de Bureau de Relance",
         "en": "Le Chef de Bureau de Relance",
         "code": "212-P37",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "204",
         "fr": "Le Chef de Service de la Production de la Balance Consolidée",
         "en": "Le Chef de Service de la Production de la Balance Consolidée",
         "code": "212-P38",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "205",
         "fr": "Le Chef de Bureau de Traitement de l'Information",
         "en": "Le Chef de Bureau de Traitement de l'Information",
         "code": "212-P39",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "206",
         "fr": "Le Chef de Bureau des Archives",
         "en": "Le Chef de Bureau des Archives",
         "code": "212-P40",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "207",
         "fr": "Le Chef de Service de la Production de la Situation d'Execution Budgétaire",
         "en": "Le Chef de Service de la Production de la Situation d'Execution Budgétaire",
         "code": "212-P41",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "208",
         "fr": "Le Chef de Bureau de Traitement de la Balance",
         "en": "Le Chef de Bureau de Traitement de la Balance",
         "code": "212-P42",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "209",
         "fr": "Le Chef de Bureau des Archives",
         "en": "Le Chef de Bureau des Archives",
         "code": "212-P43",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "210",
         "fr": "Cadre 1/DCP",
         "en": "Cadre 1/DCP",
         "code": "212-P44",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "211",
         "fr": "Cadre 2/DCP",
         "en": "Cadre 2/DCP",
         "code": "212-P45",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "212",
         "fr": "Cadre 3/DCP-gestion des affaires financières",
         "en": "Cadre 3/DCP-gestion des affaires financières",
         "code": "212-P46",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "213",
         "fr": "Cadre/Suivi des couvertures budgétair",
         "en": "Cadre/Suivi des couvertures budgétair",
         "code": "212-P47",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "214",
         "fr": "Cadre/Suivi des arrêts de la CDC/CS",
         "en": "Cadre/Suivi des arrêts de la CDC/CS",
         "code": "212-P48",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "215",
         "fr": "Cadre/Analyse et exploitation des balances",
         "en": "Cadre/Analyse et exploitation des balances",
         "code": "212-P49",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "216",
         "fr": "Cadre/suivi des états de synthèse",
         "en": "Cadre/suivi des états de synthèse",
         "code": "212-P50",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "217",
         "fr": "Cadre/suivi de la confection des CDG",
         "en": "Cadre/suivi de la confection des CDG",
         "code": "212-P51",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "218",
         "fr": "Cadre/Saisie des dépenses",
         "en": "Cadre/Saisie des dépenses",
         "code": "212-P52",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "219",
         "fr": "Cadre/rétrocession des fonds",
         "en": "Cadre/rétrocession des fonds",
         "code": "212-P53",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "220",
         "fr": "Cadre/Tirage swift",
         "en": "Cadre/Tirage swift",
         "code": "212-P54",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "221",
         "fr": "Cadre/Réception des états de synthèse",
         "en": "Cadre/Réception des états de synthèse",
         "code": "212-P55",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "222",
         "fr": "Cadre/Suivi des relat avec centre de compensation",
         "en": "Cadre/Suivi des relat avec centre de compensation",
         "code": "212-P56",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "223",
         "fr": "Cadre/Emission des AMF",
         "en": "Cadre/Emission des AMF",
         "code": "212-P57",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "224",
         "fr": "Cadre/Tenue du quittancier",
         "en": "Cadre/Tenue du quittancier",
         "code": "212-P58",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "225",
         "fr": "Point focal E-GUCE",
         "en": "Point focal E-GUCE",
         "code": "212-P59",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "226",
         "fr": "Cadre/enliassement des cptabilités",
         "en": "Cadre/enliassement des cptabilités",
         "code": "212-P60",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "227",
         "fr": "Secrétariat DCP",
         "en": "Secrétariat DCP",
         "code": "212-P61",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "228",
         "fr": "Secrétariat SDRBC",
         "en": "Secrétariat SDRBC",
         "code": "212-P62",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "229",
         "fr": "Secrétariat ACCT",
         "en": "Secrétariat ACCT",
         "code": "212-P63",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "230",
         "fr": "Agent d'Accueil 1 ACCT",
         "en": "Agent d'Accueil 1 ACCT",
         "code": "212-P64",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "231",
         "fr": "Agent d'Accueil 2 ACCT ",
         "en": "Agent d'Accueil 2 ACCT ",
         "code": "212-P65",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "232",
         "fr": "Assistante/FP-ACCT",
         "en": "Assistante/FP-ACCT",
         "code": "212-P66",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "233",
         "fr": "Secrétariat SDCSP",
         "en": "Secrétariat SDCSP",
         "code": "212-P67",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "234",
         "fr": "Secrétariat SDCOB",
         "en": "Secrétariat SDCOB",
         "code": "212-P68",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "235",
         "fr": "Le Directeur de la Trésorerie",
         "en": "Le Directeur de la Trésorerie",
         "code": "227-P1",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "236",
         "fr": "Le Sous-Directeur du Plan de Trésorerie de l'Etat",
         "en": "Le Sous-Directeur du Plan de Trésorerie de l'Etat",
         "code": "227-P2",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "237",
         "fr": "Le Chef de Bureau des Statistiques Financières",
         "en": "Le Chef de Bureau des Statistiques Financières",
         "code": "227-P3",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "238",
         "fr": "Le Chef de Service des Régies des Recettes ",
         "en": "Le Chef de Service des Régies des Recettes ",
         "code": "227-P4",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "239",
         "fr": "Le Chef de Bureau de la Centralisation des Etats des Restes à Payer",
         "en": "Le Chef de Bureau de la Centralisation des Etats des Restes à Payer",
         "code": "227-P5",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "240",
         "fr": "Le Chef de Bureau des Recettes",
         "en": "Le Chef de Bureau des Recettes",
         "code": "227-P6",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "241",
         "fr": "Le Chef de Bureau du Suivi des Réalisations",
         "en": "Le Chef de Bureau du Suivi des Réalisations",
         "code": "227-P7",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "242",
         "fr": "Le Chef de Service de l'Analyse des Systèmes Financières ",
         "en": "Le Chef de Service de l'Analyse des Systèmes Financières ",
         "code": "227-P8",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "243",
         "fr": "Le Chef de Bureau de la Collecte",
         "en": "Le Chef de Bureau de la Collecte",
         "code": "227-P9",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "244",
         "fr": "Le Chef de Bureau des Analyses ",
         "en": "Le Chef de Bureau des Analyses ",
         "code": "227-P10",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "245",
         "fr": "Le Chef de Bureau du Suivi",
         "en": "Le Chef de Bureau du Suivi",
         "code": "227-P11",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "246",
         "fr": "Le Sous-Directeur des Opérations Financières de l'Etat",
         "en": "Le Sous-Directeur des Opérations Financières de l'Etat",
         "code": "227-P12",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "247",
         "fr": "Le Chef de Service des Emissions et des Transactions ",
         "en": "Le Chef de Service des Emissions et des Transactions ",
         "code": "227-P13",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "248",
         "fr": "Le Chef de Bureau des Emissions",
         "en": "Le Chef de Bureau des Emissions",
         "code": "227-P14",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "249",
         "fr": "Le Chef de Bureau des Transactions",
         "en": "Le Chef de Bureau des Transactions",
         "code": "227-P15",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "250",
         "fr": "Le Chef de Service de la Dette et de l'Audit",
         "en": "Le Chef de Service de la Dette et de l'Audit",
         "code": "227-P16",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "251",
         "fr": "Le Chef de Bureau de la Dette Extérieure",
         "en": "Le Chef de Bureau de la Dette Extérieure",
         "code": "227-P17",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "252",
         "fr": "Le Chef de Bureau de la Dette Intérieure",
         "en": "Le Chef de Bureau de la Dette Intérieure",
         "code": "227-P18",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "253",
         "fr": "Le Chef de Bureau de l'Audit",
         "en": "Le Chef de Bureau de l'Audit",
         "code": "227-P19",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "254",
         "fr": "Le Chef de Service des Statistiques Financières ",
         "en": "Le Chef de Service des Statistiques Financières ",
         "code": "227-P20",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "255",
         "fr": "Le Chef de Bureau de la Synthèse des Données",
         "en": "Le Chef de Bureau de la Synthèse des Données",
         "code": "227-P21",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "256",
         "fr": "Le Chef de Bureau du Tableau de Bord des Finances Publiques",
         "en": "Le Chef de Bureau du Tableau de Bord des Finances Publiques",
         "code": "227-P22",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "257",
         "fr": "Le Chef de Bureau du Tableau des Opérations Financières",
         "en": "Le Chef de Bureau du Tableau des Opérations Financières",
         "code": "227-P23",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "258",
         "fr": "Le Sous-Directeur des Opérations Financières des Collectivités Territoriales Décentralisées et des Etablissements Publics Administratifs",
         "en": "Le Sous-Directeur des Opérations Financières des Collectivités Territoriales Décentralisées et des Etablissements Publics Administratifs",
         "code": "227-P24",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "259",
         "fr": "Le Chef de Service des Collectivités Territoriales Décentralisées",
         "en": "Le Chef de Service des Collectivités Territoriales Décentralisées",
         "code": "227-P25",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "260",
         "fr": "Le Chef de Bureau du Plan de Trésorerie",
         "en": "Le Chef de Bureau du Plan de Trésorerie",
         "code": "227-P26",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "261",
         "fr": "Le Chef de Bureau du Suivi et de la Centralisation des Restes à Payer",
         "en": "Le Chef de Bureau du Suivi et de la Centralisation des Restes à Payer",
         "code": "227-P27",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "262",
         "fr": "Le Chef de Service des Etabilssements Publics Administratifs",
         "en": "Le Chef de Service des Etabilssements Publics Administratifs",
         "code": "227-P28",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "263",
         "fr": "Le Chef de Bureau du Plan de Trésorerie",
         "en": "Le Chef de Bureau du Plan de Trésorerie",
         "code": "227-P29",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "264",
         "fr": "Le Chef de Bureau du Suivi et de la Centralisation des Restes à Payer",
         "en": "Le Chef de Bureau du Suivi et de la Centralisation des Restes à Payer",
         "code": "227-P30",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "265",
         "fr": "Secrétaire 1 DIRTRE",
         "en": "Secrétaire 1 DIRTRE",
         "code": "227-P31",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "266",
         "fr": "Secrétaire 2 DIRTRE",
         "en": "Secrétaire 2 DIRTRE",
         "code": "227-P32",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "267",
         "fr": "Secrétaire 3 DIRTRE",
         "en": "Secrétaire 3 DIRTRE",
         "code": "227-P33",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "268",
         "fr": "Secrétariat SDOPFE",
         "en": "Secrétariat SDOPFE",
         "code": "227-P34",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "269",
         "fr": "Secrétariat SDOFCTD",
         "en": "Secrétariat SDOFCTD",
         "code": "227-P35",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "270",
         "fr": "Le Directeur de la Coopération Financière et Monetaire",
         "en": "Le Directeur de la Coopération Financière et Monetaire",
         "code": "238-P1",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "271",
         "fr": "Le Chef de la Cellule des Relations Financières Internationales",
         "en": "Le Chef de la Cellule des Relations Financières Internationales",
         "code": "238-P2",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "272",
         "fr": "CEA1 CRFI",
         "en": "CEA1 CRFI",
         "code": "238-P3",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "273",
         "fr": "CEA2 CRFI",
         "en": "CEA2 CRFI",
         "code": "238-P4",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "274",
         "fr": "CEA3 CRFI",
         "en": "CEA3 CRFI",
         "code": "238-P5",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "275",
         "fr": "CEA4 CRFI",
         "en": "CEA4 CRFI",
         "code": "238-P6",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "276",
         "fr": "Le Chef de la Cellule des Enquêtes et des Statistiques",
         "en": "Le Chef de la Cellule des Enquêtes et des Statistiques",
         "code": "238-P7",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "277",
         "fr": "CEA1 CES",
         "en": "CEA1 CES",
         "code": "238-P8",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "278",
         "fr": "CEA2 CES",
         "en": "CEA2 CES",
         "code": "238-P9",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "279",
         "fr": "CEA3 CES",
         "en": "CEA3 CES",
         "code": "238-P10",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "280",
         "fr": "CEA4 CES",
         "en": "CEA4 CES",
         "code": "238-P11",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "281",
         "fr": "CEA5 CES",
         "en": "CEA5 CES",
         "code": "238-P12",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "282",
         "fr": "CEA6 CES",
         "en": "CEA6 CES",
         "code": "238-P13",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "283",
         "fr": "CEA7 CES",
         "en": "CEA7 CES",
         "code": "238-P14",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "284",
         "fr": "CEA8 CES",
         "en": "CEA8 CES",
         "code": "238-P15",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "285",
         "fr": "CEA9 CES",
         "en": "CEA9 CES",
         "code": "238-P16",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "286",
         "fr": "CEA10 CES",
         "en": "CEA10 CES",
         "code": "238-P17",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "287",
         "fr": "Le Sous-Directeur des Changes et des Transferts",
         "en": "Le Sous-Directeur des Changes et des Transferts",
         "code": "238-P18",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "288",
         "fr": "Le Chef de Service des Changes ",
         "en": "Le Chef de Service des Changes ",
         "code": "238-P19",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "289",
         "fr": "Le Chef de Bureau des Agréments",
         "en": "Le Chef de Bureau des Agréments",
         "code": "238-P20",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "290",
         "fr": "Le Chef de Bureau des Apurements",
         "en": "Le Chef de Bureau des Apurements",
         "code": "238-P21",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "291",
         "fr": "Le Chef de Service des Transferts",
         "en": "Le Chef de Service des Transferts",
         "code": "238-P22",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "292",
         "fr": "Le Chef de Bureau des Rapatriements ",
         "en": "Le Chef de Bureau des Rapatriements ",
         "code": "238-P23",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "293",
         "fr": "Le Chef de Bureau des Mouvements des Capitaux",
         "en": "Le Chef de Bureau des Mouvements des Capitaux",
         "code": "238-P24",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "294",
         "fr": "Le Sous-Directeur de la Monnai et des Etablissements de Crédit",
         "en": "Le Sous-Directeur de la Monnai et des Etablissements de Crédit",
         "code": "238-P25",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "295",
         "fr": "Le Chef de Service de la Monnai",
         "en": "Le Chef de Service de la Monnai",
         "code": "238-P26",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "296",
         "fr": "Le Chef de Bureau des Statistiques ",
         "en": "Le Chef de Bureau des Statistiques ",
         "code": "238-P27",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "297",
         "fr": "Le Chef de Bureau des Etudes Monétaires",
         "en": "Le Chef de Bureau des Etudes Monétaires",
         "code": "238-P28",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "298",
         "fr": "Le Chef de Service des Etablissements de Crédit",
         "en": "Le Chef de Service des Etablissements de Crédit",
         "code": "238-P29",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "299",
         "fr": "Le Chef de Bureau des Agréments",
         "en": "Le Chef de Bureau des Agréments",
         "code": "238-P30",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "300",
         "fr": "Le Chef de Bureau des Statistiques",
         "en": "Le Chef de Bureau des Statistiques",
         "code": "238-P31",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "301",
         "fr": "Cadre/courrier",
         "en": "Cadre/courrier",
         "code": "238-P32",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "302",
         "fr": "Cadre/cpte rendu réunions",
         "en": "Cadre/cpte rendu réunions",
         "code": "238-P33",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "303",
         "fr": "Cadre/suivi des opérat de change",
         "en": "Cadre/suivi des opérat de change",
         "code": "238-P34",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "304",
         "fr": "Cadre/tenue des stat monétaires",
         "en": "Cadre/tenue des stat monétaires",
         "code": "238-P35",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "305",
         "fr": "Cadre/ctx règlementat des changes",
         "en": "Cadre/ctx règlementat des changes",
         "code": "238-P36",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "306",
         "fr": "Cadre/ règlementat des changes",
         "en": "Cadre/ règlementat des changes",
         "code": "238-P37",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "307",
         "fr": "Cadre/ suivi du pôle de veille",
         "en": "Cadre/ suivi du pôle de veille",
         "code": "238-P38",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "308",
         "fr": "Cadre/ prépar comités",
         "en": "Cadre/ prépar comités",
         "code": "238-P39",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "309",
         "fr": "Cadre/contrôle de gestion",
         "en": "Cadre/contrôle de gestion",
         "code": "238-P40",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "310",
         "fr": "Cadre/dossiers de transferts",
         "en": "Cadre/dossiers de transferts",
         "code": "238-P41",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "311",
         "fr": "Cadre/initiation des projets",
         "en": "Cadre/initiation des projets",
         "code": "238-P42",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "312",
         "fr": "Cadre/Dossiers de prêts et emprunts",
         "en": "Cadre/Dossiers de prêts et emprunts",
         "code": "238-P43",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "313",
         "fr": "Cadre/étude de dossiers",
         "en": "Cadre/étude de dossiers",
         "code": "238-P44",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "314",
         "fr": "Cadre/attestations de rapatriement",
         "en": "Cadre/attestations de rapatriement",
         "code": "238-P45",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "315",
         "fr": "Cadre/dossiers cotés",
         "en": "Cadre/dossiers cotés",
         "code": "238-P46",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "316",
         "fr": "Cadre/responsabl des stages DCFM",
         "en": "Cadre/responsabl des stages DCFM",
         "code": "238-P47",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "317",
         "fr": "Cadre/enq auprès des banques DCFM",
         "en": "Cadre/enq auprès des banques DCFM",
         "code": "238-P48",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "318",
         "fr": "Secrétariat 1 DCFM",
         "en": "Secrétariat 1 DCFM",
         "code": "238-P49",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "319",
         "fr": "Secrétariat 2 DCFM",
         "en": "Secrétariat 2 DCFM",
         "code": "238-P50",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "320",
         "fr": "Billeteur DCFM",
         "en": "Billeteur DCFM",
         "code": "238-P51",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "321",
         "fr": "Secrétariat SDMEC",
         "en": "Secrétariat SDMEC",
         "code": "238-P52",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "322",
         "fr": "Le Directeur des Affaires Générales",
         "en": "Le Directeur des Affaires Générales",
         "code": "247-P1",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "323",
         "fr": "CEA/DAG",
         "en": "CEA/DAG",
         "code": "247-P2",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "324",
         "fr": "Le Chef de la Cellule de Perfectionnement et de la Formation Continue",
         "en": "Le Chef de la Cellule de Perfectionnement et de la Formation Continue",
         "code": "247-P3",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "325",
         "fr": "CEA1 CPFC",
         "en": "CEA1 CPFC",
         "code": "247-P4",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "326",
         "fr": "CEA2 CPFC",
         "en": "CEA2 CPFC",
         "code": "247-P5",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "327",
         "fr": "Chef Bibliothèque",
         "en": "Chef Bibliothèque",
         "code": "247-P6",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "328",
         "fr": "Le Sous-Directeur du Personnel",
         "en": "Le Sous-Directeur du Personnel",
         "code": "247-P7",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "329",
         "fr": "Le Chef de Service du Personnel Fonctionnaire ",
         "en": "Le Chef de Service du Personnel Fonctionnaire ",
         "code": "247-P8",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "330",
         "fr": "Le Chef de Bureau du Contrôle et de la Discipline",
         "en": "Le Chef de Bureau du Contrôle et de la Discipline",
         "code": "247-P9",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "331",
         "fr": "Le Chef de Bureau de la Gestion de la Carrière",
         "en": "Le Chef de Bureau de la Gestion de la Carrière",
         "code": "247-P10",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "332",
         "fr": "Le Chef de Service du Personnel Non Fonctionnaire ",
         "en": "Le Chef de Service du Personnel Non Fonctionnaire ",
         "code": "247-P11",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "333",
         "fr": "Le Chef de Bureau du Contrôle et de la Discipline",
         "en": "Le Chef de Bureau du Contrôle et de la Discipline",
         "code": "247-P12",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "334",
         "fr": "Le Chef de Bureau de la Gestion de la Carrière",
         "en": "Le Chef de Bureau de la Gestion de la Carrière",
         "code": "247-P13",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "335",
         "fr": "Le Chef de Service de l'Action Sociale",
         "en": "Le Chef de Service de l'Action Sociale",
         "code": "247-P14",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "336",
         "fr": "Le Sous-Directeur du Budget et du Matériel",
         "en": "Le Sous-Directeur du Budget et du Matériel",
         "code": "247-P15",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "337",
         "fr": "Le Chef de Service du Budget",
         "en": "Le Chef de Service du Budget",
         "code": "247-P16",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "338",
         "fr": "Le Chef de Bureau de la Préparation des Budgets",
         "en": "Le Chef de Bureau de la Préparation des Budgets",
         "code": "247-P17",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "339",
         "fr": "Le Chef de Bureau des Engagements",
         "en": "Le Chef de Bureau des Engagements",
         "code": "247-P18",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "340",
         "fr": "Le Chef de Bureau de la Comptabilité",
         "en": "Le Chef de Bureau de la Comptabilité",
         "code": "247-P19",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "341",
         "fr": "Le Chef de Service du Matériel",
         "en": "Le Chef de Service du Matériel",
         "code": "247-P20",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "342",
         "fr": "Le Chef de Bureau du Matériel",
         "en": "Le Chef de Bureau du Matériel",
         "code": "247-P21",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "343",
         "fr": "Le Chef de Bureau de la Maintenance",
         "en": "Le Chef de Bureau de la Maintenance",
         "code": "247-P22",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "344",
         "fr": "Cadre1 Unité de Suivi DAG",
         "en": "Cadre1 Unité de Suivi DAG",
         "code": "247-P23",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "345",
         "fr": "Cadre2 Unité de Suivi DAG",
         "en": "Cadre2 Unité de Suivi DAG",
         "code": "247-P24",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "346",
         "fr": "Cadre3 Unité de Suivi DAG",
         "en": "Cadre3 Unité de Suivi DAG",
         "code": "247-P25",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "347",
         "fr": "Cadre/Orga et enca stagi",
         "en": "Cadre/Orga et enca stagi",
         "code": "247-P26",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "348",
         "fr": "Cadre/prépa. Miss° formations",
         "en": "Cadre/prépa. Miss° formations",
         "code": "247-P27",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "349",
         "fr": "Cadre/Initiation des décis°",
         "en": "Cadre/Initiation des décis°",
         "code": "247-P28",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "350",
         "fr": "Unité de suivi/enga.Budg DAG",
         "en": "Unité de suivi/enga.Budg DAG",
         "code": "247-P29",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "351",
         "fr": "Unité de suivi/Sec.Ré.COO DAG",
         "en": "Unité de suivi/Sec.Ré.COO DAG",
         "code": "247-P30",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "352",
         "fr": "Unité études et prospective DAG",
         "en": "Unité études et prospective DAG",
         "code": "247-P31",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "353",
         "fr": "UG/Document cptable DAG",
         "en": "UG/Document cptable DAG",
         "code": "247-P32",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "354",
         "fr": "Secrétariat DAG",
         "en": "Secrétariat DAG",
         "code": "247-P33",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "355",
         "fr": "Intendance DAG",
         "en": "Intendance DAG",
         "code": "247-P34",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "356",
         "fr": "Billeteur DAG",
         "en": "Billeteur DAG",
         "code": "247-P35",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "357",
         "fr": "Agent d'accueil et Orientation DAG",
         "en": "Agent d'accueil et Orientation DAG",
         "code": "247-P36",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "358",
         "fr": " Agent Bibliothèque 1/Badge",
         "en": " Agent Bibliothèque 1/Badge",
         "code": "247-P37",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "359",
         "fr": "Agent Bibliothèque 2",
         "en": "Agent Bibliothèque 2",
         "code": "247-P38",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "360",
         "fr": "AB/établissement des AVI",
         "en": "AB/établissement des AVI",
         "code": "247-P39",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "361",
         "fr": "AB/établir les certif .D.Retr",
         "en": "AB/établir les certif .D.Retr",
         "code": "247-P40",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "362",
         "fr": "Chauffeur DAG",
         "en": "Chauffeur DAG",
         "code": "247-P41",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "363",
         "fr": "Chef de parc auto",
         "en": "Chef de parc auto",
         "code": "247-P42",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "364",
         "fr": "chauffeur 1",
         "en": "chauffeur 1",
         "code": "247-P43",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "365",
         "fr": "chauffeur 2",
         "en": "chauffeur 2",
         "code": "247-P44",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     },
     {
         "id": "366",
         "fr": "chauffeur 3",
         "en": "chauffeur 3",
         "code": "247-P45",
-        "requiredEffective": "1"
+        "requiredEffective": 1
     }
 ]

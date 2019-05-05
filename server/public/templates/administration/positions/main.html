@@ -54,8 +54,8 @@
                         <th md-column md-order-by="value" translate>Code</th>
                         <th md-column md-order-by="code" translate>Position name</th>
                         <th md-column md-order-by="structure" translate>Structure</th>
-                        <th md-column md-order-by="requiredEffective" translate>Required effective</th>
-                        <th md-column md-order-by="actualEffective" translate>Actual effective</th>
+                        <th md-column md-order-by="requiredEffective" translate>Effective</th>
+                        <th md-column md-order-by="vancancies" translate>Vacancies</th>
                     </tr>
                 </thead>
                 <tbody md-body>
@@ -64,8 +64,8 @@
                         <td md-cell>{{position.code| uppercase | unknown}}</td>
                         <td md-cell>{{position.value}} </td>
                         <td md-cell>{{position.structure.name| unknown}}</td>
-                        <td md-cell>{{position.requiredEffective| unknown}}</td>
-                        <td md-cell>{{position.actualEffective | unknown}}</td>
+                        <td md-cell><span class="diy-chip" ng-class="{'green': position.actualEffective >= position.requiredEffective, 'red': position.actualEffective < position.requiredEffective}">{{position.actualEffective}} / {{position.requiredEffective}} <small translate>positions</small></span></td>
+                       <td md-cell><small class="diy-chip" ng-class="{'red': structure.vacancies > 0}">{{position.vacancies}} positions</small></td>
                     </tr>
                 </tbody>
             </table>

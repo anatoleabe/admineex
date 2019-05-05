@@ -22,13 +22,38 @@ exports.api.upsert = function (req, res) {
 exports.api.list = function (req, res) {
     if (req.actor) {
         var structures = dictionary.getJSONList("../../resources/dictionary/structure/structures.json", req.actor.language);
-        beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
-            if (err) {
-                return res.status(500).send(err);
+
+        function loopA(a) {
+            if (a < structures.length) {
+                var positions = dictionary.getJSONListByCode("../../resources/dictionary/structure/positions.json", req.actor.language.toLowerCase(), structures[a].code);
+                structures[a].workstationsNb = positions.length;
+                var requiredEffective = 0;
+                var actualEffective = 0;
+
+                function LoopB(b) {
+                    if (b < positions.length) {
+                        //TODO compute real effective
+                        requiredEffective += positions[b].requiredEffective;
+                        LoopB(b + 1);
+                    } else {
+                        structures[a].requiredEffective = requiredEffective;
+                        structures[a].actualEffective = actualEffective;
+                        structures[a].vacancies = requiredEffective - actualEffective;
+                        loopA(a + 1);
+                    }
+                }
+                LoopB(0)
             } else {
-                return res.json(objects);
+                beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
+                    if (err) {
+                        return res.status(500).send(err);
+                    } else {
+                        return res.json(objects);
+                    }
+                });
             }
-        });
+        }
+        loopA(0);
     } else {
         audit.logEvent('[anonymous]', 'Projects', 'List', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);
@@ -62,10 +87,10 @@ function beautify(options, objects, callback) {
     if (options.beautify && options.beautify === true) {
         function objectsLoop(o) {
             if (o < objects.length) {
-                objects[o].typeValue= dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);
-                objects[o].rankValue= dictionary.getValueFromJSON('../../resources/dictionary/structure/ranks.json', objects[o].rank, language);
-                objectsLoop(o+1);
-            }else{
+                objects[o].typeValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);
+                objects[o].rankValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/ranks.json', objects[o].rank, language);
+                objectsLoop(o + 1);
+            } else {
                 callback(null, objects);
             }
         }

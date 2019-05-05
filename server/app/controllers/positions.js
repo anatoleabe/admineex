@@ -74,13 +74,24 @@ exports.api.upsert = function (req, res) {
 exports.api.list = function (req, res) {
     if (req.actor) {
         var positions = dictionary.getJSONListByCode("../../resources/dictionary/structure/positions.json", req.actor.language.toLowerCase(), req.params.id);
-        beautify({actor: req.actor, language: req.actor.language, beautify: true}, positions, function (err, objects) {
-            if (err) {
-                return res.status(500).send(err);
+
+        function LoopA(o) {
+            if (o < positions.length) {
+                //TODO compute real effective
+                positions[o].actualEffective = 0;
+                positions[o].vacancies = positions[o].requiredEffective - positions[o].actualEffective;
+                LoopA(o + 1)
             } else {
-                return res.json(objects);
+                beautify({actor: req.actor, language: req.actor.language, beautify: true}, positions, function (err, objects) {
+                    if (err) {
+                        return res.status(500).send(err);
+                    } else {
+                        return res.json(objects);
+                    }
+                });
             }
-        });
+        }
+        LoopA(0);
     } else {
         audit.logEvent('[anonymous]', 'Projects', 'List', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);
