@@ -5,7 +5,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 // Structure schema
 var StructureSchema = new Schema({
-    identifier: {type: String, required: true},
+    identifier: {type: String, required: true},//Unique Id from json
     code: {type: String, required: true},
     en: {type: String, required: true},
     fr: {type: String, required: false},

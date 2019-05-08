@@ -15,14 +15,14 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
         };
 
         $scope.edit = function (params) {
-            $state.go("home.organizations.edit", params);
+            console.log(params);
+            $state.go("home.administration.structures.edit", params);
         };
 
         function getStructures() {
             $scope.helper = [];
             Structure.list().then(function (response) {
                 var data = response.data;
-                console.log(data)
                 if (data.length == 0 && $scope.helper.length == 0) {
                     $scope.helper = helper;
                 }

@@ -20,11 +20,11 @@
     </md-toolbar>
 
     <md-card>
-        <md-toolbar class="md-table-toolbar md-default" ng-show="search">
+        <md-toolbar class="md-table-toolbar md-default" >
             <div class="md-toolbar-tools">
                 <md-icon>search</md-icon>
                 <form flex>
-                    <input type="text" name="search" ng-model="structureFilter" placeholder="{{ 'Search...' | translate }}">
+                    <input type="text" name="search" ng-model="structureFilter" placeholder="{{ 'Search among structure...' | translate }}">
                 </form>
 
                 <md-button class="md-icon-button" ng-click="search = false" aria-label="close">
@@ -47,7 +47,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row data-ng-repeat="structure in structures| filter:structureFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="read(structure)">
+                    <tr md-row data-ng-repeat="structure in structures| filter:structureFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="edit({id:structure._id})">
                         <td md-cell>{{structure.code| uppercase | unknown}}</td>
                         <td md-cell style="min-width: 200px">{{structure.name}} </td>
                         <td md-cell>{{structure.rankValue| unknown}}</td>
@@ -73,7 +73,7 @@
     </md-card>
 </div>
 <div style="margin-bottom: 100px"></div>
-<md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" href="#!structures/add" >
+<md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" ui-sref="home.administration.structures.new" >
     <md-icon>add</md-icon>
     <md-tooltip md-direction="top">
         <span translate>New</span>

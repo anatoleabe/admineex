@@ -400,6 +400,28 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Administration", "Structures"]
+        }).state('home.administration.structures.new', {
+            url: '/new',
+            templateUrl: 'templates/administration/structures/edit.html',
+            controller: 'StructureController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/administration/structures/StructureCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Administration", "Structures", "New"]
+        }).state('home.administration.structures.edit', {
+            url: '/edit/:id',
+            templateUrl: 'templates/administration/structures/edit.html',
+            controller: 'StructureController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/administration/structures/StructureCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Administration", "Structures", "Edit"]
         }).state('home.organizations.edit', {
             url: '/edit/:id',
             templateUrl: 'templates/organizations/edit.html',

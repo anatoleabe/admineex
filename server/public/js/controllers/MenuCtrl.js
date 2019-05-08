@@ -22,7 +22,6 @@ angular.module('MenuCtrl', []).controller('MenuController', function ($scope, $s
                         data.nav.left[i].items[j].name = gettextCatalog.getString(data.nav.left[i].items[j].name);
                     }
                 }
-                console.log(data.nav.left);
                 $scope.nav = data.nav.left;
             }).catch(function (response) {
                 console.log(response);
