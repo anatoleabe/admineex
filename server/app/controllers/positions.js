@@ -35,14 +35,25 @@ exports.upsert = function (fields, callback) {
         filter = fields;
     }
 
-    fields.lastModified = new Date();
-    Position.findOneAndUpdate(filter, fields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+    Position.findOne(filter, function (err, position) {
         if (err) {
             log.error(err);
-            audit.logEvent('[mongodb]', 'Position', 'Upsert', "", "", 'failed', "Mongodb attempted to update position");
+            audit.logEvent('[mongodb]', 'Positions', 'Upsert', "", "", 'failed', "Mongodb attempted to find a position");
             callback(err);
         } else {
-            callback(null, result);
+            if (position == null) {
+                fields.created = new Date();
+            }
+            fields.lastModified = new Date();
+            Position.findOneAndUpdate(filter, fields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+                if (err) {
+                    log.error(err);
+                    audit.logEvent('[mongodb]', 'Position', 'Upsert', "", "", 'failed', "Mongodb attempted to upsert a Position");
+                    callback(err);
+                } else {
+                    callback(null, result);
+                }
+            });
         }
     });
 };
@@ -56,40 +67,12 @@ exports.api.upsert = function (req, res) {
                 audit.logEvent('[formidable]', 'Positions', 'Upsert', "", "", 'failed', "Formidable attempted to parse Position fields");
                 return res.status(500).send(err);
             } else {
-                var id = fields._id || '';
-                var positionId = fields.positionId || '';
-
-                var filter = {$and: []};
-                if (id !== '') {
-                    filter.$and.push({
-                        "_id": id
-                    });
-                } else {
-                    filter.$and.push({
-                        "positionId": positionId
-                    });
-                }
-
-                Position.findOne(filter, function (err, position) {
+                exports.upsert(fields, function (err) {
                     if (err) {
                         log.error(err);
-                        audit.logEvent('[mongodb]', 'Positions', 'Upsert', "", "", 'failed', "Mongodb attempted to find a position");
-                        callback(err);
+                        return res.status(500).send(err);
                     } else {
-                        if (position == null) {
-                            fields.created = new Date();
-                        }
-                        fields.lastModified = new Date();
-                        Position.findOneAndUpdate(filter, fields, {upsert: true, new : true}, function (err, result) {
-                            if (err) {
-                                log.error(err);
-                                audit.logEvent('[mongodb]', 'Position', 'Upsert', "", "", 'failed', "Mongodb attempted to upsert a Position");
-                                return res.status(500).send(err);
-                            } else {
-                                return res.status(200).send(result);
-                            }
-                        });
-
+                        res.sendStatus(200);
                     }
                 });
             }
@@ -98,8 +81,6 @@ exports.api.upsert = function (req, res) {
         audit.logEvent('[anonymous]', 'Positions', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
         return res.sendStatus(401);
     }
-
-
 };
 
 
@@ -156,23 +137,12 @@ exports.api.read = function (req, res) {
                     'The actor could not read the position because one or more params of the request was not defined');
             return res.sendStatus(400);
         } else {
-            var position = dictionary.getPositionFromIdJSON("../../resources/dictionary/structure/positions.json", req.params.id, req.actor.language.toLowerCase());
-            exports.find(position.id, function (err, positiondetail) {
+            //var position = dictionary.getPositionFromIdJSON("../../resources/dictionary/structure/positions.json", req.params.id, req.actor.language.toLowerCase());
+            exports.find(req.params.id, function (err, position) {
                 if (err) {
                     audit.logEvent('[mongodb]', 'Positions', 'Read', "id", req.params.id, 'failed', "Mongodb attempted to find the position detail");
                     return res.status(500).send(err);
                 } else {
-                    if (positiondetail) {
-                        position.details = positiondetail;
-                    } else {
-                        position.details = {
-                            positionId: position.id,
-                            requiredProfiles: [],
-                            requiredSkills: [],
-                            activities: [],
-                            tasks: []
-                        }
-                    }
                     beautify({actor: req.actor, language: req.actor.language, beautify: true}, [position], function (err, objects) {
                         if (err) {
                             return res.status(500).send(err);
@@ -281,9 +251,9 @@ exports.findPositionsByStructureCode = function (code, callback) {
     });
 }
 
-exports.find = function (positionId, callback) {
+exports.find = function (id, callback) {
     Position.findOne({
-        positionId: positionId
+        _id: id
     }).lean().exec(function (err, positionDetails) {
         if (err) {
             log.error(err);

@@ -60,13 +60,13 @@
                 </thead>
                 <tbody md-body>
                     <tr md-row data-ng-repeat="position in positions| filter:positionFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
-                        <td md-cell ng-click="details(position)">{{position.code| uppercase | unknown}}</td>
-                        <td md-cell ng-click="details(position)">{{position.name}} </td>
-                        <td md-cell ng-click="details(position)">{{position.structure.name| unknown}}</td>
-                        <td md-cell ng-click="details(position)"><span class="diy-chip" ng-class="{'green': position.actualEffective >= position.requiredEffective, 'red': position.actualEffective < position.requiredEffective}">{{position.actualEffective}} / {{position.requiredEffective}} <small translate>positions</small></span></td>
+                        <td md-cell ng-click="details({id:position._id})">{{position.code| uppercase | unknown}}</td>
+                        <td md-cell ng-click="details({id:position._id})">{{position.name}} </td>
+                        <td md-cell ng-click="details({id:position._id})">{{position.structure.name| unknown}}</td>
+                        <td md-cell ng-click="details({id:position._id})"><span class="diy-chip" ng-class="{'green': position.actualEffective >= position.requiredEffective, 'red': position.actualEffective < position.requiredEffective}">{{position.actualEffective}} / {{position.requiredEffective}} <small translate>positions</small></span></td>
                         <!--<td md-cell ng-click="details(position)"><small class="diy-chip" ng-class="{'red': structure.vacancies > 0}">{{position.vacancies}} positions</small></td>-->
                         <td md-cell >
-                            <md-button ng-click="edit(position)" aria-label="Edit" >
+                            <md-button ng-click="edit({id:position._id})" aria-label="Edit" >
                                 <md-icon>edit</md-icon>
                                 <md-tooltip md-direction="top">
                                     <span translate>Edit</span>
@@ -83,7 +83,7 @@
 
     </md-card>
     <div style="margin-bottom: 100px"></div>
-    <md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" href="#!positions/add" >
+    <md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" ng-click="new()" >
         <md-icon>add</md-icon>
         <md-tooltip md-direction="top">
             <span translate>New</span>

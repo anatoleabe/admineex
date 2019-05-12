@@ -274,6 +274,20 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.structures.api.list],
         access: _.findWhere(aclRoutes, {id: 39}).roles
     },
+    // Read struture
+    {
+        path: _.findWhere(aclRoutes, {id: 46}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 46}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.structures.api.read],
+        access: _.findWhere(aclRoutes, {id: 46}).roles
+    },
+    // Upsert a structure
+    {
+        path: _.findWhere(aclRoutes, {id: 47}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 47}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.structures.api.upsert],
+        access: _.findWhere(aclRoutes, {id: 4}).roles
+    },
 
     // === POSITIONS ROUTES ==========================================================
     // Get positions

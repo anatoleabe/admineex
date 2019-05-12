@@ -23,7 +23,11 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
             };
 
             $scope.edit = function (params) {
-                console.log("params");
+                $state.go("home.administration.edit", params);
+            };
+
+            $scope.new = function () {
+                $state.go("home.administration.new");
             };
 
             function getPositions(idStructure) {

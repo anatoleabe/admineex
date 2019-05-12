@@ -18,6 +18,32 @@ var controllers = {
     positions: require('./positions')
 };
 
+
+exports.api.upsert = function (req, res) {
+    if (req.actor) {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[formidable]', 'Structures', 'Upsert', "", "", 'failed', "Formidable attempted to parse structure fields");
+                return res.status(500).send(err);
+            } else {
+                exports.upsert(fields, function (err) {
+                    if (err) {
+                        log.error(err);
+                        return res.status(500).send(err);
+                    } else {
+                        res.sendStatus(200);
+                    }
+                });
+            }
+        });
+    } else {
+        audit.logEvent('[anonymous]', 'Structures', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
+        return res.sendStatus(401);
+    }
+};
+
 exports.upsert = function (fields, callback) {
     // Parse received fields
     var id = fields._id || '';
@@ -81,13 +107,13 @@ exports.api.list = function (req, res) {
 
                                 var requiredEffective = 0;
                                 var actualEffective = 0;
-                                
+
                                 function LoopB(b) {
                                     if (b < positions.length) {
-                                        
+
                                         //TODO compute real effective
                                         requiredEffective += Number(positions[b].requiredEffective);
-                                        
+
                                         LoopB(b + 1);
                                     } else {
                                         structures[a].requiredEffective = requiredEffective;
@@ -115,27 +141,68 @@ exports.api.list = function (req, res) {
             }
         });
     } else {
-        audit.logEvent('[anonymous]', 'Projects', 'List', '', '', 'failed', 'The actor was not authenticated');
-        return res.send(401);
+        audit.logEvent('[anonymous]', 'Structures', 'List', '', '', 'failed', 'The actor was not authenticated');
+        return res.sendStatus(401);
     }
 }
 
 exports.api.read = function (req, res) {
     if (req.actor) {
-
+        if (req.params.id === undefined) {
+            audit.logEvent(req.actor.id, 'Structure', 'Read', '', '', 'failed',
+                    'The actor could not read the structure because one or more params of the request was not defined');
+            return res.sendStatus(400);
+        } else {
+            filter = {_id: req.params.id};
+            exports.read({actor: req.actor, language: req.actor.language, beautify: true}, req.params.id, function (err, structure) {
+                if (err) {
+                    audit.logEvent('[mongodb]', 'Structure', 'Read', "id", req.params.id, 'failed', "Mongodb attempted to find the structure");
+                    return res.status(500).send(err);
+                } else {
+                    return res.json(structure);
+                }
+            });
+        }
     } else {
-        audit.logEvent('[anonymous]', 'Projects', 'Read', '', '', 'failed', 'The actor was not authenticated');
-        return res.send(401);
+        audit.logEvent('[anonymous]', 'Structure', 'Read', '', '', 'failed', 'The actor was not authenticated');
+        return res.sendStatus(401);
     }
 }
+
+exports.read = function (options, id, callback) {
+    Structure.findOne({
+        _id: id
+    }).lean().exec(function (err, structure) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            if (structure != null) {
+                if (options && options.beautify) {
+                    beautify(options, [structure], function (err, objects) {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            callback(null, objects[0]);
+                        }
+                    });
+                } else {
+                    callback(null, structure);
+                }
+            } else {
+                callback(null);
+            }
+        }
+    });
+};
 
 
 exports.api.delete = function (req, res) {
     if (req.actor) {
 
     } else {
-        audit.logEvent('[anonymous]', 'Projects', 'Delete', '', '', 'failed', 'The actor was not authenticated');
-        return res.send(401);
+        audit.logEvent('[anonymous]', 'Structures', 'Delete', '', '', 'failed', 'The actor was not authenticated');
+        return res.sendStatus(401);
     }
 }
 
@@ -169,7 +236,7 @@ exports.initialize = function (callback) {
                             avoidedStructuresCode.push(structures[a].code);
                             loopA(a + 1);
                         } else {
-                            exports.upsert(fields, function (err, contact) {
+                            exports.upsert(fields, function (err, structure) {
                                 if (err) {
                                     log.error(err);
                                 } else {
@@ -205,7 +272,7 @@ exports.findStructureByCode = function (code, language, callback) {
             callback(err);
         } else {
             var structure = JSON.parse(JSON.stringify(result));
-            
+
             if (structure != null) {
                 structure.name = ((language && language !== "" && structure[language] != undefined && structure[language] != "") ? structure[language] : structure['en']);
                 callback(null, structure);

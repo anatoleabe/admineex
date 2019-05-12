@@ -1,4 +1,4 @@
-angular.module('StructureCtrl', []).controller('StructureController', function ($scope, $window, gettextCatalog, $stateParams, $state, $ocLazyLoad, $injector, $rootScope, $location) {
+angular.module('PositionCtrl', []).controller('PositionController', function ($scope, $window, gettextCatalog, $stateParams, $state, $ocLazyLoad, $injector, $rootScope, $location) {
     $rootScope.kernel.loading = 0;
     $scope.title = "...";
 
@@ -14,13 +14,13 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
             $scope.types = response.data.jsonList;
             Dictionary.jsonList({dictionary: 'structure', levels: ['ranks']}).then(function (response) {
                 $scope.ranks = response.data.jsonList;
-                $ocLazyLoad.load('js/services/StructureService.js').then(function () {
-                    var Structure = $injector.get('Structure');
+                $ocLazyLoad.load('js/services/PositionService.js').then(function () {
+                    var Position = $injector.get('Position');
                     $rootScope.kernel.loading = 100;
                     // Modify or Add ?
                     if ($stateParams.id !== undefined) {
                         $scope.new = false;
-                        Structure.read({
+                        Position.read({
                             id: $stateParams.id
                         }).then(function (response) {
                             $scope.structure = response.data;
@@ -42,7 +42,7 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
                     $scope.submit = function () {
                         $rootScope.kernel.loading = 0;
                         $scope.structure.en = $scope.structure.fr;
-                        Structure.upsert($scope.structure).then(function (response) {
+                        Position.upsert($scope.structure).then(function (response) {
                             $rootScope.kernel.loading = 100;
                             $state.go('home.administration.structures');
                             $rootScope.kernel.alerts.push({

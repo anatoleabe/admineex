@@ -262,5 +262,17 @@
         "uri": "/api/personnel",
         "method": "GET",
         "roles": [1,2,3]
+    },
+    {
+        "id": 46,
+        "uri": "/api/structures/read/:id",
+        "method": "GET",
+        "roles": [1,2,3]
+    },
+    {
+        "id": 47,
+        "uri": "/api/structures",
+        "method": "PUT",
+        "roles": [1,2,3]
     }
 ]

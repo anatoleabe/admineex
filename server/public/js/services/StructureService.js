@@ -4,7 +4,7 @@ angular.module('StructureService', []).factory('Structure', function($http) {
             return $http.get('/api/structures');
         },
         read: function(info) {
-            return $http.get('/api/structures/' + info.id);
+            return $http.get('/api/structures/read/' + info.id);
         },
         upsert: function(info) {
             return $http.put('/api/structures', info);

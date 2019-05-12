@@ -389,6 +389,28 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Administration", "Positions", "Details"]
+        }).state('home.administration.new', {
+            url: '/new',
+            templateUrl: 'templates/administration/positions/edit.html',
+            controller: 'PositionController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/administration/positions/PositionCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Administration", "Positions", "New"]
+        }).state('home.administration.edit', {
+            url: '/edit/:id',
+            templateUrl: 'templates/administration/positions/edit.html',
+            controller: 'PositionController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/administration/positions/PositionCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Administration", "Positions", "Edit"]
         }).state('home.administration.structures', {
             url: '/structures',
             templateUrl: 'templates/administration/structures/main.html',

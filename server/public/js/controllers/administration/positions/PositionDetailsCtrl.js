@@ -28,7 +28,7 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
         title: gettextCatalog.getString("No data found.")
     };
      
-
+    
     $ocLazyLoad.load('js/services/PositionService.js').then(function () {
         var Position = $injector.get('Position');
         $rootScope.kernel.loading = 100;
@@ -57,18 +57,18 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                         function prepareRequiredItems() {
                             var requiredProfiles = [];
                             var requiredSkills = [];
-                            if ($scope.position.details) {
-                                if ($scope.position.details.requiredProfiles) {
-                                    for (i = 0; i < $scope.position.details.requiredProfiles.length; i++) {
-                                        if ($scope.position.details.requiredProfiles [i]) {
-                                            requiredProfiles.push(getDictionaryItemByValue(dictionary.profiles, $scope.position.details.requiredProfiles[i]));
+                            if ($scope.position) {
+                                if ($scope.position.requiredProfiles) {
+                                    for (i = 0; i < $scope.position.requiredProfiles.length; i++) {
+                                        if ($scope.position.requiredProfiles [i]) {
+                                            requiredProfiles.push(getDictionaryItemByValue(dictionary.profiles, $scope.position.requiredProfiles[i]));
                                         }
                                     }
                                 }
-                                if ($scope.position.details.requiredSkills) {
-                                    for (i = 0; i < $scope.position.details.requiredSkills.length; i++) {
-                                        if ($scope.position.details.requiredSkills [i]) {
-                                            requiredSkills.push(getDictionaryItemByValue(dictionary.skills, $scope.position.details.requiredSkills[i]));
+                                if ($scope.position.requiredSkills) {
+                                    for (i = 0; i < $scope.position.requiredSkills.length; i++) {
+                                        if ($scope.position.requiredSkills [i]) {
+                                            requiredSkills.push(getDictionaryItemByValue(dictionary.skills, $scope.position.requiredSkills[i]));
                                         }
                                     }
                                 }
@@ -83,7 +83,7 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                             $state.go("home.administration.positions");
                         }
                         $scope.add = function (position, detailField, resourcesDistionary) {
-                            var positionDetail = position.details;
+                            var positionDetail = position;
                             
 
                             $mdDialog.show({
@@ -158,9 +158,11 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                                         };
                                         $scope.save = function (params) {
                                             $scope.positionDetail[detailField] = $scope.selectedDetails;
+                                            $scope.position = positionDetail;
                                             prepareDetailsForServer();
                                             Position.upsert($scope.positionDetail).then(function (response) {
                                                 $mdDialog.hide();
+                                                prepareRequiredItems()
                                                 $rootScope.kernel.alerts.push({
                                                     type: 3,
                                                     msg: gettextCatalog.getString('The position has been updated'),
