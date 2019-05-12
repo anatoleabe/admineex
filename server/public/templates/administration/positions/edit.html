@@ -5,14 +5,29 @@
                 <md-card>
                     <md-card-title style="padding-bottom: 0;">
                         <md-card-title-text>
-                            <span class="md-headline" translate>Poste informations</span>
+                            <span class="md-headline" translate>Position informations {{structure.code}}</span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-content>
+                        <div layout="row">
+                            <md-input-container class="md-block" flex >
+                                <label translate>Position's structure</label>
+                                <md-select name="structure" ng-model="structure" ng-change="getNextPositionCode(structure)" ng-disabled="position._id" required data-md-container-class="selectdemoSelectHeader">
+                                    <md-option ng-repeat="struct in structures" value="{{struct}}">
+                                        {{struct.name}} <em>(code: {{struct.code}})</em>
+                                    </md-option>
+                                </md-select>
+                                <div ng-messages="structure.$error">
+                                    <div ng-message="required">
+                                        This is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
                         <div layout="row" >
                             <md-input-container class="md-block" flex>
-                                <label translate>Title</label>
-                                <input name="nom" ng-model="poste.nom" required>
+                                <label translate>Title position</label>
+                                <input name="nom" ng-model="position.fr" required>
                                 <div ng-messages="nom.$error">
                                     <div ng-message="required">
                                         This field is required to proceed on next step.
@@ -21,9 +36,9 @@
                             </md-input-container>
                         </div>
                         <div layout="row" >
-                            <md-input-container class="md-block" flex>
-                                <label translate>Poste code</label>
-                                <input name="code" ng-model="poste.code" required>
+                            <md-input-container class="md-block" flex >
+                                <label translate>Position code</label>
+                                <input name="code" ng-model="position.code" ng-disabled="position._id" required ng-blur="validateCode()">
                                 <div ng-messages="code.$error">
                                     <div ng-message="required">
                                         This field is required to proceed on next step.
@@ -31,32 +46,84 @@
                                 </div>
                             </md-input-container>
                         </div>
-                        <div layout="row">
-                            <md-input-container class="md-block" flex >
-                                <label translate>Position's structure</label>
-                                <md-select name="idStructure" ng-model="poste.idStructure" required data-md-container-class="selectdemoSelectHeader">
-                                    <md-select-header class="demo-select-header">
-                                        <input ng-model="searchTerm1" ng-keydown="stopPropagation($event)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
-                                               type="search"
-                                               placeholder="Rechercher une structure (nom ou sigle) ..."
-                                               class="demo-header-searchbox md-text">
-                                    </md-select-header>
-                                    <md-option ng-repeat="structure in structures|filter:searchTerm1" value="{{structure.id}}">
-                                        {{structure.nom| uppercase}} ({{structure.code| uppercase}})
-                                    </md-option>
-                                </md-select>
-                                <div ng-messages="idStructure.$error">
-                                    <div ng-message="required">
-                                        This is required to proceed on next step.
-                                    </div>
+                        <md-input-container class="md-block" flex>
+                            <label translate>Required profiles (max 05 profiles)</label>
+                            <md-chips  ng-model="requiredProfiles" md-max-chips="5" name='requiredProfiles' md-autocomplete-snap="" md-transform-chip="transformChip($chip)">
+                                <md-autocomplete  md-selected-item="selectedProfile"
+                                                 md-search-text="searchProfileText"
+                                                 md-items="item in querySearchInResourcesDic(searchProfileText, 'profiles', 'requiredProfiles')"
+                                                 md-item-text="item.name"
+                                                 placeholder="{{'Enter required profile'| translate}}"
+                                                 ng-hide="position.requiredProfiles.length == 5">
+                                    <span md-highlight-text="searchProfileText">{{item.name}}</span>
+                                    <md-not-found>
+                                        <div class="chip-not-found" ng-click="ctrl.notFound(ctrl.searchText)">Not found.</div>
+                                    </md-not-found>
+                                </md-autocomplete>
+                                <md-chip-template>
+                                    <span>{{$chip.name}}</span>
+                                </md-chip-template>
+                            </md-chips>
+                            <div ng-messages="requiredProfiles.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
                                 </div>
-                            </md-input-container>
-                        </div>
-                        
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex>
+                            <label translate>Required skills (max 05 skills)</label>
+                            <md-chips ng-model="requiredSkills"  md-autocomplete-snap="" name='requiredSkills' md-transform-chip="transformChip($chip)">
+                                <md-autocomplete  md-selected-item="selectedSkill"
+                                                 md-search-text="searchSkillText"
+                                                 md-items="item in querySearchInResourcesDic(searchSkillText, 'skills','requiredSkills')"
+                                                 md-item-text="item.name"
+                                                 placeholder="{{'Enter required skill'| translate}}"
+                                                 ng-hide="position.requiredSkills.length == 5">
+                                    <span md-highlight-text="searchSkillText">{{item.name}}</span>
+                                    <md-not-found>
+                                        <div class="chip-not-found" ng-click="ctrl.notFound(ctrl.searchText)">Not found.</div>
+                                    </md-not-found>
+                                </md-autocomplete>
+                                <md-chip-template>
+                                    <span>{{$chip.name}}</span>
+                                </md-chip-template>
+                            </md-chips>
+                            <div ng-messages="requiredSkills.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex>
+                            <label translate>Activities (Add activity then press enter) </label>
+                            <md-chips ng-model="position.activities" name="activities" readonly="false"
+                                      md-removable="true" md-max-chips="5" placeholder="{{'Enter activity ...'| translate}}"
+                                      input-aria-label="{{'Activity'| translate}}">
+                                <md-chip-template>
+                                    <strong>{{$chip}}</strong>
+                                </md-chip-template>
+                            </md-chips>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex>
+                            <label translate>Tasks (Add task then press enter)</label>
+                            <md-chips ng-model="position.tasks" name="tasks" readonly="false"
+                                      md-removable="true" md-max-chips="5" placeholder="{{'Enter a task...'| translate}}"
+                                      input-aria-label="{{'Task'| translate}}">
+                                <md-chip-template>
+                                    <strong>{{$chip}}</strong>
+                                </md-chip-template>
+                            </md-chips>
+                        </md-input-container>
+
+
+
                     </md-card-content>
                 </md-card>
                 <md-card-actions layout="row" layout-align="end center">
-                    <md-button ng-click="goToTab('postes');"><span translate>Cancel</span></md-button>
+                    <md-button ui-sref="home.administration.positions"><span translate>Cancel</span></md-button>
                     <md-button class="md-raised md-accent" type="submit"><span translate>Done</span></md-button>
                 </md-card-actions>
             </form>

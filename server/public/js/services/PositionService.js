@@ -11,6 +11,9 @@ angular.module('PositionService', []).factory('Position', function($http) {
         },
         delete: function(info) {
             return $http.delete('/api/positions/' + info.id);
+        },
+        find: function(info) {
+            return $http.get('/api/positions/find/' + info.code);
         }
     }
 });

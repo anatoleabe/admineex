@@ -1,5 +1,5 @@
 {
-  "name": "core-backend",
+  "name": "persabe-backend",
   "main": "app.js",
   "dependencies": {
     "aes-cross": "1.0.9",

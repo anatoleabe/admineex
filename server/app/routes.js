@@ -311,6 +311,13 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.positions.api.upsert],
         access: _.findWhere(aclRoutes, {id: 42}).roles
     },
+    // find position
+    {
+        path: _.findWhere(aclRoutes, {id: 48}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 48}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.positions.api.findPositionByCode],
+        access: _.findWhere(aclRoutes, {id: 48}).roles
+    },
 
     // === STAFF MANAGEMENT ROUTES ==========================================================
     // Get staff

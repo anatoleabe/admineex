@@ -34,7 +34,7 @@ exports.upsert = function (fields, callback) {
     } else {
         filter = fields;
     }
-
+    
     Position.findOne(filter, function (err, position) {
         if (err) {
             log.error(err);
@@ -77,6 +77,27 @@ exports.api.upsert = function (req, res) {
                 });
             }
         });
+    } else {
+        audit.logEvent('[anonymous]', 'Positions', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
+        return res.sendStatus(401);
+    }
+};
+exports.api.findPositionByCode = function (req, res) {
+    if (req.actor) {
+            exports.findPositionByCode(req.params.code, function (err, position) {
+                if (err) {
+                    audit.logEvent('[mongodb]', 'Positions', 'findPositionByCode', "code", req.params.code, 'failed', "Mongodb attempted to find the position detail");
+                    return res.status(500).send(err);
+                } else {
+                    beautify({actor: req.actor, language: req.actor.language, beautify: true}, [position], function (err, objects) {
+                        if (err) {
+                            return res.status(500).send(err);
+                        } else {
+                            return res.json(objects[0]);
+                        }
+                    });
+                }
+            });
     } else {
         audit.logEvent('[anonymous]', 'Positions', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
         return res.sendStatus(401);
@@ -284,7 +305,7 @@ function beautify(options, objects, callback) {
     var gt = dictionary.translator(language);
     if (options.beautify && options.beautify === true) {
         function objectsLoop(o) {
-            if (o < objects.length) {
+            if (o < objects.length && objects[o]) {
                 objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
                 controllers.structures.findStructureByCode(objects[o].code.substring(0, objects[o].code.indexOf('-')), language, function (err, structure) {
                     if (err) {
