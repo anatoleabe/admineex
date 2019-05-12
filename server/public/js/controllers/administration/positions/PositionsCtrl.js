@@ -12,6 +12,7 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
             $scope.search = false;
             $scope.filters = {};
             $scope.structures = [];
+            $scope.showOnlyVacancies = false;
             $scope.query = {
                 limit: 50,
                 page: 1,
@@ -30,11 +31,16 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                 $state.go("home.administration.new");
             };
 
-            function getPositions(idStructure) {
+            $scope.toggleVacancies = function () {
+               getPositions($scope.filters.structure?$scope.filters.structure:"-1", $scope.showOnlyVacancies?"0":"-1");
+            };
+
+            function getPositions(idStructure, restric) {
                 $scope.helper = [];
+                $rootScope.kernel.loading = 0;
                 var deferred = $q.defer();
                 $scope.promise = deferred.promise;
-                Position.list({id: idStructure}).then(function (response) {
+                Position.list({id: idStructure, restric:restric}).then(function (response) {
                     var data = response.data;
                     if (data.length == 0 && $scope.helper.length == 0) {
                         $scope.helper = helper;
@@ -46,17 +52,19 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                     console.error(response);
                 });
             }
-            getPositions(-1);
+            //// All structures (first -1)
+            //// Vacancies and allowed positions (Second -1)
+            getPositions(-1, -1);
 
             $scope.filterByStructure = function (idStructure) {
-                getPositions(idStructure);
+                getPositions(idStructure, $scope.showOnlyVacancies?0:-1);
             };
 
 
             $scope.$watch('filters.structure', function (newval, oldval) {
                 if (newval) {
                     newval = JSON.parse(newval).code;
-                    getPositions(newval ? newval : "-1");
+                    getPositions(newval ? newval : "-1", $scope.showOnlyVacancies?"0":"-1");
                 }
             });
 

@@ -34,7 +34,7 @@ exports.upsert = function (fields, callback) {
     } else {
         filter = fields;
     }
-    
+
     Position.findOne(filter, function (err, position) {
         if (err) {
             log.error(err);
@@ -84,20 +84,20 @@ exports.api.upsert = function (req, res) {
 };
 exports.api.findPositionByCode = function (req, res) {
     if (req.actor) {
-            exports.findPositionByCode(req.params.code, function (err, position) {
-                if (err) {
-                    audit.logEvent('[mongodb]', 'Positions', 'findPositionByCode', "code", req.params.code, 'failed', "Mongodb attempted to find the position detail");
-                    return res.status(500).send(err);
-                } else {
-                    beautify({actor: req.actor, language: req.actor.language, beautify: true}, [position], function (err, objects) {
-                        if (err) {
-                            return res.status(500).send(err);
-                        } else {
-                            return res.json(objects[0]);
-                        }
-                    });
-                }
-            });
+        exports.findPositionByCode(req.params.code, function (err, position) {
+            if (err) {
+                audit.logEvent('[mongodb]', 'Positions', 'findPositionByCode', "code", req.params.code, 'failed', "Mongodb attempted to find the position detail");
+                return res.status(500).send(err);
+            } else {
+                beautify({actor: req.actor, language: req.actor.language, beautify: true}, [position], function (err, objects) {
+                    if (err) {
+                        return res.status(500).send(err);
+                    } else {
+                        return res.json(objects[0]);
+                    }
+                });
+            }
+        });
     } else {
         audit.logEvent('[anonymous]', 'Positions', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
         return res.sendStatus(401);
@@ -108,7 +108,7 @@ exports.api.findPositionByCode = function (req, res) {
 exports.api.list = function (req, res) {
     if (req.actor) {
         var positions = dictionary.getJSONListByCode("../../resources/dictionary/structure/positions.json", req.actor.language.toLowerCase(), req.params.id);
-
+        var restriction = req.params.restric;
         filter = {};
         if (req.params.id && req.params.id != "-1") {
             filter = {$and: []};
@@ -125,14 +125,23 @@ exports.api.list = function (req, res) {
                 return res.status(500).send(err);
             } else {
                 var positions = JSON.parse(JSON.stringify(result));
+                var positionsFiltered = [];
+                var cp = 10;
                 function LoopA(o) {
                     if (o < positions.length) {
                         //TODO compute real effective
                         positions[o].actualEffective = 0;
+
                         positions[o].vacancies = Number(positions[o].requiredEffective) - positions[o].actualEffective;
+
+                        if (restriction && restriction == "0" && positions[o].vacancies > 0) {
+                            positionsFiltered.push(positions[o]);
+                        } else {
+                            positionsFiltered.push(positions[o]);
+                        }
                         LoopA(o + 1);
                     } else {
-                        beautify({actor: req.actor, language: req.actor.language, beautify: true}, positions, function (err, objects) {
+                        beautify({actor: req.actor, language: req.actor.language, beautify: true}, positionsFiltered, function (err, objects) {
                             if (err) {
                                 return res.status(500).send(err);
                             } else {

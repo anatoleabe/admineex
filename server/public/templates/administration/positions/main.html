@@ -17,8 +17,14 @@
                             </md-optgroup>
                         </md-select>
                     </md-input-container>
+
                 </span>
+
             </div>
+            <md-switch ng-change="toggleVacancies()" flex ng-model="showOnlyVacancies" aria-label="enable">
+                <span><span translate>Show only vacancies</span><span translate>:</span></span> 
+            </md-switch>
+
             <md-button class="md-icon-button" aria-label="Print" >
                 <md-icon>print</md-icon>
                 <md-tooltip md-direction="top">
@@ -60,19 +66,19 @@
                 </thead>
                 <tbody md-body>
                     <tr md-row data-ng-repeat="position in positions| filter:positionFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
-                        <td md-cell ng-click="details({id:position._id})">{{position.code| uppercase | unknown}}</td>
-                        <td md-cell ng-click="details({id:position._id})">{{position.name}} </td>
-                        <td md-cell ng-click="details({id:position._id})">{{position.structure.name| unknown}}</td>
-                        <td md-cell ng-click="details({id:position._id})"><md-icon style="color:{{position.actualEffective < position.requiredEffective?'red':'green'}}">fiber_manual_record </md-icon> </td>
-                        <td md-cell >
-                            <md-button ng-click="edit({id:position._id})" aria-label="Edit" >
-                                <md-icon>edit</md-icon>
-                                <md-tooltip md-direction="top">
-                                    <span translate>Edit</span>
-                                </md-tooltip>
-                                <span translate>Edit</span>
-                            </md-button>
-                        </td>
+                        <td md-cell ng-click="details({id: position._id})">{{position.code| uppercase | unknown}}</td>
+                        <td md-cell ng-click="details({id: position._id})">{{position.name}} </td>
+                        <td md-cell ng-click="details({id: position._id})">{{position.structure.name| unknown}}</td>
+                        <td md-cell ng-click="details({id: position._id})"><md-icon style="color:{{position.vacancies > 0 ?'red':'green'}}">fiber_manual_record  </md-icon> </td>
+                <td md-cell >
+                <md-button ng-click="edit({id: position._id})" aria-label="Edit" >
+                    <md-icon>edit</md-icon>
+                    <md-tooltip md-direction="top">
+                        <span translate>Edit</span>
+                    </md-tooltip>
+                    <span translate>Edit</span>
+                </md-button>
+                </td>
                 </tr>
                 </tbody>
             </table>
@@ -82,7 +88,7 @@
 
     </md-card>
     <div style="margin-bottom: 100px"></div>
-    <md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" ng-click="new()" >
+    <md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" ng-click="new ()" >
         <md-icon>add</md-icon>
         <md-tooltip md-direction="top">
             <span translate>New</span>
