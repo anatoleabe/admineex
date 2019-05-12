@@ -100,7 +100,7 @@
                         <md-select ng-model="filters.direction" md-selected-text="getSelectedDirectionCode()" style="min-width: 150px;">
                             <md-optgroup label="{{'Filter by Directions'| translate}}">
                                 <md-option  value="0" >
-                                    {{"All Directions"| translate}}
+                                    {{"All Structures"| translate}}
                                 </md-option>
                                 <md-option ng-repeat="dir in directions" value="{{dir}}" >
                                     {{dir.nom}}
@@ -108,7 +108,7 @@
                             </md-optgroup>
                         </md-select>
                     </md-input-container>
-                    <md-input-container flex>
+<!--                     <md-input-container flex>
                         <label translate>All Sub-Directions</label>
                         <md-select ng-model="filters.sdirection" md-selected-text="getSelectedsDirectionCode()" style="min-width: 150px;">
                             <md-optgroup label="{{'Filter by Sub-directions'| translate}}">
@@ -120,8 +120,8 @@
                                 </md-option>
                             </md-optgroup>
                         </md-select>
-                    </md-input-container>
-                    <md-input-container flex>
+                    </md-input-container> -->
+<!--                     <md-input-container flex>
                         <label translate>All Services</label>
                         <md-select ng-model="filters.service">
                             <md-optgroup label="{{'Filtre by Services'| translate}}">
@@ -133,7 +133,7 @@
                                 </md-option>
                             </md-optgroup>
                         </md-select>
-                    </md-input-container>
+                    </md-input-container> -->
                 </span>
             </div>
 
@@ -150,8 +150,8 @@
                     <th md-column md-order-by="posteActuel[0].structure[0].nom"><span translate>Structure</span></th>
                     <th md-column md-order-by="posteActuel[0].acte[0].dateCreation" style="max-width: 50px"><span translate>Starting date</span></th>
                     <th md-column md-order-by="telephone"><span translate>Phone</span></th>
-                    <th md-column translate><span translate>Actions</span></th>
                     <th md-column md-order-by="miseajour" ><span translate>Modified</span></th>
+                    <th md-column translate><span translate>Actions</span></th>
                 </tr>
             </thead>
             <tbody md-body>
@@ -165,7 +165,7 @@
                     <td md-cell>{{personnel.telephone| unknown}}</td>
                     <td md-cell>{{personnel.lastModified| date:'dd/MM/yyyy'}}</td>
                     <td md-cell >
-                            <md-button ng-click="edit(personnel)" aria-label="Edit" >
+                            <md-button ng-click="edit({id:personnel._id})" aria-label="Edit" >
                                 <md-icon>edit</md-icon>
                                 <md-tooltip md-direction="top">
                                     <span translate>Edit</span>
@@ -182,7 +182,7 @@
 
 </md-card>
 <div style="margin-bottom: 100px"></div>
-<md-button  class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ui-sref="home.staffs.staffmanagement.new" >
+<md-button  class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ui-sref="home.staffs.new" >
     <md-icon>add</md-icon>
     <md-tooltip md-direction="top">
         <span translate>New</span>
