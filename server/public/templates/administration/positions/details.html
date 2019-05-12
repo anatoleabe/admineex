@@ -2,12 +2,12 @@
 <div flex="70" flex-offset="15" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" ui-view style="height:100%;">
     <md-content layout-padding layout="column" flex>
         <md-card-actions layout="row" >
-            <md-button ng-click="back()" class="md-raised md-primary" aria-label="Edit" >
+            <md-button ng-click="back()" class="md-raised md-primary" aria-label="Back" >
                 <md-icon>arrow_back_ios</md-icon>
                 <span translate>Back</span>
             </md-button>
             <span flex></span>
-            <md-button  class="md-raised md-primary" aria-label="Edit" >
+            <md-button  class="md-raised md-primary" ng-click="edit({id:position._id})" aria-label="Edit" >
                 <md-icon>edit</md-icon>
                 <span translate>Edit</span>
             </md-button>
@@ -39,18 +39,6 @@
                     </md-list-item>
                     <md-divider></md-divider>
                     <md-list-item>
-                        <md-icon>local_hospital</md-icon>
-                        <p class="md-body-2" translate>Required effective</p>
-                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{position.requiredEffective}}</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item>
-                        <md-icon>local_hospital</md-icon>
-                        <p class="md-body-2" translate>Actual effective</p>
-                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">0</p>
-                    </md-list-item>
-                    <md-divider></md-divider>
-                    <md-list-item>
                         <md-icon>phone</md-icon>
                         <p class="md-body-2" translate>Structure</p>
                         <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{position.structure.name}}</p>
@@ -65,7 +53,49 @@
                 </md-list>
             </md-card-content>
         </md-card>
-
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline" translate>Occupant information</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <md-list ng-cloak>
+                    <div ng-repeat="staff in affectedStaffs">
+                        <md-list-item ui-sref="#" >
+                            <div class="avatar avatar-md md-avatar" >
+                                {{"J".toUpperCase()}}
+                            </div>
+                            <p class="md-body-2" >{{staff.name}}</p>
+                            <md-button class="md-secondary " aria-label="Consult" ng-click="edit({id: user._id})">
+                                <md-icon aria-label="pageview">pageview</md-icon>
+                                <md-tooltip>
+                                    <span translate>Consult</span>
+                                </md-tooltip>
+                                <span translate>Consult</span>
+                            </md-button>
+                            <md-button class="md-secondary " ng-class="{'red':true}" aria-label="Remove" ng-click="edit({id: user._id})">
+                                <md-icon style="color: white;" aria-label="remove_circle_outline">remove_circle_outline</md-icon>
+                                <md-tooltip>
+                                    <span translate>Remove</span>
+                                </md-tooltip>
+                                <span translate>Remove</span>
+                            </md-button>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </div>
+                </md-list>
+                <div layout="row" layout-align="center center"  >
+                    <md-button class="md-secondary" ng-class="{'green':true}" aria-label="See" ng-click="edit({id: user._id})">
+                        <md-icon aria-label="person_add">person_add</md-icon>
+                        <md-tooltip>
+                            <span translate>Affect staff to this position</span>
+                        </md-tooltip>
+                        <span>Affect staff to this position</span>
+                    </md-button>
+                </div>
+            </md-card-content>
+        </md-card>
         <!--Required Skills-->
         <md-card>
             <md-card-title class="card-container">
@@ -151,50 +181,7 @@
             </md-card-content>
         </md-card>
 
-        <md-card>
-            <md-card-title>
-                <md-card-title-text>
-                    <span class="md-headline" translate>Occupant information</span>
-                    <md-header class="md-no-sticky" style="text-align: center">0 occupant à ce poste</md-header>
-                </md-card-title-text>
-            </md-card-title>
-            <md-card-content>
-                <md-list ng-cloak>
-                    <div ng-repeat="staff in affectedStaffs">
-                        <md-list-item ui-sref="#" >
-                            <div class="avatar avatar-md md-avatar" >
-                                {{"J".toUpperCase()}}
-                            </div>
-                            <p class="md-body-2" >{{staff.name}}</p>
-                            <md-button class="md-secondary " aria-label="Consult" ng-click="edit({id: user._id})">
-                                <md-icon aria-label="pageview">pageview</md-icon>
-                                <md-tooltip>
-                                    <span translate>Consult</span>
-                                </md-tooltip>
-                                <span translate>Consult</span>
-                            </md-button>
-                            <md-button class="md-secondary " ng-class="{'red':true}" aria-label="Remove" ng-click="edit({id: user._id})">
-                                <md-icon style="color: white;" aria-label="remove_circle_outline">remove_circle_outline</md-icon>
-                                <md-tooltip>
-                                    <span translate>Remove</span>
-                                </md-tooltip>
-                                <span translate>Remove</span>
-                            </md-button>
-                        </md-list-item>
-                        <md-divider></md-divider>
-                    </div>
-                </md-list>
-                <div layout="row" layout-align="center center"  >
-                    <md-button class="md-secondary" ng-class="{'green':true}" aria-label="See" ng-click="edit({id: user._id})">
-                        <md-icon aria-label="person_add">person_add</md-icon>
-                        <md-tooltip>
-                            <span translate>Affect staff to this position</span>
-                        </md-tooltip>
-                        <span>Affect staff to this position</span>
-                    </md-button>
-                </div>
-            </md-card-content>
-        </md-card>
+
 
         <md-card-actions layout="row" >
             <md-button ng-click="back()" class="md-raised md-primary" aria-label="Edit" >
@@ -202,7 +189,7 @@
                 <span translate>Back</span>
             </md-button>
             <span flex></span>
-            <md-button  class="md-raised md-primary" aria-label="Edit" >
+            <md-button  class="md-raised md-primary" ng-click="edit({id:position._id})" aria-label="Edit" >
                 <md-icon>edit</md-icon>
                 <span translate>Edit</span>
             </md-button>

@@ -111,7 +111,7 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                                     }
                                                 }
                                             }
-                                                                                    console.log($scope.structure)
+                                            console.log($scope.structure)
 
                                         }
                                     }
@@ -202,7 +202,7 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                         $scope.position.requiredSkills = [];
                                         $scope.position.activities = [];
                                         $scope.position.tasks = [];
-                                        
+
                                     }
 
                                     // Add or edit new structure

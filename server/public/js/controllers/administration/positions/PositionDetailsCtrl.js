@@ -27,8 +27,8 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
         icon: 'event_note',
         title: gettextCatalog.getString("No data found.")
     };
-     
-    
+
+
     $ocLazyLoad.load('js/services/PositionService.js').then(function () {
         var Position = $injector.get('Position');
         $rootScope.kernel.loading = 100;
@@ -76,30 +76,36 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                             $scope.requiredProfiles = requiredProfiles;
                             $scope.requiredSkills = requiredSkills;
                         }
-                        
+
                         prepareRequiredItems();
 
                         $scope.back = function () {
                             $state.go("home.administration.positions");
                         }
+
+
+                        $scope.edit = function (params) {
+                            $state.go("home.administration.edit", params);
+                        };
+
                         $scope.add = function (position, detailField, resourcesDistionary) {
                             var positionDetail = position;
-                            
+
 
                             $mdDialog.show({
                                 controller: ['$scope', '$mdDialog', 'positionDetail', '$q', 'dictionary', 'detailField', 'resourcesDistionary', function ($scope, $mdDialog, positionDetail, $q, dictionary, detailField, resourcesDistionary) {
                                         $scope.positionDetail = positionDetail;
                                         $scope.detailDescription = {};
                                         $scope.detailDescription.name = resourcesDistionary;
-                                        if (resourcesDistionary == "profiles"){
+                                        if (resourcesDistionary == "profiles") {
                                             $scope.detailDescription.title = gettextCatalog.getString("Select profiles (You can add up to 05 profiles):");
                                             $scope.detailDescription.placeholder = gettextCatalog.getString("Choose profile");
-                                        }else if (resourcesDistionary == "skills"){
+                                        } else if (resourcesDistionary == "skills") {
                                             $scope.detailDescription.title = gettextCatalog.getString("Select skills (You can add up to 05 skills):");
                                             $scope.detailDescription.placeholder = gettextCatalog.getString("Choose a skill");
                                         }
-                                        
-                                        
+
+
                                         function prepareDetailsForServer() {
                                             if ($scope.positionDetail) {
                                                 $scope.positionDetail[detailField] = [];
