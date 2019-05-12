@@ -47,16 +47,16 @@ exports.api.upsert = function (req, res) {
 exports.upsert = function (fields, callback) {
     // Parse received fields
     var id = fields._id || '';
-    var identifier = fields.identifier || '';
+    var code = fields.code || '';
 
     var filter = {$and: []};
     if (id !== '') {
         filter.$and.push({
             "_id": id
         });
-    } else if (identifier !== '') {
+    } else if (code !== '') {
         filter.$and.push({
-            "identifier": identifier
+            "code": code
         });
     } else {
         filter = fields;
@@ -215,7 +215,6 @@ exports.initialize = function (callback) {
         function loopA(a) {
             if (a < structures.length) {
                 var fields = {
-                    identifier: structures[a].id,
                     code: structures[a].code,
                     en: structures[a].en,
                     fr: structures[a].fr,

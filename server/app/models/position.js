@@ -5,7 +5,6 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 // Position schema
 var PositionSchema = new Schema({
-    identifier: { type: String, required: true },
     code: { type: String, required: true },
     en: { type: String, required: true },
     fr: { type: String, required: false },

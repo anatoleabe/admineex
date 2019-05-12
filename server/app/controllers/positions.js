@@ -20,16 +20,16 @@ var controllers = {
 exports.upsert = function (fields, callback) {
     // Parse received fields
     var id = fields._id || '';
-    var identifier = fields.identifier || '';
+    var code = fields.code || '';
 
     var filter = {$and: []};
     if (id !== '') {
         filter.$and.push({
             "_id": id
         });
-    } else if (identifier !== '') {
+    } else if (code !== '') {
         filter.$and.push({
-            "identifier": identifier
+            "code": code
         });
     } else {
         filter = fields;
@@ -169,7 +169,6 @@ exports.initialize = function (callback) {
         function loopA(a) {
             if (a < positions.length) {
                 var fields = {
-                    identifier: positions[a].id,
                     code: positions[a].code,
                     en: positions[a].en,
                     fr: positions[a].fr,
