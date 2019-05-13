@@ -21,7 +21,7 @@ angular.module('StaffManagementCtrl', [[
         });
     });
     $scope.currentTab = 0;
-    if($location.path().indexOf('/staffs/staffmanagement') > -1){
+    if($location.path().indexOf('/staffs/management') > -1){
         $scope.currentTab = 1;
     } else if($location.path().indexOf('/staffs/movement') > -1){
         $scope.currentTab = 2;

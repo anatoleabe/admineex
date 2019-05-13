@@ -88,7 +88,7 @@ function buildNav(user, callback){
         name: 'Dashboard'
     };
     var staffManagement = {
-        href: 'home.staffs.staffmanagement',
+        href: 'home.staffs.main',
         icon: 'class',
         label: 'Staff management',
         name: 'Staff management',
@@ -102,7 +102,7 @@ function buildNav(user, callback){
         name: 'Personnal records'
     };
     var staffManagementTab2 = {
-        href: 'home.staffs.staffmanagement',
+        href: 'home.staffs.main',
         label: 'Staff management',
         name: 'Staff management'
     };

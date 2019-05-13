@@ -10,7 +10,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function($scope,
 
         $scope.edit = function (params) {
             alert('Edit personnel');
-            $state.go("home.staffs.staffmanagement.edit", params);
+            $state.go("home.staffs.edit", params);
         };
 
         function getAgents(){

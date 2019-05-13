@@ -169,56 +169,56 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
             abstract: true,
             url: 'staffs',
             access: {requiredAuthentication: true},
-            templateUrl: 'templates/staffManagement/staffManagement.html',
+            templateUrl: 'templates/staffs/staffManagement.html',
             controller: 'StaffManagementController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/StaffManagementCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/StaffManagementCtrl.js');
                     }]
             },
-        }).state('home.staffs.staffmanagement', {
-            url: '/staffmanagement',
-            templateUrl: 'templates/staffManagement/staff/main.html',
+        }).state('home.staffs.main', {
+            url: '/management',
+            templateUrl: 'templates/staffs/staff/main.html',
             controller: 'StaffsController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/staff/StaffsCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/staff/StaffsCtrl.js');
                     }]
             },
             breadcrumbs: ["Staffs management"]
-        }).state('home.staffs.staffmanagement.edit', {
-            url: '/edit/:id',
-            templateUrl: 'templates/staffManagement/staff/edit.html',
+        }).state('home.staffs.edit', {
+            url: '/management/edit/:id',
+            templateUrl: 'templates/staffs/staff/edit.html',
             controller: 'StaffController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/staff/StaffCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/staff/StaffCtrl.js');
                     }]
             },
-            breadcrumbs: ["Staffs management", "Edit"]
-        }).state('home.staffs.staffmanagement.new', {
-            url: '/new',
-            templateUrl: 'templates/staffManagement/staff/edit.html',
+            breadcrumbs: ["Staffs", "Staffs management", "Edit"]
+        }).state('home.staffs.new', {
+            url: '/management/new',
+            templateUrl: 'templates/staffs/staff/edit.html',
             controller: 'StaffController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/staff/StaffCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/staff/StaffCtrl.js');
                     }]
             },
-            breadcrumbs: ["Staffs management", "New"]
+            breadcrumbs: ["Staffs", "Staffs management", "New"]
         }).state('home.staffs.personnalrecords', {
             url: '/personnalrecords',
             params: {id: undefined, personnelID: undefined},
-            templateUrl: 'templates/staffManagement/personnal_records.html',
+            templateUrl: 'templates/staffs/personnal_records.html',
             controller: 'PersonnalRecordsController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/PersonnalRecordsCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/PersonnalRecordsCtrl.js');
                     }]
             },
             breadcrumbs: ["Staff management", "Personnal records"]
@@ -228,34 +228,34 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
             access: {requiredAuthentication: true}
         }).state('home.staffs.movement.main', {
             url: '',
-            templateUrl: 'templates/staffManagement/movement/main.html',
+            templateUrl: 'templates/staffs/movement/main.html',
             controller: 'MovementsController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/movement/MovementsCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/movement/MovementsCtrl.js');
                     }]
             },
             breadcrumbs: ["Staff management", "Movement"]
         }).state('home.staffs.movement.new', {
             url: '/new',
-            templateUrl: 'templates/staffManagement/movement/edit.html',
+            templateUrl: 'templates/staffs/movement/edit.html',
             controller: 'StaffController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/movement/MovementCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/movement/MovementCtrl.js');
                     }]
             },
             breadcrumbs: ["Staff management", "Movement", "New"]
         }).state('home.staffs.movement.edit', {
             url: '/edit/:id',
-            templateUrl: 'templates/staffManagement/movement/edit.html',
+            templateUrl: 'templates/staffs/movement/edit.html',
             controller: 'StaffController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/movement/MovementCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/movement/MovementCtrl.js');
                     }]
             },
             breadcrumbs: ["Staff management", "Movement", "Edit"]
@@ -265,34 +265,34 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
             access: {requiredAuthentication: true}
         }).state('home.staffs.status.main', {
             url: '',
-            templateUrl: 'templates/staffManagement/status/main.html',
+            templateUrl: 'templates/staffs/status/main.html',
             controller: 'StatussController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/status/StatussCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/status/StatussCtrl.js');
                     }]
             },
             breadcrumbs: ["Staff management", "Status"]
         }).state('home.staffs.status.new', {
             url: '/new',
-            templateUrl: 'templates/staffManagement/status/edit.html',
+            templateUrl: 'templates/staffs/status/edit.html',
             controller: 'StatusController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/movement/StatusCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/movement/StatusCtrl.js');
                     }]
             },
             breadcrumbs: ["Staff management", "Status", "New"]
         }).state('home.staffs.status.edit', {
             url: '/edit/:id',
-            templateUrl: 'templates/staffManagement/status/edit.html',
+            templateUrl: 'templates/staffs/status/edit.html',
             controller: 'StaffController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/status/StatusCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/status/StatusCtrl.js');
                     }]
             },
             breadcrumbs: ["Staff management", "Status", "Edit"]
@@ -302,34 +302,34 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
             access: {requiredAuthentication: true}
         }).state('home.staffs.discipline.main', {
             url: '',
-            templateUrl: 'templates/staffManagement/discipline/main.html',
+            templateUrl: 'templates/staffs/discipline/main.html',
             controller: 'DisciplinesController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/discipline/DisciplinesCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/discipline/DisciplinesCtrl.js');
                     }]
             },
             breadcrumbs: ["Staff management", "Discipline"]
         }).state('home.staffs.discipline.new', {
             url: '/new',
-            templateUrl: 'templates/staffManagement/discipline/edit.html',
+            templateUrl: 'templates/staffs/discipline/edit.html',
             controller: 'DisciplineController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/movement/DisciplineCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/movement/DisciplineCtrl.js');
                     }]
             },
             breadcrumbs: ["Staff management", "Discipline", "New"]
         }).state('home.staffs.discipline.edit', {
             url: '/edit/:id',
-            templateUrl: 'templates/staffManagement/discipline/edit.html',
+            templateUrl: 'templates/staffs/discipline/edit.html',
             controller: 'DisciplineController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/staff_management/discipline/DisciplineCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/staffs/discipline/DisciplineCtrl.js');
                     }]
             },
             breadcrumbs: ["Staff management", "Discipline", "Edit"]
