@@ -39,6 +39,7 @@ exports.api.list = function (req, res) {
 }
 
 exports.api.read = function (req, res) {
+    console.log('Read method call for personnel');
     if (req.actor) {
         if (req.params.id === undefined) {
             audit.logEvent(req.actor.id, 'Position', 'Read', '', '', 'failed',
