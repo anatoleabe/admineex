@@ -8,12 +8,12 @@
     {
         "id": "2",
         "en": "Disrespectful",
-        "fr": "Irrespectueux"
+        "fr": "Non respect de la hierarchie"
     },
     {
         "id": "3",
         "en": "Abscence",
-        "fr": "Abscence"
+        "fr": "Abscence irreguliere"
     },
     {
         "id": "4",
@@ -23,6 +23,6 @@
     {
         "id": "5",
         "en": "assiduous",
-        "fr": "Assidu"
+        "fr": "Assidu au travail"
     }
 ]
