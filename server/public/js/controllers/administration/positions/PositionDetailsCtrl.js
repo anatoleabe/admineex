@@ -201,6 +201,37 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                             });
 
                         }
+                        
+                        $scope.affectTo = function (position) {
+
+                            $mdDialog.show({
+                                controller: ['$scope', '$mdDialog', 'position', '$q', function ($scope, $mdDialog, position, $q) {
+                                        $scope.position = position;
+
+                                        $scope.close = function () {
+                                            $mdDialog.hide();
+                                        }
+                                        $scope.cancel = function () {
+                                            $mdDialog.cancel();
+                                        };
+                                        $scope.save = function (params) {
+                                            console.log("Save");
+                                        };
+
+                                    }],
+                                templateUrl: '../templates/dialogs/affectation.html',
+                                parent: angular.element(document.body),
+                                clickOutsideToClose: true,
+                                locals: {
+                                    position: position,
+                                }
+                            }).then(function (answer) {
+
+                            }, function () {
+
+                            });
+
+                        }
                     }).catch(function (response) {
                         console.error(response);
                     });

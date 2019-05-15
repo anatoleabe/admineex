@@ -4,6 +4,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 // Personnel schema
 var Schema = mongoose.Schema;
 var PersonnelSchema = new Schema({
+    mysqlId: {type: String, required: true}, //autoincrementId TO BE REMOVED
     identifier: {type: String, required: true}, //Matricule
     name: {
         use: String,
@@ -22,8 +23,17 @@ var PersonnelSchema = new Schema({
     birthPlace: {type: String, required: false},
     children: {type: String, required: false},
     maritalStatus: {type: String, required: false},
+    father: {type: String, required: false},
+    mother: {type: String, required: false},
     telecom: [{}],
-    address: [{}],
+    address: [
+        {
+            country: String, //From json
+            region: String, //From json
+            department: String, //From json
+            arrondissement: String//From json
+        }
+    ],
     cni: {
         identifier: String,
         date: Date,
@@ -32,26 +42,35 @@ var PersonnelSchema = new Schema({
     },
     positionsHistory: [
         {
-            refAct: {type: ObjectId, required: true},
-            positionId: {type: ObjectId, required: true},
+            numAct: {type: ObjectId, required: false},
+            positionId: {type: ObjectId, required: false},
             lastPositionId: {type: ObjectId, required: false},
+            current: Boolean,
+            signatureDate: Date,
             startDate: Date,
-            endDateDate: Date,
-            mouvement: String,//Id from json resources json mouvement
+            endDate: Date,
+            mouvement: String, //Id from json resources json mouvement
+            nature: String, //Id from json resources json act nature
             lastModified: {type: Date, default: Date.now, required: true}
         }
     ],
-    schools: [
-        {
-            diploma: String,
-            year: Date,
-            organization: String,
-            lastModified: {type: Date, default: Date.now, required: true}
-        }
-    ],
+    qualifications: {
+        highestLevelEducation: String, //From json
+        schools: [
+            {
+                diploma: String,
+                date: Date,
+                autority: String,
+                option: String,
+                domaine: String,
+                lastModified: {type: Date, default: Date.now, required: true}
+            }
+        ]
+    },
+    more: {},
     sanctions: [
         {
-            refAct: {type: String, required: true}, //Numero de l'acte administratif
+            numAct: {type: String, required: true}, //Numero de l'acte administratif
             nature: {type: String, required: true}, //id fron resource json nature > acte
             sanction: {type: String, required: true}, //id fron resource json sanctions
             date: {type: Date},
@@ -60,7 +79,7 @@ var PersonnelSchema = new Schema({
     ],
     situations: [
         {
-            refAct: {type: String, required: true}, //Numero de l'acte administratif
+            numAct: {type: String, required: true}, //Numero de l'acte administratif
             nature: {type: String, required: true}, //id fron resource json nature > acte
             situation: {type: String, required: true}, //id fron resource json situations
             date: {type: Date},
