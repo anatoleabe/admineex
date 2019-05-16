@@ -1,4 +1,5 @@
 var Position = require('../models/position').Position;
+var Affectation = require('../models/affectation').Affectation;
 var nconf = require('nconf');
 nconf.file("config/server.json");
 var audit = require('../utils/audit-log');
@@ -79,6 +80,44 @@ exports.api.upsert = function (req, res) {
         });
     } else {
         audit.logEvent('[anonymous]', 'Positions', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
+        return res.sendStatus(401);
+    }
+};
+
+exports.api.affectToPosition = function (req, res) {
+    if (req.actor) {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[formidable]', 'Positions', 'affectation', "", "", 'failed', "Formidable attempted to parse affectation fields");
+                return res.status(500).send(err);
+            } else {
+                // Parse received fields
+                var affectationFields = {
+                    positionId: fields.positionId,
+                    positionCode: fields.positionCode,
+                    personnelId: fields.occupiedBy,
+                    date: fields.startDate
+                };
+                var filter = affectationFields;
+
+                fields.lastModified = new Date();
+                Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+                    if (err) {
+                        log.error(err);
+                        audit.logEvent('[mongodb]', 'Position', 'affectToPosition', "", "", 'failed', "Mongodb attempted to affect to  a Position");
+                        return res.status(500).send(err);
+                    } else {
+                        console.log(result);
+                        res.sendStatus(200);
+                    }
+                });
+
+            }
+        });
+    } else {
+        audit.logEvent('[anonymous]', 'Positions', 'affectToPosition', '', '', 'failed', 'The actor was not authenticated');
         return res.sendStatus(401);
     }
 };

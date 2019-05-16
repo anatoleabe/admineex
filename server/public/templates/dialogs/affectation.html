@@ -1,4 +1,5 @@
 <md-dialog flex="50">
+    <form ng-submit="save()">
     <md-toolbar class="md-accent">
         <div class="md-toolbar-tools">
             <h2>Affectation to position</h2>
@@ -9,131 +10,150 @@
         </div>
     </md-toolbar>
     <md-dialog-content>
-        <md-card>
+        
+            <md-card>
 
-            <md-card-content>
-                <div layout="row" >
-                    <md-autocomplete md-search-text="personnelSearchText"
-                                     md-selected-item-change="selectedPersonnelChange(perso)"
-                                     md-items="perso in personnelQuerySearch(personnelSearchText)"
-                                     md-item-text="perso.nom + ' ' + perso.prenom"
-                                     md-min-length="1"
-                                     required
-                                     md-require-match
-                                     flex
-                                     md-floating-label="{{'Find the personnel concerned (find by: name, matricule, ID card, phone number...)' | translate}}"
-                                     >
-                        <md-item-template>
-                            <span md-highlight-text="personnelSearchText">{{perso.nom}} {{perso.prenom}} </span>
-                            <small>
-                                <span ng-if="perso.matricule">{{"(Mle: " + (perso.matricule)}} </span>
-                                <span ng-if="perso.sexe">| {{(perso.sexe)}} , {{(perso.age) + " ans"}}</span>
-                                <span ng-if="perso.fonction" > | {{perso.fonction}})</span>
-                            </small>
-                        </md-item-template>
-                        <md-not-found>
-                            "{{personnelSearchText}}"<span translate>:</span> <span translate> No matching information was found.</span>
-                        </md-not-found>
-                    </md-autocomplete>
-                </div>
-                <div layout="row" ng-if="selectedPersonnel" style="margin-top: -40px; font-size: 12px; color: #E6504C">
-                    <span ng-if="selectedPersonnel">Poste actuel: {{selectedPersonnelPosteActuel}} ({{selectedPersonnelStructureactuel}}) </span>
-                </div>
-                <div layout="row">
-                    <md-input-container flex>
-                        <label translate>Structure</label>
-                        <md-select name="structure" required ng-model="filters.structure"  style="min-width: 150px;">
-                            <md-option ng-repeat="struc in structure" value="{{struc}}" >
-                                {{struc.name}}
-                            </md-option>
-                        </md-select>
-                        <div ng-messages="structure.$error">
-                            <div ng-message="required">
-                                This field is required to proceed on next step.
+                <md-card-content>
+                    <!--<div layout="row" >-->
+                    <!--                    <md-autocomplete md-search-text="personnelSearchText"
+                                                         md-selected-item-change="selectedPersonnelChange(perso)"
+                                                         md-items="perso in personnelQuerySearch(personnelSearchText)"
+                                                         md-item-text="perso.nom + ' ' + perso.prenom"
+                                                         md-min-length="1"
+                                                         required
+                                                         md-require-match
+                                                         flex
+                                                         md-floating-label="{{'Find the personnel concerned (find by: name, matricule, ID card, phone number...)' | translate}}"
+                                                         >
+                                            <md-item-template>
+                                                <span md-highlight-text="personnelSearchText">{{perso.nom}} {{perso.prenom}} </span>
+                                                <small>
+                                                    <span ng-if="perso.matricule">{{"(Mle: " + (perso.matricule)}} </span>
+                                                    <span ng-if="perso.sexe">| {{(perso.sexe)}} , {{(perso.age) + " ans"}}</span>
+                                                    <span ng-if="perso.fonction" > | {{perso.fonction}})</span>
+                                                </small>
+                                            </md-item-template>
+                                            <md-not-found>
+                                                "{{personnelSearchText}}"<span translate>:</span> <span translate> No matching information was found.</span>
+                                            </md-not-found>
+                                        </md-autocomplete>-->
+                    <!--</div>-->
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label translate>Select a personnel</label>
+                            <md-select name="selectedPersonnel" required ng-model="selectedPersonnel"  style="min-width: 150px;">
+                                <md-option ng-repeat="perso in personnels" value="{{perso._id}}" >
+                                    {{perso.name.family[0]}} {{perso.name.given[0]}} <small>{{"(Mle: " + (perso.identifier) + ")"}}</small>
+
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="selectedPersonnel.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
                             </div>
-                        </div>
-                    </md-input-container>
-                </div>
-                <div layout="row" >
-                    <md-input-container class="md-block" flex="60">
-                        <label translate>New position </label>
-                        <md-select name="idPosteActuel" ng-model="mouvement.idPosteActuel" required data-md-container-class="selectdemoSelectHeader">
-                            <md-option ng-repeat="position in positions|filter:searchTerm" value="{{poste.id}}">
-                                {{position.name|uppercase| truncateTexte}} ({{position.code| uppercase}})
-                            </md-option>
-                        </md-select>
-                        <div ng-messages="idPosteActuel.$error">
-                            <div ng-message="required">
-                                This field is required to proceed on next step.
+                        </md-input-container>
+                    </div>
+                    <!--                <div layout="row" ng-if="!selectedPersonnel" style="margin-top: -40px; font-size: 12px; color: #E6504C">
+                                        <span ng-if="selectedPersonnel">Poste actuel: {{selectedPersonnelPosteActuel}} ({{selectedPersonnelStructureactuel}}) </span>
+                                    </div>-->
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label translate>Structure</label>
+                            <md-select name="structure" required ng-model="structure"  style="min-width: 150px;">
+                                <md-option ng-repeat="struc in structures" value="{{struc.code}}" >
+                                    {{struc.name}} ({{struc.code}})
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="structure.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
                             </div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container class="datepicker-xl" flex >
-                        <label translate>Date of beginning</label>
-                        <md-datepicker name="date" class="md-block"  ng-model="mouvement.startDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
-                        <div ng-messages="date">
-                            <div ng-message="required">
-                                This field is required to proceed on next step.
+                        </md-input-container>
+                    </div>
+                    <div layout="row" >
+                        <md-input-container class="md-block" flex="60">
+                            <label translate>New position </label>
+                            <md-select name="newPosition" ng-model="affectation.positionId" required data-md-container-class="selectdemoSelectHeader" ng-change="getPositionCode(position)">
+                                <md-option ng-repeat="position in positions|filter:searchTerm" value="{{position._id}}">
+                                    {{position.name|uppercase| truncateTexte}} ({{position.code| uppercase}})
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="newPosition.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
                             </div>
-                        </div>
-                    </md-input-container>
-                </div>
-                <div layout="row" >
-                    <md-input-container class="md-block" flex>
-                        <label translate>Type of movement</label>
-                        <md-select name="idTypeMouvement" ng-model="mouvement.idTypeMouvement" required >
-                            <md-option ng-repeat="typem in typeMouvements" value="{{typem.id}}" >
-                                {{typem.libelle}} 
-                            </md-option>
-                        </md-select>
-                        <div ng-messages="idTypeMouvement.$error">
-                            <div ng-message="required">
-                                This field is required to proceed on next step.
+                        </md-input-container>
+                        <md-input-container class="datepicker-xl" flex >
+                            <label translate>Date of beginning</label>
+                            <md-datepicker name="date" class="md-block"  ng-model="affectation.startDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
+                            <div ng-messages="date">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
                             </div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container class="md-block" flex>
-                        <label translate>Nature</label>
-                        <md-select name="acte.idNature" ng-model="mouvement.acte.idNature" required >
-                            <md-option ng-repeat="natureacte in natturesActe" value="{{natureacte.id}}" >
-                                {{natureacte.libelle}} 
-                            </md-option>
-                        </md-select>
-                        <div ng-messages="acte.idNature.$error">
-                            <div ng-message="required">
-                                This field is required to proceed on next step.
+                        </md-input-container>
+                    </div>
+                    <div layout="row" >
+                        <md-input-container class="md-block" flex>
+                            <label translate>Type of movement</label>
+                            <md-select name="mouvement" ng-model="affectation.mouvement" required >
+                                <md-option ng-repeat="typem in mouvements" value="{{typem.id}}" >
+                                    {{typem.name}} 
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="mouvement.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
                             </div>
-                        </div>
-                    </md-input-container>
-                </div>
-                <div layout="row" >
-                    <md-input-container class="md-block" flex>
-                        <label translate>Reference or Number</label>
-                        <input name="number" ng-model="mouvement.numAct" required>
-                        <div ng-messages="number.$error">
-                            <div ng-message="required">
-                                This field is required to proceed on next step.
+                        </md-input-container>
+                        <md-input-container class="md-block" flex>
+                            <label translate>Nature</label>
+                            <md-select name="nature" ng-model="affectation.nature" required >
+                                <md-option ng-repeat="natureacte in naturesAct" value="{{natureacte.id}}" >
+                                    {{natureacte.name}} 
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="nature.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
                             </div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container class="datepicker-xl" flex style="width: 400px;">
-                        <label translate>Signature date</label>
-                        <md-datepicker name="acte.date" class="md-block"  ng-model="mouvement.signatureDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
-                        <div ng-messages="acte.date">
-                            <div ng-message="required">
-                                This field is required to proceed on next step.
+                        </md-input-container>
+                    </div>
+                    <div layout="row" >
+                        <md-input-container class="md-block" flex>
+                            <label translate>Reference or Number</label>
+                            <input name="number" ng-model="affectation.numAct" required>
+                            <div ng-messages="number.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
                             </div>
-                        </div>
-                    </md-input-container>
-                </div>
-            </md-card-content>
-        </md-card>
+                        </md-input-container>
+                        <md-input-container class="datepicker-xl" flex style="width: 400px;">
+                            <label translate>Signature date</label>
+                            <md-datepicker name="signatureDate" class="md-block"  ng-model="affectation.signatureDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
+                            <div ng-messages="signatureDate">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+            </md-card>
+        
 
     </md-dialog-content>
 
     <md-dialog-actions layout="row">
         <span flex></span>
-        <md-button ng-click="goToTab('staff/mobilities');"><span translate>Cancel</span></md-button>
-        <md-button class="md-raised md-accent" ng-click="save()"><span translate>Save</span></md-button>
+        <md-button ><span translate>Cancel</span></md-button>
+        <md-button class="md-raised md-accent" type="submit"><span translate>Save</span></md-button>
     </md-dialog-actions>
+    </form>
 </md-dialog>

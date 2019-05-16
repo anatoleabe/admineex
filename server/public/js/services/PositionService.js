@@ -14,6 +14,9 @@ angular.module('PositionService', []).factory('Position', function($http) {
         },
         find: function(info) {
             return $http.get('/api/positions/find/' + info.code);
+        },
+        affect: function(info) {
+            return $http.put('/api/positions/affect/', info);
         }
     }
 });

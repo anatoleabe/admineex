@@ -280,5 +280,11 @@
         "uri": "/api/positions/find/:code",
         "method": "GET",
         "roles": [1,2,3]
+    },
+    {
+        "id": 49,
+        "uri": "/api/positions/affect/",
+        "method": "PUT",
+        "roles": [1,2,3]
     }
 ]
