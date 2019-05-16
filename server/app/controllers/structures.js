@@ -106,7 +106,6 @@ exports.api.list = function (req, res) {
                                 }
 
                                 var requiredEffective = 0;
-                                var actualEffective = 0;
 
                                 function LoopB(b) {
                                     if (b < positions.length) {
@@ -116,11 +115,22 @@ exports.api.list = function (req, res) {
 
                                         LoopB(b + 1);
                                     } else {
-                                        structures[a].requiredEffective = requiredEffective;
-                                        structures[a].actualEffective = actualEffective;
-                                        structures[a].vacancies = requiredEffective - actualEffective;
-
-                                        loopA(a + 1);
+                                        controllers.positions.findHelderPositionsByStructureCode(structures[a].code, function (err, affectations) {
+                                            if (err) {
+                                                audit.logEvent('[mongodb]', 'Positions', 'findHelderPositionsByStructureCode', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
+                                                return res.status(500).send(err);
+                                            } else {
+                                                console.log(affectations);
+                                                if (affectations && affectations.length > 0) {
+                                                    structures[a].actualEffective = affectations.length;
+                                                } else {
+                                                    structures[a].actualEffective = 0;
+                                                }
+                                                structures[a].requiredEffective = requiredEffective;
+                                                structures[a].vacancies = requiredEffective - structures[a].actualEffective;
+                                                loopA(a + 1);
+                                            }
+                                        });
                                     }
                                 }
                                 LoopB(0);

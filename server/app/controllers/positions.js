@@ -169,16 +169,26 @@ exports.api.list = function (req, res) {
                 function LoopA(o) {
                     if (o < positions.length) {
                         //TODO compute real effective
-                        positions[o].actualEffective = 0;
+                        exports.findPositionHelder(positions[o].code, function (err, affectation) {
+                            if (err) {
+                                audit.logEvent('[mongodb]', 'Positions', 'findPositionHelder', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
+                                return res.status(500).send(err);
+                            } else {
+                                if (affectation && affectation.length > 0) {
+                                    positions[o].actualEffective = 1;//We can also put the real effective in case we are using effective for position
+                                } else {
+                                    positions[o].actualEffective = 0;
+                                }
+                                positions[o].vacancies = Number(positions[o].requiredEffective) - positions[o].actualEffective;
 
-                        positions[o].vacancies = Number(positions[o].requiredEffective) - positions[o].actualEffective;
-
-                        if (restriction && restriction == "0" && positions[o].vacancies > 0) {
-                            positionsFiltered.push(positions[o]);
-                        } else {
-                            positionsFiltered.push(positions[o]);
-                        }
-                        LoopA(o + 1);
+                                if (restriction && restriction == "0" && positions[o].vacancies > 0) {
+                                    positionsFiltered.push(positions[o]);
+                                } else {
+                                    positionsFiltered.push(positions[o]);
+                                }
+                                LoopA(o + 1);
+                            }
+                        });
                     } else {
                         beautify({actor: req.actor, language: req.actor.language, beautify: true}, positionsFiltered, function (err, objects) {
                             if (err) {
@@ -283,6 +293,46 @@ exports.initialize = function (callback) {
         }
         loopA(0);
     }
+}
+
+/**
+ * Find the person who held a posisition
+ * @param {type} code
+ * @param {type} callback
+ * @returns json
+ */
+exports.findPositionHelder = function (code, callback) {
+    Affectation.find({
+        positionCode: code
+    }).lean().exec(function (err, affectation) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            if (affectation != null) {
+                callback(null, affectation);
+            } else {
+                callback(null);
+            }
+        }
+    });
+};
+
+exports.findHelderPositionsByStructureCode = function (code, callback) {
+    Affectation.find({
+        positionCode: {'$regex': code + "-"}
+    }).lean().exec(function (err, positions) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            if (positions != null) {
+                callback(null, positions);
+            } else {
+                callback(null);
+            }
+        }
+    });
 }
 
 exports.findPositionByCode = function (code, callback) {
