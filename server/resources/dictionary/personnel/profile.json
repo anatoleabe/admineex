@@ -1,32 +1,347 @@
 [
-    {
-        "id": "1",
-        "en": "Chief Inspector of the Treasury",
-        "fr": "Inspecteur Principal du trésor"
-    },
-    {
-        "id": "2",
-        "en": "Inspector of the Treasury",
-        "fr": "Principal du trésor"
-    },
-    {
-        "id": "3",
-        "en": "Class A public agent",
-        "fr": "Agent public de catégorie A"
-    },
-    {
-        "id": "4",
-        "en": "Class B public agent",
-        "fr": "Agent public de catégorie B"
-    },
-    {
-        "id": "5",
-        "en": "Inspector of Class A Financial Boards",
-        "fr": "Inspecteur de régies Financière de catégorie A"
-    },
-    {
-        "id": "6",
-        "en": "Public official category A, B or similar without position of responsibility",
-        "fr": "Agent public de catégorie A, B ou assimilé sans poste de responsabilité"
-    }
+ {
+   "id": 1,
+   "fr": "Administrateur du travail",
+   "en": "Administrator of work"
+ },
+ {
+   "id": 2,
+   "fr": "Agent  public",
+   "en": "Public agent"
+ },
+ {
+   "id": 3,
+   "fr": "Agent 1",
+   "en": "Agent 1"
+ },
+ {
+   "id": 4,
+   "fr": "Agent 1 ou assimilés",
+   "en": "Agent 1 or similar"
+ },
+ {
+   "id": 5,
+   "fr": "Agent 2",
+   "en": "Agent 2"
+ },
+ {
+   "id": 6,
+   "fr": "Agent 2 ou assimilés",
+   "en": "Agent 2 or similar"
+ },
+ {
+   "id": 7,
+   "fr": "Agent Comptable",
+   "en": "Accountant"
+ },
+ {
+   "id": 8,
+   "fr": "Agent Comptable ou assimilés",
+   "en": "Accountant or equivalent"
+ },
+ {
+   "id": 9,
+   "fr": "Agent de l'Etat",
+   "en": "State agent"
+ },
+ {
+   "id": 10,
+   "fr": "Cadre Contractuel d'Administration",
+   "en": "Contractual Framework of Administration"
+ },
+ {
+   "id": 11,
+   "fr": "Cadre Contractuel d'Administration ou assimilés",
+   "en": "Contractual Framework of Administration or similar"
+ },
+ {
+   "id": 12,
+   "fr": "Categorie 1",
+   "en": "Category 1"
+ },
+ {
+   "id": 13,
+   "fr": "Categorie 1 ou assimilés",
+   "en": "Category 1 or similar"
+ },
+ {
+   "id": 14,
+   "fr": "Categorie 10",
+   "en": "Category 10"
+ },
+ {
+   "id": 15,
+   "fr": "Categorie 10 ou assimilés",
+   "en": "Category 10 or similar"
+ },
+ {
+   "id": 16,
+   "fr": "Categorie 11",
+   "en": "Category 11"
+ },
+ {
+   "id": 17,
+   "fr": "Categorie 11 ou assimilés",
+   "en": "Category 11 or similar"
+ },
+ {
+   "id": 18,
+   "fr": "Categorie 12",
+   "en": "Category 12"
+ },
+ {
+   "id": 19,
+   "fr": "Categorie 12 ou assimilés",
+   "en": "Category 12 or similar"
+ },
+ {
+   "id": 20,
+   "fr": "Categorie 2",
+   "en": "Category 2"
+ },
+ {
+   "id": 21,
+   "fr": "Categorie 2 ou assimilés",
+   "en": "Category 2 or similar"
+ },
+ {
+   "id": 22,
+   "fr": "Categorie 3",
+   "en": "Category 3"
+ },
+ {
+   "id": 23,
+   "fr": "Categorie 3 ou assimilés",
+   "en": "Category 3 or similar"
+ },
+ {
+   "id": 24,
+   "fr": "Categorie 4",
+   "en": "Category 4"
+ },
+ {
+   "id": 25,
+   "fr": "Categorie 4 ou assimilés",
+   "en": "Category 4 or similar"
+ },
+ {
+   "id": 26,
+   "fr": "Categorie 5",
+   "en": "Category 5"
+ },
+ {
+   "id": 27,
+   "fr": "Categorie 5 ou assimilés",
+   "en": "Category 5 or similar"
+ },
+ {
+   "id": 28,
+   "fr": "Categorie 6",
+   "en": "Category 6"
+ },
+ {
+   "id": 29,
+   "fr": "Categorie 6 ou assimilés",
+   "en": "Category 6 or similar"
+ },
+ {
+   "id": 30,
+   "fr": "Categorie 7",
+   "en": "Category 7"
+ },
+ {
+   "id": 31,
+   "fr": "Categorie 7 ou assimilés",
+   "en": "Category 7 or similar"
+ },
+ {
+   "id": 32,
+   "fr": "Categorie 8",
+   "en": "Category 8"
+ },
+ {
+   "id": 33,
+   "fr": "Categorie 8 ou assimilés",
+   "en": "Category 8 or similar"
+ },
+ {
+   "id": 34,
+   "fr": "Categorie 9",
+   "en": "Category 9"
+ },
+ {
+   "id": 35,
+   "fr": "Categorie 9 ou assimilés",
+   "en": "Category 9 or similar"
+ },
+ {
+   "id": 36,
+   "fr": "Categorie A",
+   "en": "Category A"
+ },
+ {
+   "id": 37,
+   "fr": "Categorie A ou assimilés",
+   "en": "Category A or similar"
+ },
+ {
+   "id": 38,
+   "fr": "Categorie B",
+   "en": "Category B"
+ },
+ {
+   "id": 39,
+   "fr": "Categorie B ou assimilés",
+   "en": "Category B or similar"
+ },
+ {
+   "id": 40,
+   "fr": "Categorie C",
+   "en": "Category C"
+ },
+ {
+   "id": 41,
+   "fr": "Categorie C ou assimilés",
+   "en": "Category C or similar"
+ },
+ {
+   "id": 42,
+   "fr": "CCM",
+   "en": "TLC"
+ },
+ {
+   "id": 43,
+   "fr": "Comptabilité Matière",
+   "en": "Accounting Matter"
+ },
+ {
+   "id": 44,
+   "fr": "Contractuel d'Administration",
+   "en": "Contract of Administration"
+ },
+ {
+   "id": 45,
+   "fr": "Contractuel d'Administration ou assimilés",
+   "en": "Contract of Administration or similar"
+ },
+ {
+   "id": 46,
+   "fr": "Contrôleur du Trésor",
+   "en": "Treasury Controller"
+ },
+ {
+   "id": 47,
+   "fr": "Contrôleur du Trésor ou assimilés",
+   "en": "Controller of the Treasury or similar"
+ },
+ {
+   "id": 48,
+   "fr": "Contrôleur Principal du Trésor",
+   "en": "Senior Treasury Controller"
+ },
+ {
+   "id": 49,
+   "fr": "Contrôleur Principal du Trésor ou assimilés",
+   "en": "Chief Controller of the Treasury or similar"
+ },
+ {
+   "id": 50,
+   "fr": "Fonctionnaire des régies Financière de Categorie A",
+   "en": "Financial Officer of Category A"
+ },
+ {
+   "id": 51,
+   "fr": "Fonctionnaire des régies Financière de Categorie A ou assimilés",
+   "en": "Financial officer of Category A or similar"
+ },
+ {
+   "id": 52,
+   "fr": "Fonctionnaire des régies Financière de Categorie B",
+   "en": "Financial Officer of Category B"
+ },
+ {
+   "id": 53,
+   "fr": "Fonctionnaire des régies Financière de Categorie B ou assimilés",
+   "en": "Financial officer of Category B or similar"
+ },
+ {
+   "id": 54,
+   "fr": "Fonctionnaire des régies Financière de Categorie C",
+   "en": "Financial Officer of Category C"
+ },
+ {
+   "id": 55,
+   "fr": "Fonctionnaire des régies Financière de Categorie C ou assimilés",
+   "en": "Financial officer of Category C or similar"
+ },
+ {
+   "id": 56,
+   "fr": "Inspecteur de la documentation",
+   "en": "Documentation Inspector"
+ },
+ {
+   "id": 57,
+   "fr": "Inspecteur du Trésor",
+   "en": "Treasury Inspector"
+ },
+ {
+   "id": 58,
+   "fr": "Inspecteur du Trésor ou assimilés",
+   "en": "Treasury inspector or similar"
+ },
+ {
+   "id": 59,
+   "fr": "Inspecteur Principal des Impôts",
+   "en": "Chief Tax Inspector"
+ },
+ {
+   "id": 60,
+   "fr": "Inspecteur Principal du Trésor",
+   "en": "Senior Treasury Inspector"
+ },
+ {
+   "id": 61,
+   "fr": "Inspecteur Principal du Trésor ou assimilés",
+   "en": "Chief Inspector of the Treasury or similar"
+ },
+ {
+   "id": 62,
+   "fr": "Inspecteur Régies Financière",
+   "en": "Financial Regulatory Inspector"
+ },
+ {
+   "id": 63,
+   "fr": "Inspecteur Régies Financière ou assimilés",
+   "en": "Financial Regulator or similar"
+ },
+ {
+   "id": 64,
+   "fr": "PLEG",
+   "en": "PLEG"
+ },
+ {
+   "id": 65,
+   "fr": "Programmeur",
+   "en": "Programmer"
+ },
+ {
+   "id": 66,
+   "fr": "Sans poste de responsabilité",
+   "en": "No position of responsibility"
+ },
+ {
+   "id": 67,
+   "fr": "Secrétaire d'Administration Principal",
+   "en": "Senior Administrative Secretary"
+ },
+ {
+   "id": 68,
+   "fr": "Technicien en Maintenance",
+   "en": "Maintenance Technician"
+ },
+ {
+   "id": 69,
+   "fr": "Titulaire des permis B/C et du CEP",
+   "en": "Licensee B / C and CEP"
+ }
 ]

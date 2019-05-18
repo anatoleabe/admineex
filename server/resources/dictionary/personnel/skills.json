@@ -1,22 +1,242 @@
 [
-    {
-        "id": "1",
-        "en": "Data Analysis",
-        "fr": "Analyse des données"
-    },
-    {
-        "id": "2",
-        "en": "Accounting",
-        "fr": "Comptabilité"
-    },
-    {
-        "id": "3",
-        "en": "Management",
-        "fr": "Gestion"
-    },
-    {
-        "id": "4",
-        "en": "Administration",
-        "fr": "Administration"
-    }
+ {
+   "id": 1,
+   "fr": "Administration",
+   "en": "Administration"
+ },
+ {
+   "id": 2,
+   "fr": "Administration du travail",
+   "en": "Labor Administration"
+ },
+ {
+   "id": 3,
+   "fr": "Administration générale",
+   "en": "General Administration"
+ },
+ {
+   "id": 4,
+   "fr": "Analiste conception projet",
+   "en": "Analyst project design"
+ },
+ {
+   "id": 5,
+   "fr": "Aptitude managériale",
+   "en": "Managerial ability"
+ },
+ {
+   "id": 6,
+   "fr": "Bonne Connaissance de la reglementation et des procedures de gestion RH",
+   "en": "Good knowledge of regulation and HR management procedures"
+ },
+ {
+   "id": 7,
+   "fr": "Bonne connaissances des metiers et des procedures du Trésor, Apt Dicta et Pédag 8ans anc ",
+   "en": "Good knowledge of the trades and the procedures of the Treasury, Apt Dicta and Pedag 8ans old"
+ },
+ {
+   "id": 8,
+   "fr": "Bonne maitrise de la mécanique, électricité, plomberie ",
+   "en": "Good mastery of mechanics, electricity, plumbing"
+ },
+ {
+   "id": 9,
+   "fr": "Comptabilité",
+   "en": "Accounting"
+ },
+ {
+   "id": 10,
+   "fr": "Connaissance des procédures budgetaires et comptables;  connaissance informatique",
+   "en": "Knowledge of budget and accounting procedures; computer knowledge"
+ },
+ {
+   "id": 11,
+   "fr": "Connaissance en comptabilité ;sens de l'organisation et des responsabilités",
+   "en": "Accounting knowledge, organizational skills and responsibilities"
+ },
+ {
+   "id": 12,
+   "fr": "Connaissance en comptabilité matière",
+   "en": "Knowledge in subject accounting"
+ },
+ {
+   "id": 13,
+   "fr": "connaissance en Comptabilité Matière ",
+   "en": "knowledge in Accounting Matter"
+ },
+ {
+   "id": 14,
+   "fr": "Connaissance en technique de bibliothèque",
+   "en": "Knowledge in library technique"
+ },
+ {
+   "id": 15,
+   "fr": "Connaissance en tecnique administrative et secrétariat",
+   "en": "Knowledge in administrative and secretarial skills"
+ },
+ {
+   "id": 16,
+   "fr": "Connaissance en tenue de comptabilité matière",
+   "en": "Knowledge in material accounting"
+ },
+ {
+   "id": 17,
+   "fr": "Connaissance informatique",
+   "en": "Computer knowledge"
+ },
+ {
+   "id": 18,
+   "fr": "Connaissances en procedure comptable et budgetaire",
+   "en": "Knowledge of accounting and budgetary procedures"
+ },
+ {
+   "id": 19,
+   "fr": "Connaissances en techniques administratives et secrétariat",
+   "en": "Knowledge in administrative techniques and secretarial"
+ },
+ {
+   "id": 20,
+   "fr": "Economie",
+   "en": "Economy"
+ },
+ {
+   "id": 21,
+   "fr": "Expérience en conduite défensive et offensive",
+   "en": "Experience in defensive and offensive driving"
+ },
+ {
+   "id": 22,
+   "fr": "Expérience en gestion et procédure de traitement et d'engagement des dossiers financières",
+   "en": "Management Experience and Procedure for Processing and Engaging Financial Records"
+ },
+ {
+   "id": 23,
+   "fr": "Expérience en procédure d'exécution Budgetaire",
+   "en": "Experience in Budgetary Execution"
+ },
+ {
+   "id": 24,
+   "fr": "Fonctionnaire de gendarmerie",
+   "en": "Gendarmerie official"
+ },
+ {
+   "id": 25,
+   "fr": "Fonctionnaire de police",
+   "en": "Police officer"
+ },
+ {
+   "id": 26,
+   "fr": "Formateur ",
+   "en": "Former"
+ },
+ {
+   "id": 27,
+   "fr": "Formation en Comptabilité",
+   "en": "Accounting Training"
+ },
+ {
+   "id": 28,
+   "fr": "Formation en documentation",
+   "en": "Documentation training"
+ },
+ {
+   "id": 29,
+   "fr": "Formation en droit",
+   "en": "Law Training"
+ },
+ {
+   "id": 30,
+   "fr": "Formation en droit ou en gestion",
+   "en": "Training in law or management"
+ },
+ {
+   "id": 31,
+   "fr": "Formation en gestion",
+   "en": "Management training"
+ },
+ {
+   "id": 32,
+   "fr": "Formation en droit ou en gestion RH",
+   "en": "Training in law or HR management"
+ },
+ {
+   "id": 33,
+   "fr": "Formation en sécretariat ",
+   "en": "Secretarial training"
+ },
+ {
+   "id": 34,
+   "fr": "Gestion Ressources Humaines",
+   "en": "Human Resources Management"
+ },
+ {
+   "id": 35,
+   "fr": "Grande polyvalence intellectuelle et professionnelle",
+   "en": "Great intellectual and professional versatility"
+ },
+ {
+   "id": 36,
+   "fr": "Intégrité et impartialité",
+   "en": "Integrity and impartiality"
+ },
+ {
+   "id": 37,
+   "fr": "Juriste",
+   "en": "Lawyer"
+ },
+ {
+   "id": 38,
+   "fr": "Maitrise des procédures comptables et administratives",
+   "en": "Mastery of accounting and administrative procedures"
+ },
+ {
+   "id": 39,
+   "fr": "Maitrise des procédures du droit ",
+   "en": "Mastery of the legal procedures"
+ },
+ {
+   "id": 40,
+   "fr": "Maitrise des techniques d'audit et de contrôle",
+   "en": "Mastery of audit and control techniques"
+ },
+ {
+   "id": 41,
+   "fr": "Master en Finance public",
+   "en": "Master in Public Finance"
+ },
+ {
+   "id": 42,
+   "fr": "Mécanique auto",
+   "en": "Auto mechanics"
+ },
+ {
+   "id": 43,
+   "fr": "Permis de conduire capacicité",
+   "en": "Driving license capacitance"
+ },
+ {
+   "id": 44,
+   "fr": "Rédaction Admnistrative",
+   "en": "Admnistrative Drafting"
+ },
+ {
+   "id": 45,
+   "fr": "Saisie informatique",
+   "en": "Computer Input"
+ },
+ {
+   "id": 46,
+   "fr": "Sens d'organisation",
+   "en": "Organizational sense"
+ },
+ {
+   "id": 47,
+   "fr": "Spécialiste des questions de sécurité",
+   "en": "Security Specialist"
+ },
+ {
+   "id": 48,
+   "fr": "Spécialiste des questions de sécurité;Fonctionnaire de police ou de gendarmerie",
+   "en": "Security Specialist Police or Gendarmerie Officer"
+ }
 ]
