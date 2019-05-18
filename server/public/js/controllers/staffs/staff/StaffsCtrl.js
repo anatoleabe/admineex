@@ -30,6 +30,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                     }
                     $rootScope.kernel.loading = 100;
                     $scope.personnels = data;
+
                 }).catch(function (response) {
                     console.log(response);
                 });
@@ -51,8 +52,8 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                     console.log(response);
                 });
             }
-            
-            
+
+
             //Load structure list
             Structure.list().then(function (response) {
                 var data = response.data;

@@ -14,6 +14,7 @@ exports.api = {};
 var controllers = {
     configuration: require('./configuration'),
     users: require('./users'),
+    positions: require('./positions')
 };
 
 exports.upsert = function (fields, callback) {
@@ -141,7 +142,7 @@ exports.DONOTUSETHISMETHODE = function (callback) {
                                                 loopA(a + 1);
                                             }
                                         });
-                                    }else{
+                                    } else {
                                         avoidedPersonnel.push(personnel.identifier);
                                         loopA(a + 1);
                                     }
@@ -170,7 +171,6 @@ exports.DONOTUSETHISMETHODE = function (callback) {
 }
 
 exports.api.list = function (req, res) {
-
     if (req.actor) {
         Personnel.find({}, function (err, personnels) {
             if (err) {
@@ -178,7 +178,23 @@ exports.api.list = function (req, res) {
                 audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
                 return res.status(500).send(err);
             } else {
-                return res.json(personnels);
+                personnels = JSON.parse(JSON.stringify(personnels));
+                function LoopA(a) {
+                    if (a < personnels.length && personnels[a]) {
+                        controllers.positions.findPositionHelderBystaffId({req: req}, personnels[a]._id, function (err, affectation) {
+                            if (err) {
+                                log.error(err);
+                                res.status(500).send(err);
+                            } else {
+                                personnels[a].affectedTo = affectation;
+                                LoopA(a + 1);
+                            }
+                        });
+                    } else {
+                        return res.json(personnels);
+                    }
+                }
+                LoopA(0);
             }
         });
     } else {

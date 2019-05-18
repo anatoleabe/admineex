@@ -69,8 +69,8 @@
                     <td md-cell>{{personnel.name.family[0]}} {{personnel.name.given[0]}}</td>
                     <td md-cell style="max-width: 60px">{{personnel.identifier| uppercase | unknown}}</td>
                     <td md-cell style="max-width: 10px">{{personnel.gender| uppercase | unknown}}</td>
-                    <td md-cell>{{personnel.posteActuel[0].nom| unknown}}</td>
-                    <td md-cell>{{personnel.posteActuel[0].structure[0].nom| unknown}} <span style="color: #999999" ng-if="personnel.posteActuel[0].structure[0]"> - {{personnel.posteActuel[0].structure[0].code}} </span></td>
+                    <td md-cell>{{personnel.affectedTo.position.name| unknown}}</td>
+                    <td md-cell>{{personnel.affectedTo.position.structure.name| unknown}} <span style="color: #999999" ng-if="personnel.posteActuel[0].structure[0]"> - {{personnel.posteActuel[0].structure[0].code}} </span></td>
                     <td md-cell>{{personnel.telephone| unknown}}</td>
                     <td md-cell>{{personnel.lastModified| date:'dd/MM/yyyy'}}</td>
                     <td md-cell >
