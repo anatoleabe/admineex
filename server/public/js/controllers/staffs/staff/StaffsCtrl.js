@@ -5,6 +5,12 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function($scope,
             title: gettextCatalog.getString("No project"),
             icon: "class"
         };
+        $scope.query = {
+            limit: 50,
+            page: 1,
+            order: "name"
+        };
+
 
         $scope.personnels = [], $scope.helper = [];
 
@@ -22,7 +28,6 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function($scope,
                 }
                 $rootScope.kernel.loading = 100;
                 $scope.personnels = data;
-                console.log(JSON.stringify($scope.personnels))
             }).catch(function(response) {
                 console.log(response);
             });

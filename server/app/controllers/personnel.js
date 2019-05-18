@@ -1,4 +1,4 @@
-var Personnel    = require('../models/personnel').Personnel;
+var Personnel = require('../models/personnel').Personnel;
 var audit = require('../utils/audit-log');
 var log = require('../utils/log');
 var mail = require('../utils/mail');
@@ -6,6 +6,7 @@ var _ = require('lodash');
 var crypto = require('crypto');
 var dictionary = require('../utils/dictionary');
 var formidable = require("formidable");
+var mysql = require('mysql');
 
 // API
 exports.api = {};
@@ -15,14 +16,162 @@ var controllers = {
     users: require('./users'),
 };
 
+exports.upsert = function (fields, callback) {
+    // Parse received fields
+    var id = fields._id || '';
+    var matricule = fields.matricule || '';
+    var mysqlId = fields.mysqlId || '';
+
+    var filter = {$and: []};
+    if (id !== '') {
+        filter.$and.push({
+            "_id": id
+        });
+    } else if (matricule !== '') {
+        filter.$and.push({
+            "isentifier": matricule
+        });
+    } else if (matricule !== '') {
+        filter.$and.push({
+            "mysqlId": mysqlId
+        });
+    } else {
+        filter = fields;
+    }
+
+    fields.lastModified = new Date();
+    Personnel.findOneAndUpdate(filter, fields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Personnel', 'Upsert', "", "", 'failed', "Mongodb attempted to update a personnel");
+            callback(err);
+        } else {
+            callback(null, result);
+        }
+    });
+};
+
 exports.api.upsert = function (req, res) {
 
 };
 
+exports.DONOTUSETHISMETHODE = function (callback) {
+    var con = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "",
+        database: "sygepet"
+    });
+
+    con.connect(function (err) {
+        if (err)
+            throw err;
+        con.query("SELECT * FROM personnel", function (err, personnels, fields) {
+            if (err) {
+                throw err;
+            } else {
+                var avoidedPersonnel = [];
+                var eci = 1;
+                function loopA(a) {
+                    if (a < personnels.length) {
+                        var personne = JSON.parse(JSON.stringify(personnels[a]));
+                        var fieldPerso = {
+                            "mysqlId": personne.id,
+                            "identifier": personne.matricule.replace(/\s+/g, ''),
+                            "name": {
+                                "family": personne.nom,
+                                "given": personne.prenom,
+                                "maiden": personne.nomDeJeuneFille
+                            },
+                            "status": personne.idStatut,
+                            "grade": personne.idGrade,
+                            "category": personne.idCategorie,
+                            "gender": personne.sexe,
+                            "birthDate": new Date(personne.dateNaissance || null),
+                            "birthPlace": personne.lieuNaissance,
+                            "children": personne.nbreEnfant,
+                            "maritalStatus": personne.situationFamiliale,
+                            "father": "",
+                            "mother": "",
+                            "partner": "",
+                            "telecom": [
+                                {
+                                    "system": "phone",
+                                    "value": personne.telephone,
+                                    "use": "home"
+                                },
+                                {
+                                    "system": "email",
+                                    "value": personne.email
+                                }
+                            ],
+                            "address": [
+                                {
+                                    "country": 1,
+                                    "region": personne.idRegion,
+                                    "department": personne.idDepartement,
+                                    "arrondissement": ""
+                                }
+                            ],
+                            "cni": {
+                                "identifier": personne.numCNI,
+                                "date": new Date(personne.dateDelivCNI || null),
+                                "city": personne.lieuDelivCNI,
+                                "by": personne.cniDelivrePar
+                            },
+                            "created": new Date(personne.dateEnregistrement || null),
+                            "lastModified": new Date(personne.miseajour || null)
+                        };
+                        if (personne.matricule == "ECI") {
+                            fieldPerso.identifier = "ECI-" + eci;
+                            eci = eci + 1;
+                        }
+                        exports.findByMatricule({matricule: fieldPerso.identifier}, function (err, personnel) {
+                            if (err) {
+                                log.error(err);
+                                callback(err);
+                            } else {
+                                if (personnel != null) {// If this structure already exist
+                                    if (!personnel.grade || personnel.grade == null || personnel.grade == "null" || !personnel.category || personnel.category == null || personnel.category == "null") {
+                                        exports.upsert(fieldPerso, function (err, structure) {
+                                            if (err) {
+                                                log.error(err);
+                                            } else {
+                                                //console.log(personne.nom + "Inserted")
+                                                loopA(a + 1);
+                                            }
+                                        });
+                                    }else{
+                                        avoidedPersonnel.push(personnel.identifier);
+                                        loopA(a + 1);
+                                    }
+                                } else {
+                                    exports.upsert(fieldPerso, function (err, structure) {
+                                        if (err) {
+                                            log.error(err);
+                                        } else {
+                                            //console.log(personne.nom + "Inserted")
+                                            loopA(a + 1);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+
+                    } else {
+                        callback(null, avoidedPersonnel);
+                    }
+                }
+                loopA(0);
+                //console.log(result);
+            }
+        });
+    })
+}
 
 exports.api.list = function (req, res) {
- 
-    if(req.actor){
+
+    if (req.actor) {
         Personnel.find({}, function (err, personnels) {
             if (err) {
                 log.error(err);
@@ -33,7 +182,7 @@ exports.api.list = function (req, res) {
             }
         });
     } else {
-        audit.logEvent('[anonymous]', 'Personnel', 'List', '', '', 'failed','The actor was not authenticated');
+        audit.logEvent('[anonymous]', 'Personnel', 'List', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);
     }
 }
@@ -81,6 +230,22 @@ exports.read = function (options, callback) {
     });
 }
 
+exports.findByMatricule = function (options, callback) {
+    Personnel.findOne({
+        identifier: options.matricule
+    }).lean().exec(function (err, result) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            if (result) {
+                callback(null, result);
+            } else {
+                callback(null);
+            }
+        }
+    });
+}
 
 exports.api.delete = function (req, res) {
     if (req.actor) {
@@ -90,7 +255,6 @@ exports.api.delete = function (req, res) {
         return res.send(401);
     }
 }
-
 
 function beautify(options, objects, callback) {
     var language = options.language || "";

@@ -15,7 +15,6 @@ angular.module('StaffManagementCtrl', [[
                     $scope.tabs = data.nav.left[0].items[i].items;
                 }
             }
-            console.log($scope.tabs)
         }).catch(function(response) {
             console.error(response);
         });

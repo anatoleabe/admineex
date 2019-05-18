@@ -11,6 +11,7 @@ var PersonnelSchema = new Schema({
         text: String,
         family: [String],
         middle: [String],
+        maiden: [String],
         given: [String],
         prefix: [String],
         suffix: [String]
@@ -25,6 +26,7 @@ var PersonnelSchema = new Schema({
     maritalStatus: {type: String, required: false},
     father: {type: String, required: false},
     mother: {type: String, required: false},
+    partner: {type: String, required: false},
     telecom: [{}],
     address: [
         {

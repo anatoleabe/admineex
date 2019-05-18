@@ -561,4 +561,13 @@ function startBot() {
             audit.logEvent('[anonymous]', 'Routes', 'startBot', "", "", 'Success', "Initialization of position succesfully done. " + avoidedmsg);
         }
     });
+
+//    controllers.personnel.initializeFromMysql(function (err, avoided) {
+//        if (err) {
+//            log.error(err);
+//            console.log(err);
+//        } else {
+//            console.log(avoided)
+//        }
+//    });
 }
