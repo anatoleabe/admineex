@@ -7,7 +7,7 @@
                 <span translate>Back</span>
             </md-button>
             <span flex></span>
-            <md-button  class="md-raised md-primary" ng-click="edit({id:position._id})" aria-label="Edit" >
+            <md-button  class="md-raised md-primary" ng-click="edit({id: position._id})" aria-label="Edit" >
                 <md-icon>edit</md-icon>
                 <span translate>Edit</span>
             </md-button>
@@ -61,12 +61,13 @@
             </md-card-title>
             <md-card-content>
                 <md-list ng-cloak>
+                    <span  translate ng-hide="affectedStaffs && affectedStaffs.length > 0"><center>No body is holding this position information</center></span>
                     <div ng-repeat="staff in affectedStaffs">
                         <md-list-item ui-sref="#" >
                             <div class="avatar avatar-md md-avatar" >
-                                {{"J".toUpperCase()}}
+                                {{staff.name.substr(0, 1).toUpperCase()}}
                             </div>
-                            <p class="md-body-2" >{{staff.name}}</p>
+                            <p class="md-body-2" >{{staff.name}} <sma>({{staff.matricule}})</sma></p>
                             <md-button class="md-secondary " aria-label="Consult" ng-click="edit({id: user._id})">
                                 <md-icon aria-label="pageview">pageview</md-icon>
                                 <md-tooltip>
@@ -86,7 +87,8 @@
                     </div>
                 </md-list>
                 <div layout="row" layout-align="center center"  >
-                    <md-button class="md-secondary" ng-class="{'green':true}" aria-label="See" ng-click="affectTo(position)">
+                    <md-button class="md-secondary" ng-class="{'green':!affectedStaffs || !affectedStaffs.length > 0,'gray':affectedStaffs && affectedStaffs.length > 0}" aria-label="See" ng-click="affectTo(position)"
+                               ng-disabled="affectedStaffs && affectedStaffs.length > 0">
                         <md-icon aria-label="person_add">person_add</md-icon>
                         <md-tooltip>
                             <span translate>Affect staff to this position</span>
@@ -189,7 +191,7 @@
                 <span translate>Back</span>
             </md-button>
             <span flex></span>
-            <md-button  class="md-raised md-primary" ng-click="edit({id:position._id})" aria-label="Edit" >
+            <md-button  class="md-raised md-primary" ng-click="edit({id: position._id})" aria-label="Edit" >
                 <md-icon>edit</md-icon>
                 <span translate>Edit</span>
             </md-button>

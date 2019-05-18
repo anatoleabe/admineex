@@ -14,14 +14,7 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
     $scope.position = {};
     $scope.requiredProfiles = [];
     $scope.requiredSKills = [];
-    $scope.affectedStaffs = [
-        {
-            name: "John Ndoe"
-        },
-        {
-            name: "Ndoe John"
-        },
-    ];
+    $scope.affectedStaffs = [];
     var dictionary = {};
     $scope.helper = {
         icon: 'event_note',
@@ -42,7 +35,14 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                     Position.read({id: id}).then(function (response) {
                         var data = response.data;
                         $scope.position = data;
-
+                        if ($scope.position && $scope.position.occupiedBy){
+                            var positionHelder = {
+                                name: $scope.position.occupiedBy.personnel.name.family+" "+$scope.position.occupiedBy.personnel.name.given,
+                                matricule: $scope.position.occupiedBy.personnel.identifier
+                            };
+                            $scope.affectedStaffs.push(positionHelder);
+                        }
+                        
                         function getDictionaryItemByValue(dictionaryList, itemValue) {
                             var items = $.grep(dictionaryList, function (c, i) {
                                 return c.value === itemValue;

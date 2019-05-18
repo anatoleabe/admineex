@@ -64,6 +64,23 @@ exports.api.read = function (req, res) {
     }
 }
 
+exports.read = function (options, callback) {
+    Personnel.findOne({
+        _id: options._id
+    }).lean().exec(function (err, result) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            if (result) {
+                callback(null, result);
+            } else {
+                callback(null);
+            }
+        }
+    });
+}
+
 
 exports.api.delete = function (req, res) {
     if (req.actor) {

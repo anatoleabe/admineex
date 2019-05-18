@@ -120,7 +120,6 @@ exports.api.list = function (req, res) {
                                                 audit.logEvent('[mongodb]', 'Positions', 'findHelderPositionsByStructureCode', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
                                                 return res.status(500).send(err);
                                             } else {
-                                                console.log(affectations);
                                                 if (affectations && affectations.length > 0) {
                                                     structures[a].actualEffective = affectations.length;
                                                 } else {

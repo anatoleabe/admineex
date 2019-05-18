@@ -15,7 +15,8 @@ exports.api = {};
 
 var controllers = {
     configuration: require('./configuration'),
-    structures: require('./structures')
+    structures: require('./structures'),
+    personnel: require('./personnel')
 };
 
 exports.upsert = function (fields, callback) {
@@ -100,16 +101,18 @@ exports.api.affectToPosition = function (req, res) {
                     personnelId: fields.occupiedBy,
                     date: fields.startDate
                 };
-                var filter = affectationFields;
+                var filter = {
+                    positionId: fields.positionId,
+                    positionCode: fields.positionCode,
+                    personnelId: fields.occupiedBy,
+                };
 
-                fields.lastModified = new Date();
                 Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
                     if (err) {
                         log.error(err);
                         audit.logEvent('[mongodb]', 'Position', 'affectToPosition', "", "", 'failed', "Mongodb attempted to affect to  a Position");
                         return res.status(500).send(err);
                     } else {
-                        console.log(result);
                         res.sendStatus(200);
                     }
                 });
@@ -174,7 +177,7 @@ exports.api.list = function (req, res) {
                                 audit.logEvent('[mongodb]', 'Positions', 'findPositionHelder', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
                                 return res.status(500).send(err);
                             } else {
-                                if (affectation && affectation.length > 0) {
+                                if (affectation) {
                                     positions[o].actualEffective = 1;//We can also put the real effective in case we are using effective for position
                                 } else {
                                     positions[o].actualEffective = 0;
@@ -216,23 +219,36 @@ exports.api.read = function (req, res) {
                     'The actor could not read the position because one or more params of the request was not defined');
             return res.sendStatus(400);
         } else {
-            //var position = dictionary.getPositionFromIdJSON("../../resources/dictionary/structure/positions.json", req.params.id, req.actor.language.toLowerCase());
             exports.find(req.params.id, function (err, position) {
                 if (err) {
                     audit.logEvent('[mongodb]', 'Positions', 'Read', "id", req.params.id, 'failed', "Mongodb attempted to find the position detail");
                     return res.status(500).send(err);
                 } else {
-                    beautify({actor: req.actor, language: req.actor.language, beautify: true}, [position], function (err, objects) {
+                    var filter = {
+                        positionId: position._id,
+                        positionCode: position.code
+                    };
+
+                    exports.findPositionHelder(filter.positionCode, function (err, result) {
                         if (err) {
+                            log.error(err);
+                            audit.logEvent('[mongodb]', 'Position', 'read', "", "", 'failed', "Mongodb attempted to fiend position helder");
                             return res.status(500).send(err);
                         } else {
-                            return res.json(objects[0]);
+                            position.occupiedBy = result;
+
+                            beautify({actor: req.actor, language: req.actor.language, beautify: true}, [position], function (err, objects) {
+                                if (err) {
+                                    return res.status(500).send(err);
+                                } else {
+                                    return res.json(objects[0]);
+                                }
+                            });
                         }
                     });
                 }
             });
         }
-
     } else {
         audit.logEvent('[anonymous]', 'Projects', 'Read', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);
@@ -302,15 +318,24 @@ exports.initialize = function (callback) {
  * @returns json
  */
 exports.findPositionHelder = function (code, callback) {
-    Affectation.find({
+    Affectation.findOne({
         positionCode: code
     }).lean().exec(function (err, affectation) {
         if (err) {
             log.error(err);
             callback(err);
         } else {
-            if (affectation != null) {
-                callback(null, affectation);
+            if (affectation) {
+                controllers.personnel.read({_id: affectation.personnelId}, function (err, personnel) {
+                    if (err) {
+                        log.error(err);
+                        audit.logEvent('[mongodb]', 'Position', 'findPositionHelder', '', '', 'failed', 'Mongodb attempted to retrieve personnel ');
+                        return callback(err);
+                    } else {
+                        affectation.personnel = personnel;
+                        return callback(null, affectation);
+                    }
+                });
             } else {
                 callback(null);
             }
