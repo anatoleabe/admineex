@@ -1,68 +1,80 @@
-angular.module('StaffsCtrl', []).controller('StaffsController', function($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope) {
-    $ocLazyLoad.load('js/services/StaffService.js').then(function() {
+angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope) {
+    $ocLazyLoad.load('js/services/StaffService.js').then(function () {
         var StaffAgent = $injector.get('Staff');
-        var helper = {
-            title: gettextCatalog.getString("No project"),
-            icon: "class"
-        };
-        $scope.query = {
-            limit: 50,
-            page: 1,
-            order: "name"
-        };
+        $ocLazyLoad.load('js/services/StructureService.js').then(function () {
+            var Structure = $injector.get('Structure');
+            var helper = {
+                title: gettextCatalog.getString("No project"),
+                icon: "class"
+            };
+            $scope.query = {
+                limit: 50,
+                page: 1,
+                order: "name"
+            };
+            $scope.search = false;
 
+            $scope.personnels = [], $scope.helper = [];
 
-        $scope.personnels = [], $scope.helper = [];
+            $scope.edit = function (params) {
+                alert('Edit personnel');
+                $state.go("home.staffs.edit", params);
+            };
 
-        $scope.edit = function (params) {
-            alert('Edit personnel');
-            $state.go("home.staffs.edit", params);
-        };
-
-        function getAgents(){
-            $scope.helper = [];
-            StaffAgent.list().then(function(response){
-                var data = response.data;
-                if(data.length == 0 && $scope.helper.length == 0){
-                    $scope.helper = helper;
-                }
-                $rootScope.kernel.loading = 100;
-                $scope.personnels = data;
-            }).catch(function(response) {
-                console.log(response);
-            });
-        }
-        getAgents();
-
-        
-        function deleteAgent(id){
-            StaffAgent.delete({
-                id : id
-            }).then(function(response){
-                getAgents();
-                $rootScope.kernel.alerts.push({
-                    type: 3,
-                    msg: gettextCatalog.getString('The Agent has been deleted'),
-                    priority: 4
+            function getAgents() {
+                $scope.helper = [];
+                StaffAgent.list().then(function (response) {
+                    var data = response.data;
+                    if (data.length == 0 && $scope.helper.length == 0) {
+                        $scope.helper = helper;
+                    }
+                    $rootScope.kernel.loading = 100;
+                    $scope.personnels = data;
+                }).catch(function (response) {
+                    console.log(response);
                 });
-            }).catch(function(response) {
-                console.log(response);
-            });
-        }
+            }
+            getAgents();
 
-        $scope.showConfirm = function(agent){
-            var confirm = $mdDialog.confirm()
-            .title(gettextCatalog.getString("Delete this Agent"))
-            .textContent(gettextCatalog.getString("Are you sure you want to delete the Agent") + " " + agent.name.use + gettextCatalog.getString("?"))
-            .ok(gettextCatalog.getString("OK"))
-            .cancel(gettextCatalog.getString("Cancel"));
 
-            $mdDialog.show(confirm).then(function() {
-                // Delete
-                deleteAgent(agent._id)
-            }, function() {
-                // Cancel
+            function deleteAgent(id) {
+                StaffAgent.delete({
+                    id: id
+                }).then(function (response) {
+                    getAgents();
+                    $rootScope.kernel.alerts.push({
+                        type: 3,
+                        msg: gettextCatalog.getString('The Agent has been deleted'),
+                        priority: 4
+                    });
+                }).catch(function (response) {
+                    console.log(response);
+                });
+            }
+            
+            
+            //Load structure list
+            Structure.list().then(function (response) {
+                var data = response.data;
+                $scope.structures = data;
+            }).catch(function (response) {
+                console.error(response);
             });
-        }
+
+            $scope.showConfirm = function (agent) {
+                var confirm = $mdDialog.confirm()
+                        .title(gettextCatalog.getString("Delete this Agent"))
+                        .textContent(gettextCatalog.getString("Are you sure you want to delete the Agent") + " " + agent.name.use + gettextCatalog.getString("?"))
+                        .ok(gettextCatalog.getString("OK"))
+                        .cancel(gettextCatalog.getString("Cancel"));
+
+                $mdDialog.show(confirm).then(function () {
+                    // Delete
+                    deleteAgent(agent._id)
+                }, function () {
+                    // Cancel
+                });
+            }
+        });
     });
 });

@@ -1,142 +1,53 @@
 <md-toolbar class="toolbar-filter">
-    <div class="md-toolbar-tools md-default">
-        <div flex >
-            <div >
-                <span style="display: inline-block;"  >
-                    <md-button style="margin-right:0;" ng-repeat="b in btnFilters"  ng-click="enableActifOrRetraite(b.path)" class="md-raised" ng-class="{'md-accent active': b.enabled, 'btn-filter-green': b.path == 'actif', 'btn-filter-red': b.path == 'aretraite'}">{{b.name}}</md-button>
-                </span>
-            </div>
-        </div>
-        <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
-            <md-icon class="material-icons" >search</md-icon>
-            <md-tooltip>
-                <span translate>Search</span>
-            </md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button" aria-label="search" ng-click="filter = !filter; filters = {}" ng-hide="search == undefined" >
-            <md-icon class="material-icons" >filter_list</md-icon>
-            <md-tooltip>
-                <span translate>Filter</span>
-            </md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button" aria-label="Print" >
-            <md-icon>print</md-icon>
-            <md-tooltip md-direction="top">
-                <span translate>Print</span>
-            </md-tooltip>
-        </md-button>
-        <md-menu md-offset="0 -7">
-            <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open($event)">
-                <md-icon class="material-icons" >more_vert</md-icon>
-            </md-button>
-            <md-menu-content width="4">
-                <md-menu-item >
-                    <md-button ng-click="nextRetirement()"> <span md-menu-align-target>Personnel admis en retraite</span></md-button>
-                </md-menu-item>
-                <md-divider ></md-divider>
-
-            </md-menu-content>
-        </md-menu>
-    </div>
-</md-toolbar>
-
-<md-card>
-    <md-toolbar class="md-table-toolbar md-default" ng-show="search">
-        <div class="md-toolbar-tools">
-            <md-icon>search</md-icon>
-            <form flex>
-                <input type="text" name="search" ng-model="contactsFilter" placeholder="{{ 'Search...' | translate }}">
-            </form>
-            <md-button class="md-icon-button" ng-click="search = false" aria-label="close">
-                <md-icon class="material-icons">close</md-icon>
-            </md-button>
-        </div>
-    </md-toolbar>
-    <md-toolbar class="md-table-toolbar md-default" ng-show="filter == true">
-        <span style="display: inline-block;margin-top: 15px;" >
-            <md-input-container flex>
-                <label>Statut du personnel</label>
-                <md-select ng-model="filters.status" ng-change="doFilter()" >
-                    <md-option ng-repeat="statut in statutsPersonnel" value="{{statut.id}}">
-                        {{statut.intitule}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-
-            <md-input-container flex ng-if="filters.status">
-                <label translate>Corps</label>
-                <md-select ng-model="filters.corps" >
-                    <md-option ng-repeat="c in corps" value="{{c.id}}">
-                        {{c.intitule| uppercase}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container flex ng-if="filters.corps">
-                <label translate>Grade</label>
-                <md-select  ng-model="filters.grade" >
-                    <md-option ng-repeat="grade in grades" value="{{grade.id}}">
-                        {{grade.intitule| uppercase}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container flex ng-if="filters.grade">
-                <label translate>Category</label>
-                <md-select ng-model="filters.category" >
-                    <md-option ng-repeat="category in categories" value="{{category.id}}">
-                        {{category.code| uppercase}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-
-
-        </span>
-    </md-toolbar>
-    <md-toolbar class="toolbar-filter">
         <div class="md-toolbar-tools md-default">
             <div flex >
                 <span style="display: inline-block;margin-top: 18px;" >
                     <md-input-container flex>
-                        <label translate>All Directions</label>
-                        <md-select ng-model="filters.direction" md-selected-text="getSelectedDirectionCode()" style="min-width: 150px;">
-                            <md-optgroup label="{{'Filter by Directions'| translate}}">
-                                <md-option  value="0" >
-                                    {{"All Structures"| translate}}
+                        <label translate>Filter by structure</label>
+                        <md-select ng-model="filters.structure"  style="min-width: 150px;">
+                            <md-optgroup label="{{'Filtre by structure'| translate}}">
+                                <md-option value="-1" >
+                                    {{'All structures'| translate}}
                                 </md-option>
-                                <md-option ng-repeat="dir in directions" value="{{dir}}" >
-                                    {{dir.nom}}
+                                <md-option ng-repeat="struc in structures" value="{{struc}}" >
+                                    {{struc.name}}
                                 </md-option>
                             </md-optgroup>
                         </md-select>
                     </md-input-container>
-<!--                     <md-input-container flex>
-                        <label translate>All Sub-Directions</label>
-                        <md-select ng-model="filters.sdirection" md-selected-text="getSelectedsDirectionCode()" style="min-width: 150px;">
-                            <md-optgroup label="{{'Filter by Sub-directions'| translate}}">
-                                <md-option value="0" >
-                                    {{"All Sub-Directions"| translate}}
-                                </md-option>
-                                <md-option ng-repeat="sdir in sousDirections" value="{{sdir}}">
-                                    {{sdir.nom}}
-                                </md-option>
-                            </md-optgroup>
-                        </md-select>
-                    </md-input-container> -->
-<!--                     <md-input-container flex>
-                        <label translate>All Services</label>
-                        <md-select ng-model="filters.service">
-                            <md-optgroup label="{{'Filtre by Services'| translate}}">
-                                <md-option value="0" >
-                                    {{"All Services"| translate}}
-                                </md-option>
-                                <md-option ng-repeat="serv in services" value="{{serv.id}}">
-                                    {{serv.nom}}
-                                </md-option>
-                            </md-optgroup>
-                        </md-select>
-                    </md-input-container> -->
-                </span>
-            </div>
 
+                </span>
+
+            </div>
+            <md-switch  flex ng-model="showOnlyVacancies" aria-label="enable">
+                <span><span translate>People of retirement age</span><span translate>:</span></span> 
+            </md-switch>
+
+            <md-button class="md-icon-button" aria-label="Print" >
+                <md-icon>print</md-icon>
+                <md-tooltip md-direction="top">
+                    <span translate>Print</span>
+                </md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
+                <md-icon class="material-icons" >search</md-icon>
+                <md-tooltip>
+                    <span translate>Search</span>
+                </md-tooltip>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+<md-card>
+    <md-toolbar class="md-table-toolbar md-default" >
+        <div class="md-toolbar-tools">
+            <md-icon>search</md-icon>
+            <form flex>
+                <input type="text" name="search" ng-model="staffsFilter" placeholder="{{ 'Search...' | translate }}">
+            </form>
+            <md-button class="md-icon-button" ng-click="search = false" aria-label="close">
+                <md-icon class="material-icons">close</md-icon>
+            </md-button>
         </div>
     </md-toolbar>
     <md-table-container>
@@ -155,9 +66,9 @@
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row data-ng-repeat="personnel in personnels| filter:contactsFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="read(personnel)">
+                <tr md-row data-ng-repeat="personnel in personnels| filter:staffsFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="read(personnel)">
                     <td md-cell>{{personnel.name.family[0]}} {{personnel.name.given[0]}}</td>
-                    <td md-cell style="max-width: 50px">{{personnel.identifier| uppercase | unknown}}</td>
+                    <td md-cell style="max-width: 60px">{{personnel.identifier| uppercase | unknown}}</td>
                     <td md-cell style="max-width: 30px">{{personnel.gender| uppercase | unknown}}</td>
                     <td md-cell>{{personnel.posteActuel[0].nom| unknown}}</td>
                     <td md-cell>{{personnel.posteActuel[0].structure[0].nom| unknown}} <span style="color: #999999" ng-if="personnel.posteActuel[0].structure[0]"> - {{personnel.posteActuel[0].structure[0].code}} </span></td>
