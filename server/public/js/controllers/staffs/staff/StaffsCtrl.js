@@ -21,9 +21,30 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                 $state.go("home.staffs.edit", params);
             };
 
+            $scope.affect = function (personnel) {
+                $ocLazyLoad.load('js/controllers/administration/positions/AffectationCtrl.js').then(function () {
+                    $mdDialog.show({
+                        controller: 'AffectationController',
+                        templateUrl: '../templates/dialogs/affectation.html',
+                        parent: angular.element(document.body),
+                        clickOutsideToClose: true,
+                        locals: {
+                            params: {
+                                personnel: personnel
+                            }
+                        }
+                    }).then(function (answer) {
+//                                    $scope.profile.work[0].organisationID = answer._id;
+//                                    $scope.organisationSearchText = answer.name;
+//                                    showAlert();
+                    }, function () {
+                    });
+                });
+            };
+
             function getAgents() {
                 $scope.helper = [];
-                StaffAgent.list().then(function (response) {
+                StaffAgent.list({minify:true}).then(function (response) {
                     var data = response.data;
                     if (data.length == 0 && $scope.helper.length == 0) {
                         $scope.helper = helper;

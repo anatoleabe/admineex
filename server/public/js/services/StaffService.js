@@ -1,7 +1,7 @@
 angular.module('StaffService', []).factory('Staff', function($http) {
     return {
-        list: function() {
-            return $http.get('/api/personnel');
+        list: function(info) {
+            return $http.get('/api/personnel/'+info.minify);
         },
         read: function(info) {
             return $http.get('/api/personnel/' + info.id);

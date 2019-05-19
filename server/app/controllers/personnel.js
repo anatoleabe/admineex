@@ -171,6 +171,10 @@ exports.DONOTUSETHISMETHODE = function (callback) {
 }
 
 exports.api.list = function (req, res) {
+    var minify = false;
+    if (req.params.minify && req.params.minify == "true") {
+        minify = true;
+    }
     if (req.actor) {
         Personnel.find({}, function (err, personnels) {
             if (err) {
@@ -178,23 +182,27 @@ exports.api.list = function (req, res) {
                 audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
                 return res.status(500).send(err);
             } else {
-                personnels = JSON.parse(JSON.stringify(personnels));
-                function LoopA(a) {
-                    if (a < personnels.length && personnels[a]) {
-                        controllers.positions.findPositionHelderBystaffId({req: req}, personnels[a]._id, function (err, affectation) {
-                            if (err) {
-                                log.error(err);
-                                res.status(500).send(err);
-                            } else {
-                                personnels[a].affectedTo = affectation;
-                                LoopA(a + 1);
-                            }
-                        });
-                    } else {
-                        return res.json(personnels);
+                if (minify == true) {
+                    personnels = JSON.parse(JSON.stringify(personnels));
+                    function LoopA(a) {
+                        if (a < personnels.length && personnels[a]) {
+                            controllers.positions.findPositionHelderBystaffId({req: req}, personnels[a]._id, function (err, affectation) {
+                                if (err) {
+                                    log.error(err);
+                                    res.status(500).send(err);
+                                } else {
+                                    personnels[a].affectedTo = affectation;
+                                    LoopA(a + 1);
+                                }
+                            });
+                        } else {
+                            return res.json(personnels);
+                        }
                     }
+                    LoopA(0);
+                } else {
+                    return res.json(personnels);
                 }
-                LoopA(0);
             }
         });
     } else {

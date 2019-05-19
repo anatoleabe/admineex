@@ -73,7 +73,7 @@
                         </md-input-container>
                     </div>
                     <div layout="row" >
-                        <md-input-container class="md-block" flex="60">
+                        <md-input-container class="md-block" flex>
                             <label translate>New position </label>
                             <md-select name="newPosition" ng-model="affectation.positionId" required data-md-container-class="selectdemoSelectHeader" ng-change="getPositionCode(position)">
                                 <md-option ng-repeat="position in positions|filter:searchTerm" value="{{position._id}}">
@@ -86,15 +86,7 @@
                                 </div>
                             </div>
                         </md-input-container>
-                        <md-input-container class="datepicker-xl" flex >
-                            <label translate>Date of beginning</label>
-                            <md-datepicker name="date" class="md-block"  ng-model="affectation.startDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
-                            <div ng-messages="date">
-                                <div ng-message="required">
-                                    This field is required to proceed on next step.
-                                </div>
-                            </div>
-                        </md-input-container>
+                        
                     </div>
                     <div layout="row" >
                         <md-input-container class="md-block" flex>
@@ -134,7 +126,18 @@
                                 </div>
                             </div>
                         </md-input-container>
-                        <md-input-container class="datepicker-xl" flex style="width: 400px;">
+                    </div>
+                    <div layout="row" >
+                        <md-input-container class="datepicker-xl" flex="50" >
+                            <label translate>Date of beginning</label>
+                            <md-datepicker name="date" class="md-block"  ng-model="affectation.startDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
+                            <div ng-messages="date">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="datepicker-xl" flex="50">
                             <label translate>Signature date</label>
                             <md-datepicker name="signatureDate" class="md-block"  ng-model="affectation.signatureDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
                             <div ng-messages="signatureDate">

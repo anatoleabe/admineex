@@ -115,7 +115,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                         Structure.list().then(function (response) {
                                             var data = response.data;
                                             $scope.structures = data;
-                                            Staff.list().then(function (response) {
+                                            Staff.list({minify:false}).then(function (response) {
                                                 var data = response.data;
                                                 $scope.personnels = data;
 

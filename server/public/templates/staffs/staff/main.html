@@ -74,13 +74,13 @@
                     <td md-cell>{{personnel.telephone| unknown}}</td>
                     <td md-cell>{{personnel.lastModified| date:'dd/MM/yyyy'}}</td>
                     <td md-cell >
-                            <md-button class="md-fab md-primary md-hue-2 md-mini"  aria-label="Affecte" >
+                            <md-button ng-click="affect({id:personnel._id})" class="md-fab md-primary md-hue-2 md-mini"  aria-label="Affecte" >
                                 <md-icon>transfer_within_a_station</md-icon>
                                 <md-tooltip md-direction="top">
                                     <span translate>Affect to new position</span>
                                 </md-tooltip>
                             </md-button>
-                            <md-button class="md-fab md-primary md-hue-2 md-mini" ng-click="edit({id:personnel._id})" aria-label="Edit" >
+                            <md-button class="md-fab md-primary md-hue-2 md-mini" ng-click="edit(personnel)" aria-label="Edit" >
                                 <md-icon>edit</md-icon>
                                 <md-tooltip md-direction="top">
                                     <span translate>Edit</span>
