@@ -115,69 +115,83 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                         Structure.list().then(function (response) {
                                             var data = response.data;
                                             $scope.structures = data;
-                                            Staff.list({minify:false}).then(function (response) {
-                                                var data = response.data;
-                                                $scope.personnels = data;
+                                        }).catch(function (response) {
+                                            console.error(response);
+                                        });
 
-                                                $scope.$watch('structure', function (newval, oldval) {
-                                                    if (newval) {
-                                                        getPositions(newval ? newval : "-1", $scope.showOnlyVacancies ? "0" : "-1");
-                                                    }
-                                                });
+                                        Staff.list({minify: false}).then(function (response) {
+                                            var data = response.data;
+                                            $scope.personnels = data;
 
-                                                function getPositions(idStructure, restric) {
-                                                    $scope.helper = [];
-                                                    $rootScope.kernel.loading = 0;
-                                                    var deferred = $q.defer();
-                                                    $scope.promise = deferred.promise;
-                                                    Position.list({id: idStructure, restric: restric}).then(function (response) {
-                                                        var data = response.data;
-
-                                                        $rootScope.kernel.loading = 100;
-                                                        $scope.positions = data;
-                                                        deferred.resolve();
-                                                    }).catch(function (response) {
-                                                        console.error(response);
-                                                    });
+                                            $scope.$watch('structure', function (newval, oldval) {
+                                                if (newval) {
+                                                    getPositions(newval ? newval : "-1", $scope.showOnlyVacancies ? "0" : "-1");
                                                 }
+                                            });
 
+                                            function getPositions(idStructure, restric) {
+                                                $scope.helper = [];
+                                                $rootScope.kernel.loading = 0;
+                                                var deferred = $q.defer();
+                                                $scope.promise = deferred.promise;
+                                                Position.list({id: idStructure, restric: restric}).then(function (response) {
+                                                    var data = response.data;
 
-                                                // Modify or Add ?
-                                                if ($scope.params && $scope.params.positionTo) {
+                                                    $rootScope.kernel.loading = 100;
+                                                    $scope.positions = data;
+                                                    deferred.resolve();
+                                                }).catch(function (response) {
+                                                    console.error(response);
+                                                });
+                                            }
+                                            $scope.affectation.isCurrent = true;
+
+                                            // Modify or Add ?
+                                            if ($scope.params) {
+                                                if ($scope.params.positionTo) {
+                                                    $scope.positionFromParams = true;
                                                     $scope.structure = $scope.params.positionTo.structure.code;
                                                     $scope.affectation.positionId = $scope.params.positionTo._id;
                                                     $scope.affectation.positionCode = $scope.params.positionTo.code;
                                                 }
-
-
-                                                // save
-                                                $scope.save = function () {
-                                                    $rootScope.kernel.loading = 0;
-                                                    $scope.affectation.occupiedBy = $scope.selectedPersonnel;
-
-                                                    Position.affect($scope.affectation).then(function (response) {
-                                                        $rootScope.kernel.loading = 100;
-                                                        $state.go('home.administration.positions');
-                                                        $rootScope.kernel.alerts.push({
-                                                            type: 3,
-                                                            msg: gettextCatalog.getString('The operation has been saved'),
-                                                            priority: 4
-                                                        });
-                                                        $scope.close();
-                                                    }).catch(function (response) {
-                                                        $rootScope.kernel.loading = 100;
-                                                        $rootScope.kernel.alerts.push({
-                                                            type: 1,
-                                                            msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                                            priority: 2
-                                                        });
-                                                        console.error(response);
-                                                    });
+                                                
+                                                if ($scope.params.personnel) {
+                                                    $scope.personnelFromParams = true;
+                                                    $scope.selectedPersonnel = $scope.params.personnel._id;
                                                 }
-                                            });
-                                        }).catch(function (response) {
-                                            console.error(response);
+                                            }
+
+                                            // save
+                                            $scope.save = function () {
+                                                $rootScope.kernel.loading = 0;
+                                                $scope.affectation.occupiedBy = $scope.selectedPersonnel;
+
+                                                Position.affect($scope.affectation).then(function (response) {
+                                                    $rootScope.kernel.loading = 100;
+                                                    if ($scope.params.positionTo) {
+                                                        $state.go('home.administration.positions');
+                                                    }else if ($scope.params.personnel) {
+                                                        $state.go('home.staffs.main');
+                                                    }
+                                                    
+                                                    $rootScope.kernel.alerts.push({
+                                                        type: 3,
+                                                        msg: gettextCatalog.getString('The operation has been saved'),
+                                                        priority: 4
+                                                    });
+                                                    $scope.close();
+                                                }).catch(function (response) {
+                                                    $rootScope.kernel.loading = 100;
+                                                    $rootScope.kernel.alerts.push({
+                                                        type: 1,
+                                                        msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                        priority: 2
+                                                    });
+                                                    console.error(response);
+                                                });
+                                            }
                                         });
+
                                     });
                                 });
                             });

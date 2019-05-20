@@ -176,7 +176,10 @@ exports.api.list = function (req, res) {
         minify = true;
     }
     if (req.actor) {
-        Personnel.find({}, function (err, personnels) {
+        var query = {}
+        var sort = {"name.family": 'asc'};
+        var q = Personnel.find(query).sort(sort).limit(0).skip(0).lean();
+        q.exec(function (err, personnels) {
             if (err) {
                 log.error(err);
                 audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');

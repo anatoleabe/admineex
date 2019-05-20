@@ -5,14 +5,14 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 var Schema = mongoose.Schema;
 var PersonnelSchema = new Schema({
     mysqlId: {type: String, required: true}, //autoincrementId TO BE REMOVED
-    identifier: {type: String, required: true}, //Matricule
+    identifier: {type: String, required: true, index: true}, //Matricule
     name: {
-        use: String,
+        use: {type: String, index: true},
         text: String,
         family: [String],
         middle: [String],
         maiden: [String],
-        given: [String],
+        given: [{type: String, index: true},],
         prefix: [String],
         suffix: [String]
     },
@@ -44,10 +44,9 @@ var PersonnelSchema = new Schema({
     },
     positionsHistory: [
         {
-            numAct: {type: ObjectId, required: false},
+            numAct: String,
             positionId: {type: ObjectId, required: false},
-            lastPositionId: {type: ObjectId, required: false},
-            current: Boolean,
+            isCurrent: Boolean,
             signatureDate: Date,
             startDate: Date,
             endDate: Date,
@@ -113,3 +112,8 @@ var Personnel = mongoose.model('Personnel', PersonnelSchema);
 
 // Export the model
 exports.Personnel = Personnel;
+
+Personnel.ensureIndexes(function(err) {
+    if (err)
+        console.log(err);
+});

@@ -1,16 +1,16 @@
 <md-dialog flex="50">
     <form ng-submit="save()">
-    <md-toolbar class="md-accent">
-        <div class="md-toolbar-tools">
-            <h2>Affectation to position</h2>
-            <span flex></span>
-            <md-button class="md-icon-button" ng-click="cancel()">
-                <md-icon>close</md-icon>
-            </md-button>
-        </div>
-    </md-toolbar>
-    <md-dialog-content>
-        
+        <md-toolbar class="md-accent">
+            <div class="md-toolbar-tools">
+                <h2>Affectation to position</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+
             <md-card>
 
                 <md-card-content>
@@ -41,7 +41,7 @@
                     <div layout="row">
                         <md-input-container flex>
                             <label translate>Select a personnel</label>
-                            <md-select name="selectedPersonnel" required ng-model="selectedPersonnel"  style="min-width: 150px;">
+                            <md-select name="selectedPersonnel" ng-disabled="personnelFromParams" required ng-model="selectedPersonnel"  style="min-width: 150px;">
                                 <md-option ng-repeat="perso in personnels" value="{{perso._id}}" >
                                     {{perso.name.family[0]}} {{perso.name.given[0]}} <small>{{"(Mle: " + (perso.identifier) + ")"}}</small>
 
@@ -60,7 +60,7 @@
                     <div layout="row">
                         <md-input-container flex>
                             <label translate>Structure</label>
-                            <md-select name="structure" required ng-model="structure"  style="min-width: 150px;">
+                            <md-select name="structure" ng-disabled="positionFromParams" required ng-model="structure"  style="min-width: 150px;">
                                 <md-option ng-repeat="struc in structures" value="{{struc.code}}" >
                                     {{struc.name}} ({{struc.code}})
                                 </md-option>
@@ -75,9 +75,9 @@
                     <div layout="row" >
                         <md-input-container class="md-block" flex>
                             <label translate>New position </label>
-                            <md-select name="newPosition" ng-model="affectation.positionId" required data-md-container-class="selectdemoSelectHeader" ng-change="getPositionCode(position)">
-                                <md-option ng-repeat="position in positions|filter:searchTerm" value="{{position._id}}">
-                                    {{position.name|uppercase| truncateTexte}} ({{position.code| uppercase}})
+                            <md-select name="newPosition" ng-disabled="positionFromParams" ng-model="affectation.positionId" required data-md-container-class="selectdemoSelectHeader" >
+                                <md-option ng-repeat="position in positions|filter:searchTerm" ng-s value="{{position._id}}">
+                                    {{position.name}} ({{position.code| uppercase}})
                                 </md-option>
                             </md-select>
                             <div ng-messages="newPosition.$error">
@@ -86,7 +86,7 @@
                                 </div>
                             </div>
                         </md-input-container>
-                        
+
                     </div>
                     <div layout="row" >
                         <md-input-container class="md-block" flex>
@@ -127,17 +127,13 @@
                             </div>
                         </md-input-container>
                     </div>
+                    <div flex-gt-sm="50">
+                        <md-checkbox ng-model="affectation.isCurrent" ng-checked="affectation.isCurrent" aria-label="Checkbox 1">
+                            Currently holds this position 
+                        </md-checkbox>
+                    </div>
                     <div layout="row" >
-                        <md-input-container class="datepicker-xl" flex="50" >
-                            <label translate>Date of beginning</label>
-                            <md-datepicker name="date" class="md-block"  ng-model="affectation.startDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
-                            <div ng-messages="date">
-                                <div ng-message="required">
-                                    This field is required to proceed on next step.
-                                </div>
-                            </div>
-                        </md-input-container>
-                        <md-input-container class="datepicker-xl" flex="50">
+                        <md-input-container class="datepicker-xl" >
                             <label translate>Signature date</label>
                             <md-datepicker name="signatureDate" class="md-block"  ng-model="affectation.signatureDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
                             <div ng-messages="signatureDate">
@@ -146,17 +142,36 @@
                                 </div>
                             </div>
                         </md-input-container>
+                        <md-input-container class="datepicker-xl" >
+                            <label translate>Start</label>
+                            <md-datepicker name="date" class="md-block"  ng-model="affectation.startDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
+                            <div ng-messages="date">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="datepicker-xl"  ng-hide="affectation.isCurrent">
+                            <label translate>End</label>
+                            <md-datepicker name="date" class="md-block"  ng-model="affectation.endDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
+                            <div ng-messages="date">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                        
                     </div>
                 </md-card-content>
             </md-card>
-        
 
-    </md-dialog-content>
 
-    <md-dialog-actions layout="row">
-        <span flex></span>
-        <md-button ><span translate>Cancel</span></md-button>
-        <md-button class="md-raised md-accent" type="submit"><span translate>Save</span></md-button>
-    </md-dialog-actions>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="close();"><span translate>Cancel</span></md-button>
+            <md-button class="md-raised md-accent" type="submit"><span translate>Save</span></md-button>
+        </md-dialog-actions>
     </form>
 </md-dialog>

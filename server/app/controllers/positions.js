@@ -9,6 +9,7 @@ var _ = require('lodash');
 var crypto = require('crypto');
 var dictionary = require('../utils/dictionary');
 var formidable = require("formidable");
+var ObjectID = require('mongoose').mongo.ObjectID;
 
 // API
 exports.api = {};
@@ -94,29 +95,72 @@ exports.api.affectToPosition = function (req, res) {
                 audit.logEvent('[formidable]', 'Positions', 'affectation', "", "", 'failed', "Formidable attempted to parse affectation fields");
                 return res.status(500).send(err);
             } else {
-                // Parse received fields
-                var affectationFields = {
-                    positionId: fields.positionId,
-                    positionCode: fields.positionCode,
-                    personnelId: fields.occupiedBy,
-                    date: fields.startDate
+                var projection = {
+                    _id: 1,
+                    code: 1
                 };
-                var filter = {
-                    positionId: fields.positionId,
-                    positionCode: fields.positionCode,
-                    personnelId: fields.occupiedBy,
-                };
-
-                Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+                Position.findOne({_id: fields.positionId}, projection, function (err, result) {
                     if (err) {
                         log.error(err);
-                        audit.logEvent('[mongodb]', 'Position', 'affectToPosition', "", "", 'failed', "Mongodb attempted to affect to  a Position");
                         return res.status(500).send(err);
                     } else {
-                        res.sendStatus(200);
+                        // Parse received fields
+                        var affectationFields = {
+                            positionId: fields.positionId,
+                            positionCode: result.code,
+                            personnelId: fields.occupiedBy,
+                            date: fields.startDate
+                        };
+                        var filter = {
+                            positionId: fields.positionId,
+                            positionCode: result.code,
+                            personnelId: fields.occupiedBy
+                        };
+                        Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+                            if (err) {
+                                log.error(err);
+                                audit.logEvent('[mongodb]', 'Position', 'affectToPosition', "", "", 'failed', "Mongodb attempted to affect to  a Position");
+                                return res.status(500).send(err);
+                            } else {
+                                controllers.personnel.read({_id: affectationFields.personnelId}, function (err, perso) {
+                                    if (err) {
+                                        log.error(err);
+                                        return res.status(500).send(err);
+                                    } else {
+                                        if (perso) {
+                                            
+                                            var history = {
+                                                numAct: fields.numAct,
+                                                positionId: new ObjectID(fields.positionId),
+                                                isCurrent: fields.isCurrent,
+                                                signatureDate: fields.signatureDate,
+                                                startDate: fields.startDate,
+                                                endDate: (fields.isCurrent && fields.isCurrent == "true") ? null : fields.endDate,
+                                                mouvement: fields.mouvement,
+                                                nature: fields.nature
+                                            };
+                                            if (!perso.positionsHistory){
+                                                perso.positionsHistory = [];
+                                            }
+                                            perso.positionsHistory.push(history);
+
+                                            controllers.personnel.upsert(perso, function (err, structure) {
+                                                if (err) {
+                                                    log.error(err);
+                                                } else {
+                                                    res.sendStatus(200);
+                                                }
+                                            });
+                                        } else {
+                                            res.sendStatus(200);
+
+                                        }
+                                    }
+                                });
+                            }
+                        });
                     }
                 });
-
             }
         });
     } else {
