@@ -45,7 +45,7 @@
             <form flex>
                 <input type="text" name="search" ng-model="staffsFilter" placeholder="{{ 'Search amongs staff...' | translate }}">
             </form>
-            <md-button class="md-icon-button" ng-click="search = false" aria-label="close">
+            <md-button class="md-icon-button" ng-click="filters.structure='-1';staffsFilter=''" aria-label="close">
                 <md-icon class="material-icons">close</md-icon>
             </md-button>
         </div>

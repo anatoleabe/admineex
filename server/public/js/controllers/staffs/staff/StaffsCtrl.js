@@ -13,13 +13,28 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                 order: "name"
             };
             $scope.search = false;
+            $scope.filters = {};
 
             $scope.personnels = [], $scope.helper = [];
 
             $scope.edit = function (params) {
-                alert('Edit personnel');
                 $state.go("home.staffs.edit", params);
             };
+            
+            $scope.filterByStructure = function (structureCode) {
+                $scope.staffsFilter = structureCode;
+            };
+            
+            
+            $scope.$watch('filters.structure', function (newval, oldval) {
+                if (newval) {
+                    newval = JSON.parse(newval).code;
+                    if (newval && newval != "-1"){
+                        $scope.staffsFilter = newval+"-P";
+                    }
+                    
+                }
+            });
 
             $scope.affect = function (personnel) {
                 $ocLazyLoad.load('js/controllers/administration/positions/AffectationCtrl.js').then(function () {
