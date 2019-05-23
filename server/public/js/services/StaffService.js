@@ -6,6 +6,9 @@ angular.module('StaffService', []).factory('Staff', function($http) {
         read: function(info) {
             return $http.get('/api/personnel/' + info.id);
         },
+        search: function(info) {
+            return $http.get('/api/personnel/search/' + info.text);
+        },
         upsert: function(info) {
             return $http.put('/api/personnel', info);
         },

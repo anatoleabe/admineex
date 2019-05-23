@@ -176,43 +176,124 @@ exports.api.list = function (req, res) {
         minify = true;
     }
     if (req.actor) {
-        var query = {}
-        var sort = {"name.family": 'asc'};
-        var q = Personnel.find(query).sort(sort).limit(0).skip(0).lean();
-        q.exec(function (err, personnels) {
+        var options = {
+            minify: minify,
+            req: req
+        }
+
+        exports.list(options, function (err, personnels) {
             if (err) {
                 log.error(err);
-                audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
-                return res.status(500).send(err);
+                res.status(500).send(err);
             } else {
-                if (minify == true) {
-                    personnels = JSON.parse(JSON.stringify(personnels));
-                    function LoopA(a) {
-                        if (a < personnels.length && personnels[a]) {
-                            controllers.positions.findPositionHelderBystaffId({req: req}, personnels[a]._id, function (err, affectation) {
-                                if (err) {
-                                    log.error(err);
-                                    res.status(500).send(err);
-                                } else {
-                                    personnels[a].affectedTo = affectation;
-                                    LoopA(a + 1);
-                                }
-                            });
-                        } else {
-                            return res.json(personnels);
-                        }
-                    }
-                    LoopA(0);
-                } else {
-                    return res.json(personnels);
-                }
+                return res.json(personnels);
             }
         });
+
     } else {
         audit.logEvent('[anonymous]', 'Personnel', 'List', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);
     }
 }
+
+
+exports.list = function (options, callback) {
+
+    var query = {}
+    var sort = {"name.family": 'asc'};
+    var q = Personnel.find(query).sort(sort).limit(0).skip(0).lean();
+    q.exec(function (err, personnels) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
+            callback(err);
+        } else {
+            if (options.minify == true) {
+                personnels = JSON.parse(JSON.stringify(personnels));
+                function LoopA(a) {
+                    if (a < personnels.length && personnels[a]) {
+                        controllers.positions.findPositionHelderBystaffId({req: options.req}, personnels[a]._id, function (err, affectation) {
+                            if (err) {
+                                log.error(err);
+                                callback(err);
+                            } else {
+                                personnels[a].affectedTo = affectation;
+                                LoopA(a + 1);
+                            }
+                        });
+                    } else {
+                        callback(null, personnels);
+                    }
+                }
+                LoopA(0);
+            } else {
+                callback(null, personnels);
+            }
+        }
+    });
+}
+
+
+
+
+
+exports.api.search = function (req, res) {
+    if (req.actor) {
+        if (req.params.text == undefined) {
+            audit.logEvent(req.actor.id, 'Personnel', 'Search', '', '', 'failed',
+                    'The actor could not read the personnel timeline because one or more params of the request was not defined');
+            return res.sendStatus(400);
+        } else {
+            
+            var name = req.params.text || '';
+            var concat;
+
+            concat = ["$name.family", " ", "$name.given"];
+
+            if (name !== '') {
+                Personnel.aggregate([
+                    {"$unwind": "$name"},
+                    {"$unwind": "$name.family"},
+                    {"$unwind": "$name.given"},
+                    { "$addFields": { "name": {$concat: concat}, } },
+                    {$match: {"name": dictionary.makePattern(name)}}
+                ]).exec(function (err, personnels) {
+                    if (err) {
+                        log.error(err);
+                        audit.logEvent('[mongodb]', 'Personnel', 'Search', '', '', 'failed', 'Mongodb attempted to retrieve a personnel');
+                        return res.sendStatus(500);
+                    } else {
+                        personnels = JSON.parse(JSON.stringify(personnels));
+                        function LoopA(a) {
+                            if (a < personnels.length && personnels[a]) {
+                                controllers.positions.findPositionHelderBystaffId({req: req}, personnels[a]._id, function (err, affectation) {
+                                    if (err) {
+                                        log.error(err);
+                                        callback(err);
+                                    } else {
+                                        personnels[a].affectedTo = affectation;
+                                        LoopA(a + 1);
+                                    }
+                                });
+                            } else {
+                                 return res.json(personnels);
+                            }
+                        }
+                        LoopA(0);
+                    }
+                });
+
+            } else {
+                return res.json();
+            }
+        }
+    } else {
+        audit.logEvent('[anonymous]', 'Personnel', 'Search', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+}
+
+
 
 exports.api.read = function (req, res) {
     console.log('Read method call for personnel');

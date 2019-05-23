@@ -5,19 +5,19 @@
             <md-autocomplete md-search-text="personnelSearchText"
                              md-selected-item-change="selectedPersonnelChange(perso)"
                              md-items="perso in personnelQuerySearch(personnelSearchText)"
-                             md-item-text="perso.nom + ' ' + perso.prenom"
+                             md-item-text="perso.name"
                              md-min-length="2"
-                             placeholder="{{'Search a staff (Name, number, CNI, telephone ...)' | translate}}"
+                             placeholder="{{'Search a staff (Name, matricule or CNI)' | translate}}"
                              required
                              md-require-match
                              flex>
                 <md-item-template>
-                    <span md-highlight-text="deficitaireSearchText">{{perso.nom}} {{perso.prenom}} </span>
+                    <span md-highlight-text="deficitaireSearchText">{{perso.name}} </span>
                     <small>
                         <span >(</span>
-                        <span ng-if="perso.matricule">{{"Mle: " + (perso.matricule)}} </span>
-                        <span ng-if="perso.sexe">| {{(perso.sexe)}} , {{(perso.age) + " ans"}}</span>
-                        <span ng-if="perso.fonction" > | {{perso.fonction}})</span>
+                        <span ng-if="perso.identifier">{{"Mle: " + (perso.identifier)}} </span>
+                        <span ng-if="perso.gender">| {{(perso.gender)}} , {{(perso.age) + " ans"}}</span>
+                        <span ng-if="perso.affectedTo.position.name" > | {{perso.affectedTo.position.name}})</span>
                         <span >)</span>
                     </small>
                 </md-item-template>

@@ -348,6 +348,13 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.upsert],
         access: _.findWhere(aclRoutes, {id: 43}).roles
     },
+    // Search staff
+    {
+        path: _.findWhere(aclRoutes, {id: 50}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 50}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.search],
+        access: _.findWhere(aclRoutes, {id: 50}).roles
+    },
 
     // === ORGANIZATION ROUTES ==========================================================
     // Create an org

@@ -111,8 +111,6 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                                     }
                                                 }
                                             }
-                                            console.log($scope.structure)
-
                                         }
                                     }
 

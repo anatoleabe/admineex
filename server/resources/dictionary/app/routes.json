@@ -286,5 +286,11 @@
         "uri": "/api/positions/affect/",
         "method": "PUT",
         "roles": [1,2,3]
+    },
+    {
+        "id": 50,
+        "uri": "/api/personnel/search/:text",
+        "method": "GET",
+        "roles": [1,2,3]
     }
 ]
