@@ -128,7 +128,7 @@ exports.api.affectToPosition = function (req, res) {
                                         return res.status(500).send(err);
                                     } else {
                                         if (perso) {
-                                            
+
                                             var history = {
                                                 numAct: fields.numAct,
                                                 positionId: new ObjectID(fields.positionId),
@@ -139,7 +139,7 @@ exports.api.affectToPosition = function (req, res) {
                                                 mouvement: fields.mouvement,
                                                 nature: fields.nature
                                             };
-                                            if (!perso.positionsHistory){
+                                            if (!perso.positionsHistory) {
                                                 perso.positionsHistory = [];
                                             }
                                             perso.positionsHistory.push(history);
@@ -168,6 +168,61 @@ exports.api.affectToPosition = function (req, res) {
         return res.sendStatus(401);
     }
 };
+
+//This read data from json files (matricule and position code , then lint position and personnel in db
+exports.affectToPositionFromJson = function (callback) {
+    var affectations = dictionary.getToJSONList("../../resources/dictionary/tmp/usersposition.json");
+    var avoided = [];
+    var projection = {_id: 1};
+    function loopA(a) {
+        if (a < affectations.length) {
+            var identifier = affectations[a].identifier.replace(/\s+/g, '');
+            var codep = affectations[a].codeposte.replace(/\s+/g, '');
+            Position.findOne({code: codep}, projection, function (err, post) {
+                if (err) {
+                    log.error(err);
+                } else {
+                    controllers.personnel.findByMatricule({matricule: identifier}, function (err, pers) {
+                        if (err) {
+                            log.error(err);
+                        } else {
+                            if (pers && post) {
+                                var affectationFields = {
+                                    positionId: post._id,
+                                    positionCode: codep,
+                                    personnelId: pers._id,
+                                    date: new Date()
+                                };
+
+                                var filter = {
+                                    positionId: post._id,
+                                    positionCode: codep,
+                                    personnelId: pers._id,
+                                };
+
+                                Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+                                    if (err) {
+                                        log.error(err);
+                                    } else {
+                                        loopA(a + 1);
+                                    }
+                                });
+                            }else{
+                                avoided.push(affectations[a]);
+                                loopA(a + 1);
+                            }
+                        }
+                    });
+                }
+            });
+        } else {
+            callback(null, avoided);
+        }
+    }
+    loopA(0);
+};
+
+
 exports.api.findPositionByCode = function (req, res) {
     if (req.actor) {
         exports.findPositionByCode(req.params.code, function (err, position) {

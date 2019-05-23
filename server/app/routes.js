@@ -570,4 +570,13 @@ function startBot() {
 //            console.log(avoided)
 //        }
 //    });
+
+//    controllers.positions.affectToPositionFromJson(function (err, avoided) {
+//        if (err) {
+//            log.error(err);
+//            console.log(err);
+//        } else {
+//            console.log(avoided)
+//        }
+//    });
 }

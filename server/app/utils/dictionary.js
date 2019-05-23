@@ -193,6 +193,26 @@ exports.getJSONList = getJSONList;
 /**
  * build json list from json file
  */
+var getToJSONList = function (file) {
+    if (file && file !== "") {
+        var data = require(file);
+        var result = [];
+        function myLoopA(i) {
+            if (i < data.length) {
+                var item = data[i];
+                result.push(data[i]);
+                myLoopA(i+1);
+            }
+        }
+        myLoopA(0);
+        return result;
+    }
+};
+exports.getToJSONList = getToJSONList;
+
+/**
+ * build json list from json file
+ */
 var getJSONListByCode = function (file, language, code) {
     if (file && file !== "") {
         var data = require(file);
