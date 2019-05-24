@@ -1,5 +1,5 @@
 <!-- Simple header with scrollable tabs. -->
-<div flex="70" flex-offset="15" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" ui-view style="height:100%;">
+<div flex="90" flex-offset="5" flex-md="80" flex-offset-md="20" flex-sm="90" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" ui-view style="height:100%;">
     <md-content layout-padding layout="column" flex>
         <form >
             <md-autocomplete md-search-text="personnelSearchText"
@@ -42,238 +42,321 @@
             <md-icon aria-label="{{helper.title}}" class="material-icons" style="font-size: 120px;height: 120px;width: 120px;">{{helper.icon}}</md-icon>
             <h2 class="md-title">{{helper.title}}</h2>
         </div>
-
         <md-tabs md-dynamic-height md-border-bottom ng-if="personnelSelected" style="margin-top: -20px">
             <md-tab label='{{"Personnal data"| translate }}'>
-                <md-content class="md-padding">
-                    <md-card >
-                        <md-card>
-                            <md-card-title>
-                                <md-card-title-text>
-                                    <span class="md-headline" translate>Personal informations</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-card-content>
-                                <md-list>
-                                    <md-list-item>
-                                        <md-icon>face</md-icon>
-                                        <p class="md-body-2" translate>Full name</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.name}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item ng-if="personnelSelected.birthDate">
-                                        <md-icon>cake</md-icon>
-                                        <p class="md-body-2" translate>Age</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.age}} <span translate>Years</span></p>
-                                    </md-list-item>
-                                    <md-divider ></md-divider>
-                                    <md-list-item ng-if="personnelSelected.birthDate">
-                                        <md-icon>cake</md-icon>
-                                        <p class="md-body-2" translate>Birth date</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.birthDate| dateHuman}}</p>
-                                    </md-list-item>
-                                    <md-divider ></md-divider>
-                                    <md-list-item ng-if="personnelSelected.birthPlace">
-                                        <md-icon>cake</md-icon>
-                                        <p class="md-body-2" translate>Birth place</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.birthPlace}}</p>
-                                    </md-list-item>
-                                    <md-divider ng-if="personnelSelected.birthPlace"></md-divider>
+                <md-content class="md-padding" layout="row">
 
-                                    <md-list-item>
-                                        <md-icon>accessibility</md-icon>
-                                        <p class="md-body-2" translate>Gender</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.gender}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>local_hospital</md-icon>
-                                        <p class="md-body-2" translate>Family situation</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.maritalStatus}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>local_hospital</md-icon>
-                                        <p class="md-body-2" translate>Spouse's name</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.partner}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>poll</md-icon>
-                                        <p class="md-body-2" translate>Number of child</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.children}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>location_on</md-icon>
-                                        <p class="md-body-2" translate>Origin of</p>
-                                        <p class="md-body-1 md-secondary">CMR, {{personnelSelected.address[0].region}} , {{personnelSelected.address[0].department}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>phone</md-icon>
-                                        <p class="md-body-2" translate>Phone number</p>
-                                        <p class="md-body-1 md-secondary">{{personnelSelected.telecom[0].value}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>email</md-icon>
-                                        <p class="md-body-2" translate>Email</p>
-                                        <p class="md-body-1 md-secondary">{{personnelSelected.telecom[1].value}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
+                    <div flex="50">
+                        <md-card >
+                            <md-card>
+                                <md-card-title>
+                                    <md-card-title-text>
+                                        <span class="md-headline" translate>Personal informations</span>
+                                    </md-card-title-text>
+                                </md-card-title>
+                                <md-card-content>
+                                    <md-list>
+                                        <md-list-item>
+                                            <md-icon>face</md-icon>
+                                            <p class="md-body-2" translate>Full name</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.name}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item ng-if="personnelSelected.birthDate">
+                                            <md-icon>cake</md-icon>
+                                            <p class="md-body-2" translate>Age</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.age}} <span translate>Years</span></p>
+                                        </md-list-item>
+                                        <md-divider ></md-divider>
+                                        <md-list-item ng-if="personnelSelected.birthDate">
+                                            <md-icon>cake</md-icon>
+                                            <p class="md-body-2" translate>Birth date</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.birthDate| dateHuman}}</p>
+                                        </md-list-item>
+                                        <md-divider ></md-divider>
+                                        <md-list-item ng-if="personnelSelected.birthPlace">
+                                            <md-icon>cake</md-icon>
+                                            <p class="md-body-2" translate>Birth place</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.birthPlace}}</p>
+                                        </md-list-item>
+                                        <md-divider ng-if="personnelSelected.birthPlace"></md-divider>
 
-                                </md-list>
-                            </md-card-content>
-                        </md-card>
-                        <md-card>
-                            <md-card-title>
-                                <md-card-title-text>
-                                    <span class="md-headline" translate>Professional informations</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-card-content>
-                                <md-list>
-                                    <md-list-item>
-                                        <md-icon>store</md-icon>
-                                        <p class="md-body-2" translate>Structure</p>
-                                        <p class="md-body-1 md-secondary">{{personnelSelected.affectedTo.position.structure.name| uppercase | unknown}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>local_hospital</md-icon>
-                                        <p class="md-body-2" translate>Function</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.affectedTo.position.name| uppercase | unknown}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>local_hospital</md-icon>
-                                        <p class="md-body-2" translate>Registration number</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.identifier| uppercase | unknown}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>local_hospital</md-icon>
-                                        <p class="md-body-2" translate>Status</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.status| uppercase | unknown}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>local_hospital</md-icon>
-                                        <p class="md-body-2" translate>Corps</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.corps| uppercase | unknown}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>local_hospital</md-icon>
-                                        <p class="md-body-2" translate>Grade</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.grade| uppercase | unknown}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>local_hospital</md-icon>
-                                        <p class="md-body-2" translate>Category</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.category| uppercase | unknown}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-<!--                                    <md-list-item>
-                                        <md-icon>airline_seat_recline_extra</md-icon>
-                                        <p class="md-body-2" translate>Retirement</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.retirement}}</p>
-                                    </md-list-item>-->
-<!--                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>local_hospital</md-icon>
-                                        <p class="md-body-2" translate>Discipline</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.discipline| uppercase | unknown}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>local_hospital</md-icon>
-                                        <p class="md-body-2" translate>Actual situation</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.situation| uppercase | unknown}}</p>
-                                    </md-list-item>-->
+                                        <md-list-item>
+                                            <md-icon>accessibility</md-icon>
+                                            <p class="md-body-2" translate>Gender</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.gender}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>local_hospital</md-icon>
+                                            <p class="md-body-2" translate>Family situation</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.maritalStatus}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>local_hospital</md-icon>
+                                            <p class="md-body-2" translate>Spouse's name</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.partner}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>poll</md-icon>
+                                            <p class="md-body-2" translate>Number of child</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.children}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>location_on</md-icon>
+                                            <p class="md-body-2" translate>Origin of</p>
+                                            <p class="md-body-1 md-secondary">CMR, {{personnelSelected.address[0].region}} , {{personnelSelected.address[0].department}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>phone</md-icon>
+                                            <p class="md-body-2" translate>Phone number</p>
+                                            <p class="md-body-1 md-secondary">{{personnelSelected.telecom[0].value}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>email</md-icon>
+                                            <p class="md-body-2" translate>Email</p>
+                                            <p class="md-body-1 md-secondary">{{personnelSelected.telecom[1].value}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
 
-                                </md-list>
-                            </md-card-content>
-                        </md-card>
-<!--                        <md-card>
-                            <md-card-title>
-                                <md-card-title-text>
-                                    <span class="md-headline" translate>Last progression</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-card-content>
-                                <md-list>
-                                    <md-list-item>
-                                        <md-icon>store</md-icon>
-                                        <p class="md-body-2" translate>Index or echelon</p>
-                                        <p class="md-body-1 md-secondary">{{personnelSelected.note| uppercase | unknown}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>event</md-icon>
-                                        <p class="md-body-2" translate>Date</p>
-                                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.note| uppercase | unknown}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                </md-list>
-                            </md-card-content>
-                            <md-card-actions layout="row" style="margin-top: -20px">
-                                <span flex></span>
-                                <md-button  class="md-raised md-primary" aria-label="Add" >
-                                    <md-icon>edit</md-icon>
-                                    <span translate>Add</span>
-                                </md-button>
-                            </md-card-actions>
-                        </md-card>-->
-                        <md-card ng-if="personnelSelected.qualifications.schools.length > 0">
-                            <md-card-title>
-                                <md-card-title-text>
-                                    <span class="md-headline" translate>School and training</span>
-                                </md-card-title-text>
+                                    </md-list>
+                                </md-card-content>
+                            </md-card>
 
-                            </md-card-title>
-                            <md-card-content>
-                                <md-content>
-                                    <md-list >
-                                        <md-list-item class="md-3-line" ng-repeat="diplome in personnelSelected.qualifications.schools" >
-                                            <div class="md-list-item-text" layout="column">
-                                                <h3>{{ diplome.autority}}</h3>
-                                                <h4>{{ diplome.diploma}}</h4>
-                                                <p>{{ diplome.date}}</p>
-                                            </div>
-                                            <md-divider></md-divider>
+                            <!--                        <md-card>
+                                                        <md-card-title>
+                                                            <md-card-title-text>
+                                                                <span class="md-headline" translate>Last progression</span>
+                                                            </md-card-title-text>
+                                                        </md-card-title>
+                                                        <md-card-content>
+                                                            <md-list>
+                                                                <md-list-item>
+                                                                    <md-icon>store</md-icon>
+                                                                    <p class="md-body-2" translate>Index or echelon</p>
+                                                                    <p class="md-body-1 md-secondary">{{personnelSelected.note| uppercase | unknown}}</p>
+                                                                </md-list-item>
+                                                                <md-divider></md-divider>
+                                                                <md-list-item>
+                                                                    <md-icon>event</md-icon>
+                                                                    <p class="md-body-2" translate>Date</p>
+                                                                    <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.note| uppercase | unknown}}</p>
+                                                                </md-list-item>
+                                                                <md-divider></md-divider>
+                                                            </md-list>
+                                                        </md-card-content>
+                                                        <md-card-actions layout="row" style="margin-top: -20px">
+                                                            <span flex></span>
+                                                            <md-button  class="md-raised md-primary" aria-label="Add" >
+                                                                <md-icon>edit</md-icon>
+                                                                <span translate>Add</span>
+                                                            </md-button>
+                                                        </md-card-actions>
+                                                    </md-card>-->
+                            <!--Required Skills-->
+
+                            <md-card ng-if="personnelSelected.qualifications.schools.length > 0">
+                                <md-card-title>
+                                    <md-card-title-text>
+                                        <span class="md-headline" translate>School and training</span>
+                                    </md-card-title-text>
+
+                                </md-card-title>
+                                <md-card-content>
+                                    <md-content>
+                                        <md-list >
+                                            <md-list-item class="md-3-line" ng-repeat="diplome in personnelSelected.qualifications.schools" >
+                                                <div class="md-list-item-text" layout="column">
+                                                    <h3>{{ diplome.autority}}</h3>
+                                                    <h4>{{ diplome.diploma}}</h4>
+                                                    <p>{{ diplome.date}}</p>
+                                                </div>
+                                                <md-divider></md-divider>
+                                            </md-list-item>
+                                        </md-list>
+                                    </md-content>
+                                </md-card-content>
+                            </md-card>
+                            <!--Meta--> 
+                            <md-card>
+                                <md-card-title>
+                                    <md-card-title-text>
+                                        <span class="md-headline" translate>Meta</span>
+                                    </md-card-title-text>
+                                </md-card-title>
+                                <md-card-content>
+                                    <md-list>
+                                        <md-list-item>
+                                            <md-icon>event</md-icon>
+                                            <p class="md-body-2" translate>Created</p>
+                                            <p class="md-body-1 md-secondary">{{personnelSelected.created| dateHuman}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>event</md-icon>
+                                            <p class="md-body-2" translate>Last modified</p>
+                                            <p class="md-body-1 md-secondary">{{personnelSelected.lastModified| dateHuman}}</p>
                                         </md-list-item>
                                     </md-list>
-                                </md-content>
-                            </md-card-content>
+                                </md-card-content>
+                            </md-card>
+
                         </md-card>
+                    </div>
+                    <div >
+                        <div layout="row">
+                            <div flex="25">
+
+                            </div>
+                            <div flex="50">
+                                <md-card md-theme="dark-grey" md-theme-watch>
+                                    <md-card-title-media>
+                                        <div class="md-media-lg card-media" style="max-width: 250px; max-height: 250px">
+                                            <img ng-src="templates/staffs/img/{{personnelSelected.mysqlId}}.jpeg"    class="img-responsive " />
+                                        </div>
+                                    </md-card-title-media>
+                                </md-card>
+                            </div>
+                            <div flex="25">
+
+                            </div>
+                        </div>
 
                         <md-card>
-                            <md-card-title>
-                                <md-card-title-text>
-                                    <span class="md-headline" translate>Meta</span>
-                                </md-card-title-text>
-                            </md-card-title>
-                            <md-card-content>
-                                <md-list>
-                                    <md-list-item>
-                                        <md-icon>event</md-icon>
-                                        <p class="md-body-2" translate>Created</p>
-                                        <p class="md-body-1 md-secondary">{{personnelSelected.created| dateHuman}}</p>
-                                    </md-list-item>
-                                    <md-divider></md-divider>
-                                    <md-list-item>
-                                        <md-icon>event</md-icon>
-                                        <p class="md-body-2" translate>Last modified</p>
-                                        <p class="md-body-1 md-secondary">{{personnelSelected.lastModified| dateHuman}}</p>
-                                    </md-list-item>
-                                </md-list>
-                            </md-card-content>
-                        </md-card>
-                    </md-card>
+                            <md-card>
+                                <md-card-title>
+                                    <md-card-title-text>
+                                        <span class="md-headline" translate>Professional informations</span>
+                                    </md-card-title-text>
+                                </md-card-title>
+                                <md-card-content>
+                                    <md-list>
+                                        <md-list-item>
+                                            <md-icon>store</md-icon>
+                                            <p class="md-body-2" translate>Structure</p>
+                                            <p class="md-body-1 md-secondary">{{personnelSelected.affectedTo.position.structure.name| uppercase | unknown}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>local_hospital</md-icon>
+                                            <p class="md-body-2" translate>Function</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.affectedTo.position.name| uppercase | unknown}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>local_hospital</md-icon>
+                                            <p class="md-body-2" translate>Registration number</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.identifier| uppercase | unknown}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>local_hospital</md-icon>
+                                            <p class="md-body-2" translate>Status</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.status| uppercase | unknown}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>local_hospital</md-icon>
+                                            <p class="md-body-2" translate>Corps</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.corps| uppercase | unknown}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>local_hospital</md-icon>
+                                            <p class="md-body-2" translate>Grade</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.grade| uppercase | unknown}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>local_hospital</md-icon>
+                                            <p class="md-body-2" translate>Category</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.category| uppercase | unknown}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <!--                                    <md-list-item>
+                                                                                <md-icon>airline_seat_recline_extra</md-icon>
+                                                                                <p class="md-body-2" translate>Retirement</p>
+                                                                                <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.retirement}}</p>
+                                                                            </md-list-item>-->
+                                        <!--                                    <md-divider></md-divider>
+                                                                            <md-list-item>
+                                                                                <md-icon>local_hospital</md-icon>
+                                                                                <p class="md-body-2" translate>Discipline</p>
+                                                                                <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.discipline| uppercase | unknown}}</p>
+                                                                            </md-list-item>
+                                                                            <md-divider></md-divider>
+                                                                            <md-list-item>
+                                                                                <md-icon>local_hospital</md-icon>
+                                                                                <p class="md-body-2" translate>Actual situation</p>
+                                                                                <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.situation| uppercase | unknown}}</p>
+                                                                            </md-list-item>-->
 
+                                    </md-list>
+                                </md-card-content>
+                            </md-card>
+                            <md-card>
+                                <md-card-title class="card-container">
+                                    <md-card-title-text class="card-container-left">
+                                        <span class="md-headline" translate>Profiles</span>
+                                    </md-card-title-text>
+                                    <md-card-actions layout="row" >
+                                        <span flex></span>
+                                        <md-button ng-click="add(position, 'requiredProfiles', 'profiles')" aria-label="Edit" >
+                                            <md-icon>edit</md-icon>
+                                            <span translate>Add or edit profiles</span>
+                                        </md-button>
+                                    </md-card-actions>
+                                </md-card-title>
+                                <md-card-content>
+                                    <md-list ng-cloak>
+                                        <div  ng-repeat="reqProfile in requiredProfiles">
+                                            <md-list-item ui-sref="#">
+                                                <p class="md-body-2" >{{reqProfile.name}}</p>
+                                            </md-list-item>
+                                            <md-divider></md-divider>
+                                        </div>
+                                        <div layout="row" layout-align="center center" data-ng-if="requiredProfiles && requiredProfiles.length <= 0" style="opacity:0.2; margin-top: -40px">
+                                            <h2 class="md-title">{{helper.title}}</h2>
+                                        </div>
+                                    </md-list>
+                                </md-card-content>
+                            </md-card>
+                            <!--required skills-->
+                            <md-card>
+                                <md-card-title class="card-container">
+                                    <md-card-title-text class="card-container-left">
+                                        <span class="md-headline" translate>Skill</span>
+                                    </md-card-title-text>
+                                    <md-card-actions layout="row" >
+                                        <span flex></span>
+                                        <md-button ng-click="add(position, 'requiredSkills', 'skills')" aria-label="Edit" >
+                                            <md-icon>edit</md-icon>
+                                            <span translate>Add or edit required skills</span>
+                                        </md-button>
+                                    </md-card-actions>
+                                </md-card-title>
+                                <md-card-content>
+                                    <md-list ng-cloak>
+                                        <div  ng-repeat="reqSkill in requiredSkills">
+                                            <md-list-item ui-sref="#">
+                                                <p class="md-body-2" >{{reqSkill.name}}</p>
+                                            </md-list-item>
+                                            <md-divider></md-divider>
+                                        </div>
+                                        <div layout="row" layout-align="center center" data-ng-if="requiredSkills && requiredSkills.length <= 0" style="opacity:0.2; margin-top: -40px">
+                                            <h2 class="md-title">{{helper.title}}</h2>
+                                        </div>
+                                    </md-list>
+                                </md-card-content>
+                            </md-card>
+                        </md-card>
+
+                    </div>
                 </md-content>
             </md-tab>
             <md-tab label='{{"History"| translate }}'>
@@ -298,7 +381,10 @@
                     </div>
                 </md-content>
             </md-tab>
+
         </md-tabs>
+
+
         <md-card-actions layout="row" ng-if="personnelSelected" style="margin-top: -30px">
             <span flex></span>
             <md-button  class="md-raised md-primary" aria-label="Edit" >
