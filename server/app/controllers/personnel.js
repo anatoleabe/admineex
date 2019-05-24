@@ -244,7 +244,7 @@ exports.api.search = function (req, res) {
                     'The actor could not read the personnel timeline because one or more params of the request was not defined');
             return res.sendStatus(400);
         } else {
-            
+
             var name = req.params.text || '';
             var concat;
 
@@ -255,7 +255,7 @@ exports.api.search = function (req, res) {
                     {"$unwind": "$name"},
                     {"$unwind": "$name.family"},
                     {"$unwind": "$name.given"},
-                    { "$addFields": { "name": {$concat: concat}, } },
+                    {"$addFields": {"name": {$concat: concat}, }},
                     {$match: {"name": dictionary.makePattern(name)}}
                 ]).exec(function (err, personnels) {
                     if (err) {
@@ -264,22 +264,13 @@ exports.api.search = function (req, res) {
                         return res.sendStatus(500);
                     } else {
                         personnels = JSON.parse(JSON.stringify(personnels));
-                        function LoopA(a) {
-                            if (a < personnels.length && personnels[a]) {
-                                controllers.positions.findPositionHelderBystaffId({req: req}, personnels[a]._id, function (err, affectation) {
-                                    if (err) {
-                                        log.error(err);
-                                        callback(err);
-                                    } else {
-                                        personnels[a].affectedTo = affectation;
-                                        LoopA(a + 1);
-                                    }
-                                });
+                        beautify({req: req, language: req.actor.language, beautify: true}, personnels, function (err, objects) {
+                            if (err) {
+                                return res.status(500).send(err);
                             } else {
-                                 return res.json(personnels);
+                                return res.json(objects);
                             }
-                        }
-                        LoopA(0);
+                        });
                     }
                 });
 
@@ -364,21 +355,54 @@ exports.api.delete = function (req, res) {
     }
 }
 
-function beautify(options, objects, callback) {
+function _calculateAge(birthday) { // birthday is a date
+    var ageDifMs = Date.now() - birthday.getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+
+function beautify(options, personnels, callback) {
     var language = options.language || "";
     language = language.toLowerCase();
     var gt = dictionary.translator(language);
     if (options.beautify && options.beautify === true) {
-        function objectsLoop(o) {
-            if (o < objects.length) {
-                objects[o].structure = dictionary.getStructureFromJSONByCode('../../resources/dictionary/structure/structures.json', objects[o].code.substring(0, objects[o].code.indexOf('-')), language.toLowerCase());
-                objectsLoop(o + 1);
+        //Address
+        personnels = controllers.configuration.beautifyAddress({language: language}, personnels);
+        function LoopA(a) {
+            if (a < personnels.length && personnels[a]) {
+                controllers.positions.findPositionHelderBystaffId({req: options.req}, personnels[a]._id, function (err, affectation) {
+                    if (err) {
+                        log.error(err);
+                        callback(err);
+                    } else {
+                        var status = personnels[a].status || "";
+                        var grade = personnels[a].grade || "";
+                        var corps = personnels[a].corps || "";
+                        var category = personnels[a].category || "";
+
+                        personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
+                        personnels[a].affectedTo = affectation;
+                        personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
+
+                        if (status != "") {
+                            personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
+                            personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, language);
+                        }
+
+                        if (corps != "") {
+                            personnels[a].corps = dictionary.getValueFromJSON('../../resources/dictionary/personnel/corps.json', corps, language);
+                        }
+
+                        LoopA(a + 1);
+                    }
+                });
             } else {
-                callback(null, objects);
+                callback(null, personnels);
             }
         }
-        objectsLoop(0);
+
+        LoopA(0);
     } else {
-        callback(null, objects);
+        callback(null, personnels);
     }
 }

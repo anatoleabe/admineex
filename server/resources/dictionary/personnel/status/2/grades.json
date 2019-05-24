@@ -1,10 +1,34 @@
 [
     {
-        "id": "1",
+        "id": 1,
         "fr": "Cadre Contractuel d'Administration",
         "en": "Cadre Contractuel d'Administration",
-        "corps": "5",
-        "category": null,
-        "priority": "1"
+        "corps": 5,
+        "priority": 1,
+        "description": "Entre CAT 10 et CAT 12"
+    },
+    {
+        "id": 2,
+        "fr": "Contractuel d'Administration",
+        "en": "Contractuel d'Administration",
+        "corps": 5,
+        "priority": 2,
+        "description": "Entre CAT 9 et CAT 7"
+    },
+    {
+        "id": 3,
+        "fr": "Agent Décisionnaire",
+        "en": "Agent Décisionnaire",
+        "corps": 5,
+        "priority": 4,
+        "description": "Entre CAT 1 et CAT 4"
+    },
+    {
+        "id": 4,
+        "fr": "Agent Contractuel",
+        "en": "Agent Contractuel",
+        "corps": 5,
+        "priority": 3,
+        "description": "Entre CAT 5 et CAT 6"
     }
 ]

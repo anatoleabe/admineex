@@ -1,0 +1,42 @@
+[
+    {
+        "id": 41,
+        "name": "Haut Nkam",
+        "city": "Bafang"
+    },
+    {
+        "id": 42,
+        "name": "Mifi",
+        "city": "Bafoussam"
+    },
+    {
+        "id": 43,
+        "name": "Hauts Plateaux",
+        "city": "Baham"
+    },
+    {
+        "id": 44,
+        "name": "Koung Khi",
+        "city": "Bandjoun"
+    },
+    {
+        "id": 45,
+        "name": "Ndé",
+        "city": "Bangangté"
+    },
+    {
+        "id": 46,
+        "name": "Menoua",
+        "city": "Dschang"
+    },
+    {
+        "id": 47,
+        "name": "Noun",
+        "city": "Foumban"
+    },
+    {
+        "id": 56,
+        "name": "Bamboutos",
+        "city": "Mbouda"
+    }
+]

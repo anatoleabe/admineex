@@ -1,10 +1,416 @@
 [
     {
-        "id": "1",
+        "id": 1,
+        "corps": 1,
+        "code": "PLEG",
         "fr": "PLEG",
         "en": "PLEG",
-        "corps": "1",
-        "category": "1",
+        "category": 1,
+        "priority": null
+    },
+    {
+        "id": 2,
+        "corps": 1,
+        "code": "PCEG",
+        "fr": "PCEG",
+        "en": "PCEG",
+        "category": 2,
+        "priority": null
+    },
+    {
+        "id": 5,
+        "corps": 2,
+        "code": "IT",
+        "fr": "Inspecteur du Trésor",
+        "en": "Inspecteur du Trésor",
+        "category": 2,
+        "priority": "2"
+    },
+    {
+        "id": 6,
+        "corps": 2,
+        "code": "IPT",
+        "fr": "Inspecteur Principal du Trésor",
+        "en": "Inspecteur Principal du Trésor",
+        "category": 1,
+        "priority": "1"
+    },
+    {
+        "id": 9,
+        "corps": 2,
+        "code": null,
+        "fr": "Contrôleur Principal du Trésor",
+        "en": "Contrôleur Principal du Trésor",
+        "category": 3,
+        "priority": "3"
+    },
+    {
+        "id": 10,
+        "corps": 2,
+        "code": null,
+        "fr": "Contrôleur Trésor",
+        "en": "Contrôleur Trésor",
+        "category": 4,
+        "priority": "4"
+    },
+    {
+        "id": 13,
+        "corps": 2,
+        "code": null,
+        "fr": "Contrôleur adjoint du Trésor",
+        "en": "Contrôleur adjoint du Trésor",
+        "category": 5,
+        "priority": "5"
+    },
+    {
+        "id": 14,
+        "corps": 2,
+        "code": null,
+        "fr": "Commis  du Trésor",
+        "en": "Commis  du Trésor",
+        "category": 6,
+        "priority": "6"
+    },
+    {
+        "id": 15,
+        "corps": 4,
+        "code": null,
+        "fr": "Inspecteur Principal des Impots ",
+        "en": "Inspecteur Principal des Impots ",
+        "category": 1,
+        "priority": null
+    },
+    {
+        "id": 16,
+        "corps": 4,
+        "code": "ACP",
+        "fr": "Administrateur Civil Principal",
+        "en": "Administrateur Civil Principal",
+        "category": 1,
+        "priority": null
+    },
+    {
+        "id": 17,
+        "corps": 4,
+        "code": "SA",
+        "fr": "Secretaire d'Administration",
+        "en": "Secretaire d'Administration",
+        "category": 4,
+        "priority": null
+    },
+    {
+        "id": 18,
+        "corps": 4,
+        "code": "AD",
+        "fr": "Adjoints d'Administration",
+        "en": "Adjoints d'Administration",
+        "category": 5,
+        "priority": null
+    },
+    {
+        "id": 19,
+        "corps": 4,
+        "code": "CA",
+        "fr": "Commis d'Administration",
+        "en": "Commis d'Administration",
+        "category": 6,
+        "priority": null
+    },
+    {
+        "id": 20,
+        "corps": 4,
+        "code": null,
+        "fr": "Inspecteurs de la comptabilite matieres",
+        "en": "Inspecteurs de la comptabilite matieres",
+        "category": 2,
+        "priority": null
+    },
+    {
+        "id": 22,
+        "corps": 4,
+        "code": null,
+        "fr": "Controleurs  de la comptabilite matieres",
+        "en": "Controleurs  de la comptabilite matieres",
+        "category": 4,
+        "priority": null
+    },
+    {
+        "id": 23,
+        "corps": 4,
+        "code": null,
+        "fr": "Controleurs adjoints de la comptabilite matieres",
+        "en": "Controleurs adjoints de la comptabilite matieres",
+        "category": 5,
+        "priority": null
+    },
+    {
+        "id": 24,
+        "corps": 4,
+        "code": null,
+        "fr": "Inspecteurs Prix Poids et mesure",
+        "en": "Inspecteurs Prix Poids et mesure",
+        "category": 2,
+        "priority": null
+    },
+    {
+        "id": 25,
+        "corps": 4,
+        "code": null,
+        "fr": "Controleurs adjoint Prix Poids et mesure",
+        "en": "Controleurs adjoint Prix Poids et mesure",
+        "category": 5,
+        "priority": null
+    },
+    {
+        "id": 26,
+        "corps": 1,
+        "code": "IEG",
+        "fr": "Instituteur d'enseignement Général",
+        "en": "Instituteur d'enseignement Général",
+        "category": 4,
+        "priority": null
+    },
+    {
+        "id": 27,
+        "corps": 14,
+        "code": null,
+        "fr": "Controleurs des Postes et Telecom",
+        "en": "Controleurs des Postes et Telecom",
+        "category": 4,
+        "priority": null
+    },
+    {
+        "id": 28,
+        "corps": 4,
+        "code": null,
+        "fr": "Commis de la documentation",
+        "en": "Commis de la documentation",
+        "category": 6,
+        "priority": null
+    },
+    {
+        "id": 29,
+        "corps": 4,
+        "code": null,
+        "fr": "Ingenieur de Travaux d'agriculture",
+        "en": "Ingenieur de Travaux d'agriculture",
+        "category": 2,
+        "priority": null
+    },
+    {
+        "id": 32,
+        "corps": 4,
+        "code": "ATPS",
+        "fr": "Administrateur de Travail et de la Prevévoiyan Soc",
+        "en": "Administrateur de Travail et de la Prevévoiyan Soc",
+        "category": 2,
+        "priority": null
+    },
+    {
+        "id": 34,
+        "corps": 4,
+        "code": null,
+        "fr": "Magistrats",
+        "en": "Magistrats",
+        "category": 1,
+        "priority": null
+    },
+    {
+        "id": 35,
+        "corps": 4,
+        "code": null,
+        "fr": "Analyste et Programmeur",
+        "en": "Analyste et Programmeur",
+        "category": 2,
+        "priority": null
+    },
+    {
+        "id": 36,
+        "corps": 4,
+        "code": null,
+        "fr": "Ingenieur de Travaux Statistique",
+        "en": "Ingenieur de Travaux Statistique",
+        "category": 2,
+        "priority": null
+    },
+    {
+        "id": 37,
+        "corps": 4,
+        "code": null,
+        "fr": "Ingenieur Statisticien Economiste",
+        "en": "Ingenieur Statisticien Economiste",
+        "category": 1,
+        "priority": null
+    },
+    {
+        "id": 38,
+        "corps": 4,
+        "code": null,
+        "fr": "Ingénieur Informaticien",
+        "en": "Ingénieur Informaticien",
+        "category": 1,
+        "priority": null
+    },
+    {
+        "id": 39,
+        "corps": 4,
+        "code": "AC",
+        "fr": "Administrateur Civil",
+        "en": "Administrateur Civil",
+        "category": 1,
+        "priority": null
+    },
+    {
+        "id": 40,
+        "corps": 4,
+        "code": "SAP",
+        "fr": "Secretaire d'Administration Principal",
+        "en": "Secretaire d'Administration Principal",
+        "category": 4,
+        "priority": null
+    },
+    {
+        "id": 47,
+        "corps": 4,
+        "code": null,
+        "fr": "Inspecteurs Principal de la Comptabilite Matieres",
+        "en": "Inspecteurs Principal de la Comptabilite Matieres",
+        "category": 1,
+        "priority": "1"
+    },
+    {
+        "id": 51,
+        "corps": 4,
+        "code": null,
+        "fr": "Contrôleur Adjoint de la comptabilite matiere",
+        "en": "Contrôleur Adjoint de la comptabilite matiere",
+        "category": 5,
+        "priority": null
+    },
+    {
+        "id": 52,
+        "corps": 4,
+        "code": null,
+        "fr": "Contrôleur Principal de la comptabilite matiere",
+        "en": "Contrôleur Principal de la comptabilite matiere",
+        "category": 3,
+        "priority": null
+    },
+    {
+        "id": 54,
+        "corps": 4,
+        "code": null,
+        "fr": "Commis de la comptabilite matiere",
+        "en": "Commis de la comptabilite matiere",
+        "category": 6,
+        "priority": null
+    },
+    {
+        "id": 55,
+        "corps": 4,
+        "code": null,
+        "fr": "Inspecteur Principal de la Documentation",
+        "en": "Inspecteur Principal de la Documentation",
+        "category": 1,
+        "priority": null
+    },
+    {
+        "id": 56,
+        "corps": 4,
+        "code": null,
+        "fr": "Inspecteur de la Documentation",
+        "en": "Inspecteur de la Documentation",
+        "category": 2,
+        "priority": null
+    },
+    {
+        "id": 58,
+        "corps": 4,
+        "code": null,
+        "fr": "Controleur de la Documentation",
+        "en": "Controleur de la Documentation",
+        "category": 4,
+        "priority": null
+    },
+    {
+        "id": 59,
+        "corps": 4,
+        "code": null,
+        "fr": "Controleur Principal de la Documentation",
+        "en": "Controleur Principal de la Documentation",
+        "category": 3,
+        "priority": null
+    },
+    {
+        "id": 60,
+        "corps": 4,
+        "code": null,
+        "fr": "Controleur Adjoint de la Documentation",
+        "en": "Controleur Adjoint de la Documentation",
+        "category": 5,
+        "priority": null
+    },
+    {
+        "id": 61,
+        "corps": 4,
+        "code": null,
+        "fr": "Commis de la Documentation",
+        "en": "Commis de la Documentation",
+        "category": 6,
+        "priority": null
+    },
+    {
+        "id": 63,
+        "corps": 14,
+        "code": null,
+        "fr": "Ingénieur des Postes et Télécommunications",
+        "en": "Ingénieur des Postes et Télécommunications",
+        "category": 1,
+        "priority": null
+    },
+    {
+        "id": 64,
+        "corps": 14,
+        "code": null,
+        "fr": "Ingénieur des Travaux Postes et Télécommunications",
+        "en": "Ingénieur des Travaux Postes et Télécommunications",
+        "category": 2,
+        "priority": null
+    },
+    {
+        "id": 65,
+        "corps": 14,
+        "code": null,
+        "fr": "Tech. Supérieur des Télécommunications",
+        "en": "Tech. Supérieur des Télécommunications",
+        "category": 3,
+        "priority": null
+    },
+    {
+        "id": 66,
+        "corps": 14,
+        "code": null,
+        "fr": "Tech. des Télécommunications",
+        "en": "Tech. des Télécommunications",
+        "category": 4,
+        "priority": null
+    },
+    {
+        "id": 67,
+        "corps": 14,
+        "code": null,
+        "fr": "Agent Technique des Télécommunications",
+        "en": "Agent Technique des Télécommunications",
+        "category": 6,
+        "priority": null
+    },
+    {
+        "id": 69,
+        "corps": 14,
+        "code": null,
+        "fr": "Inspecteur des Postes et Télécom",
+        "en": "Inspecteur des Postes et Télécom",
+        "category": 1,
         "priority": null
     }
 ]

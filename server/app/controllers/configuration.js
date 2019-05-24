@@ -87,3 +87,48 @@ exports.getLanguage = function (options) {
     }
     return language.toLowerCase();
 }
+
+exports.beautifyAddress = function (options, objects) {
+    if (!options.ugly) {
+        var language = options.language || "";
+        language = language.toLowerCase();
+        for (i = 0; i < objects.length; i++) {
+            if (objects[i] && objects[i].address) {
+                var address = (objects[i].address.length) ? objects[i].address[0] : objects[i].address;
+
+                // Country
+                address.country = "CMR"
+
+                var region = address.region;
+                var department = address.department;
+                // State
+                if (address.region && address.region != "") {
+                    var found2 = _.findWhere(require('../../resources/dictionary/location/countries/CMR.json'), {
+                        id: address.region
+                    });
+                    if (found2) {
+                        address.region = found2.en;
+                        if (language != "") {
+                            if (found2[language]) {
+                                address.region = found2[language];
+                            } else {
+                                address.region = found2['en'];
+                            }
+                        }
+
+                        // City
+                        if (address.department && address.department != "") {
+                            var found3 = _.findWhere(require('../../resources/dictionary/location/countries/regions/' + region + '.json'), {
+                                id: parseInt(address.department, 10)
+                            });
+                            if (found3) {
+                                address.department = found3.name;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return (objects);
+};

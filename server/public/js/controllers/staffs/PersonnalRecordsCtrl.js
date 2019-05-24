@@ -52,7 +52,7 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
 
             $scope.selectedPersonnelChange = function (personnel) {
                 if (personnel) {
-
+                    $scope.personnelSelected = personnel;
                     //loadsHistory(personnel);
                 } else {
                     $scope.personnelSelected = undefined;
