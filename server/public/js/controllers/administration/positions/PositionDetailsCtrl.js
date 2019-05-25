@@ -57,6 +57,8 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                         function prepareRequiredItems() {
                             var requiredProfiles = [];
                             var requiredSkills = [];
+                            var tasks = [];
+                            var activities = [];
                             if ($scope.position) {
                                 if ($scope.position.requiredProfiles) {
                                     for (i = 0; i < $scope.position.requiredProfiles.length; i++) {
@@ -72,9 +74,25 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                                         }
                                     }
                                 }
+                                if ($scope.position.tasks) {
+                                    for (i = 0; i < $scope.position.tasks.length; i++) {
+                                        if ($scope.position.tasks [i]) {
+                                            tasks.push($scope.position.tasks [i]);
+                                        }
+                                    }
+                                }
+                                if ($scope.position.activities) {
+                                    for (i = 0; i < $scope.position.activities.length; i++) {
+                                        if ($scope.position.activities [i]) {
+                                            tasks.push($scope.position.activities [i]);
+                                        }
+                                    }
+                                }
                             }
                             $scope.requiredProfiles = requiredProfiles;
                             $scope.requiredSkills = requiredSkills;
+                            $scope.tasks = tasks;
+                            $scope.activities = activities;
                         }
 
                         prepareRequiredItems();

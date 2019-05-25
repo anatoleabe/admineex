@@ -208,7 +208,7 @@
 
                         </md-card>
                     </div>
-                    <div >
+                    <div flex="50">
                         <div layout="row">
                             <div flex="25">
 
@@ -306,22 +306,22 @@
                                     </md-card-title-text>
                                     <md-card-actions layout="row" >
                                         <span flex></span>
-                                        <md-button ng-click="add(position, 'requiredProfiles', 'profiles')" aria-label="Edit" >
+                                        <md-button ng-click="add(personnelSelected, 'profiles', 'profiles')" aria-label="Edit" >
                                             <md-icon>edit</md-icon>
-                                            <span translate>Add or edit profiles</span>
+                                            <span translate>Edit profiles</span>
                                         </md-button>
                                     </md-card-actions>
                                 </md-card-title>
                                 <md-card-content>
                                     <md-list ng-cloak>
-                                        <div  ng-repeat="reqProfile in requiredProfiles">
+                                        <div  ng-repeat="profile in profiles">
                                             <md-list-item ui-sref="#">
-                                                <p class="md-body-2" >{{reqProfile.name}}</p>
+                                                <p class="md-body-2" >{{profile.name}}</p>
                                             </md-list-item>
                                             <md-divider></md-divider>
                                         </div>
-                                        <div layout="row" layout-align="center center" data-ng-if="requiredProfiles && requiredProfiles.length <= 0" style="opacity:0.2; margin-top: -40px">
-                                            <h2 class="md-title">{{helper.title}}</h2>
+                                        <div layout="row" layout-align="center center" data-ng-if="profiles && profiles.length <= 0" style="opacity:0.2; margin-top: -40px">
+                                            <h2 class="md-title">{{helperNoData.title}}</h2>
                                         </div>
                                     </md-list>
                                 </md-card-content>
@@ -334,28 +334,27 @@
                                     </md-card-title-text>
                                     <md-card-actions layout="row" >
                                         <span flex></span>
-                                        <md-button ng-click="add(position, 'requiredSkills', 'skills')" aria-label="Edit" >
+                                        <md-button ng-click="add(personnelSelected, 'skills', 'skills')" aria-label="Edit" >
                                             <md-icon>edit</md-icon>
-                                            <span translate>Add or edit required skills</span>
+                                            <span translate>Edit skills</span>
                                         </md-button>
                                     </md-card-actions>
                                 </md-card-title>
                                 <md-card-content>
                                     <md-list ng-cloak>
-                                        <div  ng-repeat="reqSkill in requiredSkills">
+                                        <div  ng-repeat="skill in skills">
                                             <md-list-item ui-sref="#">
-                                                <p class="md-body-2" >{{reqSkill.name}}</p>
+                                                <p class="md-body-2" >{{skill.name}}</p>
                                             </md-list-item>
                                             <md-divider></md-divider>
                                         </div>
-                                        <div layout="row" layout-align="center center" data-ng-if="requiredSkills && requiredSkills.length <= 0" style="opacity:0.2; margin-top: -40px">
-                                            <h2 class="md-title">{{helper.title}}</h2>
+                                        <div layout="row" layout-align="center center" data-ng-if="skills && skills.length <= 0" style="opacity:0.2; margin-top: -40px">
+                                            <h2 class="md-title">{{helperNoData.title}}</h2>
                                         </div>
                                     </md-list>
                                 </md-card-content>
                             </md-card>
                         </md-card>
-
                     </div>
                 </md-content>
             </md-tab>

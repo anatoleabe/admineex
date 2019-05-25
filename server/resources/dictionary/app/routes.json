@@ -247,8 +247,8 @@
     },
     {
         "id": 43,
-        "uri": "/api/personnel/id/:id",
-        "method": "GET",
+        "uri": "/api/personnel",
+        "method": "PUT",
         "roles": [1,2,3]
     },
     {

@@ -21,12 +21,17 @@ exports.upsert = function (fields, callback) {
     // Parse received fields
     var id = fields._id || '';
     var matricule = fields.matricule || '';
+    var identifier = fields.identifier || '';
     var mysqlId = fields.mysqlId || '';
 
     var filter = {$and: []};
     if (id !== '') {
         filter.$and.push({
             "_id": id
+        });
+    } else if (identifier !== '') {
+        filter.$and.push({
+            "isentifier": identifier
         });
     } else if (matricule !== '') {
         filter.$and.push({
@@ -39,7 +44,6 @@ exports.upsert = function (fields, callback) {
     } else {
         filter = fields;
     }
-
     fields.lastModified = new Date();
     Personnel.findOneAndUpdate(filter, fields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
         if (err) {
@@ -52,8 +56,30 @@ exports.upsert = function (fields, callback) {
     });
 };
 
-exports.api.upsert = function (req, res) {
 
+exports.api.upsert = function (req, res) {
+    if (req.actor) {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[formidable]', 'Personnel', 'Upsert', "", "", 'failed', "Formidable attempted to parse personnel fields");
+                return res.status(500).send(err);
+            } else {
+                exports.upsert(fields, function (err) {
+                    if (err) {
+                        log.error(err);
+                        return res.status(500).send(err);
+                    } else {
+                        res.sendStatus(200);
+                    }
+                });
+            }
+        });
+    } else {
+        audit.logEvent('[anonymous]', 'Personnel', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
+        return res.sendStatus(401);
+    }
 };
 
 exports.DONOTUSETHISMETHODE = function (callback) {
