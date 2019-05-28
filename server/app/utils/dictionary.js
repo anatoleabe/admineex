@@ -178,7 +178,9 @@ var getJSONList = function (file, language) {
         function myLoopA(i) {
             if (i < data.length) {
                 var item = data[i];
-                data[i].name = ((language && language !== "" && data[i][language] != undefined && data[i][language] != "") ? data[i][language] : data[i]['en']);
+                if (!data[i].name){
+                    data[i].name = ((language && language !== "" && data[i][language] != undefined && data[i][language] != "") ? data[i][language] : data[i]['en']);
+                }
                 data[i].value = data[i].id;
                 result.push(data[i]);
                 myLoopA(i+1);

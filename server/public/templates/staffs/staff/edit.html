@@ -10,14 +10,14 @@
                                     <md-card>
                                         <md-card-title style="padding-bottom: 0;">
                                             <md-card-title-text>
-                                                <span class="md-headline" translate>Bio information</span>
+                                                <span class="md-headline" translate>Identification</span>
                                             </md-card-title-text>
                                         </md-card-title>
                                         <md-card-content>
                                             <div layout="row" >
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Last name</label>
-                                                    <input name="name" ng-model="personnel.name.firstname[0]" required>
+                                                    <input name="name" ng-model="personnel.name[0].given" required>
                                                     <div ng-messages="step1.name.$error">
                                                         <div ng-message="required">
                                                             User name is required to proceed on next step.
@@ -26,7 +26,7 @@
                                                 </md-input-container>
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>First name</label>
-                                                    <input name="fname" ng-model="personnel.name.firstname[0]" >
+                                                    <input name="fname" ng-model="personnel.name[0].family" >
                                                     <div ng-messages="step1.firsname.$error">
                                                         <div ng-message="required">
                                                             User first name is required to proceed on next step.
@@ -43,13 +43,9 @@
                                                         </md-radio-group>
                                                     </md-input-container>
                                                 </div>
-                                                <md-input-container ng-show="personnel.gender == 'F'" class="md-block" flex>
-                                                    <label translate>Maiden name</label>
-                                                    <input ng-model="personnel.maindenName" >
-                                                </md-input-container>
                                                 <md-input-container class="md-block"  flex>
                                                     <label translate>Family situation</label>
-                                                    <md-select ng-model="personnel.familySituation" required>
+                                                    <md-select ng-model="personnel.maritalStatus" required>
                                                         <md-option ng-repeat="familySituation in familySituations" value="{{familySituation.id}}">
                                                             {{familySituation.value}}
                                                         </md-option>
@@ -65,11 +61,11 @@
                                             <div layout="row" >
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Spouse's name</label>
-                                                    <input ng-model="personnel.spouseName">
+                                                    <input ng-model="personnel.partner">
                                                 </md-input-container>
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Number of child</label>
-                                                    <input ng-model="personnel.numberChild">
+                                                    <input ng-model="personnel.children">
                                                 </md-input-container>
                                             </div>
 
@@ -94,12 +90,23 @@
                                                 </md-input-container>
                                             </div>
 
+                                            <div layout="row" >
+                                                <md-input-container class="md-block" flex>
+                                                    <label translate>Father's name</label>
+                                                    <input ng-model="personnel.father">
+                                                </md-input-container>
+                                                <md-input-container class="md-block" flex>
+                                                    <label translate>Mother's name</label>
+                                                    <input ng-model="personnel.mother">
+                                                </md-input-container>
+                                            </div>
+
                                             <div layout="row">
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Region</label>
-                                                    <md-select name="regions" ng-model="personnel.region" required >
+                                                    <md-select name="regions" ng-model="personnel.address[0].region" required >
                                                         <md-option ng-repeat="region in regions" value="{{region.id}}" >
-                                                            {{region.intitule}}
+                                                            {{region.name}}
                                                         </md-option>
                                                     </md-select>
                                                     <div ng-messages="step1.regions.$error">
@@ -110,9 +117,9 @@
                                                 </md-input-container>
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>division</label>
-                                                    <md-select name="division" ng-model="personnel.division" required>
-                                                        <md-option ng-repeat="division in divisions" value="{{division.id}}">
-                                                            {{division.nom}}
+                                                    <md-select name="division" ng-model="personnel.department" required>
+                                                        <md-option ng-repeat="department in departments" value="{{department.id}}">
+                                                            {{department.name}}
                                                         </md-option>
                                                     </md-select>
                                                     <div ng-messages="step1.division.$error">
@@ -126,7 +133,7 @@
                                             <div layout="row" >
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>CNI N°</label>
-                                                    <input name="cniId" ng-model="personnel.cniId" required>
+                                                    <input name="cniId" ng-model="personnel.cni.identifier" required>
                                                     <div ng-messages="step1.cniId.$error">
                                                         <div ng-message="required">
                                                             The CNI ID is required to proceed on next step.
@@ -135,7 +142,7 @@
                                                 </md-input-container>
                                                 <md-input-container class="datepicker-xl" flex>
                                                     <label translate>CNI Delivered on</label>
-                                                    <md-datepicker name="cniDeliveredOn" class="md-block"  ng-model="personnel.cniDeliveredOn" md-max-date="max" required></md-datepicker>
+                                                    <md-datepicker name="cniDeliveredOn" class="md-block"  ng-model="personnel.cni.date" md-max-date="max" required></md-datepicker>
                                                     <div ng-messages="step1.cniDeliveredOn.$error">
                                                         <div ng-message="required">
                                                             The CNI delivered date is required to proceed on next step.
@@ -146,7 +153,7 @@
                                             <div layout="row" >
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>CNI Delivered at</label>
-                                                    <input ng-model="personnel.cniDeliveredAt" required>
+                                                    <input ng-model="personnel.cni.city" required>
                                                     <div ng-messages="step1.cniDeliveredAt.$error">
                                                         <div ng-message="required">
                                                             The CNI delivered at is required to proceed on next step.
@@ -155,17 +162,27 @@
                                                 </md-input-container>
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>CNI Delivered by</label>
-                                                    <input ng-model="personnel.cniDeliveredBy">
+                                                    <input ng-model="personnel.cni.by">
                                                 </md-input-container>
                                             </div>
                                             <div layout="row">
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Phone number</label>
-                                                    <input ng-model="personnel.phone" type="tel" >
+                                                    <input ng-model="personnel.telecom[0].value" type="tel" >
                                                 </md-input-container>
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Email</label>
-                                                    <input type="email" ng-model="personnel.email">
+                                                    <input type="email" ng-model="personnel.telecom[1].value">
+                                                </md-input-container>
+                                            </div>
+                                            <div layout="row" >
+                                                <md-input-container class="md-block" flex>
+                                                    <label translate>Person to contact</label>
+                                                    <input ng-model="personnel.telecom[2].personToContact">
+                                                </md-input-container>
+                                                <md-input-container class="md-block" flex>
+                                                    <label translate>Person to contact phone number</label>
+                                                    <input ng-model="personnel.telecom[2].value">
                                                 </md-input-container>
                                             </div>
 
@@ -179,12 +196,51 @@
                                             </md-card-title-text>
                                         </md-card-title>
                                         <md-card-content>
+                                            <h3 class="md-subhead"><span translate>History in Public Service</span></h3>
+                                            <div layout="row" flex>
+                                                <md-input-container class="md-block" flex>
+                                                    <label translate>Recruitment act number</label>
+                                                    <input ng-model="diplomeOfRecrutement.intitule">
+                                                </md-input-container>
+                                                <md-input-container flex>
+                                                    <label translate>Nature</label>
+                                                    <md-select name="diplomeYear" ng-model="diplomeOfRecrutement.year">
+                                                        <md-option value="{{y.year}}" ng-repeat="y in allYears" >{{y.year}}</md-option>
+                                                    </md-select>
+                                                </md-input-container>
+                                                <md-input-container class="md-block"  flex>
+                                                    <label translate>original administration</label>
+                                                    <input ng-model="diplomeOfRecrutement.organisation">
+                                                </md-input-container>
+                                            </div>
+                                            <div layout="row" flex>
+                                                <md-input-container class="md-block"  flex>
+                                                    <label translate>Signature date</label>
+                                                    <input ng-model="diplomeOfRecrutement.organisation">
+                                                </md-input-container>
+                                                <md-input-container class="md-block"  flex>
+                                                    <label translate>Title of signatory</label>
+                                                    <input ng-model="diplomeOfRecrutement.organisation">
+                                                </md-input-container>
+                                                <md-input-container class="md-block"  flex>
+                                                    <label translate>Start date</label>
+                                                    <input ng-model="diplomeOfRecrutement.option">
+                                                </md-input-container>
+                                            </div>
+                                            <div layout="row" flex>
+                                                <md-input-container class="md-block"  flex>
+                                                    <label translate>Date of entry at MINFI</label>
+                                                    <input ng-model="diplomeOfRecrutement.organisation">
+                                                </md-input-container>
+                                            </div>
+
+                                            <span class="md-subhead" translate>Actual situation</span>
                                             <div layout="row" >
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Status</label>
                                                     <md-select ng-model="personnel.status" required>
                                                         <md-option ng-repeat="sta in status" value="{{sta.id}}">
-                                                            {{sta.intitule| uppercase}}
+                                                            {{sta.name}}
                                                         </md-option>
                                                     </md-select>
                                                     <div ng-messages="step1.cniDeliveredAt.$error" >
@@ -195,7 +251,7 @@
                                                 </md-input-container>
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Registration number</label>
-                                                    <input ng-model="personnel.matricule" required>
+                                                    <input ng-model="personnel.identifier" required>
                                                 </md-input-container>
                                             </div>
                                             <div layout="row" >
@@ -203,7 +259,7 @@
                                                     <label translate>Corps</label>
                                                     <md-select ng-model="personnel.corps" >
                                                         <md-option ng-repeat="c in corps" value="{{c.id}}">
-                                                            {{c.intitule| uppercase}}
+                                                            {{c.name}}
                                                         </md-option>
                                                     </md-select>
                                                 </md-input-container>
@@ -211,7 +267,7 @@
                                                     <label translate>Grade</label>
                                                     <md-select  ng-model="personnel.grade" >
                                                         <md-option ng-repeat="grade in grades" value="{{grade.id}}">
-                                                            {{grade.intitule| uppercase}}
+                                                            {{grade.name}}
                                                         </md-option>
                                                     </md-select>
                                                 </md-input-container>
@@ -224,7 +280,6 @@
                                                     </md-select>
                                                 </md-input-container>
                                             </div>
-
                                         </md-card-content>
                                     </md-card>
 
@@ -235,28 +290,66 @@
                                             </md-card-title-text>
                                         </md-card-title>
                                         <md-card-content>
-                                            <div layout="row" ng-repeat="diplome in diplomes" flex>
+                                            <h3 class="md-subhead"><span translate>Educational status</span> <small>(<span translate>Highest level of education</span>)</small></h3>
+                                            <md-input-container class="md-block">
+                                                <label>Highest level of education</label>
+                                                <md-select ng-model="profile.more.highestLevelEducation" >
+                                                    <md-option ng-repeat="educationalLevel in dictionary.educationLevels" value="{{educationalLevel.id}}">
+                                                        {{educationalLevel.title}}
+                                                    </md-option>
+                                                </md-select>
+                                            </md-input-container>
+                                            <span class="md-subhead" translate>Highest degree</span>
+                                            <div layout="row" flex>
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Entitled</label>
-                                                    <input ng-model="diplome.intitule">
+                                                    <input ng-model="diplomeMostHigher.intitule">
                                                 </md-input-container>
                                                 <md-input-container flex>
                                                     <label translate>Year</label>
-                                                    <md-select name="diplomeYear" ng-model="diplome.anneeObtention">
+                                                    <md-select name="diplomeYear" ng-model="diplomeMostHigher.year">
                                                         <md-option value="{{y.year}}" ng-repeat="y in allYears" >{{y.year}}</md-option>
                                                     </md-select>
                                                 </md-input-container>
                                                 <md-input-container class="md-block"  flex>
-                                                    <label translate>Organisation</label>
-                                                    <input ng-model="diplome.organisation">
+                                                    <label translate>Authority</label>
+                                                    <input ng-model="diplomeMostHigher.organisation">
                                                 </md-input-container>
                                                 <md-input-container class="md-block"  flex>
-                                                    <label translate>Title</label>
-                                                    <input ng-model="diplome.titre">
+                                                    <label translate>Option</label>
+                                                    <input ng-model="diplomeMostHigher.option">
                                                 </md-input-container>
-                                                <md-icon ng-show="$index < (diplomes.length - 1)" ng-click="removeDiplomeLine($index)" class="md-warn" style="margin-left: 10px; margin-top: 20px;">delete</md-icon>
-                                                <md-icon ng-show="(diplomes.length - 1) === $index" ng-click="addNewDiplomeLine()" class="md-success"  style="margin-left: 10px; margin-top: 20px;">add_circle_outline</md-icon>
+                                                <md-input-container class="md-block"  flex>
+                                                    <label translate>Domain</label>
+                                                    <input ng-model="diplomeMostHigher.domain">
+                                                </md-input-container>
                                             </div>
+                                            <span class="md-subhead" translate>Recruitment diploma <small>(<span translate>in public service</span>)</small></span>
+                                            <div layout="row" flex>
+                                                <md-input-container class="md-block" flex>
+                                                    <label translate>Entitled</label>
+                                                    <input ng-model="diplomeOfRecrutement.intitule">
+                                                </md-input-container>
+                                                <md-input-container flex>
+                                                    <label translate>Year</label>
+                                                    <md-select name="diplomeYear" ng-model="diplomeOfRecrutement.year">
+                                                        <md-option value="{{y.year}}" ng-repeat="y in allYears" >{{y.year}}</md-option>
+                                                    </md-select>
+                                                </md-input-container>
+                                                <md-input-container class="md-block"  flex>
+                                                    <label translate>Authority</label>
+                                                    <input ng-model="diplomeOfRecrutement.organisation">
+                                                </md-input-container>
+                                                <md-input-container class="md-block"  flex>
+                                                    <label translate>Option</label>
+                                                    <input ng-model="diplomeOfRecrutement.option">
+                                                </md-input-container>
+                                                <md-input-container class="md-block"  flex>
+                                                    <label translate>Domain</label>
+                                                    <input ng-model="diplomeOfRecrutement.domain">
+                                                </md-input-container>
+                                            </div>
+                                            <h3 class="md-subhead"><span translate>Stages</span></h3>
                                         </md-card-content>
                                     </md-card>
 

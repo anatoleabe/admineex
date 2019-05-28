@@ -33,7 +33,8 @@ var PersonnelSchema = new Schema({
             country: String, //From json
             region: String, //From json
             department: String, //From json
-            arrondissement: String//From json
+            arrondissement: String,//From json
+            personToContact: String
         }
     ],
     cni: {
@@ -60,13 +61,15 @@ var PersonnelSchema = new Schema({
         schools: [
             {
                 diploma: String,
-                date: Date,
-                autority: String,
+                date: Number,
+                authority: String,
                 option: String,
-                domaine: String,
+                domain: String,
+                type: String, //recrutement or higher
                 lastModified: {type: Date, default: Date.now, required: true}
             }
-        ]
+        ], 
+        stages: [{}]
     },
     more: {},
     sanctions: [
