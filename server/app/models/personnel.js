@@ -12,7 +12,7 @@ var PersonnelSchema = new Schema({
         family: [String],
         middle: [String],
         maiden: [String],
-        given: [{type: String, index: true},],
+        given: [{type: String, index: true}, ],
         prefix: [String],
         suffix: [String]
     },
@@ -33,7 +33,7 @@ var PersonnelSchema = new Schema({
             country: String, //From json
             region: String, //From json
             department: String, //From json
-            arrondissement: String,//From json
+            arrondissement: String, //From json
             personToContact: String
         }
     ],
@@ -43,19 +43,28 @@ var PersonnelSchema = new Schema({
         city: String,
         by: String
     },
-    positionsHistory: [
-        {
-            numAct: String,
-            positionId: {type: ObjectId, required: false},
-            isCurrent: Boolean,
-            signatureDate: Date,
-            startDate: Date,
-            endDate: Date,
-            mouvement: String, //Id from json resources json mouvement
-            nature: String, //Id from json resources json act nature
-            lastModified: {type: Date, default: Date.now, required: true}
-        }
-    ],
+    history: {
+        recruitmentActNumber: String,
+        nature: String,
+        originalAdministration: String,
+        signatureDate: String,
+        signatory: String,
+        startDate: Date,
+        minfiEntryDate: Date,
+        positions: [
+            {
+                numAct: String,
+                positionId: {type: ObjectId, required: false},
+                isCurrent: Boolean,
+                signatureDate: Date,
+                startDate: Date,
+                endDate: Date,
+                mouvement: String, //Id from json resources json mouvement
+                nature: String, //Id from json resources json act nature
+                lastModified: {type: Date, default: Date.now, required: true}
+            }
+        ]
+    },
     qualifications: {
         highestLevelEducation: String, //From json
         schools: [
@@ -68,7 +77,7 @@ var PersonnelSchema = new Schema({
                 type: String, //recrutement or higher
                 lastModified: {type: Date, default: Date.now, required: true}
             }
-        ], 
+        ],
         stages: [{}]
     },
     more: {},
@@ -116,7 +125,7 @@ var Personnel = mongoose.model('Personnel', PersonnelSchema);
 // Export the model
 exports.Personnel = Personnel;
 
-Personnel.ensureIndexes(function(err) {
+Personnel.ensureIndexes(function (err) {
     if (err)
         console.log(err);
 });

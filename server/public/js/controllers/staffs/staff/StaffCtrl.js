@@ -71,7 +71,7 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
     $scope.personnels = [];
     $scope.corps = [];
     $scope.allYears = [];
-//    $scope.diplomeOfrecrutement = {diploma: '', year: '', authority: '', option: '', domaine: ''};
+    $scope.stages = [{title: '', start: undefined, end: undefined, authority: ''}];
 //    $scope.diplomeMostHigher = {diploma: '', year: '', authority: '', option: '', domaine: '', };
     $scope.diplomesCounter = 1;
 
@@ -116,12 +116,12 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
     }
 
 
-    $scope.addNewDiplomeLine = function () {
-        $scope.diplomes.push({diploma: '', year: '', authority: '', option: '', domaine: ''});
+    $scope.addNewStageLine = function () {
+        $scope.stages.push({title: '', start: undefined, end: undefined, authority: ''});
     }
 
-    $scope.removeDiplomeLine = function (index) {
-        $scope.diplomes.splice(index, 1);
+    $scope.removeStageLine = function (index) {
+        $scope.stages.splice(index, 1);
     }
 
 
