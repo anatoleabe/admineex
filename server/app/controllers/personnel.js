@@ -433,7 +433,7 @@ function beautify(options, personnels, callback) {
                         }
 
                         if (corps != "") {
-                            personnels[a].corps = dictionary.getValueFromJSON('../../resources/dictionary/personnel/corps.json', corps, language);
+                            personnels[a].corps = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/corps.json', corps, language);
                         }
 
                         LoopA(a + 1);

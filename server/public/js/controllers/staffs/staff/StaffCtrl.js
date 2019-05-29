@@ -180,7 +180,7 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                         Dictionary.jsonList({dictionary: 'personnel', levels: ['status', newval, "corps"]}).then(function (response) {
                                             $scope.corps = response.data.jsonList;
                                         });
-                                        if (!currentId) {
+                                        if ($stateParams.id === undefined) {
                                             $scope.personnel.corps = undefined;
                                             $scope.personnel.grade = undefined;
                                             $scope.personnel.category = undefined;
@@ -200,7 +200,7 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                         Dictionary.jsonList({dictionary: 'personnel', levels: ['status', $scope.personnel.status, "grades"]}).then(function (response) {
                                             $scope.grades = response.data.jsonList;
                                         });
-                                        if (!currentId) {
+                                        if ($stateParams.id === undefined) {
                                             $scope.personnel.grade = undefined;
                                             $scope.personnel.category = undefined;
                                         }
@@ -219,7 +219,7 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                             $scope.categories = response.data.jsonList;
                                         });
 
-                                        if (!currentId) {
+                                        if ($stateParams.id === undefined) {
                                             $scope.personnel.category = undefined;
                                         }
                                     } else {

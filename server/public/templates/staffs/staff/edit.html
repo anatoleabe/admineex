@@ -271,7 +271,7 @@
                                                 </md-input-container>
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Registration number (Matricul)</label>
-                                                    <input ng-model="personnel.identifier" required>
+                                                    <input ng-model="personnel.identifier" required ng-keydown="$event.keyCode != 32 ? $event:$event.preventDefault()">
                                                 </md-input-container>
                                             </div>
                                             <div layout="row" >
