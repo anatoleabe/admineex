@@ -17,6 +17,7 @@ var PersonnelSchema = new Schema({
         suffix: [String]
     },
     status: {type: String, required: true},
+    corps: {type: String, required: false},
     grade: {type: String, required: false},
     category: {type: String, required: false},
     gender: {type: String, required: true},
@@ -33,8 +34,7 @@ var PersonnelSchema = new Schema({
             country: String, //From json
             region: String, //From json
             department: String, //From json
-            arrondissement: String, //From json
-            personToContact: String
+            arrondissement: String //From json
         }
     ],
     cni: {
@@ -69,13 +69,12 @@ var PersonnelSchema = new Schema({
         highestLevelEducation: String, //From json
         schools: [
             {
-                diploma: String,
-                date: Number,
-                authority: String,
-                option: String,
-                domain: String,
-                type: String, //recrutement or higher
-                lastModified: {type: Date, default: Date.now, required: true}
+//                diploma: String,
+//                date: Date,
+//                authority: String,
+//                option: String,
+//                domain: String,
+//                type: String, //recrutement or higher
             }
         ],
         stages: [{}]

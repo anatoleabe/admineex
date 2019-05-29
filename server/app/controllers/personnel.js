@@ -31,11 +31,11 @@ exports.upsert = function (fields, callback) {
         });
     } else if (identifier !== '') {
         filter.$and.push({
-            "isentifier": identifier
+            "identifier": identifier
         });
     } else if (matricule !== '') {
         filter.$and.push({
-            "isentifier": matricule
+            "identifier": matricule
         });
     } else if (matricule !== '') {
         filter.$and.push({
@@ -45,6 +45,7 @@ exports.upsert = function (fields, callback) {
         filter = fields;
     }
     fields.lastModified = new Date();
+    console.log(fields);
     Personnel.findOneAndUpdate(filter, fields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
         if (err) {
             log.error(err);
@@ -66,6 +67,7 @@ exports.api.upsert = function (req, res) {
                 audit.logEvent('[formidable]', 'Personnel', 'Upsert', "", "", 'failed', "Formidable attempted to parse personnel fields");
                 return res.status(500).send(err);
             } else {
+                console.log(fields.qualifications.schools);
                 exports.upsert(fields, function (err) {
                     if (err) {
                         log.error(err);
@@ -313,7 +315,6 @@ exports.api.search = function (req, res) {
 
 
 exports.api.read = function (req, res) {
-    console.log('Read method call for personnel');
     if (req.actor) {
         if (req.params.id === undefined) {
             audit.logEvent(req.actor.id, 'Position', 'Read', '', '', 'failed',
@@ -321,15 +322,31 @@ exports.api.read = function (req, res) {
             return res.sendStatus(400);
         } else {
             console.log("Read " + req.params.id);
-            var position = dictionary.getPositionFromIdJSON("../../resources/dictionary/structure/positions.json", req.params.id, req.actor.language.toLowerCase());
-            beautify({actor: req.actor, language: req.actor.language, beautify: true}, [position], function (err, objects) {
+            var filter = {
+                _id: req.params.id
+            };
+            var isBeautify = false;
+            if (req.params.beautify){
+                isBeautify = true;
+            }
+
+            exports.read(filter, function (err, personnel) {
                 if (err) {
                     return res.status(500).send(err);
                 } else {
-                    console.log(objects);
-                    return res.json(objects[0]);
+                    beautify({actor: req.actor, language: req.actor.language, beautify: isBeautify}, [personnel], function (err, objects) {
+                        if (err) {
+                            return res.status(500).send(err);
+                        } else {
+                            console.log(objects);
+                            return res.json(objects[0]);
+                        }
+                    });
                 }
             });
+
+
+
         }
 
     } else {

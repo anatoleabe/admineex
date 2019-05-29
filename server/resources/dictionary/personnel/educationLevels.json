@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "en": "Primary",
+    "fr": "Primaire"
+  },
+  {
+    "id": 2,
+    "en": "Secondary",
+    "fr": "Secondaire"
+  },
+  {
+    "id": 3,
+    "en": "University",
+    "fr": "Universitaire"
+  },
+  {
+    "id": 4,
+    "en": "None",
+    "fr": "Auccun"
+  }
+]
