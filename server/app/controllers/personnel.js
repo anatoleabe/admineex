@@ -67,7 +67,6 @@ exports.api.upsert = function (req, res) {
                 audit.logEvent('[formidable]', 'Personnel', 'Upsert', "", "", 'failed', "Formidable attempted to parse personnel fields");
                 return res.status(500).send(err);
             } else {
-                console.log(fields.qualifications.schools);
                 exports.upsert(fields, function (err) {
                     if (err) {
                         log.error(err);

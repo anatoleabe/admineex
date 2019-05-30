@@ -36,6 +36,9 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
         return new Date(b.dateOf).getTime() - new Date(a.dateOf).getTime();
     }
 
+
+
+
     $ocLazyLoad.load('js/services/StaffService.js').then(function () {
         var Staffs = $injector.get('Staff');
         $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
@@ -71,7 +74,6 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
                     $scope.selectedPersonnelChange = function (personnel) {
                         if (personnel) {
                             $scope.personnelSelected = personnel;
-
 
                             function getDictionaryItemByValue(dictionaryList, itemValue) {
                                 var items = $.grep(dictionaryList, function (c, i) {
@@ -184,15 +186,15 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
                                             };
                                             $scope.save = function (params) {
                                                 $scope.personnel[moreField] = $scope.selectedDetails;
-                                                
+
                                                 prepareDetailsForServer();
-                                                
+
                                                 var positionToUpdate = {
-                                                    _id:$scope.personnel._id,
-                                                    identifier:$scope.personnel.identifier
+                                                    _id: $scope.personnel._id,
+                                                    identifier: $scope.personnel.identifier
                                                 };
                                                 positionToUpdate[moreField] = $scope.personnel[moreField];
-                                                
+
                                                 Staffs.upsert(positionToUpdate).then(function (response) {
                                                     $mdDialog.hide();
                                                     prepareRequiredItemsToAngular();
@@ -227,8 +229,6 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
 
                                 });
                             }
-
-
                             //loadsHistory(personnel);
                         } else {
                             $scope.personnelSelected = undefined;

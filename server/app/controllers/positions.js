@@ -139,10 +139,10 @@ exports.api.affectToPosition = function (req, res) {
                                                 mouvement: fields.mouvement,
                                                 nature: fields.nature
                                             };
-                                            if (!perso.positionsHistory) {
-                                                perso.positionsHistory = [];
+                                            if (!perso.history) {
+                                                perso.history = {positions: []};
                                             }
-                                            perso.positionsHistory.push(history);
+                                            perso.history.positions.push(history);
 
                                             controllers.personnel.upsert(perso, function (err, structure) {
                                                 if (err) {

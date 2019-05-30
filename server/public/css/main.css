@@ -427,24 +427,24 @@ table.md-table tbody.md-body > tr.md-row:hover {
 .md-errors-spacer:empty { display: none; }
 
 .card-container {
-  /*  not needed styles to reflect it 
-  background: #ccc;*/ 
-  padding: 10px;
-  /*color: white;*/
-  /* needed styles below */
-  display: flex;
-  justify-content: space-between;
-  font-size: 2rem;
+    /*  not needed styles to reflect it 
+    background: #ccc;*/ 
+    padding: 10px;
+    /*color: white;*/
+    /* needed styles below */
+    display: flex;
+    justify-content: space-between;
+    font-size: 2rem;
     line-height: 1.4;
     font-weight: 400;
     color:black;
 }
 
 .card-container-right {
- text-align: right
+    text-align: right
 }
 .card-container-left {
- text-align: left
+    text-align: left
 }
 
 .hint {
@@ -456,4 +456,12 @@ table.md-table tbody.md-body > tr.md-row:hover {
     line-height: 14px;
     /* Set our own color */
     color: grey; 
+}
+
+.img-circle {
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto;
+    background-size: cover;
 }

@@ -42,6 +42,42 @@
             <md-icon aria-label="{{helper.title}}" class="material-icons" style="font-size: 120px;height: 120px;width: 120px;">{{helper.icon}}</md-icon>
             <h2 class="md-title">{{helper.title}}</h2>
         </div>
+
+        <md-card ng-if="personnelSelected">
+            <md-card-header   layout-align="center" layout-wrap layout="column" >
+                <div layout="row" layout-align="center center" >
+                    <img  ng-src="templates/staffs/img/{{personnelSelected.mysqlId}}.jpeg" class="img-circle" />
+                </div>
+                <div layout="column" layout-align="center center">
+                    <md-button ui-sref="home.profile.edit" >
+                        <span style="white-space: nowrap; font-weight: bold;">{{personnelSelected.name}}</span>
+                    </md-button>
+                    <span ng-if="personnelSelected.affectedTo.position.name" style="white-space: nowrap; margin-top: -6px;margin-bottom: 5px;">{{personnelSelected.affectedTo.position.name| uppercase | unknown}}</span>
+                </div>
+                <div style="padding:0;margin: 0;" layout="row" layout-align="center center">
+                    <div flex>
+                        <div style="padding:0;margin: 0;" layout="row" layout-align="center center">
+                            <p style="white-space: nowrap; font-weight: bold;padding:0;margin: 0; font-size: 80%;" > {{profile.score}} <span translate>Profile: 80% of required profile</span> </p>
+                        </div>
+                        <div layout="row" layout-align="center center">
+                            <div style="margin-right:5px;"> <md-icon style="color: #0288d1;">star</md-icon></div>
+                            <md-progress-linear style="max-width: 20%;" md-mode="determinate" value="80"></md-progress-linear>
+                        </div>
+                    </div>
+                    <div flex>
+                        <div style="padding:0;margin: 0;" layout="row" layout-align="center center">
+                            <p style="white-space: nowrap; font-weight: bold;padding:0;margin: 0; font-size: 80%;" > {{profile.score}} <span translate>Skills: 60% of required skills</span> </p>
+                        </div>
+                        <div layout="row" layout-align="center center">
+                            <div style="margin-right:5px;"> <md-icon style="color: #0288d1;">star</md-icon></div>
+                            <md-progress-linear style="max-width: 20%;" md-mode="determinate" value="60"></md-progress-linear>
+                        </div>
+                    </div>
+
+                </div>
+            </md-card-header>
+        </md-card>
+
         <md-tabs md-dynamic-height md-border-bottom ng-if="personnelSelected" style="margin-top: -20px">
             <md-tab label='{{"Personnal data"| translate }}'>
                 <md-content class="md-padding" layout="row">
@@ -49,11 +85,6 @@
                     <div flex="50">
                         <md-card >
                             <md-card>
-                                <md-card-title>
-                                    <md-card-title-text>
-                                        <span class="md-headline" translate>Personal informations</span>
-                                    </md-card-title-text>
-                                </md-card-title>
                                 <md-card-content>
                                     <md-list>
                                         <md-list-item>
@@ -209,23 +240,7 @@
                         </md-card>
                     </div>
                     <div flex="50">
-                        <div layout="row">
-                            <div flex="25">
 
-                            </div>
-                            <div flex="50">
-                                <md-card md-theme="dark-grey" md-theme-watch>
-                                    <md-card-title-media>
-                                        <div class="md-media-lg card-media" style="max-width: 250px; max-height: 250px">
-                                            <img ng-src="templates/staffs/img/{{personnelSelected.mysqlId}}.jpeg"    class="img-responsive " />
-                                        </div>
-                                    </md-card-title-media>
-                                </md-card>
-                            </div>
-                            <div flex="25">
-
-                            </div>
-                        </div>
 
                         <md-card>
                             <md-card>
@@ -312,8 +327,8 @@
                                         </md-button>
                                     </md-card-actions>
                                 </md-card-title>
-                                <md-card-content>
-                                    <md-list ng-cloak>
+                                <md-card-content layout="row" flex>
+                                    <md-list ng-cloak flex="80">
                                         <div  ng-repeat="profile in profiles">
                                             <md-list-item ui-sref="#">
                                                 <p class="md-body-2" >{{profile.name}}</p>
@@ -324,6 +339,11 @@
                                             <h2 class="md-title">{{helperNoData.title}}</h2>
                                         </div>
                                     </md-list>
+                                    <span flex></span>
+                                    <div oc-lazy-load="'node_modules/angularjs-gauge/dist/angularjs-gauge.min.js'"  layout="column" layout-align="center center" flex>
+                                        <span flex></span>
+                                        <ng-gauge size="100" type="full" thick="10" min="0" max="120" value="68.2" cap="butt" label="of required"  foreground-color="#0fbf41" background-color="#ededed" append="%" flex></ng-gauge>
+                                    </div>
                                 </md-card-content>
                             </md-card>
                             <!--required skills-->
@@ -340,8 +360,8 @@
                                         </md-button>
                                     </md-card-actions>
                                 </md-card-title>
-                                <md-card-content>
-                                    <md-list ng-cloak>
+                                <md-card-content layout="row" flex>
+                                    <md-list ng-cloak flex="80">
                                         <div  ng-repeat="skill in skills">
                                             <md-list-item ui-sref="#">
                                                 <p class="md-body-2" >{{skill.name}}</p>
@@ -352,6 +372,11 @@
                                             <h2 class="md-title">{{helperNoData.title}}</h2>
                                         </div>
                                     </md-list>
+                                    <span flex></span>
+                                    <div oc-lazy-load="'node_modules/angularjs-gauge/dist/angularjs-gauge.min.js'"  layout="column" layout-align="center center" flex>
+                                        <span flex></span>
+                                        <ng-gauge size="100" type="full" thick="10" min="0" max="120" value="68.2" cap="butt" label="of required"  foreground-color="#0fbf41" background-color="#ededed" append="%" flex></ng-gauge>
+                                    </div>
                                 </md-card-content>
                             </md-card>
                         </md-card>
@@ -360,24 +385,24 @@
             </md-tab>
             <md-tab label='{{"History"| translate }}'>
                 <md-content >
-                    <div oc-lazy-load="'bower_components/angular-timeline/dist/angular-timeline.js'">
-                        <timeline>
-                            <timeline-event ng-repeat="event in events| orderBy:'dateOf':true">
-                                <timeline-badge ng-click="read($index);">
-                                    <small>{{event.dateOf| dateOnlyYear}}</small>
-                                </timeline-badge>
-                                <timeline-panel ng-click="read($index);">
-                                    <timeline-heading>
-                                        <h6 style="margin:0;"><md-icon>work</md-icon> <small>{{event.action}}</small> : <b>{{event.title}}</b></h6>
-                                    </timeline-heading>
-                                    <p style="margin:0;">
-                                        <span >  <md-icon>account_balance</md-icon> {{event.content}}</span></br>
-                                        <span > <md-icon>vpn_key</md-icon><small> {{event.acte}}</small> <small translate> of </small> <small> {{event.dateOf| dateHuman}}</small></span>
-                                    </p>
-                                </timeline-panel>
-                            </timeline-event>
-                        </timeline>
-                    </div>
+                    <!--                    <div oc-lazy-load="'bower_components/angular-timeline/dist/angular-timeline.js'">
+                                            <timeline>
+                                                <timeline-event ng-repeat="event in events| orderBy:'dateOf':true">
+                                                    <timeline-badge ng-click="read($index);">
+                                                        <small>{{event.dateOf| dateOnlyYear}}</small>
+                                                    </timeline-badge>
+                                                    <timeline-panel ng-click="read($index);">
+                                                        <timeline-heading>
+                                                            <h6 style="margin:0;"><md-icon>work</md-icon> <small>{{event.action}}</small> : <b>{{event.title}}</b></h6>
+                                                        </timeline-heading>
+                                                        <p style="margin:0;">
+                                                            <span >  <md-icon>account_balance</md-icon> {{event.content}}</span></br>
+                                                            <span > <md-icon>vpn_key</md-icon><small> {{event.acte}}</small> <small translate> of </small> <small> {{event.dateOf| dateHuman}}</small></span>
+                                                        </p>
+                                                    </timeline-panel>
+                                                </timeline-event>
+                                            </timeline>
+                                        </div>-->
                 </md-content>
             </md-tab>
 
