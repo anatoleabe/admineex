@@ -325,7 +325,7 @@ exports.api.read = function (req, res) {
                 _id: req.params.id
             };
             var isBeautify = false;
-            if (req.params.beautify){
+            if (req.params.beautify) {
                 isBeautify = true;
             }
 
@@ -417,13 +417,54 @@ function beautify(options, personnels, callback) {
                         log.error(err);
                         callback(err);
                     } else {
+                        personnels[a].affectedTo = affectation;
+                        personnels[a].skillsCorresponding = 0;
+                        personnels[a].profilesCorresponding = 0;
+
+                        if (personnels[a].affectedTo && personnels[a].affectedTo.position) {
+                            var requiredProfiles = personnels[a].affectedTo.position.requiredProfiles;
+                            var requiredSkills = personnels[a].affectedTo.position.requiredSkills;
+                            var userProfiles = personnels[a].profiles;
+                            var userSkills = personnels[a].skills;
+
+                            if (requiredProfiles && requiredProfiles.length) {
+                                var count = 0;
+                                if (userProfiles && userProfiles.length > 0) {
+                                    for (var i in userProfiles) {
+                                        if (requiredProfiles.includes(userProfiles[i])) {
+                                            count = count + 1;
+                                        }
+                                    }
+                                }
+                                personnels[a].profilesCorresponding = Number((100*(count / 3 )).toFixed(1));
+                                if (personnels[a].profilesCorresponding > 100){
+                                    personnels[a].profilesCorresponding = 100;
+                                }
+                            }
+
+                            if (requiredSkills && requiredSkills.length > 0) {
+                                var count = 0;
+                                if (userSkills && userSkills.length > 0) {
+                                    for (var i in userSkills) {
+                                        if (requiredSkills.includes(userSkills[i])) {
+                                            count = count + 1;
+                                        }
+                                    }
+                                }
+                                personnels[a].skillsCorresponding = Number((100*(count / 3 )).toFixed(1));
+                                if (personnels[a].skillsCorresponding > 100){
+                                    personnels[a].skillsCorresponding = 100;
+                                }
+                            }
+                        }
+
                         var status = personnels[a].status || "";
                         var grade = personnels[a].grade || "";
                         var corps = personnels[a].corps || "";
                         var category = personnels[a].category || "";
 
                         personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
-                        personnels[a].affectedTo = affectation;
+
                         personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
 
                         if (status != "") {

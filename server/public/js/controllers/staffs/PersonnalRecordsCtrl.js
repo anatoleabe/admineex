@@ -74,7 +74,7 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
                     $scope.selectedPersonnelChange = function (personnel) {
                         if (personnel) {
                             $scope.personnelSelected = personnel;
-
+                            console.log(personnel);
                             function getDictionaryItemByValue(dictionaryList, itemValue) {
                                 var items = $.grep(dictionaryList, function (c, i) {
                                     return c.value === itemValue;
