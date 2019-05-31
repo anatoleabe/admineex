@@ -1,0 +1,63 @@
+<md-dialog flex="70" flex-offset="0" flex-md="60" flex-offset-md="0" flex-sm="70" flex-offset-sm="0" flex-xs="100" flex-offset-xs="0" ui-view >
+
+    <md-toolbar class="md-accent">
+        <div class="md-toolbar-tools">
+            <h2><span translate>List of people eligible to the position {{position.code}}</span></h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon>close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <md-card>
+                <md-toolbar class="md-table-toolbar md-default" >
+                    <div class="md-toolbar-tools">
+                        <md-icon>search</md-icon>
+                        <form flex>
+                            <input type="text" name="search" ng-model="personnelFilter" placeholder="{{ 'Search...' | translate }}">
+                        </form>
+                        <md-button class="md-icon-button" ng-click="personnelFilter = ''" aria-label="close">
+                            <md-icon class="material-icons">close</md-icon>
+                        </md-button>
+                    </div>
+                </md-toolbar>
+                <md-table-container>
+                    <table md-table md-progress="promise" md-row-select="false" >
+                        <thead md-head md-order="query.order">
+                            <tr md-row>
+                                <th md-column md-order-by="#"><span translate>Order</span></th>
+                                <th md-column md-order-by="name"><span translate>Full name</span></th>
+                                <th md-column md-order-by="identifier"><span translate>Registration number</span></th>
+                                <th md-column md-order-by="grade"><span translate>Grade</span></th>
+                                <th md-column md-order-by="corresponding"><span translate>Eligibility</span></th>
+                            </tr>
+                        </thead>
+                        <tbody md-body>
+                            <tr md-row md-select="personnel" md-select-id="personnel.id"  data-ng-repeat="personnel in personnels| filter:personnelFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                                <td md-cell>{{$index+1}} </td>
+                                <td md-cell>{{personnel.name.family[0]}} {{personnel.name.given[0]}} </td>
+                                <td md-cell>{{personnel.identifier| uppercase | unknown}}</td>
+                                <td md-cell>{{personnel.grade| uppercase | unknown}}</td>
+                                <td md-cell>{{personnel.corresponding}}%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </md-table-container>
+                <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 50, 100]" md-page="query.page" md-total="{{personnels.length}}" 
+                                      md-page-select="true"  >
+
+            </md-card>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        
+        <span flex></span>
+        
+        <md-button ng-disabled="personnels.length <= 0" ng-click="print()" class="md-primary">
+            <span translate>Print</span>
+        </md-button>
+    </md-dialog-actions>
+
+    </md-dialog>

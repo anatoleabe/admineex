@@ -6,7 +6,15 @@
                 <md-icon>arrow_back_ios</md-icon>
                 <span translate>Back</span>
             </md-button>
-            <span flex></span>
+            <div layout="row" layout-align="center center" flex >
+                <md-button class="md-secondary"  aria-label="See" ng-click="eligibility(position)">
+                    <md-icon aria-label="person_add">person_adsd</md-icon>
+                    <md-tooltip>
+                        <span translate>Show eligible persons to this position</span>
+                    </md-tooltip>
+                    <span>Show eligible persons to this position</span>
+                </md-button>
+            </div>
             <md-button  class="md-raised md-primary" ng-click="edit({id: position._id})" aria-label="Edit" >
                 <md-icon>edit</md-icon>
                 <span translate>Edit</span>
@@ -185,6 +193,15 @@
                 <h2 class="md-title">{{helper.title}}</h2>
             </div>
         </md-card>
+        <div layout="row" layout-align="center center"  >
+            <md-button class="md-secondary"  aria-label="See" ng-click="eligibility(position)">
+                <md-icon aria-label="person_add">person_adsd</md-icon>
+                <md-tooltip>
+                    <span translate>Show eligible persons to this position</span>
+                </md-tooltip>
+                <span>Show eligible persons to this position</span>
+            </md-button>
+        </div>
 
         <md-card-actions layout="row" >
             <md-button ng-click="back()" class="md-raised md-primary" aria-label="Edit" >

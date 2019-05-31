@@ -234,9 +234,25 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                                         }
                                     }
                                 }).then(function (answer) {
-//                                    $scope.profile.work[0].organisationID = answer._id;
-//                                    $scope.organisationSearchText = answer.name;
-//                                    showAlert();
+                                }, function () {
+                                });
+                            });
+                        }
+
+                        $scope.eligibility = function (position) {
+
+                            $ocLazyLoad.load('js/controllers/administration/positions/EligibilityCtrl.js').then(function () {
+                                $mdDialog.show({
+                                    controller: 'EligibilityController',
+                                    templateUrl: '../templates/dialogs/eligibility.html',
+                                    parent: angular.element(document.body),
+                                    clickOutsideToClose: true,
+                                    locals: {
+                                        params: {
+                                            position: position
+                                        }
+                                    }
+                                }).then(function (answer) {
                                 }, function () {
                                 });
                             });

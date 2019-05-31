@@ -282,7 +282,7 @@ exports.api.search = function (req, res) {
                     {"$unwind": "$name"},
                     {"$unwind": "$name.family"},
                     {"$unwind": "$name.given"},
-                    {"$addFields": {"name": {$concat: concat}, }},
+                    {"$addFields": {"name": {$concat: concat}}},
                     {$match: {"name": dictionary.makePattern(name)}}
                 ]).exec(function (err, personnels) {
                     if (err) {
@@ -304,6 +304,61 @@ exports.api.search = function (req, res) {
             } else {
                 return res.json();
             }
+        }
+    } else {
+        audit.logEvent('[anonymous]', 'Personnel', 'Search', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+}
+
+exports.api.eligibleTo = function (req, res) {
+    if (req.actor) {
+        if (req.params.id == undefined) {
+            audit.logEvent(req.actor.id, 'Personnel', 'EligibleTo', '', '', 'failed',
+                    'The actor could not read the personnel eligible because one or more params of the request was not defined');
+            return res.sendStatus(400);
+        } else {
+
+            controllers.positions.find({_id: req.params.id}, function (err, position) {
+                if (err) {
+                    log.error(err);
+                    return res.sendStatus(400);
+                } else {
+                    var requiredProfiles = position.requiredProfiles;
+                    var requiredSkills = position.requiredSkills;
+
+                    if ((requiredProfiles && requiredProfiles.length > 0) || (requiredSkills && requiredSkills.length > 0)) {
+                        var concat;
+
+                        concat = ["$name.family", " ", "$name.given"];
+
+                        var query = {$or: []};
+                        var sort = {"name.family": 'asc'};
+                        query.$or.push({"profiles": {"$in": requiredProfiles}});
+                        query.$or.push({"skills": {"$in": requiredSkills}});
+
+                        var q = Personnel.find(query).sort(sort).limit(0).skip(0).lean();
+                        q.exec(function (err, personnels) {
+                            if (err) {
+                                log.error(err);
+                                audit.logEvent('[mongodb]', 'Personnel', 'EligibleTo', '', '', 'failed', 'Mongodb attempted to retrieve a personnel');
+                                return res.sendStatus(500);
+                            } else {
+                                personnels = JSON.parse(JSON.stringify(personnels));
+                                beautify({req: req, language: req.actor.language, beautify: true}, personnels, function (err, objects) {
+                                    if (err) {
+                                        return res.status(500).send(err);
+                                    } else {
+                                        return res.json(objects);
+                                    }
+                                });
+                            }
+                        });
+                    } else {
+                        return res.json();
+                    }
+                }
+            });
         }
     } else {
         audit.logEvent('[anonymous]', 'Personnel', 'Search', '', '', 'failed', 'The actor was not authenticated');
@@ -427,7 +482,7 @@ function beautify(options, personnels, callback) {
                             var userProfiles = personnels[a].profiles;
                             var userSkills = personnels[a].skills;
 
-                            if (requiredProfiles && requiredProfiles.length) {
+                            if (requiredProfiles && requiredProfiles.length > 0) {
                                 var count = 0;
                                 if (userProfiles && userProfiles.length > 0) {
                                     for (var i in userProfiles) {
@@ -436,8 +491,8 @@ function beautify(options, personnels, callback) {
                                         }
                                     }
                                 }
-                                personnels[a].profilesCorresponding = Number((100*(count / 3 )).toFixed(1));
-                                if (personnels[a].profilesCorresponding > 100){
+                                personnels[a].profilesCorresponding = Number((100 * (count / 3)).toFixed(1));
+                                if (personnels[a].profilesCorresponding > 100) {
                                     personnels[a].profilesCorresponding = 100;
                                 }
                             }
@@ -451,12 +506,14 @@ function beautify(options, personnels, callback) {
                                         }
                                     }
                                 }
-                                personnels[a].skillsCorresponding = Number((100*(count / 3 )).toFixed(1));
-                                if (personnels[a].skillsCorresponding > 100){
+                                personnels[a].skillsCorresponding = Number((100 * (count / 3)).toFixed(1));
+                                if (personnels[a].skillsCorresponding > 100) {
                                     personnels[a].skillsCorresponding = 100;
                                 }
                             }
                         }
+                        
+                        personnels[a].corresponding = Number(((personnels[a].skillsCorresponding + personnels[a].profilesCorresponding)/2).toFixed(1));
 
                         var status = personnels[a].status || "";
                         var grade = personnels[a].grade || "";

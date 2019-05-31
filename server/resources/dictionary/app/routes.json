@@ -292,5 +292,11 @@
         "uri": "/api/personnel/search/:text",
         "method": "GET",
         "roles": [1,2,3]
+    },
+    {
+        "id": 51,
+        "uri": "/api/personnel/eligible/:id",
+        "method": "GET",
+        "roles": [1,2,3]
     }
 ]
