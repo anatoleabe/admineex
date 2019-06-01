@@ -45,7 +45,6 @@ exports.upsert = function (fields, callback) {
         filter = fields;
     }
     fields.lastModified = new Date();
-    console.log(fields);
     Personnel.findOneAndUpdate(filter, fields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
         if (err) {
             log.error(err);
@@ -261,9 +260,6 @@ exports.list = function (options, callback) {
 }
 
 
-
-
-
 exports.api.search = function (req, res) {
     if (req.actor) {
         if (req.params.text == undefined) {
@@ -311,6 +307,12 @@ exports.api.search = function (req, res) {
     }
 }
 
+/**
+ * This function output the list of staff corresponds to geven position
+ * @param {type} req
+ * @param {type} res
+ * @returns {unresolved}
+ */
 exports.api.eligibleTo = function (req, res) {
     if (req.actor) {
         if (req.params.id == undefined) {

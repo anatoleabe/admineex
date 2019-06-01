@@ -166,8 +166,10 @@
         <md-card>
             <md-card-title class="card-container">
                 <md-card-title-text class="card-container-left">
-                    <span class="md-headline" translate>Position activities</span>
+                    <span class="md-headline" translate>Activities</span>
                 </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
                 <md-list ng-cloak>
                     <div  ng-repeat="activity in activities">
                         <md-list-item ui-sref="#">
@@ -179,20 +181,30 @@
                         <h2 class="md-title">{{helper.title}}</h2>
                     </div>
                 </md-list>
-            </md-card-title>
+            </md-card-content>
         </md-card>
-        <!--required Activities-->
+        <!--required Task-->
         <md-card>
-            <div  ng-repeat="task in tasks">
-                <md-list-item ui-sref="#">
-                    <p class="md-body-2" >{{task.name}}</p>
-                </md-list-item>
-                <md-divider></md-divider>
-            </div>
-            <div layout="row" layout-align="center center" data-ng-if="tasks && tasks.length <= 0" style="opacity:0.2; margin-top: -40px">
-                <h2 class="md-title">{{helper.title}}</h2>
-            </div>
+            <md-card-title class="card-container">
+                <md-card-title-text class="card-container-left">
+                    <span class="md-headline" translate>Tasks</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <md-list ng-cloak>
+                    <div  ng-repeat="task in tasks">
+                        <md-list-item ui-sref="#">
+                            <p class="md-body-2" >{{task}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </div>
+                    <div layout="row" layout-align="center center" data-ng-if="tasks && tasks.length <= 0" style="opacity:0.2; margin-top: -40px">
+                        <h2 class="md-title">{{helper.title}}</h2>
+                    </div>
+                </md-list>
+            </md-card-content>
         </md-card>
+
         <div layout="row" layout-align="center center"  >
             <md-button class="md-secondary"  aria-label="See" ng-click="eligibility(position)">
                 <md-icon aria-label="person_add">person_adsd</md-icon>
