@@ -5,14 +5,14 @@
             <md-autocomplete md-search-text="personnelSearchText"
                              md-selected-item-change="selectedPersonnelChange(perso)"
                              md-items="perso in personnelQuerySearch(personnelSearchText)"
-                             md-item-text="perso.name"
+                             md-item-text="perso.fname"
                              md-min-length="2"
                              placeholder="{{'Search a staff (Name, matricule or CNI)' | translate}}"
                              required
                              md-require-match
                              flex>
                 <md-item-template>
-                    <span md-highlight-text="deficitaireSearchText">{{perso.name}} </span>
+                    <span md-highlight-text="deficitaireSearchText">{{perso.fname}} </span>
                     <small>
                         <span >(</span>
                         <span ng-if="perso.identifier">{{"Mle: " + (perso.identifier)}} </span>
@@ -50,7 +50,7 @@
                 </div>
                 <div layout="column" layout-align="center center">
                     <md-button ui-sref="home.profile.edit" >
-                        <span style="white-space: nowrap; font-weight: bold;">{{personnelSelected.name}}</span>
+                        <span style="white-space: nowrap; font-weight: bold;">{{personnelSelected.fname}}</span>
                     </md-button>
                     <span ng-if="personnelSelected.affectedTo.position.name" style="white-space: nowrap; margin-top: -6px;margin-bottom: 5px;">{{personnelSelected.affectedTo.position.name| uppercase | unknown}}</span>
                 </div>

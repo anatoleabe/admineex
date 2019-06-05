@@ -17,6 +17,9 @@ angular.module('StaffService', []).factory('Staff', function($http) {
         },
         delete: function(info) {
             return $http.delete('/api/personnel/' + info.id);
+        },
+        pdf1: function() {
+            return $http.get('/api/pdf/pdf1/');
         }
     }
 });

@@ -283,7 +283,13 @@ exports.findStructureByCode = function (code, language, callback) {
 
             if (structure != null) {
                 structure.name = ((language && language !== "" && structure[language] != undefined && structure[language] != "") ? structure[language] : structure['en']);
-                callback(null, structure);
+                beautify({language: language, beautify: true}, [structure], function (err, objects) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        callback(null, objects[0]);
+                    }
+                });
             } else {
                 callback(null);
             }

@@ -1,0 +1,23 @@
+<html>
+    <head>
+        Dynamic HTML to PDF
+    </head>
+    <body>
+        <h1>Hi {{users.0.name}}</h1>
+        <div>
+            template
+            {{#ifCond 'v1' 'v2'}}
+            {{v1}} is equals to {{v2}}
+            {{else}}
+            Variables are not similar
+            {{/ifCond}}
+        </div>
+        <ul>
+            {{#each users}}
+            <li>Name: {{this.name}}</li>
+            <li>Age: {{this.age}}</li>
+            <li>DOB: {{this.dob}}</li>
+            {{/each}}
+        </ul>
+    </body>
+</html>

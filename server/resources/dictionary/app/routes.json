@@ -298,5 +298,11 @@
         "uri": "/api/personnel/eligible/:id",
         "method": "GET",
         "roles": [1,2,3]
+    },
+    {
+        "id": 52,
+        "uri": "/api/pdf/pdf1/",
+        "method": "GET",
+        "roles": [1,2,3]
     }
 ]

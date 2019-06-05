@@ -83,23 +83,23 @@
                                 </md-tooltip>
                                 <span translate>Consult</span>
                             </md-button>
-                            <md-button class="md-secondary " ng-class="{'red':true}" aria-label="Remove" ng-click="edit({id: user._id})">
+<!--                            <md-button class="md-secondary " ng-class="{'red':true}" aria-label="Remove" ng-click="edit({id: user._id})">
                                 <md-icon style="color: white;" aria-label="remove_circle_outline">remove_circle_outline</md-icon>
                                 <md-tooltip>
                                     <span translate>Remove</span>
                                 </md-tooltip>
                                 <span translate>Remove</span>
-                            </md-button>
+                            </md-button>-->
                         </md-list-item>
                         <md-divider></md-divider>
                     </div>
                 </md-list>
                 <div layout="row" layout-align="center center"  >
-                    <md-button class="md-secondary" ng-class="{'green':!affectedStaffs || !affectedStaffs.length > 0,'gray':affectedStaffs && affectedStaffs.length > 0}" aria-label="See" ng-click="affectTo(position)"
-                               ng-disabled="affectedStaffs && affectedStaffs.length > 0">
+                    <md-button class="md-secondary" ng-class="{'green':true}" aria-label="See" ng-click="affectTo(position)"
+                               >
                         <md-icon aria-label="person_add">person_add</md-icon>
                         <md-tooltip>
-                            <span translate>Affect staff to this position</span>
+                            <span translate>Affect new staff to this position</span>
                         </md-tooltip>
                         <span>Affect staff to this position</span>
                     </md-button>

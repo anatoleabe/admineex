@@ -31,6 +31,7 @@ controllers.notifications = require('./controllers/notifications');
 controllers.configuration = require('./controllers/configuration');
 controllers.installation = require('./controllers/installation');
 controllers.dictionary = require('./utils/dictionary');
+controllers.pdfs = require('./controllers/pdfs');
 controllers.angular = function (req, res) {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 };
@@ -361,6 +362,13 @@ var routes = [
         httpMethod: _.findWhere(aclRoutes, {id: 51}).method,
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.eligibleTo],
         access: _.findWhere(aclRoutes, {id: 51}).roles
+    },
+    // pdf1
+    {
+        path: _.findWhere(aclRoutes, {id: 52}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 52}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.pdfs.api.pdf1],
+        access: _.findWhere(aclRoutes, {id: 52}).roles
     },
 
     // === ORGANIZATION ROUTES ==========================================================

@@ -278,8 +278,8 @@ exports.api.search = function (req, res) {
                     {"$unwind": "$name"},
                     {"$unwind": "$name.family"},
                     {"$unwind": "$name.given"},
-                    {"$addFields": {"name": {$concat: concat}}},
-                    {$match: {"name": dictionary.makePattern(name)}}
+                    {"$addFields": {"fname": {$concat: concat}}},
+                    {$match: {"fname": dictionary.makePattern(name)}}
                 ]).exec(function (err, personnels) {
                     if (err) {
                         log.error(err);
@@ -521,6 +521,8 @@ function beautify(options, personnels, callback) {
                         var grade = personnels[a].grade || "";
                         var corps = personnels[a].corps || "";
                         var category = personnels[a].category || "";
+                        var highestLevelEducation = (personnels[a].qualifications)?personnels[a].qualifications.highestLevelEducation : "";
+                        var natureActe = (personnels[a].history)?personnels[a].history.nature : "";
 
                         personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
 
@@ -533,6 +535,14 @@ function beautify(options, personnels, callback) {
 
                         if (corps != "") {
                             personnels[a].corps = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/corps.json', corps, language);
+                        }
+                        
+                        if (highestLevelEducation != "") {
+                            personnels[a].qualifications.highestLevelEducation = dictionary.getValueFromJSON('../../resources/dictionary/personnel/educationLevels.json', parseInt(highestLevelEducation, 10), language);
+                        }
+                        
+                        if (natureActe != "") {
+                            personnels[a].history.nature = dictionary.getValueFromJSON('../../resources/dictionary/acts/natures.json', natureActe, language);
                         }
 
                         LoopA(a + 1);
