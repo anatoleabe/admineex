@@ -370,6 +370,13 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.pdfs.api.pdf1],
         access: _.findWhere(aclRoutes, {id: 52}).roles
     },
+    // checkExistance
+    {
+        path: _.findWhere(aclRoutes, {id: 53}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 53}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.checkExistance],
+        access: _.findWhere(aclRoutes, {id: 53}).roles
+    },
 
     // === ORGANIZATION ROUTES ==========================================================
     // Create an org

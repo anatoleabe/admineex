@@ -307,6 +307,42 @@ exports.api.search = function (req, res) {
     }
 }
 
+exports.api.checkExistance = function (req, res) {
+    
+    console.log("Mat XXXXX ");
+    if (req.actor) {
+        if (req.params.mat == undefined) {
+            audit.logEvent(req.actor.id, 'Personnel', 'checkExistance', '', '', 'failed',
+                    'The actor could not read the personnel timeline because one or more params of the request was not defined');
+            return res.sendStatus(400);
+        } else {
+
+            var mat = req.params.mat || '';
+            console.log("Mat = "+mat)
+            var concat;
+
+            concat = ["$name.family", " ", "$name.given"];
+
+            if (mat !== '') {
+                Personnel.count({"identifier": mat}).exec(function (err, count) {
+                    if (err) {
+                        log.error(err);
+                        audit.logEvent('[mongodb]', 'Personnel', 'checkExistance', '', '', 'failed', 'Mongodb attempted to checkExistance of identifier');
+                        return res.sendStatus(500);
+                    } else {
+                        return res.json(count);
+                    }
+                });
+            } else {
+                return res.json(0);
+            }
+        }
+    } else {
+        audit.logEvent('[anonymous]', 'Personnel', 'Search', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+}
+
 /**
  * This function output the list of staff corresponds to geven position
  * @param {type} req

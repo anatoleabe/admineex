@@ -20,6 +20,9 @@ angular.module('StaffService', []).factory('Staff', function($http) {
         },
         pdf1: function() {
             return $http.get('/api/pdf/pdf1/');
+        },
+        checkExistance: function(info) {
+            return $http.get('/api/personnel/checkExistance/'+ info.mat);
         }
     }
 });

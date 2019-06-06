@@ -22,7 +22,7 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
         cni: {},
         more: {},
         qualifications: {
-            schools: [{type: "higher"},{type: "recrutement"}],
+            schools: [{type: "higher"}, {type: "recrutement"}],
             stages: []
         },
         sanctions: [],
@@ -52,6 +52,7 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
     $scope.regions = [];
     $scope.divisions = [];
     $scope.stages = [{title: '', from: undefined, to: undefined, authority: ''}];
+    $scope.previousFonctions = [{numAct: '', nature: '', from: undefined}];
     $scope.familySituations = [{
             "id": "single",
             value: gettextCatalog.getString('Single')
@@ -113,6 +114,14 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
 
     $scope.removeStageLine = function (index) {
         $scope.stages.splice(index, 1);
+    }
+
+    $scope.addNewPreviousFonctionsLine = function () {
+        $scope.previousFonctions.push({numAct: '', nature: '', from: undefined});
+    }
+
+    $scope.removePreviousFonctionsLine = function (index) {
+        $scope.previousFonctions.splice(index, 1);
     }
 
 
@@ -238,25 +247,49 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                 function prepareForAngular() {
                                     if ($scope.personnel && $scope.personnel.qualifications) {
                                         $scope.stages = $scope.personnel.qualifications.stages;
-                                        if (($scope.stages && $scope.stages.length == 0 )|| !$scope.stages){
+                                        if (($scope.stages && $scope.stages.length == 0) || !$scope.stages) {
                                             $scope.stages = [{title: '', from: undefined, to: undefined, authority: ''}];
                                         }
                                     }
-//                                    $scope.personnel.grade = parseInt($scope.personnel.grade, 10);
-//                                    $scope.personnel.category = parseInt($scope.personnel.category, 10);
-//                                    console.log($scope.personnel);
-//                                    console.log($scope.grades);
+                                    if ($scope.personnel && $scope.personnel.qualifications) {
+                                        $scope.stages = $scope.personnel.qualifications.stages;
+                                        if (($scope.stages && $scope.stages.length == 0) || !$scope.stages) {
+                                            $scope.stages = [{title: '', from: undefined, to: undefined, authority: ''}];
+                                        }
+                                    }
                                 }
 
                                 function prepareForServer() {
                                     if ($scope.personnel && $scope.personnel.qualifications) {
                                         $scope.personnel.qualifications.stages = [];
-                                        for (var i = 0; i<=$scope.stages.length; i++){
-                                            if ($scope.stages[i] && $scope.stages[i].title && $scope.stages[i].title != ""){
+                                        for (var i = 0; i <= $scope.stages.length; i++) {
+                                            if ($scope.stages[i] && $scope.stages[i].title && $scope.stages[i].title != "") {
                                                 $scope.personnel.qualifications.stages.push($scope.stages[i])
                                             }
                                         }
                                     }
+                                }
+
+                                // Add or edit new Personnel
+                                $scope.checkIfMatriculeExist = function () {
+                                    Staff.checkExistance({
+                                        mat: $scope.personnel.identifier
+                                    }).then(function (response) {
+                                        if (response.data > 0 && !$scope.personnel._id) {
+                                            $rootScope.kernel.alerts.push({
+                                                type: 1,
+                                                msg: gettextCatalog.getString('Error:  this Register Number already exist.'),
+                                                priority: 2
+                                            });
+                                        }
+                                    }).catch(function (response) {
+                                        $rootScope.kernel.alerts.push({
+                                            type: 1,
+                                            msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                            priority: 2
+                                        });
+                                        console.error(response);
+                                    });
                                 }
 
                                 //Modify or Add ?
@@ -282,19 +315,38 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
 
                                 // Add or edit new Personnel
                                 $scope.submit = function () {
-                                    $rootScope.kernel.loading = 0;
-                                    prepareForServer();
-                                    console.log($scope.personnel);
-                                    Staff.upsert($scope.personnel).then(function (response) {
-                                        $rootScope.kernel.loading = 100;
-                                        $state.go('home.staffs.main');
-                                        $rootScope.kernel.alerts.push({
-                                            type: 3,
-                                            msg: gettextCatalog.getString('The personnel has been saved'),
-                                            priority: 4
-                                        });
+                                    Staff.checkExistance({
+                                        mat: $scope.personnel.identifier
+                                    }).then(function (response) {
+                                        if (response.data > 0 && !$scope.personnel._id) {
+                                            $rootScope.kernel.alerts.push({
+                                                type: 1,
+                                                msg: gettextCatalog.getString('Error:  this Register Number already exist.'),
+                                                priority: 2
+                                            });
+                                        } else {
+                                            $rootScope.kernel.loading = 0;
+                                            prepareForServer();
+                                            console.log($scope.personnel);
+                                            Staff.upsert($scope.personnel).then(function (response) {
+                                                $rootScope.kernel.loading = 100;
+                                                $state.go('home.staffs.main');
+                                                $rootScope.kernel.alerts.push({
+                                                    type: 3,
+                                                    msg: gettextCatalog.getString('The personnel has been saved'),
+                                                    priority: 4
+                                                });
+                                            }).catch(function (response) {
+                                                $rootScope.kernel.loading = 100;
+                                                $rootScope.kernel.alerts.push({
+                                                    type: 1,
+                                                    msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                    priority: 2
+                                                });
+                                                console.error(response);
+                                            });
+                                        }
                                     }).catch(function (response) {
-                                        $rootScope.kernel.loading = 100;
                                         $rootScope.kernel.alerts.push({
                                             type: 1,
                                             msg: gettextCatalog.getString('An error occurred, please try again later'),
