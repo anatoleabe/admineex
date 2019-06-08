@@ -212,7 +212,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
             breadcrumbs: ["Staffs", "Staffs management", "New"]
         }).state('home.staffs.personnalrecords', {
             url: '/personnalrecords',
-            params: {id: undefined, personnelID: undefined},
+            params: {id: undefined, opath: undefined},
             templateUrl: 'templates/staffs/personnal_records.html',
             controller: 'PersonnalRecordsController',
             access: {requiredAuthentication: true},

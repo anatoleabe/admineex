@@ -1,4 +1,7 @@
-angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsController', function ($scope, $window, gettextCatalog, $q, $stateParams, $state, $ocLazyLoad, $injector, $rootScope, $location, $mdDialog, $http, $filter) {
+angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsController', function ($scope, $window, gettextCatalog, $q, $stateParams, $state, $ocLazyLoad, $injector, $rootScope, $location, $mdDialog, $http, $filter, params) {
+    var id = params && params.id ? params.id : $stateParams.id;
+    var oldPath = params && params.opath ? params.name : $stateParams.opath;
+
     $rootScope.kernel.loading = 100;
     $scope.title = "...";
 
@@ -32,286 +35,309 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
         $state.go("home.staffs.edit", params);
     };
 
-
+    $scope.currentTab = 0;
 
     function sortMe(a, b) {
         return new Date(b.dateOf).getTime() - new Date(a.dateOf).getTime();
     }
 
 
+    $ocLazyLoad.load('../node_modules/angular-base64/angular-base64.js').then(function () {
+//        var $base64 = $injector.get('$base64');
+//        console.log($base64.encode('./templates/staffs/img/97.jpeg'))
 
+        $ocLazyLoad.load('js/services/StaffService.js').then(function () {
+            var Staffs = $injector.get('Staff');
+            $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
+                var Dictionary = $injector.get('Dictionary');
+                Dictionary.jsonList({dictionary: "personnel", levels: ['profile']}).then(function (response) {
+                    dictionary.profiles = response.data.jsonList;
+                    Dictionary.jsonList({dictionary: "personnel", levels: ['skills']}).then(function (response) {
+                        dictionary.skills = response.data.jsonList;
 
-    $ocLazyLoad.load('js/services/StaffService.js').then(function () {
-        var Staffs = $injector.get('Staff');
-        $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
-            var Dictionary = $injector.get('Dictionary');
-            Dictionary.jsonList({dictionary: "personnel", levels: ['profile']}).then(function (response) {
-                dictionary.profiles = response.data.jsonList;
-                Dictionary.jsonList({dictionary: "personnel", levels: ['skills']}).then(function (response) {
-                    dictionary.skills = response.data.jsonList;
-
-                    $scope.pdf1 = function () {
-                        console.log("PDF1")
+                        $scope.pdf1 = function () {
+                            console.log("PDF1")
 //                        Staffs.pdf1().then(function (response) {
 //
 //                        }).catch(function (response) {
 //                            console.log(response);
 //                        });
 
-                        $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
-                            var FileSaver = $injector.get('FileSaver');
-                            $rootScope.kernel.loading = 0;
+                            $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
+                                var FileSaver = $injector.get('FileSaver');
+                                $rootScope.kernel.loading = 0;
+                                var deferred = $q.defer();
+                                $scope.promise = deferred.promise;
+                                $http({
+                                    method: 'GET',
+                                    url: '/api/pdf/pdf1/',
+                                    headers: {'Content-Type': "application/pdf"},
+                                    responseType: "arraybuffer"
+                                }).then(function (response) {
+                                    var d = new Blob([response.data], {type: "application/pdf"});
+                                    FileSaver.saveAs(d, 'CV_xxx.pdf');
+                                    $rootScope.kernel.loading = 100;
+                                    deferred.resolve(response.data);
+                                }).catch(function (response) {
+                                    console.error(response);
+                                });
+                            });
+
+                        };
+
+
+                        function createFilterFor(query) {
+                            var lowercaseQuery = query.toLowerCase();
+                            return function filterFn(item) {
+                                return (item.value.indexOf(lowercaseQuery) === 0);
+                            };
+                        }
+
+                        //Patient Query search
+                        $scope.personnelQuerySearch = function (text) {
+                            $scope.personnelSelected = undefined;
                             var deferred = $q.defer();
-                            $scope.promise = deferred.promise;
-                            $http({
-                                method: 'GET',
-                                url: '/api/pdf/pdf1/',
-                                headers: {'Content-Type': "application/pdf"},
-                                responseType: "arraybuffer"
-                            }).then(function (response) {
-                                var d = new Blob([response.data], {type: "application/pdf"});
-                                FileSaver.saveAs(d, 'CV_xxx.pdf');
-                                $rootScope.kernel.loading = 100;
-                                deferred.resolve(response.data);
+                            var results = text ? createFilterFor(text) : deferred;
+                            Staffs.search({text: text}).then(function (response) {
+                                var result = response.data;
+                                if (!result || result === 'null' | result === null) {
+                                    result = [];
+                                }
+                                deferred.resolve(result);
                             }).catch(function (response) {
+                                console.log(response);
+                            });
+                            return deferred.promise;
+                        };
+
+                        if (id) {
+                            Staffs.read({
+                                id: id,
+                                beautify: true
+                            }).then(function (response) {
+                                $scope.selectedPersonnelChange(response.data);
+                                $scope.back = function () {
+                                    $state.go(oldPath);
+                                };
+                            }).catch(function (response) {
+                                $rootScope.kernel.alerts.push({
+                                    type: 1,
+                                    msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                    priority: 2
+                                });
                                 console.error(response);
                             });
-                        });
+                        }
 
-                    };
-
-
-                    function createFilterFor(query) {
-                        var lowercaseQuery = query.toLowerCase();
-                        return function filterFn(item) {
-                            return (item.value.indexOf(lowercaseQuery) === 0);
-                        };
-                    }
-
-                    //Patient Query search
-                    $scope.personnelQuerySearch = function (text) {
-                        $scope.personnelSelected = undefined;
-                        var deferred = $q.defer();
-                        var results = text ? createFilterFor(text) : deferred;
-                        Staffs.search({text: text}).then(function (response) {
-                            var result = response.data;
-                            if (!result || result === 'null' | result === null) {
-                                result = [];
-                            }
-                            deferred.resolve(result);
-                        }).catch(function (response) {
-                            console.log(response);
-                        });
-                        return deferred.promise;
-                    };
-
-                    $scope.selectedPersonnelChange = function (personnel) {
-                        if (personnel) {
-                            $scope.personnelSelected = personnel;
-                            console.log(personnel);
-                            function getDictionaryItemByValue(dictionaryList, itemValue) {
-                                var items = $.grep(dictionaryList, function (c, i) {
-                                    return c.value === itemValue;
-                                });
-                                if (items && items.length > 0) {
-                                    return items[0];
-                                } else {
-                                    return undefined;
-                                }
-                            }
-
-                            function prepareRequiredItemsToAngular() {
-                                var profiles = [];
-                                var skills = [];
-                                if ($scope.personnelSelected) {
-                                    if ($scope.personnelSelected.profiles) {
-                                        for (i = 0; i < $scope.personnelSelected.profiles.length; i++) {
-                                            if ($scope.personnelSelected.profiles [i]) {
-                                                profiles.push(getDictionaryItemByValue(dictionary.profiles, $scope.personnelSelected.profiles[i]));
-                                            }
-                                        }
-                                    }
-                                    if ($scope.personnelSelected.skills) {
-                                        for (i = 0; i < $scope.personnelSelected.skills.length; i++) {
-                                            if ($scope.personnelSelected.skills [i]) {
-                                                skills.push(getDictionaryItemByValue(dictionary.skills, $scope.personnelSelected.skills[i]));
-                                            }
-                                        }
+                        $scope.selectedPersonnelChange = function (personnel) {
+                            if (personnel) {
+                                $scope.personnelSelected = personnel;
+                                function getDictionaryItemByValue(dictionaryList, itemValue) {
+                                    var items = $.grep(dictionaryList, function (c, i) {
+                                        return c.value === itemValue;
+                                    });
+                                    if (items && items.length > 0) {
+                                        return items[0];
+                                    } else {
+                                        return undefined;
                                     }
                                 }
-                                $scope.profiles = profiles;
-                                $scope.skills = skills;
-                            }
 
-                            prepareRequiredItemsToAngular();
-
-                            $scope.add = function (personnel, moreField, resourcesDistionary) {
-                                var personnel = personnel;
-
-                                $mdDialog.show({
-                                    controller: ['$scope', '$mdDialog', 'personnel', '$q', 'dictionary', 'moreField', 'resourcesDistionary', function ($scope, $mdDialog, personnel, $q, dictionary, moreField, resourcesDistionary) {
-                                            $scope.personnel = personnel;
-                                            $scope.detailDescription = {};
-                                            $scope.detailDescription.name = resourcesDistionary;
-                                            if (resourcesDistionary == "profiles") {
-                                                $scope.detailDescription.title = gettextCatalog.getString("Select profiles (You can add up to 05 profiles):");
-                                                $scope.detailDescription.placeholder = gettextCatalog.getString("Choose profile");
-                                            } else if (resourcesDistionary == "skills") {
-                                                $scope.detailDescription.title = gettextCatalog.getString("Select skills (You can add up to 05 skills):");
-                                                $scope.detailDescription.placeholder = gettextCatalog.getString("Choose a skill");
-                                            }
-
-
-                                            function prepareDetailsForServer() {
-                                                if ($scope.personnel) {
-                                                    $scope.personnel[moreField] = [];
-                                                    for (i = 0; i < $scope.selectedDetails.length; i++) {
-                                                        if ($scope.selectedDetails[i]) {
-                                                            $scope.personnel[moreField].push($scope.selectedDetails[i].id);
-                                                        }
-                                                    }
+                                function prepareRequiredItemsToAngular() {
+                                    var profiles = [];
+                                    var skills = [];
+                                    if ($scope.personnelSelected) {
+                                        if ($scope.personnelSelected.profiles) {
+                                            for (i = 0; i < $scope.personnelSelected.profiles.length; i++) {
+                                                if ($scope.personnelSelected.profiles [i]) {
+                                                    profiles.push(getDictionaryItemByValue(dictionary.profiles, $scope.personnelSelected.profiles[i]));
                                                 }
                                             }
+                                        }
+                                        if ($scope.personnelSelected.skills) {
+                                            for (i = 0; i < $scope.personnelSelected.skills.length; i++) {
+                                                if ($scope.personnelSelected.skills [i]) {
+                                                    skills.push(getDictionaryItemByValue(dictionary.skills, $scope.personnelSelected.skills[i]));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    $scope.profiles = profiles;
+                                    $scope.skills = skills;
+                                }
 
-                                            function prepareDetailsForAngular() {
-                                                var requiredDetails = [];
-                                                if ($scope.personnel) {
-                                                    if ($scope.personnel[moreField]) {
-                                                        for (i = 0; i < $scope.personnel[moreField].length; i++) {
-                                                            if ($scope.personnel[moreField] [i]) {
-                                                                requiredDetails.push(getDictionaryItemByValue(dictionary[resourcesDistionary], $scope.personnel[moreField][i]));
+                                prepareRequiredItemsToAngular();
+
+                                $scope.add = function (personnel, moreField, resourcesDistionary) {
+                                    var personnel = personnel;
+
+                                    $mdDialog.show({
+                                        controller: ['$scope', '$mdDialog', 'personnel', '$q', 'dictionary', 'moreField', 'resourcesDistionary', function ($scope, $mdDialog, personnel, $q, dictionary, moreField, resourcesDistionary) {
+                                                $scope.personnel = personnel;
+                                                $scope.detailDescription = {};
+                                                $scope.detailDescription.name = resourcesDistionary;
+                                                if (resourcesDistionary == "profiles") {
+                                                    $scope.detailDescription.title = gettextCatalog.getString("Select profiles (You can add up to 05 profiles):");
+                                                    $scope.detailDescription.placeholder = gettextCatalog.getString("Choose profile");
+                                                } else if (resourcesDistionary == "skills") {
+                                                    $scope.detailDescription.title = gettextCatalog.getString("Select skills (You can add up to 05 skills):");
+                                                    $scope.detailDescription.placeholder = gettextCatalog.getString("Choose a skill");
+                                                }
+
+
+                                                function prepareDetailsForServer() {
+                                                    if ($scope.personnel) {
+                                                        $scope.personnel[moreField] = [];
+                                                        for (i = 0; i < $scope.selectedDetails.length; i++) {
+                                                            if ($scope.selectedDetails[i]) {
+                                                                $scope.personnel[moreField].push($scope.selectedDetails[i].id);
                                                             }
                                                         }
                                                     }
                                                 }
-                                                $scope.selectedDetails = requiredDetails;
-                                            }
 
-                                            prepareDetailsForAngular();
-
-                                            $scope.querySearchInProfiles = function (text) {
-                                                var deferred = $q.defer();
-                                                if (text) {
-                                                    var profile = $.grep(dictionary[resourcesDistionary], function (c, i) {
-                                                        return c.name.toLowerCase().includes(text.toLowerCase());
-                                                    });
-                                                    deferred.resolve(profile);
-                                                } else {
-                                                    deferred.resolve(dictionary[resourcesDistionary]);
+                                                function prepareDetailsForAngular() {
+                                                    var requiredDetails = [];
+                                                    if ($scope.personnel) {
+                                                        if ($scope.personnel[moreField]) {
+                                                            for (i = 0; i < $scope.personnel[moreField].length; i++) {
+                                                                if ($scope.personnel[moreField] [i]) {
+                                                                    requiredDetails.push(getDictionaryItemByValue(dictionary[resourcesDistionary], $scope.personnel[moreField][i]));
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    $scope.selectedDetails = requiredDetails;
                                                 }
-                                                return deferred.promise;
-                                            }
 
-                                            $scope.transformChip = function (chip) {
-                                                // If it is an object, it's already a known chip
-                                                if (angular.isObject(chip)) {
-                                                    return chip;
+                                                prepareDetailsForAngular();
+
+                                                $scope.querySearchInProfiles = function (text) {
+                                                    var deferred = $q.defer();
+                                                    if (text) {
+                                                        var profile = $.grep(dictionary[resourcesDistionary], function (c, i) {
+                                                            return c.name.toLowerCase().includes(text.toLowerCase());
+                                                        });
+                                                        deferred.resolve(profile);
+                                                    } else {
+                                                        deferred.resolve(dictionary[resourcesDistionary]);
+                                                    }
+                                                    return deferred.promise;
                                                 }
-                                                // Otherwise, return null;
-                                                return null;
-                                            }
 
-                                            ;
-                                            $scope.close = function () {
-                                                $mdDialog.hide();
-                                            }
-                                            $scope.cancel = function () {
-                                                $mdDialog.cancel();
-                                            };
-                                            $scope.save = function (params) {
-                                                $scope.personnel[moreField] = $scope.selectedDetails;
+                                                $scope.transformChip = function (chip) {
+                                                    // If it is an object, it's already a known chip
+                                                    if (angular.isObject(chip)) {
+                                                        return chip;
+                                                    }
+                                                    // Otherwise, return null;
+                                                    return null;
+                                                }
 
-                                                prepareDetailsForServer();
-
-                                                var positionToUpdate = {
-                                                    _id: $scope.personnel._id,
-                                                    identifier: $scope.personnel.identifier
-                                                };
-                                                positionToUpdate[moreField] = $scope.personnel[moreField];
-
-                                                Staffs.upsert(positionToUpdate).then(function (response) {
+                                                ;
+                                                $scope.close = function () {
                                                     $mdDialog.hide();
-                                                    prepareRequiredItemsToAngular();
-                                                    $rootScope.kernel.alerts.push({
-                                                        type: 3,
-                                                        msg: gettextCatalog.getString('The staff has been updated'),
-                                                        priority: 4
+                                                }
+                                                $scope.cancel = function () {
+                                                    $mdDialog.cancel();
+                                                };
+                                                $scope.save = function (params) {
+                                                    $scope.personnel[moreField] = $scope.selectedDetails;
+
+                                                    prepareDetailsForServer();
+
+                                                    var positionToUpdate = {
+                                                        _id: $scope.personnel._id,
+                                                        identifier: $scope.personnel.identifier
+                                                    };
+                                                    positionToUpdate[moreField] = $scope.personnel[moreField];
+
+                                                    Staffs.upsert(positionToUpdate).then(function (response) {
+                                                        $mdDialog.hide();
+                                                        prepareRequiredItemsToAngular();
+                                                        $rootScope.kernel.alerts.push({
+                                                            type: 3,
+                                                            msg: gettextCatalog.getString('The staff has been updated'),
+                                                            priority: 4
+                                                        });
+                                                    }).catch(function (response) {
+                                                        $rootScope.kernel.loading = 100;
+                                                        $rootScope.kernel.alerts.push({
+                                                            type: 1,
+                                                            msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                            priority: 2
+                                                        });
                                                     });
-                                                }).catch(function (response) {
-                                                    $rootScope.kernel.loading = 100;
-                                                    $rootScope.kernel.alerts.push({
-                                                        type: 1,
-                                                        msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                                        priority: 2
-                                                    });
-                                                });
-                                            };
+                                                };
 
-                                        }],
-                                    templateUrl: '../templates/dialogs/detail.html',
-                                    parent: angular.element(document.body),
-                                    clickOutsideToClose: true,
-                                    locals: {
-                                        personnel: personnel,
-                                        dictionary: dictionary,
-                                        moreField: moreField,
-                                        resourcesDistionary: resourcesDistionary
-                                    }
-                                }).then(function (answer) {
+                                            }],
+                                        templateUrl: '../templates/dialogs/detail.html',
+                                        parent: angular.element(document.body),
+                                        clickOutsideToClose: true,
+                                        locals: {
+                                            personnel: personnel,
+                                            dictionary: dictionary,
+                                            moreField: moreField,
+                                            resourcesDistionary: resourcesDistionary
+                                        }
+                                    }).then(function (answer) {
 
-                                }, function () {
+                                    }, function () {
 
-                                });
+                                    });
+                                }
+                                //loadsHistory(personnel);
+                            } else {
+                                $scope.personnelSelected = undefined;
+                                $scope.events = [];
                             }
-                            //loadsHistory(personnel);
-                        } else {
-                            $scope.personnelSelected = undefined;
-                            $scope.events = [];
                         }
-                    }
 
 
 
-                    loadsHistory = function (personnel) {
-                        staffFactory.history(personnel).then(function (response) {
-                            var p = response.data.personnel;
-                            $scope.personnelSelected = p;
-                            var history = p.history;
-                            var events = [];
+                        loadsHistory = function (personnel) {
+                            staffFactory.history(personnel).then(function (response) {
+                                var p = response.data.personnel;
+                                $scope.personnelSelected = p;
+                                var history = p.history;
+                                var events = [];
 
-                            for (var i = 0; i < history.length; i++) {
-                                var h = history[i];
+                                for (var i = 0; i < history.length; i++) {
+                                    var h = history[i];
 
-                                var event = {
-                                    action: h.typeMouvement[0].libelle,
-                                    title: h.posteActuel[0].nom,
-                                    content: h.posteActuel[0].structure[0].nom,
-                                    acte: h.acte[0].nature[0].libelle + " N° " + h.acte[0].numero,
-                                    dateOf: h.acte[0].dateCreation
-                                };
-                                events.push(event);
-                            }
+                                    var event = {
+                                        action: h.typeMouvement[0].libelle,
+                                        title: h.posteActuel[0].nom,
+                                        content: h.posteActuel[0].structure[0].nom,
+                                        acte: h.acte[0].nature[0].libelle + " N° " + h.acte[0].numero,
+                                        dateOf: h.acte[0].dateCreation
+                                    };
+                                    events.push(event);
+                                }
 
-                            $scope.events = events;
+                                $scope.events = events;
 
-                        }).catch(function (response) {
-                            console.log(response);
-                        });
-                    }
+                            }).catch(function (response) {
+                                console.log(response);
+                            });
+                        }
+                    });
                 });
             });
         });
     });
 
 
+
+
+
     $scope.openPdf = function () {
         var cni = $scope.personnelSelected.cni;
         var p = $scope.personnelSelected;
-        var structure = ($scope.personnelSelected.affectedTo && $scope.personnelSelected.affectedTo.position)? $scope.personnelSelected.affectedTo.position.structure : undefined;
-        var poste = ($scope.personnelSelected.affectedTo && $scope.personnelSelected.affectedTo.position)? $scope.personnelSelected.affectedTo.position : undefined;
-        
+        var structure = ($scope.personnelSelected.affectedTo && $scope.personnelSelected.affectedTo.position) ? $scope.personnelSelected.affectedTo.position.structure : undefined;
+        var poste = ($scope.personnelSelected.affectedTo && $scope.personnelSelected.affectedTo.position) ? $scope.personnelSelected.affectedTo.position : undefined;
 
-        var stages = ($scope.personnelSelected.qualifications )? $scope.personnelSelected.qualifications.schools : [];
+        var stages = ($scope.personnelSelected.qualifications) ? $scope.personnelSelected.qualifications.schools : [];
 
         var dd = {
             content: [
@@ -364,7 +390,8 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
 
                                 },
                                 {
-                                    image: "data:image/png;base64,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",
+//                                    image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQgAAAEoCAYAAACkWm/JAAAMF2lDQ1BJQ0MgUHJvZmlsZQAASImVVwdYU8kWnltSCAktEAEpoTdBinSB0HuRDjZCEiCUCAlBxY4uKrh2EQFR0RUQBdcCyFqxK4tg7w9FVFbWxYINlTcpoOtr3zvfN/f+nDnnzH9Ozh1mAFC2ZefmZqMqAOQI8oXRgT7MxKRkJqkXIIACFIAq0GVzRLneUVFhAMro++/y7ia0hnLNWhLrX+f/q6hyeSIOAEgUxKlcEScH4kMA4JqcXGE+AIQOqDeanZ8rwYMQqwshQQCIuASny7CmBKfK8ASpTWy0L8QsAMhUNluYDoCShDezgJMO4yhJONoKuHwBxFUQe3Iy2FyI70M8ISdnFsTKZIjNU7+Lk/63mKljMdns9DEsy0UqZD++KDebPff/LMf/lpxs8egahnBQM4RB0ZKcYd3qsmaFSjAV4qOC1IhIiNUgvsDnSu0l+G6GOChObj/AEfnCmgEGACjgsv1CIdaBmCHOivOWY3u2UOoL7dEIfn5wrBynCmdFy+OjBYLsiDB5nBUZvOBRXM0T+ceM2qTxA4Ihhp2GHirMiE2Q8UTPFPDjIyBWgrhLlBUTKvd9WJjhGzFqIxRHSzgbQ/w2TRgQLbPBNHNEo3lhNhy2dC3YCxgrPyM2SOaLJfJEiWGjHLg8P38ZB4zLE8TJuWGwu3yi5b7FudlRcnusmpcdGC2rM7ZfVBAz6ns1HzaYrA7Y40x2SJR8rXe5+VGxMm44CsKAL/ADTCCGIxXMApmA3znQMgD/ks0EADYQgnTAA9ZyzahHgnRGAJ8xoBD8CREPiMb8fKSzPFAA9V/GtLKnNUiTzhZIPbLAU4hzcG3cE3fHw+CTBYc97oK7jvoxlUdXJfoT/YhBxACixRgPDmSdDYcQ8P+NLhS+eTA7CRfBaA7f4hGeEroJjwk3CD2EOyAePJFGkVvN5BcJf2DOBOGgB0YLkGeXCmP2j9rgppC1I+6De0D+kDvOwLWBNT4JZuKNe8HcHKH2e4biMW7favnjehLW3+cj1ytZKjnKWaSO/TK+Y1Y/RvH9rkZc+A790RJbgR3EzmOnsIvYUawFMLETWCvWgR2T4LFOeCLthNHVoqXcsmAc/qiNbYNtv+3nH9Zmy9eX1EuUz5uTL/kYfGflzhXy0zPymd5wN+YxgwUcmwlMe1s7VwAke7ts63jDkO7ZCOPSN13eSQBcS6Ay/ZuObQTAkacA0N990xm9hu2+FoBjXRyxsECmk2zHgAD/ZyjDr0IL6AEjYA7zsQdOwB2wgD8IAZEgFiSBGbDiGSAHcp4N5oMloBiUgrVgE6gA28BOUAf2gQOgBRwFp8A5cBl0gRvgHuyLPvACDIJ3YBhBEBJCQ+iIFqKPmCBWiD3igngi/kgYEo0kISlIOiJAxMh8ZClSiqxHKpAdSD3yK3IEOYVcRLqRO8gjpB95jXxCMZSKqqO6qCk6EXVBvdFQNBadjqajeWghugxdjZajNehetBk9hV5Gb6A96At0CAOYIsbADDBrzAXzxSKxZCwNE2ILsRKsDKvBGrE2+Dtfw3qwAewjTsTpOBO3hr0ZhMfhHDwPX4ivwivwOrwZP4Nfwx/hg/hXAo2gQ7AiuBGCCYmEdMJsQjGhjLCbcJhwFn43fYR3RCKRQTQjOsPvMomYSZxHXEXcSmwiniR2E3uJQyQSSYtkRfIgRZLYpHxSMWkLaS/pBOkqqY/0gaxI1ifbkwPIyWQBuYhcRt5DPk6+Sn5GHlZQUTBRcFOIVOAqzFVYo7BLoU3hikKfwjBFlWJG8aDEUjIpSyjllEbKWcp9yhtFRUVDRVfFKYp8xcWK5Yr7FS8oPlL8SFWjWlJ9qdOoYupqai31JPUO9Q2NRjOlsWjJtHzaalo97TTtIe2DEl3JRilYiau0SKlSqVnpqtJLZQVlE2Vv5RnKhcplygeVrygPqCiomKr4qrBVFqpUqhxRuaUypEpXtVONVM1RXaW6R/Wi6nM1kpqpmr8aV22Z2k6102q9dIxuRPelc+hL6bvoZ+l96kR1M/Vg9Uz1UvV96p3qgxpqGpM04jXmaFRqHNPoYWAMU0YwI5uxhnGAcZPxaZzuOO9xvHErxzWOuzruveZ4TZYmT7NEs0nzhuYnLaaWv1aW1jqtFq0H2ri2pfYU7dna1dpntQfGq493H88ZXzL+wPi7OqiOpU60zjydnTodOkO6erqBurm6W3RP6w7oMfRYepl6G/WO6/Xr0/U99fn6G/VP6P/B1GB6M7OZ5cwzzEEDHYMgA7HBDoNOg2FDM8M4wyLDJsMHRhQjF6M0o41G7UaDxvrG4cbzjRuM75oomLiYZJhsNjlv8t7UzDTBdLlpi+lzM02zYLNCswaz++Y0cy/zPPMa8+sWRAsXiyyLrRZdlqilo2WGZaXlFSvUysmKb7XVqnsCYYLrBMGEmgm3rKnW3tYF1g3Wj2wYNmE2RTYtNi8nGk9Mnrhu4vmJX20dbbNtd9nes1OzC7Ersmuze21vac+xr7S/7kBzCHBY5NDq8GqS1STepOpJtx3pjuGOyx3bHb84OTsJnRqd+p2NnVOcq5xvuai7RLmscrngSnD1cV3ketT1o5uTW77bAbe/3K3ds9z3uD+fbDaZN3nX5F4PQw+2xw6PHk+mZ4rnds8eLwMvtleN12OWEYvL2s165m3hnem91/ulj62P0Oewz3tfN98Fvif9ML9AvxK/Tn81/zj/Cv+HAYYB6QENAYOBjoHzAk8GEYJCg9YF3QrWDeYE1wcPhjiHLAg5E0oNjQmtCH0cZhkmDGsLR8NDwjeE348wiRBEtESCyODIDZEPosyi8qJ+m0KcEjWlcsrTaLvo+dHnY+gxM2P2xLyL9YldE3svzjxOHNcerxw/Lb4+/n2CX8L6hJ7EiYkLEi8naSfxk1qTScnxybuTh6b6T900tW+a47TiaTenm02fM/3iDO0Z2TOOzVSeyZ55MIWQkpCyJ+UzO5Jdwx5KDU6tSh3k+HI2c15wWdyN3H6eB28971maR9r6tOfpHukb0vszvDLKMgb4vvwK/qvMoMxtme+zIrNqs0ayE7Kbcsg5KTlHBGqCLMGZWXqz5szqzrXKLc7tyXPL25Q3KAwV7hYhoumi1nx1eMzpEJuLfxI/KvAsqCz4MDt+9sE5qnMEczrmWs5dOfdZYUDhL/PweZx57fMN5i+Z/2iB94IdC5GFqQvbFxktWraob3Hg4rollCVZS34vsi1aX/R2acLStmW6yxYv6/0p8KeGYqViYfGt5e7Lt63AV/BXdK50WLll5dcSbsmlUtvSstLPqzirLv1s93P5zyOr01Z3rnFaU72WuFaw9uY6r3V161XXF67v3RC+oXkjc2PJxrebZm66WDapbNtmymbx5p7ysPLWLcZb1m75XJFRcaPSp7KpSqdqZdX7rdytV6tZ1Y3bdLeVbvu0nb/99o7AHc01pjVlO4k7C3Y+3RW/6/wvLr/U79beXbr7S62gtqcuuu5MvXN9/R6dPWsa0AZxQ//eaXu79vnta220btzRxGgq3Q/2i/f/8WvKrzcPhB5oP+hysPGQyaGqw/TDJc1I89zmwZaMlp7WpNbuIyFH2tvc2w7/ZvNb7VGDo5XHNI6tOU45vuz4yInCE0Mnc08OnEo/1ds+s/3e6cTT189MOdN5NvTshXMB506f9z5/4oLHhaMX3S4eueRyqeWy0+XmDseOw787/n6406mz+YrzldYu16627sndx696XT11ze/auevB1y/fiLjRfTPu5u1b02713Obefn4n+86ruwV3h+8tvk+4X/JA5UHZQ52HNf+w+EdTj1PPsUd+jzoexzy+18vpffFE9ORz37KntKdlz/Sf1T+3f360P6C/64+pf/S9yH0xPFD8p+qfVS/NXx76i/VXx2DiYN8r4auR16veaL2pfTvpbftQ1NDDdznvht+XfND6UPfR5eP5Twmfng3P/kz6XP7F4kvb19Cv90dyRkZy2UK29CiAwYGmpQHwuhYAWhI8O3QBQFGS3b2kgsjui1IE/hOW3c+k4gRALQuAuMUAhMEzSjUcJhBT4Vty9I5lAdTBYWzIRZTmYC+LRYU3GMKHkZE3ugCQ2gD4IhwZGd46MvJlFyR7B4CTebI7n0SI8Hy/XVmCLnYu2Q5+kH8CTWZs6to/iX4AAAAJcEhZcwAAFiUAABYlAUlSJPAAAAGdaVRYdFhNTDpjb20uYWRvYmUueG1wAAAAAAA8eDp4bXBtZXRhIHhtbG5zOng9ImFkb2JlOm5zOm1ldGEvIiB4OnhtcHRrPSJYTVAgQ29yZSA1LjQuMCI+CiAgIDxyZGY6UkRGIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyI+CiAgICAgIDxyZGY6RGVzY3JpcHRpb24gcmRmOmFib3V0PSIiCiAgICAgICAgICAgIHhtbG5zOmV4aWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20vZXhpZi8xLjAvIj4KICAgICAgICAgPGV4aWY6UGl4ZWxYRGltZW5zaW9uPjI2NDwvZXhpZjpQaXhlbFhEaW1lbnNpb24+CiAgICAgICAgIDxleGlmOlBpeGVsWURpbWVuc2lvbj4yOTY8L2V4aWY6UGl4ZWxZRGltZW5zaW9uPgogICAgICA8L3JkZjpEZXNjcmlwdGlvbj4KICAgPC9yZGY6UkRGPgo8L3g6eG1wbWV0YT4K6o4iogAAABxpRE9UAAAAAgAAAAAAAACUAAAAKAAAAJQAAACUAAAEF7GYEG4AAAPjSURBVHgB7NSxDQAgDAQxsv/QgKi5DUxJOut1s+9bHgECBD4CIxAfFV8ECDwBgTAEAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAgQMAAP//pnASFQAAA+FJREFU7dSxDQAgDAQxsv/QgKi5DUxJOut1s+9bHgECBD4CIxAfFV8ECDwBgTAEAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAAYGwAQIEUkAgksaBAAGBsAECBFJAIJLGgQABgbABAgRSQCCSxoEAgQPwhJzFQm+JggAAAABJRU5ErkJggg==",
+                                    image: 'public/templates/staffs/img/' + $scope.personnelSelected.mysqlId + '.jpeg',
                                     border: [true, true, true, true],
                                     height: 120
                                 }
@@ -426,7 +453,7 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
                             [{text: 'B1', style: 'tableHeader'}, {text: 'TYPE DE SERVICE :', style: 'tableHeader', colSpan: 2}, {}, {}],
 
                             [{text: 'B2', style: 'tableHeader'}, {text: 'STRUCTURE', style: 'tableHeader', colSpan: 3}, {}, {}],
-                            [{}, {text: 'B21', style: 'tableHeader'}, {text: 'Type de structure : ', style: 'tablecells'}, {text: (structure )?structure.typeValue :"", style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                            [{}, {text: 'B21', style: 'tableHeader'}, {text: 'Type de structure : ', style: 'tablecells'}, {text: (structure) ? structure.typeValue : "", style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
                             [{}, {text: 'B22', style: 'tableHeader'}, {text: 'Nom de la structure : ', style: 'tablecells'}, {text: ($scope.personnelSelected.affectedTo ? $scope.personnelSelected.affectedTo.position.structure.name : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
                             [{}, {text: 'B23', style: 'tableHeader'}, {text: 'Sous structure : ', style: 'tablecells'}, {text: '', style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
                             [{}, {text: 'B24', style: 'tableHeader'}, {text: 'Service : ', style: 'tablecells'}, {text: '', style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
@@ -671,12 +698,12 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
             }
 
         }
-        
+
         var stages = [];
         var stagesToPDF = [{}, {text: 'C21', style: 'tableHeader'}, {text: 'Stage 1 : ', style: 'tablecells', colSpan: 3}, {}, {}];
         if ($scope.personnelSelected.qualifications && $scope.personnelSelected.qualifications.stages) {
             stages = $scope.personnelSelected.qualifications.stages;
-            
+
             console.log(stages);
             stagesToPDF = [];
             for (var i = 0; i < stages.length; i++) {
@@ -684,11 +711,11 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
                 var st = [{}, {text: 'C21', style: 'tableHeader'}, {text: 'Stage 1 : ' + s, style: 'tablecells', colSpan: 3}, {}, {}]
                 dd.content[7].table.body.push(st);
             }
-        }else{
+        } else {
             dd.content[7].table.body.push(stagesToPDF);
         }
-        
-        
+
+
         console.log(dd);
         pdfMake.createPdf(dd).open();
     };

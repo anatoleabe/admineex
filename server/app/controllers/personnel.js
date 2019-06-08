@@ -413,12 +413,11 @@ exports.api.read = function (req, res) {
                     'The actor could not read the position because one or more params of the request was not defined');
             return res.sendStatus(400);
         } else {
-            console.log("Read " + req.params.id);
             var filter = {
                 _id: req.params.id
             };
             var isBeautify = false;
-            if (req.params.beautify) {
+            if (req.params.beautify && req.params.beautify == "true") {
                 isBeautify = true;
             }
 
@@ -426,21 +425,16 @@ exports.api.read = function (req, res) {
                 if (err) {
                     return res.status(500).send(err);
                 } else {
-                    beautify({actor: req.actor, language: req.actor.language, beautify: isBeautify}, [personnel], function (err, objects) {
+                    beautify({req: req, language: req.actor.language, beautify: isBeautify}, [personnel], function (err, objects) {
                         if (err) {
                             return res.status(500).send(err);
                         } else {
-                            console.log(objects);
                             return res.json(objects[0]);
                         }
                     });
                 }
             });
-
-
-
         }
-
     } else {
         audit.logEvent('[anonymous]', 'Projects', 'Read', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);

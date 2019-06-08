@@ -487,7 +487,8 @@ function ensureAuthorized(req, res, next) {
         "/api/dictionary/search/:dictionary/:query",
         "/api/installation",
         "/api/installation/status",
-        "/api/installation/admin"
+        "/api/installation/admin",
+        "public/templates/staffs/img/"
     ], req.route.path)) {
         return next();
     } else {

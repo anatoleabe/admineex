@@ -20,6 +20,10 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
             $scope.edit = function (params) {
                 $state.go("home.staffs.edit", params);
             };
+
+            $scope.read = function (params) {
+                $state.go("home.staffs.personnalrecords", {id: params._id, opath: "home.staffs.main"});
+            };
             
             $scope.filterByStructure = function (structureCode) {
                 $scope.staffsFilter = structureCode;

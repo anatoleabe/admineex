@@ -253,7 +253,7 @@
     },
     {
         "id": 44,
-        "uri": "/api/personnel/read/:id",
+        "uri": "/api/personnel/read/:id/:beautify",
         "method": "GET",
         "roles": [1,2,3]
     },

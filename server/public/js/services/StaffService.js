@@ -4,7 +4,7 @@ angular.module('StaffService', []).factory('Staff', function($http) {
             return $http.get('/api/personnel/'+info.minify);
         },
         read: function(info) {
-            return $http.get('/api/personnel/read/' + info.id);
+            return $http.get('/api/personnel/read/' + info.id+'/'+info.beautify);
         },
         search: function(info) {
             return $http.get('/api/personnel/search/' + info.text);

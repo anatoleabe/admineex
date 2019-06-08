@@ -69,7 +69,7 @@ angular.module('MenuCtrl', []).controller('MenuController', function ($scope, $s
                 if ($rootScope.ERR_CONNECTION_REFUSED) {
                     $rootScope.kernel.alerts.push({
                         type: 1,
-                        msg: gettextCatalog.getString('Core Unreachable.'),
+                        msg: gettextCatalog.getString('Sygepe Unreachable.'),
                         priority: 1
                     });
                 }
