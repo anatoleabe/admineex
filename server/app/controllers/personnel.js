@@ -224,7 +224,6 @@ exports.api.list = function (req, res) {
 
 
 exports.list = function (options, callback) {
-
     var query = {}
     var sort = {"name.family": 'asc'};
     var q = Personnel.find(query).sort(sort).limit(0).skip(0).lean();
@@ -308,8 +307,6 @@ exports.api.search = function (req, res) {
 }
 
 exports.api.checkExistance = function (req, res) {
-    
-    console.log("Mat XXXXX ");
     if (req.actor) {
         if (req.params.mat == undefined) {
             audit.logEvent(req.actor.id, 'Personnel', 'checkExistance', '', '', 'failed',

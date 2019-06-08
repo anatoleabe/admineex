@@ -465,3 +465,7 @@ table.md-table tbody.md-body > tr.md-row:hover {
     margin: 0 auto;
     background-size: cover;
 }
+
+.retired {
+    background-color:rgb(237, 39, 21, .15);
+}

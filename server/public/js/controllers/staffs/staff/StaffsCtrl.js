@@ -24,21 +24,30 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
             $scope.read = function (params) {
                 $state.go("home.staffs.personnalrecords", {id: params._id, opath: "home.staffs.main"});
             };
-            
+
             $scope.filterByStructure = function (structureCode) {
                 $scope.staffsFilter = structureCode;
             };
-            
-            
+
+
             $scope.$watch('filters.structure', function (newval, oldval) {
                 if (newval) {
                     newval = JSON.parse(newval).code;
-                    if (newval && newval != "-1"){
-                        $scope.staffsFilter = newval+"-P";
+                    if (newval && newval != "-1") {
+                        $scope.staffsFilter = newval + "-P";
                     }
-                    
+
                 }
             });
+
+            $scope.retiredOnly = function (item) {
+                if ($scope.showOnlyRetirement == true){
+                    return item.retirement && item.retirement.retirement == true;
+                }else{
+                    return true
+                }
+                
+            };
 
             $scope.affect = function (personnel) {
                 $ocLazyLoad.load('js/controllers/administration/positions/AffectationCtrl.js').then(function () {
@@ -63,7 +72,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
 
             function getAgents() {
                 $scope.helper = [];
-                StaffAgent.list({minify:true}).then(function (response) {
+                StaffAgent.list({minify: true}).then(function (response) {
                     var data = response.data;
                     if (data.length == 0 && $scope.helper.length == 0) {
                         $scope.helper = helper;

@@ -1,42 +1,41 @@
 <md-toolbar class="toolbar-filter">
-        <div class="md-toolbar-tools md-default">
-            <div flex >
-                <span style="display: inline-block;margin-top: 18px;" >
-                    <md-input-container flex>
-                        <label translate>Filter by structure</label>
-                        <md-select ng-model="filters.structure"  style="min-width: 150px;">
-                            <md-optgroup label="{{'Filtre by structure'| translate}}">
-                                <md-option value="-1" >
-                                    {{'All structures'| translate}}
-                                </md-option>
-                                <md-option ng-repeat="struc in structures" value="{{struc}}" >
-                                    {{struc.name}}
-                                </md-option>
-                            </md-optgroup>
-                        </md-select>
-                    </md-input-container>
-
-                </span>
-
-            </div>
-            <md-switch  flex ng-model="showOnlyVacancies" aria-label="enable">
-                <span><span translate>People of retirement age</span><span translate>:</span></span> 
-            </md-switch>
-
-            <md-button class="md-icon-button" aria-label="Print" >
-                <md-icon>print</md-icon>
-                <md-tooltip md-direction="top">
-                    <span translate>Print</span>
-                </md-tooltip>
-            </md-button>
-            <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
-                <md-icon class="material-icons" >search</md-icon>
-                <md-tooltip>
-                    <span translate>Search</span>
-                </md-tooltip>
-            </md-button>
+    <div class="md-toolbar-tools md-default">
+        <div flex >
+            <span style="display: inline-block;margin-top: 18px;" >
+                <md-input-container flex>
+                    <label translate>Filter by structure</label>
+                    <md-select ng-model="filters.structure"  style="min-width: 150px;">
+                        <md-optgroup label="{{'Filtre by structure'| translate}}">
+                            <md-option value="-1" >
+                                {{'All structures'| translate}}
+                            </md-option>
+                            <md-option ng-repeat="struc in structures" value="{{struc}}" >
+                                {{struc.name}}
+                            </md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+            </span>
         </div>
-    </md-toolbar>
+        <md-switch  flex ng-model="showOnlyRetirement" aria-label="enable" style="float: left">
+            <span><span translate>People of retirement age</span></span> 
+        </md-switch>
+        <span flex></span>
+
+        <md-button class="md-icon-button" aria-label="Print" >
+            <md-icon>print</md-icon>
+            <md-tooltip md-direction="top">
+                <span translate>Print</span>
+            </md-tooltip>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
+            <md-icon class="material-icons" >search</md-icon>
+            <md-tooltip>
+                <span translate>Search</span>
+            </md-tooltip>
+        </md-button>
+    </div>
+</md-toolbar>
 
 <md-card>
     <md-toolbar class="md-table-toolbar md-default" >
@@ -45,7 +44,7 @@
             <form flex>
                 <input type="text" name="search" ng-model="staffsFilter" placeholder="{{ 'Search amongs staff...' | translate }}">
             </form>
-            <md-button class="md-icon-button" ng-click="filters.structure='-1';staffsFilter=''" aria-label="close">
+            <md-button class="md-icon-button" ng-click="filters.structure = '-1';staffsFilter = ''" aria-label="close">
                 <md-icon class="material-icons">close</md-icon>
             </md-button>
         </div>
@@ -57,37 +56,37 @@
                     <th md-column md-order-by="name"><span translate>Full name</span></th>
                     <th md-column md-order-by="matricule" style="max-width: 60px"><span translate>Reg. number</span></th>
                     <th md-column md-order-by="sexe" style="max-width: 10px"><span translate>Sex</span></th>
+                    <th md-column md-order-by="posteActuel[0].structure[0].nom"><span translate>Structure aff.</span></th>
                     <th md-column md-order-by="posteActuel[0].nom"><span translate>Function</span></th>
-                    <th md-column md-order-by="posteActuel[0].structure[0].nom"><span translate>Structure</span></th>
+                    <th md-column md-order-by="miseajour" ><span translate>Service began</span></th>
                     <th md-column md-order-by="telephone"><span translate>Phone</span></th>
-                    <th md-column md-order-by="miseajour" ><span translate>Modified</span></th>
                     <th md-column translate><span translate>Actions</span></th>
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row data-ng-repeat="personnel in personnels| filter:staffsFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                <tr md-row data-ng-repeat="personnel in personnels| filter:staffsFilter | filter:retiredOnly | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit"  ng-class="{'retired': personnel.retirement.retirement == 'true' || personnel.retirement.retirement == true || personnel.retirement.retirement === 'true'}" >
                     <td md-cell ng-click="read(personnel)">{{personnel.name.family[0]}} {{personnel.name.given[0]}}</td>
                     <td md-cell style="max-width: 60px" ng-click="read(personnel)">{{personnel.identifier| uppercase | unknown}}</td>
                     <td md-cell style="max-width: 10px" ng-click="read(personnel)">{{personnel.gender| uppercase | unknown}}</td>
-                    <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.position.name| unknown}}</td>
                     <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.position.structure.name| unknown}} <span style="color: #999999" ng-if="personnel.posteActuel[0].structure[0]"> - {{personnel.posteActuel[0].structure[0].code}} </span></td>
-                    <td md-cell ng-click="read(personnel)">{{personnel.telephone| unknown}}</td>
-                    <td md-cell ng-click="read(personnel)">{{personnel.lastModified| date:'dd/MM/yyyy'}}</td>
+                    <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.position.name| unknown}}</td>
+                    <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.date| date:'dd/MM/yyyy'|unknown}}</td>
+                    <td md-cell ng-click="read(personnel)">{{personnel.telecom[0].value| unknown}}</td>
                     <td md-cell >
-                            <md-button ng-click="affect(personnel)" class="md-fab md-primary md-hue-2 md-mini"  aria-label="Affecte" >
-                                <md-icon>transfer_within_a_station</md-icon>
-                                <md-tooltip md-direction="top">
-                                    <span translate>Affect to new position</span>
-                                </md-tooltip>
-                            </md-button>
-                            <md-button class="md-fab md-primary md-hue-2 md-mini" ng-click="edit({id:personnel._id})" aria-label="Edit" >
-                                <md-icon>edit</md-icon>
-                                <md-tooltip md-direction="top">
-                                    <span translate>Edit</span>
-                                </md-tooltip>
-                            </md-button>
-                        </td>
-                </tr>
+            <md-button ng-click="affect(personnel)" class="md-fab md-primary md-hue-2 md-mini"  aria-label="Affecte" >
+                <md-icon>transfer_within_a_station</md-icon>
+                <md-tooltip md-direction="top">
+                    <span translate>Affect to new position</span>
+                </md-tooltip>
+            </md-button>
+            <md-button class="md-fab md-primary md-hue-2 md-mini" ng-click="edit({id: personnel._id})" aria-label="Edit" >
+                <md-icon>edit</md-icon>
+                <md-tooltip md-direction="top">
+                    <span translate>Edit</span>
+                </md-tooltip>
+            </md-button>
+            </td>
+            </tr>
             </tbody>
         </table>
     </md-table-container>
