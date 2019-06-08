@@ -46,7 +46,6 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                 }else{
                     return true
                 }
-                
             };
 
             $scope.affect = function (personnel) {
