@@ -71,12 +71,12 @@
                 <md-list ng-cloak>
                     <span  translate ng-hide="affectedStaffs && affectedStaffs.length > 0"><center>No body is holding this position information</center></span>
                     <div ng-repeat="staff in affectedStaffs">
-                        <md-list-item ui-sref="#" >
+                        <md-list-item ui-sref="#" ng-click="showHelder({_id: staff._id})">
                             <div class="avatar avatar-md md-avatar" >
                                 {{staff.name.substr(0, 1).toUpperCase()}}
                             </div>
                             <p class="md-body-2" >{{staff.name}} <sma>({{staff.matricule}})</sma></p>
-                            <md-button class="md-secondary " aria-label="Consult" ng-click="edit({id: user._id})">
+                            <md-button class="md-secondary " aria-label="Consult" ng-click="showHelder({_id: staff._id})">
                                 <md-icon aria-label="pageview">pageview</md-icon>
                                 <md-tooltip>
                                     <span translate>Consult</span>

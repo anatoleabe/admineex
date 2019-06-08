@@ -22,6 +22,10 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
     };
 
 
+    $scope.showHelder = function (params) {
+        $state.go("home.staffs.personnalrecords", {id: params._id, opath: "home.staffs.main"});
+    };
+    
     $ocLazyLoad.load('js/services/PositionService.js').then(function () {
         var Position = $injector.get('Position');
         $rootScope.kernel.loading = 100;
@@ -35,14 +39,15 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                     Position.read({id: id}).then(function (response) {
                         var data = response.data;
                         $scope.position = data;
-                        if ($scope.position && $scope.position.occupiedBy){
+                        if ($scope.position && $scope.position.occupiedBy) {
                             var positionHelder = {
-                                name: $scope.position.occupiedBy.personnel.name.family+" "+$scope.position.occupiedBy.personnel.name.given,
+                                _id: $scope.position.occupiedBy.personnel._id,
+                                name: $scope.position.occupiedBy.personnel.name.family + " " + $scope.position.occupiedBy.personnel.name.given,
                                 matricule: $scope.position.occupiedBy.personnel.identifier
                             };
                             $scope.affectedStaffs.push(positionHelder);
                         }
-                        
+
                         function getDictionaryItemByValue(dictionaryList, itemValue) {
                             var items = $.grep(dictionaryList, function (c, i) {
                                 return c.value === itemValue;
