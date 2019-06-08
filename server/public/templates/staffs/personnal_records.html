@@ -54,7 +54,7 @@
                 </div>
                 <div layout="column" layout-align="center center">
                     <md-button ui-sref="home.profile.edit" >
-                        <span style="white-space: nowrap; font-weight: bold;">{{personnelSelected.name.family[0] + " " + personnelSelected.name.given[0]}}</span>
+                        <span style="white-space: nowrap; font-weight: bold;">{{personnelSelected.fname?personnelSelected.fname:personnelSelected.name.family[0] + " " + personnelSelected.name.given[0]}}</span>
                     </md-button>
                     <span ng-if="personnelSelected.affectedTo.position.name" style="white-space: nowrap; margin-top: -6px;margin-bottom: 5px;">{{personnelSelected.affectedTo.position.name| uppercase | unknown}}</span>
                 </div>
@@ -94,7 +94,7 @@
                                         <md-list-item>
                                             <md-icon>face</md-icon>
                                             <p class="md-body-2" translate>Full name</p>
-                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.name.family[0] + " " + personnelSelected.name.given[0]}}</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.fname?personnelSelected.fname:personnelSelected.name.family[0] + " " + personnelSelected.name.given[0]}}</p>
                                         </md-list-item>
                                         <md-divider></md-divider>
                                         <md-list-item ng-if="personnelSelected.birthDate">

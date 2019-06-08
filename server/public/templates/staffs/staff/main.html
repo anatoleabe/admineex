@@ -65,14 +65,14 @@
                 </tr>
             </thead>
             <tbody md-body>
-                <tr md-row data-ng-repeat="personnel in personnels| filter:staffsFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="read(personnel)">
-                    <td md-cell>{{personnel.name.family[0]}} {{personnel.name.given[0]}}</td>
-                    <td md-cell style="max-width: 60px">{{personnel.identifier| uppercase | unknown}}</td>
-                    <td md-cell style="max-width: 10px">{{personnel.gender| uppercase | unknown}}</td>
-                    <td md-cell>{{personnel.affectedTo.position.name| unknown}}</td>
-                    <td md-cell>{{personnel.affectedTo.position.structure.name| unknown}} <span style="color: #999999" ng-if="personnel.posteActuel[0].structure[0]"> - {{personnel.posteActuel[0].structure[0].code}} </span></td>
-                    <td md-cell>{{personnel.telephone| unknown}}</td>
-                    <td md-cell>{{personnel.lastModified| date:'dd/MM/yyyy'}}</td>
+                <tr md-row data-ng-repeat="personnel in personnels| filter:staffsFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                    <td md-cell ng-click="read(personnel)">{{personnel.name.family[0]}} {{personnel.name.given[0]}}</td>
+                    <td md-cell style="max-width: 60px" ng-click="read(personnel)">{{personnel.identifier| uppercase | unknown}}</td>
+                    <td md-cell style="max-width: 10px" ng-click="read(personnel)">{{personnel.gender| uppercase | unknown}}</td>
+                    <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.position.name| unknown}}</td>
+                    <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.position.structure.name| unknown}} <span style="color: #999999" ng-if="personnel.posteActuel[0].structure[0]"> - {{personnel.posteActuel[0].structure[0].code}} </span></td>
+                    <td md-cell ng-click="read(personnel)">{{personnel.telephone| unknown}}</td>
+                    <td md-cell ng-click="read(personnel)">{{personnel.lastModified| date:'dd/MM/yyyy'}}</td>
                     <td md-cell >
                             <md-button ng-click="affect(personnel)" class="md-fab md-primary md-hue-2 md-mini"  aria-label="Affecte" >
                                 <md-icon>transfer_within_a_station</md-icon>
