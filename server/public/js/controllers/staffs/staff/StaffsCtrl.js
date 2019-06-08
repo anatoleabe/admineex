@@ -41,12 +41,35 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
             });
 
             $scope.retiredOnly = function (item) {
-                if ($scope.showOnlyRetirement == true){
+                if ($scope.showOnlyRetirement == true) {
                     return item.retirement && item.retirement.retirement == true;
-                }else{
+                } else {
                     return true
                 }
             };
+
+            $scope.openMoreMenu = function ($mdOpenMenu) {
+                $mdOpenMenu();
+            };
+
+
+            $scope.showRetired = function () {
+                $ocLazyLoad.load('js/controllers/staffs/staff/RetiredCtrl.js').then(function () {
+                    $mdDialog.show({
+                        controller: 'RetiredController',
+                        templateUrl: '../templates/dialogs/retired.html',
+                        parent: angular.element(document.body),
+                        clickOutsideToClose: true,
+                        locals: {
+                            params: {
+                                
+                            }
+                        }
+                    }).then(function (answer) {
+                    }, function () {
+                    });
+                });
+            }
 
             $scope.affect = function (personnel) {
                 $ocLazyLoad.load('js/controllers/administration/positions/AffectationCtrl.js').then(function () {

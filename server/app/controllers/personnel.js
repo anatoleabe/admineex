@@ -222,9 +222,41 @@ exports.api.list = function (req, res) {
     }
 }
 
+//Get all retired staff
+exports.api.retired = function (req, res) {
+    if (req.actor) {
+        var query1 = {$and: []};
+        query1.$and.push({"retirement.retirement": true});//Les personnes en age de retraite
+        query1.$and.push({"retirement.notified": { $exists: true }});//..et notifiés
+        query1.$and.push({$or: []});//..et non pas été prolongés
+        query1.$and[2].$or.push({"retirement.extended": { $exists: false }});//non pas été prolongés
+        query1.$and[2].$or.push({"retirement.extended": false});//non pas été prolongés
+
+        var options = {
+            query : query1,
+            req: req
+        }
+        exports.list(options, function (err, personnels) {
+            if (err) {
+                log.error(err);
+                res.status(500).send(err);
+            } else {
+                return res.json(personnels);
+            }
+        });
+    } else {
+        audit.logEvent('[anonymous]', 'Personnel', 'retired', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+}
+
 
 exports.list = function (options, callback) {
-    var query = {}
+    
+    var query = {};
+    if (options.query) {
+        query = options.query;
+    }
     var sort = {"name.family": 'asc'};
     var q = Personnel.find(query).sort(sort).limit(0).skip(0).lean();
     q.exec(function (err, personnels) {
@@ -315,7 +347,7 @@ exports.api.checkExistance = function (req, res) {
         } else {
 
             var mat = req.params.mat || '';
-            console.log("Mat = "+mat)
+            console.log("Mat = " + mat)
             var concat;
 
             concat = ["$name.family", " ", "$name.given"];
@@ -541,15 +573,15 @@ function beautify(options, personnels, callback) {
                                 }
                             }
                         }
-                        
-                        personnels[a].corresponding = Number(((personnels[a].skillsCorresponding + personnels[a].profilesCorresponding)/2).toFixed(1));
+
+                        personnels[a].corresponding = Number(((personnels[a].skillsCorresponding + personnels[a].profilesCorresponding) / 2).toFixed(1));
 
                         var status = personnels[a].status || "";
                         var grade = personnels[a].grade || "";
                         var corps = personnels[a].corps || "";
                         var category = personnels[a].category || "";
-                        var highestLevelEducation = (personnels[a].qualifications)?personnels[a].qualifications.highestLevelEducation : "";
-                        var natureActe = (personnels[a].history)?personnels[a].history.nature : "";
+                        var highestLevelEducation = (personnels[a].qualifications) ? personnels[a].qualifications.highestLevelEducation : "";
+                        var natureActe = (personnels[a].history) ? personnels[a].history.nature : "";
 
                         personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
 
@@ -563,11 +595,11 @@ function beautify(options, personnels, callback) {
                         if (corps != "") {
                             personnels[a].corps = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/corps.json', corps, language);
                         }
-                        
+
                         if (highestLevelEducation != "") {
                             personnels[a].qualifications.highestLevelEducation = dictionary.getValueFromJSON('../../resources/dictionary/personnel/educationLevels.json', parseInt(highestLevelEducation, 10), language);
                         }
-                        
+
                         if (natureActe != "") {
                             personnels[a].history.nature = dictionary.getValueFromJSON('../../resources/dictionary/acts/natures.json', natureActe, language);
                         }

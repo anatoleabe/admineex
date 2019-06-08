@@ -34,6 +34,24 @@
                 <span translate>Search</span>
             </md-tooltip>
         </md-button>
+
+        <md-menu>
+            <md-button class="md-icon-button"  ng-click="openMoreMenu($mdOpenMenu)" >
+                <md-icon class="material-icons" >more_vert</md-icon>
+                <md-tooltip>
+                    <span translate>More actions</span>
+                </md-tooltip>
+            </md-button>
+            <md-menu-content width="4">
+                <md-menu-item>
+                    <md-button ng-click="showRetired()">
+                        <md-icon class="material-icons" >people</md-icon>
+                        Show retired people
+                    </md-button>
+                </md-menu-item>
+
+            </md-menu-content>
+        </md-menu>
     </div>
 </md-toolbar>
 

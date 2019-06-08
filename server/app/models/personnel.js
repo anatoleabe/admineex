@@ -111,8 +111,8 @@ var PersonnelSchema = new Schema({
     },
     retirement: {
         retirement: {type: Boolean, default: false},
-        notified: {type: Boolean, default: false},
-        prolonger: {type: Boolean, default: false}
+        notified: {type: Date},
+        extended: {type: Boolean, default: false}
     },
     lastModified: {type: Date, default: Date.now, required: true},
     created: {type: Date, default: Date.now, required: true}

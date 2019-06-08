@@ -310,5 +310,11 @@
         "uri": "/api/personnel/checkExistance/:mat",
         "method": "GET",
         "roles": [1,2,3]
+    },
+    {
+        "id": 54,
+        "uri": "/api/personnel/retired/:from/:to",
+        "method": "GET",
+        "roles": [1,2,3]
     }
 ]
