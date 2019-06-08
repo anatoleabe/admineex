@@ -50,7 +50,7 @@
         <md-card ng-if="personnelSelected">
             <md-card-header   layout-align="center" layout-wrap layout="column" >
                 <div layout="row" layout-align="center center" >
-                    <img  ng-src="templates/staffs/img/{{personnelSelected.mysqlId}}.jpeg" class="img-circle" />
+                    <img  ng-src="{{userImage}}" class="img-circle" />
                 </div>
                 <div layout="column" layout-align="center center">
                     <md-button ui-sref="home.profile.edit" >

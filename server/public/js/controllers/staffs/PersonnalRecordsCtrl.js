@@ -142,6 +142,11 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
                                         return undefined;
                                     }
                                 }
+                                
+                                $scope.userImage = "templates/staffs/img/"+personnel.mysqlId+".jpeg";
+                                if (personnel.mysqlId != "351" && personnel.mysqlId != "372" && personnel.mysqlId != "97"){
+                                    $scope.userImage = "templates/staffs/img/unknow.png";
+                                }
 
                                 function prepareRequiredItemsToAngular() {
                                     var profiles = [];
