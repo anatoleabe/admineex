@@ -7,6 +7,7 @@ var crypto = require('crypto');
 var dictionary = require('../utils/dictionary');
 var formidable = require("formidable");
 var mysql = require('mysql');
+var moment = require('moment');
 
 // API
 exports.api = {};
@@ -227,13 +228,13 @@ exports.api.retired = function (req, res) {
     if (req.actor) {
         var query1 = {$and: []};
         query1.$and.push({"retirement.retirement": true});//Les personnes en age de retraite
-        query1.$and.push({"retirement.notified": { $exists: true }});//..et notifiés
+        query1.$and.push({"retirement.notified": {$exists: true}});//..et notifiés
         query1.$and.push({$or: []});//..et non pas été prolongés
-        query1.$and[2].$or.push({"retirement.extended": { $exists: false }});//non pas été prolongés
+        query1.$and[2].$or.push({"retirement.extended": {$exists: false}});//non pas été prolongés
         query1.$and[2].$or.push({"retirement.extended": false});//non pas été prolongés
 
         var options = {
-            query : query1,
+            query: query1,
             req: req
         }
         exports.list(options, function (err, personnels) {
@@ -250,9 +251,95 @@ exports.api.retired = function (req, res) {
     }
 }
 
+//This function is called each day at 6am and check and set the new retired people
+exports.checkRetirement = function (callback) {
+    var dateLimit = new Date(new Date().setFullYear(new Date().getFullYear() - 49));
+
+    var query = {
+        $and: [
+            {
+                "retirement.retirement": false
+            },
+            {
+                "birthDate": {
+                    $lte: moment(dateLimit).endOf('day')
+                }
+            }
+        ]
+    };
+
+    var q = Personnel.find(query);
+    q.exec(function (err, personnels) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Personnel', 'checkRetirement', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
+            callback(err);
+        } else {
+            var candidates = [];
+            function LoopA(a) {
+                if (a < personnels.length && personnels[a]) {
+                    var age = _calculateAge(new Date(personnels[a].birthDate));
+                    if (personnels[a].grade && personnels[a].grade != "" && personnels[a].grade != null) {
+                        if (personnels[a].status == "1") {//Civil servant
+                            if (personnels[a].corps == "1") {//Case corps Enseignant 55 or 60 years
+                                if ((personnels[a].grade == "1" || personnels[a].grade == "2") && age >= 60) {//PLEG or PCEG with age >= 60 -> retirement
+                                    candidates.push(personnels[a][a]._id);
+                                } else if (personnels[a].grade == "26" && age >= 55) { //If Instituteur and age >= 55 
+                                    candidates.push(personnels[a]._id);
+                                }
+                            } else {
+                                //Autre fonctionnaire de Categorie Ax  Bx, C, D dont l'age >=55ans 
+                                if (age >= 55) {
+                                    candidates.push(personnels[a]._id);
+                                }
+                            }
+
+                        } else {// Contractual
+                            if (personnels[a].category && personnels[a].category != null && personnels[a].category != "") {
+                                var perCategory = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + personnels[a].status + '/categories.json', personnels[a].category, "en");
+                                if (parseInt(personnels[a].category, 10) >= 7 && parseInt(personnels[a].category, 10) <= 13 && age >= 50) { //Personnel non fonctionnaire CAT 1 à CAT 7
+                                    candidates.push(personnels[a]._id);
+                                } else if (age >= 55) {
+                                    candidates.push(personnels[a]._id); //Personnel non fonctionnaire CAT 8 à CAT 12
+                                }
+                            } else if (age >= 55) {
+                                candidates.push(personnels[a]._id);//other
+                            }
+                        }
+                    } else if (age >= 55) {
+                        candidates.push(personnels[a]._id);//other
+                    }
+                    LoopA(a + 1);
+                } else {
+                    function LoopB(b) {
+                        if (b < candidates.length) {
+                            var fields = {
+                                "_id": candidates[b],
+                                "retirement.retirement": true
+                            }
+                            exports.upsert(fields, function (err) {
+                                if (err) {
+                                    log.error(err);
+                                    callback(err);
+                                } else {
+                                    LoopB(b+1);
+                                }
+                            });
+                        } else {
+                            callback(null, candidates.length);
+                        }
+                    }
+                    LoopB(0);
+                }
+            }
+            LoopA(0);
+        }
+    });
+}
+
 
 exports.list = function (options, callback) {
-    
+
     var query = {};
     if (options.query) {
         query = options.query;

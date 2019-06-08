@@ -31,7 +31,8 @@
     "rate-limiter-flexible": "0.16.6",
     "archiver": "~2.1.1",
     "line-by-line": "0.1.6",
-    "xlsx-style": "0.8.13"
+    "xlsx-style": "0.8.13",
+    "cron": "1.3.0"
   },
   "devDependencies": {
     "grunt": "1.0.3",

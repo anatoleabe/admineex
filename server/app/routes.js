@@ -616,4 +616,29 @@ function startBot() {
 //            console.log(avoided)
 //        }
 //    });
+
+    var CronJob = require('cron').CronJob;
+    new CronJob('00 00 06 * * 1-5', function () {
+        /*
+         * Runs every weekday (Monday through Friday)
+         * at 06:00:00 AM. It does not run on Saturday or Sunday.
+         */
+        controllers.personnel.checkRetirement(function (err, count) {
+            if (err) {
+                log.error(err);
+                console.log(err);
+            } else {
+                console.log("Check of new retirment done. New retirement = ", count)
+            }
+        });
+    }, null, true);
+
+    controllers.personnel.checkRetirement(function (err, count) {
+        if (err) {
+            log.error(err);
+            console.log(err);
+        } else {
+            console.log("Check of new retirment done. New retirement = ", count)
+        }
+    });
 }
