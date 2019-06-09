@@ -55,8 +55,10 @@
                 <div layout="column" layout-align="center center">
                     <md-button ui-sref="home.profile.edit" >
                         <span style="white-space: nowrap; font-weight: bold;">{{personnelSelected.fname?personnelSelected.fname:personnelSelected.name.family[0] + " " + personnelSelected.name.given[0]}}</span>
+
                     </md-button>
-                    <span ng-if="personnelSelected.affectedTo.position.name" style="white-space: nowrap; margin-top: -6px;margin-bottom: 5px;">{{personnelSelected.affectedTo.position.name| uppercase | unknown}}</span>
+                    <span ng-if="personnelSelected.affectedTo.position.name" style="white-space: nowrap; margin-top: -6px;margin-bottom: 5px;">{{personnelSelected.affectedTo.position.name| uppercase | unknown}} </span>
+                    <span ng-if="personnelSelected.situations[0].situation">({{personnelSelected.situations[0].value}})</span>
                 </div>
                 <div style="padding:0;margin: 0;" layout="row" layout-align="center center">
                     <div flex>
@@ -302,18 +304,17 @@
                                                                                 <p class="md-body-2" translate>Retirement</p>
                                                                                 <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.retirement}}</p>
                                                                             </md-list-item>-->
-                                        <!--                                    <md-divider></md-divider>
-                                                                            <md-list-item>
-                                                                                <md-icon>local_hospital</md-icon>
-                                                                                <p class="md-body-2" translate>Discipline</p>
-                                                                                <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.discipline| uppercase | unknown}}</p>
-                                                                            </md-list-item>
-                                                                            <md-divider></md-divider>
-                                                                            <md-list-item>
-                                                                                <md-icon>local_hospital</md-icon>
-                                                                                <p class="md-body-2" translate>Actual situation</p>
-                                                                                <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.situation| uppercase | unknown}}</p>
-                                                                            </md-list-item>-->
+                                        <md-list-item>
+                                            <md-icon>local_hospital</md-icon>
+                                            <p class="md-body-2" translate>Discipline</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.discipline| uppercase | unknown}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>local_hospital</md-icon>
+                                            <p class="md-body-2" translate>Actual situation</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.situations[0].value| uppercase | unknown}}</p>
+                                        </md-list-item>
 
                                     </md-list>
                                 </md-card-content>

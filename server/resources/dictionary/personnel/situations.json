@@ -1,18 +1,18 @@
 [
       {
         "id": "1",
-        "en": "Congé",
-        "fr": "Congé"
+        "en": "En congé",
+        "fr": "En congé"
       },
       {
         "id": "2",
-        "en": "Permission",
-        "fr": "Permission"
+        "en": "Permissionnaire",
+        "fr": "Permissionnaire"
       },
       {
         "id": "3",
-        "en": "Retraite",
-        "fr": "Retraite"
+        "en": "Retraité",
+        "fr": "Retraité"
       },
       {
         "id": "4",
@@ -26,8 +26,8 @@
       },
       {
         "id": "6",
-        "en": "Suspension",
-        "fr": "Suspension"
+        "en": "Suspendu",
+        "fr": "Suspendu"
       },
       {
         "id": "7",
@@ -36,13 +36,13 @@
       },
       {
         "id": "8",
-        "en": "Décès",
-        "fr": "Décès"
+        "en": "Décédé",
+        "fr": "Décédé"
       },
       {
         "id": "9",
-        "en": "Maladie",
-        "fr": "Maladie"
+        "en": "Malade",
+        "fr": "Malade"
       },
       {
         "id": "10",

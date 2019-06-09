@@ -10,9 +10,6 @@ angular.module('SituationCtrl', []).controller('SituationController', function (
         $mdDialog.cancel();
     };
 
-    var situation = {};
-
-
     $ocLazyLoad.load('js/services/StaffService.js').then(function () {
         var Staff = $injector.get('Staff');
         $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {

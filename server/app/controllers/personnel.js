@@ -322,7 +322,7 @@ exports.checkRetirement = function (callback) {
                                     log.error(err);
                                     callback(err);
                                 } else {
-                                    LoopB(b+1);
+                                    LoopB(b + 1);
                                 }
                             });
                         } else {
@@ -689,6 +689,17 @@ function beautify(options, personnels, callback) {
 
                         if (natureActe != "") {
                             personnels[a].history.nature = dictionary.getValueFromJSON('../../resources/dictionary/acts/natures.json', natureActe, language);
+                        }
+
+                        var situations = personnels[a].situations;
+                        if (situations && situations.length > 0) {
+                            situations.sort(function (a, b) {
+                                return new Date(b.date) - new Date(a.date);
+                            });
+                            for (var i in situations) {
+                                situations[i].value = dictionary.getValueFromJSON('../../resources/dictionary/personnel/situations.json', situations[i].situation, language);
+                            }
+                            personnels[a].situations = situations;
                         }
 
                         LoopA(a + 1);
