@@ -107,16 +107,11 @@ function buildNav(user, callback){
         name: 'Staff management'
     };
     var staffManagementTab3 = {
-        href: 'home.staffs.movement.main',
-        label: 'Appointements & promotions',
-        name: 'Appointements & promotions'
-    };
-    var staffManagementTab4 = {
         href: 'home.staffs.status.main',
         label: 'Status',
         name: 'Status'
     };
-    var staffManagementTab5 = {
+    var staffManagementTab4 = {
         href: 'home.staffs.discipline.main',
         label: 'Discipline',
         name: 'Discipline'
@@ -146,11 +141,11 @@ function buildNav(user, callback){
         label: 'Export',
         name: 'Export'
     };
-    var administrationTab4 = {
-        href: 'home.administration.duplicates',
-        label: 'Duplicates',
-        name: 'Duplicates'
-    };
+//    var administrationTab4 = {
+//        href: 'home.administration.duplicates',
+//        label: 'Duplicates',
+//        name: 'Duplicates'
+//    };
     
     var statistics = {
         href: 'home.statistics.main',
@@ -218,7 +213,6 @@ function buildNav(user, callback){
             nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab2);
             nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab3);
             nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab4);
-            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab5);
             // LEFT MENU STATISTICS
             nav.left[0].items.push(statistics);
             // LEFT MENU ADMINISTRATION
@@ -227,7 +221,6 @@ function buildNav(user, callback){
             nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab1);
             nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab2);
             nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab3);
-            nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab4);
 //            //LEFT MENU REPORTS
 //            nav.left[0].items.push(reports);
             // PREFERNCES

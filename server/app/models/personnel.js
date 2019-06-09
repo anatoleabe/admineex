@@ -86,6 +86,7 @@ var PersonnelSchema = new Schema({
             nature: {type: String, required: true}, //id fron resource json nature > acte
             sanction: {type: String, required: true}, //id fron resource json sanctions
             date: {type: Date},
+            comment: {type: String},
             lastModified: {type: Date, default: Date.now, required: true},
         }
     ],
@@ -95,7 +96,8 @@ var PersonnelSchema = new Schema({
             nature: {type: String, required: true}, //id fron resource json nature > acte
             situation: {type: String, required: true}, //id fron resource json situations
             date: {type: Date},
-            lastModified: {type: Date, default: Date.now, required: true},
+            comment: {type: String},
+            lastModified: {type: Date, default: Date.now, required: true}
         }
     ],
     trainnings: [{}],

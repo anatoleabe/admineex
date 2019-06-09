@@ -618,7 +618,7 @@ function startBot() {
 //    });
 
     var CronJob = require('cron').CronJob;
-    new CronJob('00 00 06 * * 1-5', function () {
+    new CronJob('00 11 06 * * *', function () {
         /*
          * Runs every weekday (Monday through Friday)
          * at 06:00:00 AM. It does not run on Saturday or Sunday.

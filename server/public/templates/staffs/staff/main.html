@@ -103,6 +103,29 @@
                     <span translate>Edit</span>
                 </md-tooltip>
             </md-button>
+            <md-menu>
+                <md-button class="md-icon-button"  ng-click="openMoreMenu($mdOpenMenu)" >
+                    <md-icon class="material-icons" >more_vert</md-icon>
+                    <md-tooltip>
+                        <span translate>More actions</span>
+                    </md-tooltip>
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item>
+                        <md-button ng-click="newStaffSituation(personnel)">
+                            <md-icon class="material-icons" >people</md-icon>
+                            <span translate>New staff situation</span>
+                        </md-button>
+                    </md-menu-item>
+                    <md-divider ></md-divider>
+                    <md-menu-item>
+                        <md-button >
+                            <md-icon class="material-icons" >people</md-icon>
+                            <span translate>New sanction disciplinaire</span>
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
             </td>
             </tr>
             </tbody>

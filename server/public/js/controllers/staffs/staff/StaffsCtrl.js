@@ -57,12 +57,31 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                 $ocLazyLoad.load('js/controllers/staffs/staff/RetiredCtrl.js').then(function () {
                     $mdDialog.show({
                         controller: 'RetiredController',
-                        templateUrl: '../templates/dialogs/retired.html',
+                        templateUrl: '../templates/dialogs/retireds.html',
                         parent: angular.element(document.body),
                         clickOutsideToClose: true,
                         locals: {
                             params: {
                                 
+                            }
+                        }
+                    }).then(function (answer) {
+                    }, function () {
+                    });
+                });
+            }
+
+
+            $scope.newStaffSituation = function (personnel) {
+                $ocLazyLoad.load('js/controllers/staffs/staff/SituationCtrl.js').then(function () {
+                    $mdDialog.show({
+                        controller: 'SituationController',
+                        templateUrl: '../templates/dialogs/situation.html',
+                        parent: angular.element(document.body),
+                        clickOutsideToClose: true,
+                        locals: {
+                            params: {
+                                personnel: personnel
                             }
                         }
                     }).then(function (answer) {
