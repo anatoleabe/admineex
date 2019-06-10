@@ -10,7 +10,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.11\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: public/templates/staffs/personnal_records.html:363
 #: public/templates/staffs/personnal_records.html:66
@@ -660,7 +659,7 @@ msgstr ""
 #: public/templates/import_export.html:58
 #: public/templates/import_export.html:79
 msgid "Export"
-msgstr ""
+msgstr "Expoter"
 
 #: public/templates/dialogs/retireds.html:52
 msgid "Extend"
@@ -681,7 +680,7 @@ msgstr "Février"
 
 #: public/js/appFilters.js:357 public/templates/staffs/staff/edit.html:42
 msgid "Female"
-msgstr ""
+msgstr "Feminin"
 
 #: public/js/controllers/SettingsCtrl.js:138
 #: public/js/controllers/recovery/ResetCtrl.js:29
@@ -734,7 +733,7 @@ msgstr "Vendredi"
 #: public/templates/import_export.html:66
 #: public/templates/staffs/mouvement/main.html:38
 msgid "From"
-msgstr ""
+msgstr "De"
 
 #: public/templates/dialogs/eligibility.html:32
 #: public/templates/dialogs/retireds.html:32
@@ -843,7 +842,7 @@ msgstr ""
 
 #: public/templates/import_export.html:3 public/templates/import_export.html:53
 msgid "Import"
-msgstr ""
+msgstr "Importer"
 
 #: public/js/appFilters.js:216 public/js/controllers/projects/ProjectCtrl.js:6
 msgid "In talks"
@@ -892,8 +891,12 @@ msgid "Last sanction"
 msgstr ""
 
 #: public/templates/import_export.html:46
+#, fuzzy
 msgid "List of organization types codes:"
 msgstr ""
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"Type d'organisation"
 
 #: public/templates/dialogs/eligibility.html:5
 msgid "List of people eligible to the position {{position.code}}"
@@ -1110,8 +1113,12 @@ msgstr "Novembre"
 #: public/templates/import_export.html:28
 #: public/templates/staffs/discipline/edit.html:66
 #: public/templates/staffs/status/edit.html:66
+#, fuzzy
 msgid "Number"
 msgstr ""
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"Novembre"
 
 #: public/templates/staffs/personnal_records.html:141
 #: public/templates/staffs/staff/edit.html:72
@@ -1168,8 +1175,12 @@ msgid "Order"
 msgstr ""
 
 #: public/templates/organizations/profile.html:9
+#, fuzzy
 msgid "Organization ID"
 msgstr ""
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"Organisations"
 
 #: public/templates/organizations/edit.html:6
 #: public/templates/organizations/profile.html:15
@@ -1221,8 +1232,12 @@ msgstr "Les mots de passe ne correspondent pas."
 
 #: public/templates/projects/edit.html:22
 #: public/templates/projects/profile.html:33
+#, fuzzy
 msgid "Payment Date"
 msgstr ""
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"Date début"
 
 #: public/templates/users/main.html:1
 msgid "Pending accounts"
@@ -1359,8 +1374,12 @@ msgid "Progress"
 msgstr ""
 
 #: public/templates/projects/profile.html:9
+#, fuzzy
 msgid "Project ID"
 msgstr ""
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"Projets"
 
 #: public/templates/projects/edit.html:6
 #: public/templates/projects/profile.html:15
@@ -1390,8 +1409,12 @@ msgid "Promoted as"
 msgstr ""
 
 #: public/js/controllers/projects/ProjectCtrl.js:7
+#, fuzzy
 msgid "Proposal Sent"
 msgstr ""
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"Proposition envoyée"
 
 #: public/js/appFilters.js:219
 msgid "Proposal sent"
@@ -1534,8 +1557,12 @@ msgstr ""
 #: public/templates/staffs/mouvement/main.html:10
 #: public/templates/staffs/staff/main.html:34
 #: public/templates/staffs/status/main.html:10
+#, fuzzy
 msgid "Search"
 msgstr ""
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"Mars"
 
 #: public/templates/staffs/personnal_records.html:10
 msgid "Search a staff (Name, matricule or CNI)"
@@ -1796,8 +1823,12 @@ msgid "The current password you entered is incorrect"
 msgstr "Le mot de passe que vous avez entré est incorrect"
 
 #: public/js/controllers/Import_ExportCtrl.js:29
+#, fuzzy
 msgid "The data have been imported"
 msgstr ""
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"#-#-#-#-#  0catalog.po (fr)  #-#-#-#-#\n"
+"Le projet a été créé"
 
 #: public/js/controllers/sign/SigninCtrl.js:85
 msgid "The email or password is empty."
@@ -1942,7 +1973,7 @@ msgstr ""
 
 #: public/templates/import_export.html:71
 msgid "To"
-msgstr ""
+msgstr "A"
 
 #: public/templates/settings/notifications.html:5
 msgid "To turn off a specific feature, just click the toggle."
@@ -1988,7 +2019,7 @@ msgstr ""
 
 #: public/templates/users/profile.html:9
 msgid "User ID"
-msgstr ""
+msgstr "ID Utilisateur"
 
 #: public/templates/administration/structures/main.html:45
 msgid "Vacancies"
@@ -2084,7 +2115,7 @@ msgstr ""
 
 #: public/templates/import_export.html:27
 msgid "to be find in Users > User profile"
-msgstr ""
+msgstr "être trouvé dans les Utilisateurs > profile Utilisateur"
 
 #: public/templates/import_export.html:30
 #: public/templates/import_export.html:31
