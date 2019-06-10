@@ -9,10 +9,21 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.8\n"
+"X-Generator: Poedit 2.2.3\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: public/js/controllers/projects/ProjectCtrl.js:20
+msgid "- Generic -"
+msgstr ""
+
 #: app/controllers/account.js:298
+#: public/js/controllers/AdministrationCtrl.js:31
+#: public/js/controllers/AdministrationCtrl.js:32
+#: public/templates/import_export.html:29
+#: public/templates/import_export.html:32
+#: public/templates/import_export.html:34
+#: public/templates/import_export.html:35
+#: public/templates/import_export.html:46
 msgid ":"
 msgstr " :"
 
@@ -47,11 +58,11 @@ msgstr "Récupération du compte"
 msgid "Account not activated"
 msgstr "Le compte n’est pas activé"
 
-#: public/templates/users/main.html:18
+#: public/templates/users/main.html:19
 msgid "Activate"
 msgstr "Activer"
 
-#: public/templates/users/main.html:37
+#: public/templates/users/main.html:39
 msgid "Active accounts"
 msgstr "Comptes actifs"
 
@@ -62,6 +73,10 @@ msgstr "Administration"
 #: public/templates/installation/second.html:13
 msgid "Administrator Account"
 msgstr "Compte administrateur"
+
+#: public/js/appFilters.js:328 public/js/controllers/projects/ProjectCtrl.js:31
+msgid "Alics"
+msgstr ""
 
 #: app/controllers/account.js:305
 msgid "Alics notification"
@@ -75,14 +90,14 @@ msgstr ""
 "Un email contenant un lien pour reinitialiser votre mot de passe a été "
 "envoyé à votre adresse email."
 
-#: public/js/controllers/organizations/OrganizationCtrl.js:109
-#: public/js/controllers/organizations/OrganizationCtrl.js:39
-#: public/js/controllers/organizations/OrganizationCtrl.js:62
-#: public/js/controllers/organizations/OrganizationCtrl.js:84
-#: public/js/controllers/projects/ProjectCtrl.js:108
-#: public/js/controllers/projects/ProjectCtrl.js:133
-#: public/js/controllers/projects/ProjectCtrl.js:57
-#: public/js/controllers/projects/ProjectCtrl.js:80
+#: public/js/controllers/organizations/OrganizationCtrl.js:110
+#: public/js/controllers/organizations/OrganizationCtrl.js:40
+#: public/js/controllers/organizations/OrganizationCtrl.js:63
+#: public/js/controllers/organizations/OrganizationCtrl.js:85
+#: public/js/controllers/projects/ProjectCtrl.js:102
+#: public/js/controllers/projects/ProjectCtrl.js:130
+#: public/js/controllers/projects/ProjectCtrl.js:155
+#: public/js/controllers/projects/ProjectCtrl.js:79
 #: public/js/controllers/recovery/LostCtrl.js:26
 #: public/js/controllers/recovery/ResetCtrl.js:42
 #: public/js/controllers/users/UserCtrl.js:117
@@ -116,23 +131,23 @@ msgstr "Audit"
 msgid "August"
 msgstr "Août"
 
-#: public/templates/organizations/profile.html:33
-#: public/templates/projects/profile.html:88
+#: public/templates/organizations/profile.html:39
+#: public/templates/projects/profile.html:99
 msgid "Author"
 msgstr "Auteur"
 
-#: public/templates/settings/main.html:6 public/templates/users/profile.html:9
+#: public/templates/settings/main.html:6 public/templates/users/profile.html:15
 msgid "Avatar"
 msgstr "Avatar"
 
 #: public/templates/installation/second.html:44
 #: public/templates/organizations/profile.html:2
-#: public/templates/organizations/profile.html:40
+#: public/templates/organizations/profile.html:46
+#: public/templates/projects/profile.html:106
 #: public/templates/projects/profile.html:2
-#: public/templates/projects/profile.html:95
 #: public/templates/recovery/lost.html:16
 #: public/templates/recovery/reset.html:25
-#: public/templates/users/profile.html:2 public/templates/users/profile.html:64
+#: public/templates/users/profile.html:2 public/templates/users/profile.html:70
 msgid "Back"
 msgstr "Retour"
 
@@ -142,7 +157,7 @@ msgstr "Retour"
 #: public/templates/organizations/edit.html:19
 #: public/templates/profile/email.html:10 public/templates/profile/name.html:26
 #: public/templates/profile/phone.html:10
-#: public/templates/projects/edit.html:83
+#: public/templates/projects/edit.html:91
 #: public/templates/settings/avatar.html:13
 #: public/templates/settings/language.html:14
 #: public/templates/settings/notifications.html:19
@@ -151,11 +166,15 @@ msgstr "Retour"
 msgid "Cancel"
 msgstr "Annuler"
 
+#: public/js/appFilters.js:231 public/js/controllers/projects/ProjectCtrl.js:11
+msgid "Canceled"
+msgstr "Annuler"
+
 #: public/templates/settings/avatar.html:3
 msgid "Choose a color for your avatar"
 msgstr "Choisissez une couleur pour votre avatar"
 
-#: public/js/appFilters.js:238
+#: public/js/appFilters.js:241
 msgid "Community"
 msgstr "Communauté"
 
@@ -182,18 +201,22 @@ msgstr ""
 msgid "Confirmation"
 msgstr "Confirmation"
 
-#: public/js/controllers/MenuCtrl.js:72
-msgid "Core Unreachable."
-msgstr "Core inaccessible."
+#: app/controllers/import_export.js:65
+msgid "Core: Export projects"
+msgstr ""
 
 #: public/templates/projects/edit.html:67
-#: public/templates/projects/profile.html:64
+#: public/templates/projects/profile.html:69
 msgid "Countries"
 msgstr "Pays"
 
-#: public/templates/organizations/profile.html:27
-#: public/templates/projects/profile.html:82
-#: public/templates/users/profile.html:51
+#: public/templates/import_export.html:33
+msgid "Country:"
+msgstr "Pays"
+
+#: public/templates/organizations/profile.html:33
+#: public/templates/projects/profile.html:93
+#: public/templates/users/profile.html:57
 msgid "Created"
 msgstr "Créé"
 
@@ -205,14 +228,18 @@ msgstr "Actuel"
 msgid "Dashboard"
 msgstr "Tableau de bord"
 
+#: public/js/appFilters.js:319 public/js/controllers/projects/ProjectCtrl.js:28
+msgid "DataToCare"
+msgstr ""
+
 #: public/js/appFilters.js:13 public/js/appFilters.js:66
 msgid "December"
 msgstr "Décembre"
 
 #: public/js/controllers/users/UsersCtrl.js:105
-#: public/templates/organizations/main.html:25
-#: public/templates/projects/main.html:25 public/templates/users/main.html:30
-#: public/templates/users/main.html:58
+#: public/templates/organizations/main.html:39
+#: public/templates/projects/main.html:39 public/templates/users/main.html:31
+#: public/templates/users/main.html:61
 msgid "Delete"
 msgstr "Supprimer"
 
@@ -228,18 +255,24 @@ msgstr "Supprimer cette organisation"
 msgid "Delete this project"
 msgstr "Supprimer ce projet"
 
-#: public/js/appFilters.js:241
+#: public/js/appFilters.js:244
 msgid "Developed Country NGO"
 msgstr "ONG pays développé"
 
-#: public/js/appFilters.js:244
+#: public/js/appFilters.js:247
 msgid "Developing Country NGO"
 msgstr "ONG pays en voie de développement"
+
+#: public/templates/import_export.html:15
+msgid ""
+"Documentation <md-icon>{{doc == true ? 'keyboard_arrow_up' : "
+"'keyboard_arrow_down'}}</md-icon>"
+msgstr ""
 
 #: public/templates/organizations/edit.html:20
 #: public/templates/profile/email.html:11 public/templates/profile/name.html:27
 #: public/templates/profile/phone.html:11
-#: public/templates/projects/edit.html:84
+#: public/templates/projects/edit.html:92
 #: public/templates/settings/avatar.html:14
 #: public/templates/settings/language.html:15
 #: public/templates/settings/notifications.html:20
@@ -248,35 +281,39 @@ msgstr "ONG pays en voie de développement"
 msgid "Done"
 msgstr "OK"
 
-#: public/js/appFilters.js:247
+#: public/js/appFilters.js:250
 msgid "Donors"
 msgstr "Donateurs"
 
-#: public/templates/organizations/main.html:13
-#: public/templates/projects/main.html:13
+#: public/templates/organizations/main.html:27
+#: public/templates/projects/main.html:27
 msgid "Duplicate"
 msgstr "Dupliquer"
 
-#: public/js/appFilters.js:291 public/js/controllers/projects/ProjectCtrl.js:19
+#: public/js/appFilters.js:306 public/js/controllers/projects/ProjectCtrl.js:23
 msgid "Ebola"
 msgstr "Ebola"
 
-#: public/templates/organizations/main.html:19
-#: public/templates/projects/main.html:19 public/templates/users/main.html:24
-#: public/templates/users/main.html:52
+#: public/templates/organizations/main.html:33
+#: public/templates/projects/main.html:33 public/templates/users/main.html:25
+#: public/templates/users/main.html:55
 msgid "Edit"
 msgstr "Editer"
 
 #: public/templates/installation/second.html:28
 #: public/templates/profile/email.html:5 public/templates/profile/main.html:12
 #: public/templates/recovery/lost.html:12 public/templates/sign/signin.html:14
-#: public/templates/users/edit.html:25 public/templates/users/profile.html:23
+#: public/templates/users/edit.html:25 public/templates/users/profile.html:29
 msgid "Email"
 msgstr "Email"
 
 #: public/js/controllers/DashboardCtrl.js:5
 msgid "Empty dashboard"
 msgstr "Tableau de bord vide"
+
+#: public/templates/import_export.html:27
+msgid "EnablerID:"
+msgstr ""
 
 #: public/js/appFilters.js:170
 msgid "English"
@@ -286,9 +323,19 @@ msgstr "Anglais"
 msgid "Enter a new password for your Core account."
 msgstr "Entrez un nouveau mot de passe pour votre compte Core."
 
+#: public/js/controllers/Import_ExportCtrl.js:61
+#: public/templates/import_export.html:58
+#: public/templates/import_export.html:79
+msgid "Export"
+msgstr "Expoter"
+
 #: public/js/appFilters.js:3 public/js/appFilters.js:56
 msgid "February"
 msgstr "Février"
+
+#: public/js/appFilters.js:357
+msgid "Female"
+msgstr "Feminin"
 
 #: public/js/controllers/SettingsCtrl.js:138
 #: public/js/controllers/recovery/ResetCtrl.js:29
@@ -301,7 +348,7 @@ msgstr "Remplir le formulaire correctement"
 msgid "First name"
 msgstr "Prénom"
 
-#: public/js/appFilters.js:250
+#: public/js/appFilters.js:253
 msgid "Foundation"
 msgstr "Fondation"
 
@@ -313,18 +360,30 @@ msgstr "Français"
 msgid "Friday"
 msgstr "Vendredi"
 
-#: public/templates/profile/main.html:6 public/templates/users/profile.html:17
+#: public/templates/import_export.html:66
+msgid "From"
+msgstr "De"
+
+#: public/templates/profile/main.html:6 public/templates/users/profile.html:23
 msgid "Full name"
 msgstr "Nom complet"
 
 #: public/templates/projects/edit.html:50
-#: public/templates/projects/profile.html:52
+#: public/templates/projects/profile.html:57
 msgid "Fund Provider"
 msgstr ""
 
-#: public/js/appFilters.js:262 public/templates/projects/edit.html:42
-#: public/templates/projects/profile.html:46
+#: public/js/appFilters.js:265 public/templates/projects/edit.html:42
+#: public/templates/projects/profile.html:51
 msgid "Funder"
+msgstr ""
+
+#: public/templates/import_export.html:30
+msgid "FunderID:"
+msgstr ""
+
+#: public/js/appFilters.js:297
+msgid "Generic"
 msgstr ""
 
 #: public/templates/recovery/lost.html:8
@@ -341,21 +400,33 @@ msgstr ""
 msgid "Got it!"
 msgstr "Compris !"
 
-#: public/js/appFilters.js:259
+#: public/js/appFilters.js:262
 msgid "Government"
 msgstr "Gouvernement"
 
-#: public/js/controllers/projects/ProjectCtrl.js:21
+#: public/js/controllers/projects/ProjectCtrl.js:25
 msgid "HCV"
 msgstr "Hépatite"
 
-#: public/js/appFilters.js:288 public/js/controllers/projects/ProjectCtrl.js:18
+#: public/js/appFilters.js:303 public/js/controllers/projects/ProjectCtrl.js:22
 msgid "HIV"
 msgstr "VIH"
 
 #: public/templates/recovery/lost.html:7
 msgid "Having trouble signing in?"
 msgstr "Des problèmes de connexion ?"
+
+#: public/templates/import_export.html:63
+msgid "Here you can download a list of projects as an Excel <i>(.xls)</i> file"
+msgstr ""
+
+#: public/templates/import_export.html:8
+msgid "Here you can upload a <i>.csv</i> file"
+msgstr ""
+
+#: public/templates/import_export.html:3 public/templates/import_export.html:53
+msgid "Import"
+msgstr "Importer"
 
 #: public/js/appFilters.js:216 public/js/controllers/projects/ProjectCtrl.js:6
 msgid "In talks"
@@ -375,12 +446,12 @@ msgstr "Juin"
 
 #: public/templates/settings/language.html:5
 #: public/templates/settings/main.html:26 public/templates/users/edit.html:37
-#: public/templates/users/profile.html:45
+#: public/templates/users/profile.html:51
 msgid "Language"
 msgstr "Langue"
 
-#: public/templates/organizations/profile.html:21
-#: public/templates/projects/profile.html:76
+#: public/templates/organizations/profile.html:27
+#: public/templates/projects/profile.html:87
 msgid "Last Modified"
 msgstr "Dernière modification"
 
@@ -390,9 +461,40 @@ msgstr "Dernière modification"
 msgid "Last name"
 msgstr "Nom"
 
-#: public/js/appFilters.js:294 public/js/controllers/projects/ProjectCtrl.js:20
+#: public/templates/import_export.html:46
+#, fuzzy
+#| msgid "Organization Type"
+msgid "List of organization types codes:"
+msgstr "Type d'organisation"
+
+#: public/templates/import_export.html:35
+msgid "List of product codes:"
+msgstr ""
+
+#: public/templates/import_export.html:32
+msgid "List of revenue type codes:"
+msgstr ""
+
+#: public/templates/import_export.html:34
+msgid "List of sicknesses codes:"
+msgstr ""
+
+#: public/templates/import_export.html:29
+msgid "List of status codes:"
+msgstr ""
+
+#: public/js/appFilters.js:309 public/js/controllers/projects/ProjectCtrl.js:24
 msgid "Malaria"
 msgstr "Paludisme"
+
+#: public/js/appFilters.js:360
+msgid "Male"
+msgstr ""
+
+#: public/templates/import_export.html:25
+#: public/templates/import_export.html:44
+msgid "Mapping:"
+msgstr ""
 
 #: public/js/appFilters.js:4 public/js/appFilters.js:57
 msgid "March"
@@ -402,6 +504,10 @@ msgstr "Mars"
 msgid "May"
 msgstr "Mai"
 
+#: public/js/appFilters.js:322 public/js/controllers/projects/ProjectCtrl.js:29
+msgid "MediScout"
+msgstr ""
+
 #: public/js/appFilters.js:47
 msgid "Monday"
 msgstr "Lundi"
@@ -410,14 +516,14 @@ msgstr "Lundi"
 msgid "Need help?"
 msgstr "Besoin d'aide ?"
 
-#: public/js/controllers/organizations/OrganizationCtrl.js:70
-#: public/js/controllers/projects/ProjectCtrl.js:88
+#: public/js/controllers/organizations/OrganizationCtrl.js:71
+#: public/js/controllers/projects/ProjectCtrl.js:110
 #: public/js/controllers/users/UserCtrl.js:84
 #: public/templates/dashboard/main.html:16
-#: public/templates/organizations/main.html:40
-#: public/templates/projects/main.html:40
+#: public/templates/organizations/main.html:54
+#: public/templates/projects/main.html:54
 #: public/templates/settings/password.html:10
-#: public/templates/users/main.html:72
+#: public/templates/users/main.html:76
 msgid "New"
 msgstr "Nouveau"
 
@@ -474,6 +580,12 @@ msgstr "Prévenez moi par email"
 msgid "November"
 msgstr "Novembre"
 
+#: public/templates/import_export.html:28
+#, fuzzy
+#| msgid "November"
+msgid "Number"
+msgstr "Novembre"
+
 #: public/js/controllers/ConfigurationCtrl.js:2
 #: public/js/controllers/SettingsCtrl.js:2
 msgid "OFF"
@@ -494,19 +606,33 @@ msgstr "ON"
 msgid "October"
 msgstr "Octobre"
 
-#: public/templates/organizations/edit.html:6
+#: public/js/appFilters.js:278
+msgid "One Shot Sales"
+msgstr ""
+
 #: public/templates/organizations/profile.html:9
+#, fuzzy
+#| msgid "Organizations"
+msgid "Organization ID"
+msgstr "Organisations"
+
+#: public/templates/organizations/edit.html:6
+#: public/templates/organizations/profile.html:15
 msgid "Organization Name"
 msgstr "Nom de l'organisation"
 
 #: public/templates/organizations/edit.html:10
-#: public/templates/organizations/profile.html:15
+#: public/templates/organizations/profile.html:21
 msgid "Organization Type"
 msgstr "Type d'organisation"
 
-#: public/templates/organizations/main.html:2
+#: public/templates/organizations/main.html:3
 msgid "Organizations"
 msgstr "Organisations"
+
+#: public/js/controllers/AdministrationCtrl.js:31
+msgid "Page"
+msgstr ""
 
 #: public/js/controllers/sign/SigninCtrl.js:17
 #: public/js/controllers/sign/SigninCtrl.js:34
@@ -529,12 +655,19 @@ msgstr "Le mot de passe est réinitialisé"
 msgid "Passwords don't match."
 msgstr "Les mots de passe ne correspondent pas."
 
+#: public/templates/projects/edit.html:22
+#: public/templates/projects/profile.html:33
+#, fuzzy
+#| msgid "Start Date"
+msgid "Payment Date"
+msgstr "Date début"
+
 #: public/templates/users/main.html:1
 msgid "Pending accounts"
 msgstr "Comptes en attente de validation"
 
 #: public/templates/profile/main.html:18 public/templates/profile/phone.html:5
-#: public/templates/users/profile.html:57
+#: public/templates/users/profile.html:63
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
@@ -552,14 +685,19 @@ msgstr ""
 msgid "Portuguese"
 msgstr "Portugais"
 
-#: public/js/appFilters.js:253
+#: public/js/appFilters.js:256
 msgid "Private Sector"
 msgstr "Secteur privé"
 
 #: public/templates/projects/edit.html:27
-#: public/templates/projects/profile.html:34
+#: public/templates/projects/profile.html:39
 msgid "Probability of Success"
 msgstr "Probabilité de réussite"
+
+#: public/templates/projects/edit.html:83
+#: public/templates/projects/profile.html:81
+msgid "Product"
+msgstr ""
 
 #: resources/languages/extraDictionary.html:4
 msgid "Profile"
@@ -569,8 +707,14 @@ msgstr "Profil"
 msgid "Progress"
 msgstr ""
 
-#: public/templates/projects/edit.html:6
 #: public/templates/projects/profile.html:9
+#, fuzzy
+#| msgid "Projects"
+msgid "Project ID"
+msgstr "Projets"
+
+#: public/templates/projects/edit.html:6
+#: public/templates/projects/profile.html:15
 msgid "Project Name"
 msgstr "Nom du projet"
 
@@ -579,22 +723,32 @@ msgid "Project Status"
 msgstr "Statut du projet"
 
 #: public/templates/projects/edit.html:18
-#: public/templates/projects/profile.html:21
+#: public/templates/projects/profile.html:27
 msgid "Project Value"
 msgstr "Valeur du projet"
 
 #: public/templates/projects/edit.html:10
-#: public/templates/projects/profile.html:15
+#: public/templates/projects/profile.html:21
 msgid "Project enabled by"
 msgstr ""
 
-#: public/templates/projects/main.html:2
+#: public/templates/projects/main.html:3
 msgid "Projects"
 msgstr "Projets"
 
-#: public/js/appFilters.js:219 public/js/controllers/projects/ProjectCtrl.js:7
+#: public/js/controllers/projects/ProjectCtrl.js:7
+#, fuzzy
+#| msgid "Proposal sent"
+msgid "Proposal Sent"
+msgstr "Proposition envoyée"
+
+#: public/js/appFilters.js:219
 msgid "Proposal sent"
 msgstr "Proposition envoyée"
+
+#: public/templates/import_export.html:31
+msgid "ProviderID:"
+msgstr ""
 
 #: public/templates/configuration.html:6
 msgid "Public access"
@@ -603,6 +757,14 @@ msgstr "Accès public"
 #: public/templates/settings/password.html:14
 msgid "Re-type new"
 msgstr "Saisir à nouveau"
+
+#: public/js/appFilters.js:281
+msgid "Recurring Sales"
+msgstr ""
+
+#: public/js/appFilters.js:268
+msgid "Research Consortium"
+msgstr ""
 
 #: public/js/controllers/sign/SigninCtrl.js:32
 msgid "Reset password"
@@ -613,21 +775,24 @@ msgid "Reset your password"
 msgstr "Réinitialiser votre mot de passe"
 
 #: public/templates/projects/edit.html:58
-#: public/templates/projects/profile.html:58
+#: public/templates/projects/profile.html:63
 msgid "Revenue Type"
 msgstr "Type de revenu"
 
 #: public/templates/settings/main.html:14 public/templates/users/edit.html:29
-#: public/templates/users/profile.html:29
+#: public/templates/users/profile.html:35
 msgid "Role"
 msgstr "Rôle"
+
+#: public/js/controllers/AdministrationCtrl.js:32
+msgid "Rows per page"
+msgstr ""
 
 #: public/js/appFilters.js:173
 msgid "Russian"
 msgstr "Russe"
 
-#: public/js/appFilters.js:149 public/js/appFilters.js:272
-#: public/js/controllers/users/UserCtrl.js:18
+#: public/js/appFilters.js:149 public/js/controllers/users/UserCtrl.js:18
 msgid "Sales"
 msgstr "Ventes"
 
@@ -640,6 +805,18 @@ msgstr "Samedi"
 msgid "Save"
 msgstr "Enregistrer"
 
+#: public/templates/organizations/main.html:13
+#: public/templates/organizations/main.html:9
+#: public/templates/projects/main.html:13 public/templates/projects/main.html:9
+#, fuzzy
+#| msgid "March"
+msgid "Search"
+msgstr "Mars"
+
+#: public/js/appFilters.js:325 public/js/controllers/projects/ProjectCtrl.js:30
+msgid "Selfics"
+msgstr ""
+
 #: public/js/appFilters.js:10 public/js/appFilters.js:63
 msgid "September"
 msgstr "Septembre"
@@ -648,12 +825,16 @@ msgstr "Septembre"
 msgid "Server URL"
 msgstr "URL serveur"
 
+#: public/js/appFilters.js:287
+msgid "Service"
+msgstr ""
+
 #: resources/languages/extraDictionary.html:2
 msgid "Settings"
 msgstr "Paramètres"
 
 #: public/templates/projects/edit.html:75
-#: public/templates/projects/profile.html:70
+#: public/templates/projects/profile.html:75
 msgid "Sicknesses"
 msgstr "Maladies"
 
@@ -685,12 +866,7 @@ msgstr "Espagnol"
 msgid "Start"
 msgstr "Commencer"
 
-#: public/templates/projects/edit.html:22
-#: public/templates/projects/profile.html:28
-msgid "Start Date"
-msgstr "Date début"
-
-#: public/templates/projects/profile.html:40
+#: public/templates/projects/profile.html:45
 msgid "Status"
 msgstr "Statut"
 
@@ -699,29 +875,43 @@ msgstr "Statut"
 msgid "Submit"
 msgstr "Envoyer"
 
-#: public/js/appFilters.js:275
+#: public/js/appFilters.js:284
 msgid "Subsidy"
 msgstr "Subvention"
+
+#: public/templates/import_export.html:28
+msgid "Success Probaility:"
+msgstr ""
 
 #: public/js/appFilters.js:46
 msgid "Sunday"
 msgstr "Dimanche"
 
+#: public/js/controllers/MenuCtrl.js:72
+msgid "Sygepe Unreachable."
+msgstr "Sygepe inaccessible."
+
 #: public/js/appFilters.js:143
 msgid "System Administrator"
 msgstr "Administrateur système"
 
-#: public/js/appFilters.js:285 public/js/controllers/projects/ProjectCtrl.js:17
+#: public/js/appFilters.js:300 public/js/controllers/projects/ProjectCtrl.js:21
 msgid "TB"
 msgstr "TB"
 
-#: public/js/appFilters.js:256
+#: public/js/appFilters.js:259
 msgid "Technical Agency"
 msgstr "Agence technique"
 
 #: public/js/controllers/SettingsCtrl.js:97
 msgid "The current password you entered is incorrect"
 msgstr "Le mot de passe que vous avez entré est incorrect"
+
+#: public/js/controllers/Import_ExportCtrl.js:29
+#, fuzzy
+#| msgid "The project has been created"
+msgid "The data have been imported"
+msgstr "Le projet a été créé"
 
 #: public/js/controllers/sign/SigninCtrl.js:85
 msgid "The email or password is empty."
@@ -749,7 +939,7 @@ msgstr ""
 "Le lien que vous avez suivi n’est plus valide ou la page n’est accessible "
 "que par une certaine audience dont vous ne faites pas partie."
 
-#: public/js/controllers/organizations/OrganizationCtrl.js:101
+#: public/js/controllers/organizations/OrganizationCtrl.js:102
 msgid "The organization has been created"
 msgstr "L’organisation a été créée"
 
@@ -757,11 +947,11 @@ msgstr "L’organisation a été créée"
 msgid "The organization has been deleted"
 msgstr "L'organisation a été supprimée"
 
-#: public/js/controllers/organizations/OrganizationCtrl.js:54
+#: public/js/controllers/organizations/OrganizationCtrl.js:55
 msgid "The organization has been updated"
 msgstr "L'organisation a été mise à jour"
 
-#: public/js/controllers/projects/ProjectCtrl.js:125
+#: public/js/controllers/projects/ProjectCtrl.js:147
 msgid "The project has been created"
 msgstr "Le projet a été créé"
 
@@ -769,9 +959,13 @@ msgstr "Le projet a été créé"
 msgid "The project has been deleted"
 msgstr "Le projet a été supprimé."
 
-#: public/js/controllers/projects/ProjectCtrl.js:72
+#: public/js/controllers/projects/ProjectCtrl.js:94
 msgid "The project has been updated"
 msgstr "Le projet a été mis à jour"
+
+#: public/templates/import_export.html:64 public/templates/import_export.html:9
+msgid "The time required to perform this task depends on the file size."
+msgstr ""
 
 #: public/js/controllers/users/UsersCtrl.js:86
 msgid "The user has been activated"
@@ -807,6 +1001,10 @@ msgstr "Cet Assistant vous aidera à configurer Core."
 msgid "Thursday"
 msgstr "Jeudi"
 
+#: public/templates/import_export.html:71
+msgid "To"
+msgstr "A"
+
 #: public/templates/settings/notifications.html:5
 msgid "To turn off a specific feature, just click the toggle."
 msgstr ""
@@ -826,6 +1024,10 @@ msgstr "Utilisez au moins 6 caractères"
 #: public/js/controllers/users/UserCtrl.js:127
 msgid "Use at least 6 characters for your password"
 msgstr "Utiliser au moins 6 caractères pour votre mot de passe"
+
+#: public/templates/users/profile.html:9
+msgid "User ID"
+msgstr "ID Utilisateur"
 
 #: public/js/controllers/ConfigurationCtrl.js:34
 msgid "Warning"
@@ -869,10 +1071,29 @@ msgstr "a créé un compte avec l'email"
 msgid "e.g."
 msgstr "p. ex."
 
+#: public/templates/import_export.html:28
+msgid "from 0 to 100"
+msgstr "de 0 à 100"
+
+#: public/js/controllers/AdministrationCtrl.js:33
+msgid "of"
+msgstr ""
+
+#: public/templates/import_export.html:27
+msgid "to be find in Users > User profile"
+msgstr "être trouvé dans les Utilisateurs > profile Utilisateur"
+
+#: public/templates/import_export.html:30
+#: public/templates/import_export.html:31
+msgid "to be found in Organizations > Organization profile"
+msgstr "se trouve dans Organisation"
+
 #: public/js/appFilters.js:134 public/js/appFilters.js:140
 #: public/js/appFilters.js:158 public/js/appFilters.js:182
 #: public/js/appFilters.js:189 public/js/appFilters.js:213
-#: public/js/appFilters.js:235 public/js/appFilters.js:25
-#: public/js/appFilters.js:269 public/js/appFilters.js:282
+#: public/js/appFilters.js:238 public/js/appFilters.js:25
+#: public/js/appFilters.js:275 public/js/appFilters.js:294
+#: public/js/appFilters.js:316 public/js/appFilters.js:363
+#: public/js/appFilters.js:370
 msgid "unknown"
 msgstr "non-connu"
