@@ -702,6 +702,17 @@ function beautify(options, personnels, callback) {
                             personnels[a].situations = situations;
                         }
 
+                        var sanctions = personnels[a].sanctions;
+                        if (sanctions && sanctions.length > 0) {
+                            sanctions.sort(function (a, b) {
+                                return new Date(b.date) - new Date(a.date);
+                            });
+                            for (var i in sanctions) {
+                                sanctions[i].value = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions.json', sanctions[i].sanction, language);
+                            }
+                            personnels[a].sanctions = sanctions;
+                        }
+
                         LoopA(a + 1);
                     }
                 });

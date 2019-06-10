@@ -90,6 +90,25 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                 });
             }
 
+
+            $scope.newStaffSanction = function (personnel) {
+                $ocLazyLoad.load('js/controllers/staffs/staff/SanctionCtrl.js').then(function () {
+                    $mdDialog.show({
+                        controller: 'SanctionController',
+                        templateUrl: '../templates/dialogs/sanction.html',
+                        parent: angular.element(document.body),
+                        clickOutsideToClose: true,
+                        locals: {
+                            params: {
+                                personnel: personnel
+                            }
+                        }
+                    }).then(function (answer) {
+                    }, function () {
+                    });
+                });
+            }
+
             $scope.affect = function (personnel) {
                 $ocLazyLoad.load('js/controllers/administration/positions/AffectationCtrl.js').then(function () {
                     $mdDialog.show({

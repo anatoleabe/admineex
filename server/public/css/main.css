@@ -469,3 +469,7 @@ table.md-table tbody.md-body > tr.md-row:hover {
 .retired {
     background-color:rgb(237, 39, 21, .15);
 }
+
+.tooltip1 {
+    height: auto;
+}

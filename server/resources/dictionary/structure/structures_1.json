@@ -1,0 +1,110 @@
+[
+    {
+        "id": "1",
+        "fr": "DGTCFM/CABINET DGTCFM",
+        "en": "DGTCFM/CABINET DGTCFM",
+        "code": "190",
+        "father": "0",
+        "rank": "1",
+        "type": "1"
+    },
+    {
+        "id": "2",
+        "fr": "SERVICE D'ORDRE",
+        "en": "SERVICE D'ORDRE",
+        "code": "191",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "3",
+        "fr": "INSPECTION DES SERVICES DU TRESOR",
+        "en": "INSPECTION DES SERVICES DU TRESOR",
+        "code": "192",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "4",
+        "fr": "CELLULE DE LA LEGISLATION ET DE LA CODIFICATION",
+        "en": "CELLULE DE LA LEGISLATION ET DE LA CODIFICATION",
+        "code": "193",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "5",
+        "fr": "DIVISION DE L'INFORMATIQUE",
+        "en": "DIVISION DE L'INFORMATIQUE",
+        "code": "194",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "6",
+        "fr": "DIVISION DE LA MICRO FINANCE",
+        "en": "DIVISION DE LA MICRO FINANCE",
+        "code": "198",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "7",
+        "fr": "DIRECTION DES ASSURANCES",
+        "en": "DIRECTION DES ASSURANCES",
+        "code": "203",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "8",
+        "fr": "DIRECTION DE LA COMPTABILITE PUBLIQUE",
+        "en": "DIRECTION DE LA COMPTABILITE PUBLIQUE",
+        "code": "212",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "9",
+        "fr": "DIRECTION DE LA TRESORERIE",
+        "en": "DIRECTION DE LA TRESORERIE",
+        "code": "227",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "10",
+        "fr": "DIRECTION DE LA COOPERATION FINANCIERE ET MONETAIRE",
+        "en": "DIRECTION DE LA COOPERATION FINANCIERE ET MONETAIRE",
+        "code": "238",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "11",
+        "fr": "DIRECTION DES AFFAIRES GENERALES",
+        "en": "DIRECTION DES AFFAIRES GENERALES",
+        "code": "247",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    },
+    {
+        "id": "12",
+        "fr": "PAIERIE GENERALE DU TRESOR",
+        "en": "PAIERIE GENERALE DU TRESOR",
+        "code": "398",
+        "father": "1",
+        "rank": "2",
+        "type": "1"
+    }
+]

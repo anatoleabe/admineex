@@ -306,14 +306,28 @@
                                                                             </md-list-item>-->
                                         <md-list-item>
                                             <md-icon>local_hospital</md-icon>
-                                            <p class="md-body-2" translate>Discipline</p>
-                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.discipline| uppercase | unknown}}</p>
+                                            <p class="md-body-2" translate>Last sanction</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.sanctions[0].value| unknown}}
+                                            <span>
+                                                <md-icon>info</md-icon>
+                                                <md-tooltip class="tooltip1">
+                                                    <span ng-repeat="sit in personnelSelected.sanctions" >{{sit.date | dateHuman }} | {{sit.value}} <br/></span>
+                                                </md-tooltip>
+                                            </span>
+                                            </p>
                                         </md-list-item>
                                         <md-divider></md-divider>
                                         <md-list-item>
                                             <md-icon>local_hospital</md-icon>
                                             <p class="md-body-2" translate>Actual situation</p>
-                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.situations[0].value| uppercase | unknown}}</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.situations[0].value| unknown}}
+                                            <span>
+                                                <md-icon>info</md-icon>
+                                                <md-tooltip class="tooltip1">
+                                                    <span ng-repeat="sit in personnelSelected.situations" >{{sit.date | dateHuman }} | {{sit.value}} <br/></span>
+                                                </md-tooltip>
+                                            </span>
+                                            </p>
                                         </md-list-item>
 
                                     </md-list>

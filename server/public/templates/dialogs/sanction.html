@@ -1,0 +1,96 @@
+<md-dialog flex="50">
+    <form ng-submit="save()">
+        <md-toolbar class="md-accent">
+            <div class="md-toolbar-tools">
+                <h2>New disciplinary sanction</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+
+            <md-card>
+                <md-card-title style="padding-bottom: 0;">
+                    <md-card-title-text>
+                        <span><i> {{personnel.name.family[0]}}  {{personnel.name.given[0]}} - {{personnel.identifier}}</i></span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div layout="row" >
+                        <md-input-container class="md-block" flex>
+                            <label translate>Select a  sanction</label>
+                            <md-select name="sanction" ng-model="sanction.sanction" required >
+                                <md-option ng-repeat="sanction in sanctions" value="{{sanction.id}}" >
+                                    {{sanction.name}} 
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="sanction.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+            </md-card>
+            <md-card>
+                <md-card-title style="padding-bottom: 0;">
+                    <md-card-title-text>
+                        <span class="md-headline" translate>Administrative act</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <div layout="row" >
+                        <md-input-container class="md-block" flex>
+                            <label translate>Nature</label>
+                            <md-select name="nature" ng-model="sanction.nature" required >
+                                <md-option ng-repeat="nature in natures" value="{{nature.id}}" >
+                                    {{nature.name}} 
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="nature.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex>
+                            <label translate>Number of reference</label>
+                            <input name="numAct" ng-model="sanction.numAct" required>
+                            <div ng-messages="numAct.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" >
+                        <md-input-container class="datepicker-xl" flex style="width: 200px;">
+                            <label translate>Date</label>
+                            <md-datepicker name="date" class="md-block"  ng-model="sanction.date" md-max-date="max" required style="width: 200px;"></md-datepicker>
+                            <div ng-messages="date">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex>
+                            <label translate>Comment</label>
+                            <input name="comment" ng-model="sanction.comment" >
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+            </md-card>
+
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="close();"><span translate>Cancel</span></md-button>
+            <md-button class="md-raised md-accent" type="submit"><span translate>Save</span></md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
