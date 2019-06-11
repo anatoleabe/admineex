@@ -165,7 +165,12 @@ msgstr ""
 msgid "Alics notification"
 msgstr ""
 
+#: public/templates/monitor/main.html:25
+msgid "All quarters"
+msgstr ""
+
 #: public/templates/administration/positions/main.html:12
+#: public/templates/monitor/main.html:38
 #: public/templates/staffs/staff/main.html:10
 msgid "All structures"
 msgstr ""
@@ -536,6 +541,7 @@ msgid "Domain"
 msgstr ""
 
 #: public/templates/administration/positions/edit.html:127
+#: public/templates/monitor/main.html:79
 #: public/templates/organizations/edit.html:20
 #: public/templates/profile/email.html:11
 #: public/templates/profile/name.html:27
@@ -699,13 +705,19 @@ msgid "Filter by Sub-directions"
 msgstr ""
 
 #: public/templates/administration/positions/main.html:8
+#: public/templates/monitor/main.html:34
 #: public/templates/staffs/staff/main.html:6
 msgid "Filter by structure"
 msgstr ""
 
 #: public/templates/administration/positions/main.html:10
+#: public/templates/monitor/main.html:36
 #: public/templates/staffs/staff/main.html:8
 msgid "Filtre by structure"
+msgstr ""
+
+#: public/templates/monitor/main.html:10
+msgid "Filtre by year"
 msgstr ""
 
 #: public/templates/staffs/mouvement/edit.html:74
@@ -987,6 +999,10 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
+#: public/templates/monitor/main.html:76
+msgid "Name of position held"
+msgstr ""
+
 #: public/templates/dialogs/affectation.html:106
 #: public/templates/dialogs/sanction.html:47
 #: public/templates/dialogs/situation.html:47
@@ -1011,6 +1027,7 @@ msgstr ""
 #: public/templates/administration/positions/main.html:94
 #: public/templates/administration/structures/main.html:79
 #: public/templates/dashboard/main.html:16
+#: public/templates/monitor/main.html:102
 #: public/templates/organizations/main.html:54
 #: public/templates/projects/main.html:54
 #: public/templates/settings/password.html:10
@@ -1083,6 +1100,7 @@ msgstr ""
 msgid "No position"
 msgstr ""
 
+#: public/js/controllers/monitor/MonitorsCtrl.js:5
 #: public/js/controllers/projects/ProjectsCtrl.js:5
 #: public/js/controllers/staffs/discipline/DisciplinesCtrl.js:5
 #: public/js/controllers/staffs/movement/MovementsCtrl.js:5
@@ -1097,6 +1115,10 @@ msgstr ""
 
 #: public/js/controllers/users/UsersCtrl.js:5
 msgid "No user"
+msgstr ""
+
+#: public/templates/monitor/main.html:80
+msgid "Notation"
 msgstr ""
 
 #: public/js/controllers/MenuCtrl.js:9
@@ -1303,6 +1325,10 @@ msgstr ""
 msgid "Portuguese"
 msgstr ""
 
+#: public/templates/monitor/main.html:77
+msgid "Position"
+msgstr ""
+
 #: public/templates/administration/positions/edit.html:40
 msgid "Position code"
 msgstr ""
@@ -1424,6 +1450,14 @@ msgstr ""
 
 #: public/templates/configuration.html:6
 msgid "Public access"
+msgstr ""
+
+#: public/templates/monitor/main.html:21
+msgid "Quarter"
+msgstr ""
+
+#: public/templates/monitor/main.html:23
+msgid "Quater"
 msgstr ""
 
 #: public/templates/settings/password.html:14
@@ -1549,6 +1583,7 @@ msgstr ""
 
 #: public/templates/administration/positions/main.html:37
 #: public/templates/administration/structures/main.html:16
+#: public/templates/monitor/main.html:54
 #: public/templates/organizations/main.html:13
 #: public/templates/organizations/main.html:9
 #: public/templates/projects/main.html:13
@@ -1967,6 +2002,10 @@ msgstr ""
 msgid "To"
 msgstr ""
 
+#: public/templates/monitor/main.html:78
+msgid "To do"
+msgstr ""
+
 #: public/templates/settings/notifications.html:5
 msgid "To turn off a specific feature, just click the toggle."
 msgstr ""
@@ -2047,6 +2086,10 @@ msgstr ""
 msgid "Would you like to save the new configuration"
 msgstr ""
 
+#: public/templates/monitor/main.html:8
+msgid "Year"
+msgstr ""
+
 #: public/templates/staffs/personnal_records.html:105
 msgid "Years"
 msgstr ""
@@ -2094,6 +2137,10 @@ msgstr ""
 
 #: public/templates/administration/structures/main.html:55
 msgid "positions"
+msgstr ""
+
+#: public/templates/monitor/main.html:65
+msgid "search among evaluations..."
 msgstr ""
 
 #: public/templates/administration/positions/main.html:48
