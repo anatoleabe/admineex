@@ -333,17 +333,22 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Staff management", "Discipline", "Edit"]
-        }).state('home.projects.profile', {
-            url: '/preview/:id',
-            templateUrl: 'templates/projects/profile.html',
-            controller: 'ProjectController',
+        }).state('home.monitor', {// Define monitor page (ABSTRACT)
+            abstract: true,
+            url: 'monitor',
+            templateUrl: 'templates/monitor/monitor.html',
+            access: {requiredAuthentication: true}
+        }).state('home.monitor.main', {
+            url: '',
+            templateUrl: 'templates/monitor/main.html',
+            controller: 'MonitorsController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/projects/ProjectCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/monitor/MonitorsCtrl.js');
                     }]
             },
-            breadcrumbs: ["Projects", "Preview"]
+            breadcrumbs: ["Monitoring & Evaluation"]
         }).state('home.projects.new', {
             url: '/new',
             params: {duplicateID: null},

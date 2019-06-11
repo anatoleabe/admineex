@@ -147,9 +147,23 @@ function buildNav(user, callback){
 //        name: 'Duplicates'
 //    };
     
+    var monitoring = {
+        href: 'home.monitor.main',
+        icon: 'verified_user',
+        label: 'Monitoring & Evaluation',
+        name: 'Monitoring & Evaluation',
+        items: []
+    };
+    
+    var monitoringTab1 = {
+        href: 'home.monitor.monitor',
+        label: 'Monitoring & Evaluation',
+        name: 'Monitoring & Evaluation'
+    };
+    
     var statistics = {
         href: 'home.statistics.main',
-        icon: 'bar_chart',
+        icon: 'equalizer',
         label: 'Statistics',
         name: 'Statistics'
     };
@@ -213,6 +227,9 @@ function buildNav(user, callback){
             nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab2);
             nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab3);
             nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab4);
+            // LEFT MENU MONITOR
+            nav.left[0].items.push(monitoring);
+            nav.left[0].items[nav.left[0].items.length-1].items.push(monitoringTab1);
             // LEFT MENU STATISTICS
             nav.left[0].items.push(statistics);
             // LEFT MENU ADMINISTRATION
