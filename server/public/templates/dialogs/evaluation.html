@@ -1,0 +1,99 @@
+<md-dialog flex="50">
+    <form ng-submit="save()">
+        <md-toolbar class="md-accent">
+            <div class="md-toolbar-tools">
+                <h2>Staff evaluation</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+
+            <md-card>
+
+                <md-card-content>
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label translate>Structure</label>
+                            <md-select name="structure" ng-disabled="positionFromParams" required ng-model="notation.structure"  style="min-width: 150px;">
+                                <md-option ng-repeat="struc in structures" value="{{struc._id}}" >
+                                    {{struc.name}} (code: {{struc.code}})
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="structure.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label translate>Select an agent</label>
+                            <md-select name="selectedPersonnel" ng-disabled="personnelFromParams" required ng-model="selectedPersonnel"  style="min-width: 150px;">
+                                <md-option ng-repeat="perso in personnels" value="{{perso}}" >
+                                    {{perso.name.family[0]}} {{perso.name.given[0]}} <small>{{"(Mle: " + (perso.identifier) + ")"}}</small>
+
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="selectedPersonnel.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label translate>Select a quarter</label>
+                            <md-select name="quarter" required ng-model="notation.quarter"  style="min-width: 150px;">
+                                <md-option ng-repeat="q in quarters" value="{{q.id}}" >
+                                    {{q.name}} 
+
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="quarter.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    
+                    <div layout="row" >
+                        <md-input-container class="md-block" flex>
+                            <label translate>Number of records processed </label>
+                            <input name="number" ng-model="notation.accomplished" type="number" step="1" required>
+                            <div ng-messages="number.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex>
+                            <label translate>Appreciation</label>
+                            <md-select name="nature" ng-model="notation.appreciation" required >
+                                <md-option ng-repeat="a in appreciations" value="{{a.id}}" >
+                                    {{a.name}} 
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="nature.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                </md-card-content>
+            </md-card>
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="close();"><span translate>Cancel</span></md-button>
+            <md-button class="md-raised md-accent" type="submit"><span translate>Save</span></md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

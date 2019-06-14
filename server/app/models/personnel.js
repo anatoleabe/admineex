@@ -101,7 +101,16 @@ var PersonnelSchema = new Schema({
         }
     ],
     trainnings: [{}],
-    notations: [{}],
+    notations: [
+        {
+            accomplished: {type: String},
+            appreciation: {type: String},
+            structure: {type: ObjectId}, //Mongo id
+            position: {type: ObjectId},//mongo id
+            quarter: {type: String},//Id of quarter
+            lastModified: {type: Date, default: Date.now, required: true},
+        }
+    ],
     profiles: [{}], //Codes of existing profil, list of string
     skills: [{}], //Code of existing profiles taken from a global lists
     trainingNeeds: [{}],

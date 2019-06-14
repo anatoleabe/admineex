@@ -1,105 +1,103 @@
-<div flex="90" flex-offset="5" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" style="height:100%;"> 
+<md-tabs md-dynamic-height md-border-bottom md-selected="currentTab" class="md-primary">
+    <md-tab ng-repeat="tab in tabs" label="{{tab.name}}" ng-click="href(tab.href);">
+    </md-tab>
+</md-tabs>
+<div oc-lazy-load="'node_modules/angular-material-data-table/dist/md-data-table.min.js'">
+    <div flex="90" flex-offset="5" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" style="height:100%;"> 
 
-    <md-toolbar class="toolbar-filter">
-        <div class="md-toolbar-tools md-default">
-            <div flex >
-                <span style="display: inline-block;margin-top: 18px;" >
-                    <md-input-container flex>
-                        <label translate>Year</label>
-                        <md-select ng-model="filters.year"  >
-                            <md-optgroup label="{{'Filtre by year'| translate}}">
-                                <md-option value="0" >
-                                    2019
-                                </md-option>
-                                <md-option ng-repeat="y in years" value="{{y}}" >
-                                    {{y}}
-                                </md-option>
-                            </md-optgroup>
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container flex>
-                        <label translate>Quarter</label>
-                        <md-select ng-model="filters.structure"  style="min-width: 150px;">
-                            <md-optgroup label="{{'Quater'| translate}}">
-                                <md-option value="-1" >
-                                    {{'All quarters'| translate}}
-                                </md-option>
+        <md-toolbar class="toolbar-filter">
+            <div class="md-toolbar-tools md-default">
+                <div flex >
+                    <span style="display: inline-block;margin-top: 18px;" >
+                        <md-input-container flex>
+                            <label translate>Year</label>
+                            <md-select ng-model="filters.year"  >
+                                <md-optgroup label="{{'Filtre by year'| translate}}">
+                                    <md-option ng-repeat="y in years" value="{{y}}" >
+                                        {{y}}
+                                    </md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label translate>Quarter</label>
+                            <md-select ng-model="filters.quater"  style="min-width: 150px;">
                                 <md-option ng-repeat="q in quarters" value="{{q.id}}" >
                                     {{q.name}}
                                 </md-option>
-                            </md-optgroup>
-                        </md-select>
-                    </md-input-container>
-                    <md-input-container flex>
-                        <label translate>Filter by structure</label>
-                        <md-select ng-model="filters.structure"  style="min-width: 150px;">
-                            <md-optgroup label="{{'Filtre by structure'| translate}}">
-                                <md-option value="-1" >
-                                    {{'All structures'| translate}}
-                                </md-option>
-                                <md-option ng-repeat="struc in structures" value="{{struc}}" >
-                                    {{struc.name}}
-                                </md-option>
-                            </md-optgroup>
-                        </md-select>
-                    </md-input-container>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container flex>
+                            <label translate>Filter by structure</label>
+                            <md-select ng-model="filters.structure"  style="min-width: 150px;">
+                                <md-optgroup label="{{'Filtre by structure'| translate}}">
+                                    <md-option value="-1" >
+                                        {{'All structures'| translate}}
+                                    </md-option>
+                                    <md-option ng-repeat="struc in structures" value="{{struc}}" >
+                                        {{struc.name}}
+                                    </md-option>
+                                </md-optgroup>
+                            </md-select>
+                        </md-input-container>
 
-                </span>
+                    </span>
 
-            </div>
+                </div>
 
-            <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
-                <md-icon class="material-icons" >search</md-icon>
-                <md-tooltip>
-                    <span translate>Search</span>
-                </md-tooltip>
-            </md-button>
-        </div>
-    </md-toolbar>
-
-    <md-card>
-        <md-toolbar class="md-table-toolbar md-default" >
-            <div class="md-toolbar-tools">
-                <md-icon>search</md-icon>
-                <form flex>
-                    <input type="text" name="search" ng-model="monitorFilter" placeholder="{{ 'search among evaluations...' | translate }}">
-                </form>
-                <md-button class="md-icon-button" ng-click="search = false" aria-label="close">
-                    <md-icon class="material-icons">close</md-icon>
+                <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
+                    <md-icon class="material-icons" >search</md-icon>
+                    <md-tooltip>
+                        <span translate>Search</span>
+                    </md-tooltip>
                 </md-button>
             </div>
         </md-toolbar>
-        <md-table-container>
-            <table md-table md-progress="promise">
-                <thead md-head md-order="query.order">
-                    <tr md-row>
-                        <th md-column md-order-by="name" translate>Name of position held</th>
-                        <th md-column md-order-by="position" translate>Position</th>
-                        <th md-column md-order-by="todo" translate>To do</th>
-                        <th md-column md-order-by="done" translate>Done</th>
-                        <th md-column md-order-by="note" translate>Notation</th>
-                    </tr>
-                </thead>
-                <tbody md-body>
-                    <tr md-row data-ng-repeat="m in monitors| filter:monitorFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
-                        <td md-cell >22</td>
-                        <td md-cell >22</td>
-                        <td md-cell >22</td>
-                        <td md-cell >22</td>
-                        <td md-cell >22</td>
-                    </tr>
-                </tbody>
-            </table>
-        </md-table-container>
-        <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 50, 100]" md-page="query.page" md-total="{{monitors.length}}" 
-                              md-page-select="true" md-label="{{label}}" >
 
-    </md-card>
-    <div style="margin-bottom: 100px"></div>
-    <md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" ng-click="new ()" >
-        <md-icon>add</md-icon>
-        <md-tooltip md-direction="top">
-            <span translate>New</span>
-        </md-tooltip>
-    </md-button>
+        <md-card>
+            <md-toolbar class="md-table-toolbar md-default" >
+                <div class="md-toolbar-tools">
+                    <md-icon>search</md-icon>
+                    <form flex>
+                        <input type="text" name="search" ng-model="monitorFilter" placeholder="{{ 'search among evaluations...' | translate }}">
+                    </form>
+                    <md-button class="md-icon-button" ng-click="search = false" aria-label="close">
+                        <md-icon class="material-icons">close</md-icon>
+                    </md-button>
+                </div>
+            </md-toolbar>
+            <md-table-container>
+                <table md-table md-progress="promise">
+                    <thead md-head md-order="query.order">
+                        <tr md-row>
+                            <th md-column md-order-by="name" translate>Full name</th>
+                            <th md-column md-order-by="position" translate>Position</th>
+                            <th md-column md-order-by="todo" translate>To do</th>
+                            <th md-column md-order-by="done" translate>Done</th>
+                            <th md-column md-order-by="note" translate>Appreciation</th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row data-ng-repeat="m in monitors| filter:monitorFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                            <td md-cell >22</td>
+                            <td md-cell >22</td>
+                            <td md-cell >22</td>
+                            <td md-cell >22</td>
+                            <td md-cell >22</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 50, 100]" md-page="query.page" md-total="{{monitors.length}}" 
+                                  md-page-select="true" md-label="{{label}}" >
+
+        </md-card>
+        <div style="margin-bottom: 100px"></div>
+        <md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" ng-click="evaluate()" >
+            <md-icon>add</md-icon>
+            <md-tooltip md-direction="top">
+                <span translate>New evaluation</span>
+            </md-tooltip>
+        </md-button>
+    </div>
 </div>

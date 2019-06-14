@@ -1,0 +1,21 @@
+[
+    {
+        "id": "1",
+        "en": "Quarter 1",
+        "fr": "Trimestre 1"
+    },
+    {
+        "id": "2",
+        "en": "Quarter 2",
+        "fr": "Trimestre 2"
+    },
+    {
+        "id": "3",
+        "en": "Quarter 3",
+        "fr": "Trimestre 3"
+    }, {
+        "id": "4",
+        "en": "Quarter 4",
+        "fr": "Trimestre 4"
+    }
+]

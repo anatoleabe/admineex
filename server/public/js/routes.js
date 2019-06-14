@@ -341,11 +341,11 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         }).state('home.monitor.main', {
             url: '',
             templateUrl: 'templates/monitor/main.html',
-            controller: 'MonitorsController',
+            controller: 'MonitorController',
             access: {requiredAuthentication: true},
             resolve: {
                 loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('js/controllers/monitor/MonitorsCtrl.js');
+                        return $ocLazyLoad.load('js/controllers/MonitorCtrl.js');
                     }]
             },
             breadcrumbs: ["Monitoring & Evaluation"]
