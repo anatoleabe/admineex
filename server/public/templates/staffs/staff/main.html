@@ -124,6 +124,13 @@
                             <span translate>New disciplinary sanction</span>
                         </md-button>
                     </md-menu-item>
+                    <md-divider ></md-divider>
+                    <md-menu-item >
+                        <md-button ng-click="evaluate(personnel)" ng-disabled="!personnel.affectedTo || personnel.affectedTo === null || personnel.affectedTo === 'null' ">
+                            <md-icon class="material-icons" >verified_user</md-icon>
+                            <span translate>New quarter evaluation</span>
+                        </md-button>
+                    </md-menu-item>
                 </md-menu-content>
             </md-menu>
             </td>

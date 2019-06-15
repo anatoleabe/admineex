@@ -17,7 +17,7 @@
                     <div layout="row">
                         <md-input-container flex>
                             <label translate>Structure</label>
-                            <md-select name="structure" ng-disabled="positionFromParams" required ng-model="notation.structure" ng-change="loadStaff()" style="min-width: 150px;">
+                            <md-select name="structure" ng-disabled="fromParam" required ng-model="notation.structure" ng-change="loadStaff()" style="min-width: 150px;">
                                 <md-option ng-repeat="struc in structures" value="{{struc._id}}" >
                                     {{struc.name}} (code: {{struc.code}})
                                 </md-option>

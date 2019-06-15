@@ -62,7 +62,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                         clickOutsideToClose: true,
                         locals: {
                             params: {
-                                
+
                             }
                         }
                     }).then(function (answer) {
@@ -129,6 +129,24 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                     });
                 });
             };
+
+            $scope.evaluate = function (personnel) {
+                $ocLazyLoad.load('js/controllers/monitor/EvaluationCtrl.js').then(function () {
+                    $mdDialog.show({
+                        controller: 'EvaluationController',
+                        templateUrl: '../templates/dialogs/evaluation.html',
+                        parent: angular.element(document.body),
+                        clickOutsideToClose: true,
+                        locals: {
+                            params: {
+                                personnel: personnel
+                            }
+                        }
+                    }).then(function (answer) {
+                    }, function () {
+                    });
+                });
+            }
 
             function getAgents() {
                 $scope.helper = [];

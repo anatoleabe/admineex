@@ -2,8 +2,9 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
     //$rootScope.kernel.loading = 0;
     $scope.title = "...";
     $scope.params = params;
+    var personnelfromParams = params.personnel;
 
-    $scope.notations = {
+    $scope.notation = {
     };
 
     $scope.loading = false;
@@ -16,8 +17,10 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
     $scope.stopPropagation = function (event) {
         event.stopPropagation();
     };
-
+    console.log(personnelfromParams);
+    $scope.fromParam = true;
     $scope.personnelSelected = undefined;
+
     $scope.personnelSearchText = null;
     $scope.selectedPersonnelChange = null;
     $scope.selectedPersonnel = null;
@@ -60,6 +63,10 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
                                     Structure.list().then(function (response) {
                                         var data = response.data;
                                         $scope.structures = data;
+                                        if (personnelfromParams && personnelfromParams.affectedTo && personnelfromParams.affectedTo.position && personnelfromParams.affectedTo.position.structure) {
+                                            $scope.notation.structure = personnelfromParams.affectedTo.position.structure._id;
+                                            $scope.loadStaff();
+                                        }
                                     }).catch(function (response) {
                                         console.error(response);
                                     });
@@ -71,6 +78,7 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
                                             var data = response.data;
                                             $scope.personnels = data;
                                             $rootScope.kernel.loading = 100;
+                                            $scope.selectedPersonnel = personnelfromParams;
                                         });
                                     }
 
@@ -93,7 +101,7 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
                                         }
                                     };
 
-                                    $scope.loadStaff();
+
 
                                     // Modify or Add ?
                                     if ($scope.params) {
