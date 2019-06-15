@@ -18,7 +18,7 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
         event.stopPropagation();
     };
     console.log(personnelfromParams);
-    $scope.fromParam = true;
+    $scope.fromParam = false;
     $scope.personnelSelected = undefined;
 
     $scope.personnelSearchText = null;
@@ -64,6 +64,7 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
                                         var data = response.data;
                                         $scope.structures = data;
                                         if (personnelfromParams && personnelfromParams.affectedTo && personnelfromParams.affectedTo.position && personnelfromParams.affectedTo.position.structure) {
+                                            $scope.fromParam = true;
                                             $scope.notation.structure = personnelfromParams.affectedTo.position.structure._id;
                                             $scope.loadStaff();
                                         }
@@ -116,31 +117,42 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
                                             $scope.personnel.notations = [];
                                         }
                                         if ($scope.personnel && $scope.personnel.affectedTo && $scope.personnel.affectedTo.position) {
+
                                             $scope.notation.position = $scope.personnel.affectedTo.position._id;
                                             $scope.notation.year = (new Date()).getFullYear();
-                                            ;
                                             $scope.personnel.notations.push($scope.notation);
                                             console.log($scope.personnel);
 
                                             $rootScope.kernel.loading = 0;
 
-                                            Staff.upsert($scope.personnel).then(function (response) {
-                                                $rootScope.kernel.loading = 100;
-                                                $mdDialog.hide();
-                                                $rootScope.kernel.alerts.push({
-                                                    type: 3,
-                                                    msg: gettextCatalog.getString('The personnel has been updated'),
-                                                    priority: 4
+                                            if ($scope.notation && $scope.notation.quarter && $scope.notation.quarter != "" && $scope.notation.appreciation && $scope.notation.appreciation != "" && $scope.notation.accomplished && $scope.notation.accomplished != "") {
+                                                Staff.upsert($scope.personnel).then(function (response) {
+                                                    $rootScope.kernel.loading = 100;
+                                                    $mdDialog.hide();
+                                                    $rootScope.kernel.alerts.push({
+                                                        type: 3,
+                                                        msg: gettextCatalog.getString('The personnel has been updated'),
+                                                        priority: 4
+                                                    });
+                                                }).catch(function (response) {
+                                                    $rootScope.kernel.loading = 100;
+                                                    $rootScope.kernel.alerts.push({
+                                                        type: 1,
+                                                        msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                        priority: 2
+                                                    });
+                                                    console.error(response);
                                                 });
-                                            }).catch(function (response) {
+                                            } else {
                                                 $rootScope.kernel.loading = 100;
                                                 $rootScope.kernel.alerts.push({
                                                     type: 1,
-                                                    msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                    msg: gettextCatalog.getString('Can not save, one or more field is empty'),
                                                     priority: 2
                                                 });
                                                 console.error(response);
-                                            });
+                                            }
+
 
                                         } else {
                                             $rootScope.kernel.loading = 100;
