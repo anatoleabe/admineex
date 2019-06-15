@@ -63,6 +63,7 @@ angular.module('MonitorCtrl', [[
                         Monitor.list(option).then(function (response) {
                             var data = response.data;
                             $scope.monitors = data;
+                            
                         }).catch(function (response) {
                             console.error(response);
                         });

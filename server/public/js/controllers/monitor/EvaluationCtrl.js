@@ -22,6 +22,7 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
     $scope.selectedPersonnelChange = null;
     $scope.selectedPersonnel = null;
     $scope.selectedPersonnelStructureactuel = null;
+    $scope.year = (new Date()).getFullYear();
 
     function createFilterFor(query) {
         var lowercaseQuery = angular.lowercase(query);
@@ -55,95 +56,93 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
                                 var Position = $injector.get('Position');
                                 $ocLazyLoad.load('js/services/StaffService.js').then(function () {
                                     var Staff = $injector.get('Staff');
-                                    $ocLazyLoad.load('js/services/PositionService.js').then(function () {
-                                        var Position = $injector.get('Position');
 
-                                        Structure.list().then(function (response) {
-                                            var data = response.data;
-                                            $scope.structures = data;
-                                        }).catch(function (response) {
-                                            console.error(response);
-                                        });
+                                    Structure.list().then(function (response) {
+                                        var data = response.data;
+                                        $scope.structures = data;
+                                    }).catch(function (response) {
+                                        console.error(response);
+                                    });
 
+                                    $scope.loadStaff = function () {
+                                        $scope.selectedPersonnel = undefined;
+                                        $rootScope.kernel.loading = 0;
                                         Staff.list({minify: true}).then(function (response) {
                                             var data = response.data;
                                             $scope.personnels = data;
+                                            $rootScope.kernel.loading = 100;
+                                        });
+                                    }
 
-
-                                            $scope.$watch('structure', function (newval, oldval) {
-                                                if (newval) {
-                                                    getPositions(newval ? newval : "-1", $scope.showOnlyVacancies ? "0" : "-1");
-                                                }
-                                            });
-
-                                            function getPositions(idStructure, restric) {
-                                                $scope.helper = [];
-                                                $rootScope.kernel.loading = 0;
-                                                var deferred = $q.defer();
-                                                $scope.promise = deferred.promise;
-                                                Position.list({id: idStructure, restric: restric}).then(function (response) {
-                                                    var data = response.data;
-
-                                                    $rootScope.kernel.loading = 100;
-                                                    $scope.positions = data;
-                                                    deferred.resolve();
-                                                }).catch(function (response) {
-                                                    console.error(response);
+                                    $scope.checkSelectedAgent = function () {
+                                        var notations = JSON.parse($scope.selectedPersonnel).notations;
+                                        if (notations && notations.length > 0) {
+                                            for (var i = 0; i < notations.length; i++) {
+                                                $scope.quarters = $scope.quarters.filter(function (item) {
+                                                    return !(item.id == notations[i].quarter && notations[i].year == $scope.year);
                                                 });
                                             }
+                                        }
+                                    }
 
-                                            // Modify or Add ?
-                                            if ($scope.params) {
+                                    $scope.onlyThisStructure = function (item) {
+                                        if ($scope.notation && item.affectedTo && item.affectedTo.position && item.affectedTo.position.structure && $scope.notation.structure == item.affectedTo.position.structure._id) {
+                                            return true;
+                                        } else {
+                                            return false;
+                                        }
+                                    };
 
-                                            }
+                                    $scope.loadStaff();
 
-                                            // save
-                                            $scope.save = function () {
-                                                $scope.personnel = newval = JSON.parse($scope.selectedPersonnel);
-                                                
-                                                if (!$scope.personnel.notations) {
-                                                    $scope.personnel.notations = [];
-                                                }
-                                                if ($scope.personnel && $scope.personnel.affectedTo && $scope.personnel.affectedTo.position) {
-                                                    $scope.notation.position = $scope.personnel.affectedTo.position._id;
-                                                    $scope.notation.year = (new Date()).getFullYear();;
-                                                    $scope.personnel.notations.push($scope.notation);
-                                                    console.log($scope.personnel);
+                                    // Modify or Add ?
+                                    if ($scope.params) {
 
-                                                    $rootScope.kernel.loading = 0;
+                                    }
 
-                                                    Staff.upsert($scope.personnel).then(function (response) {
-                                                        $rootScope.kernel.loading = 100;
-                                                        $mdDialog.hide();
-                                                        $rootScope.kernel.alerts.push({
-                                                            type: 3,
-                                                            msg: gettextCatalog.getString('The personnel has been updated'),
-                                                            priority: 4
-                                                        });
-                                                    }).catch(function (response) {
-                                                        $rootScope.kernel.loading = 100;
-                                                        $rootScope.kernel.alerts.push({
-                                                            type: 1,
-                                                            msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                                            priority: 2
-                                                        });
-                                                        console.error(response);
-                                                    });
+                                    // save
+                                    $scope.save = function () {
+                                        $scope.personnel = newval = JSON.parse($scope.selectedPersonnel);
 
-                                                } else {
-                                                    $rootScope.kernel.loading = 100;
-                                                    $rootScope.kernel.alerts.push({
-                                                        type: 1,
-                                                        msg: gettextCatalog.getString('You can not evaluate this agent. Position is needed'),
-                                                        priority: 2
-                                                    });
-                                                }
+                                        if (!$scope.personnel.notations) {
+                                            $scope.personnel.notations = [];
+                                        }
+                                        if ($scope.personnel && $scope.personnel.affectedTo && $scope.personnel.affectedTo.position) {
+                                            $scope.notation.position = $scope.personnel.affectedTo.position._id;
+                                            $scope.notation.year = (new Date()).getFullYear();
+                                            ;
+                                            $scope.personnel.notations.push($scope.notation);
+                                            console.log($scope.personnel);
 
+                                            $rootScope.kernel.loading = 0;
 
-                                            }
-                                        });
+                                            Staff.upsert($scope.personnel).then(function (response) {
+                                                $rootScope.kernel.loading = 100;
+                                                $mdDialog.hide();
+                                                $rootScope.kernel.alerts.push({
+                                                    type: 3,
+                                                    msg: gettextCatalog.getString('The personnel has been updated'),
+                                                    priority: 4
+                                                });
+                                            }).catch(function (response) {
+                                                $rootScope.kernel.loading = 100;
+                                                $rootScope.kernel.alerts.push({
+                                                    type: 1,
+                                                    msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                    priority: 2
+                                                });
+                                                console.error(response);
+                                            });
 
-                                    });
+                                        } else {
+                                            $rootScope.kernel.loading = 100;
+                                            $rootScope.kernel.alerts.push({
+                                                type: 1,
+                                                msg: gettextCatalog.getString('You can not evaluate this agent. Position is needed'),
+                                                priority: 2
+                                            });
+                                        }
+                                    }
                                 });
                             });
                         });

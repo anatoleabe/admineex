@@ -348,7 +348,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                         return $ocLazyLoad.load('js/controllers/MonitorCtrl.js');
                     }]
             },
-            breadcrumbs: ["Monitoring & Evaluation"]
+            breadcrumbs: ["Staff monitoring and evaluation"]
         }).state('home.projects.new', {
             url: '/new',
             params: {duplicateID: null},
