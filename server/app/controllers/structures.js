@@ -297,6 +297,32 @@ exports.findStructureByCode = function (code, language, callback) {
     });
 }
 
+exports.find = function (id, language, callback) {
+    Structure.findOne({
+        _id: id
+    }).lean().exec(function (err, result) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            var structure = JSON.parse(JSON.stringify(result));
+
+            if (structure != null) {
+                structure.name = ((language && language !== "" && structure[language] != undefined && structure[language] != "") ? structure[language] : structure['en']);
+                beautify({language: language, beautify: true}, [structure], function (err, objects) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        callback(null, objects[0]);
+                    }
+                });
+            } else {
+                callback(null);
+            }
+        }
+    });
+}
+
 
 
 

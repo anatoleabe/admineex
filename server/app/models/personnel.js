@@ -108,6 +108,7 @@ var PersonnelSchema = new Schema({
             structure: {type: ObjectId}, //Mongo id
             position: {type: ObjectId},//mongo id
             quarter: {type: String},//Id of quarter
+            year: {type: String},//Id of quarter
             lastModified: {type: Date, default: Date.now, required: true},
         }
     ],

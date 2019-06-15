@@ -316,5 +316,11 @@
         "uri": "/api/personnel/retired/:from/:to",
         "method": "GET",
         "roles": [1,2,3]
+    },
+    {
+        "id": 55,
+        "uri": "/api/monitor/:year/:quarter/:structure",
+        "method": "GET",
+        "roles": [1,2,3]
     }
 ]

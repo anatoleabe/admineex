@@ -32,6 +32,7 @@ controllers.configuration = require('./controllers/configuration');
 controllers.installation = require('./controllers/installation');
 controllers.dictionary = require('./utils/dictionary');
 controllers.pdfs = require('./controllers/pdfs');
+controllers.monitor = require('./controllers/monitor');
 controllers.angular = function (req, res) {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 };
@@ -385,6 +386,15 @@ var routes = [
         access: _.findWhere(aclRoutes, {id: 54}).roles
     },
 
+    // === MONITOR ROUTES ==========================================================
+    
+    {
+        path: _.findWhere(aclRoutes, {id: 55}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 55}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.monitor.api.list],
+        access: _.findWhere(aclRoutes, {id: 55}).roles
+    },
+    
     // === ORGANIZATION ROUTES ==========================================================
     // Create an org
     {

@@ -14,9 +14,9 @@ angular.module('MonitorCtrl', [[
     };
     $scope.search = false;
     $scope.year = (new Date()).getFullYear();
-    $scope.filters = {quater: "1", year: $scope.year, structure: "-1"};
-    var rangeYears = (start, stop, step) => Array.from({ length: (stop - start) / step + 1}, (_, i) => start + (i * step));
-    $scope.years = rangeYears($scope.year , $scope.year  - 5, -1);
+    $scope.filters = {quarter: "-1", year: $scope.year, structure: "-1"};
+    var rangeYears = (start, stop, step) => Array.from({length: (stop - start) / step + 1}, (_, i) => start + (i * step));
+    $scope.years = rangeYears($scope.year, $scope.year - 5, -1);
     $scope.monitors = [];
 
     $ocLazyLoad.load('js/services/UIService.js').then(function () {
@@ -45,57 +45,56 @@ angular.module('MonitorCtrl', [[
         of: gettextCatalog.getString("of")
     }
 
+    $ocLazyLoad.load('js/services/MonitorService.js').then(function () {
+        var Monitor = $injector.get('Monitor');
+        $ocLazyLoad.load('js/services/StructureService.js').then(function () {
+            var Structure = $injector.get('Structure');
+            $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
+                var Dictionary = $injector.get('Dictionary');
+                Dictionary.jsonList({dictionary: 'time', levels: ['quarters']}).then(function (response) {
+                    $scope.quarters = response.data.jsonList;
 
-    $ocLazyLoad.load('js/services/StructureService.js').then(function () {
-        var Structure = $injector.get('Structure');
-        $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
-            var Dictionary = $injector.get('Dictionary');
-            Dictionary.jsonList({dictionary: 'time', levels: ['quaters']}).then(function (response) {
-                $scope.quarters = response.data.jsonList;
-                
-                $scope.filterByStructure = function (structureCode) {
-                    $scope.staffsFilter = structureCode;
-                };
+                    $scope.filterByStructure = function (structureCode) {
+                        $scope.staffsFilter = structureCode;
+                    };
 
-                //Load structure list
-                Structure.list().then(function (response) {
-                    var data = response.data;
-                    if (data.length == 0 && $scope.helper.length == 0) {
-                        $scope.helper = helper;
+                    $scope.load = function () {
+                        var option = {year: $scope.filters.year, quarter: $scope.filters.quarter, structure: $scope.filters.structure};
+                        Monitor.list(option).then(function (response) {
+                            var data = response.data;
+                            $scope.monitors = data;
+                        }).catch(function (response) {
+                            console.error(response);
+                        });
                     }
-                    $scope.structures = data;
-                }).catch(function (response) {
-                    console.error(response);
-                });
 
-
-                $scope.$watch('filters.structure', function (newval, oldval) {
-                    if (newval) {
-                        newval = JSON.parse(newval).code;
-                        //getPositions(newval ? newval : "-1", $scope.showOnlyVacancies?"0":"-1");
-                    }
-                });
-                
-                
-            $scope.evaluate = function () {
-                $ocLazyLoad.load('js/controllers/monitor/EvaluationCtrl.js').then(function () {
-                    $mdDialog.show({
-                        controller: 'EvaluationController',
-                        templateUrl: '../templates/dialogs/evaluation.html',
-                        parent: angular.element(document.body),
-                        clickOutsideToClose: true,
-                        locals: {
-                            params: {
-                                
-                            }
-                        }
-                    }).then(function (answer) {
-                    }, function () {
+                    //Load structure list
+                    Structure.list().then(function (response) {
+                        var data = response.data;
+                        $scope.structures = data;
+                        $scope.load();
+                    }).catch(function (response) {
+                        console.error(response);
                     });
+
+                    $scope.evaluate = function () {
+                        $ocLazyLoad.load('js/controllers/monitor/EvaluationCtrl.js').then(function () {
+                            $mdDialog.show({
+                                controller: 'EvaluationController',
+                                templateUrl: '../templates/dialogs/evaluation.html',
+                                parent: angular.element(document.body),
+                                clickOutsideToClose: true,
+                                locals: {
+                                    params: {
+
+                                    }
+                                }
+                            }).then(function (answer) {
+                            }, function () {
+                            });
+                        });
+                    }
                 });
-            }
-
-
             });
         });
     });

@@ -547,6 +547,24 @@ exports.find = function (id, callback) {
     });
 };
 
+exports.find2 = function (option, callback) {
+    Position.findOne({
+        _id: option.id
+    }).lean().exec(function (err, positionDetails) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            if (positionDetails != null) {
+                positionDetails.name = ((option.language && option.language !== "" && positionDetails[option.language] != undefined && positionDetails[option.language] != "") ? positionDetails[option.language] : positionDetails['en']);
+                callback(null, positionDetails);
+            } else {
+                callback(null, positionDetails);
+            }
+        }
+    });
+};
+
 
 exports.api.delete = function (req, res) {
     if (req.actor) {

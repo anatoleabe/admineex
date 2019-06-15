@@ -45,7 +45,7 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
             $scope.types = response.data.jsonList;
             Dictionary.jsonList({dictionary: 'structure', levels: ['ranks']}).then(function (response) {
                 $scope.ranks = response.data.jsonList;
-                Dictionary.jsonList({dictionary: 'time', levels: ['quaters']}).then(function (response) {
+                Dictionary.jsonList({dictionary: 'time', levels: ['quarters']}).then(function (response) {
                     $scope.quarters = response.data.jsonList;
                     Dictionary.jsonList({dictionary: 'monitor', levels: ['appreciations']}).then(function (response) {
                         $scope.appreciations = response.data.jsonList;
@@ -106,11 +106,11 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
                                                 }
                                                 if ($scope.personnel && $scope.personnel.affectedTo && $scope.personnel.affectedTo.position) {
                                                     $scope.notation.position = $scope.personnel.affectedTo.position._id;
+                                                    $scope.notation.year = (new Date()).getFullYear();;
                                                     $scope.personnel.notations.push($scope.notation);
                                                     console.log($scope.personnel);
 
                                                     $rootScope.kernel.loading = 0;
-                                                    $scope.personnel.sanctions.push($scope.sanction);
 
                                                     Staff.upsert($scope.personnel).then(function (response) {
                                                         $rootScope.kernel.loading = 100;
