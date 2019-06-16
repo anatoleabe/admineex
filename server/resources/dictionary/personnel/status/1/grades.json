@@ -73,7 +73,7 @@
     },
     {
         "id": 15,
-        "corps": 4,
+        "corps": 7,
         "code": null,
         "fr": "Inspecteur Principal des Impots ",
         "en": "Inspecteur Principal des Impots ",
@@ -411,6 +411,24 @@
         "fr": "Inspecteur des Postes et Télécom",
         "en": "Inspecteur des Postes et Télécom",
         "category": 1,
+        "priority": null
+    },
+    {
+        "id": 70,
+        "corps": 7,
+        "code": null,
+        "fr": "Contrôleur Principal des Impots",
+        "en": "Contrôleur Principal des Impots",
+        "category": 3,
+        "priority": null
+    },
+    {
+        "id": 71,
+        "corps": 4,
+        "code": null,
+        "fr": "Programmeur",
+        "en": "Programmeur",
+        "category": 3,
         "priority": null
     }
 ]
