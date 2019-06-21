@@ -38,6 +38,7 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
 
                     Position.read({id: id}).then(function (response) {
                         var data = response.data;
+                        console.log(data)
                         $scope.position = data;
                         if ($scope.position && $scope.position.occupiedBy) {
                             var positionHelder = {
@@ -89,7 +90,7 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
                                 if ($scope.position.activities) {
                                     for (i = 0; i < $scope.position.activities.length; i++) {
                                         if ($scope.position.activities [i]) {
-                                            tasks.push($scope.position.activities [i]);
+                                            activities.push($scope.position.activities [i]);
                                         }
                                     }
                                 }

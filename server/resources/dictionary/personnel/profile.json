@@ -1,347 +1,287 @@
 [
  {
-   "id": 1,
-   "fr": "Administrateur du travail",
-   "en": "Administrator of work"
+   "id": "1",
+   "fr": "Administrateur  du Travail",
+   "en": "Administrator of Labor"
  },
  {
-   "id": 2,
-   "fr": "Agent  public",
-   "en": "Public agent"
+   "id": "2",
+   "fr": "Administrateur Civil",
+   "en": "Civil Administrator"
  },
  {
-   "id": 3,
-   "fr": "Agent 1",
-   "en": "Agent 1"
+   "id": "3",
+   "fr": "Agent  de l'Etat 2e",
+   "en": "State Agent 2nd"
  },
  {
-   "id": 4,
-   "fr": "Agent 1 ou assimilés",
-   "en": "Agent 1 or similar"
+   "id": "4",
+   "fr": "Agent  de l'Etat 3e",
+   "en": "State Agent 3rd"
  },
  {
-   "id": 5,
-   "fr": "Agent 2",
-   "en": "Agent 2"
+   "id": "5",
+   "fr": "Agent  de l'Etat 4e",
+   "en": "State Agent 4th"
  },
  {
-   "id": 6,
-   "fr": "Agent 2 ou assimilés",
-   "en": "Agent 2 or similar"
+   "id": "6",
+   "fr": "Agent  de l'Etat 5e",
+   "en": "State Agent 5th"
  },
  {
-   "id": 7,
-   "fr": "Agent Comptable",
-   "en": "Accountant"
+   "id": "7",
+   "fr": "Agent  de l'Etat 6e",
+   "en": "State Agent 6th"
  },
  {
-   "id": 8,
-   "fr": "Agent Comptable ou assimilés",
-   "en": "Accountant or equivalent"
+   "id": "8",
+   "fr": "Agent de l'Etat 1e",
+   "en": "State Agent 1e"
  },
  {
-   "id": 9,
-   "fr": "Agent de l'Etat",
-   "en": "State agent"
+   "id": "9",
+   "fr": "Agent de l'Etat 7e",
+   "en": "State Agent 7th"
  },
  {
-   "id": 10,
-   "fr": "Cadre Contractuel d'Administration",
-   "en": "Contractual Framework of Administration"
+   "id": "10",
+   "fr": "Analystes",
+   "en": "analysts"
  },
  {
-   "id": 11,
-   "fr": "Cadre Contractuel d'Administration ou assimilés",
-   "en": "Contractual Framework of Administration or similar"
+   "id": "11",
+   "fr": "Cadre Contractuel d'Administration 10e",
+   "en": "Contractual Framework of Administration 10e"
  },
  {
-   "id": 12,
-   "fr": "Categorie 1",
-   "en": "Category 1"
+   "id": "12",
+   "fr": "Cadre Contractuel d'Administration 11e",
+   "en": "11th Administrative Contractual Framework"
  },
  {
-   "id": 13,
-   "fr": "Categorie 1 ou assimilés",
-   "en": "Category 1 or similar"
+   "id": "13",
+   "fr": "Cadre Contractuel d'Administration 12e",
+   "en": "Contractual Framework of Administration 12th"
  },
  {
-   "id": 14,
-   "fr": "Categorie 10",
-   "en": "Category 10"
+   "id": "14",
+   "fr": "Commis d'Administration",
+   "en": "Administration Clerk"
  },
  {
-   "id": 15,
-   "fr": "Categorie 10 ou assimilés",
-   "en": "Category 10 or similar"
+   "id": "15",
+   "fr": "Commis de la Documentation",
+   "en": "Documentation Clerk"
  },
  {
-   "id": 16,
-   "fr": "Categorie 11",
-   "en": "Category 11"
+   "id": "16",
+   "fr": "Commis du Trésor",
+   "en": "Treasury Clerk"
  },
  {
-   "id": 17,
-   "fr": "Categorie 11 ou assimilés",
-   "en": "Category 11 or similar"
+   "id": "17",
+   "fr": "Contractuel d'Administration 8e",
+   "en": "Contractual Administration 8th"
  },
  {
-   "id": 18,
-   "fr": "Categorie 12",
-   "en": "Category 12"
+   "id": "18",
+   "fr": "Contractuel d'Administration 9e",
+   "en": "Contractual Administration 9th"
  },
  {
-   "id": 19,
-   "fr": "Categorie 12 ou assimilés",
-   "en": "Category 12 or similar"
+   "id": "19",
+   "fr": "Contrôleur  du Travail",
+   "en": "Work Supervisor"
  },
  {
-   "id": 20,
-   "fr": "Categorie 2",
-   "en": "Category 2"
+   "id": "20",
+   "fr": "Contrôleur Adjoint de la Comptabilité matière",
+   "en": "Assistant Controller of Material Accounting"
  },
  {
-   "id": 21,
-   "fr": "Categorie 2 ou assimilés",
-   "en": "Category 2 or similar"
+   "id": "21",
+   "fr": "Contrôleur Adjoint de la Documentation",
+   "en": "Assistant Controller of Documentation"
  },
  {
-   "id": 22,
-   "fr": "Categorie 3",
-   "en": "Category 3"
+   "id": "22",
+   "fr": "Contrôleur Adjoints des prix poids et mesures",
+   "en": "Deputy Controller of Weights and Measures Prices"
  },
  {
-   "id": 23,
-   "fr": "Categorie 3 ou assimilés",
-   "en": "Category 3 or similar"
+   "id": "23",
+   "fr": "Contrôleur de la Comptabilité Matière",
+   "en": "Controller of Material Accounting"
  },
  {
-   "id": 24,
-   "fr": "Categorie 4",
-   "en": "Category 4"
- },
- {
-   "id": 25,
-   "fr": "Categorie 4 ou assimilés",
-   "en": "Category 4 or similar"
- },
- {
-   "id": 26,
-   "fr": "Categorie 5",
-   "en": "Category 5"
- },
- {
-   "id": 27,
-   "fr": "Categorie 5 ou assimilés",
-   "en": "Category 5 or similar"
- },
- {
-   "id": 28,
-   "fr": "Categorie 6",
-   "en": "Category 6"
- },
- {
-   "id": 29,
-   "fr": "Categorie 6 ou assimilés",
-   "en": "Category 6 or similar"
- },
- {
-   "id": 30,
-   "fr": "Categorie 7",
-   "en": "Category 7"
- },
- {
-   "id": 31,
-   "fr": "Categorie 7 ou assimilés",
-   "en": "Category 7 or similar"
- },
- {
-   "id": 32,
-   "fr": "Categorie 8",
-   "en": "Category 8"
- },
- {
-   "id": 33,
-   "fr": "Categorie 8 ou assimilés",
-   "en": "Category 8 or similar"
- },
- {
-   "id": 34,
-   "fr": "Categorie 9",
-   "en": "Category 9"
- },
- {
-   "id": 35,
-   "fr": "Categorie 9 ou assimilés",
-   "en": "Category 9 or similar"
- },
- {
-   "id": 36,
-   "fr": "Categorie A",
-   "en": "Category A"
- },
- {
-   "id": 37,
-   "fr": "Categorie A ou assimilés",
-   "en": "Category A or similar"
- },
- {
-   "id": 38,
-   "fr": "Categorie B",
-   "en": "Category B"
- },
- {
-   "id": 39,
-   "fr": "Categorie B ou assimilés",
-   "en": "Category B or similar"
- },
- {
-   "id": 40,
-   "fr": "Categorie C",
-   "en": "Category C"
- },
- {
-   "id": 41,
-   "fr": "Categorie C ou assimilés",
-   "en": "Category C or similar"
- },
- {
-   "id": 42,
-   "fr": "CCM",
-   "en": "TLC"
- },
- {
-   "id": 43,
-   "fr": "Comptabilité Matière",
-   "en": "Accounting Matter"
- },
- {
-   "id": 44,
-   "fr": "Contractuel d'Administration",
-   "en": "Contract of Administration"
- },
- {
-   "id": 45,
-   "fr": "Contractuel d'Administration ou assimilés",
-   "en": "Contract of Administration or similar"
- },
- {
-   "id": 46,
+   "id": "24",
    "fr": "Contrôleur du Trésor",
    "en": "Treasury Controller"
  },
  {
-   "id": 47,
-   "fr": "Contrôleur du Trésor ou assimilés",
-   "en": "Controller of the Treasury or similar"
- },
- {
-   "id": 48,
+   "id": "25",
    "fr": "Contrôleur Principal du Trésor",
    "en": "Senior Treasury Controller"
  },
  {
-   "id": 49,
-   "fr": "Contrôleur Principal du Trésor ou assimilés",
-   "en": "Chief Controller of the Treasury or similar"
+   "id": "26",
+   "fr": "Contrôleurs Adjoint du Trésor",
+   "en": "Assistant Treasury Controllers"
  },
  {
-   "id": 50,
-   "fr": "Fonctionnaire des régies Financière de Categorie A",
-   "en": "Financial Officer of Category A"
+   "id": "27",
+   "fr": "Contrôleurs de la Documentation",
+   "en": "Documentation Controllers"
  },
  {
-   "id": 51,
-   "fr": "Fonctionnaire des régies Financière de Categorie A ou assimilés",
-   "en": "Financial officer of Category A or similar"
+   "id": "28",
+   "fr": "Fonctionnaire Catégorie A1",
+   "en": "Category A1 official"
  },
  {
-   "id": 52,
-   "fr": "Fonctionnaire des régies Financière de Categorie B",
-   "en": "Financial Officer of Category B"
+   "id": "29",
+   "fr": "Fonctionnaire Catégorie A2",
+   "en": "Functional Category A2"
  },
  {
-   "id": 53,
-   "fr": "Fonctionnaire des régies Financière de Categorie B ou assimilés",
-   "en": "Financial officer of Category B or similar"
+   "id": "30",
+   "fr": "Fonctionnaire Catégorie B1",
+   "en": "Official Category B1"
  },
  {
-   "id": 54,
-   "fr": "Fonctionnaire des régies Financière de Categorie C",
-   "en": "Financial Officer of Category C"
+   "id": "31",
+   "fr": "Fonctionnaire Catégorie B2",
+   "en": "Category B2 official"
  },
  {
-   "id": 55,
-   "fr": "Fonctionnaire des régies Financière de Categorie C ou assimilés",
-   "en": "Financial officer of Category C or similar"
+   "id": "32",
+   "fr": "Fonctionnaire Catégorie C",
+   "en": "Functional Category C"
  },
  {
-   "id": 56,
-   "fr": "Inspecteur de la documentation",
+   "id": "33",
+   "fr": "Fonctionnaire Catégorie D",
+   "en": "Category D official"
+ },
+ {
+   "id": "34",
+   "fr": "Forces de l'ordre",
+   "en": "Law enforcement"
+ },
+ {
+   "id": "35",
+   "fr": "Ingénieur des Travaux Agricoles",
+   "en": "Engineer of Agricultural Works"
+ },
+ {
+   "id": "36",
+   "fr": "Ingénieur des Travaux de la Statistique",
+   "en": "Statistical Work Engineer"
+ },
+ {
+   "id": "37",
+   "fr": "Ingénieur Informaticien",
+   "en": "Computer engineer"
+ },
+ {
+   "id": "38",
+   "fr": "Ingénieur Principal des Travaux de la Statistique",
+   "en": "Senior Engineer, Statistics Work"
+ },
+ {
+   "id": "39",
+   "fr": "Ingénieur Statisticien Economiste",
+   "en": "Economist Statistician Engineer"
+ },
+ {
+   "id": "40",
+   "fr": "Inspecteur de la comptabilité Matière",
+   "en": "Accounting Inspector Matter"
+ },
+ {
+   "id": "41",
+   "fr": "Inspecteur de la Documentation",
    "en": "Documentation Inspector"
  },
  {
-   "id": 57,
-   "fr": "Inspecteur du Trésor",
-   "en": "Treasury Inspector"
+   "id": "42",
+   "fr": "Inspecteur des Prix poids et mesures",
+   "en": "Weight and Measurement Price Inspector"
  },
  {
-   "id": 58,
-   "fr": "Inspecteur du Trésor ou assimilés",
-   "en": "Treasury inspector or similar"
+   "id": "43",
+   "fr": "Inspecteur du Trésor ou Impot",
+   "en": "Treasury or Tax Inspector"
  },
  {
-   "id": 59,
+   "id": "44",
+   "fr": "Inspecteur Pricipal du Trésor",
+   "en": "Chief Inspector of the Treasury"
+ },
+ {
+   "id": "45",
    "fr": "Inspecteur Principal des Impôts",
    "en": "Chief Tax Inspector"
  },
  {
-   "id": 60,
-   "fr": "Inspecteur Principal du Trésor",
-   "en": "Senior Treasury Inspector"
+   "id": "46",
+   "fr": "Instituteur Adjoint de l'Enseignement Général",
+   "en": "Assistant School Teacher of General Education"
  },
  {
-   "id": 61,
-   "fr": "Inspecteur Principal du Trésor ou assimilés",
-   "en": "Chief Inspector of the Treasury or similar"
+   "id": "47",
+   "fr": "Instituteur de l'Enseignement Général",
+   "en": "Teacher of General Education"
  },
  {
-   "id": 62,
-   "fr": "Inspecteur Régies Financière",
-   "en": "Financial Regulatory Inspector"
+   "id": "48",
+   "fr": "Magistrats",
+   "en": "magistrates"
  },
  {
-   "id": 63,
-   "fr": "Inspecteur Régies Financière ou assimilés",
-   "en": "Financial Regulator or similar"
+   "id": "49",
+   "fr": "Professeur Adjoint de l'Education Physique",
+   "en": "Assistant Professor of Physical Education"
  },
  {
-   "id": 64,
-   "fr": "PLEG",
-   "en": "PLEG"
+   "id": "50",
+   "fr": "Professeur des Lycées et Collèges d'Enseignement Général",
+   "en": "Professor of Lycées and Colleges of General Education"
  },
  {
-   "id": 65,
-   "fr": "Programmeur",
-   "en": "Programmer"
+   "id": "51",
+   "fr": "Programmeurs",
+   "en": "programmers"
  },
  {
-   "id": 66,
-   "fr": "Sans poste de responsabilité",
-   "en": "No position of responsibility"
+   "id": "52",
+   "fr": "Secrétaire principal d'Administration",
+   "en": "Senior Secretary of Administration"
  },
  {
-   "id": 67,
-   "fr": "Secrétaire d'Administration Principal",
-   "en": "Senior Administrative Secretary"
+   "id": "53",
+   "fr": "Technicien des télécommunications ou ingénieur travaux informatiques",
+   "en": "Telecommunications Technician or Computer Works Engineer"
  },
  {
-   "id": 68,
-   "fr": "Technicien en Maintenance",
-   "en": "Maintenance Technician"
+   "id": "54",
+   "fr": "Technicien Principal de la Statistique",
+   "en": "Senior Technician of Statistics"
  },
  {
-   "id": 69,
-   "fr": "Titulaire des permis B/C et du CEP",
-   "en": "Licensee B / C and CEP"
+   "id": "55",
+   "fr": "Controleur principal des impots",
+   "en": "Senior Tax Controller"
+ },
+ {
+   "id": "56",
+   "fr": "Secretaire Administration",
+   "en": "Secretary Administration"
+ },
+ {
+   "id": "57",
+   "fr": "Personnel d'appui",
+   "en": "Support staff"
  }
 ]

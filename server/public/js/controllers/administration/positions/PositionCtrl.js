@@ -77,18 +77,24 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                     function prepareDetailsForServer() {
                                         if ($scope.position) {
                                             var requiredProfiles = [];
-                                            for (i = 0; i < $scope.requiredProfiles.length; i++) {
-                                                if ($scope.requiredProfiles[i]) {
-                                                    requiredProfiles.push($scope.requiredProfiles[i].id);
+                                            if ($scope.requiredProfiles && $scope.requiredProfiles.length > 0) {
+                                                for (i = 0; i < $scope.requiredProfiles.length; i++) {
+                                                    if ($scope.requiredProfiles[i]) {
+                                                        requiredProfiles.push($scope.requiredProfiles[i].id);
+                                                    }
                                                 }
                                             }
+
                                             $scope.position.requiredProfiles = requiredProfiles;
                                             var requiredSkills = [];
-                                            for (i = 0; i < $scope.requiredSkills.length; i++) {
-                                                if ($scope.requiredSkills[i]) {
-                                                    requiredSkills.push($scope.requiredSkills[i].id);
+                                            if ($scope.requiredSkills && $scope.requiredSkills.length > 0) {
+                                                for (i = 0; i < $scope.requiredSkills.length; i++) {
+                                                    if ($scope.requiredSkills[i]) {
+                                                        requiredSkills.push($scope.requiredSkills[i].id);
+                                                    }
                                                 }
                                             }
+
                                             $scope.position.requiredSkills = requiredSkills;
                                         }
                                     }

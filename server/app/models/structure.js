@@ -14,6 +14,14 @@ var StructureSchema = new Schema({
     type: {type: String, required: false},
     activities: [],
     tasks: [],
+    address: [
+        {
+            country: String, //From json
+            region: String, //From json
+            department: String, //From json
+            arrondissement: String //From json
+        }
+    ],
     lastModified: {type: Date, default: Date.now, required: true},
     created: {type: Date, default: Date.now, required: true}
 });

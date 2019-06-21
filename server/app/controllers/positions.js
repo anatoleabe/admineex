@@ -170,6 +170,7 @@ exports.api.affectToPosition = function (req, res) {
 };
 
 //This read data from json files (matricule and position code , then lint position and personnel in db
+//DO NOT USE THIS
 exports.affectToPositionFromJson = function (callback) {
     var affectations = dictionary.getToJSONList("../../resources/dictionary/tmp/usersposition.json");
     var avoided = [];
@@ -207,7 +208,7 @@ exports.affectToPositionFromJson = function (callback) {
                                         loopA(a + 1);
                                     }
                                 });
-                            }else{
+                            } else {
                                 avoided.push(affectations[a]);
                                 loopA(a + 1);
                             }
@@ -409,6 +410,104 @@ exports.initialize = function (callback) {
         loopA(0);
     }
 }
+
+
+exports.INITPOSITIONDATAFROMJSON = function (callback) {
+    var initialize = controllers.configuration.getConf().initialize;
+
+    String.prototype.isNumber = function () {
+        return /^\d+$/.test(this);
+    }
+    String.prototype.capitalize = function () {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+    }
+
+    if (initialize.positions) {
+        var positions = dictionary.getJSONList("../../resources/dictionary/tmp/dataToImportProfSkillTask.json", "en");
+        var avoidedPositionsCode = [];
+        function loopA(a) {
+            if (a < positions.length) {
+                var skillRequired = positions[a].crequired.split(";");
+                var profilelRequired = positions[a].prequired.split(";");
+                var activities = positions[a].activity.split(";");
+                var tasks = positions[a].task.split(";");
+                console.log("====");
+
+                for (var s in skillRequired) {
+                    skillRequired[s] = skillRequired[s];
+                }
+
+                for (var s in profilelRequired) {
+                    profilelRequired[s] = profilelRequired[s];
+                }
+
+                for (var s in activities) {
+                    activities[s] = activities[s].trim().capitalize();
+                }
+
+                for (var s in tasks) {
+                    tasks[s] = tasks[s].trim().capitalize();
+                }
+
+
+                var fieldsUpdate = {
+                    code: positions[a].codept,
+                    realisationRequired: positions[a].nbtotraite,
+                    activities: activities,
+                    tasks: tasks,
+                    requiredProfiles: profilelRequired,
+                    requiredSkills: skillRequired,
+                }
+
+                var fieldsCreate = {
+                    code: positions[a].codept,
+                    en: positions[a].pt,
+                    fr: positions[a].pt,
+                    realisationRequired: positions[a].nbtotraite,
+                    activities: activities,
+                    tasks: tasks,
+                    requiredProfiles: profilelRequired,
+                    requiredSkills: skillRequired,
+                }
+
+                exports.findPositionByCode(positions[a].codept, function (err, position) {
+                    if (err) {
+                        log.error(err);
+                        callback(err);
+                    } else {
+                        var fields = fieldsCreate;
+                        if (position) {// If this position already exist
+                            fields = fieldsUpdate;
+                            fields._id = position._id;
+                        }
+                        console.log(fields);
+                        exports.upsert(fields, function (err) {
+                            if (err) {
+                                log.error(err);
+                            } else {
+                                loopA(a + 1);
+                            }
+                        });
+                    }
+                });
+
+            } else {
+//                nconf.set("initialize:positions", "1");
+//                nconf.save(function (err) {
+//                    if (err) {
+//                        log.error(err);
+//                        audit.logEvent('[nconf]', 'Position', 'Update', "", "", 'failed', "nconf attempted to save configuration");
+//                    } else {
+                console.log("===done===");
+                callback(null, avoidedPositionsCode);
+//                    }
+//                });
+            }
+        }
+        loopA(0);
+    }
+}
+
 
 /**
  * Find the person who held a posisition

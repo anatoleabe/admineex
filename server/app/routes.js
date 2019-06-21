@@ -627,6 +627,15 @@ function startBot() {
 //        }
 //    });
 
+//    controllers.positions.INITPOSITIONDATAFROMJSON(function (err, avoided) {
+//        if (err) {
+//            log.error(err);
+//            console.log(err);
+//        } else {
+//            console.log(avoided)
+//        }
+//    });
+
     var CronJob = require('cron').CronJob;
     new CronJob('00 11 06 * * *', function () {
         /*
