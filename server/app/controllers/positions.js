@@ -174,11 +174,24 @@ exports.api.affectToPosition = function (req, res) {
 exports.affectToPositionFromJson = function (callback) {
     var affectations = dictionary.getToJSONList("../../resources/dictionary/tmp/usersposition.json");
     var avoided = [];
+
+    String.prototype.isNumber = function () {
+        return /^\d+$/.test(this);
+    }
+    String.prototype.capitalize = function () {
+        return this.charAt(0).toUpperCase() + this.slice(1);
+    }
     var projection = {_id: 1};
     function loopA(a) {
         if (a < affectations.length) {
             var identifier = affectations[a].identifier.replace(/\s+/g, '');
             var codep = affectations[a].codeposte.replace(/\s+/g, '');
+
+            var skills = affectations[a].creel.split(";");
+            var profiles = affectations[a].preel.split(";");
+            console.log("====");
+
+
             Position.findOne({code: codep}, projection, function (err, post) {
                 if (err) {
                     log.error(err);
@@ -195,6 +208,12 @@ exports.affectToPositionFromJson = function (callback) {
                                     date: new Date()
                                 };
 
+                                var userFields = {
+                                    _id: pers._id,
+                                    profiles: profiles,
+                                    skills: skills
+                                };
+
                                 var filter = {
                                     positionId: post._id,
                                     positionCode: codep,
@@ -205,7 +224,13 @@ exports.affectToPositionFromJson = function (callback) {
                                     if (err) {
                                         log.error(err);
                                     } else {
-                                        loopA(a + 1);
+                                        controllers.personnel.upsert(userFields, function (err, result) {
+                                            if (err) {
+                                                log.error(err);
+                                            } else {
+                                                loopA(a + 1);
+                                            }
+                                        });
                                     }
                                 });
                             } else {
@@ -249,7 +274,6 @@ exports.api.findPositionByCode = function (req, res) {
 
 exports.api.list = function (req, res) {
     if (req.actor) {
-        var positions = dictionary.getJSONListByCode("../../resources/dictionary/structure/positions.json", req.actor.language.toLowerCase(), req.params.id);
         var restriction = req.params.restric;
         filter = {};
         if (req.params.id && req.params.id != "-1") {

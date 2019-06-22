@@ -47,6 +47,7 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                     }
                     $rootScope.kernel.loading = 100;
                     $scope.positions = data;
+                    console.log(data);
                     deferred.resolve();
                 }).catch(function (response) {
                     console.error(response);
@@ -60,6 +61,14 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                 getPositions(idStructure, $scope.showOnlyVacancies?0:-1);
             };
 
+            
+            $scope.vacanciesOnly = function (item) {
+                if ($scope.showOnlyVacancies == true) {
+                    return item.vacancies && item.vacancies > 0;
+                } else {
+                    return true
+                }
+            };
 
             $scope.$watch('filters.structure', function (newval, oldval) {
                 if (newval) {

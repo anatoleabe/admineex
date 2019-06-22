@@ -112,8 +112,8 @@ var PersonnelSchema = new Schema({
             lastModified: {type: Date, default: Date.now, required: true},
         }
     ],
-    profiles: [{}], //Codes of existing profil, list of string
-    skills: [{}], //Code of existing profiles taken from a global lists
+    profiles: [], //Codes of existing profil, list of string
+    skills: [], //Code of existing profiles taken from a global lists
     trainingNeeds: [{}],
     preferences: {
         notification: {

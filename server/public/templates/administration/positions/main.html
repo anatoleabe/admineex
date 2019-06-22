@@ -21,9 +21,10 @@
                 </span>
 
             </div>
-            <md-switch ng-change="toggleVacancies()" flex ng-model="showOnlyVacancies" aria-label="enable">
-                <span><span translate>Show only vacancies</span><span translate>:</span></span> 
+            <md-switch flex ng-model="showOnlyVacancies" aria-label="enable">
+                <span><span translate>Show only vacancies</span></span> 
             </md-switch>
+            <span flex></span>
 
             <md-button class="md-icon-button" aria-label="Print" >
                 <md-icon>print</md-icon>
@@ -65,7 +66,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row data-ng-repeat="position in positions| filter:positionFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                    <tr md-row data-ng-repeat="position in positions| filter:positionFilter | filter:vacanciesOnly | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
                         <td md-cell ng-click="details({id: position._id})">{{position.code| uppercase | unknown}}</td>
                         <td md-cell ng-click="details({id: position._id})">{{position.name}} </td>
                         <td md-cell ng-click="details({id: position._id})">{{position.structure.name| unknown}}</td>
