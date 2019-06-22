@@ -434,7 +434,6 @@ exports.api.checkExistance = function (req, res) {
         } else {
 
             var mat = req.params.mat || '';
-            console.log("Mat = " + mat)
             var concat;
 
             concat = ["$name.family", " ", "$name.given"];
@@ -620,52 +619,10 @@ function beautify(options, personnels, callback) {
                         log.error(err);
                         callback(err);
                     } else {
-                        personnels[a].affectedTo = affectation;
-                        personnels[a].skillsCorresponding = 0;
-                        personnels[a].profilesCorresponding = 0;
-
-                        if (personnels[a].affectedTo && personnels[a].affectedTo.position) {
-                            var requiredProfiles = personnels[a].affectedTo.position.requiredProfiles;
-                            var requiredSkills = personnels[a].affectedTo.position.requiredSkills;
-                            var userProfiles = personnels[a].profiles;
-                            var userSkills = personnels[a].skills;
-
-                            if (requiredProfiles && requiredProfiles.length > 0) {
-                                var count = 0;
-                                if (userProfiles && userProfiles.length > 0) {
-                                    for (var i in userProfiles) {
-                                        if (requiredProfiles.includes(userProfiles[i])) {
-                                            count = count + 1;
-                                        }
-                                    }
-                                }
-                                personnels[a].profilesCorresponding = Number((100 * (count / 3)).toFixed(1));
-                                if (personnels[a].profilesCorresponding > 100) {
-                                    personnels[a].profilesCorresponding = 100;
-                                }
-                            }
-
-                            if (requiredSkills && requiredSkills.length > 0) {
-                                var count = 0;
-                                if (userSkills && userSkills.length > 0) {
-                                    for (var i in userSkills) {
-                                        if (requiredSkills.includes(userSkills[i])) {
-                                            count = count + 1;
-                                        }
-                                    }
-                                }
-                                personnels[a].skillsCorresponding = Number((100 * (count / 3)).toFixed(1));
-                                if (personnels[a].skillsCorresponding > 100) {
-                                    personnels[a].skillsCorresponding = 100;
-                                }
-                            }
-                        }
-
-                        personnels[a].corresponding = Number(((personnels[a].skillsCorresponding + personnels[a].profilesCorresponding) / 2).toFixed(1));
 
                         var status = personnels[a].status || "";
                         var grade = personnels[a].grade || "";
-                        var corps = personnels[a].corps || "";
+                        
                         var category = personnels[a].category || "";
                         var highestLevelEducation = (personnels[a].qualifications) ? personnels[a].qualifications.highestLevelEducation : "";
                         var natureActe = (personnels[a].history) ? personnels[a].history.nature : "";
@@ -678,6 +635,8 @@ function beautify(options, personnels, callback) {
                             personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
                             personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, language);
                         }
+                        
+                        var corps = ((personnels[a].corps)? personnels[a].corps : personnels[a].grade.corps)+"";
 
                         if (corps != "") {
                             personnels[a].corps = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/corps.json', corps, language);
@@ -712,6 +671,57 @@ function beautify(options, personnels, callback) {
                             }
                             personnels[a].sanctions = sanctions;
                         }
+
+                        personnels[a].affectedTo = affectation;
+                        personnels[a].skillsCorresponding = 0;
+                        personnels[a].profilesCorresponding = 0;
+
+                        //ASKED BY DGTCFM ONLY FOR TRESOR STAFF
+                        if (corps == "2") {
+                            personnels[a].skillsCorresponding = 40;
+                            personnels[a].profilesCorresponding = 40;
+                        }
+
+                        if (personnels[a].affectedTo && personnels[a].affectedTo.position) {
+                            var requiredProfiles = personnels[a].affectedTo.position.requiredProfiles;
+                            var requiredSkills = personnels[a].affectedTo.position.requiredSkills;
+                            var userProfiles = personnels[a].profiles;
+                            var userSkills = personnels[a].skills;
+
+                            if (requiredProfiles && requiredProfiles.length > 0) {
+                                var count = 0;
+                                if (userProfiles && userProfiles.length > 0) {
+                                    for (var i in userProfiles) {
+                                        if (requiredProfiles.includes(userProfiles[i])) {
+                                            count = count + 1;
+                                        }
+                                    }
+                                }
+                                personnels[a].profilesCorresponding += Number((100 * (count / requiredProfiles.length)).toFixed(1));
+                                if (personnels[a].profilesCorresponding > 100) {
+                                    personnels[a].profilesCorresponding = 100;
+                                }
+                            }
+
+                            if (requiredSkills && requiredSkills.length > 0) {
+                                var count = 0;
+                                if (userSkills && userSkills.length > 0) {
+                                    for (var i in userSkills) {
+                                        if (requiredSkills.includes(userSkills[i])) {
+                                            count = count + 1;
+                                        }
+                                    }
+                                }
+                                personnels[a].skillsCorresponding += Number((100 * (count / 3)).toFixed(1));
+                                if (personnels[a].skillsCorresponding > 100) {
+                                    personnels[a].skillsCorresponding = 100;
+                                }
+                            }
+                        }
+
+                        personnels[a].corresponding = Number(((personnels[a].skillsCorresponding + personnels[a].profilesCorresponding) / 2).toFixed(1));
+
+
 
                         LoopA(a + 1);
                     }
