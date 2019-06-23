@@ -33,6 +33,7 @@ controllers.installation = require('./controllers/installation');
 controllers.dictionary = require('./utils/dictionary');
 controllers.pdfs = require('./controllers/pdfs');
 controllers.monitor = require('./controllers/monitor');
+controllers.export = require('./controllers/export');
 controllers.angular = function (req, res) {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 };
@@ -385,6 +386,16 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.retired],
         access: _.findWhere(aclRoutes, {id: 54}).roles
     },
+
+    // === EXPORT PDF ROUTES ==========================================================
+    
+    {
+        path: _.findWhere(aclRoutes, {id: 56}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 56}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.export.api.positions],
+        access: _.findWhere(aclRoutes, {id: 56}).roles
+    },
+    
 
     // === MONITOR ROUTES ==========================================================
     

@@ -336,6 +336,26 @@ exports.api.list = function (req, res) {
     }
 }
 
+exports.list = function (options, callback) {
+    filter = {};
+    Position.find(filter, function (err, result) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            var positions = JSON.parse(JSON.stringify(result));
+            beautify(options, positions, function (err, objects) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, objects);
+                }
+            });
+        }
+    });
+}
+
+
 exports.api.read = function (req, res) {
     if (req.actor) {
         if (req.params.id === undefined) {
@@ -636,16 +656,27 @@ exports.findPositionByCode = function (code, callback) {
     });
 }
 
-exports.findPositionsByStructureCode = function (code, callback) {
+exports.findPositionsByStructureCode = function (options, callback) {
     Position.find({
-        code: {'$regex': code + "-"}
+        code: {'$regex': options.code + "-"}
     }).lean().exec(function (err, positions) {
         if (err) {
             log.error(err);
             callback(err);
         } else {
             if (positions != null) {
-                callback(null, positions);
+                if (options.beautify) {
+                    beautify(options, positions, function (err, objects) {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            callback(null, objects);
+                        }
+                    });
+                } else {
+                    callback(null, positions);
+                }
+
             } else {
                 callback(null);
             }
@@ -700,23 +731,62 @@ exports.api.delete = function (req, res) {
 
 
 function beautify(options, objects, callback) {
-    var language = options.language || "";
+    var language = options.language || "en";
     language = language.toLowerCase();
     var gt = dictionary.translator(language);
     if (options.beautify && options.beautify === true) {
         function objectsLoop(o) {
             if (o < objects.length && objects[o]) {
                 objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
-                controllers.structures.findStructureByCode(objects[o].code.substring(0, objects[o].code.indexOf('-')), language, function (err, structure) {
-                    if (err) {
-                        log.error(err);
-                        callback(err);
-                    } else {
-                        objects[o].structure = structure;
-                        objectsLoop(o + 1);
-                    }
-                });
+
+                if (options.structures && options.structures == false) {
+                    exports.findPositionHelder(objects[o].code, function (err, affectation) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            var name = "";
+                            if (affectation && affectation.personnel) {
+                                name = affectation.personnel.name.family[0] + " " + affectation.personnel.name.given[0];
+                            }
+                            objects[o].helderName = name;
+
+                            objectsLoop(o + 1);
+                        }
+                    });
+                } else {
+                    controllers.structures.findStructureByCode(objects[o].code.substring(0, objects[o].code.indexOf('-')), language, function (err, structure) {
+                        if (err) {
+                            log.error(err);
+                            callback(err);
+                        } else {
+                            objects[o].structure = structure;
+
+                            exports.findPositionHelder(objects[o].code, function (err, affectation) {
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    var name = "";
+                                    if (affectation && affectation.personnel) {
+                                        name = affectation.personnel.name.family[0] + " " + affectation.personnel.name.given[0];
+                                    }
+                                    objects[o].helderName = name;
+
+                                    objectsLoop(o + 1);
+                                }
+                            });
+                        }
+                    });
+                }
             } else {
+//                if (options.grouping) {
+//                    // Group the tests by structure _id 
+//                    objects = _.groupBy(objects, function (item) {
+//                        return item.structure.code;
+//                    });
+//
+//                    //transforme it in array
+//                    objects = _.toArray(objects);
+//                }
                 callback(null, objects);
             }
         }

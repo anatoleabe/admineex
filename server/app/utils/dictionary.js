@@ -105,6 +105,17 @@ var getValueFromJSON = function (file, id, language) {
 };
 exports.getValueFromJSON = getValueFromJSON;
 
+
+var getJSONById = function (file, id) {
+    var value = id;
+    if (id && id !== "") {
+        var found = _.findWhere(require(file), {id: id});
+        return found;
+    }
+    return undefined;
+};
+exports.getJSONById = getJSONById;
+
 var getPositionFromIdJSON = function (file, id, language) {
     var value = id;
     if (id && id !== "") {

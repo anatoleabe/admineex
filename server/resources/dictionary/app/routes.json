@@ -322,5 +322,11 @@
         "uri": "/api/monitor/:year/:quarter/:structure",
         "method": "GET",
         "roles": [1,2,3]
+    },
+    {
+        "id": 56,
+        "uri": "/api/export/pdf/positions/",
+        "method": "GET",
+        "roles": [1,2,3]
     }
 ]

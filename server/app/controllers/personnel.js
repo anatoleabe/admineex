@@ -620,26 +620,31 @@ function beautify(options, personnels, callback) {
                         callback(err);
                     } else {
 
-                        var status = personnels[a].status || "";
-                        var grade = personnels[a].grade || "";
-                        
-                        var category = personnels[a].category || "";
+                        var status = (personnels[a].status)? personnels[a].status : "";
+                        var grade = (personnels[a].grade)? personnels[a].grade : "";
+                        var category = (personnels[a].category)? personnels[a].category : "";
+
                         var highestLevelEducation = (personnels[a].qualifications) ? personnels[a].qualifications.highestLevelEducation : "";
                         var natureActe = (personnels[a].history) ? personnels[a].history.nature : "";
+                        var corps = personnels[a].corps;
+                        console.log("=== 1", corps);
 
                         personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
 
                         personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
-
+                        
                         if (status != "") {
                             personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
                             personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, language);
-                        }
-                        
-                        var corps = ((personnels[a].corps)? personnels[a].corps : personnels[a].grade.corps)+"";
 
-                        if (corps != "") {
-                            personnels[a].corps = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/corps.json', corps, language);
+                            var thisgrade = dictionary.getJSONById('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
+                            if (thisgrade){
+                                corps = ((personnels[a].corps) ? personnels[a].corps : thisgrade.corps);
+                            }
+                            
+                            if (corps && corps != "") {
+                                personnels[a].corps = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/corps.json', corps + "", language);
+                            }
                         }
 
                         if (highestLevelEducation != "") {
@@ -649,6 +654,7 @@ function beautify(options, personnels, callback) {
                         if (natureActe != "") {
                             personnels[a].history.nature = dictionary.getValueFromJSON('../../resources/dictionary/acts/natures.json', natureActe, language);
                         }
+
 
                         var situations = personnels[a].situations;
                         if (situations && situations.length > 0) {
@@ -664,10 +670,17 @@ function beautify(options, personnels, callback) {
                         var sanctions = personnels[a].sanctions;
                         if (sanctions && sanctions.length > 0) {
                             sanctions.sort(function (a, b) {
-                                return new Date(b.date) - new Date(a.date);
+                                if (a && b && a != null && b != null && a != "null" && b != "null") {
+                                    return new Date(b.date) - new Date(a.date);
+                                } else {
+                                    return 1;
+                                }
+
                             });
                             for (var i in sanctions) {
-                                sanctions[i].value = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions.json', sanctions[i].sanction, language);
+                                if (sanctions[i]) {
+                                    sanctions[i].value = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions.json', sanctions[i].sanction, language);
+                                }
                             }
                             personnels[a].sanctions = sanctions;
                         }
@@ -677,6 +690,7 @@ function beautify(options, personnels, callback) {
                         personnels[a].profilesCorresponding = 0;
 
                         //ASKED BY DGTCFM ONLY FOR TRESOR STAFF
+                        console.log("=== 3", corps);
                         if (corps == "2") {
                             personnels[a].skillsCorresponding = 40;
                             personnels[a].profilesCorresponding = 40;
@@ -712,7 +726,7 @@ function beautify(options, personnels, callback) {
                                         }
                                     }
                                 }
-                                personnels[a].skillsCorresponding += Number((100 * (count / 3)).toFixed(1));
+                                personnels[a].skillsCorresponding += Number((100 * (count / requiredProfiles.length)).toFixed(1));
                                 if (personnels[a].skillsCorresponding > 100) {
                                     personnels[a].skillsCorresponding = 100;
                                 }

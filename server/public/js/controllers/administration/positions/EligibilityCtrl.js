@@ -11,7 +11,7 @@ angular.module('EligibilityCtrl', []).controller('EligibilityController', functi
 
     $scope.helper = {
         title: gettextCatalog.getString("No correspondance found for this position"),
-        subtitle: gettextCatalog.getString("Vérifier que le profil et les compétences requis du poste ont été renségné ")
+        subtitle: gettextCatalog.getString("Verify that the profile and skills required for the position have been completed ")
     };
 
 

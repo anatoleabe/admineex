@@ -95,7 +95,7 @@ exports.api.list = function (req, res) {
                 function loopA(a) {
                     if (a < structures.length) {
                         structures[a].name = ((language && language !== "" && structures[a][language] != undefined && structures[a][language] != "") ? structures[a][language] : structures[a]['en']);
-                        controllers.positions.findPositionsByStructureCode(structures[a].code, function (err, positions) {
+                        controllers.positions.findPositionsByStructureCode({code: structures[a].code}, function (err, positions) {
                             if (err) {
                                 return res.status(500).send(err);
                             } else {
@@ -205,6 +205,25 @@ exports.read = function (options, id, callback) {
     });
 };
 
+
+exports.list = function (options, callback) {
+    var filter = {};
+    Structure.find(filter, function (err, result) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            var structures = JSON.parse(JSON.stringify(result));
+            beautify(options, structures, function (err, objects) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, objects);
+                }
+            });
+        }
+    });
+}
 
 exports.api.delete = function (req, res) {
     if (req.actor) {
@@ -332,16 +351,29 @@ function beautify(options, objects, callback) {
     language = language.toLowerCase();
     var gt = dictionary.translator(language);
     if (options.beautify && options.beautify === true) {
-        function objectsLoop(o) {
+        function Loop(o) {
             if (o < objects.length) {
                 objects[o].typeValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);
                 objects[o].rankValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/ranks.json', objects[o].rank, language);
-                objectsLoop(o + 1);
+
+                if (options.includePositions) {
+                    objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
+                    controllers.positions.findPositionsByStructureCode({code: objects[o].code, beautify: true, structures: false}, function (err, positions) {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            objects[o].positions = positions;
+                            Loop(o + 1);
+                        }
+                    });
+                } else {
+                    Loop(o + 1);
+                }
             } else {
                 callback(null, objects);
             }
         }
-        objectsLoop(0);
+        Loop(0);
     } else {
         callback(null, objects);
     }
