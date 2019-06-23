@@ -895,7 +895,7 @@ msgstr "LISTE DES STRUCTURES DE LA DGTCFM"
 
 #: app/controllers/export.js:60
 msgid "LIST OF VACANCIES"
-msgstr "Liste des postes vacants"
+msgstr "LISTE DES POSTES VACANTS"
 
 #: app/controllers/export.js:47
 msgid "LIST OF WORKSTATIONS BY STRUCTURE"
