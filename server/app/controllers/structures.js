@@ -355,13 +355,14 @@ function beautify(options, objects, callback) {
     language = language.toLowerCase();
     var gt = dictionary.translator(language);
     if (options.beautify && options.beautify === true) {
+        
         function Loop(o) {
             if (o < objects.length) {
                 objects[o].typeValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);
                 objects[o].rankValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/ranks.json', objects[o].rank, language);
                 objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
                 if (options.includePositions) {
-                    controllers.positions.findPositionsByStructureCode({code: objects[o].code, beautify: true, structures: false}, function (err, positions) {
+                    controllers.positions.findPositionsByStructureCode({code: objects[o].code, beautify: true, structures: false, vacancies: options.vacancies}, function (err, positions) {
                         if (err) {
                             callback(err);
                         } else {

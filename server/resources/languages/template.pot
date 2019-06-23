@@ -379,8 +379,8 @@ msgstr ""
 msgid "Choose profile"
 msgstr ""
 
-#: app/controllers/export.js:139
-#: app/controllers/export.js:74
+#: app/controllers/export.js:148
+#: app/controllers/export.js:83
 #: public/templates/administration/positions/main.html:60
 #: public/templates/administration/structures/edit.html:14
 #: public/templates/administration/structures/main.html:40
@@ -848,7 +848,7 @@ msgstr ""
 msgid "Here you can upload a <i>.csv</i> file"
 msgstr ""
 
-#: app/controllers/export.js:141
+#: app/controllers/export.js:150
 #: public/templates/administration/structures/main.html:42
 msgid "Hierarchical rank"
 msgstr ""
@@ -898,11 +898,15 @@ msgstr ""
 msgid "June"
 msgstr ""
 
-#: app/controllers/export.js:119
+#: app/controllers/export.js:128
 msgid "LIST OF DGTCFM'S STRUCTURES"
 msgstr ""
 
-#: app/controllers/export.js:46
+#: app/controllers/export.js:60
+msgid "LIST OF VACANCIES"
+msgstr ""
+
+#: app/controllers/export.js:47
 msgid "LIST OF WORKSTATIONS BY STRUCTURE"
 msgstr ""
 
@@ -1019,7 +1023,7 @@ msgstr ""
 msgid "Mother's name"
 msgstr ""
 
-#: app/controllers/export.js:140
+#: app/controllers/export.js:149
 #: public/templates/administration/structures/main.html:41
 msgid "Name"
 msgstr ""
@@ -1219,7 +1223,7 @@ msgstr ""
 msgid "Occupant information"
 msgstr ""
 
-#: app/controllers/export.js:76
+#: app/controllers/export.js:85
 msgid "Occupied by"
 msgstr ""
 
@@ -1374,7 +1378,7 @@ msgstr ""
 msgid "Position informations"
 msgstr ""
 
-#: app/controllers/export.js:75
+#: app/controllers/export.js:84
 #: public/templates/administration/positions/main.html:61
 msgid "Position name"
 msgstr ""
@@ -2057,7 +2061,7 @@ msgstr ""
 msgid "Tuesday"
 msgstr ""
 
-#: app/controllers/export.js:142
+#: app/controllers/export.js:151
 #: public/templates/administration/structures/main.html:43
 #: public/templates/staffs/mouvement/main.html:32
 msgid "Type"

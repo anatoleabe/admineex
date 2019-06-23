@@ -31,6 +31,7 @@ exports.api.positions = function (req, res) {
     })
     
     var structureCode = req.params.structure || "-1";
+    var vacancies = req.params.vacancies;
 
     var gt = dictionary.translator(req.actor.language);
 
@@ -47,11 +48,19 @@ exports.api.positions = function (req, res) {
     };
     
     var filter = {};
-    if (structureCode != "-1"){
+    if (structureCode != "-1" && structureCode != "undefined"){
         filter.code = structureCode;
     }
-
-    controllers.structures.list({actor: req.actor, language: req.actor.language, beautify: true, includePositions: true, filter: filter}, function (err, structures) {
+    var option = {
+        actor: req.actor, language: req.actor.language, beautify: true, includePositions: true, filter: filter,
+    }
+    
+    if (vacancies && (vacancies == "true" || vacancies == true)){
+        option.vacancies = true;
+        meta.title = gt.gettext("LIST OF VACANCIES");
+    }
+    
+    controllers.structures.list(option, function (err, structures) {
         if (err) {
             log.error(err);
             return res.status(500).send(err);

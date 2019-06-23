@@ -382,7 +382,7 @@ msgstr "Choisir une compétence"
 msgid "Choose profile"
 msgstr "Choisir un profile"
 
-#: app/controllers/export.js:139 app/controllers/export.js:74
+#: app/controllers/export.js:148 app/controllers/export.js:83
 #: public/templates/administration/positions/main.html:60
 #: public/templates/administration/structures/edit.html:14
 #: public/templates/administration/structures/main.html:40
@@ -844,7 +844,7 @@ msgstr ""
 msgid "Here you can upload a <i>.csv</i> file"
 msgstr ""
 
-#: app/controllers/export.js:141
+#: app/controllers/export.js:150
 #: public/templates/administration/structures/main.html:42
 msgid "Hierarchical rank"
 msgstr "Rang hiérarchique"
@@ -889,11 +889,15 @@ msgstr "Juillet"
 msgid "June"
 msgstr "Juin"
 
-#: app/controllers/export.js:119
+#: app/controllers/export.js:128
 msgid "LIST OF DGTCFM'S STRUCTURES"
 msgstr "LISTE DES STRUCTURES DE LA DGTCFM"
 
-#: app/controllers/export.js:46
+#: app/controllers/export.js:60
+msgid "LIST OF VACANCIES"
+msgstr "Liste des postes vacants"
+
+#: app/controllers/export.js:47
 msgid "LIST OF WORKSTATIONS BY STRUCTURE"
 msgstr "LISTE DES POSTES DE TRAVAIL PAR STRUTUTRE"
 
@@ -1002,7 +1006,7 @@ msgstr "Plus d'actions"
 msgid "Mother's name"
 msgstr "Nom de la mère"
 
-#: app/controllers/export.js:140
+#: app/controllers/export.js:149
 #: public/templates/administration/structures/main.html:41
 msgid "Name"
 msgstr "Nom"
@@ -1199,7 +1203,7 @@ msgstr "ON"
 msgid "Occupant information"
 msgstr "Information de l'occupant"
 
-#: app/controllers/export.js:76
+#: app/controllers/export.js:85
 msgid "Occupied by"
 msgstr "Occupé par"
 
@@ -1356,7 +1360,7 @@ msgstr ""
 msgid "Position informations"
 msgstr "Information du Poste"
 
-#: app/controllers/export.js:75
+#: app/controllers/export.js:84
 #: public/templates/administration/positions/main.html:61
 msgid "Position name"
 msgstr "Nom du poste"
@@ -2042,7 +2046,7 @@ msgstr ""
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: app/controllers/export.js:142
+#: app/controllers/export.js:151
 #: public/templates/administration/structures/main.html:43
 #: public/templates/staffs/mouvement/main.html:32
 msgid "Type"

@@ -722,6 +722,7 @@ function beautify(options, objects, callback) {
     language = language.toLowerCase();
     var gt = dictionary.translator(language);
     if (options.beautify && options.beautify === true) {
+        var vacancies = [];
         function objectsLoop(o) {
             if (o < objects.length && objects[o]) {
                 objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
@@ -734,6 +735,8 @@ function beautify(options, objects, callback) {
                             var name = "";
                             if (affectation && affectation.personnel) {
                                 name = affectation.personnel.name.family[0] + " " + affectation.personnel.name.given[0];
+                            } else {
+                                vacancies.push(objects[o]);
                             }
                             objects[o].helderName = name;
 
@@ -755,6 +758,8 @@ function beautify(options, objects, callback) {
                                     var name = "";
                                     if (affectation && affectation.personnel) {
                                         name = affectation.personnel.name.family[0] + " " + affectation.personnel.name.given[0];
+                                    } else {
+                                        vacancies.push(objects[o]);
                                     }
                                     objects[o].helderName = name;
 
@@ -765,16 +770,11 @@ function beautify(options, objects, callback) {
                     });
                 }
             } else {
-//                if (options.grouping) {
-//                    // Group the tests by structure _id 
-//                    objects = _.groupBy(objects, function (item) {
-//                        return item.structure.code;
-//                    });
-//
-//                    //transforme it in array
-//                    objects = _.toArray(objects);
-//                }
-                callback(null, objects);
+                if (options.vacancies == true){
+                    callback(null, vacancies);
+                }else{
+                    callback(null, objects);
+                }
             }
         }
         objectsLoop(0);

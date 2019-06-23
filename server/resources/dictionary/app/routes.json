@@ -325,7 +325,7 @@
     },
     {
         "id": 56,
-        "uri": "/api/export/pdf/positions/:structure",
+        "uri": "/api/export/pdf/positions/:structure/:vacancies",
         "method": "GET",
         "roles": [1,2,3]
     },

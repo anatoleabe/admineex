@@ -100,9 +100,11 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                         var selectedTruct = JSON.parse($scope.filters.structure);
                         code = selectedTruct.code;
                     }
+                    
+                    
                     $http({
                         method: 'GET',
-                        url: '/api/export/pdf/positions/'+code,
+                        url: '/api/export/pdf/positions/'+code+'/'+$scope.showOnlyVacancies,
                         headers: {'Content-Type': "application/pdf"},
                         responseType: "arraybuffer"
                     }).then(function (response) {
