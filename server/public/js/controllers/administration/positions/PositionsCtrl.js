@@ -109,7 +109,7 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                         responseType: "arraybuffer"
                     }).then(function (response) {
                         var d = new Blob([response.data], {type: "application/pdf"});
-                        FileSaver.saveAs(d, 'CV_xxx.pdf');
+                        FileSaver.saveAs(d, 'List_of_positions_dgtcfm.pdf');
                         $rootScope.kernel.loading = 100;
                         deferred.resolve(response.data);
                     }).catch(function (response) {

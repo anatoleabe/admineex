@@ -627,7 +627,6 @@ function beautify(options, personnels, callback) {
                         var highestLevelEducation = (personnels[a].qualifications) ? personnels[a].qualifications.highestLevelEducation : "";
                         var natureActe = (personnels[a].history) ? personnels[a].history.nature : "";
                         var corps = personnels[a].corps;
-                        console.log("=== 1", corps);
 
                         personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
 
@@ -690,7 +689,6 @@ function beautify(options, personnels, callback) {
                         personnels[a].profilesCorresponding = 0;
 
                         //ASKED BY DGTCFM ONLY FOR TRESOR STAFF
-                        console.log("=== 3", corps);
                         if (corps == "2") {
                             personnels[a].skillsCorresponding = 40;
                             personnels[a].profilesCorresponding = 40;
