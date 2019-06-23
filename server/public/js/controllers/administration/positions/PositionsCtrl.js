@@ -89,16 +89,20 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
 
 
             $scope.openPdf = function () {
-                console.log("PDF1")
-
                 $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
                     var FileSaver = $injector.get('FileSaver');
                     $rootScope.kernel.loading = 0;
                     var deferred = $q.defer();
                     $scope.promise = deferred.promise;
+                    var code = "-1";
+                    
+                    if ($scope.filters.structure){
+                        var selectedTruct = JSON.parse($scope.filters.structure);
+                        code = selectedTruct.code;
+                    }
                     $http({
                         method: 'GET',
-                        url: '/api/export/pdf/positions/',
+                        url: '/api/export/pdf/positions/'+code,
                         headers: {'Content-Type': "application/pdf"},
                         responseType: "arraybuffer"
                     }).then(function (response) {

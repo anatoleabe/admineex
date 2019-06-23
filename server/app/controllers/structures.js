@@ -208,6 +208,10 @@ exports.read = function (options, id, callback) {
 
 exports.list = function (options, callback) {
     var filter = {};
+    if (options.filter){
+        filter = options.filter;
+    }
+    console.log("filter", filter)
     Structure.find(filter, function (err, result) {
         if (err) {
             log.error(err);

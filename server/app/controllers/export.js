@@ -4,7 +4,7 @@ var moment = require('moment');
 var _ = require('underscore');
 var fs = require("fs");
 var pdf = require('dynamic-html-pdf');
-var html = fs.readFileSync('resources/pdf/list.html', 'utf8');
+var html = fs.readFileSync('resources/pdf/positions.html', 'utf8');
 var keyGenerator = require("generate-key");
 var dictionary = require('../utils/dictionary');
 
@@ -30,9 +30,10 @@ exports.api.positions = function (req, res) {
         }
         return options.inverse(this);
     })
+    
+    var structureCode = req.params.structure || "-1";
 
     var gt = dictionary.translator(req.actor.language);
-    var subject = "DataToCare - " + gt.gettext("Alics notification");
 
     var options = {
         format: "A4",
@@ -41,18 +42,25 @@ exports.api.positions = function (req, res) {
         "border-bottom": "15mm",
         pagination:true
     };
+    
     var meta = {
         title: gt.gettext("LIST OF WORKSTATIONS"),
         structure: gt.gettext("All structures")
     };
+    
+    var filter = {};
+    if (structureCode != "-1"){
+        filter.code = structureCode;
+    }
 
-    controllers.structures.list({actor: req.actor, language: req.actor.language, beautify: true, includePositions: true}, function (err, positions) {
+    controllers.structures.list({actor: req.actor, language: req.actor.language, beautify: true, includePositions: true, filter: filter}, function (err, structures) {
         if (err) {
             log.error(err);
             return res.status(500).send(err);
         } else {
-            var structures = structures;
-
+            if (structureCode != "-1"){
+                meta.structure = structures[0].name;
+            }
             var tmpFile = "./tmp/" + keyGenerator.generateKey() + ".pdf";
             if (!fs.existsSync("./tmp")) {
                 fs.mkdirSync("./tmp");
@@ -62,7 +70,7 @@ exports.api.positions = function (req, res) {
                 type: 'file', // 'file' or 'buffer'
                 template: html,
                 context: {
-                    positions: positions,
+                    positions: structures,
                     meta: meta,
                     header: {
                         code:gt.gettext("Code"),
