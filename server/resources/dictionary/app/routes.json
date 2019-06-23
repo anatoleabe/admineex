@@ -328,5 +328,11 @@
         "uri": "/api/export/pdf/positions/:structure",
         "method": "GET",
         "roles": [1,2,3]
+    },
+    {
+        "id": 57,
+        "uri": "/api/export/pdf/structures/",
+        "method": "GET",
+        "roles": [1,2,3]
     }
 ]

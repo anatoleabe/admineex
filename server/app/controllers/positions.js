@@ -189,8 +189,6 @@ exports.affectToPositionFromJson = function (callback) {
 
             var skills = affectations[a].creel.split(";");
             var profiles = affectations[a].preel.split(";");
-            console.log("====");
-
 
             Position.findOne({code: codep}, projection, function (err, post) {
                 if (err) {
@@ -475,7 +473,6 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                 var profilelRequired = positions[a].prequired.split(";");
                 var activities = positions[a].activity.split(";");
                 var tasks = positions[a].task.split(";");
-                console.log("====");
 
                 for (var s in skillRequired) {
                     skillRequired[s] = skillRequired[s];
@@ -524,7 +521,6 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                             fields = fieldsUpdate;
                             fields._id = position._id;
                         }
-                        console.log(fields);
                         exports.upsert(fields, function (err) {
                             if (err) {
                                 log.error(err);
@@ -536,16 +532,7 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                 });
 
             } else {
-//                nconf.set("initialize:positions", "1");
-//                nconf.save(function (err) {
-//                    if (err) {
-//                        log.error(err);
-//                        audit.logEvent('[nconf]', 'Position', 'Update', "", "", 'failed', "nconf attempted to save configuration");
-//                    } else {
-                console.log("===done===");
                 callback(null, avoidedPositionsCode);
-//                    }
-//                });
             }
         }
         loopA(0);

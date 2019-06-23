@@ -136,11 +136,11 @@ function buildNav(user, callback){
         label: 'Structures',
         name: 'Structures'
     };
-    var administrationTab3 = {
-        href: 'home.administration.export',
-        label: 'Export',
-        name: 'Export'
-    };
+//    var administrationTab3 = {
+//        href: 'home.administration.export',
+//        label: 'Export',
+//        name: 'Export'
+//    };
 //    var administrationTab4 = {
 //        href: 'home.administration.duplicates',
 //        label: 'Duplicates',
@@ -237,7 +237,7 @@ function buildNav(user, callback){
             // LEFT MENU TABS FOR ADMINISTRATION
             nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab1);
             nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab2);
-            nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab3);
+//            nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab3);
 //            //LEFT MENU REPORTS
 //            nav.left[0].items.push(reports);
             // PREFERNCES

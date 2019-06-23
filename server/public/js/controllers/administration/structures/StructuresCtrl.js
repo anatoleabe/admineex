@@ -1,4 +1,4 @@
-angular.module('StructuresCtrl', []).controller('StructuresController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope) {
+angular.module('StructuresCtrl', []).controller('StructuresController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope , $q, $http) {
     $ocLazyLoad.load('js/services/StructureService.js').then(function () {
         var Structure = $injector.get('Structure');
         var helper = {
@@ -49,6 +49,30 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
                 console.error(response);
             });
         }
+
+        $scope.openPdf = function () {
+            $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
+                var FileSaver = $injector.get('FileSaver');
+                $rootScope.kernel.loading = 0;
+                var deferred = $q.defer();
+                $scope.promise = deferred.promise;
+                
+                $http({
+                    method: 'GET',
+                    url: '/api/export/pdf/structures/',
+                    headers: {'Content-Type': "application/pdf"},
+                    responseType: "arraybuffer"
+                }).then(function (response) {
+                    var d = new Blob([response.data], {type: "application/pdf"});
+                    FileSaver.saveAs(d, 'CV_xxx.pdf');
+                    $rootScope.kernel.loading = 100;
+                    deferred.resolve(response.data);
+                }).catch(function (response) {
+                    console.error(response);
+                });
+            });
+
+        };
 
         $scope.showConfirm = function (organization) {
             var confirm = $mdDialog.confirm()

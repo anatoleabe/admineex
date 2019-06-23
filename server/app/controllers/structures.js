@@ -359,9 +359,8 @@ function beautify(options, objects, callback) {
             if (o < objects.length) {
                 objects[o].typeValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);
                 objects[o].rankValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/ranks.json', objects[o].rank, language);
-
+                objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
                 if (options.includePositions) {
-                    objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
                     controllers.positions.findPositionsByStructureCode({code: objects[o].code, beautify: true, structures: false}, function (err, positions) {
                         if (err) {
                             callback(err);

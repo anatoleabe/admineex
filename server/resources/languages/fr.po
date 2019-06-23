@@ -53,7 +53,7 @@ msgstr ""
 
 #: public/js/controllers/ConfigurationCtrl.js:35
 #: public/js/controllers/administration/OrganizationsCtrl.js:49
-#: public/js/controllers/administration/structures/StructuresCtrl.js:56
+#: public/js/controllers/administration/structures/StructuresCtrl.js:80
 #: public/js/controllers/organizations/OrganizationsCtrl.js:49
 #: public/js/controllers/projects/ProjectsCtrl.js:49
 #: public/js/controllers/staffs/discipline/DisciplinesCtrl.js:49
@@ -164,7 +164,7 @@ msgstr "Âge"
 msgid "Alics"
 msgstr ""
 
-#: app/controllers/account.js:305 app/controllers/export.js:35
+#: app/controllers/account.js:305
 msgid "Alics notification"
 msgstr "Notification Alics"
 
@@ -172,7 +172,6 @@ msgstr "Notification Alics"
 msgid "All quarters"
 msgstr "Tous les quartiers"
 
-#: app/controllers/export.js:45
 #: public/templates/administration/positions/main.html:12
 #: public/templates/monitor/main.html:38
 #: public/templates/staffs/staff/main.html:10
@@ -243,7 +242,7 @@ msgid "Are you sure you want to delete the account of"
 msgstr "Êtes-vous sûr de vouloir supprimer le compte de"
 
 #: public/js/controllers/administration/OrganizationsCtrl.js:49
-#: public/js/controllers/administration/structures/StructuresCtrl.js:56
+#: public/js/controllers/administration/structures/StructuresCtrl.js:80
 #: public/js/controllers/organizations/OrganizationsCtrl.js:49
 msgid "Are you sure you want to delete the organization"
 msgstr "Etes-vous sûr de vouloir supprimer l'organisation"
@@ -328,7 +327,7 @@ msgid "Can not save, one or more field is empty"
 msgstr "Impossible d'enregistrer, un ou plusieurs champs sont vides"
 
 #: public/js/controllers/administration/OrganizationsCtrl.js:51
-#: public/js/controllers/administration/structures/StructuresCtrl.js:58
+#: public/js/controllers/administration/structures/StructuresCtrl.js:82
 #: public/js/controllers/organizations/OrganizationsCtrl.js:51
 #: public/js/controllers/projects/ProjectsCtrl.js:51
 #: public/js/controllers/staffs/discipline/DisciplinesCtrl.js:51
@@ -383,7 +382,7 @@ msgstr "Choisir une compétence"
 msgid "Choose profile"
 msgstr "Choisir un profile"
 
-#: app/controllers/export.js:67
+#: app/controllers/export.js:139 app/controllers/export.js:74
 #: public/templates/administration/positions/main.html:60
 #: public/templates/administration/structures/edit.html:14
 #: public/templates/administration/structures/main.html:40
@@ -504,7 +503,7 @@ msgid "Delete this account"
 msgstr "Supprimer ce compte"
 
 #: public/js/controllers/administration/OrganizationsCtrl.js:48
-#: public/js/controllers/administration/structures/StructuresCtrl.js:55
+#: public/js/controllers/administration/structures/StructuresCtrl.js:79
 #: public/js/controllers/organizations/OrganizationsCtrl.js:48
 msgid "Delete this organization"
 msgstr "Supprimer cette organisation"
@@ -845,6 +844,7 @@ msgstr ""
 msgid "Here you can upload a <i>.csv</i> file"
 msgstr ""
 
+#: app/controllers/export.js:141
 #: public/templates/administration/structures/main.html:42
 msgid "Hierarchical rank"
 msgstr "Rang hiérarchique"
@@ -889,9 +889,13 @@ msgstr "Juillet"
 msgid "June"
 msgstr "Juin"
 
-#: app/controllers/export.js:44
-msgid "LIST OF WORKSTATIONS"
-msgstr "LISTE DES POSTES DE TRAVAIL"
+#: app/controllers/export.js:119
+msgid "LIST OF DGTCFM'S STRUCTURES"
+msgstr "LISTE DES STRUCTURES DE LA DGTCFM"
+
+#: app/controllers/export.js:46
+msgid "LIST OF WORKSTATIONS BY STRUCTURE"
+msgstr "LISTE DES POSTES DE TRAVAIL PAR STRUTUTRE"
 
 #: public/templates/settings/language.html:5
 #: public/templates/settings/main.html:26 public/templates/users/edit.html:37
@@ -998,6 +1002,7 @@ msgstr "Plus d'actions"
 msgid "Mother's name"
 msgstr "Nom de la mère"
 
+#: app/controllers/export.js:140
 #: public/templates/administration/structures/main.html:41
 msgid "Name"
 msgstr "Nom"
@@ -1175,7 +1180,7 @@ msgstr "OFF"
 
 #: public/js/controllers/InstallationCtrl.js:74
 #: public/js/controllers/administration/OrganizationsCtrl.js:50
-#: public/js/controllers/administration/structures/StructuresCtrl.js:57
+#: public/js/controllers/administration/structures/StructuresCtrl.js:81
 #: public/js/controllers/organizations/OrganizationsCtrl.js:50
 #: public/js/controllers/projects/ProjectsCtrl.js:50
 #: public/js/controllers/staffs/discipline/DisciplinesCtrl.js:50
@@ -1194,7 +1199,7 @@ msgstr "ON"
 msgid "Occupant information"
 msgstr "Information de l'occupant"
 
-#: app/controllers/export.js:69
+#: app/controllers/export.js:76
 msgid "Occupied by"
 msgstr "Occupé par"
 
@@ -1351,7 +1356,7 @@ msgstr ""
 msgid "Position informations"
 msgstr "Information du Poste"
 
-#: app/controllers/export.js:68
+#: app/controllers/export.js:75
 #: public/templates/administration/positions/main.html:61
 msgid "Position name"
 msgstr "Nom du poste"
@@ -2037,6 +2042,7 @@ msgstr ""
 msgid "Tuesday"
 msgstr "Mardi"
 
+#: app/controllers/export.js:142
 #: public/templates/administration/structures/main.html:43
 #: public/templates/staffs/mouvement/main.html:32
 msgid "Type"
@@ -2198,6 +2204,9 @@ msgstr "se trouve dans Organisation"
 #: public/js/appFilters.js:370
 msgid "unknown"
 msgstr "non-connu"
+
+#~ msgid "LIST OF WORKSTATIONS"
+#~ msgstr "LISTE DES POSTES DE TRAVAIL"
 
 #~ msgid "Name of position held"
 #~ msgstr "Nom du poste occupé"

@@ -69,7 +69,7 @@ and open the template in the editor.
                 font-style: italic;
                 font-size:12px;
             }
-            
+
             .content{
                 text-align: center;
             }
@@ -177,40 +177,36 @@ and open the template in the editor.
         </div>
     </center>
 
-    <div id="content" style="margin:-5px">
+    <div id="content" style="margin:-10px" >
         <h4 style ='text-align: center;font-size:14px'><strong> {{meta.title}}</strong> </h4>
     </div>
 
 
-    <table class="blueTable">
+    <table class="blueTable" style="margin-top: -5px">
         <thead>
             <tr>
-                <th width="60">{{header.code}}</th>
-                <th translate>{{header.positionName}}</th>
-                <th translate>{{header.occupiedBy}}</th>
+                <th width="50">{{header.code}}</th>
+                <th translate>{{header.name}}</th>
+                <th translate>{{header.rank}}</th>
+                <th translate>{{header.type}}</th>
             </tr>
         </thead>
         <tfoot>
             <tr>
-                <td colspan="3">
-                    <div >Total: {{positions.length}} </div>
+                <td colspan="4">
+                    <div >Total: {{structures.length}} </div>
                 </td>
             </tr>
         </tfoot>
         <tbody>
-            {{#each positions}}
-            <tr ><td colspan="3"><b><center>{{this.code}} - {{this.name}}</center></b></td></tr>
-            {{#each this.positions}}
+            {{#each structures}}
             <tr>
                 <td>{{this.code}}</td>
                 <td>{{this.name}}</td>
-                <td>
-                    {{this.helderName}}
-                </td>
+                <td>{{this.rankValue}}</td>
+                <td>{{this.typeValue}}</td>
             </tr>
             {{/each}}
-            {{/each}}
-
         </tbody>
     </table>
 </body>
