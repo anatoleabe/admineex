@@ -11,7 +11,7 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
         $scope.query = {
             limit: 50,
             page: 1,
-            order: "id"
+            order: "code"
         };
 
         $scope.edit = function (params) {

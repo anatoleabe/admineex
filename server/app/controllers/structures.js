@@ -95,7 +95,7 @@ exports.api.list = function (req, res) {
                 function loopA(a) {
                     if (a < structures.length) {
                         structures[a].name = ((language && language !== "" && structures[a][language] != undefined && structures[a][language] != "") ? structures[a][language] : structures[a]['en']);
-                        controllers.positions.findPositionsByStructureCode({code: structures[a].code}, function (err, positions) {
+                        controllers.positions.findPositionsByStructureId({_id: structures[a]._id}, function (err, positions) {
                             if (err) {
                                 return res.status(500).send(err);
                             } else {
@@ -362,7 +362,7 @@ function beautify(options, objects, callback) {
                 objects[o].rankValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/ranks.json', objects[o].rank, language);
                 objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
                 if (options.includePositions) {
-                    controllers.positions.findPositionsByStructureCode({code: objects[o].code, beautify: true, structures: false, vacancies: options.vacancies}, function (err, positions) {
+                    controllers.positions.findPositionsByStructureId({_id: objects[o]._id, beautify: true, structures: false, vacancies: options.vacancies}, function (err, positions) {
                         if (err) {
                             callback(err);
                         } else {

@@ -16,5 +16,23 @@
         "code": "SDIR",
         "en": "Sous-Direction",
         "fr": "Sous-Direction"
+    },
+    {
+        "id": "4",
+        "code": "DA",
+        "en": "Direction Adjoint",
+        "fr": "Direction Adjoint"
+    },
+    {
+        "id": "5",
+        "code": "SERV",
+        "en": "Service",
+        "fr": "Service"
+    },
+    {
+        "id": "6",
+        "code": "BUR",
+        "en": "Bureau",
+        "fr": "Bureau"
     }
 ]

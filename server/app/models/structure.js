@@ -10,6 +10,7 @@ var StructureSchema = new Schema({
     en: {type: String, required: true},
     fr: {type: String, required: false},
     fatherIdentifier: {type: String, required: false},
+    fatherId: { type: ObjectId, required: false },
     rank: {type: String, required: false},
     type: {type: String, required: false},
     activities: [],

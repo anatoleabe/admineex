@@ -5,10 +5,53 @@
                 <md-card>
                     <md-card-title style="padding-bottom: 0;">
                         <md-card-title-text>
-                            <span class="md-headline" translate>Structure informations</span>
+                            <span class="md-headline" translate>Creation of new structure</span>
                         </md-card-title-text>
                     </md-card-title>
                     <md-card-content>
+                        <div layout="row">
+                            <md-input-container class="md-block" flex>
+                                <label translate>Structure type</label>
+                                <md-select name="type" ng-model="structure.type" required >
+                                    <md-option ng-repeat="type in types" value="{{type.id}}" >
+                                        {{type.name| uppercase}}
+                                    </md-option>
+                                </md-select>
+                                <div ng-messages="type.$error">
+                                    <div ng-message="required">
+                                        The structure type is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                            <md-input-container class="md-block" flex>
+                                <label translate>Structure rank</label>
+                                <md-select name="rank" ng-model="structure.rank" required ng-change="rankChange()">
+                                    <md-option ng-repeat="rank in ranks" value="{{rank.id}}" >
+                                        {{rank.name}}
+                                    </md-option>
+                                </md-select>
+                                <div ng-messages="rank.$error">
+                                    <div ng-message="required">
+                                        The structure rang is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div layout="row" ng-show="addFather">
+                            <md-input-container class="md-block" flex >
+                                <label translate>Structure</label>
+                                <md-select name="selectedStruc" ng-model="selected.structure" required ng-change="structureChange()">
+                                    <md-option ng-repeat="struct in structures| filter:structureFilter" value="{{struct}}" >
+                                        {{struct.name}} <em>(code: {{struct.code}})</em> 
+                                    </md-option>
+                                </md-select>
+                                <div ng-messages="selectedStruc.$error">
+                                    <div ng-message="required">
+                                        This is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
                         <div layout="row" >
                             <md-input-container class="md-block" flex>
                                 <label translate>Code</label>
@@ -31,34 +74,32 @@
                         </div>
                         <div layout="row">
                             <md-input-container class="md-block" flex>
-                                <label translate>Structure type</label>
-                                <md-select name="type" ng-model="structure.type" required >
-                                    <md-option ng-repeat="type in types" value="{{type.id}}" >
-                                        {{type.name| uppercase}}
+                                <label translate>Region</label>
+                                <md-select name="regions" ng-model="structure.address[0].region" required >
+                                    <md-option ng-repeat="region in regions" value="{{region.id}}" >
+                                        {{region.name}}
                                     </md-option>
                                 </md-select>
-                                <div ng-messages="type.$error">
+                                <div ng-messages="step1.regions.$error">
                                     <div ng-message="required">
-                                        The structure type is required to proceed on next step.
+                                        The original region is required to proceed on next step.
                                     </div>
                                 </div>
                             </md-input-container>
                             <md-input-container class="md-block" flex>
-                                <label translate>Structure rank</label>
-                                <md-select name="rank" ng-model="structure.rank" required >
-                                    <md-option ng-repeat="rank in ranks" value="{{rank.id}}" >
-                                        {{rank.name}}
+                                <label translate>division</label>
+                                <md-select name="division" ng-model="structure.address[0].department" required>
+                                    <md-option ng-repeat="department in departments" value="{{department.id}}">
+                                        {{department.name}}
                                     </md-option>
                                 </md-select>
-                                <div ng-messages="rank.$error">
+                                <div ng-messages="step1.division.$error">
                                     <div ng-message="required">
-                                        The structure rang is required to proceed on next step.
+                                        The division is required to proceed on next step.
                                     </div>
                                 </div>
                             </md-input-container>
                         </div>
-                        
-                        
                     </md-card-content>
                 </md-card>
                 <md-card-actions layout="row" layout-align="end center">

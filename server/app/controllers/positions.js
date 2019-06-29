@@ -277,7 +277,7 @@ exports.api.list = function (req, res) {
         if (req.params.id && req.params.id != "-1") {
             filter = {$and: []};
             filter.$and.push({
-                "code": {'$regex': req.params.id + "-"}
+                "code": {'$regex': req.params.id + "P"}
             });
         }
 
@@ -290,7 +290,6 @@ exports.api.list = function (req, res) {
             } else {
                 var positions = JSON.parse(JSON.stringify(result));
                 var positionsFiltered = [];
-                var cp = 10;
                 function LoopA(o) {
                     if (o < positions.length) {
                         //TODO compute real effective
@@ -304,7 +303,7 @@ exports.api.list = function (req, res) {
                                 } else {
                                     positions[o].actualEffective = 0;
                                 }
-                                positions[o].vacancies = Number(positions[o].requiredEffective) - positions[o].actualEffective;
+                                positions[o].vacancies = 1 - positions[o].actualEffective;
 
                                 if (restriction && restriction == "0" && positions[o].vacancies > 0) {
                                     positionsFiltered.push(positions[o]);
@@ -473,6 +472,8 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                 var profilelRequired = positions[a].prequired.split(";");
                 var activities = positions[a].activity.split(";");
                 var tasks = positions[a].task.split(";");
+                var taskValues = [];
+                var activitiesValues = [];
 
                 for (var s in skillRequired) {
                     skillRequired[s] = skillRequired[s];
@@ -483,19 +484,26 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                 }
 
                 for (var s in activities) {
-                    activities[s] = activities[s].trim().capitalize();
+                    if (activities[s] && activities[s] != "") {
+                        var activity = dictionary.getJSONById('../../resources/dictionary/tmp/activities.json', activities[s].trim());
+                        activitiesValues.push(activity.activity.capitalize());
+                    }
                 }
 
                 for (var s in tasks) {
-                    tasks[s] = tasks[s].trim().capitalize();
+                    if (tasks[s] && tasks[s] != "") {
+                        //console.log(tasks, tasks[s]);
+                        var task = dictionary.getJSONById('../../resources/dictionary/tmp/tasks.json', tasks[s].trim());
+                        taskValues.push(task.task.capitalize());
+                    }
                 }
 
 
                 var fieldsUpdate = {
                     code: positions[a].codept,
                     realisationRequired: positions[a].nbtotraite,
-                    activities: activities,
-                    tasks: tasks,
+                    activities: activitiesValues,
+                    tasks: taskValues,
                     requiredProfiles: profilelRequired,
                     requiredSkills: skillRequired,
                 }
@@ -505,8 +513,8 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                     en: positions[a].pt,
                     fr: positions[a].pt,
                     realisationRequired: positions[a].nbtotraite,
-                    activities: activities,
-                    tasks: tasks,
+                    activities: activitiesValues,
+                    tasks: taskValues,
                     requiredProfiles: profilelRequired,
                     requiredSkills: skillRequired,
                 }
@@ -516,16 +524,24 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                         log.error(err);
                         callback(err);
                     } else {
-                        var fields = fieldsCreate;
-                        if (position) {// If this position already exist
-                            fields = fieldsUpdate;
-                            fields._id = position._id;
-                        }
-                        exports.upsert(fields, function (err) {
+                        controllers.structures.findStructureByCode(positions[a].codept.substring(0, positions[a].codept.indexOf('P')), "en", function (err, structure) {
                             if (err) {
                                 log.error(err);
+                                callback(err);
                             } else {
-                                loopA(a + 1);
+                                var fields = fieldsCreate;
+                                fields.structureId = structure._id;
+                                if (position) {// If this position already exist
+                                    fields = fieldsUpdate;
+                                    fields._id = position._id;
+                                }
+                                exports.upsert(fields, function (err) {
+                                    if (err) {
+                                        log.error(err);
+                                    } else {
+                                        loopA(a + 1);
+                                    }
+                                });
                             }
                         });
                     }
@@ -645,7 +661,35 @@ exports.findPositionByCode = function (code, callback) {
 
 exports.findPositionsByStructureCode = function (options, callback) {
     Position.find({
-        code: {'$regex': options.code + "-"}
+        code: {'$regex': options.code + "P"}
+    }).lean().exec(function (err, positions) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            if (positions != null) {
+                if (options.beautify) {
+                    beautify(options, positions, function (err, objects) {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            callback(null, objects);
+                        }
+                    });
+                } else {
+                    callback(null, positions);
+                }
+
+            } else {
+                callback(null);
+            }
+        }
+    });
+}
+
+exports.findPositionsByStructureId = function (options, callback) {
+    Position.find({
+        structureId: options._id
     }).lean().exec(function (err, positions) {
         if (err) {
             log.error(err);
@@ -744,7 +788,7 @@ function beautify(options, objects, callback) {
                         }
                     });
                 } else {
-                    controllers.structures.findStructureByCode(objects[o].code.substring(0, objects[o].code.indexOf('-')), language, function (err, structure) {
+                    controllers.structures.findStructureByCode(objects[o].code.substring(0, objects[o].code.indexOf('P')), language, function (err, structure) {
                         if (err) {
                             log.error(err);
                             callback(err);
@@ -770,9 +814,9 @@ function beautify(options, objects, callback) {
                     });
                 }
             } else {
-                if (options.vacancies == true){
+                if (options.vacancies == true) {
                     callback(null, vacancies);
-                }else{
+                } else {
                     callback(null, objects);
                 }
             }

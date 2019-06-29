@@ -1,402 +1,387 @@
 [
- {
-   "id": "1",
-   "fr": "Administration",
-   "en": "Administration"
- },
- {
-   "id": "2",
-   "fr": "Administration générale",
-   "en": "General Administration"
- },
- {
-   "id": "3",
-   "fr": "Archive",
-   "en": "Archive"
- },
- {
-   "id": "4",
-   "fr": "Assurance",
-   "en": "Insurance"
- },
- {
-   "id": "5",
-   "fr": "Banque et monaie",
-   "en": "Bank and monies"
- },
- {
-   "id": "6",
-   "fr": "Bâtiment",
-   "en": "Building"
- },
- {
-   "id": "7",
-   "fr": "CEP ou équivalent",
-   "en": "CEP or equivalent"
- },
- {
-   "id": "8",
-   "fr": "Comptabilité Publique",
-   "en": "Public Accounting"
- },
- {
-   "id": "9",
-   "fr": "Comptabilité-matière",
-   "en": "Stock records"
- },
- {
-   "id": "10",
-   "fr": "Conduite automobile",
-   "en": "Car driving"
- },
- {
-   "id": "11",
-   "fr": "Documentation",
-   "en": "Documentation"
- },
- {
-   "id": "12",
-   "fr": "Droit",
-   "en": "Law"
- },
- {
-   "id": "13",
-   "fr": "Economie",
-   "en": "Economy"
- },
- {
-   "id": "14",
-   "fr": "Electronique",
-   "en": "Electronic"
- },
- {
-   "id": "15",
-   "fr": "Enseignement général ou technique.",
-   "en": "General or technical education."
- },
- {
-   "id": "16",
-   "fr": "Finance publique",
-   "en": "public finance"
- },
- {
-   "id": "17",
-   "fr": "Certificat en gestion des Ressources Humaines",
-   "en": "Certificate in Human Resources Management"
- },
- {
-   "id": "18",
-   "fr": "Informatique",
-   "en": "data processing"
- },
- {
-   "id": "19",
-   "fr": "Journalisme",
-   "en": "Journalism"
- },
- {
-   "id": "20",
-   "fr": "Lettres",
-   "en": "letters"
- },
- {
-   "id": "21",
-   "fr": "Maintenance auto",
-   "en": "Auto Maintenance"
- },
- {
-   "id": "22",
-   "fr": "Maintenance électronique",
-   "en": "Electronic maintenance"
- },
- {
-   "id": "23",
-   "fr": "Maintenance informatique",
-   "en": "Computer maintenance"
- },
- {
-   "id": "24",
-   "fr": "Management",
-   "en": "Management"
- },
- {
-   "id": "25",
-   "fr": "Mécanique auto",
-   "en": "Auto mechanics"
- },
- {
-   "id": "26",
-   "fr": "Régies financières (Impot)",
-   "en": "Financial Regulatory (Tax)"
- },
- {
-   "id": "27",
-   "fr": "Régies financières (Trésor)",
-   "en": "Financial Regulatory (Treasury)"
- },
- {
-   "id": "28",
-   "fr": "Sciences économiques",
-   "en": "Economic science"
- },
- {
-   "id": "29",
-   "fr": "Sciences et techniques de l’information et de la communication",
-   "en": "Information and Communication Sciences and Technologies"
- },
- {
-   "id": "30",
-   "fr": "Sciences humaines",
-   "en": "Social science"
- },
- {
-   "id": "31",
-   "fr": "Secrétariat",
-   "en": "Secretariat"
- },
- {
-   "id": "32",
-   "fr": "Statistiques",
-   "en": "Statistics"
- },
- {
-   "id": "33",
-   "fr": "Statistiques économiques",
-   "en": "Economic statistics"
- },
- {
-   "id": "34",
-   "fr": "Technique de la documentation",
-   "en": "Documentation technique"
- },
- {
-   "id": "35",
-   "fr": "Techniques administratives",
-   "en": "Administrative techniques"
- },
- {
-   "id": "36",
-   "fr": "Travaux Publics",
-   "en": "Public Works"
- },
- {
-   "id": "37",
-   "fr": "Reglementation du travail",
-   "en": "Regulation of work"
- },
- {
-   "id": "38",
-   "fr": "Procédures budgetaires",
-   "en": "Budgetary procedures"
- },
- {
-   "id": "39",
-   "fr": "Analiste en conception projet",
-   "en": "Analyst in project design"
- },
- {
-   "id": "40",
-   "fr": "Spécialiste des questions de sécurité (Force de l'ordre)",
-   "en": "Security Specialist (Law Enforcement)"
- },
- {
-   "id": "41",
-   "fr": "Fiscalité",
-   "en": "tax system"
- },
- {
-   "id": "42",
-   "fr": "Droit niveau Master 1",
-   "en": "Master level right 1"
- },
- {
-   "id": "43",
-   "fr": "Droit niveau Master 2",
-   "en": "Master's degree level 2"
- },
- {
-   "id": "44",
-   "fr": "Droit niveau Licence",
-   "en": "Law level License"
- },
- {
-   "id": "45",
-   "fr": "Droit niveau DEUG",
-   "en": "Right level DEUG"
- },
- {
-   "id": "46",
-   "fr": "Droit niveau Doctorat",
-   "en": "Doctorate level right"
- },
- {
-   "id": "47",
-   "fr": "Economie niveau Master 1",
-   "en": "Economy level Master 1"
- },
- {
-   "id": "48",
-   "fr": "Economie niveau Master 2",
-   "en": "Economics level Master 2"
- },
- {
-   "id": "49",
-   "fr": "Economie niveau Licence",
-   "en": "Economy level License"
- },
- {
-   "id": "50",
-   "fr": "Economie niveau DEUG",
-   "en": "Economics level DEUG"
- },
- {
-   "id": "51",
-   "fr": "Economie niveau Doctorat",
-   "en": "Economics Doctorate level"
- },
- {
-   "id": "52",
-   "fr": "Finance niveau Master 1",
-   "en": "Finance Level Master 1"
- },
- {
-   "id": "53",
-   "fr": "Finance niveau Master 2",
-   "en": "Finance level Master 2"
- },
- {
-   "id": "54",
-   "fr": "Sciences humaines niveau Master 1",
-   "en": "Human Sciences Master level 1"
- },
- {
-   "id": "55",
-   "fr": "Sciences humaines niveau Master 2",
-   "en": "Humanities Master 2 level"
- },
- {
-   "id": "56",
-   "fr": "Sciences humaines niveau Licence",
-   "en": "Human Sciences Bachelor Degree"
- },
- {
-   "id": "57",
-   "fr": "Sciences humaines niveau DEUG",
-   "en": "Human Sciences DEUG level"
- },
- {
-   "id": "58",
-   "fr": "Sciences humaines niveau Doctorat",
-   "en": "Human Sciences PhD level"
- },
- {
-   "id": "59",
-   "fr": "Certificat en programmation financiere 1",
-   "en": "Certificate in Financial Programming 1"
- },
- {
-   "id": "60",
-   "fr": "Certificat en rogrammation financiere 2",
-   "en": "Certificate in financial rogramming 2"
- },
- {
-   "id": "61",
-   "fr": "Gestion des stocks",
-   "en": "Inventory management"
- },
- {
-   "id": "62",
-   "fr": "Expérience en trésorerie",
-   "en": "Cash experience"
- },
- {
-   "id": "63",
-   "fr": "Contrôle et Audit interne",
-   "en": "Control and Internal Audit"
- },
- {
-   "id": "64",
-   "fr": "Moins de 3 ans d'Expérience dans le Metier de la trésorerie et des finances",
-   "en": "Less than 3 years of experience in the business of treasury and finance"
- },
- {
-   "id": "65",
-   "fr": "Plus de 3 ans d'Expérience dans le Metier de la trésorerie et des finances",
-   "en": "More than 3 years of experience in the business of treasury and finance"
- },
- {
-   "id": "66",
-   "fr": "Moins de 3 ans d'Expérience dans le Metier de l'administration",
-   "en": "Less than 3 years of experience in the administration of the administration"
- },
- {
-   "id": "67",
-   "fr": "Plus de 3 ans d'Expérience dans le Metier de l'administration",
-   "en": "More than 3 years of experience in the business of administration"
- },
- {
-   "id": "68",
-   "fr": "Moins de 3 ans d'Expérience dans le Métier de la comptabilité",
-   "en": "Less than 3 years of experience in the accounting profession"
- },
- {
-   "id": "69",
-   "fr": "Plus de 3 ans d'Expérience dans le Métier de la comptabilité",
-   "en": "More than 3 years of experience in the accounting profession"
- },
- {
-   "id": "70",
-   "fr": "Moins de 3 ans d'Expérience dans le Métier de l'informatique",
-   "en": "Less than 3 years of experience in the IT profession"
- },
- {
-   "id": "71",
-   "fr": "Plus de 3 ans d'Expérience dans le Métier de l'informatique",
-   "en": "More than 3 years of experience in the IT profession"
- },
- {
-   "id": "72",
-   "fr": "Moins de 3 ans d'Expérience dans le Métier des banques et monaies",
-   "en": "Less than 3 years of experience in banking and monies"
- },
- {
-   "id": "73",
-   "fr": "Plus de 3 ans d'Expérience dans le Métier des banques et monaies",
-   "en": "More than 3 years of experience in banking and monies business"
- },
- {
-   "id": "74",
-   "fr": "Moins de 3 ans d'Expérience dans le Métier des assurances",
-   "en": "Less than 3 years of experience in the insurance business"
- },
- {
-   "id": "75",
-   "fr": "Plus de 3 ans d'Expérience dans le Métier des assurances",
-   "en": "More than 3 years of experience in the insurance business"
- },
- {
-   "id": "76",
-   "fr": "Moins de 3 ans d'Expérience dans le Métier de la formation",
-   "en": "Less than 3 years of experience in the training profession"
- },
- {
-   "id": "77",
-   "fr": "Plus de 3 ans d'Expérience dans le Métier de la formation",
-   "en": "More than 3 years of experience in the profession of training"
- },
- {
-   "id": "78",
-   "fr": "Moins de 3 ans d'Expérience dans le Métier de l'Audit et contrôle",
-   "en": "Less than 3 years of experience in the audit and control profession"
- },
- {
-   "id": "79",
-   "fr": "Plus de 3 ans d'Expérience dans le Métier de l'Audit et contrôle",
-   "en": "More than 3 years of experience in the audit and control profession"
- },
- {
-   "id": "80",
-   "fr": "Traducteur",
-   "en": "Translator"
- }
+    {
+        "id": "1",
+        "fr": "Administration",
+        "en": "Administration"
+    },
+    {
+        "id": "2",
+        "fr": "Administration générale",
+        "en": "General Administration"
+    },
+    {
+        "id": "3",
+        "fr": "Administration économie et finance",
+        "en": "Administration economy and finance"
+    },
+    {
+        "id": "4",
+        "fr": "Administration hospitalière",
+        "en": "Hospital Administration"
+    },
+    {
+        "id": "5",
+        "fr": "Archives",
+        "en": "Archives"
+    },
+    {
+        "id": "6",
+        "fr": "Assurances",
+        "en": "insurance"
+    },
+    {
+        "id": "7",
+        "fr": "Banque et monnaie",
+        "en": "Bank and currency"
+    },
+    {
+        "id": "8",
+        "fr": "Bâtiment",
+        "en": "Building"
+    },
+    {
+        "id": "9",
+        "fr": "Comptabilité Publique",
+        "en": "Public Accounting"
+    },
+    {
+        "id": "10",
+        "fr": "Comptabilité Privée",
+        "en": "Private Accounting"
+    },
+    {
+        "id": "11",
+        "fr": "Comptabilité-matière",
+        "en": "Stock records"
+    },
+    {
+        "id": "12",
+        "fr": "Courier",
+        "en": "Courier"
+    },
+    {
+        "id": "13",
+        "fr": "Conduite automobile",
+        "en": "Car driving"
+    },
+    {
+        "id": "14",
+        "fr": "Documentation",
+        "en": "Documentation"
+    },
+    {
+        "id": "15",
+        "fr": "Droit Publique",
+        "en": "Public Law"
+    },
+    {
+        "id": "16",
+        "fr": "Droit Privé",
+        "en": "Private right"
+    },
+    {
+        "id": "17",
+        "fr": "Sciences économiques",
+        "en": "Economic science"
+    },
+    {
+        "id": "18",
+        "fr": "Electronique",
+        "en": "Electronic"
+    },
+    {
+        "id": "19",
+        "fr": "Finances publiques",
+        "en": "Public finances"
+    },
+    {
+        "id": "20",
+        "fr": "Gestion des Ressources Humaines",
+        "en": "Human Resource Management"
+    },
+    {
+        "id": "21",
+        "fr": "Informatique",
+        "en": "data processing"
+    },
+    {
+        "id": "22",
+        "fr": "Journalisme",
+        "en": "Journalism"
+    },
+    {
+        "id": "23",
+        "fr": "Lettres",
+        "en": "letters"
+    },
+    {
+        "id": "24",
+        "fr": "Maintenance automobile",
+        "en": "Automotive Maintenance"
+    },
+    {
+        "id": "25",
+        "fr": "Maintenance électronique",
+        "en": "Electronic maintenance"
+    },
+    {
+        "id": "26",
+        "fr": "Maintenance informatique",
+        "en": "Computer maintenance"
+    },
+    {
+        "id": "27",
+        "fr": "Management",
+        "en": "Management"
+    },
+    {
+        "id": "28",
+        "fr": "Mécanique automobile",
+        "en": "Automobile mechanic"
+    },
+    {
+        "id": "29",
+        "fr": "Régies financières (Impot)",
+        "en": "Financial Regulatory (Tax)"
+    },
+    {
+        "id": "30",
+        "fr": "Régies financières (Trésor)",
+        "en": "Financial Regulatory (Treasury)"
+    },
+    {
+        "id": "31",
+        "fr": "Sciences et techniques de l’information et de la communication",
+        "en": "Information and Communication Sciences and Technologies"
+    },
+    {
+        "id": "32",
+        "fr": "Sciences humaines",
+        "en": "Social science"
+    },
+    {
+        "id": "33",
+        "fr": "Sciences sociales",
+        "en": "Social Sciences"
+    },
+    {
+        "id": "34",
+        "fr": "Secrétariat",
+        "en": "Secretariat"
+    },
+    {
+        "id": "35",
+        "fr": "Statistiques",
+        "en": "Statistics"
+    },
+    {
+        "id": "36",
+        "fr": "Statistiques économiques",
+        "en": "Economic statistics"
+    },
+    {
+        "id": "37",
+        "fr": "Techniques de la documentation",
+        "en": "Documentation techniques"
+    },
+    {
+        "id": "38",
+        "fr": "Techniques administratives",
+        "en": "Administrative techniques"
+    },
+    {
+        "id": "39",
+        "fr": "Travaux Publics",
+        "en": "Public Works"
+    },
+    {
+        "id": "40",
+        "fr": "Reglementation du travail",
+        "en": "Regulation of work"
+    },
+    {
+        "id": "41",
+        "fr": "Procédures budgetaires",
+        "en": "Budgetary procedures"
+    },
+    {
+        "id": "42",
+        "fr": "Analyste en conception de projet",
+        "en": "Project Design Analyst"
+    },
+    {
+        "id": "43",
+        "fr": "Spécialiste des questions de sécurité (Force de l'ordre)",
+        "en": "Security Specialist (Law Enforcement)"
+    },
+    {
+        "id": "44",
+        "fr": "Fiscalité",
+        "en": "tax system"
+    },
+    {
+        "id": "45",
+        "fr": "Programmation financiere",
+        "en": "Financial programming"
+    },
+    {
+        "id": "46",
+        "fr": "Gestion des stocks",
+        "en": "Inventory management"
+    },
+    {
+        "id": "47",
+        "fr": "Gestion de la trésorerie",
+        "en": "Finance management"
+    },
+    {
+        "id": "48",
+        "fr": "Audit et Contrôle",
+        "en": "Audit and Control"
+    },
+    {
+        "id": "49",
+        "fr": "Contrôle de Gestion",
+        "en": "Management Control"
+    },
+    {
+        "id": "50",
+        "fr": "Traducteur",
+        "en": "Translator"
+    },
+    {
+        "id": "51",
+        "fr": "Moins de 3 ans d'Expérience dans le Metier de la trésorerie et des finances",
+        "en": "Less than 3 years of experience in the business of treasury and finance"
+    },
+    {
+        "id": "52",
+        "fr": "Plus de 3 ans d'Expérience dans le Metier de la trésorerie et des finances",
+        "en": "More than 3 years of experience in the business of treasury and finance"
+    },
+    {
+        "id": "53",
+        "fr": "Moins de 3 ans d'Expérience dans le Metier de l'administration",
+        "en": "Less than 3 years of experience in the administration of the administration"
+    },
+    {
+        "id": "54",
+        "fr": "Plus de 3 ans d'Expérience dans le Metier de l'administration",
+        "en": "More than 3 years of experience in the business of administration"
+    },
+    {
+        "id": "55",
+        "fr": "Moins de 3 ans d'Expérience dans le Métier de la comptabilité",
+        "en": "Less than 3 years of experience in the accounting profession"
+    },
+    {
+        "id": "56",
+        "fr": "Plus de 3 ans d'Expérience dans le Métier de la comptabilité",
+        "en": "More than 3 years of experience in the accounting profession"
+    },
+    {
+        "id": "57",
+        "fr": "Moins de 3 ans d'Expérience dans le Métier de l'informatique",
+        "en": "Less than 3 years of experience in the IT profession"
+    },
+    {
+        "id": "58",
+        "fr": "Plus de 3 ans d'Expérience dans le Métier de l'informatique",
+        "en": "More than 3 years of experience in the IT profession"
+    },
+    {
+        "id": "59",
+        "fr": "Moins de 3 ans d'Expérience dans le Métier des banques et monaies",
+        "en": "Less than 3 years of experience in banking and monies"
+    },
+    {
+        "id": "60",
+        "fr": "Plus de 3 ans d'Expérience dans le Métier des banques et monaies",
+        "en": "More than 3 years of experience in banking and monies business"
+    },
+    {
+        "id": "61",
+        "fr": "Moins de 3 ans d'Expérience dans le Métier des assurances",
+        "en": "Less than 3 years of experience in the insurance business"
+    },
+    {
+        "id": "62",
+        "fr": "Plus de 3 ans d'Expérience dans le Métier des assurances",
+        "en": "More than 3 years of experience in the insurance business"
+    },
+    {
+        "id": "63",
+        "fr": "Moins de 3 ans d'Expérience dans le Métier de la formation",
+        "en": "Less than 3 years of experience in the training profession"
+    },
+    {
+        "id": "64",
+        "fr": "Plus de 3 ans d'Expérience dans le Métier de la formation",
+        "en": "More than 3 years of experience in the profession of training"
+    },
+    {
+        "id": "65",
+        "fr": "Moins de 3 ans d'Expérience dans le Métier de l'Audit et contrôle",
+        "en": "Less than 3 years of experience in the audit and control profession"
+    },
+    {
+        "id": "66",
+        "fr": "Plus de 3 ans d'Expérience dans le Métier de l'Audit et contrôle",
+        "en": "More than 3 years of experience in the audit and control profession"
+    },
+    {
+        "id": "67",
+        "fr": "5 ans d'Expérience dans le Metier de la trésorerie et des finances",
+        "en": "5 years of experience in the business of treasury and finance"
+    },
+    {
+        "id": "68",
+        "fr": "5 ans d'Expérience dans le Metier de l'administration",
+        "en": "5 years of experience in the business of administration"
+    },
+    {
+        "id": "69",
+        "fr": "5 ans d'Expérience dans le Métier de la comptabilité",
+        "en": "5 years of experience in the accounting profession"
+    },
+    {
+        "id": "70",
+        "fr": "5 ans d'Expérience dans le Métier de l'informatique",
+        "en": "5 years of experience in the IT profession"
+    },
+    {
+        "id": "71",
+        "fr": "5 ans d'Expérience dans le Métier des banques et monaies",
+        "en": "5 years of experience in banking and monies"
+    },
+    {
+        "id": "72",
+        "fr": "5 ans d'Expérience dans le Métier des assurances",
+        "en": "5 years of experience in the insurance business"
+    },
+    {
+        "id": "73",
+        "fr": "5 ans d'Expérience dans le Métier de la formation",
+        "en": "5 years of experience in the profession of training"
+    },
+    {
+        "id": "74",
+        "fr": "5 ans d'Expérience dans le Métier de l'Audit et contrôle",
+        "en": "5 years of experience in the audit and control profession"
+    },
+    {
+        "id": "75",
+        "fr": "15 ans d'Expérience dans l'administration publique",
+        "en": "15 years of experience in public administration"
+    },
+    {
+        "id": "76",
+        "fr": "Bureautique",
+        "en": "Office"
+    },
+    {
+        "id": "77",
+        "fr": "Sciences Juridiques",
+        "en": "Legal Sciences"
+    }
 ]
