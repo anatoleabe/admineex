@@ -7,7 +7,9 @@ var dictionary = require('../utils/dictionary');
 
 var controllers = {
     configuration: require('./configuration'),
-    users: require('./users')
+    users: require('./users'),
+    personnel: require('./personnel'),
+    positions: require('./positions')
 };
 
 // API
@@ -16,25 +18,67 @@ exports.api = {};
 // Retrieve notifications
 exports.api.list = function (req, res) {
     if (req.actor) {
+        
         Notification.find({
             $and: [{
-                created: {
-                    $gte: new Date(new Date().setDate(new Date().getDate() - 30))
-                }
-            }, {
-                $or: [{
-                    userID: {$exists: false}
+                    created: {
+                        $gte: new Date(new Date().setDate(new Date().getDate() - 30))
+                    }
                 }, {
-                    userID: req.actor.id
+                    $or: [{
+                            userID: {$exists: false}
+                        }, {
+                            userID: req.actor.id
+                        }]
                 }]
-            }]
         }).sort({"created": -1}).exec(function (err, notifications) {
             if (err) {
                 log.error(err);
                 audit.logEvent('[mongodb]', 'Notifications', 'List', '', '', 'failed', 'Mongodb attempted to retrieve notifications');
                 return res.status(500).send(err);
             } else {
-                return res.json(notifications);
+                
+                if (notifications) {
+
+                    notifications = JSON.parse(JSON.stringify(notifications));
+
+                    function LoopA(m) {
+                        if (m < notifications.length) {
+
+                            function LoopB(b) {
+                                if (b < notifications[m].details.length) {
+                                    notifications[m].details[b].years = _calculateAge(new Date(notifications[m].details[b].date));
+                                    controllers.personnel.read({_id: notifications[m].details[b].personnelId}, function (err, personnel) {
+                                        if (err) {
+                                            log.error(err);
+                                        } else {
+                                            notifications[m].details[b].personnel = personnel;
+                                            controllers.positions.find2({id: notifications[m].details[b].positionId}, function (err, position) {
+                                                if (err) {
+                                                    log.error(err);
+                                                } else {
+                                                    notifications[m].details[b].position = position;
+
+                                                    LoopB(b + 1);
+                                                }
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    LoopA(m + 1);
+                                }
+                            }
+                            LoopB(0);
+
+                        } else {
+                            return res.json(notifications);
+                        }
+                    }
+                    LoopA(0);
+
+                } else {
+                    return res.json(notifications);
+                }
             }
         });
     } else {
@@ -67,7 +111,7 @@ exports.api.update = function (req, res) {
     if (req.actor) {
         if (!req.params.id) {
             audit.logEvent("[API]", 'Notifications', 'Update', '', '', 'failed',
-                           'The API could not update a notification because one or more fields was empty');
+                    'The API could not update a notification because one or more fields was empty');
             return callback(null, 400);
         } else {
             Notification.update({_id: req.params.id}, {
@@ -97,7 +141,7 @@ exports.markAsMailed = function (id, callback) {
     var _id = id || '';
     if (_id === '') {
         audit.logEvent("[API]", 'Notifications', 'markAsMailled', '', '', 'failed',
-                       'The API could not update a notification because one or more fields was empty');
+                'The API could not update a notification because one or more fields was empty');
         return callback(null, 400);
     } else {
         Notification.update({_id: _id}, {
@@ -136,6 +180,13 @@ exports.notifyUser = function (params, callback) {
     callback(null, !loop);
 };
 
+
+function _calculateAge(birthday) { // birthday is a date
+    var ageDifMs = Date.now() - birthday.getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+
 /**
  * send by email, all available notifications to the corresponding user after grouping them 
  * @param {type} callback
@@ -143,8 +194,8 @@ exports.notifyUser = function (params, callback) {
 exports.mailAvailableNotifications = function (callback) {
     Notification.find({
         $and: [{
-            mailed: {$exists: false}
-        }]
+                mailed: {$exists: false}
+            }]
     }).sort({"created": -1}).exec(function (err, notifications) {
         if (err) {
             log.error(err);
@@ -211,7 +262,7 @@ exports.mailAvailableNotifications = function (callback) {
                                         log.error(err);
                                     } else {
                                         log.info("Notification sent to: " + user.email);
-                                        loopUserNotifications(n+1);
+                                        loopUserNotifications(n + 1);
                                         //mark this notifications
                                         for (u = 0; u < userNotifications.length; u++) {
                                             exports.markAsMailed(userNotifications[u]._id, function (err) {
@@ -223,7 +274,7 @@ exports.mailAvailableNotifications = function (callback) {
                                     }
                                 });
                             } else {
-                                loopUserNotifications(n+1);
+                                loopUserNotifications(n + 1);
                                 //mark this notifications
                                 for (u = 0; u < userNotifications.length; u++) {
                                     exports.markAsMailed(userNotifications[u]._id, function (err) {

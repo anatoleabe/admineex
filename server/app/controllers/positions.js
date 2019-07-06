@@ -1,5 +1,6 @@
 var Position = require('../models/position').Position;
 var Affectation = require('../models/affectation').Affectation;
+var Notification = require('../models/notification').Notification;
 var nconf = require('nconf');
 nconf.file("config/server.json");
 var audit = require('../utils/audit-log');
@@ -10,6 +11,7 @@ var crypto = require('crypto');
 var dictionary = require('../utils/dictionary');
 var formidable = require("formidable");
 var ObjectID = require('mongoose').mongo.ObjectID;
+var moment = require('moment');
 
 // API
 exports.api = {};
@@ -17,7 +19,8 @@ exports.api = {};
 var controllers = {
     configuration: require('./configuration'),
     structures: require('./structures'),
-    personnel: require('./personnel')
+    personnel: require('./personnel'),
+    users: require('./users')
 };
 
 exports.upsert = function (fields, callback) {
@@ -109,12 +112,12 @@ exports.api.affectToPosition = function (req, res) {
                             positionId: fields.positionId,
                             positionCode: result.code,
                             personnelId: fields.occupiedBy,
-                            date: fields.startDate
+                            date: fields.startDate,
+                            lastModified: new Date()
                         };
                         var filter = {
                             positionId: fields.positionId,
                             positionCode: result.code,
-                            personnelId: fields.occupiedBy
                         };
                         Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
                             if (err) {
@@ -593,6 +596,92 @@ exports.findPositionHelder = function (id, callback) {
         }
     });
 };
+
+/**
+ * Alert after 05 years spent at one position
+ * @param {type} code
+ * @param {type} callback
+ * @returns json
+ */
+exports.patrol0 = function (callback) {
+    var query = {$and: []};
+    var d = new Date();
+    var pastYear = d.getFullYear() - 5;
+    d.setFullYear(pastYear);
+
+    query.$and.push({
+        'date': {
+            $lte: moment(d).startOf('day')
+        }
+    });
+
+    Affectation.find(query).lean().exec(function (err, affectations) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            if (affectations && affectations.length > 0) {
+                controllers.users.all(function (err, users) {
+                    if (err) {
+                        callback(err);
+                        log.error(err);
+                    } else {
+
+                        function LoopA(m) {
+                            if (m < users.length) {
+                                var language = users[m].language.toLowerCase();
+                                var gt = dictionary.translator(language);
+                                var notification = {
+                                    type: 'admin',
+                                    author: 'App',
+
+                                };
+                                notification.userID = users[m]._id;
+                                notification.abstract = gt.gettext("There are people who have spent more than 5 years at a position.");
+                                notification.content = gt.gettext("[1] people have spent more than 5 years at the same position.") + "<br><br>' <table>";
+                                        
+                                notification.details = [];
+                                for (i = 0; i < affectations.length; i++) {
+                                    notification.content =notification.content + "<tr>"+
+                                            "<td>"+ i+1 +"</td>" +
+                                            "<td>"+ "XXXXXX" +"</td>" +
+                                            "<td> "+ affectations[i].positionCode +
+                                            "<td> since: "+ affectations[i].date +"</td>" + "</tr></table>";
+                                    notification.details.push(affectations[i]);
+                                }
+                                
+                                notification.content = notification.content.replace("[1]", affectations.length);
+
+                                var filter = {
+                                    type: 'admin',
+                                    author: 'App',
+                                    userID: users[m]._id,
+                                    content: notification.content
+                                };
+                                
+                                Notification.findOneAndUpdate(filter, notification, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+                                    if (err) {
+                                        log.error(err);
+                                        audit.logEvent('[mongodb]', 'Position', 'patrol0', "", "", 'failed', "Mongodb attempted to alert after 05 years spent at one position");
+                                        callback(err);
+                                    } else {
+                                        LoopA(m + 1);
+                                    }
+                                });
+                            } else {
+
+                            }
+                        }
+                        LoopA(0);
+                    }
+                });
+            } else {
+                callback(null);
+            }
+        }
+    });
+};
+
 /**
  * Find the person who held a posisition
  * @param {type} code
@@ -732,7 +821,7 @@ exports.find = function (id, callback) {
             if (positionDetails != null) {
                 callback(null, positionDetails);
             } else {
-                callback(null, positionDetails);
+                callback(null);
             }
         }
     });

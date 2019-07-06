@@ -646,6 +646,15 @@ function startBot() {
 //        }
 //    });
 
+    controllers.positions.patrol0(function (err, avoided) {
+        if (err) {
+            log.error(err);
+            console.log(err);
+        } else {
+            
+        }
+    });
+
 //    controllers.positions.INITPOSITIONDATAFROMJSON(function (err, avoided) {
 //        if (err) {
 //            log.error(err);

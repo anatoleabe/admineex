@@ -48,21 +48,61 @@ angular.module('MenuCtrl', []).controller('MenuController', function ($scope, $s
             getNotifications();
 
 
+            $scope.sohwSedentary = function (position) {
+
+                $ocLazyLoad.load('js/controllers/staffs/staff/SedentaryCtrl.js').then(function () {
+                    $mdDialog.show({
+                        controller: 'SedentaryController',
+                        templateUrl: '../templates/dialogs/sedentary.html',
+                        parent: angular.element(document.body),
+                        clickOutsideToClose: true,
+                        locals: {
+                            params: {
+                                positionTo: position
+                            }
+                        }
+                    }).then(function (answer) {
+                    }, function () {
+                    });
+                });
+            }
+
+
             $scope.read = function (notification) {
                 if (!notification.read) {
                     Notification.update(notification).then(function () {});
                 }
-                $mdDialog.show(
-                    $mdDialog.alert()
-                    .clickOutsideToClose(true)
-                    .title(notification.author)
-                    .htmlContent(notification.content)
-                    .ariaLabel(gettextCatalog.getString("Notifications"))
-                    .ok(gettextCatalog.getString('Got it!'))
-                ).finally(function () {
-                    getNotifications();
-                    $scope.toggleNotifications();
-                });
+
+                if (notification.details) {
+                    var details = notification.details;
+                    $ocLazyLoad.load('js/controllers/staffs/staff/SedentaryCtrl.js').then(function () {
+                        $mdDialog.show({
+                            controller: 'SedentaryController',
+                            templateUrl: '../templates/dialogs/sedentary.html',
+                            parent: angular.element(document.body),
+                            clickOutsideToClose: true,
+                            locals: {
+                                params: {
+                                    details: details
+                                }
+                            }
+                        }).then(function (answer) {
+                        }, function () {
+                        });
+                    });
+                } else {
+                    $mdDialog.show(
+                            $mdDialog.alert()
+                            .clickOutsideToClose(true)
+                            .title(notification.author)
+                            .htmlContent(notification.content)
+                            .ariaLabel(gettextCatalog.getString("Notifications"))
+                            .ok(gettextCatalog.getString('Got it!'))
+                            ).finally(function () {
+                        getNotifications();
+                        $scope.toggleNotifications();
+                    });
+                }
             };
 
             $rootScope.$on("ERR_CONNECTION_REFUSED", function () {
@@ -94,7 +134,7 @@ angular.module('MenuCtrl', []).controller('MenuController', function ($scope, $s
                         break;
                 }
             };
-    
+
 
             //TODO: manage duplicate alerts (with content and date)
             $rootScope.$watch('kernel.alerts', function (newValue, oldValue) {
@@ -104,11 +144,11 @@ angular.module('MenuCtrl', []).controller('MenuController', function ($scope, $s
                         hide = 5000;
                     }
                     $mdToast.show(
-                        $mdToast.simple()
-                        .textContent(newValue[newValue.length - 1].msg)
-                        .position('bottom left')
-                        .hideDelay(hide)
-                    );
+                            $mdToast.simple()
+                            .textContent(newValue[newValue.length - 1].msg)
+                            .position('bottom left')
+                            .hideDelay(hide)
+                            );
                     $rootScope.kernel.alerts.splice(-1, 1);
                 }
             }, true);

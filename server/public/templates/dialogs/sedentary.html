@@ -1,0 +1,65 @@
+    <md-dialog flex="70" flex-offset="0" flex-md="60" flex-offset-md="0" flex-sm="70" flex-offset-sm="0" flex-xs="100" flex-offset-xs="0" ui-view >
+
+        <md-toolbar class="md-accent">
+            <div class="md-toolbar-tools">
+                <h2><span translate>Persons who have not been affected for 5 years</span></h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <md-card>
+                    <md-toolbar class="md-table-toolbar md-default" >
+                        <div class="md-toolbar-tools">
+                            <md-icon>search</md-icon>
+                            <form flex>
+                                <input type="text" name="search" ng-model="sedentaryFilter" placeholder="{{ 'Search...' | translate }}">
+                            </form>
+                            <md-button class="md-icon-button" ng-click="sedentaryFilter = ''" aria-label="close">
+                                <md-icon class="material-icons">close</md-icon>
+                            </md-button>
+                        </div>
+                    </md-toolbar>
+                    <md-table-container>
+                        <table md-table md-progress="promise" md-row-select="false" >
+                            <thead md-head md-order="query.order">
+                                <tr md-row>
+                                    <th md-column md-order-by="#"><span translate>#</span></th>
+                                    <th md-column md-order-by="name"><span translate>Full name</span></th>
+                                    <th md-column md-order-by="identifier"><span translate>Registration number</span></th>
+                                    <th md-column md-order-by="grade"><span translate>Position</span></th>
+                                    <th md-column md-order-by="age"><span translate>Since</span></th>
+                                    <th md-column md-order-by="age"><span translate>Years at this position</span></th>
+                                </tr>
+                            </thead>
+                            <tbody md-body>
+                                <tr md-row  data-ng-repeat="sedentary in sedentaries| filter:sedentaryFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                                    <td md-cell>{{$index + 1}} </td>
+                                    <td md-cell>{{sedentary.personnel.name.family[0]}} {{sedentary.personnel.name.given[0]}} </td>
+                                    <td md-cell>{{sedentary.personnel.identifier| uppercase | unknown}}</td>
+                                    <td md-cell>{{sedentary.position.name| unknown}}</td>
+                                    <td md-cell>{{sedentary.date| dateHuman}}</td>
+                                    <td md-cell>{{sedentary.years| unknown}} <span md-cell translate>years</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </md-table-container>
+                    <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 50, 100]" md-page="query.page" md-total="{{sedentaries.length}}" 
+                                          md-page-select="true"  >
+
+                </md-card>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+
+            <span flex></span>
+
+            <md-button ng-disabled="personnels.length <= 0" ng-click="print()" class="md-primary">
+                <span translate>Print</span>
+            </md-button>
+        </md-dialog-actions>
+
+    </md-dialog>

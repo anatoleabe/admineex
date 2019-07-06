@@ -72,7 +72,8 @@
         <md-list class="md-dense" style="padding: 0;">
             <div ng-repeat="notification in notifications">
                 <md-list-item class="md-3-line md-long-text"  style="padding: 0;margin: 0;" ng-click="read(notification);" ng-class="{'read': notification.read}">
-                    <img ng-src="../img/notifications/{{notification.type}}.png" class="md-avatar" alt="{{notification.type}}">
+                    <!--<img ng-src="../img/notifications/{{notification.type}}.png" class="md-avatar" alt="{{notification.type}}">-->
+                    <md-icon aria-label="" class="material-icons">notifications</md-icon>
                     <div class="md-list-item-text" style="padding: 0;">
                         <h3>
                             {{ notification.author }} <span class="md-caption" style="color:#CF6935;right: 16px;position: absolute;">{{ notification.created | smartDatetime}}</span>

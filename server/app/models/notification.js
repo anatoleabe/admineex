@@ -9,6 +9,7 @@ var NotificationSchema = new Schema({
     author : { type: String, required: false },
     abstract : { type: String, required: true },
     content : { type: String, required: true },
+    details : [{}],
     mailed : { type: Date },
     created: { type: Date, default: Date.now },
     read: { type: Date }
