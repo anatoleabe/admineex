@@ -1,0 +1,63 @@
+<md-card class="widget widget-data">
+    <md-card-title>
+        <md-card-title-text layout="row">
+            <md-button class="md-icon-button info-labs">
+                <md-icon>fullscreen</md-icon>
+                <md-tooltip md-direction="bottom">
+                    <span><span translate>Data of </span> <span translate>all structure</span></span>
+                </md-tooltip>
+            </md-button>
+            <span class="md-headline" translate>Global statistics</span>
+            <span flex></span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div class="loading" data-ng-if="loadingChart">
+            <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
+        </div>
+        <div ng-class="{'opacity1': loadingChart}">
+            <md-list>
+                <div>
+                    <md-list-item>
+                        <md-icon>perm_contact_calendar</md-icon>
+                        <p class="md-body-2"><span translate>Total number</span></p>
+                        <span class="md-body-1 md-secondary" style="display: inline-block;" flex>
+                            <span >{{data[0]}}</span>
+                        </span>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>perm_contact_calendar</md-icon>
+                        <p class="md-body-2"><span translate>Corps of Treasury</span></p>
+                        <span class="md-body-1 md-secondary" >{{data[1]}} &nbsp;&nbsp;&nbsp;&nbsp; ({{data[7]}}%)</span>
+                        
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>perm_contact_calendar</md-icon>
+                        <p class="md-body-2"><span translate>Other civil servant</span></p>
+                        <span class="md-body-1 md-secondary" >{{data[2]}} &nbsp;&nbsp;&nbsp;&nbsp; ({{data[8]}}%)</span>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>perm_contact_calendar</md-icon>
+                        <p class="md-body-2"><span translate>Non-staff personnel</span></p>
+                        <span class="md-body-1 md-secondary" >{{data[3]}} &nbsp;&nbsp;&nbsp;&nbsp; ({{data[9]}}%)</span>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>location_city</md-icon>
+                        <p class="md-body-2"><span translate>Vacancies</span></p>
+                        <p class="md-body-1 md-secondary"> Unknown </p>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>location_city</md-icon>
+                        <p class="md-body-2"><span translate>Male/Female ratio</span></p>
+                        <p class="md-body-1 md-secondary"> {{data[5]}} / {{data[6]}}</p>
+                    </md-list-item>
+                </div>
+            </md-list>
+        </div>
+    </md-card-content>
+</md-card>

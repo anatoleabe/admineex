@@ -94,8 +94,12 @@ exports.api.list = function (req, res) {
                 var structures = JSON.parse(JSON.stringify(result));
                 function loopA(a) {
                     if (a < structures.length) {
+                        var filterCode = structures[a].code + "P";
+                        if (structures[a].rank == "2") {
+                            filterCode = structures[a].code;
+                        }
                         structures[a].name = ((language && language !== "" && structures[a][language] != undefined && structures[a][language] != "") ? structures[a][language] : structures[a]['en']);
-                        controllers.positions.findPositionsByStructureId({_id: structures[a]._id}, function (err, positions) {
+                        controllers.positions.findPositionsByStructureCode({code: filterCode}, function (err, positions) {
                             if (err) {
                                 return res.status(500).send(err);
                             } else {
@@ -105,34 +109,28 @@ exports.api.list = function (req, res) {
                                     structures[a].workstationsNb = 0;
                                 }
 
-                                var requiredEffective = 0;
+                                var requiredEffective = positions.length;
 
-                                function LoopB(b) {
-                                    if (b < positions.length) {
-
-                                        //TODO compute real effective
-                                        requiredEffective += Number(positions[b].requiredEffective);
-
-                                        LoopB(b + 1);
-                                    } else {
-                                        controllers.positions.findHelderPositionsByStructureCode(structures[a].code, function (err, affectations) {
-                                            if (err) {
-                                                audit.logEvent('[mongodb]', 'Positions', 'findHelderPositionsByStructureCode', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
-                                                return res.status(500).send(err);
-                                            } else {
-                                                if (affectations && affectations.length > 0) {
-                                                    structures[a].actualEffective = affectations.length;
-                                                } else {
-                                                    structures[a].actualEffective = 0;
-                                                }
-                                                structures[a].requiredEffective = requiredEffective;
-                                                structures[a].vacancies = requiredEffective - structures[a].actualEffective;
-                                                loopA(a + 1);
-                                            }
-                                        });
-                                    }
+                                var filterCode = {'$regex': structures[a].code + "P"};
+                                if (structures[a].rank == "2") {
+                                    filterCode = {'$regex': structures[a].code};
                                 }
-                                LoopB(0);
+                                controllers.positions.findHelderPositionsByStructureCode(filterCode, function (err, affectations) {
+                                    if (err) {
+                                        audit.logEvent('[mongodb]', 'Positions', 'findHelderPositionsByStructureCode', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
+                                        return res.status(500).send(err);
+                                    } else {
+                                        if (affectations && affectations.length > 0) {
+                                            structures[a].actualEffective = affectations.length;
+                                        } else {
+                                            structures[a].actualEffective = 0;
+                                        }
+                                        structures[a].requiredEffective = requiredEffective;
+                                        structures[a].vacancies = requiredEffective - structures[a].actualEffective;
+                                        loopA(a + 1);
+                                    }
+                                });
+
                             }
                         });
 
@@ -208,7 +206,7 @@ exports.read = function (options, id, callback) {
 
 exports.list = function (options, callback) {
     var filter = {};
-    if (options.filter){
+    if (options.filter) {
         filter = options.filter;
     }
     console.log("filter", filter)
@@ -355,24 +353,32 @@ function beautify(options, objects, callback) {
     language = language.toLowerCase();
     var gt = dictionary.translator(language);
     if (options.beautify && options.beautify === true) {
-        
+        //Address
+        objects = controllers.configuration.beautifyAddress({language: language}, objects);
         function Loop(o) {
             if (o < objects.length) {
                 objects[o].typeValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);
                 objects[o].rankValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/ranks.json', objects[o].rank, language);
                 objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
-                if (options.includePositions) {
-                    controllers.positions.findPositionsByStructureId({_id: objects[o]._id, beautify: true, structures: false, vacancies: options.vacancies}, function (err, positions) {
-                        if (err) {
-                            callback(err);
+                exports.find(objects[o].fatherId, language, function (err, structure) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        objects[o].father = structure;
+                        if (options.includePositions) {
+                            controllers.positions.findPositionsByStructureId({_id: objects[o]._id, beautify: true, structures: false, vacancies: options.vacancies}, function (err, positions) {
+                                if (err) {
+                                    callback(err);
+                                } else {
+                                    objects[o].positions = positions;
+                                    Loop(o + 1);
+                                }
+                            });
                         } else {
-                            objects[o].positions = positions;
                             Loop(o + 1);
                         }
-                    });
-                } else {
-                    Loop(o + 1);
-                }
+                    }
+                });
             } else {
                 callback(null, objects);
             }

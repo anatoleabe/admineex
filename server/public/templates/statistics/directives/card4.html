@@ -1,0 +1,41 @@
+<md-card class="widget widget-data">
+    <md-card-title>
+        <md-card-title-text layout="row">
+            <md-button class="md-icon-button info-labs">
+                <md-icon>fullscreen</md-icon>
+                <md-tooltip md-direction="bottom">
+                    <span><span translate>Data of </span> <span translate>all structure</span></span>
+                </md-tooltip>
+            </md-button>
+            <span class="md-headline" translate>Personal under the Labor Code</span>
+            <span flex></span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div class="loading" data-ng-if="loadingChart">
+            <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
+        </div>
+        <div ng-class="{'opacity1': loadingChart}">
+            <md-table-container style="height: 330px; overflow: scroll">
+                <table md-table md-progress="promise">
+                    <thead md-head md-order="query.order">
+                        <tr md-row>
+                            <th md-column md-order-by="id" translate>Grade </th>
+                            <th md-column md-order-by="nom" translate>Man</th>
+                            <th md-column md-order-by="code" translate>Women</th>
+                            <th md-column md-order-by="rang[0].intitule" translate>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row ng-repeat="stat in statistics">
+                            <td md-cell  >{{stat.category}}</td>
+                            <td md-cell>{{stat.nbF}} </td>
+                            <td md-cell>{{stat.nbM}}</td>
+                            <td md-cell>{{stat.nbM + stat.nbF}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+        </div>
+    </md-card-content>
+</md-card>

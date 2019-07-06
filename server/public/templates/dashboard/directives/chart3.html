@@ -8,7 +8,7 @@
                 </md-tooltip>
             </md-button>
             <span class="md-headline">
-                <span translate>Ratio Man-Woman (Global)</span>
+                <span >{{title}}</span>
             </span>
             <span flex></span>
             <md-menu>
@@ -28,7 +28,7 @@
             <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
         </div>
         <div ng-class="{'opacity1': loadingChart}">
-            <canvas id="personnels_by_status" class="chart chart-pie" chart-data="data" chart-labels="labels" chart-options="options" chart-colors="colors"></canvas>
+            <canvas id="personnels_by_status" class="chart chart-bar" chart-data="data" chart-labels="labels" chart-series="series" chart-options="options" chart-colors="colors"></canvas>
         </div>
         <small class="daterange">-------</small>
     </md-card-content>

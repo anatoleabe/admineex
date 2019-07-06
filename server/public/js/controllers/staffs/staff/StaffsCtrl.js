@@ -34,7 +34,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                 if (newval) {
                     newval = JSON.parse(newval).code;
                     if (newval && newval != "-1") {
-                        $scope.staffsFilter = newval + "-P";
+                        $scope.staffsFilter = newval;
                     }
 
                 }

@@ -1,14 +1,14 @@
-angular.module('Chart1Directive', []).directive('chart1', function (gettextCatalog, $ocLazyLoad, $injector, $rootScope) {
+angular.module('Card5Directive', []).directive('card5', function (gettextCatalog, $ocLazyLoad, $injector, $rootScope) {
     return {
         restrict: 'A',
         scope: {},
-        templateUrl: 'templates/dashboard/directives/chart1.html',
+        templateUrl: 'templates/statistics/directives/card5.html',
         link: function ($scope, $element, $attrs) {
             $scope.title = gettextCatalog.getString(" (Gender)");
             $scope.labels = [gettextCatalog.getString('Female'), gettextCatalog.getString('Male')];
             $ocLazyLoad.load('js/services/ChartService.js').then(function () {
                 var Chart = $injector.get('Chart');
-                $scope.colors = ["#9CCC65", "#F57C00", "#E53935", "#FFB74D", "#FFE0B2"];
+                $scope.colors = ["#2B98F0", "#1EB8D2"];
                 $scope.options = {
                     tooltips: {
                         callbacks: {
@@ -27,18 +27,16 @@ angular.module('Chart1Directive', []).directive('chart1', function (gettextCatal
                 }
                 function build() {
                     $scope.loadingChart = true;
-                    
                     Chart.build({
-                        name : 'tresor'
-                    }).then(function(response){
-                        var data = response.data;
+                        name : 'global'
+                    }).then(function (response) {
                         $scope.loadingChart = false;
                         $scope.data = [
-                            1,
-                            1
+                            Math.round((response.data.totalWomen * 100) / (response.data.totalMen + response.data.totalWomen)),
+                            Math.round((response.data.totalMen * 100) / (response.data.totalMen + response.data.totalWomen))
                         ];
-                        $scope.labels = data.labels;
-                    }).catch(function(response) {
+                    }).catch(function (response) {
+                        console.log(response);
                         $rootScope.kernel.alerts.push({
                             type: 1,
                             msg: gettextCatalog.getString('An error occurred, please try again later'),

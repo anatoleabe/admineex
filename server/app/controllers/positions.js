@@ -276,9 +276,15 @@ exports.api.list = function (req, res) {
         filter = {};
         if (req.params.id && req.params.id != "-1") {
             filter = {$and: []};
-            filter.$and.push({
-                "code": {'$regex': req.params.id + "P"}
-            });
+            if (req.params.id.indexOf("-") > -1) {
+                filter.$and.push({
+                    "code": {'$regex': req.params.id + "P"}
+                });
+            } else {
+                filter.$and.push({
+                    "code": {'$regex': req.params.id}
+                });
+            }
         }
 
 
@@ -292,8 +298,8 @@ exports.api.list = function (req, res) {
                 var positionsFiltered = [];
                 function LoopA(o) {
                     if (o < positions.length) {
-                        //TODO compute real effective
-                        exports.findPositionHelder(positions[o].code, function (err, affectation) {
+
+                        exports.findPositionHelder(positions[o]._id, function (err, affectation) {
                             if (err) {
                                 audit.logEvent('[mongodb]', 'Positions', 'findPositionHelder', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
                                 return res.status(500).send(err);
@@ -370,7 +376,7 @@ exports.api.read = function (req, res) {
                         positionCode: position.code
                     };
 
-                    exports.findPositionHelder(filter.positionCode, function (err, result) {
+                    exports.findPositionHelder(filter.positionId, function (err, result) {
                         if (err) {
                             log.error(err);
                             audit.logEvent('[mongodb]', 'Position', 'read', "", "", 'failed', "Mongodb attempted to fiend position helder");
@@ -562,9 +568,9 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
  * @param {type} callback
  * @returns json
  */
-exports.findPositionHelder = function (code, callback) {
+exports.findPositionHelder = function (id, callback) {
     Affectation.findOne({
-        positionCode: code
+        positionId: id
     }).lean().exec(function (err, affectation) {
         if (err) {
             log.error(err);
@@ -627,7 +633,7 @@ exports.findPositionHelderBystaffId = function (options, staffId, callback) {
 
 exports.findHelderPositionsByStructureCode = function (code, callback) {
     Affectation.find({
-        positionCode: {'$regex': code + "-"}
+        positionCode: code
     }).lean().exec(function (err, positions) {
         if (err) {
             log.error(err);
@@ -661,7 +667,7 @@ exports.findPositionByCode = function (code, callback) {
 
 exports.findPositionsByStructureCode = function (options, callback) {
     Position.find({
-        code: {'$regex': options.code + "P"}
+        code: {'$regex': options.code}
     }).lean().exec(function (err, positions) {
         if (err) {
             log.error(err);
@@ -772,7 +778,7 @@ function beautify(options, objects, callback) {
                 objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
 
                 if (options.structures && options.structures == false) {
-                    exports.findPositionHelder(objects[o].code, function (err, affectation) {
+                    exports.findPositionHelder(objects[o]._id, function (err, affectation) {
                         if (err) {
                             console.log(err);
                         } else {
@@ -795,7 +801,7 @@ function beautify(options, objects, callback) {
                         } else {
                             objects[o].structure = structure;
 
-                            exports.findPositionHelder(objects[o].code, function (err, affectation) {
+                            exports.findPositionHelder(objects[o]._id, function (err, affectation) {
                                 if (err) {
                                     console.log(err);
                                 } else {

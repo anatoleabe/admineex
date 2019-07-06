@@ -1,3 +1,27 @@
+<md-toolbar class="toolbar-filter">
+    <div class="md-toolbar-tools md-default">
+        <div flex >
+
+        </div>
+        <md-input-container class="md-block" flex style="margin-top: 40px" >
+            <label translate>Structure</label>
+            <md-select name="idPere" ng-model="selectedStructure"  data-md-container-class="selectdemoSelectHeader">
+                <md-select-header class="demo-select-header">
+                    <input ng-model="searchTerm" ng-keydown="stopPropagation($event)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                           type="search"
+                           placeholder="Rechercher une structure (nom ou sigle) ..."
+                           class="demo-header-searchbox md-text">
+                </md-select-header>
+                <md-option ng-repeat="structure in structures|filter:searchTerm" value="{{structure.id}}">
+                    {{structure.nom}} ({{structure.code| uppercase}})
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+    </div>
+</md-toolbar>
+
+
 <div layout-xs="column" layout="row" layout-wrap>
     <div flex-xs="100" 
          flex-gt-xs="100" 
@@ -6,7 +30,38 @@
          flex-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
          flex-gt-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
 
-         data-ng-include="'templates/dashboard/charts/chart1.html'">
+         data-ng-include="'application/views/statistics/cards/card1.html'">
+    </div>
+
+    <div flex-xs="100" 
+         flex-gt-xs="100" 
+         flex-sm="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 50}}" 
+         flex-gt-sm="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 50}}" 
+         flex-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
+         flex-gt-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
+
+         data-ng-include="'application/views/statistics/cards/card2.html'">
+    </div>
+
+    <div flex-xs="100" 
+         flex-gt-xs="100" 
+         flex-sm="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 50}}" 
+         flex-gt-sm="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 50}}" 
+         flex-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
+         flex-gt-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
+
+         data-ng-include="'application/views/statistics/cards/card4.html'">
+    </div>
+</div>
+<div layout-xs="column" layout="row" layout-wrap>
+    <div flex-xs="100" 
+         flex-gt-xs="100" 
+         flex-sm="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 50}}" 
+         flex-gt-sm="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 50}}" 
+         flex-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
+         flex-gt-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
+
+         data-ng-include="'application/views/statistics/cards/card5.html'">
     </div>
     <div flex-xs="100" 
          flex-gt-xs="100" 
@@ -15,7 +70,7 @@
          flex-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
          flex-gt-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
 
-         data-ng-include="'templates/dashboard/charts/chart2.html'">
+         data-ng-include="'application/views/statistics/cards/card3.html'">
     </div>
     <div flex-xs="100" 
          flex-gt-xs="100" 
@@ -24,33 +79,6 @@
          flex-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
          flex-gt-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
 
-         data-ng-include="'templates/dashboard/charts/chart3.html'">
-    </div>
-    <div flex-xs="100" 
-         flex-gt-xs="100" 
-         flex-sm="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 50}}" 
-         flex-gt-sm="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 50}}" 
-         flex-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
-         flex-gt-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
-
-         data-ng-include="'templates/statistics/cards/card1.html'">
-    </div>
-    <div flex-xs="100" 
-         flex-gt-xs="100" 
-         flex-sm="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 50}}" 
-         flex-gt-sm="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 50}}" 
-         flex-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
-         flex-gt-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
-
-         data-ng-include="'templates/statistics/cards/card2.html'">
-    </div>
-    <div flex-xs="100" 
-         flex-gt-xs="100" 
-         flex-sm="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 50}}" 
-         flex-gt-sm="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 50}}" 
-         flex-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
-         flex-gt-md="{{chart.flex ? chart.flex : $parent.$parent.path.charts.length == 1 ? 50 : 33}}" 
-
-         data-ng-include="'templates/dashboard/charts/chart4.html'">
+         data-ng-include="'application/views/statistics/cards/card6.html'">
     </div>
 </div>

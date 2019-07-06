@@ -1,0 +1,54 @@
+<md-card class="widget widget-data">
+    <md-card-title>
+        <md-card-title-text layout="row">
+            <md-button class="md-icon-button info-labs">
+                <md-icon>fullscreen</md-icon>
+                <md-tooltip md-direction="bottom">
+                    <span translate>Data of :</span > <span translate>all structure</span>
+                </md-tooltip>
+            </md-button>
+            <span class="md-headline" translate>Global statistics</span>
+            <span flex></span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div class="loading" data-ng-if="loadingChart">
+            <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
+        </div>
+        <div ng-class="{'opacity1': loadingChart}">
+            <md-list>
+                <div>
+                    <md-list-item>
+                        <md-icon>perm_contact_calendar</md-icon>
+                        <p class="md-body-2"><span translate>Total personnels</span></p>
+                        <p class="md-body-1 md-secondary"> {{data[0]}}</p>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>perm_contact_calendar</md-icon>
+                        <p class="md-body-2"><span translate>Total Treasure officials</span></p>
+                        <p class="md-body-1 md-secondary"> {{data[1]}}</p>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>perm_contact_calendar</md-icon>
+                        <p class="md-body-2"><span translate>Total Contractuals</span></p>
+                        <p class="md-body-1 md-secondary"> {{data[2]}}</p>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>location_city</md-icon>
+                        <p class="md-body-2"><span translate>Total structure</span></p>
+                        <p class="md-body-1 md-secondary"> {{data[3]}}</p>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>computer</md-icon>
+                        <p class="md-body-2"> <span translate>Total positions</span></p>
+                        <p class="md-body-1 md-secondary"> {{data[4]}}</p>
+                    </md-list-item>
+                </div>
+            </md-list>
+        </div>
+    </md-card-content>
+</md-card>

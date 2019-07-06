@@ -49,6 +49,7 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                             var profile = $.grep(dictionary[resourceList], function (c, i) {
                                                 return c.name.toLowerCase().includes(text.toLowerCase());
                                             });
+                                            console.log(profile);
                                             deferred.resolve(profile);
                                         } else {
                                             deferred.resolve(dictionary[resourceList]);
@@ -57,6 +58,8 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                     }
 
                                     $scope.transformChip = function (chip) {
+                                        console.log("chip")
+                                        console.log(chip)
                                         if (angular.isObject(chip)) {
                                             return chip;
                                         }
@@ -67,6 +70,7 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                         var items = $.grep(dictionaryList, function (c, i) {
                                             return c.value === itemValue;
                                         });
+                                        console.log(items)
                                         if (items && items.length > 0) {
                                             return items[0];
                                         } else {

@@ -74,11 +74,11 @@
                     <th md-column md-order-by="name"><span translate>Full name</span></th>
                     <th md-column md-order-by="matricule" style="max-width: 60px"><span translate>Reg. number</span></th>
                     <th md-column md-order-by="sexe" style="max-width: 10px"><span translate>Sex</span></th>
-                    <th md-column md-order-by="posteActuel[0].structure[0].nom"><span translate>Structure aff.</span></th>
                     <th md-column md-order-by="posteActuel[0].nom"><span translate>Function</span></th>
+                    <th md-column md-order-by="posteActuel[0].structure[0].nom"><span translate>Structure aff.</span></th>
                     <th md-column md-order-by="miseajour" ><span translate>Service began</span></th>
                     <th md-column md-order-by="telephone"><span translate>Phone</span></th>
-                    <th md-column translate><span translate>Actions</span></th>
+                    <th md-column translate style="width: 200px"><span translate>Actions</span></th>
                 </tr>
             </thead>
             <tbody md-body>
@@ -86,11 +86,11 @@
                     <td md-cell ng-click="read(personnel)">{{personnel.name.family[0]}} {{personnel.name.given[0]}}</td>
                     <td md-cell style="max-width: 60px" ng-click="read(personnel)">{{personnel.identifier| uppercase | unknown}}</td>
                     <td md-cell style="max-width: 10px" ng-click="read(personnel)">{{personnel.gender| uppercase | unknown}}</td>
-                    <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.position.structure.name| unknown}} <span style="color: #999999" ng-if="personnel.posteActuel[0].structure[0]"> - {{personnel.posteActuel[0].structure[0].code}} </span></td>
                     <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.position.name| unknown}}</td>
+                    <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.position.structure.name| unknown}} <span style="color: #999999" ng-if="personnel.posteActuel[0].structure[0]"> - {{personnel.posteActuel[0].structure[0].code}} </span></td>
                     <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.date| date:'dd/MM/yyyy'|unknown}}</td>
                     <td md-cell ng-click="read(personnel)">{{personnel.telecom[0].value| unknown}}</td>
-                    <td md-cell >
+                    <td md-cell style="width: 200px">
             <md-button ng-click="affect(personnel)" class="md-fab md-primary md-hue-2 md-mini"  aria-label="Affecte" >
                 <md-icon>transfer_within_a_station</md-icon>
                 <md-tooltip md-direction="top">

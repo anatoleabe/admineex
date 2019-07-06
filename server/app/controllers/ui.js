@@ -106,16 +106,16 @@ function buildNav(user, callback){
         label: 'Staff management',
         name: 'Staff management'
     };
-    var staffManagementTab3 = {
-        href: 'home.staffs.status.main',
-        label: 'Status',
-        name: 'Status'
-    };
-    var staffManagementTab4 = {
-        href: 'home.staffs.discipline.main',
-        label: 'Discipline',
-        name: 'Discipline'
-    };
+//    var staffManagementTab3 = {
+//        href: 'home.staffs.status.main',
+//        label: 'Status',
+//        name: 'Status'
+//    };
+//    var staffManagementTab4 = {
+//        href: 'home.staffs.discipline.main',
+//        label: 'Discipline',
+//        name: 'Discipline'
+//    };
     
     var administration = {
         href: 'home.administration.positions',
@@ -225,8 +225,8 @@ function buildNav(user, callback){
             // LEFT MENU TABS FOR STAFF MANAGEMENT
             nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab2);
-            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab3);
-            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab4);
+//            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab3);
+//            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab4);
             // LEFT MENU MONITOR
             nav.left[0].items.push(monitoring);
             nav.left[0].items[nav.left[0].items.length-1].items.push(monitoringTab1);

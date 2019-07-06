@@ -61,6 +61,24 @@ var whichChart = function (config, callback) {
                 }
             });
             break;
+        case 'global':
+            global(config, function (err, chart) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, chart);
+                }
+            });
+            break;
+        case 'tresor':
+            tresor(config, function (err, chart) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, chart);
+                }
+            });
+            break;
         default:
             callback("not found");
             break;
@@ -126,6 +144,37 @@ var chart1 = function (config, callback) {
     }
     myLoopH(0);
 };
+
+var global = function (config, callback) {
+    var data = {
+        totalStaff:1,
+        totalCorpsTresor: 1,
+        totalNonFonctionnaire: 1,
+        totalPostesVacants: 1,
+        totalWomen: 1,
+        totalMen: 1
+    };
+    callback(null, data);
+}
+
+var tresor = function (config, callback) {
+    var data = {
+        ipt:0,
+        ip: 0,
+        cpt: 0,
+        ct: 0,
+        cat: 0,
+        commis: 0,
+        totalWomen: 1,
+        totalMen: 1,
+        
+    };
+    callback(null, data);
+}
+
+var nonFonctionnaire = function (config, callback) {
+    
+}
 
 /* startDate=> moment.js date object */
 function getMonths(startDate, endDate) {
