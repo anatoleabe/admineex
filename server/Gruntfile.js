@@ -14,7 +14,9 @@ module.exports = function(grunt) {
                         'public/js/controllers/sign/*.js',
                         'public/js/controllers/users/*.js',
                         'public/templates/*.html',
-                        'public/templates/**/*.html'
+                        'public/templates/**/*.html',
+                        'public/templates/**/**/*.html',
+                        'resources/pdf/*.html'
                     ]
                 }
             }

@@ -51,6 +51,7 @@ exports.api.positions = function (req, res) {
                 default: '<div style="width:100%"><div style="float:left;width:80%;font-size: 8px">'+foot+'</div><div style="float:left;width:20%;text-align:right;font-size: 8px">{{page}}/{{pages}}</div></div>', // fallback value
             }
         },
+//        "base": "file:///home/www/your-asset-path"
     };
 
     var meta = {

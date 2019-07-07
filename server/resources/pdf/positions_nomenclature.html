@@ -181,24 +181,16 @@ and open the template in the editor.
         <h4 style ='text-align: center;font-size:14px'><strong> {{meta.title}}</strong> </h4>
     </div>
 
-
+{{#each structures}}
+<div style="margin-top: 15px; margin-bottom: 10px"><b>{{this.code}} - {{this.name}}</b></div>
     <table class="blueTable">
         <thead>
             <tr>
-                <th width="60"><center>{{header.code}}</center></th>
-                <th translate><center>{{header.positionName}}</center></th>
+                <th width="60"><center translate>Code</center></th>
+                <th ><center translate>Position name</center></th>
             </tr>
         </thead>
-        <tfoot>
-            <tr >
-                <td colspan="2">
-                    <div >Total: {{positions.length}} </div>
-                </td>
-            </tr>
-        </tfoot>
         <tbody>
-            {{#each structures}}
-            <tr ><td colspan="2"><b><center>{{this.code}} - {{this.name}}</center></b></td></tr>
             {{#each this.children}}
             <tr ><td colspan="2"><b><center>{{this.code}} - {{this.name}}</center></b></td></tr>
             {{#each this.positions}}
@@ -208,9 +200,8 @@ and open the template in the editor.
             </tr>
             {{/each}}
             {{/each}}
-            {{/each}}
-
         </tbody>
     </table>
+{{/each}}
 </body>
 </html>
