@@ -149,7 +149,7 @@ var getStructureFromJSONByCode = function (file, code, language) {
         }
         found.value = value;
         return found;
-    }else{
+    } else {
         return undefined;
     }
 };
@@ -189,12 +189,12 @@ var getJSONList = function (file, language) {
         function myLoopA(i) {
             if (i < data.length) {
                 var item = data[i];
-                if (!data[i].name){
+                if (!data[i].name) {
                     data[i].name = ((language && language !== "" && data[i][language] != undefined && data[i][language] != "") ? data[i][language] : data[i]['en']);
                 }
                 data[i].value = data[i].id;
                 result.push(data[i]);
-                myLoopA(i+1);
+                myLoopA(i + 1);
             }
         }
         myLoopA(0);
@@ -214,7 +214,7 @@ var getToJSONList = function (file) {
             if (i < data.length) {
                 var item = data[i];
                 result.push(data[i]);
-                myLoopA(i+1);
+                myLoopA(i + 1);
             }
         }
         myLoopA(0);
@@ -234,11 +234,11 @@ var getJSONListByCode = function (file, language, code) {
         function myLoopA(i) {
             if (i < data.length) {
                 var item = data[i];
-                if (code == "-1" || item.code.indexOf(code+"-") > -1 ){
+                if (code == "-1" || item.code.indexOf(code + "-") > -1) {
                     data[i].value = ((language && language !== "" && data[i][language] !== undefined && data[i][language] !== "") ? data[i][language] : data[i]['en']);
                     result.push(data[i]);
                 }
-                
+
                 myLoopA(i + 1);
             }
         }
@@ -278,7 +278,7 @@ var translator = function (language) {
     language = language.toLowerCase();
     var gt = new Gettext();
     if (language != '' && language != 'en') {
-        if(fs.existsSync('./resources/languages/' + language + '.po')){
+        if (fs.existsSync('./resources/languages/' + language + '.po')) {
             var fileContents = fs.readFileSync('./resources/languages/' + language + '.po');
             var domain = gettextParser.po.parse(fileContents);
             gt.addTranslations(language, 'messages', domain);
@@ -288,6 +288,73 @@ var translator = function (language) {
     return gt;
 };
 exports.translator = translator;
+
+var dateformater = function (date , format) {
+    var DateFormatter = {
+        monthNames: [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ],
+        dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        formatDate: function (date, format) {
+            var self = this;
+            format = self.getProperDigits(format, /d+/gi, date.getDate());
+            format = self.getProperDigits(format, /M+/g, date.getMonth() + 1);
+            format = format.replace(/y+/gi, function (y) {
+                var len = y.length;
+                var year = date.getFullYear();
+                if (len == 2)
+                    return (year + "").slice(-2);
+                else if (len == 4)
+                    return year;
+                return y;
+            })
+            format = self.getProperDigits(format, /H+/g, date.getHours());
+            format = self.getProperDigits(format, /h+/g, self.getHours12(date.getHours()));
+            format = self.getProperDigits(format, /m+/g, date.getMinutes());
+            format = self.getProperDigits(format, /s+/gi, date.getSeconds());
+            format = format.replace(/a/ig, function (a) {
+                var amPm = self.getAmPm(date.getHours())
+                if (a === 'A')
+                    return amPm.toUpperCase();
+                return amPm;
+            })
+            format = self.getFullOr3Letters(format, /d+/gi, self.dayNames, date.getDay())
+            format = self.getFullOr3Letters(format, /M+/g, self.monthNames, date.getMonth())
+            return format;
+        },
+        getProperDigits: function (format, regex, value) {
+            return format.replace(regex, function (m) {
+                var length = m.length;
+                if (length == 1)
+                    return value;
+                else if (length == 2)
+                    return ('0' + value).slice(-2);
+                return m;
+            })
+        },
+        getHours12: function (hours) {
+            // https://stackoverflow.com/questions/10556879/changing-the-1-24-hour-to-1-12-hour-for-the-gethours-method
+            return (hours + 24) % 12 || 12;
+        },
+        getAmPm: function (hours) {
+            // https://stackoverflow.com/questions/8888491/how-do-you-display-javascript-datetime-in-12-hour-am-pm-format
+            return hours >= 12 ? 'pm' : 'am';
+        },
+        getFullOr3Letters: function (format, regex, nameArray, value) {
+            return format.replace(regex, function (s) {
+                var len = s.length;
+                if (len == 3)
+                    return nameArray[value].substr(0, 3);
+                else if (len == 4)
+                    return nameArray[value];
+                return s;
+            })
+        }
+    }
+    return DateFormatter.formatDate(date, format);
+};
+exports.dateformater = dateformater;
 
 
 

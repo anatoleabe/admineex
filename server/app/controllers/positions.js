@@ -866,7 +866,9 @@ function beautify(options, objects, callback) {
             if (o < objects.length && objects[o]) {
                 objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
 
-                if (options.structures && options.structures == false) {
+                if (options.nomenclature && options.nomenclature == true) {//This mean that, wil don't need positions's occupants
+                    objectsLoop(o + 1);
+                } else if (options.structures && options.structures == false) {
                     exports.findPositionHelder(objects[o]._id, function (err, affectation) {
                         if (err) {
                             console.log(err);

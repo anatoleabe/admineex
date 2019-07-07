@@ -29,43 +29,57 @@ exports.api.positions = function (req, res) {
         }
         return options.inverse(this);
     })
-    
+
     var structureCode = req.params.structure || "-1";
     var vacancies = req.params.vacancies;
+    var nomenclature = req.params.nomenclature;
+    var template = fs.readFileSync('resources/pdf/positions.html', 'utf8')
 
     var gt = dictionary.translator(req.actor.language);
+    var foot = 'SYGEPE-DGTCFM<br/>Imprimé le ' + dictionary.dateformater(new Date(), "dd/MM/yyyy HH:mm:s");
 
     var options = {
         format: "A4",
         orientation: "landscape",
         border: "10mm",
-        "border-bottom": "15mm",
-        pagination:true
+        "border-bottom": "10mm",
+        pagination: true,
+        paginationOffset: 1, // Override the initial pagination number
+        "footer": {
+            "height": "10mm",
+            "contents": {
+                default: '<div style="width:100%"><div style="float:left;width:80%;font-size: 8px">'+foot+'</div><div style="float:left;width:20%;text-align:right;font-size: 8px">{{page}}/{{pages}}</div></div>', // fallback value
+            }
+        },
     };
-    
+
     var meta = {
         title: gt.gettext("LIST OF WORKSTATIONS BY STRUCTURE")
     };
-    
-    var filter = {};
-    if (structureCode != "-1" && structureCode != "undefined"){
+
+    var filter = {rank: "2"};
+    if (structureCode != "-1" && structureCode != "undefined") {
         filter.code = structureCode;
     }
     var option = {
         actor: req.actor, language: req.actor.language, beautify: true, includePositions: true, filter: filter,
     }
-    
-    if (vacancies && (vacancies == "true" || vacancies == true)){
+
+    if (vacancies && (vacancies == "true" || vacancies == true)) {
         option.vacancies = true;
         meta.title = gt.gettext("LIST OF VACANCIES");
+    } else if (nomenclature && (nomenclature == "true" || nomenclature == true)) {
+        option.nomenclature = true;
+        meta.title = gt.gettext("DGTCFM POSITIONS'S NOMENCLATURE");
+        template = fs.readFileSync('resources/pdf/positions_nomenclature.html', 'utf8');
     }
-    
+
     controllers.structures.list(option, function (err, structures) {
         if (err) {
             log.error(err);
             return res.status(500).send(err);
         } else {
-            if (structureCode != "-1"){
+            if (structureCode != "-1") {
                 meta.structure = structures[0].name;
             }
             var tmpFile = "./tmp/" + keyGenerator.generateKey() + ".pdf";
@@ -75,13 +89,13 @@ exports.api.positions = function (req, res) {
 
             var document = {
                 type: 'file', // 'file' or 'buffer'
-                template: fs.readFileSync('resources/pdf/positions.html', 'utf8'),
+                template: template,
                 context: {
-                    positions: structures,
+                    structures: structures,
                     meta: meta,
                     header: {
-                        code:gt.gettext("Code"),
-                        positionName:gt.gettext("Position name"),
+                        code: gt.gettext("Code"),
+                        positionName: gt.gettext("Position name"),
                         occupiedBy: gt.gettext("Occupied by")
                     }
                 },
@@ -115,18 +129,27 @@ exports.api.positions = function (req, res) {
 
 exports.api.structures = function (req, res) {
     var gt = dictionary.translator(req.actor.language);
-
+    var foot = 'SYGEPE-DGTCFM<br/>Imprimé le ' + dictionary.dateformater(new Date(), "dd/MM/yyyy HH:mm:s");
+    
     var options = {
         format: "A4",
         orientation: "landscape",
         border: "10mm",
-        "border-bottom": "15mm",
-        pagination:true
+        "border-bottom": "10mm",
+        pagination: true,
+        paginationOffset: 1, // Override the initial pagination number
+        "footer": {
+            "height": "10mm",
+            "contents": {
+                default: '<div style="width:100%"><div style="float:left;width:80%;font-size: 8px">'+foot+'</div><div style="float:left;width:20%;text-align:right;font-size: 8px">{{page}}/{{pages}}</div></div>', // fallback value
+            }
+        }
     };
-    
+
     var meta = {
         title: gt.gettext("LIST OF DGTCFM'S STRUCTURES")
     };
+    
 
     controllers.structures.list({actor: req.actor, language: req.actor.language, beautify: true}, function (err, structures) {
         if (err) {
@@ -145,8 +168,8 @@ exports.api.structures = function (req, res) {
                     structures: structures,
                     meta: meta,
                     header: {
-                        code:gt.gettext("Code"),
-                        name:gt.gettext("Name"),
+                        code: gt.gettext("Code"),
+                        name: gt.gettext("Name"),
                         rank: gt.gettext("Hierarchical rank"),
                         type: gt.gettext("Type")
                     }

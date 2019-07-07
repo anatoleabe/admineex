@@ -185,30 +185,26 @@ and open the template in the editor.
     <table class="blueTable">
         <thead>
             <tr>
-                <th width="60">{{header.code}}</th>
-                <th translate>{{header.positionName}}</th>
-                <th translate>{{header.occupiedBy}}</th>
+                <th width="60"><center>{{header.code}}</center></th>
+                <th translate><center>{{header.positionName}}</center></th>
             </tr>
         </thead>
         <tfoot>
-            <tr>
-                <td colspan="3">
+            <tr >
+                <td colspan="2">
                     <div >Total: {{positions.length}} </div>
                 </td>
             </tr>
         </tfoot>
         <tbody>
             {{#each structures}}
-            <tr ><td colspan="3"><b><center>{{this.code}} - {{this.name}}</center></b></td></tr>
+            <tr ><td colspan="2"><b><center>{{this.code}} - {{this.name}}</center></b></td></tr>
             {{#each this.children}}
-            <tr ><td colspan="3"><b><center>{{this.code}} - {{this.name}}</center></b></td></tr>
+            <tr ><td colspan="2"><b><center>{{this.code}} - {{this.name}}</center></b></td></tr>
             {{#each this.positions}}
             <tr>
                 <td>{{this.code}}</td>
                 <td>{{this.name}}</td>
-                <td>
-                    {{this.helderName}}
-                </td>
             </tr>
             {{/each}}
             {{/each}}

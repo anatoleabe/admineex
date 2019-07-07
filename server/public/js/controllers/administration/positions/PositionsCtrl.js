@@ -19,6 +19,10 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                 order: "code"
             };
 
+            $scope.openMoreMenu = function ($mdOpenMenu) {
+                $mdOpenMenu();
+            };
+
             $scope.details = function (params) {
                 $state.go("home.administration.details", params);
             };
@@ -70,10 +74,31 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                 }
             };
 
+            $scope.onlyDirection = function (item) {
+                return item.rank == "2";
+            };
+
+            $scope.onlySubDirection = function (item) {
+                if ($scope.filters.structure) {
+                    var code = JSON.parse($scope.filters.structure).code;
+                    return item.rank == "3" && item.code.indexOf(code) > -1;
+                } else {
+                    return false;
+                }
+
+            };
+
             $scope.$watch('filters.structure', function (newval, oldval) {
                 if (newval) {
                     newval = JSON.parse(newval).code;
                     getPositions(newval ? newval : "-1", $scope.showOnlyVacancies ? "0" : "-1");
+                }
+            });
+
+            $scope.$watch('filters.subStructure', function (newval, oldval) {
+                if (newval){
+                    newval = JSON.parse(newval).code;
+                    $scope.positionFilter = newval;
                 }
             });
 
@@ -88,24 +113,34 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                 console.error(response);
             });
 
+            $scope.exportPDF = function (type) {
+                var code = "-1";
 
-            $scope.openPdf = function () {
+                if ($scope.filters.structure) {
+                    var selectedTruct = JSON.parse($scope.filters.structure);
+                    code = selectedTruct.code;
+                }
+
+                var url = '/api/export/pdf/positions/' + code + '/' + false + '/' + false;
+                if (type == "nomenclature") {
+                    url = '/api/export/pdf/positions/' + code + '/' + false + '/' + true;
+                }
+                getNomenclature(url);
+            }
+
+
+            getNomenclature = function (url) {
                 $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
                     var FileSaver = $injector.get('FileSaver');
                     $rootScope.kernel.loading = 0;
                     var deferred = $q.defer();
                     $scope.promise = deferred.promise;
-                    var code = "-1";
-                    
-                    if ($scope.filters.structure){
-                        var selectedTruct = JSON.parse($scope.filters.structure);
-                        code = selectedTruct.code;
-                    }
-                    
-                    
+
+
+
                     $http({
                         method: 'GET',
-                        url: '/api/export/pdf/positions/'+code+'/'+$scope.showOnlyVacancies,
+                        url: url,
                         headers: {'Content-Type': "application/pdf"},
                         responseType: "arraybuffer"
                     }).then(function (response) {

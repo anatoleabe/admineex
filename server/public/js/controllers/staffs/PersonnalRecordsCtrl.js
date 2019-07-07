@@ -709,7 +709,6 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
         if ($scope.personnelSelected.qualifications && $scope.personnelSelected.qualifications.stages) {
             stages = $scope.personnelSelected.qualifications.stages;
 
-            console.log(stages);
             stagesToPDF = [];
             for (var i = 0; i < stages.length; i++) {
                 var s = stages[i].title + ', ' + stages[i].authority + ' (' + $filter('dateHuman')(stages[i].from) + ' - ' + $filter('dateHuman')(stages[i].to) + ')';
@@ -721,7 +720,6 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
         }
 
 
-        console.log(dd);
         pdfMake.createPdf(dd).open();
     };
 });

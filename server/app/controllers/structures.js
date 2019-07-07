@@ -205,24 +205,39 @@ exports.read = function (options, id, callback) {
 
 
 exports.list = function (options, callback) {
-    var filter = {};
+    var filter = {rank: "2"};
     if (options.filter) {
         filter = options.filter;
     }
-    console.log("filter", filter)
     Structure.find(filter, function (err, result) {
         if (err) {
             log.error(err);
             callback(err);
         } else {
             var structures = JSON.parse(JSON.stringify(result));
-            beautify(options, structures, function (err, objects) {
-                if (err) {
-                    callback(err);
+            function LoopA(a) {
+                if (a < structures.length) {
+                    filter = {fatherId: structures[a]._id};
+                    Structure.find(filter, function (err, subStructures) {
+                        if (err) {
+                            log.error(err);
+                            callback(err);
+                        } else {
+                            structures[a].children = subStructures;
+                            LoopA(a + 1);
+                        }
+                    });
                 } else {
-                    callback(null, objects);
+                    beautify(options, structures, function (err, objects) {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            callback(null, objects);
+                        }
+                    });
                 }
-            });
+            }
+            LoopA(0);
         }
     });
 }
@@ -365,15 +380,25 @@ function beautify(options, objects, callback) {
                         callback(err);
                     } else {
                         objects[o].father = structure;
-                        if (options.includePositions) {
-                            controllers.positions.findPositionsByStructureId({_id: objects[o]._id, beautify: true, structures: false, vacancies: options.vacancies}, function (err, positions) {
-                                if (err) {
-                                    callback(err);
+                        if (options.includePositions && objects[o].children) {
+                            function LoopB(b) {
+                                if (b < objects[o].children.length) {
+                                    objects[o].children[b].typeValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);
+                                    objects[o].children[b].rankValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/ranks.json', objects[o].rank, language);
+                                    objects[o].children[b].name = ((language && language !== "" && objects[o].children[b][language] != undefined && objects[o].children[b][language] != "") ? objects[o].children[b][language] : objects[o].children[b]['en']);
+                                    controllers.positions.findPositionsByStructureId({_id: objects[o].children[b]._id, beautify: true, structures: false, vacancies: options.vacancies, nomenclature: options.nomenclature}, function (err, positions) {
+                                        if (err) {
+                                            callback(err);
+                                        } else {
+                                            objects[o].children[b].positions = positions;
+                                            LoopB(b + 1);
+                                        }
+                                    });
                                 } else {
-                                    objects[o].positions = positions;
                                     Loop(o + 1);
                                 }
-                            });
+                            }
+                            LoopB(0)
                         } else {
                             Loop(o + 1);
                         }
