@@ -11,12 +11,12 @@ angular.module('Card2Directive', []).directive('card2', function (gettextCatalog
                 function build() {
                     $scope.loadingChart = true;
                     Chart.build({
-                        name : 'tresor'
+                        name : 'card2'
                     }).then(function (response) {
                         $scope.loadingChart = false;
                         $scope.data = [
                             response.data.ipt, 
-                            response.data.ip, 
+                            response.data.it, 
                             response.data.cpt, 
                             response.data.ct, 
                             response.data.cat, 

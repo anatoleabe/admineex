@@ -1,4 +1,6 @@
-angular.module('Card4Directive', []).directive('card4', function (gettextCatalog, $ocLazyLoad, $injector, $rootScope) {
+angular.module('Card4Directive', [[
+    'node_modules/angular-material-data-table/dist/md-data-table.min.css'
+]]).directive('card4', function (gettextCatalog, $ocLazyLoad, $injector, $rootScope) {
     return {
         restrict: 'A',
         scope: {},
@@ -11,10 +13,10 @@ angular.module('Card4Directive', []).directive('card4', function (gettextCatalog
                 function build() {
                     $scope.loadingChart = true;
                     Chart.build({
-                        name : 'nonFonctionnaire'
+                        name : 'card4'
                     }).then(function (response) {
                         $scope.loadingChart = false;
-                        $scope.statistics = response.data.statistics;
+                        $scope.statistics = response.data;
                     }).catch(function (response) {
                         $rootScope.kernel.alerts.push({
                             type: 1,

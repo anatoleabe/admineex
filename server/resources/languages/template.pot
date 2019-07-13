@@ -1857,6 +1857,7 @@ msgid "Sex"
 msgstr ""
 
 #: public/templates/administration/positions/details.html:13
+#: public/templates/administration/positions/details.html:15
 #: public/templates/administration/positions/details.html:224
 msgid "Show eligible persons to this position"
 msgstr ""

@@ -1,16 +1,18 @@
+var Personnel = require('../models/personnel').Personnel;
 var audit = require('../utils/audit-log');
 var log = require('../utils/log');
 var moment = require('moment');
+var dictionary = require('../utils/dictionary');
 var _ = require('underscore');
 var controllers = {
     users: require('./users'),
     projects: require('./projects'),
+    personnel: require('./personnel'),
     configuration: require('./configuration')
 };
 
 // API
 exports.api = {};
-
 
 exports.api.build = function (req, res) {
     if (req.actor) {
@@ -31,7 +33,7 @@ exports.api.build = function (req, res) {
             });
         } else {
             audit.logEvent(req.actor.id, 'Charts', 'Build', '', '', 'failed',
-                           'The user could not build a chart because one or more params of the request was not defined');
+                    'The user could not build a chart because one or more params of the request was not defined');
             return res.sendStatus(400);
         }
     } else {
@@ -61,6 +63,15 @@ var whichChart = function (config, callback) {
                 }
             });
             break;
+        case 'chart2':
+            chart2(config, function (err, chart) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, chart);
+                }
+            });
+            break;
         case 'global':
             global(config, function (err, chart) {
                 if (err) {
@@ -70,8 +81,26 @@ var whichChart = function (config, callback) {
                 }
             });
             break;
-        case 'tresor':
-            tresor(config, function (err, chart) {
+        case 'card2':
+            card2(config, function (err, chart) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, chart);
+                }
+            });
+            break;
+        case 'card4':
+            card4(config, function (err, chart) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, chart);
+                }
+            });
+            break;
+        case 'card6':
+            card6(config, function (err, chart) {
                 if (err) {
                     callback(err);
                 } else {
@@ -86,95 +115,307 @@ var whichChart = function (config, callback) {
 };
 
 /**
- * Build the following chart: Forecast Income by probability (next 12 months)
+ * Build the following chart: Ratio Man-Woman (general)
  * @param {json} config
  * @param {json} callback
  * optimized : true
  */
 var chart1 = function (config, callback) {
-    var months = getMonths(moment(new Date(new Date().setDate(new Date().getDate() - 30))), moment(new Date(new Date().setDate(new Date().getDate() + 365-30))));
-    var data = [];
-    var labels = [];
-    var values = [];
-    function myLoopH(i) {
-        if (i < months.length) {
-            var query = {
-                $and: [{
-                    "paymentDate": {
-                        $gte: moment(months[i].from).startOf('day')
-                    }
-                },{
-                    "paymentDate": {
-                        $lte: moment(months[i].to).endOf('day')
-                    }
-                },{
-                    status: { $ne: '6' }
-                }]
-            };
-            controllers.projects.getProjectsByFilter({actor:config.actor,query:query}, function (err, projects) {
-                if (err) {
-                    audit.logEvent('[mongodb]', 'Charts', 'chart1', '', '', 'failed', 'Mongodb attempted to count tests');
-                    callback(err);
-                } else {
-                    var less = 0;
-                    var more = 0;
-                    for(j=0;j<projects.length;j++){
-                        if(projects[j].successProbability < 50){
-                            less += projects[j].value * projects[j].successProbability / 100; 
-                        } else {
-                            more += projects[j].value * projects[j].successProbability / 100; 
-                        }
-                    }
-                    values.push([kFormatter(less), kFormatter(more)]);
-                    myLoopH(i + 1);
-                }
-            });
+    var data = {
+        totalWomen: 0,
+        totalMen: 0
+    };
+    controllers.personnel.list({}, function (err, personnels) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
+            callback(err);
         } else {
-            for (k = 0; k < months.length; k++) {
-                labels.push(months[k].label);
-            }
-            for (m = 0; m < 2; m++) {
-                data[m] = [];
-                for (n = 0; n < values.length; n++) {
-                    data[m][n] = values[n][m];
+            data.totalStaff = personnels.length;
+            function LoopA(a) {
+                if (a < personnels.length && personnels[a]) {
+                    if (personnels[a].gender == "F") {
+                        data.totalWomen += 1;
+                    } else {
+                        data.totalMen += 1;
+                    }
+                    LoopA(a + 1);
+                } else {
+                    callback(null, data);
                 }
             }
-            callback(null, {data: data, labels: labels});
+            LoopA(0);
         }
-    }
-    myLoopH(0);
+    });
 };
 
-var global = function (config, callback) {
+/**
+ * Build the following chart: Corps of Treasury
+ * @param {json} config
+ * @param {json} callback
+ * optimized : true
+ */
+var card2 = function (config, callback) {
     var data = {
-        totalStaff:1,
-        totalCorpsTresor: 1,
-        totalNonFonctionnaire: 1,
-        totalPostesVacants: 1,
-        totalWomen: 1,
-        totalMen: 1
-    };
-    callback(null, data);
-}
-
-var tresor = function (config, callback) {
-    var data = {
-        ipt:0,
-        ip: 0,
+        ipt: 0,
+        it: 0,
         cpt: 0,
         ct: 0,
         cat: 0,
         commis: 0,
-        totalWomen: 1,
-        totalMen: 1,
-        
+        totalCorpsTresor: 0
     };
-    callback(null, data);
+    controllers.personnel.list({}, function (err, personnels) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
+            callback(err);
+        } else {
+            function LoopA(a) {
+                if (a < personnels.length && personnels[a]) {
+                    var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                    var status = (personnels[a].status) ? personnels[a].status : "";
+
+                    if (status == "1") {
+                        var thisgrade = dictionary.getJSONById('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), "en");
+                        if (thisgrade) {
+                            corps = ((personnels[a].corps) ? personnels[a].corps : thisgrade.corps);
+                        }
+
+                        switch (grade) {
+                            case '6':
+                                data.ipt += 1;
+                                break;
+                            case '5':
+                                data.it += 1;
+                                break;
+                            case '9':
+                                data.cpt += 1;
+                                break;
+                            case '10':
+                                data.ct += 1;
+                                break;
+                            case '13':
+                                data.cat += 1;
+                                break;
+                            case '14':
+                                data.commis += 1;
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+
+                    LoopA(a + 1);
+                } else {
+                    callback(null, data);
+                }
+            }
+            LoopA(0);
+        }
+    });
+};
+
+/**
+ * Build the following chart: Ratio Man-Woman (Treasury)
+ * @param {json} config
+ * @param {json} callback
+ * optimized : true
+ */
+var chart2 = function (config, callback) {
+    var data = {
+        totalWomen: 0,
+        totalMen: 0,
+        totalCorpsTresor: 0,
+    };
+    controllers.personnel.list({}, function (err, personnels) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
+            callback(err);
+        } else {
+            function LoopA(a) {
+                if (a < personnels.length && personnels[a]) {
+                    var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                    var status = (personnels[a].status) ? personnels[a].status : "";
+
+                    if (status == "1") {
+                        var thisgrade = dictionary.getJSONById('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), "en");
+                        if (thisgrade) {
+                            corps = ((personnels[a].corps) ? personnels[a].corps : thisgrade.corps);
+                        }
+
+                        if (corps == "2") {
+                            data.totalCorpsTresor += 1;
+                            if (personnels[a].gender == "F") {
+                                data.totalWomen += 1;
+                            } else {
+                                data.totalMen += 1;
+                            }
+                        }
+                    }
+
+                    LoopA(a + 1);
+                } else {
+                    callback(null, data);
+                }
+            }
+            LoopA(0);
+        }
+    });
+};
+
+/**
+ * Build the following chart: Personal under the Labor Code
+ * @param {json} config
+ * @param {json} callback
+ * optimized : true
+ */
+var card4 = function (config, callback) {
+    var data = [];
+    var data1 = [];
+    var options = {
+        query: {
+            status: "2"
+        }
+    }
+    controllers.personnel.list(options, function (err, personnels) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
+            callback(err);
+        } else {
+            var categories = dictionary.getJSONList('../../resources/dictionary/personnel/status/' + 2 + '/categories.json', "en");
+            for (var c in categories) {
+                var line = {
+                    category: categories[c].code,
+                    totalMen: 0,
+                    totalWoman: 0
+                };
+                data1[categories[c].id] = line;
+            }
+
+            function LoopA(a) {
+                if (a < personnels.length && personnels[a]) {
+                    var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                    var category = (personnels[a].category) ? personnels[a].category : "";
+                    
+                    if (category  != "" && data1[category]){
+                        if (personnels[a].gender == "F" ) {
+                            data1[category].totalWoman += 1;
+                        } else {
+                            data1[category].totalMen += 1;
+                        }
+                    }
+                    LoopA(a + 1);
+                } else {
+                    for (var c in categories) {
+                        var line = {
+                            category: categories[c].code,
+                            totalMen: 0,
+                            totalWoman: 0
+                        };
+                        data.push(data1[categories[c].id]);
+                    }
+                    callback(null, data);
+                }
+            }
+            LoopA(0);
+        }
+    });
+};
+
+/**
+ * Build the following chart: Ratio Man-Woman (Person under labor code)
+ * @param {json} config
+ * @param {json} callback
+ * optimized : true
+ */
+var card6 = function (config, callback) {
+    var data = {
+        totalWomen: 0,
+        totalMen: 0,
+    };
+    controllers.personnel.list({}, function (err, personnels) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
+            callback(err);
+        } else {
+            function LoopA(a) {
+                if (a < personnels.length && personnels[a]) {
+                    var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                    var status = (personnels[a].status) ? personnels[a].status : "";
+
+                    if (status == "2") {
+                        if (personnels[a].gender == "F") {
+                            data.totalWomen += 1;
+                        } else {
+                            data.totalMen += 1;
+                        }
+                    }
+
+                    LoopA(a + 1);
+                } else {
+                    callback(null, data);
+                }
+            }
+            LoopA(0);
+        }
+    });
+};
+
+var global = function (config, callback) {
+    var data = {
+        totalStaff: 0,
+        totalCorpsTresor: 0,
+        totalNonFonctionnaire: 0,
+        totalPostesVacants: 0,
+        totalWomen: 0,
+        totalMen: 0
+    };
+
+    controllers.personnel.list({}, function (err, personnels) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
+            callback(err);
+        } else {
+            data.totalStaff = personnels.length;
+            function LoopA(a) {
+                if (a < personnels.length && personnels[a]) {
+                    var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                    var status = (personnels[a].status) ? personnels[a].status : "";
+                    if (status == "2") {
+                        data.totalNonFonctionnaire += 1;
+                    }
+
+                    if (status != "") {
+                        var thisgrade = dictionary.getJSONById('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), "en");
+                        if (thisgrade) {
+                            corps = ((personnels[a].corps) ? personnels[a].corps : thisgrade.corps);
+                        }
+
+                        if (corps == "2") {
+                            data.totalCorpsTresor += 1;
+                        }
+                    }
+
+                    if (personnels[a].gender == "F") {
+                        data.totalWomen += 1;
+                    } else {
+                        data.totalMen += 1;
+                    }
+                    LoopA(a + 1);
+                } else {
+                    callback(null, data);
+                }
+            }
+            LoopA(0);
+        }
+    });
 }
 
-var nonFonctionnaire = function (config, callback) {
-    
-}
 
 /* startDate=> moment.js date object */
 function getMonths(startDate, endDate) {
@@ -215,5 +456,5 @@ function getYears(startDate, endDate) {
 }
 
 function kFormatter(num) {
-    return (num/1000000).toFixed(6);
+    return (num / 1000000).toFixed(6);
 }

@@ -881,7 +881,7 @@ msgstr ""
 #: public/templates/dashboard/directives/chart5.html:10
 #: public/templates/statistics/directives/card1.html:10
 msgid "Global statistics"
-msgstr ""
+msgstr "Statistiques globales"
 
 #: public/js/controllers/MenuCtrl.js:100
 #: public/js/controllers/sign/SigninCtrl.js:18
@@ -1611,7 +1611,7 @@ msgstr ""
 
 #: public/templates/dashboard/directives/chart1.html:11
 msgid "Ratio Man-Woman (Global)"
-msgstr ""
+msgstr "Ratio Homme-Femme (Global)"
 
 #: public/templates/settings/password.html:14
 msgid "Re-type new"
@@ -1835,6 +1835,7 @@ msgid "Sex"
 msgstr "Sexe"
 
 #: public/templates/administration/positions/details.html:13
+#: public/templates/administration/positions/details.html:15
 #: public/templates/administration/positions/details.html:224
 msgid "Show eligible persons to this position"
 msgstr "Afficher les personnes éligibles à ce poste"
@@ -1867,7 +1868,7 @@ msgstr "Signé"
 
 #: public/templates/dialogs/sedentary.html:34
 msgid "Since"
-msgstr ""
+msgstr "Depuis"
 
 #: public/js/controllers/staffs/staff/StaffCtrl.js:58
 msgid "Single"
@@ -1960,11 +1961,11 @@ msgstr "Sous-Directions"
 
 #: public/templates/administration/positions/details.html:51
 msgid "Sub-structure"
-msgstr ""
+msgstr "Sous-structure"
 
 #: public/templates/administration/positions/details.html:57
 msgid "Sub-structure code"
-msgstr ""
+msgstr "Sous-structure code"
 
 #: public/templates/recovery/lost.html:18
 #: public/templates/recovery/reset.html:27
@@ -2223,7 +2224,7 @@ msgstr "Nombre total"
 
 #: public/templates/dashboard/directives/chart5.html:23
 msgid "Total personnels"
-msgstr ""
+msgstr "Total du personnel"
 
 #: public/templates/dashboard/directives/chart5.html:47
 msgid "Total positions"
@@ -2231,7 +2232,7 @@ msgstr "Total des postes"
 
 #: public/templates/dashboard/directives/chart5.html:41
 msgid "Total structure"
-msgstr ""
+msgstr "Total des structures"
 
 #: public/js/appFilters.js:48
 msgid "Tuesday"
@@ -2304,7 +2305,7 @@ msgstr "Bienvenue sur"
 
 #: public/templates/statistics/directives/card4.html:25
 msgid "Women"
-msgstr ""
+msgstr "Femme"
 
 #: public/templates/administration/positions/details.html:45
 msgid "Workstation code"

@@ -14,8 +14,10 @@ angular.module('Card6Directive', []).directive('card6', function (gettextCatalog
                         callbacks: {
                             label: function (tooltipItem, data) {
                                 var datasetLabel = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                                var total = data.datasets[tooltipItem.datasetIndex].data[0] + data.datasets[tooltipItem.datasetIndex].data[1];
+                                var percent = Math.round((datasetLabel * 100) / total);
                                 var label = data.labels[tooltipItem.index];
-                                return label + gettextCatalog.getString(':') + ' ' + datasetLabel;
+                                return label + gettextCatalog.getString(':') + ' ' + percent + '%';
                             }
                         }
                     },
@@ -29,12 +31,12 @@ angular.module('Card6Directive', []).directive('card6', function (gettextCatalog
                 function build() {
                     $scope.loadingChart = true;
                     Chart.build({
-                        name : 'nonFonctionnaire'
+                        name : 'card6'
                     }).then(function (response) {
                         $scope.loadingChart = false;
                         $scope.data = [
-                            Math.round((response.data.totalWomen * 100) / (response.data.totalMen + response.data.totalWomen)),
-                            Math.round((response.data.totalMen * 100) / (response.data.totalMen + response.data.totalWomen))
+                            response.data.totalWomen ,
+                            response.data.totalMen
                         ];
                     }).catch(function (response) {
                         console.log(response);

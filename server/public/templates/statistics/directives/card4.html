@@ -29,9 +29,9 @@
                     <tbody md-body>
                         <tr md-row ng-repeat="stat in statistics">
                             <td md-cell  >{{stat.category}}</td>
-                            <td md-cell>{{stat.nbF}} </td>
-                            <td md-cell>{{stat.nbM}}</td>
-                            <td md-cell>{{stat.nbM + stat.nbF}}</td>
+                            <td md-cell>{{stat.totalMen}} </td>
+                            <td md-cell>{{stat.totalWoman}}</td>
+                            <td md-cell>{{stat.totalMen + stat.totalWoman}}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -498,7 +498,7 @@ exports.api.eligibleTo = function (req, res) {
                                 return res.sendStatus(500);
                             } else {
                                 personnels = JSON.parse(JSON.stringify(personnels));
-                                beautify({req: req, language: req.actor.language, beautify: true}, personnels, function (err, objects) {
+                                beautify({req: req, language: req.actor.language, beautify: true, eligibleTo: position._id, position: position}, personnels, function (err, objects) {
                                     if (err) {
                                         return res.status(500).send(err);
                                     } else {
@@ -620,9 +620,9 @@ function beautify(options, personnels, callback) {
                         callback(err);
                     } else {
 
-                        var status = (personnels[a].status)? personnels[a].status : "";
-                        var grade = (personnels[a].grade)? personnels[a].grade : "";
-                        var category = (personnels[a].category)? personnels[a].category : "";
+                        var status = (personnels[a].status) ? personnels[a].status : "";
+                        var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                        var category = (personnels[a].category) ? personnels[a].category : "";
 
                         var highestLevelEducation = (personnels[a].qualifications) ? personnels[a].qualifications.highestLevelEducation : "";
                         var natureActe = (personnels[a].history) ? personnels[a].history.nature : "";
@@ -631,16 +631,16 @@ function beautify(options, personnels, callback) {
                         personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
 
                         personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
-                        
+
                         if (status != "") {
                             personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
                             personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, language);
 
                             var thisgrade = dictionary.getJSONById('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
-                            if (thisgrade){
+                            if (thisgrade) {
                                 corps = ((personnels[a].corps) ? personnels[a].corps : thisgrade.corps);
                             }
-                            
+
                             if (corps && corps != "") {
                                 personnels[a].corps = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/corps.json', corps + "", language);
                             }
@@ -689,45 +689,56 @@ function beautify(options, personnels, callback) {
                         personnels[a].profilesCorresponding = 0;
 
                         //ASKED BY DGTCFM ONLY FOR TRESOR STAFF
-                        if (corps == "2") {
+                        //TODO: Ajouter le corps du mestier dans chaque poste. Example : Tresor
+                        //Ainsi, il nous suffira de comparer le corps réel du personnel et le corps du metier (lié au poste)
+                        if (corps == "2") {//Corps des Régies Financières Trésor
                             personnels[a].skillsCorresponding = 40;
                             personnels[a].profilesCorresponding = 40;
                         }
 
-                        if (personnels[a].affectedTo && personnels[a].affectedTo.position) {
-                            var requiredProfiles = personnels[a].affectedTo.position.requiredProfiles;
-                            var requiredSkills = personnels[a].affectedTo.position.requiredSkills;
-                            var userProfiles = personnels[a].profiles;
-                            var userSkills = personnels[a].skills;
+                        var userProfiles = personnels[a].profiles;
+                        var userSkills = personnels[a].skills;
 
-                            if (requiredProfiles && requiredProfiles.length > 0) {
-                                var count = 0;
-                                if (userProfiles && userProfiles.length > 0) {
-                                    for (var i in userProfiles) {
-                                        if (requiredProfiles.includes(userProfiles[i])) {
-                                            count = count + 1;
-                                        }
+                        var requiredProfiles = [];
+                        var requiredSkills = [];
+
+                        if (options.eligibleTo && options.position) {//Case we compute the eligibility, take it from the concerned position
+                            requiredProfiles = options.position.requiredProfiles;
+                            requiredSkills = options.position.requiredSkills;
+                        } else {
+                            if (personnels[a].affectedTo && personnels[a].affectedTo.position) {//Normal case. We just compute corresponding percentages
+                                requiredProfiles = personnels[a].affectedTo.position.requiredProfiles;
+                                requiredSkills = personnels[a].affectedTo.position.requiredSkills;
+                            }
+                        }
+
+                        if (requiredProfiles && requiredProfiles.length > 0) {
+                            var count = 0;
+                            if (userProfiles && userProfiles.length > 0) {
+                                for (var i in userProfiles) {
+                                    if (requiredProfiles.includes(userProfiles[i])) {
+                                        count = count + 1;
                                     }
-                                }
-                                personnels[a].profilesCorresponding += Number((100 * (count / requiredProfiles.length)).toFixed(1));
-                                if (personnels[a].profilesCorresponding > 100) {
-                                    personnels[a].profilesCorresponding = 100;
                                 }
                             }
+                            personnels[a].profilesCorresponding += Number((100 * (count / requiredProfiles.length)).toFixed(1));
+                            if (personnels[a].profilesCorresponding > 100) {
+                                personnels[a].profilesCorresponding = 100;
+                            }
+                        }
 
-                            if (requiredSkills && requiredSkills.length > 0) {
-                                var count = 0;
-                                if (userSkills && userSkills.length > 0) {
-                                    for (var i in userSkills) {
-                                        if (requiredSkills.includes(userSkills[i])) {
-                                            count = count + 1;
-                                        }
+                        if (requiredSkills && requiredSkills.length > 0) {
+                            var count = 0;
+                            if (userSkills && userSkills.length > 0) {
+                                for (var i in userSkills) {
+                                    if (requiredSkills.includes(userSkills[i])) {
+                                        count = count + 1;
                                     }
                                 }
-                                personnels[a].skillsCorresponding += Number((100 * (count / requiredProfiles.length)).toFixed(1));
-                                if (personnels[a].skillsCorresponding > 100) {
-                                    personnels[a].skillsCorresponding = 100;
-                                }
+                            }
+                            personnels[a].skillsCorresponding += Number((100 * (count / requiredProfiles.length)).toFixed(1));
+                            if (personnels[a].skillsCorresponding > 100) {
+                                personnels[a].skillsCorresponding = 100;
                             }
                         }
 

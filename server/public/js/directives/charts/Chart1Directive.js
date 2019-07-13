@@ -5,17 +5,19 @@ angular.module('Chart1Directive', []).directive('chart1', function (gettextCatal
         templateUrl: 'templates/dashboard/directives/chart1.html',
         link: function ($scope, $element, $attrs) {
             $scope.title = gettextCatalog.getString(" (Gender)");
-            $scope.labels = [gettextCatalog.getString('Female'), gettextCatalog.getString('Male')];
+            $scope.labels = [gettextCatalog.getString('Women'), gettextCatalog.getString('Man')];
             $ocLazyLoad.load('js/services/ChartService.js').then(function () {
                 var Chart = $injector.get('Chart');
-                $scope.colors = ["#9CCC65", "#F57C00", "#E53935", "#FFB74D", "#FFE0B2"];
+                $scope.colors = ["#2B98F0", "#ff9000"];
                 $scope.options = {
                     tooltips: {
                         callbacks: {
                             label: function (tooltipItem, data) {
                                 var datasetLabel = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                                var total = data.datasets[tooltipItem.datasetIndex].data[0] + data.datasets[tooltipItem.datasetIndex].data[1];
+                                var percent = Math.round((datasetLabel * 100) / total);
                                 var label = data.labels[tooltipItem.index];
-                                return label + gettextCatalog.getString(':') + ' ' + datasetLabel;
+                                return label + gettextCatalog.getString(':') + ' ' + percent + '%';
                             }
                         }
                     },
@@ -27,18 +29,16 @@ angular.module('Chart1Directive', []).directive('chart1', function (gettextCatal
                 }
                 function build() {
                     $scope.loadingChart = true;
-                    
                     Chart.build({
-                        name : 'tresor'
-                    }).then(function(response){
-                        var data = response.data;
+                        name : 'chart1'
+                    }).then(function (response) {
                         $scope.loadingChart = false;
                         $scope.data = [
-                            1,
-                            1
+                            response.data.totalWomen,
+                            response.data.totalMen
                         ];
-                        $scope.labels = data.labels;
-                    }).catch(function(response) {
+                    }).catch(function (response) {
+                        console.log(response);
                         $rootScope.kernel.alerts.push({
                             type: 1,
                             msg: gettextCatalog.getString('An error occurred, please try again later'),
@@ -48,6 +48,7 @@ angular.module('Chart1Directive', []).directive('chart1', function (gettextCatal
                 }
                 build();
             });
+            
         }
     }
 });

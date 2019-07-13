@@ -8,14 +8,16 @@ angular.module('Chart2Directive', []).directive('chart2', function (gettextCatal
             $scope.labels = [gettextCatalog.getString('Female'), gettextCatalog.getString('Male')];
             $ocLazyLoad.load('js/services/ChartService.js').then(function () {
                 var Chart = $injector.get('Chart');
-                $scope.colors = ["#2B98F0", "#1EB8D2"];
+                $scope.colors = ["#d30c0c", "#c4901f"];
                 $scope.options = {
                     tooltips: {
                         callbacks: {
                             label: function (tooltipItem, data) {
                                 var datasetLabel = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                                var total = data.datasets[tooltipItem.datasetIndex].data[0] + data.datasets[tooltipItem.datasetIndex].data[1];
+                                var percent = Math.round((datasetLabel * 100) / total);
                                 var label = data.labels[tooltipItem.index];
-                                return label + gettextCatalog.getString(':') + ' ' + datasetLabel;
+                                return label + gettextCatalog.getString(':') + ' ' + percent + '%';
                             }
                         }
                     },
@@ -28,12 +30,12 @@ angular.module('Chart2Directive', []).directive('chart2', function (gettextCatal
                 function build() {
                     $scope.loadingChart = true;
                     Chart.build({
-                        name : 'tresor'
+                        name : 'chart2'
                     }).then(function (response) {
                         $scope.loadingChart = false;
                         $scope.data = [
-                            Math.round((response.data.totalWomen * 100) / (response.data.totalMen + response.data.totalWomen)),
-                            Math.round((response.data.totalMen * 100) / (response.data.totalMen + response.data.totalWomen))
+                            response.data.totalWomen ,
+                            response.data.totalMen
                         ];
                     }).catch(function (response) {
                         console.log(response);
