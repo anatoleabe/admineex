@@ -25,7 +25,9 @@ angular.module('Card1Directive', []).directive('card1', function (gettextCatalog
                             response.data.totalWomen,
                             Math.round((response.data.totalCorpsTresor * 100) / (response.data.totalStaff)),
                             Math.round(((response.data.totalStaff - response.data.totalCorpsTresor - response.data.totalNonFonctionnaire) * 100) / (response.data.totalStaff)),
-                            Math.round((response.data.totalNonFonctionnaire * 100) / (response.data.totalStaff))
+                            Math.round((response.data.totalNonFonctionnaire * 100) / (response.data.totalStaff)),
+                            response.data.structures,
+                            response.data.positions,
                         ];
                     }).catch(function (response) {
                         console.log(response);

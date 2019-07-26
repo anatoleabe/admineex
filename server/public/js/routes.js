@@ -622,14 +622,16 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         $rootScope.account = {};
 
         $rootScope.kernel.isMain = true;
-        $rootScope.kernel.version = "Version 1.1";
-        $rootScope.kernel.released = "19/11/2018";
+        $rootScope.kernel.version = "Version 2.0";
+        $rootScope.kernel.released = "13/07/2019";
 
         $rootScope.kernel.background = 'world';
-        $rootScope.kernel.title = 'Persabe - DGTCFM';
+        $rootScope.kernel.title = 'Admineex - DGTCFM';
         $rootScope.kernel.logo = {
             large: '../img/logos/logo-full.png',
-            small: '../img/logos/logo.png'
+            small: '../img/logos/logo-small.png',
+            apps: '../img/logos/logo.png',
+            dark: '../img/logos/logo-dark.png'
         };
 
         // Personalize index.html
@@ -670,7 +672,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         // Export a PNG version of the chart/map
         $rootScope.exportPNG = function (content, title) {
             $rootScope.kernel.loading = 0;
-            var filename = 'Persabe-DGTCFM_' + title.replace(/ /g, '-');
+            var filename = 'Admineex_DGTCFM_' + title.replace(/ /g, '-');
             if (typeof content === 'string') {
                 filename += '_';
                 $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {

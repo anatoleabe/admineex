@@ -845,6 +845,21 @@ exports.find2 = function (option, callback) {
     });
 };
 
+exports.count = function (options, callback) {
+    var filter = {};
+    if (options.filter){
+        filter = options.filter;
+    }
+    Position.count(filter).exec(function (err, count) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            callback(null, count);
+        }
+    });
+}
+
 
 exports.api.delete = function (req, res) {
     if (req.actor) {

@@ -12,8 +12,8 @@
                         <div layout="row">
                             <md-input-container class="md-block" flex >
                                 <label translate>Position's structure</label>
-                                <md-select name="structure" ng-model="structure" ng-change="getNextPositionCode(structure)" ng-disabled="position._id" required data-md-container-class="selectdemoSelectHeader">
-                                    <md-option ng-repeat="struct in structures" value="{{struct}}">
+                                <md-select name="structure" ng-model="structure._id" ng-change="getStructure(structure._id)" ng-disabled="position._id" required data-md-container-class="selectdemoSelectHeader">
+                                    <md-option ng-repeat="struct in structures | filter:structureFilter" value="{{struct._id}}">
                                         {{struct.name}} <em>(code: {{struct.code}})</em>
                                     </md-option>
                                 </md-select>
@@ -23,14 +23,16 @@
                                     </div>
                                 </div>
                             </md-input-container>
-                        </div>
-                        <div layout="row" >
-                            <md-input-container class="md-block" flex>
-                                <label translate>Title position</label>
-                                <input name="nom" ng-model="position.fr" required>
-                                <div ng-messages="nom.$error">
+                            <md-input-container class="md-block" flex >
+                                <label translate>Sub structure</label>
+                                <md-select name="substructure" ng-model="substructure._id" ng-change="getNextPositionCode(substructure._id)" ng-disabled="position._id" required data-md-container-class="selectdemoSelectHeader">
+                                    <md-option ng-repeat="struct in structures | filter:substructureFilter" value="{{struct._id}}">
+                                        {{struct.name}} <em>(code: {{struct.code}})</em>
+                                    </md-option>
+                                </md-select>
+                                <div ng-messages="substructure.$error">
                                     <div ng-message="required">
-                                        This field is required to proceed on next step.
+                                        This is required to proceed on next step.
                                     </div>
                                 </div>
                             </md-input-container>
@@ -40,6 +42,17 @@
                                 <label translate>Position code</label>
                                 <input name="code" ng-model="position.code" ng-disabled="position._id" required ng-blur="validateCode()">
                                 <div ng-messages="code.$error">
+                                    <div ng-message="required">
+                                        This field is required to proceed on next step.
+                                    </div>
+                                </div>
+                            </md-input-container>
+                        </div>
+                        <div layout="row" >
+                            <md-input-container class="md-block" flex>
+                                <label translate>Title position</label>
+                                <input name="nom" ng-model="position.fr" required>
+                                <div ng-messages="nom.$error">
                                     <div ng-message="required">
                                         This field is required to proceed on next step.
                                     </div>

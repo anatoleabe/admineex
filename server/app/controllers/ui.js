@@ -160,13 +160,13 @@ function buildNav(user, callback){
         label: 'Monitoring & Evaluation',
         name: 'Monitoring & Evaluation'
     };
-    
-    var statistics = {
-        href: 'home.statistics.main',
-        icon: 'equalizer',
-        label: 'Statistics',
-        name: 'Statistics'
-    };
+//    
+//    var statistics = {
+//        href: 'home.statistics.main',
+//        icon: 'equalizer',
+//        label: 'Statistics',
+//        name: 'Statistics'
+//    };
     var reports = {
         href: 'home.reports.main',
         icon: 'save_alt',
@@ -231,7 +231,7 @@ function buildNav(user, callback){
             nav.left[0].items.push(monitoring);
             nav.left[0].items[nav.left[0].items.length-1].items.push(monitoringTab1);
             // LEFT MENU STATISTICS
-            nav.left[0].items.push(statistics);
+//            nav.left[0].items.push(statistics);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
             // LEFT MENU TABS FOR ADMINISTRATION

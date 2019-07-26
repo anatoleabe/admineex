@@ -8,6 +8,8 @@ var controllers = {
     users: require('./users'),
     projects: require('./projects'),
     personnel: require('./personnel'),
+    positions: require('./positions'),
+    structures: require('./structures'),
     configuration: require('./configuration')
 };
 
@@ -26,7 +28,7 @@ exports.api.build = function (req, res) {
                 group: req.params.group
             }, function (err, chart) {
                 if (err) {
-                    res.status(500).send(err);
+                    res.sendStatus(500);
                 } else {
                     return res.json(chart);
                 }
@@ -299,9 +301,9 @@ var card4 = function (config, callback) {
                 if (a < personnels.length && personnels[a]) {
                     var grade = (personnels[a].grade) ? personnels[a].grade : "";
                     var category = (personnels[a].category) ? personnels[a].category : "";
-                    
-                    if (category  != "" && data1[category]){
-                        if (personnels[a].gender == "F" ) {
+
+                    if (category != "" && data1[category]) {
+                        if (personnels[a].gender == "F") {
                             data1[category].totalWoman += 1;
                         } else {
                             data1[category].totalMen += 1;
@@ -372,7 +374,9 @@ var global = function (config, callback) {
         totalNonFonctionnaire: 0,
         totalPostesVacants: 0,
         totalWomen: 0,
-        totalMen: 0
+        totalMen: 0,
+        structures: 0,
+        positions: 0
     };
 
     controllers.personnel.list({}, function (err, personnels) {
@@ -408,7 +412,23 @@ var global = function (config, callback) {
                     }
                     LoopA(a + 1);
                 } else {
-                    callback(null, data);
+                    controllers.structures.count({}, function (err, count) {
+                        if (err) {
+                            log.error(err);
+                            callback(err);
+                        } else {
+                            data.structures = count;
+                            controllers.positions.count({}, function (err, count) {
+                                if (err) {
+                                    log.error(err);
+                                    callback(err);
+                                } else {
+                                    data.positions = count;
+                                    callback(null, data);
+                                }
+                            });
+                        }
+                    });
                 }
             }
             LoopA(0);

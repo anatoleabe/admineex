@@ -359,6 +359,22 @@ exports.find = function (id, language, callback) {
     });
 }
 
+exports.count = function (options, callback) {
+    var filter = {};
+    if (options.filter){
+        filter = options.filter;
+    }
+    Structure.count(filter).exec(function (err, count) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            callback(null, count);
+        }
+    });
+}
+
+
 
 
 

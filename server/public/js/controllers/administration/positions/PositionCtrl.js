@@ -8,7 +8,8 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
 
     $scope.codeAlreadyExist = false;
     $scope.codePosition = "";
-    $scope.structure = undefined;
+    $scope.structure = {};
+    $scope.substructure = {};
     $scope.requiredProfiles = [];
     $scope.requiredSKills = [];
     var dictionary = {};
@@ -36,12 +37,39 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
 
                                     $rootScope.kernel.loading = 100;
 
-                                    $scope.getNextPositionCode = function (structure) {
-                                        $scope.structure = JSON.parse(structure);
-                                        if (!$stateParams.id) {
-                                            $scope.position.code = $scope.structure.code + "-";
+
+                                    $scope.getStructure = function (id) {
+                                        $scope.structure = {};
+                                        for (var i in $scope.structures){
+                                            if ($scope.structures[i]._id == id){
+                                                $scope.structure = $scope.structures[i];
+                                            }
                                         }
                                     }
+
+                                    $scope.getNextPositionCode = function (subId) {
+                                        $scope.substructure = {};
+                                        for (var i in $scope.structures){
+                                            if ($scope.structures[i]._id == subId){
+                                                $scope.substructure = $scope.structures[i];
+                                            }
+                                        }
+                                        if (!$stateParams.id) {
+                                            $scope.position.code = $scope.substructure.code + "P";
+                                        }
+                                    }
+
+                                    $scope.structureFilter = function (item) {
+                                        return parseInt(item.rank, 10) < 3;
+                                    };
+
+                                    $scope.substructureFilter = function (item) {
+                                        if ($scope.structure) {
+                                            return item.code.indexOf($scope.structure.code+"-") > -1 && parseInt(item.rank, 10) == 3;
+                                        } else {
+                                            return false
+                                        }
+                                    };
 
                                     $scope.querySearchInResourcesDic = function (text, resourceList) {
                                         var deferred = $q.defer();
@@ -49,7 +77,6 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                             var profile = $.grep(dictionary[resourceList], function (c, i) {
                                                 return c.name.toLowerCase().includes(text.toLowerCase());
                                             });
-                                            console.log(profile);
                                             deferred.resolve(profile);
                                         } else {
                                             deferred.resolve(dictionary[resourceList]);
@@ -58,8 +85,6 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                     }
 
                                     $scope.transformChip = function (chip) {
-                                        console.log("chip")
-                                        console.log(chip)
                                         if (angular.isObject(chip)) {
                                             return chip;
                                         }
@@ -70,7 +95,6 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                         var items = $.grep(dictionaryList, function (c, i) {
                                             return c.value === itemValue;
                                         });
-                                        console.log(items)
                                         if (items && items.length > 0) {
                                             return items[0];
                                         } else {
@@ -125,7 +149,7 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                     }
 
                                     $scope.validateCode = function () {
-                                        if ($scope.structure && $scope.position.code && $scope.position.code.startsWith($scope.structure.code + "-")) {
+                                        if ($scope.substructure && $scope.position.code && $scope.position.code.startsWith($scope.substructure.code + "P")) {
                                             Position.find({
                                                 code: $scope.position.code
                                             }).then(function (response) {
@@ -175,8 +199,8 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
 
                                     var watch = {position: {}};
                                     watch.position.code = $scope.$watch("position.code", function (newValue, oldValue) {
-                                        if (oldValue && newValue && $scope.structure) {
-                                            if (newValue.length < ($scope.structure.code.length + 1)) {
+                                        if (oldValue && newValue && $scope.substructure) {
+                                            if (newValue.length < ($scope.substructure.code.length + 1)) {
                                                 $scope.position.code = oldValue;
                                             }
                                         }
@@ -192,7 +216,9 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                             id: $stateParams.id
                                         }).then(function (response) {
                                             $scope.position = response.data;
-                                            $scope.structure = JSON.parse(JSON.stringify(response.data.structure));
+                                            $scope.structure = JSON.parse(JSON.stringify(response.data.structure)).father;
+                                            $scope.substructure = JSON.parse(JSON.stringify(response.data.structure));
+                                            console.log($scope.structure);
                                             prepareDetailsForAngular();
                                         }).catch(function (response) {
                                             $rootScope.kernel.alerts.push({
@@ -219,6 +245,7 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                             prepareDetailsForServer();
 
                                             $rootScope.kernel.loading = 0;
+                                            $scope.position.structureId = $scope.substructure._id;
                                             $scope.position.requiredEffective = "1";//Default effective
                                             $scope.position.en = $scope.position.fr;
                                             Position.upsert($scope.position).then(function (response) {

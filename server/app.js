@@ -31,7 +31,7 @@ nconf.load(function (err, result) {
         changed |= setDefault("system:environment", "dev");
 
         //Server
-        changed |= setDefault("server:name", "http://persabe.org");
+        changed |= setDefault("server:name", "http://admineex.org");
         changed |= setDefault("server:host", "127.0.0.1");
         changed |= setDefault("server:httpPort", 4001);
 
@@ -47,7 +47,7 @@ nconf.load(function (err, result) {
         changed |= setDefault("mailer:port", 465);
         changed |= setDefault("mailer:auth:user", "anatoleabe@gmail.com");
         changed |= setDefault("mailer:auth:pass", "ylpeR6102oN");
-        changed |= setDefault("mailer:sender:name", "Persabe");
+        changed |= setDefault("mailer:sender:name", "Admineex");
         changed |= setDefault("mailer:sender:address", "anatoleabe@gmail.com");
         
         //Rate limiter
@@ -121,7 +121,7 @@ function main() {
     server.listen(nconf.get('server').httpPort);
 
     // Log
-    log.info('Persabe started on port ' + nconf.get('server').httpPort);
+    log.info('Admineex started on port ' + nconf.get('server').httpPort);
     audit.logEvent('[app]', 'main app', 'Start', 'Port', nconf.get('server').httpPort, 'succeed', 'Server successfully started.');   
 }
 
