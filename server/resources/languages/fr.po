@@ -115,11 +115,11 @@ msgstr "Comptes actifs"
 msgid "Activities"
 msgstr "Activités"
 
-#: public/templates/administration/positions/edit.html:100
+#: public/templates/administration/positions/edit.html:113
 msgid "Activities (Add activity then press enter)"
 msgstr "Activités (Ajouter une activité puis appuyez sur entrer)"
 
-#: public/templates/administration/positions/edit.html:103
+#: public/templates/administration/positions/edit.html:116
 msgid "Activity"
 msgstr "Activité"
 
@@ -145,7 +145,7 @@ msgstr "Administration"
 #: public/templates/staffs/discipline/edit.html:47
 #: public/templates/staffs/status/edit.html:47
 msgid "Administrative act"
-msgstr "Actes administration"
+msgstr "Acte administratif"
 
 #: public/templates/installation/second.html:13
 msgid "Administrator Account"
@@ -199,9 +199,9 @@ msgstr ""
 #: public/js/controllers/administration/OrganizationCtrl.js:63
 #: public/js/controllers/administration/OrganizationCtrl.js:85
 #: public/js/controllers/administration/positions/AffectationCtrl.js:187
-#: public/js/controllers/administration/positions/PositionCtrl.js:152
-#: public/js/controllers/administration/positions/PositionCtrl.js:200
-#: public/js/controllers/administration/positions/PositionCtrl.js:236
+#: public/js/controllers/administration/positions/PositionCtrl.js:176
+#: public/js/controllers/administration/positions/PositionCtrl.js:226
+#: public/js/controllers/administration/positions/PositionCtrl.js:263
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:205
 #: public/js/controllers/administration/structures/StructureCtrl.js:150
 #: public/js/controllers/administration/structures/StructureCtrl.js:91
@@ -343,7 +343,7 @@ msgstr "Impossible d'enregistrer, un ou plusieurs champs sont vides"
 #: public/js/controllers/staffs/staff/StaffsCtrl.js:197
 #: public/js/controllers/staffs/status/StatussCtrl.js:51
 #: public/js/controllers/users/UsersCtrl.js:106
-#: public/templates/administration/positions/edit.html:126
+#: public/templates/administration/positions/edit.html:139
 #: public/templates/administration/structures/edit.html:106
 #: public/templates/dialogs/affectation.html:173
 #: public/templates/dialogs/evaluation.html:95
@@ -551,7 +551,7 @@ msgstr "Supprimer"
 
 #: public/js/controllers/staffs/staff/StaffsCtrl.js:194
 msgid "Delete this Agent"
-msgstr "Supprimer ce compte"
+msgstr "Supprimer ce Agent"
 
 #: public/js/controllers/users/UsersCtrl.js:103
 msgid "Delete this account"
@@ -610,7 +610,7 @@ msgstr ""
 msgid "Domain"
 msgstr "Domaine"
 
-#: public/templates/administration/positions/edit.html:127
+#: public/templates/administration/positions/edit.html:140
 #: public/templates/monitor/main.html:80
 #: public/templates/organizations/edit.html:20
 #: public/templates/profile/email.html:11 public/templates/profile/name.html:27
@@ -698,19 +698,19 @@ msgstr "Anglais"
 msgid "Enter a new password for your Core account."
 msgstr "Entrez un nouveau mot de passe pour votre compte Core."
 
-#: public/templates/administration/positions/edit.html:113
+#: public/templates/administration/positions/edit.html:126
 msgid "Enter a task..."
 msgstr "Entrez une tâche..."
 
-#: public/templates/administration/positions/edit.html:102
+#: public/templates/administration/positions/edit.html:115
 msgid "Enter activity ..."
 msgstr "Entrez une activité ..."
 
-#: public/templates/administration/positions/edit.html:56
+#: public/templates/administration/positions/edit.html:69
 msgid "Enter required profile"
 msgstr "Entrez le profile requis"
 
-#: public/templates/administration/positions/edit.html:81
+#: public/templates/administration/positions/edit.html:94
 msgid "Enter required skill"
 msgstr "Entrez la compétence requise"
 
@@ -932,7 +932,7 @@ msgstr "Niveau le plus élevé"
 
 #: public/templates/staffs/staff/edit.html:313
 msgid "Highest level of education"
-msgstr "Niveau le plus élevé"
+msgstr "Niveau d'éducation plus élevé"
 
 #: public/templates/staffs/personnal_records.html:423
 msgid "History"
@@ -1053,7 +1053,7 @@ msgstr "Paludisme"
 msgid "Male"
 msgstr "Masculin"
 
-#: public/templates/statistics/directives/card1.html:56
+#: public/templates/statistics/directives/card1.html:50
 msgid "Male/Female ratio"
 msgstr "Ration homme/femme"
 
@@ -1119,7 +1119,7 @@ msgid "Need help?"
 msgstr "Besoin d'aide ?"
 
 #: public/js/controllers/administration/OrganizationCtrl.js:71
-#: public/js/controllers/administration/positions/PositionCtrl.js:207
+#: public/js/controllers/administration/positions/PositionCtrl.js:233
 #: public/js/controllers/administration/structures/StructureCtrl.js:98
 #: public/js/controllers/organizations/OrganizationCtrl.js:71
 #: public/js/controllers/projects/ProjectCtrl.js:110
@@ -1268,6 +1268,10 @@ msgstr "Nombre"
 msgid "Number of child"
 msgstr "Nombre d'enfant"
 
+#: public/templates/statistics/directives/card1.html:62
+msgid "Number of positions"
+msgstr "Nombre de postes"
+
 #: public/templates/dialogs/evaluation.html:67
 msgid "Number of records processed"
 msgstr ""
@@ -1276,6 +1280,10 @@ msgstr ""
 #: public/templates/dialogs/situation.html:60
 msgid "Number of reference"
 msgstr "N° de référence"
+
+#: public/templates/statistics/directives/card1.html:56
+msgid "Number of structures"
+msgstr ""
 
 #: public/js/controllers/ConfigurationCtrl.js:2
 #: public/js/controllers/SettingsCtrl.js:2
@@ -1461,17 +1469,17 @@ msgstr "Portugais"
 msgid "Position"
 msgstr "Poste"
 
-#: public/templates/administration/positions/edit.html:40
+#: public/templates/administration/positions/edit.html:42
 msgid "Position code"
 msgstr "Code du poste"
 
 #: public/templates/administration/positions/details.html:31
 msgid "Position details: {{position.name}}"
-msgstr ""
+msgstr "Détails du poste : {{position.name}}"
 
 #: public/templates/administration/positions/edit.html:8
 msgid "Position informations"
-msgstr "Information du Poste"
+msgstr "Information du poste"
 
 #: app/controllers/export.js:99
 #: public/templates/administration/positions/main.html:97
@@ -1605,13 +1613,17 @@ msgstr ""
 msgid "Ratio Femmes-Homme (Global)"
 msgstr ""
 
-#: public/templates/statistics/directives/card6.html:11
-msgid "Ratio Femmes-Homme (Non fonctionnaires)"
-msgstr ""
-
 #: public/templates/dashboard/directives/chart1.html:11
 msgid "Ratio Man-Woman (Global)"
 msgstr "Ratio Homme-Femme (Global)"
+
+#: public/templates/statistics/directives/card6.html:11
+msgid "Ratio Man-Woman (Person under labor code)"
+msgstr ""
+
+#: public/templates/dashboard/directives/chart2.html:11
+msgid "Ratio Man-Woman (Treasury)"
+msgstr "Ratio Homme-Femmes(Corps du Trésor)"
 
 #: public/templates/settings/password.html:14
 msgid "Re-type new"
@@ -1662,7 +1674,7 @@ msgstr "Matricule"
 msgid "Required profiles"
 msgstr "Profiles réquis"
 
-#: public/templates/administration/positions/edit.html:50
+#: public/templates/administration/positions/edit.html:63
 msgid "Required profiles (max 05 profiles)"
 msgstr "Profiles réquis (max 05 profils)"
 
@@ -1670,9 +1682,9 @@ msgstr "Profiles réquis (max 05 profils)"
 msgid "Required skill"
 msgstr "Compétence réquise"
 
-#: public/templates/administration/positions/edit.html:75
+#: public/templates/administration/positions/edit.html:88
 msgid "Required skills (max 05 skills)"
-msgstr "Compétence réquise (max 05 compétences)"
+msgstr "Compétences requises (max 05 compétences)"
 
 #: public/js/appFilters.js:268
 msgid "Research Consortium"
@@ -1955,6 +1967,10 @@ msgstr "Rang de la structure"
 msgid "Structure type"
 msgstr "Type de structure"
 
+#: public/templates/administration/positions/edit.html:27
+msgid "Sub structure"
+msgstr "Sous-structure"
+
 #: public/templates/staffs/mouvement/edit.html:49
 msgid "Sub-Directions"
 msgstr "Sous-Directions"
@@ -1996,7 +2012,7 @@ msgstr "Administrateur système"
 msgid "TB"
 msgstr "TB"
 
-#: public/templates/administration/positions/edit.html:114
+#: public/templates/administration/positions/edit.html:127
 msgid "Task"
 msgstr "Tâche"
 
@@ -2004,7 +2020,7 @@ msgstr "Tâche"
 msgid "Tasks"
 msgstr "Tâches"
 
-#: public/templates/administration/positions/edit.html:111
+#: public/templates/administration/positions/edit.html:124
 msgid "Tasks (Add task then press enter)"
 msgstr "Tâches (ajouter une tâche et appuyer sur entrer)"
 
@@ -2031,11 +2047,7 @@ msgstr "La date de CNI est nécéssaire pour passer à l'étape suivante."
 
 #: public/templates/dashboard/directives/chart4.html:11
 msgid "The corp of treasure officials (Category)"
-msgstr "Corps des Régies Financières (Catégorie)"
-
-#: public/templates/dashboard/directives/chart2.html:11
-msgid "The corp of treasure officials (Gender)"
-msgstr "Corps des Régies Financières (genre)"
+msgstr "Corps des régies financières (Catégorie)"
 
 #: public/js/controllers/SettingsCtrl.js:97
 msgid "The current password you entered is incorrect"
@@ -2105,7 +2117,7 @@ msgstr "Le projet a été mis à jour"
 msgid "The phone number is required to proceed on next step."
 msgstr "Le numéro de téléphone est nécéssaire pour passer à l'étape suivante."
 
-#: public/js/controllers/administration/positions/PositionCtrl.js:229
+#: public/js/controllers/administration/positions/PositionCtrl.js:256
 msgid "The position has been saved"
 msgstr "Le poste a été enrégistré"
 
@@ -2158,7 +2170,7 @@ msgstr "L'utilisateur a été supprimé"
 msgid "The user has been updated"
 msgstr "L'utilisateur a été mis à jour"
 
-#: app/controllers/positions.js:640
+#: app/controllers/positions.js:659
 msgid "There are people who have spent more than 5 years at a position."
 msgstr "Il y'a des personnes qui ont passé plus de 5 ans à un même poste. "
 
@@ -2188,7 +2200,7 @@ msgstr "Titre"
 msgid "Title of signatory"
 msgstr "Titre du signataire"
 
-#: public/templates/administration/positions/edit.html:29
+#: public/templates/administration/positions/edit.html:53
 msgid "Title position"
 msgstr "Titre de la position"
 
@@ -2276,7 +2288,6 @@ msgid "User ID"
 msgstr "ID Utilisateur"
 
 #: public/templates/administration/structures/main.html:45
-#: public/templates/statistics/directives/card1.html:50
 msgid "Vacancies"
 msgstr "Postes vacants"
 
@@ -2353,7 +2364,7 @@ msgstr ""
 "Votre mot de passe a été modifié avec succès. Vous pouvez maintenant vous "
 "connecter."
 
-#: app/controllers/positions.js:641
+#: app/controllers/positions.js:660
 msgid "[1] people have spent more than 5 years at the same position."
 msgstr "[1] personne(s) ont passé plus de 5 ans à un même poste."
 
@@ -2424,7 +2435,7 @@ msgstr "se trouve dans Organisation"
 #: public/js/appFilters.js:316 public/js/appFilters.js:363
 #: public/js/appFilters.js:370
 msgid "unknown"
-msgstr "non-connu"
+msgstr "non-connue"
 
 #: public/templates/dialogs/sedentary.html:45
 msgid "years"
@@ -2449,6 +2460,9 @@ msgstr ""
 #: resources/pdf/structures.html:191
 msgid "{{header.type}}"
 msgstr ""
+
+#~ msgid "The corp of treasure officials (Gender)"
+#~ msgstr "Corps des Régies Financières (genre)"
 
 #~ msgid "Structure informations"
 #~ msgstr "Les informations de la structure"

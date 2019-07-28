@@ -388,32 +388,30 @@ var routes = [
     },
 
     // === EXPORT PDF ROUTES ==========================================================
-    
+
     {
         path: _.findWhere(aclRoutes, {id: 56}).uri,
         httpMethod: _.findWhere(aclRoutes, {id: 56}).method,
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.export.api.positions],
         access: _.findWhere(aclRoutes, {id: 56}).roles
     },
-    
-    
+
     {
         path: _.findWhere(aclRoutes, {id: 57}).uri,
         httpMethod: _.findWhere(aclRoutes, {id: 57}).method,
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.export.api.structures],
         access: _.findWhere(aclRoutes, {id: 57}).roles
     },
-    
 
     // === MONITOR ROUTES ==========================================================
-    
+
     {
         path: _.findWhere(aclRoutes, {id: 55}).uri,
         httpMethod: _.findWhere(aclRoutes, {id: 55}).method,
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.monitor.api.list],
         access: _.findWhere(aclRoutes, {id: 55}).roles
     },
-    
+
     // === ORGANIZATION ROUTES ==========================================================
     // Create an org
     {
@@ -637,21 +635,13 @@ function startBot() {
 //        }
 //    });
 
-//    controllers.positions.affectToPositionFromJson(function (err, avoided) {
-//        if (err) {
-//            log.error(err);
-//            console.log(err);
-//        } else {
-//            console.log(avoided)
-//        }
-//    });
 
     controllers.positions.patrol0(function (err, avoided) {
         if (err) {
             log.error(err);
             console.log(err);
         } else {
-            
+
         }
     });
 
@@ -661,6 +651,15 @@ function startBot() {
 //            console.log(err);
 //        } else {
 //            console.log(avoided)
+//
+//            controllers.positions.affectToPositionFromJson(function (err, avoided) {
+//                if (err) {
+//                    log.error(err);
+//                    console.log(err);
+//                } else {
+//                    console.log(avoided)
+//                }
+//            });
 //        }
 //    });
 

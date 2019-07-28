@@ -172,10 +172,10 @@ exports.api.affectToPosition = function (req, res) {
     }
 };
 
-//This read data from json files (matricule and position code , then lint position and personnel in db
+//This read data from json files (matricule and position code , then link position and personnel in db
 //DO NOT USE THIS
 exports.affectToPositionFromJson = function (callback) {
-    var affectations = dictionary.getToJSONList("../../resources/dictionary/tmp/usersposition.json");
+    var affectations = dictionary.getToJSONList("../../resources/dictionary/tmp/insp/fulldata.json");
     var avoided = [];
 
     String.prototype.isNumber = function () {
@@ -188,11 +188,15 @@ exports.affectToPositionFromJson = function (callback) {
     function loopA(a) {
         if (a < affectations.length) {
             var identifier = affectations[a].identifier.replace(/\s+/g, '');
-            var codep = affectations[a].codeposte.replace(/\s+/g, '');
+            var codep = affectations[a].codept.replace(/\s+/g, '');
 
             var skills = affectations[a].creel.split(";");
             var profiles = affectations[a].preel.split(";");
-
+            var affectationDate = (affectations[a].date && affectations[a].date != "") ? affectations[a].date.split("/") : undefined;
+            if (affectationDate){
+                affectationDate = new Date(+affectationDate[2], affectationDate[1] - 1, +affectationDate[0]);
+            }
+            
             Position.findOne({code: codep}, projection, function (err, post) {
                 if (err) {
                     log.error(err);
@@ -206,26 +210,40 @@ exports.affectToPositionFromJson = function (callback) {
                                     positionId: post._id,
                                     positionCode: codep,
                                     personnelId: pers._id,
-                                    date: new Date()
-                                };
-
-                                var userFields = {
-                                    _id: pers._id,
-                                    profiles: profiles,
-                                    skills: skills
+                                    date: affectationDate
                                 };
 
                                 var filter = {
                                     positionId: post._id,
                                     positionCode: codep,
-                                    personnelId: pers._id,
+                                    personnelId: pers._id
                                 };
 
                                 Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
                                     if (err) {
                                         log.error(err);
                                     } else {
-                                        controllers.personnel.upsert(userFields, function (err, result) {
+                                        var history = {
+                                            numAct: undefined,
+                                            positionId: post._id,
+                                            isCurrent: true,
+                                            signatureDate: affectationDate,
+                                            startDate: affectationDate,
+                                            endDate: null,
+                                            mouvement: "1",
+                                            nature: "1"
+                                        };
+                                        if (!pers.history ) {
+                                            pers.history = {positions: []};
+                                        }
+                                        if (pers.history && !pers.history.positions) {
+                                            pers.history.positions = [];
+                                        }
+                                        pers.history.positions.push(history);
+                                        pers.profiles = profiles;
+                                        pers.skills = skills;
+
+                                        controllers.personnel.upsert(pers, function (err, result) {
                                             if (err) {
                                                 log.error(err);
                                             } else {
@@ -473,7 +491,7 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
     }
 
     if (initialize.positions) {
-        var positions = dictionary.getJSONList("../../resources/dictionary/tmp/dataToImportProfSkillTask.json", "en");
+        var positions = dictionary.getJSONList("../../resources/dictionary/tmp/insp/fulldata.json", "en");
         var avoidedPositionsCode = [];
         function loopA(a) {
             if (a < positions.length) {
@@ -494,15 +512,16 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
 
                 for (var s in activities) {
                     if (activities[s] && activities[s] != "") {
-                        var activity = dictionary.getJSONById('../../resources/dictionary/tmp/activities.json', activities[s].trim());
+                        var activity = dictionary.getJSONById('../../resources/dictionary/tmp/insp/activities.json', activities[s].trim());
+                        //console.log(activities[s].trim())
                         activitiesValues.push(activity.activity.capitalize());
                     }
                 }
 
                 for (var s in tasks) {
                     if (tasks[s] && tasks[s] != "") {
-                        //console.log(tasks, tasks[s]);
-                        var task = dictionary.getJSONById('../../resources/dictionary/tmp/tasks.json', tasks[s].trim());
+                        console.log(tasks, tasks[s]);
+                        var task = dictionary.getJSONById('../../resources/dictionary/tmp/insp/tasks.json', tasks[s].trim());
                         taskValues.push(task.task.capitalize());
                     }
                 }
@@ -639,17 +658,17 @@ exports.patrol0 = function (callback) {
                                 notification.userID = users[m]._id;
                                 notification.abstract = gt.gettext("There are people who have spent more than 5 years at a position.");
                                 notification.content = gt.gettext("[1] people have spent more than 5 years at the same position.") + "<br><br>' <table>";
-                                        
+
                                 notification.details = [];
                                 for (i = 0; i < affectations.length; i++) {
-                                    notification.content =notification.content + "<tr>"+
-                                            "<td>"+ i+1 +"</td>" +
-                                            "<td>"+ "XXXXXX" +"</td>" +
-                                            "<td> "+ affectations[i].positionCode +
-                                            "<td> since: "+ affectations[i].date +"</td>" + "</tr></table>";
+                                    notification.content = notification.content + "<tr>" +
+                                            "<td>" + i + 1 + "</td>" +
+                                            "<td>" + "XXXXXX" + "</td>" +
+                                            "<td> " + affectations[i].positionCode +
+                                            "<td> since: " + affectations[i].date + "</td>" + "</tr></table>";
                                     notification.details.push(affectations[i]);
                                 }
-                                
+
                                 notification.content = notification.content.replace("[1]", affectations.length);
 
                                 var filter = {
@@ -658,7 +677,7 @@ exports.patrol0 = function (callback) {
                                     userID: users[m]._id,
                                     content: notification.content
                                 };
-                                
+
                                 Notification.findOneAndUpdate(filter, notification, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
                                     if (err) {
                                         log.error(err);
@@ -847,7 +866,7 @@ exports.find2 = function (option, callback) {
 
 exports.count = function (options, callback) {
     var filter = {};
-    if (options.filter){
+    if (options.filter) {
         filter = options.filter;
     }
     Position.count(filter).exec(function (err, count) {

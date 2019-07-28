@@ -93,7 +93,7 @@
             <table md-table md-progress="promise">
                 <thead md-head md-order="query.order">
                     <tr md-row>
-                        <th md-column md-order-by="code" translate>Code</th>
+                        <th md-column md-order-by="code" translate style="min-width: 80px;">Code</th>
                         <th md-column md-order-by="name" translate>Position name</th>
                         <th md-column md-order-by="structure.name" translate>Structure</th>
                         <th md-column md-order-by="vancancies" style="min-width: 100px" translate>Vancancy</th>
@@ -101,7 +101,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row data-ng-repeat="position in positions| filter:positionFilter | filter:vacanciesOnly | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                    <tr md-row data-ng-repeat="position in positions| filter:positionFilter | filter:vacanciesOnly | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" style="min-width: 80px;">
                         <td md-cell ng-click="details({id: position._id})">{{position.code| uppercase | unknown}}</td>
                         <td md-cell ng-click="details({id: position._id})">{{position.name}} </td>
                         <td md-cell ng-click="details({id: position._id})">{{position.structure.father.name| unknown}} <br/><span><md-icon class="material-icons">subdirectory_arrow_right</md-icon><small><i>{{position.structure.name}}</i></small></span> </td>

@@ -108,11 +108,11 @@ msgstr ""
 msgid "Activities"
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:100
+#: public/templates/administration/positions/edit.html:113
 msgid "Activities (Add activity then press enter)"
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:103
+#: public/templates/administration/positions/edit.html:116
 msgid "Activity"
 msgstr ""
 
@@ -189,9 +189,9 @@ msgstr ""
 #: public/js/controllers/administration/OrganizationCtrl.js:63
 #: public/js/controllers/administration/OrganizationCtrl.js:85
 #: public/js/controllers/administration/positions/AffectationCtrl.js:187
-#: public/js/controllers/administration/positions/PositionCtrl.js:152
-#: public/js/controllers/administration/positions/PositionCtrl.js:200
-#: public/js/controllers/administration/positions/PositionCtrl.js:236
+#: public/js/controllers/administration/positions/PositionCtrl.js:176
+#: public/js/controllers/administration/positions/PositionCtrl.js:226
+#: public/js/controllers/administration/positions/PositionCtrl.js:263
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:205
 #: public/js/controllers/administration/structures/StructureCtrl.js:150
 #: public/js/controllers/administration/structures/StructureCtrl.js:91
@@ -338,7 +338,7 @@ msgstr ""
 #: public/js/controllers/staffs/staff/StaffsCtrl.js:197
 #: public/js/controllers/staffs/status/StatussCtrl.js:51
 #: public/js/controllers/users/UsersCtrl.js:106
-#: public/templates/administration/positions/edit.html:126
+#: public/templates/administration/positions/edit.html:139
 #: public/templates/administration/structures/edit.html:106
 #: public/templates/dialogs/affectation.html:173
 #: public/templates/dialogs/evaluation.html:95
@@ -609,7 +609,7 @@ msgstr ""
 msgid "Domain"
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:127
+#: public/templates/administration/positions/edit.html:140
 #: public/templates/monitor/main.html:80
 #: public/templates/organizations/edit.html:20
 #: public/templates/profile/email.html:11
@@ -703,19 +703,19 @@ msgstr ""
 msgid "Enter a new password for your Core account."
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:113
+#: public/templates/administration/positions/edit.html:126
 msgid "Enter a task..."
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:102
+#: public/templates/administration/positions/edit.html:115
 msgid "Enter activity ..."
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:56
+#: public/templates/administration/positions/edit.html:69
 msgid "Enter required profile"
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:81
+#: public/templates/administration/positions/edit.html:94
 msgid "Enter required skill"
 msgstr ""
 
@@ -1067,7 +1067,7 @@ msgstr ""
 msgid "Male"
 msgstr ""
 
-#: public/templates/statistics/directives/card1.html:56
+#: public/templates/statistics/directives/card1.html:50
 msgid "Male/Female ratio"
 msgstr ""
 
@@ -1136,7 +1136,7 @@ msgid "Need help?"
 msgstr ""
 
 #: public/js/controllers/administration/OrganizationCtrl.js:71
-#: public/js/controllers/administration/positions/PositionCtrl.js:207
+#: public/js/controllers/administration/positions/PositionCtrl.js:233
 #: public/js/controllers/administration/structures/StructureCtrl.js:98
 #: public/js/controllers/organizations/OrganizationCtrl.js:71
 #: public/js/controllers/projects/ProjectCtrl.js:110
@@ -1288,6 +1288,10 @@ msgstr ""
 msgid "Number of child"
 msgstr ""
 
+#: public/templates/statistics/directives/card1.html:62
+msgid "Number of positions"
+msgstr ""
+
 #: public/templates/dialogs/evaluation.html:67
 msgid "Number of records processed"
 msgstr ""
@@ -1295,6 +1299,10 @@ msgstr ""
 #: public/templates/dialogs/sanction.html:60
 #: public/templates/dialogs/situation.html:60
 msgid "Number of reference"
+msgstr ""
+
+#: public/templates/statistics/directives/card1.html:56
+msgid "Number of structures"
 msgstr ""
 
 #: public/js/controllers/ConfigurationCtrl.js:2
@@ -1479,7 +1487,7 @@ msgstr ""
 msgid "Position"
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:40
+#: public/templates/administration/positions/edit.html:42
 msgid "Position code"
 msgstr ""
 
@@ -1625,12 +1633,16 @@ msgstr ""
 msgid "Ratio Femmes-Homme (Global)"
 msgstr ""
 
-#: public/templates/statistics/directives/card6.html:11
-msgid "Ratio Femmes-Homme (Non fonctionnaires)"
-msgstr ""
-
 #: public/templates/dashboard/directives/chart1.html:11
 msgid "Ratio Man-Woman (Global)"
+msgstr ""
+
+#: public/templates/statistics/directives/card6.html:11
+msgid "Ratio Man-Woman (Person under labor code)"
+msgstr ""
+
+#: public/templates/dashboard/directives/chart2.html:11
+msgid "Ratio Man-Woman (Treasury)"
 msgstr ""
 
 #: public/templates/settings/password.html:14
@@ -1681,7 +1693,7 @@ msgstr ""
 msgid "Required profiles"
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:50
+#: public/templates/administration/positions/edit.html:63
 msgid "Required profiles (max 05 profiles)"
 msgstr ""
 
@@ -1689,7 +1701,7 @@ msgstr ""
 msgid "Required skill"
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:75
+#: public/templates/administration/positions/edit.html:88
 msgid "Required skills (max 05 skills)"
 msgstr ""
 
@@ -1978,6 +1990,10 @@ msgstr ""
 msgid "Structure type"
 msgstr ""
 
+#: public/templates/administration/positions/edit.html:27
+msgid "Sub structure"
+msgstr ""
+
 #: public/templates/staffs/mouvement/edit.html:49
 msgid "Sub-Directions"
 msgstr ""
@@ -2020,7 +2036,7 @@ msgstr ""
 msgid "TB"
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:114
+#: public/templates/administration/positions/edit.html:127
 msgid "Task"
 msgstr ""
 
@@ -2028,7 +2044,7 @@ msgstr ""
 msgid "Tasks"
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:111
+#: public/templates/administration/positions/edit.html:124
 msgid "Tasks (Add task then press enter)"
 msgstr ""
 
@@ -2054,10 +2070,6 @@ msgstr ""
 
 #: public/templates/dashboard/directives/chart4.html:11
 msgid "The corp of treasure officials (Category)"
-msgstr ""
-
-#: public/templates/dashboard/directives/chart2.html:11
-msgid "The corp of treasure officials (Gender)"
 msgstr ""
 
 #: public/js/controllers/SettingsCtrl.js:97
@@ -2122,7 +2134,7 @@ msgstr ""
 msgid "The phone number is required to proceed on next step."
 msgstr ""
 
-#: public/js/controllers/administration/positions/PositionCtrl.js:229
+#: public/js/controllers/administration/positions/PositionCtrl.js:256
 msgid "The position has been saved"
 msgstr ""
 
@@ -2175,7 +2187,7 @@ msgstr ""
 msgid "The user has been updated"
 msgstr ""
 
-#: app/controllers/positions.js:640
+#: app/controllers/positions.js:659
 msgid "There are people who have spent more than 5 years at a position."
 msgstr ""
 
@@ -2205,7 +2217,7 @@ msgstr ""
 msgid "Title of signatory"
 msgstr ""
 
-#: public/templates/administration/positions/edit.html:29
+#: public/templates/administration/positions/edit.html:53
 msgid "Title position"
 msgstr ""
 
@@ -2291,7 +2303,6 @@ msgid "User ID"
 msgstr ""
 
 #: public/templates/administration/structures/main.html:45
-#: public/templates/statistics/directives/card1.html:50
 msgid "Vacancies"
 msgstr ""
 
@@ -2363,7 +2374,7 @@ msgstr ""
 msgid "Your password has been changed with success. You can now sign in."
 msgstr ""
 
-#: app/controllers/positions.js:641
+#: app/controllers/positions.js:660
 msgid "[1] people have spent more than 5 years at the same position."
 msgstr ""
 
