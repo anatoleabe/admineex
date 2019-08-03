@@ -495,6 +495,8 @@ msgstr ""
 msgid "DGTCFM POSITIONS'S NOMENCLATURE"
 msgstr ""
 
+#: app/controllers/ui.js:88
+#: app/controllers/ui.js:89
 #: resources/languages/extraDictionary.html:1
 msgid "Dashboard"
 msgstr ""
@@ -1555,6 +1557,8 @@ msgstr ""
 msgid "Professional informations"
 msgstr ""
 
+#: app/controllers/ui.js:201
+#: app/controllers/ui.js:202
 #: resources/languages/extraDictionary.html:4
 msgid "Profile"
 msgstr ""
@@ -1860,6 +1864,8 @@ msgstr ""
 msgid "Service began"
 msgstr ""
 
+#: app/controllers/ui.js:207
+#: app/controllers/ui.js:208
 #: resources/languages/extraDictionary.html:2
 msgid "Settings"
 msgstr ""
@@ -2300,6 +2306,11 @@ msgstr ""
 
 #: public/templates/users/profile.html:9
 msgid "User ID"
+msgstr ""
+
+#: app/controllers/ui.js:180
+#: app/controllers/ui.js:181
+msgid "Users"
 msgstr ""
 
 #: public/templates/administration/structures/main.html:45

@@ -71,7 +71,7 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
                             $scope.structure.address[0].arrondissement = undefined;
                         }
                     });
-                    
+
                     $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
                         watch.region();
                     });
@@ -85,6 +85,14 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
                             id: $stateParams.id
                         }).then(function (response) {
                             $scope.structure = response.data;
+                            $scope.selected.structure = {
+                                _id:$scope.structure.fatherId
+                            }
+                            if ($scope.structure.rank == "1" || $scope.structure.rank == "2") {
+                                $scope.addFather = false;
+                            } else {
+                                $scope.addFather = true;
+                            }
                         }).catch(function (response) {
                             $rootScope.kernel.alerts.push({
                                 type: 1,
@@ -103,7 +111,7 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
                     $scope.rankChange = function () {
                         $scope.selected.structure = undefined;
 
-                        if ($scope.structure.rank == "1") {
+                        if ($scope.structure.rank == "1" || $scope.structure.rank == "2") {
                             $scope.addFather = false;
                         } else {
                             $scope.addFather = true;
@@ -112,7 +120,9 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
 
                     $scope.structureChange = function () {
                         if ($scope.selected.structure) {
-                            $scope.structure.code = JSON.parse($scope.selected.structure).code + "-";
+                            if ($scope.structure.code && !($scope.structure.code.indexOf(JSON.parse($scope.selected.structure).code) > -1)){
+                                $scope.structure.code = JSON.parse($scope.selected.structure).code + "-";
+                            }
                         }
                     };
 
@@ -131,7 +141,7 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
                     $scope.submit = function () {
                         $rootScope.kernel.loading = 0;
                         $scope.structure.en = $scope.structure.fr;
-                        if ($scope.selected.structure) {
+                        if ($scope.addFather && $scope.selected.structure) {
                             $scope.structure.fatherId = JSON.parse($scope.selected.structure)._id;
                         }
 

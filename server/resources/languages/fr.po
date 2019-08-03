@@ -14,7 +14,7 @@ msgstr ""
 
 #: public/templates/dialogs/sedentary.html:30
 msgid "#"
-msgstr ""
+msgstr "#"
 
 #: public/templates/staffs/personnal_records.html:363
 #: public/templates/staffs/personnal_records.html:66
@@ -497,6 +497,7 @@ msgstr "Actuel"
 msgid "DGTCFM POSITIONS'S NOMENCLATURE"
 msgstr "NOMENCLATURE DES POSTES DE LA DGTCFM"
 
+#: app/controllers/ui.js:88 app/controllers/ui.js:89
 #: resources/languages/extraDictionary.html:1
 msgid "Dashboard"
 msgstr "Tableau de bord"
@@ -1283,7 +1284,7 @@ msgstr "N° de référence"
 
 #: public/templates/statistics/directives/card1.html:56
 msgid "Number of structures"
-msgstr ""
+msgstr "Nombre de structures"
 
 #: public/js/controllers/ConfigurationCtrl.js:2
 #: public/js/controllers/SettingsCtrl.js:2
@@ -1537,6 +1538,7 @@ msgstr "Information professionnelle"
 msgid "Professional informations"
 msgstr "Informations professionnelles"
 
+#: app/controllers/ui.js:201 app/controllers/ui.js:202
 #: resources/languages/extraDictionary.html:4
 msgid "Profile"
 msgstr "Profil"
@@ -1838,6 +1840,7 @@ msgstr "Service"
 msgid "Service began"
 msgstr "Date de début au poste"
 
+#: app/controllers/ui.js:207 app/controllers/ui.js:208
 #: resources/languages/extraDictionary.html:2
 msgid "Settings"
 msgstr "Paramètres"
@@ -2287,6 +2290,10 @@ msgstr "Utiliser l'entrée pour rechercher un enregistrement personnel"
 msgid "User ID"
 msgstr "ID Utilisateur"
 
+#: app/controllers/ui.js:180 app/controllers/ui.js:181
+msgid "Users"
+msgstr "Utilisateurs"
+
 #: public/templates/administration/structures/main.html:45
 msgid "Vacancies"
 msgstr "Postes vacants"
@@ -2460,6 +2467,21 @@ msgstr ""
 #: resources/pdf/structures.html:191
 msgid "{{header.type}}"
 msgstr ""
+
+#~ msgid "Monitoring & Evaluation"
+#~ msgstr "Suivi & Evaluation"
+
+#~ msgid "Personnal records"
+#~ msgstr "Fichier personnel"
+
+#~ msgid "Positions"
+#~ msgstr "Postes"
+
+#~ msgid "Staff management"
+#~ msgstr "Gestion du personnel"
+
+#~ msgid "Structures"
+#~ msgstr "Structures"
 
 #~ msgid "The corp of treasure officials (Gender)"
 #~ msgstr "Corps des Régies Financières (genre)"

@@ -1,11 +1,13 @@
 angular.module('StructuresCtrl', []).controller('StructuresController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope , $q, $http) {
+    console.log("hshahahah")
     $ocLazyLoad.load('js/services/StructureService.js').then(function () {
         var Structure = $injector.get('Structure');
         var helper = {
             title: gettextCatalog.getString("No structure"),
             icon: "account_balance"
         };
-
+        console.log("11", $rootScope.kernel.loading)
+        
         $scope.organizations = [], $scope.helper = [];
         $scope.search = false;
         $scope.query = {
@@ -15,7 +17,6 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
         };
 
         $scope.edit = function (params) {
-            console.log(params);
             $state.go("home.administration.structures.edit", params);
         };
 
@@ -27,6 +28,7 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
                     $scope.helper = helper;
                 }
                 $rootScope.kernel.loading = 100;
+                console.log("222", $rootScope.kernel.loading)
                 $scope.structures = data;
             }).catch(function (response) {
                 console.error(response);

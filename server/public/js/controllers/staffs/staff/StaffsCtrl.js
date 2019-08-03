@@ -1,4 +1,5 @@
 angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope) {
+    console.log("hshahahah")
     $ocLazyLoad.load('js/services/StaffService.js').then(function () {
         var StaffAgent = $injector.get('Staff');
         $ocLazyLoad.load('js/services/StructureService.js').then(function () {
@@ -156,6 +157,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                         $scope.helper = helper;
                     }
                     $rootScope.kernel.loading = 100;
+                    console.log("Agent", $rootScope.kernel.loading)
                     $scope.personnels = data;
 
                 }).catch(function (response) {

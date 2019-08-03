@@ -6,6 +6,7 @@ var _               = require('underscore');
 var formidable      = require('formidable');
 var chartsList      = require('../../resources/dictionary/app/charts.json');
 var nconf           = require('nconf');
+var dictionary = require('../utils/dictionary');
 
 // API
 exports.api = {};
@@ -67,7 +68,7 @@ exports.api.charts = function(req,res){
 
 function buildNav(user, callback){
     var server = controllers.configuration.getConf().server;
-
+    var gt = dictionary.translator(user.language);
     // Const.
     var nav = {
         left: [{
@@ -84,8 +85,8 @@ function buildNav(user, callback){
     var dashboard = {
         href: 'home.dashboard.main',
         icon: 'dashboard',
-        label: 'Dashboard',
-        name: 'Dashboard'
+        label: gt.gettext('Dashboard'),
+        name: gt.gettext('Dashboard')
     };
     var staffManagement = {
         href: 'home.staffs.main',
@@ -128,7 +129,7 @@ function buildNav(user, callback){
     // Administration tabs
     var administrationTab1 = {
         href: 'home.administration.positions',
-        label: 'Positions',
+        label: "Positions",
         name: 'Positions'
     };
     var administrationTab2 = {
@@ -176,8 +177,8 @@ function buildNav(user, callback){
     var users = {
         href: 'home.users.main',
         icon: 'supervisor_account',
-        label: 'Users',
-        name: 'Users'
+        label: gt.gettext('Users'),
+        name: gt.gettext('Users')
     };
 
     // Preferences
@@ -197,14 +198,14 @@ function buildNav(user, callback){
     var profile = {
         href: 'home.profile.main',
         icon: 'account_circle',
-        label: 'Profile',
-        name: 'Profile'
+        label: gt.gettext('Profile'),
+        name: gt.gettext('Profile')
     };
     var settings = {
         href: 'home.settings.main',
         icon: 'tune',
-        label: 'Settings',
-        name: 'Settings'
+        label: gt.gettext('Settings'),
+        name: gt.gettext('Settings')
     };
     var signout = {
         href: '#',

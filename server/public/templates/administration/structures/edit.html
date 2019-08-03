@@ -41,7 +41,7 @@
                             <md-input-container class="md-block" flex >
                                 <label translate>Structure</label>
                                 <md-select name="selectedStruc" ng-model="selected.structure" required ng-change="structureChange()">
-                                    <md-option ng-repeat="struct in structures| filter:structureFilter" value="{{struct}}" >
+                                    <md-option ng-repeat="struct in structures| filter:structureFilter" value="{{struct}}" ng-selected="{{ struct._id === selected.structure._id ? 'true' : 'false' }}">
                                         {{struct.name}} <em>(code: {{struct.code}})</em> 
                                     </md-option>
                                 </md-select>
@@ -55,7 +55,7 @@
                         <div layout="row" >
                             <md-input-container class="md-block" flex>
                                 <label translate>Code</label>
-                                <input ng-disabled="!new" name="code" ng-model="structure.code" required>
+                                <input name="code" ng-model="structure.code" required>
                                 <div ng-messages="code.$error">
                                     <div ng-message="required">
                                         Structure code is required to proceed on next step.
@@ -80,7 +80,7 @@
                                         {{region.name}}
                                     </md-option>
                                 </md-select>
-                                <div ng-messages="step1.regions.$error">
+                                <div ng-messages="regions.$error">
                                     <div ng-message="required">
                                         The original region is required to proceed on next step.
                                     </div>
@@ -93,7 +93,7 @@
                                         {{department.name}}
                                     </md-option>
                                 </md-select>
-                                <div ng-messages="step1.division.$error">
+                                <div ng-messages="division.$error">
                                     <div ng-message="required">
                                         The division is required to proceed on next step.
                                     </div>

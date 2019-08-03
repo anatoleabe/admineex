@@ -15,7 +15,7 @@
         <a ng-if="!kernel.isMain">
             <h3>
                 {{kernel.breadcrumb[0]}} 
-                <span ng-repeat="breadcrumb in kernel.breadcrumbs">{{breadcrumb}}<md-icon ng-if="!$last">keyboard_arrow_right</md-icon></span>
+                <span ng-repeat="breadcrumb in kernel.breadcrumbs">{{breadcrumb | translate}}<md-icon ng-if="!$last">keyboard_arrow_right</md-icon></span>
             </h3>
         </a>
         <span flex></span>
