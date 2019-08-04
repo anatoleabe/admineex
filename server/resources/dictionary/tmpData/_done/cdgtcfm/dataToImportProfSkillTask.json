@@ -1,0 +1,110 @@
+[
+ {
+   "codept": "190-1P1",
+   "pt": "DGTCFM",
+   "prequired": "4;59",
+   "crequired": "2;7;9;27;19;20;30",
+   "activity": "1;2;3;4;5;8;9;10;11;12;13;14;15;16",
+   "task": "1;5;6;7;8;9;10;13;15;16;17;18;19;20;21;22;23;25;27",
+   "off": ""
+ },
+ {
+   "codept": "190-1P2",
+   "pt": "Cadre1",
+   "prequired": "11;58",
+   "crequired": "42;30;9;2",
+   "activity": "",
+   "task": "2;4;12;24;28",
+   "off": ""
+ },
+ {
+   "codept": "190-1P3",
+   "pt": "Cadre2",
+   "prequired": "11;58",
+   "crequired": "42;30;9;2",
+   "activity": "",
+   "task": "3;11;14;26",
+   "off": ""
+ },
+ {
+   "codept": "190-1P4",
+   "pt": "Assistant de Direction",
+   "prequired": "60;55",
+   "crequired": "38;34",
+   "activity": "17",
+   "task": "30;31;34;36;44;45;47",
+   "off": ""
+ },
+ {
+   "codept": "190-1P5",
+   "pt": "Billeteur",
+   "prequired": "24;60",
+   "crequired": "9;30",
+   "activity": "",
+   "task": "43",
+   "off": ""
+ },
+ {
+   "codept": "190-1P6",
+   "pt": "Agent de bureau1",
+   "prequired": "50;51;52;62;63",
+   "crequired": "38;34",
+   "activity": "18;19",
+   "task": "32;33;35;37;38;39;40;41;42;46;48",
+   "off": ""
+ },
+ {
+   "codept": "190-1P7",
+   "pt": "Agent de bureau2",
+   "prequired": "50;51;52;62;63",
+   "crequired": "38;34",
+   "activity": "18;19",
+   "task": "32;33;35;37;38;39;40;41;42;46;48",
+   "off": ""
+ },
+ {
+   "codept": "190-1P8",
+   "pt": "Agent de Sécurité",
+   "prequired": "52",
+   "crequired": "43",
+   "activity": "",
+   "task": "",
+   "off": ""
+ },
+ {
+   "codept": "190-1P9",
+   "pt": "Chauffeur",
+   "prequired": "47;48;49;50;51",
+   "crequired": "13;28",
+   "activity": "20",
+   "task": "48;49",
+   "off": ""
+ },
+ {
+   "codept": "190-1P10",
+   "pt": "Controleur de gestion",
+   "prequired": "4;11;",
+   "crequired": "30;2;16;",
+   "activity": "6;7",
+   "task": "29",
+   "off": ""
+ },
+ {
+   "codept": "190-1P11",
+   "pt": "Unité de suivi 1",
+   "prequired": "11;17",
+   "crequired": "38;2;15;17",
+   "activity": "",
+   "task": "29",
+   "off": ""
+ },
+ {
+   "codept": "190-1P12",
+   "pt": "Unité de suivi 2",
+   "prequired": "11;17",
+   "crequired": "38;2;15;17",
+   "activity": "",
+   "task": "29",
+   "off": ""
+ }
+]

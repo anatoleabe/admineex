@@ -1,0 +1,65 @@
+[
+    {
+        "codept": "191-1P1",
+        "pt": "Chef Service d'Ordre",
+        "off": "",
+        "prequired": "58;55",
+        "crequired": "14;16;2",
+        "activity": "6;7;8;9",
+        "task": "25;19;20;21;8;9;21;25"
+    },
+    {
+        "codept": "191-1P2",
+        "pt": "Bureau du Courrier et de Liaison",
+        "off": "",
+        "prequired": "60;54",
+        "crequired": "2;14",
+        "activity": "3",
+        "task": "1;4;12;13;5;17;23;24\n"
+    },
+    {
+        "codept": "191-1P3",
+        "pt": "Bureau d'Accueil et de l'Information",
+        "off": "",
+        "prequired": "60;54",
+        "crequired": "2;23;14",
+        "activity": "1;2",
+        "task": "6;7;10;11;23;24"
+    },
+    {
+        "codept": "191-1P4",
+        "pt": "Bureau des Archives",
+        "off": "",
+        "prequired": "60;54",
+        "crequired": "2;23;14",
+        "activity": "5",
+        "task": "15;19;23;24"
+    },
+    {
+        "codept": "191-1P5",
+        "pt": "Agent de liaison",
+        "off": "",
+        "prequired": "62;52",
+        "crequired": "12",
+        "activity": "4",
+        "task": "22"
+    },
+    {
+        "codept": "191-1P6",
+        "pt": "Agent de liaison",
+        "off": "",
+        "prequired": "62;52",
+        "crequired": "12",
+        "activity": "4",
+        "task": "22"
+    },
+    {
+        "codept": "191-1P7",
+        "pt": "Agent de liaison",
+        "off": "",
+        "prequired": "62;52",
+        "crequired": "12",
+        "activity": "4",
+        "task": "22"
+    }
+]

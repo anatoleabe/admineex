@@ -175,7 +175,7 @@ exports.api.affectToPosition = function (req, res) {
 //This read data from json files (matricule and position code , then link position and personnel in db
 //DO NOT USE THIS
 exports.affectToPositionFromJson = function (callback) {
-    var affectations = dictionary.getToJSONList("../../resources/dictionary/tmp/insp/fulldata.json");
+    var affectations = dictionary.getToJSONList("../../resources/dictionary/tmp/di/fulldata.json");
     var avoided = [];
 
     String.prototype.isNumber = function () {
@@ -491,7 +491,7 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
     }
 
     if (initialize.positions) {
-        var positions = dictionary.getJSONList("../../resources/dictionary/tmp/insp/fulldata.json", "en");
+        var positions = dictionary.getJSONList("../../resources/dictionary/tmp/di/fulldata.json", "en");
         var avoidedPositionsCode = [];
         function loopA(a) {
             if (a < positions.length) {
@@ -512,8 +512,8 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
 
                 for (var s in activities) {
                     if (activities[s] && activities[s] != "") {
-                        var activity = dictionary.getJSONById('../../resources/dictionary/tmp/insp/activities.json', activities[s].trim());
-                        //console.log(activities[s].trim())
+                        var activity = dictionary.getJSONById('../../resources/dictionary/tmp/di/activities.json', activities[s].trim());
+                        console.log(activities[s].trim())
                         activitiesValues.push(activity.activity.capitalize());
                     }
                 }
@@ -521,7 +521,7 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                 for (var s in tasks) {
                     if (tasks[s] && tasks[s] != "") {
                         console.log(tasks, tasks[s]);
-                        var task = dictionary.getJSONById('../../resources/dictionary/tmp/insp/tasks.json', tasks[s].trim());
+                        var task = dictionary.getJSONById('../../resources/dictionary/tmp/di/tasks.json', tasks[s].trim());
                         taskValues.push(task.task.capitalize());
                     }
                 }
@@ -552,6 +552,7 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                         log.error(err);
                         callback(err);
                     } else {
+                        console.log(positions[a].codept)
                         controllers.structures.findStructureByCode(positions[a].codept.substring(0, positions[a].codept.indexOf('P')), "en", function (err, structure) {
                             if (err) {
                                 log.error(err);

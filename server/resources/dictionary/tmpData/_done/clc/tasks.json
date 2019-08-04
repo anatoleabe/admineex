@@ -1,0 +1,142 @@
+[
+ {
+   "id": "1",
+   "task": "Accueille et oriente les usagers"
+ },
+ {
+   "id": "2",
+   "task": "Apprête et dépouille les parapheurs"
+ },
+ {
+   "id": "3",
+   "task": "Assure la transmission des dossiers"
+ },
+ {
+   "id": "4",
+   "task": "Classe les actes et documents"
+ },
+ {
+   "id": "5",
+   "task": "Classe les documents"
+ },
+ {
+   "id": "6",
+   "task": "Effectue les courses de service"
+ },
+ {
+   "id": "7",
+   "task": "Exécute les travaux techniques du secrétariat"
+ },
+ {
+   "id": "8",
+   "task": "Gère les appels téléphoniques"
+ },
+ {
+   "id": "9",
+   "task": "Habille les dossiers"
+ },
+ {
+   "id": "10",
+   "task": "L’élaboration du tableau de bord de la Cellule"
+ },
+ {
+   "id": "11",
+   "task": "L’élaboration et de la mise en œuvre du plan comptable sectoriel des Etablissements Publics Administratifs"
+ },
+ {
+   "id": "12",
+   "task": "L’élaboration et l’exécution du plan d’action de la Cellule"
+ },
+ {
+   "id": "13",
+   "task": "L’élaboration et la mise en œuvre du plan comptable général de l’Etat"
+ },
+ {
+   "id": "14",
+   "task": "L’élaboration et la mise en œuvre du plan comptable sectoriel des Collectivités Territoriales Décentralisées"
+ },
+ {
+   "id": "15",
+   "task": "L’évaluation des réformes engagées"
+ },
+ {
+   "id": "16",
+   "task": "La conservation de tous les textes législatifs et réglementaires"
+ },
+ {
+   "id": "17",
+   "task": "La définition des normes et procédures comptables"
+ },
+ {
+   "id": "18",
+   "task": "La mesure des performances de la Cellule et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "19",
+   "task": "La mise à jour de la nomenclature comptable et budgétaire de l’Etat des Collectivités"
+ },
+ {
+   "id": "20",
+   "task": "La mise en œuvre des plans d’actions arrêtés"
+ },
+ {
+   "id": "21",
+   "task": "La supervision du suivi de la législation bancaire en relation avec la COBAC"
+ },
+ {
+   "id": "22",
+   "task": "Le suivi de la mise en œuvre de la règlementation communautaire en matière financière au sein de la zone CEMAC"
+ },
+ {
+   "id": "23",
+   "task": "Le suivi de l’évaluation des normes comptables internationales"
+ },
+ {
+   "id": "24",
+   "task": "Le suivi de l’harmonisation de la comptabilité publique en zone CEMAC"
+ },
+ {
+   "id": "25",
+   "task": "Le suivi de la législation des assurances en relation avec la conférence interministérielle du marché des assurances CIMA"
+ },
+ {
+   "id": "26",
+   "task": "Le suivi des critères de convergence comptables en zone CEMAC"
+ },
+ {
+   "id": "27",
+   "task": "Le suivi et la coordination des réformes impliquant la Direction Générale"
+ },
+ {
+   "id": "28",
+   "task": "Lélaboration des indicateurs de performance"
+ },
+ {
+   "id": "29",
+   "task": "Les études et la formulation des propositions de réformes de la Direction Générale"
+ },
+ {
+   "id": "30",
+   "task": "Procède à la recherche documentaire"
+ },
+ {
+   "id": "31",
+   "task": "Reçoit trie et enregistre le courrier"
+ },
+ {
+   "id": "32",
+   "task": "Saisit les documents"
+ },
+ {
+   "id": "33",
+   "task": "Traite le courrier"
+ },
+ {
+   "id": "34",
+   "task": "Veille à la tenue et à la conservation des supports fixes d’information registres fichiers chrono minutiers"
+ },
+ {
+   "id": "35",
+   "task": "Traite les dossiers à lui confiés par le Chef de Cellule"
+ }
+]

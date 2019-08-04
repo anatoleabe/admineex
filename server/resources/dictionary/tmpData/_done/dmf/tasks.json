@@ -1,0 +1,314 @@
+[
+ {
+   "id": "1",
+   "task": "Elaboration du TABORD de la Division"
+ },
+ {
+   "id": "2",
+   "task": "Elaboration et suivi de lexécution du plan daction de la Division"
+ },
+ {
+   "id": "3",
+   "task": "Tenue des réunions de coordination"
+ },
+ {
+   "id": "4",
+   "task": "Validation des plans daction des structures"
+ },
+ {
+   "id": "5",
+   "task": "Cotation des dossiers aux chefs de structures"
+ },
+ {
+   "id": "6",
+   "task": "Exploitation des rapports établis par les chefs de structures et les EMF"
+ },
+ {
+   "id": "7",
+   "task": "Réception tritraitement et dispatching du courrier"
+ },
+ {
+   "id": "8",
+   "task": "Accueil renseignement et orientation des usagers"
+ },
+ {
+   "id": "9",
+   "task": "Réception  habillage et transmission des dossiers entre les services"
+ },
+ {
+   "id": "10",
+   "task": "Apprêter et dépouiller les parapheurs"
+ },
+ {
+   "id": "11",
+   "task": "Gérer le standard et les liaisons téléphoniques"
+ },
+ {
+   "id": "12",
+   "task": "Assurer la saisie le classement et la conservation des actes et des documents "
+ },
+ {
+   "id": "13",
+   "task": "Assurer la recherche documentaire"
+ },
+ {
+   "id": "14",
+   "task": "Assurer l’entrée et la sortie du matériel"
+ },
+ {
+   "id": "15",
+   "task": "Conservation des pièces comptables"
+ },
+ {
+   "id": "16",
+   "task": "Assure la transmission des dossiers"
+ },
+ {
+   "id": "17",
+   "task": "effectue les courses de service"
+ },
+ {
+   "id": "18",
+   "task": "Assure le transport et les déplacements par  véhicule de service"
+ },
+ {
+   "id": "19",
+   "task": "le suivi du contentieux relatif aux agréments "
+ },
+ {
+   "id": "20",
+   "task": "l’établissement et le suivi de la carte et du fichier des établissements de micro finance "
+ },
+ {
+   "id": "21",
+   "task": "l’instruction et le suivi des dossiers d’agréments "
+ },
+ {
+   "id": "22",
+   "task": "l’élaboration la tenue et la mise à jour de la carte et du fichier des établissements de microfinance "
+ },
+ {
+   "id": "23",
+   "task": "le suivi de la publication de la liste des établissements de microfinance agréés "
+ },
+ {
+   "id": "24",
+   "task": "le suivi du contentieux relatif aux agréments "
+ },
+ {
+   "id": "25",
+   "task": "la mesure des performances du Service  au vu des indicateurs retenus"
+ },
+ {
+   "id": "26",
+   "task": "l’élaboration et le suivi de la mise en œuvre du plan d’action du Service "
+ },
+ {
+   "id": "27",
+   "task": "l’élaboration du tableau de bord de suivi des activités du Service"
+ },
+ {
+   "id": "28",
+   "task": "l’élaboration des indicateurs de performance des activités du Service "
+ },
+ {
+   "id": "29",
+   "task": "Assure l’exécution des activités du bureau"
+ },
+ {
+   "id": "30",
+   "task": "prépare les projets d’arrêté relatif aux agréments des établissements de micro finance "
+ },
+ {
+   "id": "31",
+   "task": "le registre des agréments "
+ },
+ {
+   "id": "32",
+   "task": "contrôle et dépouille les demandes d’agrément"
+ },
+ {
+   "id": "33",
+   "task": "Assure l’exécution des activités du bureau"
+ },
+ {
+   "id": "34",
+   "task": "établit la carte et le fichier des établissements de micro finance "
+ },
+ {
+   "id": "35",
+   "task": "effectue les opérations de mise à jour de la carte et du fichier des établissements de micro finance"
+ },
+ {
+   "id": "36",
+   "task": "Organise dirige contrôle et évalue les activités de la Cellule  notamment "
+ },
+ {
+   "id": "37",
+   "task": "l’élaboration et l’exécution du plan d’action de la Cellule "
+ },
+ {
+   "id": "38",
+   "task": "l’élaboration du tableau de bord de la Cellule "
+ },
+ {
+   "id": "39",
+   "task": "la mise en œuvre des plans d’actions arrêtés "
+ },
+ {
+   "id": "40",
+   "task": "l’élaboration des indicateurs de performance "
+ },
+ {
+   "id": "41",
+   "task": "le suivi de l’application de la réglementation relative à la micro finance en liaison avec les ministères et organismes concernés "
+ },
+ {
+   "id": "42",
+   "task": "la création et l’aménagement d’un cadre juridique propice au développement de la microfinance "
+ },
+ {
+   "id": "43",
+   "task": "la promotion du partenariat entre les pouvoirs publics les établissements de micro finance et le système bancaire "
+ },
+ {
+   "id": "44",
+   "task": "le suivi et l’amélioration des performances des établissements de micro finance "
+ },
+ {
+   "id": "45",
+   "task": "l’élaboration et le suivi des programmes de professionnalisation des acteurs du secteur de la micro finance "
+ },
+ {
+   "id": "46",
+   "task": "le suivi des relations entre les établissements de microfinance et les organisations socio professionnelles "
+ },
+ {
+   "id": "47",
+   "task": "la mesure des performances de la Cellule et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "48",
+   "task": "Assiste le Chef de Cellule dans l’exercice de ses fonctions A ce titre il "
+ },
+ {
+   "id": "49",
+   "task": "suit l’application de la réglementation relative à la micro finance en liaison avec les ministères et organismes concernés "
+ },
+ {
+   "id": "50",
+   "task": "prépare les éléments relatifs au partenariat entre les pouvoirs publics les établissements de micro finance et le système bancaire "
+ },
+ {
+   "id": "51",
+   "task": "prépare et suit les programmes de professionnalisation "
+ },
+ {
+   "id": "52",
+   "task": "suit et évalue les performances des établissements de micro finances"
+ },
+ {
+   "id": "53",
+   "task": "Organise dirige contrôle et évalue les activités de la Cellule  notamment "
+ },
+ {
+   "id": "54",
+   "task": "l’élaboration et l’exécution du plan d’action de la Cellule "
+ },
+ {
+   "id": "55",
+   "task": "l’élaboration du tableau de bord de la Cellule "
+ },
+ {
+   "id": "56",
+   "task": "la mise en œuvre des plans d’actions arrêtés "
+ },
+ {
+   "id": "57",
+   "task": "l’élaboration des indicateurs de performance "
+ },
+ {
+   "id": "58",
+   "task": "le développement des stratégies de mobilisation d’emploi de l’épargne "
+ },
+ {
+   "id": "59",
+   "task": "la promotion de la coopération entre les organisations non gouvernementales les bailleurs de fonds les organismes de développement et les EMF"
+ },
+ {
+   "id": "60",
+   "task": "la tenue des statistiques et la réalisation des études pour le développement de la micro finance "
+ },
+ {
+   "id": "61",
+   "task": "la mesure des performances de la Cellule et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "62",
+   "task": "Assiste le Chef de Cellule dans l’exercice de ses fonctions A ce titre il "
+ },
+ {
+   "id": "63",
+   "task": "développe les stratégies d’emploi de l’épargne "
+ },
+ {
+   "id": "64",
+   "task": "conçoit et suit les programmes d’encadrement et de professionnalisation des établissements de micro finance "
+ },
+ {
+   "id": "65",
+   "task": "assure la promotion de la coopération entre les organisations non gouvernementales les bailleurs de fonds les organismes de développement et les EMF "
+ },
+ {
+   "id": "66",
+   "task": "tient les statistiques et la réalisation des études pour le développement de la micro finance"
+ },
+ {
+   "id": "67",
+   "task": "Organise dirige contrôle et évalue les activités de la Brigade  notamment "
+ },
+ {
+   "id": "68",
+   "task": "l’élaboration et l’exécution du plan d’action de la Brigade "
+ },
+ {
+   "id": "69",
+   "task": "l’élaboration du tableau de bord de la Brigade "
+ },
+ {
+   "id": "70",
+   "task": "la mise en œuvre des plans d’actions arrêtés "
+ },
+ {
+   "id": "71",
+   "task": "l’élaboration des indicateurs de performance "
+ },
+ {
+   "id": "72",
+   "task": "le suivi et la supervision des établissements de micro finance "
+ },
+ {
+   "id": "73",
+   "task": "le contrôle des établissements de micro finance en liaison avec la COBAC "
+ },
+ {
+   "id": "74",
+   "task": "l’exploitation des rapports et des états financiers des établissements de micro finance "
+ },
+ {
+   "id": "75",
+   "task": "la mesure des performances de la Cellule et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "76",
+   "task": "Assiste le Chef de Brigade dans l’exercice de ses fonctions A ce titre il "
+ },
+ {
+   "id": "77",
+   "task": "Contrôle les rapports et les états financiers des établissements de micro finance "
+ },
+ {
+   "id": "78",
+   "task": "Contrôle les établissements de micro finance en liaison avec la COBAC"
+ }
+]

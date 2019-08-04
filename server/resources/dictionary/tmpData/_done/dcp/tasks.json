@@ -1,0 +1,686 @@
+[
+ {
+   "id": "1",
+   "task": "L’élaboration et l’exécution du plan d’action de la Direction"
+ },
+ {
+   "id": "2",
+   "task": "Assure l’entrée  la sortie et la conservation du matériel"
+ },
+ {
+   "id": "3",
+   "task": "Exécute les mouvements de fonds"
+ },
+ {
+   "id": "4",
+   "task": "Accueille informe et oriente les usagers"
+ },
+ {
+   "id": "5",
+   "task": "Apprête et dépouille les parapheurs"
+ },
+ {
+   "id": "6",
+   "task": "Assure  la mise en état d’examen des comptes de gestion de l’Etat"
+ },
+ {
+   "id": "7",
+   "task": "Suit les relations avec la Chambre des Comptes de la CS en ce qui   concerne les comptes de gestion des Agents Comptables"
+ },
+ {
+   "id": "8",
+   "task": "Assure l’exploitation des états financiers des établissements publics administratifs"
+ },
+ {
+   "id": "9",
+   "task": "Assure la réception du courrier"
+ },
+ {
+   "id": "10",
+   "task": "Assure la recherche documentaire"
+ },
+ {
+   "id": "11",
+   "task": "Assure la saisie des documents"
+ },
+ {
+   "id": "12",
+   "task": "Assure la tenue des fiches de contrôle des engagements"
+ },
+ {
+   "id": "13",
+   "task": "Assure la transmission des dossiers"
+ },
+ {
+   "id": "14",
+   "task": "Assure le classement et la conservation des actes et des documents"
+ },
+ {
+   "id": "15",
+   "task": "Assure le suivi et le contrôle de la confection des comptes de gestion de l’Etat"
+ },
+ {
+   "id": "16",
+   "task": "Assure le transport et les déplacements par  véhicule de service"
+ },
+ {
+   "id": "17",
+   "task": "Centralise et prépare les états de paiement de la solde et des pensions"
+ },
+ {
+   "id": "18",
+   "task": "Classe les actes et documents"
+ },
+ {
+   "id": "19",
+   "task": "Classe les documents et archives et veille aux recherches documentaires"
+ },
+ {
+   "id": "20",
+   "task": "Collecte les données et les informations"
+ },
+ {
+   "id": "21",
+   "task": "Confectionne les comptes de gestion des receveurs municipaux"
+ },
+ {
+   "id": "22",
+   "task": "Contrôle des services de la Trésorerie Générale et des Postes Comptables rattachés"
+ },
+ {
+   "id": "23",
+   "task": "Contrôle les comptes spéciaux"
+ },
+ {
+   "id": "24",
+   "task": "Effectue la relance des différentes agences"
+ },
+ {
+   "id": "25",
+   "task": "Effectue les courses de service"
+ },
+ {
+   "id": "26",
+   "task": "Elabore les projets de notes de relance des comptables publics"
+ },
+ {
+   "id": "27",
+   "task": "Enregistre et classe les documents comptables de synthèse"
+ },
+ {
+   "id": "28",
+   "task": "Evalue l’organisation et le fonctionnement des services de la trésorerie"
+ },
+ {
+   "id": "29",
+   "task": "Fait le rapprochement entre le siège et l’Agence"
+ },
+ {
+   "id": "30",
+   "task": "Gère le standard les appels et les liaisons téléphoniques"
+ },
+ {
+   "id": "31",
+   "task": "Habille les dossiers"
+ },
+ {
+   "id": "32",
+   "task": "Lanalyse des productions comptables et de l’établissement des statistiques comptables"
+ },
+ {
+   "id": "33",
+   "task": "L’élaboration de la loi de règlement"
+ },
+ {
+   "id": "34",
+   "task": "L’élaboration des indicateurs de gestion de stocks des consommables informatiques"
+ },
+ {
+   "id": "35",
+   "task": "L’élaboration des indicateurs de suivi de l’activité comptable et des indicateurs de performance"
+ },
+ {
+   "id": "36",
+   "task": "L’élaboration des manuels de procédures comptables"
+ },
+ {
+   "id": "37",
+   "task": "L’élaboration des plans comptables sectoriels des EPA et desCTD"
+ },
+ {
+   "id": "38",
+   "task": "L’élaboration des rapports d’activités de la Direction"
+ },
+ {
+   "id": "39",
+   "task": "L’élaboration des stratégies des feuilles de route et des plans d’actions de la Direction"
+ },
+ {
+   "id": "40",
+   "task": "L’élaboration des textes législatifs et règlementaires relatifs au  règlement des dépenses de l’Etat des CTD  et desEPA"
+ },
+ {
+   "id": "41",
+   "task": "Lélaboration du tableau de bord de l’Agence Comptable Centrale"
+ },
+ {
+   "id": "42",
+   "task": "L’élaboration du tableau de bord de la Cellule"
+ },
+ {
+   "id": "43",
+   "task": "L’élaboration du tableau de bord de la Direction"
+ },
+ {
+   "id": "44",
+   "task": "L’élaboration du tableau de bord de la Sous Direction"
+ },
+ {
+   "id": "45",
+   "task": "L’élaboration du tableau de bord de suivi des activités du Service"
+ },
+ {
+   "id": "46",
+   "task": "L’élaboration et l’exécution du plan d’action de l’Agence Comptable Centrale"
+ },
+ {
+   "id": "47",
+   "task": "L’élaboration et l’exécution du plan d’action de la Cellule"
+ },
+ {
+   "id": "48",
+   "task": "L’élaboration et l’exécution du plan d’action de la SousDirection"
+ },
+ {
+   "id": "49",
+   "task": "L’élaboration et le suivi de la mise en œuvre du plan d’action du Service"
+ },
+ {
+   "id": "50",
+   "task": "L’élaboration et le suivi de la mise en œuvre du plan d’action du Service"
+ },
+ {
+   "id": "51",
+   "task": "L’élaboration la mise à jour le classement et la diffusion des instructions et textes réglementaires de ressort"
+ },
+ {
+   "id": "52",
+   "task": "L’élaboration la mise en œuvre et le suivi des plans et programmes en matière de règlement du budget de l’Etat et des comptes"
+ },
+ {
+   "id": "53",
+   "task": "L’établissement des relations avec la CDC  de la CS en ce qui concerne les comptes de gestion des comptables principaux de l’Etat"
+ },
+ {
+   "id": "54",
+   "task": "L’évaluation de l’organisation et du fonctionnement des services de l’Agence Comptable Centrale du Trésor"
+ },
+ {
+   "id": "55",
+   "task": "L’exécution du programme d’actions de la Direction"
+ },
+ {
+   "id": "56",
+   "task": "L’exploitation  et l’analyse des résultats comptables"
+ },
+ {
+   "id": "57",
+   "task": "L’exploitation des documents issus des traitements des données et de la rédaction des notes de synthèse"
+ },
+ {
+   "id": "58",
+   "task": "L’exploitation et la maintenance des applications informatiques de la Direction"
+ },
+ {
+   "id": "59",
+   "task": "La centralisation et la préparation des états de paiements"
+ },
+ {
+   "id": "60",
+   "task": "La conception et la gestion des imprimés et de la documentation comptable"
+ },
+ {
+   "id": "61",
+   "task": "La confection du compte de gestion de l’Agence Comptable Centrale du Trésor"
+ },
+ {
+   "id": "62",
+   "task": "La consolidation des opérations budgétaires et comptables de l’Etat"
+ },
+ {
+   "id": "63",
+   "task": "La consolidation et la production de la balance générale des comptes financiers et des autres états de synthèse"
+ },
+ {
+   "id": "64",
+   "task": "La coordination des activités du réseau des postes comptables"
+ },
+ {
+   "id": "65",
+   "task": "La correction et la ventilation des rejets techniques et administratifs et de leur relance"
+ },
+ {
+   "id": "66",
+   "task": "La formation et l’animation"
+ },
+ {
+   "id": "67",
+   "task": "La gestion des stocks de consommables informatiques de la Direction"
+ },
+ {
+   "id": "68",
+   "task": "La gestion et au suivi du compte unique des comptes CCP et des comptes spéciaux du Trésor ouverts à la BEAC"
+ },
+ {
+   "id": "69",
+   "task": "La gestion et l’administration des bases de données de la Direction"
+ },
+ {
+   "id": "70",
+   "task": "La mesure des performances de la Sous Direction et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "71",
+   "task": "La mesure des performances du Service  au vu des indicateurs retenus"
+ },
+ {
+   "id": "72",
+   "task": "La mise à jour de la nomenclature comptable de l’Etat "
+ },
+ {
+   "id": "73",
+   "task": "La mise en état d’examen des comptes de gestion de l’Etat  des comptes spéciaux des CTD et des EPA"
+ },
+ {
+   "id": "74",
+   "task": "La mise en œuvre des plans d’actions arrêtés"
+ },
+ {
+   "id": "75",
+   "task": "La mise en œuvre des programmes et projets en matière d’informatique à la Direction"
+ },
+ {
+   "id": "76",
+   "task": "La mise en œuvre du plan comptable général de l’Etat"
+ },
+ {
+   "id": "77",
+   "task": "La mise en œuvre et du suivi des réformes des systèmes de paiement en zone CEMAC"
+ },
+ {
+   "id": "78",
+   "task": "La préparation et la production du compte général de l’administration des finances et de la loi de règlement"
+ },
+ {
+   "id": "79",
+   "task": "La production de l’état de concordance bancaire du Trésor"
+ },
+ {
+   "id": "80",
+   "task": "La production de la balance des comptes et des états de synthèse de l’Agence Comptable Centrale du Trésor"
+ },
+ {
+   "id": "81",
+   "task": "La production de la balance nationale des comptes"
+ },
+ {
+   "id": "82",
+   "task": "La production des comptes de gestion par les comptables principaux"
+ },
+ {
+   "id": "83",
+   "task": "La production des états de concordance de l’Agence Comptable"
+ },
+ {
+   "id": "84",
+   "task": "La production des états de synthèse consolidés"
+ },
+ {
+   "id": "85",
+   "task": "La production du Compte Général de l’Administration des  Finances"
+ },
+ {
+   "id": "86",
+   "task": "La relance des différentes agences"
+ },
+ {
+   "id": "87",
+   "task": "La tenue de la comptabilité des opérations qui lui sont propres"
+ },
+ {
+   "id": "88",
+   "task": "La tenue de la comptabilité générale et auxiliaire de l’Etat et des  tiers et autres correspondants du trésor"
+ },
+ {
+   "id": "89",
+   "task": "La tenue des fiches de contrôle des engagements"
+ },
+ {
+   "id": "90",
+   "task": "La tenue et la gestion du compte unique des comptes CCP et des comptes spéciaux du Trésor ouverts à la BEAC"
+ },
+ {
+   "id": "91",
+   "task": "La tenue et la production des comptabilités"
+ },
+ {
+   "id": "92",
+   "task": "Le contrôle des postes comptable spécialisés Impôts Douanes Agences Comptables Régies des Recettes"
+ },
+ {
+   "id": "93",
+   "task": "Le contrôle des services de l’Agence Comptable Centrale du Trésor"
+ },
+ {
+   "id": "94",
+   "task": "Le contrôle du réseau comptable ou des caisses publiques rattachés"
+ },
+ {
+   "id": "95",
+   "task": "Le contrôle formel et le contrôle de validation des dépenses"
+ },
+ {
+   "id": "96",
+   "task": "Le développement des ressources de son ressort"
+ },
+ {
+   "id": "97",
+   "task": "Le pilotage  du réseau comptable de l’Etat"
+ },
+ {
+   "id": "98",
+   "task": "Le recouvrement et la certification des recettes publiques sous réserve des dispositions des textes particuliers"
+ },
+ {
+   "id": "99",
+   "task": "Le suivi de l’exécution des opérations de règlement du budget de l’Etat des EPA et des CTD"
+ },
+ {
+   "id": "100",
+   "task": "Le suivi de la gestion des comptes de dépôts"
+ },
+ {
+   "id": "101",
+   "task": "Le suivi de la production et du traitement des comptabilités"
+ },
+ {
+   "id": "102",
+   "task": "Le suivi des dépenses de personnels de l’Etat et des pensions en liaison avec les administrations concernées"
+ },
+ {
+   "id": "103",
+   "task": "Le suivi des incidents issus du traitement des opérations dans le système"
+ },
+ {
+   "id": "104",
+   "task": "Le suivi des opérations comptables des collectivités territoriales décentralisées et des établissements publics administratifs"
+ },
+ {
+   "id": "105",
+   "task": "Le suivi des règlements de la solde des personnels de l’Etat et des pensions"
+ },
+ {
+   "id": "106",
+   "task": "Le suivi des relations avec le Centre National de Compensation"
+ },
+ {
+   "id": "107",
+   "task": "Le suivi du reversement des cotisations et des retenues diverses"
+ },
+ {
+   "id": "108",
+   "task": "Le suivi et du contrôle de la confection des comptes de gestion de l’Etat des EPA et CTD"
+ },
+ {
+   "id": "109",
+   "task": "Le suivi et l’évaluation des résultats des postes comptables"
+ },
+ {
+   "id": "110",
+   "task": "Le suivi et l’exploitation des états et situations comptables"
+ },
+ {
+   "id": "111",
+   "task": "Le suivi et la coordination des réformes impliquant la Direction Générale"
+ },
+ {
+   "id": "112",
+   "task": "Les relations avec la Chambre des Comptes de la Cour Suprême en ce qui concerne les comptes de gestion des comptables principaux"
+ },
+ {
+   "id": "113",
+   "task": "Participe à l’élaboration des indicateurs de sécurité du système informatique de la Direction"
+ },
+ {
+   "id": "114",
+   "task": "Participe à l’élaboration du projet de loi de règlement"
+ },
+ {
+   "id": "115",
+   "task": "Participe à la production du compte général de l’administration des finances"
+ },
+ {
+   "id": "116",
+   "task": "Prépare les demandes de couverture relatives au règlement de la solde et des pensions"
+ },
+ {
+   "id": "117",
+   "task": "Procède  à la recherche documentaire"
+ },
+ {
+   "id": "118",
+   "task": "Procède au contrôle formel et au contrôle de validation des dépenses"
+ },
+ {
+   "id": "119",
+   "task": "Reçoit trie et enregistre le courrier"
+ },
+ {
+   "id": "120",
+   "task": "Rédige les rapports de synthèse sur l’exécution du budget"
+ },
+ {
+   "id": "121",
+   "task": "Saisit les documents"
+ },
+ {
+   "id": "122",
+   "task": "Suivi de la confection des comptes de gestion des agents comptables"
+ },
+ {
+   "id": "123",
+   "task": "Suivi des incidents issus du traitement des opérations dans le système"
+ },
+ {
+   "id": "124",
+   "task": "Suit l’exécution des instructions relatives à l’exploitation des documents de synthèse"
+ },
+ {
+   "id": "125",
+   "task": "Suit la mise en état d’examen des comptes de gestion des agents comptables"
+ },
+ {
+   "id": "126",
+   "task": "Suit la mise en état d’examen des comptes de gestion des receveurs municipaux en liaison avec la Chambre des Comptes de la CS"
+ },
+ {
+   "id": "127",
+   "task": "Supervise le pilotage  le suivi et la gestion du réseau comptable"
+ },
+ {
+   "id": "128",
+   "task": "Tient la comptabilité"
+ },
+ {
+   "id": "129",
+   "task": "Veille à  l’exploitation des états financiers des Recettes Municipales"
+ },
+ {
+   "id": "130",
+   "task": "Veille à l’exploitation des états financiers des établissements publics administratifs"
+ },
+ {
+   "id": "131",
+   "task": "Veille à la réception au tri et à l’enregistrement du courrier"
+ },
+ {
+   "id": "132",
+   "task": "Veille à la tenue et à la conservation des supports fixes d’information registres fichiers chrono minutiers"
+ },
+ {
+   "id": "133",
+   "task": "Vérifie l’exactitude des opérations du budget"
+ },
+ {
+   "id": "134",
+   "task": "Analyse l’exécution des budgets de l’Etat  des Collectivités Territoriales Décentralisées et des Etablissements Publics Administratifs"
+ },
+ {
+   "id": "135",
+   "task": "Assiste l’Agent Comptable dans l’exercice de ses missions"
+ },
+ {
+   "id": "136",
+   "task": "Assiste le Chef de Cellule dans l’exécution de ses fonctions"
+ },
+ {
+   "id": "137",
+   "task": "Assure l’exécution des activités du bureau"
+ },
+ {
+   "id": "138",
+   "task": "Assure la confection du compte de gestion de l’Agence Comptable Centrale du Trésor"
+ },
+ {
+   "id": "139",
+   "task": "Assure la correction et la ventilation des rejets techniques et administratifs et de leur relance"
+ },
+ {
+   "id": "140",
+   "task": "collecte les données et les informations"
+ },
+ {
+   "id": "141",
+   "task": "conserve les pièces comptables"
+ },
+ {
+   "id": "142",
+   "task": "Effectue les courses du Service"
+ },
+ {
+   "id": "143",
+   "task": "Exécute les travaux techniques du secrétariat"
+ },
+ {
+   "id": "144",
+   "task": "gère les appels téléphoniques"
+ },
+ {
+   "id": "145",
+   "task": "l’audit de tous les services rattachés"
+ },
+ {
+   "id": "146",
+   "task": "l’élaboration des indicateurs de performance des activités du Service"
+ },
+ {
+   "id": "147",
+   "task": "la mesure des performances de la Cellule et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "148",
+   "task": "la mesure des performances de la Direction et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "149",
+   "task": "la mesure des performances de la Sous Direction et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "150",
+   "task": "la mesure des performances du Service  au vu des indicateurs retenus"
+ },
+ {
+   "id": "151",
+   "task": "le suivi de la mise en application des plans comptables sectoriels des CTD et des EPA"
+ },
+ {
+   "id": "152",
+   "task": "participe à  l’exploitation des documents liés au traitement de la solde et des pensions"
+ },
+ {
+   "id": "153",
+   "task": "Prépare et assure l’exécution des activités du  Service"
+ },
+ {
+   "id": "154",
+   "task": "reçoit et enregistre les dossiers et les requêtes en vue de leur ventilation ou transmission vers les structures compétentes"
+ },
+ {
+   "id": "155",
+   "task": "suit les incidents issus du traitement des opérations dans le système"
+ },
+ {
+   "id": "156",
+   "task": "suit les relations avec la  Chambre des Comptes de la CS en ce qui  concerne les comptes de gestion des Receveurs Municip"
+ },
+ {
+   "id": "157",
+   "task": "suit les relations avec la Chambre des Comptes de la Cour Suprême en ce qui   concerne les comptes de gestion des agents comptables"
+ },
+ {
+   "id": "158",
+   "task": "veille à l’entretien du véhicule"
+ },
+ {
+   "id": "159",
+   "task": "supervise le suivi et du contrôle de la centralisation des opérations comptables par les comptables centralisateurs"
+ },
+ {
+   "id": "160",
+   "task": "supervise la vérification des balances des comptables centralisateurs"
+ },
+ {
+   "id": "161",
+   "task": "la consolidation et de la production de la balance nationale des comptes"
+ },
+ {
+   "id": "162",
+   "task": "la consolidation et la production des états d’exécution budgétaire"
+ },
+ {
+   "id": "163",
+   "task": "supervise la production des situations bancaires"
+ },
+ {
+   "id": "164",
+   "task": "la vérification des balances des postes centralisateurs"
+ },
+ {
+   "id": "165",
+   "task": "la collecte et la vérification des états comptables mensuels ou trimestriels"
+ },
+ {
+   "id": "166",
+   "task": "le suivi des transferts"
+ },
+ {
+   "id": "167",
+   "task": "le suivi et la relance des postes centralisateurs"
+ },
+ {
+   "id": "168",
+   "task": "la préparation des notes techniques et des rejets"
+ },
+ {
+   "id": "169",
+   "task": "la consolidation et la production de la balance nationale des comptes"
+ },
+ {
+   "id": "170",
+   "task": "la vérification et le rapprochement des états produits"
+ },
+ {
+   "id": "171",
+   "task": "assure la tenue des états comptables mensuels ou trimestriels"
+ }
+]

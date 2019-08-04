@@ -1,0 +1,38 @@
+[
+ {
+   "id": "1",
+   "activity": "Accueil des usagers de la DGTCFM"
+ },
+ {
+   "id": "2",
+   "activity": "Renseignement et Orientation"
+ },
+ {
+   "id": "3",
+   "activity": "Réception du Courrier"
+ },
+ {
+   "id": "4",
+   "activity": "La reproduction et la distribution des actes individuels et réglementaires  et autres documents intéressant la Direction Générale"
+ },
+ {
+   "id": "5",
+   "activity": "Le classement et la conservation des documents et des actes législatifs et règlementaires intéressant la Direction Générale"
+ },
+ {
+   "id": "6",
+   "activity": "L’élaboration des indicateurs de performance des activités du Service"
+ },
+ {
+   "id": "7",
+   "activity": "L’élaboration du tableau de bord de suivi des activités du Service"
+ },
+ {
+   "id": "8",
+   "activity": "L’élaboration et le suivi de la mise en œuvre du plan d’action du Service"
+ },
+ {
+   "id": "9",
+   "activity": "La conception et la gestion des imprimés et de la documentation comptable"
+ }
+]

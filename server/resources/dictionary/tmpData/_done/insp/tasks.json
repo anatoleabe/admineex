@@ -1,0 +1,158 @@
+[
+ {
+   "id": "1",
+   "task": "L’audit et l’évaluation des fonctionnalités des services"
+ },
+ {
+   "id": "2",
+   "task": "L’élaboration de la cartographie des risques des Manuels de Procédures et des référentiels de contrôle "
+ },
+ {
+   "id": "3",
+   "task": "L’élaboration du tableau de bord de l’Inspection des Services du Trésor"
+ },
+ {
+   "id": "4",
+   "task": "L’élaboration et le suivi des indicateurs de performance "
+ },
+ {
+   "id": "5",
+   "task": "La gestion du contentieux de recouvrement et de paiement "
+ },
+ {
+   "id": "6",
+   "task": "La mesure des performances de l’Inspection Nationale et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "7",
+   "task": "La mise en œuvre des plans d’actions arrêtés "
+ },
+ {
+   "id": "8",
+   "task": "La réalisation d’audits et d’enquêtes administratives internes "
+ },
+ {
+   "id": "9",
+   "task": "Le  suivi du cautionnement comptable "
+ },
+ {
+   "id": "10",
+   "task": "Le contrôle de gestion et de l’évaluation des systèmes de pilotage des performances "
+ },
+ {
+   "id": "11",
+   "task": "Le contrôle du respect des procédures et la tenue des écritures définies dans le cadre des règles de comptabilité publique "
+ },
+ {
+   "id": "12",
+   "task": "Le contrôle du respect des textes en matière de législation d’organisation et de fonctionnement interne des services "
+ },
+ {
+   "id": "13",
+   "task": "L’élaboration et le suivi de la mise en application des décisions et instructions relatives au fonctionnement à l’organisation et aux méthodes de travail "
+ },
+ {
+   "id": "14",
+   "task": "Le suivi des apurements des déficits comptables "
+ },
+ {
+   "id": "15",
+   "task": "Le suivi des dossiers de détournement des deniers publics procédures de mise en débet de décharge de responsabilité et de remise gracieuse "
+ },
+ {
+   "id": "16",
+   "task": "de l’élaboration des projets d’arrêtes de mise en débet des comptables coupables de malversations "
+ },
+ {
+   "id": "17",
+   "task": "Le suivi et le bon fonctionnement des services centraux et déconcentrés de la Direction Générale du Trésor "
+ },
+ {
+   "id": "18",
+   "task": "Les propositions en vue de l’amélioration de l’efficacité du fonctionnement du service "
+ },
+ {
+   "id": "19",
+   "task": "Tient le fichier des stocks de l’Inspection "
+ },
+ {
+   "id": "20",
+   "task": "Accueille et oriente les usagers "
+ },
+ {
+   "id": "21",
+   "task": "Apprête et dépouille les parapheurs "
+ },
+ {
+   "id": "22",
+   "task": "Assure la réception du courrier "
+ },
+ {
+   "id": "23",
+   "task": "Assure la recherche documentaire "
+ },
+ {
+   "id": "24",
+   "task": "Assure la saisie des documents "
+ },
+ {
+   "id": "25",
+   "task": "Assure la transmission des dossiers "
+ },
+ {
+   "id": "26",
+   "task": "Assure le classement et la conservation des actes et des documents "
+ },
+ {
+   "id": "27",
+   "task": "Assure le transport et les déplacements par  véhicule de service "
+ },
+ {
+   "id": "28",
+   "task": "Effectue les courses de service"
+ },
+ {
+   "id": "29",
+   "task": "Gère le standard et les liaisons téléphoniques "
+ },
+ {
+   "id": "30",
+   "task": "Gère les appels téléphoniques"
+ },
+ {
+   "id": "31",
+   "task": "Habille les dossiers "
+ },
+ {
+   "id": "32",
+   "task": "Procède  à la recherche documentaire"
+ },
+ {
+   "id": "33",
+   "task": "Reçoit trie traite enregistre et dispatche le courrier "
+ },
+ {
+   "id": "34",
+   "task": "Veille à l’entretien du véhicule"
+ },
+ {
+   "id": "35",
+   "task": "Veille à la tenue et à la conservation des supports fixes d’information registres fichiers chrono minutiers "
+ },
+ {
+   "id": "36",
+   "task": "Exploite les procès verbaux de contrôle mensuel et les documents de synthèse transmis par le CF"
+ },
+ {
+   "id": "37",
+   "task": "Assure l’entrée et la sortie du matériel "
+ },
+ {
+   "id": "38",
+   "task": "Assure la conservation du matériel "
+ },
+ {
+   "id": "39",
+   "task": "Conserve les pièces comptables"
+ }
+]

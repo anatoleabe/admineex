@@ -1,0 +1,866 @@
+[
+ {
+   "codept": "191-P1",
+   "pt": "Chef service d'Ordre",
+   "nbtotraite": "",
+   "prequired": "28;11",
+   "crequired": "11;12;2",
+   "activity": "Prépare et assure l’exécution des activités du Service",
+   "task": "Elaboration et le suivi de la mise en œuvre du plan d’action du Service ; l’élaboration du tableau de bord de suivi des activités du Service ; l’élaboration des indicateurs de performance des activités du Service ; l’accueil; l’information et l’orientation des usagers ; de la réception; du tri; du traitement et de la ventilation du courrier ; la reproduction et la distribution des actes individuels et réglementaires  et autres documents intéressant la Direction Générale ; le classement et la conservation des actes signés intéressant la Direction Générale ; la relance des  services ; la conception et la gestion des imprimés et de la documentation comptable;la mesure des performances du Service  au vu des indicateurs retenus"
+ },
+ {
+   "codept": "191-P2",
+   "pt": "Bureau du Courrier et de Liaison",
+   "nbtotraite": "",
+   "prequired": "30;18",
+   "crequired": "2;11",
+   "activity": "Assure l’exécution des activités du bureau",
+   "task": "organise la ventilation du courrier ; organise la notification des actes signés; organise l’accueil des usagers ; dépouille le courrier ; assure la transmission des dossiers ; vérifie l’enregistrement du courrier"
+ },
+ {
+   "codept": "191-P3",
+   "pt": "Bureau d'Accueil et de l'Information",
+   "nbtotraite": "",
+   "prequired": "30;18",
+   "crequired": "2;20;11",
+   "activity": "",
+   "task": "Appui"
+ },
+ {
+   "codept": "191-P4",
+   "pt": "Bureau des Archives",
+   "nbtotraite": "",
+   "prequired": "30;18",
+   "crequired": "2;20;11",
+   "activity": "",
+   "task": "Appui"
+ },
+ {
+   "codept": "191-P5",
+   "pt": "Agent de liaison",
+   "nbtotraite": "",
+   "prequired": "32;9",
+   "crequired": "15",
+   "activity": "",
+   "task": "Appui"
+ },
+ {
+   "codept": "191-P6",
+   "pt": "Agent de liaison",
+   "nbtotraite": "",
+   "prequired": "32;9",
+   "crequired": "15",
+   "activity": "",
+   "task": "Appui"
+ },
+ {
+   "codept": "191-P7",
+   "pt": "Agent de liaison",
+   "nbtotraite": "",
+   "prequired": "32;9",
+   "crequired": "15",
+   "activity": "",
+   "task": "Appui"
+ },
+ {
+   "codept": "192-P1",
+   "pt": "Chef Inspection de service",
+   "nbtotraite": "",
+   "prequired": "44",
+   "crequired": "2;8;12;13;16;24;27;63",
+   "activity": "Planifie, organise, dirige, contrôle et évalue les activités de son domaine de compétence",
+   "task": "l’élaboration et l’exécution du plan d’action de l’Inspection Nationale ; l’élaboration du tableau de bord de l’Inspection Nationale ; le suivi et le bon fonctionnement des services centraux et déconcentrés de la Direction Générale du Trésor ; l’élaboration et du suivi de la mise en application des décisions et instructions relatives au fonctionnement; à l’organisation et aux méthodes de travail"
+ },
+ {
+   "codept": "192-P10",
+   "pt": "Inspecteur de Service9",
+   "nbtotraite": "",
+   "prequired": "44;43",
+   "crequired": "2;8;12;13;16;27;63",
+   "activity": "Assiste le Chef  d’Inspecteur dans l’exécution de ses fonctions",
+   "task": "Exécute les travaux techniques du secrétariat ; accueille les usagers ; traite le courrier ; apprête et dépouille les parapheurs"
+ },
+ {
+   "codept": "192-P11",
+   "pt": "Inspecteur de Service10",
+   "nbtotraite": "",
+   "prequired": "44;43",
+   "crequired": "2;8;12;13;16;27;63",
+   "activity": "Assiste le Chef  d’Inspecteur dans l’exécution de ses fonctions",
+   "task": "Exécute les travaux techniques du secrétariat ; accueille les usagers ; traite le courrier ; apprête et dépouille les parapheurs"
+ },
+ {
+   "codept": "192-P12",
+   "pt": "Secrétaire 1",
+   "nbtotraite": "",
+   "prequired": "17;18",
+   "crequired": "35;31",
+   "activity": "",
+   "task": "saisie rapport mission"
+ },
+ {
+   "codept": "192-P13",
+   "pt": "Secrétaire 2",
+   "nbtotraite": "",
+   "prequired": "17;18",
+   "crequired": "35;31",
+   "activity": "",
+   "task": "Traitement courrier"
+ },
+ {
+   "codept": "192-P14",
+   "pt": "Cadre1",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi CF EST"
+ },
+ {
+   "codept": "192-P15",
+   "pt": "Cadre2",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Exploitation PV"
+ },
+ {
+   "codept": "192-P16",
+   "pt": "Cadre3",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Contrôle de gestion"
+ },
+ {
+   "codept": "192-P17",
+   "pt": "Cadre4",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Contrôle des services DGTCFM"
+ },
+ {
+   "codept": "192-P18",
+   "pt": "Cadre5",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des débets"
+ },
+ {
+   "codept": "192-P19",
+   "pt": "Cadre6",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Elaboration carto risques"
+ },
+ {
+   "codept": "192-P2",
+   "pt": "Inspecteur de Service 1",
+   "nbtotraite": "",
+   "prequired": "44;43",
+   "crequired": "2;8;12;13;16;27;63",
+   "activity": "Assiste le Chef  d’Inspecteur dans l’exécution de ses fonctions",
+   "task": "Exécute les travaux techniques du secrétariat ; accueille les usagers ; traite le courrier ; apprête et dépouille les parapheurs"
+ },
+ {
+   "codept": "192-P20",
+   "pt": "Cadre7",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Contrôle du respect des procédures"
+ },
+ {
+   "codept": "192-P21",
+   "pt": "Cadre8",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Audit des EPA"
+ },
+ {
+   "codept": "192-P22",
+   "pt": "Cadre9",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Audit des EPA des CTD"
+ },
+ {
+   "codept": "192-P23",
+   "pt": "Cadre10",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Audit des Postes Comptables"
+ },
+ {
+   "codept": "192-P24",
+   "pt": "Cadre11",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi CF Nord"
+ },
+ {
+   "codept": "192-P25",
+   "pt": "Cadre12",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des Postes Comptables"
+ },
+ {
+   "codept": "192-P26",
+   "pt": "Cadre13",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P27",
+   "pt": "Cadre14",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des Postes Comptables"
+ },
+ {
+   "codept": "192-P28",
+   "pt": "Cadre15",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des Postes Comptables"
+ },
+ {
+   "codept": "192-P29",
+   "pt": "Cadre16",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des Postes Comptables"
+ },
+ {
+   "codept": "192-P3",
+   "pt": "Inspecteur de Service 2",
+   "nbtotraite": "",
+   "prequired": "44;43",
+   "crequired": "2;8;12;13;16;27;63",
+   "activity": "Assiste le Chef  d’Inspecteur dans l’exécution de ses fonctions",
+   "task": "Exécute les travaux techniques du secrétariat ; accueille les usagers ; traite le courrier ; apprête et dépouille les parapheurs"
+ },
+ {
+   "codept": "192-P30",
+   "pt": "Chauffeur",
+   "nbtotraite": "",
+   "prequired": "3;4;5;6;7",
+   "crequired": "10;25",
+   "activity": "",
+   "task": "Assure le transport et les déplacements par  véhicule de service ; effectue les courses de service ; veille à l’entretien du véhicule"
+ },
+ {
+   "codept": "192-P31",
+   "pt": "Cadre 17",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P32",
+   "pt": "Cadre 18",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P33",
+   "pt": "Cadre 19",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P34",
+   "pt": "Cadre 20",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P35",
+   "pt": "Cadre 21",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P36",
+   "pt": "Cadre 22",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P37",
+   "pt": "Cadre 23",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P38",
+   "pt": "Cadre 24",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P39",
+   "pt": "Cadre 25",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P4",
+   "pt": "Inspecteur de Service 3",
+   "nbtotraite": "",
+   "prequired": "44;43",
+   "crequired": "2;8;12;13;16;27;63",
+   "activity": "Assiste le Chef  d’Inspecteur dans l’exécution de ses fonctions",
+   "task": "Exécute les travaux techniques du secrétariat ; accueille les usagers ; traite le courrier ; apprête et dépouille les parapheurs"
+ },
+ {
+   "codept": "192-P40",
+   "pt": "Cadre 26",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P41",
+   "pt": "Cadre 27",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P42",
+   "pt": "Cadre 28",
+   "nbtotraite": "",
+   "prequired": "43;25;12;13",
+   "crequired": "35;8;12;13;27;63",
+   "activity": "",
+   "task": "Suivi des CF"
+ },
+ {
+   "codept": "192-P5",
+   "pt": "Inspecteur de Service 4",
+   "nbtotraite": "",
+   "prequired": "44;43",
+   "crequired": "2;8;12;13;16;27;63",
+   "activity": "Assiste le Chef  d’Inspecteur dans l’exécution de ses fonctions",
+   "task": "Exécute les travaux techniques du secrétariat ; accueille les usagers ; traite le courrier ; apprête et dépouille les parapheurs"
+ },
+ {
+   "codept": "192-P6",
+   "pt": "Inspecteur de Service 5",
+   "nbtotraite": "",
+   "prequired": "44;43",
+   "crequired": "2;8;12;13;16;27;63",
+   "activity": "Assiste le Chef  d’Inspecteur dans l’exécution de ses fonctions",
+   "task": "Exécute les travaux techniques du secrétariat ; accueille les usagers ; traite le courrier ; apprête et dépouille les parapheurs"
+ },
+ {
+   "codept": "192-P7",
+   "pt": "Inspecteur de Service 6",
+   "nbtotraite": "",
+   "prequired": "44;43",
+   "crequired": "2;8;12;13;16;27;63",
+   "activity": "Assiste le Chef  d’Inspecteur dans l’exécution de ses fonctions",
+   "task": "Exécute les travaux techniques du secrétariat ; accueille les usagers ; traite le courrier ; apprête et dépouille les parapheurs"
+ },
+ {
+   "codept": "192-P8",
+   "pt": "Inspecteur de Service 7",
+   "nbtotraite": "",
+   "prequired": "44;43",
+   "crequired": "2;8;12;13;16;27;63",
+   "activity": "Assiste le Chef  d’Inspecteur dans l’exécution de ses fonctions",
+   "task": "Exécute les travaux techniques du secrétariat ; accueille les usagers ; traite le courrier ; apprête et dépouille les parapheurs"
+ },
+ {
+   "codept": "192-P9",
+   "pt": "Inspecteur de Service 8",
+   "nbtotraite": "",
+   "prequired": "44;43",
+   "crequired": "2;8;12;13;16;27;63",
+   "activity": "Assiste le Chef  d’Inspecteur dans l’exécution de ses fonctions",
+   "task": "Exécute les travaux techniques du secrétariat ; accueille les usagers ; traite le courrier ; apprête et dépouille les parapheurs"
+ },
+ {
+   "codept": "193-P1",
+   "pt": "Chef de Cellule",
+   "nbtotraite": "",
+   "prequired": "44;43",
+   "crequired": "8;25;35;12;27",
+   "activity": "Création et Codification des comptes publics",
+   "task": "Organise, dirige, contrôle et évalue les activités de la Cellule"
+ },
+ {
+   "codept": "193-P10",
+   "pt": "Cadre 3",
+   "nbtotraite": "",
+   "prequired": "43;12;25",
+   "crequired": "8;13;12;27",
+   "activity": "",
+   "task": "Traduction des documents"
+ },
+ {
+   "codept": "193-P11",
+   "pt": "Cadre 4",
+   "nbtotraite": "",
+   "prequired": "43;12;25",
+   "crequired": "8;13;12;27",
+   "activity": "",
+   "task": "Formation des comptables"
+ },
+ {
+   "codept": "193-P12",
+   "pt": "Secrétaire",
+   "nbtotraite": "",
+   "prequired": "17;18",
+   "crequired": "35;31",
+   "activity": "",
+   "task": "tenu et suivi des régistres courriers entrant et sortant; saisi bureautique"
+ },
+ {
+   "codept": "193-P2",
+   "pt": "Chargé d'Etude Assistant1",
+   "nbtotraite": "",
+   "prequired": "25;43",
+   "crequired": "12;8;35;27",
+   "activity": "",
+   "task": "Définition Norme et procédure comptables"
+ },
+ {
+   "codept": "193-P3",
+   "pt": "Chargé d'Etude Assistant2",
+   "nbtotraite": "",
+   "prequired": "25;43",
+   "crequired": "12;8;35;27",
+   "activity": "",
+   "task": "Organisation des atéliers et séminaires"
+ },
+ {
+   "codept": "193-P4",
+   "pt": "Chargé d'Etude Assistant3",
+   "nbtotraite": "",
+   "prequired": "25;43",
+   "crequired": "12;8;35;27",
+   "activity": "",
+   "task": "Création Comptes et codes postes"
+ },
+ {
+   "codept": "193-P5",
+   "pt": "Chargé d'Etude Assistant4",
+   "nbtotraite": "",
+   "prequired": "25;43",
+   "crequired": "12;8;35;27",
+   "activity": "",
+   "task": "Elaboration nomenclature"
+ },
+ {
+   "codept": "193-P6",
+   "pt": "Chargé d'Etude Assistant5",
+   "nbtotraite": "",
+   "prequired": "25;43",
+   "crequired": "12;8;35;27",
+   "activity": "",
+   "task": "Rédaction manuel de procédure"
+ },
+ {
+   "codept": "193-P7",
+   "pt": "Chargé d'Etude Assistant6",
+   "nbtotraite": "",
+   "prequired": "25;43",
+   "crequired": "12;8;35;27",
+   "activity": "",
+   "task": "Analyse des dossiers"
+ },
+ {
+   "codept": "193-P8",
+   "pt": "Cadre1",
+   "nbtotraite": "",
+   "prequired": "43;12;25",
+   "crequired": "8;13;12;27",
+   "activity": "",
+   "task": "Elaboration des Instructions"
+ },
+ {
+   "codept": "193-P9",
+   "pt": "Cadre2",
+   "nbtotraite": "",
+   "prequired": "43;12;25",
+   "crequired": "8;13;12;27",
+   "activity": "",
+   "task": "Création des comptes"
+ },
+ {
+   "codept": "247-P1",
+   "pt": "DAG",
+   "nbtotraite": 24,
+   "prequired": "44;2;29",
+   "crequired": "12;2;17;37",
+   "activity": "Pilotage et coordination des services de la DGTCFM",
+   "task": "Organise, dirige, contrôle et évalue les activités de la Cellule"
+ },
+ {
+   "codept": "247-P10",
+   "pt": "Bureau du Personnel Fonctionnaire/Gestion carrière",
+   "nbtotraite": 48,
+   "prequired": "30;11;18",
+   "crequired": "12;17",
+   "activity": "Assure l’exécution des activités du bureau",
+   "task": "initie les actes de gestion du Personnel  Fonctionnaire ;Participe au recensement périodique du Personnel  Fonctionnaire ;;assure la mise à jour permanente du fichier du personnel ;assure le classement des dossiers individuels initie les actes de pensions du personnel  interne "
+ },
+ {
+   "codept": "247-P11",
+   "pt": "Service du Personnel Non Fonctionnaire",
+   "nbtotraite": 24,
+   "prequired": "25;1; 52",
+   "crequired": "12;17;2",
+   "activity": "Recensement périodique du personnel  ; la mise à jour du fichier des personnels",
+   "task": "Gestion de discipline; Redaction des notes; redaction des comptes rendu réunion de coordination;suivi excellence professionnelle"
+ },
+ {
+   "codept": "247-P12",
+   "pt": "Bureau du Personnel Non Fonctionnaire/Contrôle et discipline",
+   "nbtotraite": 48,
+   "prequired": "19;11;18",
+   "crequired": "17;37",
+   "activity": "Assure l’exécution des activités du bureau",
+   "task": "suivi contrôle présence et de la discipline Personnel Non Fonctionnaire"
+ },
+ {
+   "codept": "247-P14",
+   "pt": "Service Action Social",
+   "nbtotraite": 24,
+   "prequired": "30;16;12",
+   "crequired": "12;2",
+   "activity": "Gestion Action Sociale",
+   "task": "Appui aux personnels; (fetes 8 Mars et 1er Mai) et autres; Elaboration des notes pour les droits des personnels"
+ },
+ {
+   "codept": "247-P15",
+   "pt": "SOUS Directeur du Budget et Matériel",
+   "nbtotraite": 24,
+   "prequired": "28;31;43;13;25",
+   "crequired": "16;13;12;18",
+   "activity": "Préparation et  Exécution des activités de la sous direction",
+   "task": "élaboration et suivi  du Plan  d'Action de la  DAG ; élaboration du Tableau de Bord du suivi des activités et des indicateurs de performances retenus"
+ },
+ {
+   "codept": "247-P16",
+   "pt": "Service du Budget",
+   "nbtotraite": 24,
+   "prequired": "28;31;12;13;25;40",
+   "crequired": "38;18",
+   "activity": "Préparation et  Exécution des activités du Service",
+   "task": "Suivi des actes de gestion de ressource financière ;sécurisation des postes comptables;préparation et suivi des déplacement des personnels"
+ },
+ {
+   "codept": "247-P17",
+   "pt": "Bureau Préparation du Budget",
+   "nbtotraite": 48,
+   "prequired": "30;24",
+   "crequired": "38;2;1",
+   "activity": "",
+   "task": "Elaboration et préparation du Budget; Etablissement des BCA; Arret des ordres de mission"
+ },
+ {
+   "codept": "247-P18",
+   "pt": "Bureau Engagement",
+   "nbtotraite": 48,
+   "prequired": "11;18",
+   "crequired": "38",
+   "activity": "",
+   "task": "engagement des BCA et de dépenses de personnel; suivi des dossiers d'éxecution budgetaire; redaction des notes en rapport avec l'éxecution budgetaire"
+ },
+ {
+   "codept": "247-P20",
+   "pt": "Service du  Matériel",
+   "nbtotraite": 24,
+   "prequired": "28;31;12;13;25;40",
+   "crequired": "9",
+   "activity": "Préparation et  Exécution des activités du Service",
+   "task": "Suivi des actes de gestion de ressource  mobilière et immobilière ;mise à jour du fichier du matériel mobilier et immobilier"
+ },
+ {
+   "codept": "247-P21",
+   "pt": "Bureau Matériel",
+   "nbtotraite": 48,
+   "prequired": "23;17",
+   "crequired": "9",
+   "activity": "",
+   "task": "Gestion des stocks de Mat (Entrée, Sortie)"
+ },
+ {
+   "codept": "247-P22",
+   "pt": "Bureau Maintenance",
+   "nbtotraite": 48,
+   "prequired": "17",
+   "crequired": "21;22;6",
+   "activity": "",
+   "task": "Maintenance du mobilier et immobilier DGTCFM"
+ },
+ {
+   "codept": "247-P23",
+   "pt": "Cadre 1 Unité de suivi",
+   "nbtotraite": 48,
+   "prequired": "30;24;43",
+   "crequired": "35;31",
+   "activity": "",
+   "task": "Suivi engagement Budgetaire; Contrôle de dépense fond d'equipement"
+ },
+ {
+   "codept": "247-P24",
+   "pt": "Cadre  2 Unité de suivi",
+   "nbtotraite": 48,
+   "prequired": "30;24;43",
+   "crequired": "35;31",
+   "activity": "",
+   "task": "Secrétariat des Réunions de  Cordination"
+ },
+ {
+   "codept": "247-P3",
+   "pt": "Sous Directeur CPFC",
+   "nbtotraite": 24,
+   "prequired": "50;2;43;44",
+   "crequired": "8;16;15;27",
+   "activity": "Formation du personnel de la DGTCFM",
+   "task": "Organise dirige contrôle et évalue les activités de la Cellule"
+ },
+ {
+   "codept": "247-P33",
+   "pt": "Sécretaire 1",
+   "nbtotraite": "",
+   "prequired": "17;18",
+   "crequired": "35;31",
+   "activity": "",
+   "task": "Suivi des courriers entrant et sortant; Préparation des réunions; Tenue des régistres;Saisie des données"
+ },
+ {
+   "codept": "247-P35",
+   "pt": "Billeteur",
+   "nbtotraite": "",
+   "prequired": "24;30",
+   "crequired": "8;38",
+   "activity": "",
+   "task": "élaboration des comptabilités des crédits fond d'équipement et paiement des dépenses"
+ },
+ {
+   "codept": "247-P36",
+   "pt": "Agent d'acceuil et ORIE",
+   "nbtotraite": "",
+   "prequired": "9;17",
+   "crequired": "3;34",
+   "activity": "",
+   "task": "Orientation des usagers sur les dossiers"
+ },
+ {
+   "codept": "247-P37",
+   "pt": "Agent Bibliothèque 1",
+   "nbtotraite": "",
+   "prequired": "9;21",
+   "crequired": "3;34",
+   "activity": "",
+   "task": "Gestion des badges"
+ },
+ {
+   "codept": "247-P38",
+   "pt": "Agent Bibliothèque 2",
+   "nbtotraite": "",
+   "prequired": "9;21",
+   "crequired": "3;34",
+   "activity": "",
+   "task": "Faciliter l'utilisation de la bibliothèque"
+ },
+ {
+   "codept": "247-P39",
+   "pt": "Agent de bureau 1",
+   "nbtotraite": "",
+   "prequired": "6;7;9;32",
+   "crequired": "18",
+   "activity": "",
+   "task": "Etablissement des actes de carière;saisie données; établissement des AVI;Reçoit; trie et enregistre le courrier;veille à la tenue et à la conservation des supports fixes d’information (registres; fichiers; chrono minutiers);classe les documents;procède  à la recherche documentaire"
+ },
+ {
+   "codept": "247-P4",
+   "pt": "Chargé d'Etude N° 1",
+   "nbtotraite": 48,
+   "prequired": "25;43;52",
+   "crequired": "35;31;15",
+   "activity": "",
+   "task": "Organisation des séminaires de formation"
+ },
+ {
+   "codept": "247-P40",
+   "pt": "Agent de bureau 2",
+   "nbtotraite": "",
+   "prequired": "6;7;9;32",
+   "crequired": "18",
+   "activity": "",
+   "task": "Etablissement des certificats ;Depart à la Retraite; Etablissement des actes de carière;saisie données; établissement des AVI;Reçoit; trie et enregistre le courrier;veille à la tenue et à la conservation des supports fixes d’information (registres, fichiers, chrono minutiers);classe les documents ;Procède  à la recherche documentaire"
+ },
+ {
+   "codept": "247-P41",
+   "pt": "Chauffeur",
+   "nbtotraite": "",
+   "prequired": "3;4;5;6;7",
+   "crequired": "10;25",
+   "activity": "",
+   "task": "conduire le DAG"
+ },
+ {
+   "codept": "247-P42",
+   "pt": "Chauffeur 1",
+   "nbtotraite": "",
+   "prequired": "3;4;5;6;7",
+   "crequired": "25;10",
+   "activity": "",
+   "task": "Conduit les missions de travail"
+ },
+ {
+   "codept": "247-P43",
+   "pt": "Chauffeur 2",
+   "nbtotraite": "",
+   "prequired": "3;4;5;6;7",
+   "crequired": "25;10",
+   "activity": "",
+   "task": "Conduit les missions de travail"
+ },
+ {
+   "codept": "247-P44",
+   "pt": "Chauffeur 3",
+   "nbtotraite": "",
+   "prequired": "3;4;5;6;7",
+   "crequired": "25;10",
+   "activity": "",
+   "task": "Conduit les missions de travail"
+ },
+ {
+   "codept": "247-P45",
+   "pt": "Chauffeur 4",
+   "nbtotraite": "",
+   "prequired": "3;4;5;6;7",
+   "crequired": "25;10",
+   "activity": "",
+   "task": "Conduit les missions de travail"
+ },
+ {
+   "codept": "247-P5",
+   "pt": "Chargé d'Etude N° 2",
+   "nbtotraite": 48,
+   "prequired": "25;43;52",
+   "crequired": "35;31;15",
+   "activity": "",
+   "task": "suivi des elèves stagiaires"
+ },
+ {
+   "codept": "247-P6",
+   "pt": "Chef Bibliotheque",
+   "nbtotraite": "",
+   "prequired": "17;18;53,27",
+   "crequired": "3;34",
+   "activity": "",
+   "task": "gestion de la bibliothèque"
+ },
+ {
+   "codept": "247-P7",
+   "pt": "SOUS Directeur du personnel",
+   "nbtotraite": 24,
+   "prequired": "28;29;44;45",
+   "crequired": "1;12;17;8",
+   "activity": "Suivi de la gestion du personnel;Elaboration et le suivi de la mise en œuvre du plan d’action  de la Sous Direction;Elaboration du tableau de bord de suivi des activités de la Sous Direction;Elaboration des indicateurs de performance des activités du Service ; Mesure des performances du Service  au vu des indicateurs retenus",
+   "task": "Préparation des affectations du personnel d'appui ; l’instruction des dossiers disciplinaires ; élaboration des budgets liés aux primes"
+ },
+ {
+   "codept": "247-P13",
+   "pt": "Bureau du Personnel Non Fonctionnaire/Gestion carrière",
+   "nbtotraite": 48,
+   "prequired": "19;11;18",
+   "crequired": "17;37",
+   "activity": "Assure l’exécution des activités du bureau",
+   "task": "suivi des actes de carière Personnel Non Fonctionnaire; initie les actes de gestion du personnel  Non  Fonctionnaire;participe au recensement périodique du Personnel  Non Fonctionnaire;assure la mise à jour permanente du fichier du personnel;assure le classement des dossiers individuels initie les actes de pensions du personnel  interne"
+ },
+ {
+   "codept": "247-P8",
+   "pt": "Service du Personnel Fonctionnaire",
+   "nbtotraite": 24,
+   "prequired": "25;43;28;31",
+   "crequired": "1;12;17;8",
+   "activity": "Préparation des actes de gestion du personnel;Recensement périodique du personnel  ; Mise à jour du fichier des personnels ; Conception des modèles de gestion des RH",
+   "task": "Suivi excellence professionnelle; analyse des dossiers et élaboration des notes"
+ },
+ {
+   "codept": "247-P9",
+   "pt": "Bureau du Personnel Fonctionnaire/Contrôle et discipline",
+   "nbtotraite": 48,
+   "prequired": "30;11;18",
+   "crequired": "17;37",
+   "activity": "Assure l’exécution des activités du bureau",
+   "task": "Suivi contrôle présence et de la discipline Personnel Fonctionnaire"
+ },
+ {
+   "codept": "247-P29",
+   "pt": "Cadre d'Appui",
+   "nbtotraite": 48,
+   "prequired": "20;23",
+   "crequired": "1,2;9",
+   "activity": "",
+   "task": "Suivi inventaire du matériel; Appui à la comptabilité matière "
+ }
+]

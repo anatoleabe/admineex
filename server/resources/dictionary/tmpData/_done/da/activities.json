@@ -1,0 +1,106 @@
+[
+ {
+   "id": "1",
+   "activity": "Planifie organise dirige contrôle et évalue les activités de son domaine de compétence"
+ },
+ {
+   "id": "2",
+   "activity": "Approbation et visa des polices des tarifs et des documents d’assurance destinés au public"
+ },
+ {
+   "id": "3",
+   "activity": "Collecte des données statistiques et comptables relatives à l’activité des compagnies et intermédiaires d’assurances"
+ },
+ {
+   "id": "4",
+   "activity": "Contrôle des experts techniques et des professions connexes aux activités d’assurance"
+ },
+ {
+   "id": "5",
+   "activity": "Contrôle et surveillance des Compagnies et des intermédiaires d’assurances"
+ },
+ {
+   "id": "6",
+   "activity": "Elaboration des états de synthèse périodiques et des rapports sur le marché des assurances"
+ },
+ {
+   "id": "7",
+   "activity": "Formalisation de la politique de contrôle et de planification"
+ },
+ {
+   "id": "8",
+   "activity": "Rédaction et mise à jour des guides de contrôle des compagnies d’assurances"
+ },
+ {
+   "id": "9",
+   "activity": "Suivi des contrats d’assurance des Administrations publique en liaison avec les Administrations concernées"
+ },
+ {
+   "id": "10",
+   "activity": "Suivi technique de la couverture des risques du patrimoine de l’Etat et de l’assurance scolaire"
+ },
+ {
+   "id": "11",
+   "activity": "Vérification et analyse économique des placements des compagnies d’assurances"
+ },
+ {
+   "id": "12",
+   "activity": "L’élaboration et l’exécution du plan d’action de la Direction"
+ },
+ {
+   "id": "13",
+   "activity": "L’élaboration du tableau de bord de la Direction"
+ },
+ {
+   "id": "14",
+   "activity": "La surveillance du marché des assurances et de réassurance"
+ },
+ {
+   "id": "15",
+   "activity": "Planifie organise dirige contrôle et évalue les activités de la SousDirection"
+ },
+ {
+   "id": "16",
+   "activity": "Prépare et assure l’exécution des activités du Service"
+ },
+ {
+   "id": "17",
+   "activity": "Assure l’exécution des activités du Bureau"
+ },
+ {
+   "id": "18",
+   "activity": "La Conception de la Politique de l’Etat en Matière d’assurance en Liaison avec la CIMA"
+ },
+ {
+   "id": "19",
+   "activity": "Coordonne Les Activités du Secrétariat"
+ },
+ {
+   "id": "20",
+   "activity": "Assiste le Chef d’Inspection dans l’accomplissement de ses Missions de Contrôle Et d’évaluation"
+ },
+ {
+   "id": "21",
+   "activity": "Assure l’exécution des Activités du Bureau"
+ },
+ {
+   "id": "22",
+   "activity": "Exécute les Travaux Techniques du Secrétariat"
+ },
+ {
+   "id": "23",
+   "activity": "Organise l’agenda du Directeur"
+ },
+ {
+   "id": "24",
+   "activity": "la conception des études d’ordre économique ou statistique concernant l’assurance"
+ },
+ {
+   "id": "25",
+   "activity": "Assiste l’Inspecteur dans l’exercice de ses fonctions"
+ },
+ {
+   "id": "26",
+   "activity": "la collecte des états provisoires relatifs aux opérations de la branche automobile"
+ }
+]

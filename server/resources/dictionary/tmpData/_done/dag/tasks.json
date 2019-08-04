@@ -1,0 +1,334 @@
+[
+ {
+   "id": "1",
+   "task": "Initie les documents relatifs à la préparation et à l’exécution du budget."
+ },
+ {
+   "id": "2",
+   "task": "Exécute les travaux techniques du secrétariat ;"
+ },
+ {
+   "id": "3",
+   "task": "Accueille, renseigne et oriente les usagers ;"
+ },
+ {
+   "id": "4",
+   "task": "Apprête et dépouille les parapheurs ;"
+ },
+ {
+   "id": "5",
+   "task": "Assure l’entrée , la sortie et la conservation du matériel ;"
+ },
+ {
+   "id": "6",
+   "task": "Assure l’exécution des activités du bureau."
+ },
+ {
+   "id": "7",
+   "task": "Assure la mise à jour permanente du fichier du personnel ;"
+ },
+ {
+   "id": "8",
+   "task": "Assure la réception,le tri, le traitement et le dispatching du courrier ;"
+ },
+ {
+   "id": "9",
+   "task": "Assure la recherche documentaire ;"
+ },
+ {
+   "id": "10",
+   "task": "Assure la saisie des documents ;"
+ },
+ {
+   "id": "11",
+   "task": "Assure la transmission des dossiers ;"
+ },
+ {
+   "id": "12",
+   "task": "Assure le classement des dossiers individuels."
+ },
+ {
+   "id": "13",
+   "task": "Assure le classement et la conservation des actes et des documents ;"
+ },
+ {
+   "id": "14",
+   "task": "Assure le transport du Directeur Général ;"
+ },
+ {
+   "id": "15",
+   "task": "Classe les actes et documents ;"
+ },
+ {
+   "id": "16",
+   "task": "Conserve les pièces comptables."
+ },
+ {
+   "id": "17",
+   "task": "Effectue les courses de service."
+ },
+ {
+   "id": "18",
+   "task": "Gère le standard , les appels ,et les liaisons téléphoniques ;"
+ },
+ {
+   "id": "19",
+   "task": "Habille les dossiers ;"
+ },
+ {
+   "id": "20",
+   "task": "Informe les usagers ;"
+ },
+ {
+   "id": "21",
+   "task": "Initie les actes de gestion du personnel de la Direction Générale;"
+ },
+ {
+   "id": "22",
+   "task": "Initie les actes de pensions du personnel  interne ;"
+ },
+ {
+   "id": "23",
+   "task": "Initie les engagements sur le support comptable ;"
+ },
+ {
+   "id": "24",
+   "task": "Instruit les dossiers disciplinaire du personnel de la Direction Générale."
+ },
+ {
+   "id": "25",
+   "task": "L’élaboration des indicateurs d’évaluation du personnel de la Sous-Direction ;"
+ },
+ {
+   "id": "26",
+   "task": "L’élaboration des indicateurs de performance des activités du Service ;"
+ },
+ {
+   "id": "27",
+   "task": "l’élaboration des indicateurs de performance des activités du Service ;"
+ },
+ {
+   "id": "28",
+   "task": "L’élaboration des indicateurs des performances de la Sous-Direction ;"
+ },
+ {
+   "id": "29",
+   "task": "L’élaboration du tableau de bord de la Sous- Direction ;"
+ },
+ {
+   "id": "30",
+   "task": "L’élaboration du tableau de bord de suivi des activités du secteur de compétence de la Direction Générale ;"
+ },
+ {
+   "id": "31",
+   "task": "L’élaboration du tableau de bord de suivi des activités du Service ;"
+ },
+ {
+   "id": "32",
+   "task": "L’élaboration et l’exécution du plan d’action de la Sous-Direction ;"
+ },
+ {
+   "id": "33",
+   "task": "L’élaboration et le suivi de la mise en œuvre du plan d’action du Service ;"
+ },
+ {
+   "id": "34",
+   "task": "L’élaboration  du TABORD des finances publiques, du TOFE et des indicateurs de suivi des états de synthèse ;"
+ },
+ {
+   "id": "35",
+   "task": "L’élaboration, la mise en œuvre et le suivi des plans de formation  et de perfectionnement du personnel de la Direction Générale ;"
+ },
+ {
+   "id": "36",
+   "task": "L’instruction des dossiers disciplinaires ;"
+ },
+ {
+   "id": "37",
+   "task": "La contribution à l’élaboration de la politique de financement de l’économie ;"
+ },
+ {
+   "id": "38",
+   "task": "La gestion des ressources financières ;"
+ },
+ {
+   "id": "39",
+   "task": "La gestion des ressources matérielles ;"
+ },
+ {
+   "id": "40",
+   "task": "La gestion du parc automobile ;"
+ },
+ {
+   "id": "41",
+   "task": "La mesure des performances de la Direction Générale et de celles de ses personnels au vu des indicateurs retenus."
+ },
+ {
+   "id": "42",
+   "task": "La mesure des performances de la Sous- Direction et de celles de ses personnels au vu des indicateurs retenus."
+ },
+ {
+   "id": "43",
+   "task": "La mesure des performances du Service  au vu des indicateurs retenus."
+ },
+ {
+   "id": "44",
+   "task": "La mise à jour du fichier des personnels ;"
+ },
+ {
+   "id": "45",
+   "task": "La mise en œuvre des plans d’actions arrêtés ;"
+ },
+ {
+   "id": "46",
+   "task": "La préparation des actes de gestion du personnel ;"
+ },
+ {
+   "id": "47",
+   "task": "La préparation des affectations du personnel d'appui ;"
+ },
+ {
+   "id": "48",
+   "task": "La préparation des besoins en matériel ;"
+ },
+ {
+   "id": "49",
+   "task": "La préparation et de l’exécution du budget ;"
+ },
+ {
+   "id": "50",
+   "task": "La préparation et le suivi des déplacements des personnels de la Direction Générale à l’intérieur et à l’extérieur du territoire national;"
+ },
+ {
+   "id": "51",
+   "task": "La relance des  services ;"
+ },
+ {
+   "id": "52",
+   "task": "La reproduction et la distribution des actes individuels et réglementaires  et autres documents intéressant la Direction Générale ;"
+ },
+ {
+   "id": "53",
+   "task": "La sécurisation des postes comptables ;"
+ },
+ {
+   "id": "54",
+   "task": "La supervision et la collecte des données pour la préparation du budget de la Direction Générale ;"
+ },
+ {
+   "id": "55",
+   "task": "La tenue des documents administratifs ;"
+ },
+ {
+   "id": "56",
+   "task": "Le classement et la conservation des actes signés intéressant la Direction Générale ;"
+ },
+ {
+   "id": "57",
+   "task": "Le recensement périodique du personnel en service à la Direction Générale ;"
+ },
+ {
+   "id": "58",
+   "task": "Le recueil des besoins de formation ;"
+ },
+ {
+   "id": "59",
+   "task": "Le règlement des dépenses de l’Etat, des Collectivités Territoriales Décentralisées  et des Etablissements Publics  Administratifs ;"
+ },
+ {
+   "id": "60",
+   "task": "Le respect de la discipline au sein de la Direction Générale ;"
+ },
+ {
+   "id": "61",
+   "task": "Le suivi comptable de la dette intérieure et extérieure ;"
+ },
+ {
+   "id": "62",
+   "task": "Le suivi de l’exécution du budget de l’Etat en recettes et dépenses ;"
+ },
+ {
+   "id": "63",
+   "task": "Le suivi de la carrière des personnels de la Direction Générale ;"
+ },
+ {
+   "id": "64",
+   "task": "Met à jour le fichier du matériel roulant de la Direction Générale ;"
+ },
+ {
+   "id": "65",
+   "task": "Met à jour le fichier du parc immobilier de la Direction Générale ;"
+ },
+ {
+   "id": "66",
+   "task": "Organise l’agenda du Directeur Général."
+ },
+ {
+   "id": "67",
+   "task": "Organise la notification des actes signés."
+ },
+ {
+   "id": "68",
+   "task": "Organise la réception des dossiers et des requêtes ;"
+ },
+ {
+   "id": "69",
+   "task": "participe à l’élaboration des propositions de réforme du matériel roulant de la Direction Générale."
+ },
+ {
+   "id": "70",
+   "task": "participe à l’élaboration des propositions de réforme du parc immobilier de la Direction Générale."
+ },
+ {
+   "id": "71",
+   "task": "Participe à l’établissement des ordres de mission ;"
+ },
+ {
+   "id": "72",
+   "task": "Participe au recensement périodique du personnel de la Direction Générale ;"
+ },
+ {
+   "id": "73",
+   "task": "Planifie, organise, dirige, contrôle et évalue les activités de la Sous- Direction"
+ },
+ {
+   "id": "74",
+   "task": "Prépare et assure l’exécution des activités du  Service, notamment :"
+ },
+ {
+   "id": "75",
+   "task": "Procède  à la recherche documentaire."
+ },
+ {
+   "id": "76",
+   "task": "Saisit les documents ;"
+ },
+ {
+   "id": "77",
+   "task": "Tient le fichier des stocks du Cabinet ;"
+ },
+ {
+   "id": "78",
+   "task": "Transmet les dossiers au contrôle financier."
+ },
+ {
+   "id": "79",
+   "task": "Veille à l’entretien du véhicule."
+ },
+ {
+   "id": "80",
+   "task": "Veille à la maintenance du parc immobilier de la Direction Générale ;"
+ },
+ {
+   "id": "81",
+   "task": "Veille à la tenue et à la conservation des supports fixes d’information (registres, fichiers, chrono minutiers) ;"
+ },
+ {
+   "id": "82",
+   "task": "Veille au respect des délais de traitement des dossiers."
+ },
+ {
+   "id": "83",
+   "task": "Vérifie l’enregistrement du courrier."
+ }
+]

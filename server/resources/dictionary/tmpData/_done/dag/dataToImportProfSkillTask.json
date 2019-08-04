@@ -1,0 +1,392 @@
+[
+ {
+   "codept": "247-1P1",
+   "pt": "Directeur des Affaires Générales",
+   "off": "",
+   "nbtotraite": "24",
+   "prequired": "4;41;59",
+   "crequired": "15;2;20;40",
+   "activity": "1;7",
+   "task": "30;51;45;54;55;56;67;69;70"
+ },
+ {
+   "codept": "247-1P2",
+   "pt": "Cadre 1 Unité de Suivi",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "11;60;24",
+   "crequired": "38;34",
+   "activity": "7",
+   "task": "77"
+ },
+ {
+   "codept": "247-1P3",
+   "pt": "Cadre  2 Unité de Suivi",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "11;60;24",
+   "crequired": "38;34",
+   "activity": "7",
+   "task": "77"
+ },
+ {
+   "codept": "247-1P4",
+   "pt": "Billeteur",
+   "off": "",
+   "nbtotraite": "",
+   "prequired": "24;60",
+   "crequired": "9;41",
+   "activity": "",
+   "task": "16"
+ },
+ {
+   "codept": "247-1P5",
+   "pt": "Sécretaire 1",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "53;54",
+   "crequired": "38;34",
+   "activity": "19",
+   "task": "81;83;10;11;4;2;18;68;12;15;18"
+ },
+ {
+   "codept": "247-1P6",
+   "pt": "Agent d'acceuil et ORIE",
+   "off": "",
+   "nbtotraite": "",
+   "prequired": "52;53",
+   "crequired": "5;37",
+   "activity": "",
+   "task": "3"
+ },
+ {
+   "codept": "247-1P7",
+   "pt": "Chauffeur",
+   "off": "",
+   "nbtotraite": "",
+   "prequired": "47;48;49;50;51",
+   "crequired": "13;28",
+   "activity": "",
+   "task": "79;17"
+ },
+ {
+   "codept": "247-1P8",
+   "pt": "Chef Bibliotheque",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "53;54;76,28",
+   "crequired": "5;37",
+   "activity": "",
+   "task": "9;15;20;75"
+ },
+ {
+   "codept": "247-1P9",
+   "pt": "Agent Bibliothèque 1",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "52.3",
+   "crequired": "5;37",
+   "activity": "",
+   "task": "9;15;20;75"
+ },
+ {
+   "codept": "247-1P10",
+   "pt": "Agent Bibliothèque 2",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "52.3",
+   "crequired": "5;37",
+   "activity": "",
+   "task": "9;15;20;75"
+ },
+ {
+   "codept": "247-2P1",
+   "pt": "Chef de la Cellule de Perfectionnement et de la Formation Continue",
+   "off": "",
+   "nbtotraite": "24",
+   "prequired": "4;11;86;41",
+   "crequired": "9;19;;27;38",
+   "activity": "1;2;3",
+   "task": "28;29;45;73;58;35"
+ },
+ {
+   "codept": "247-2P2",
+   "pt": "Chargé d'Etude N° 1",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "11;17;44",
+   "crequired": "38;34;",
+   "activity": "2;3",
+   "task": "31;33"
+ },
+ {
+   "codept": "247-2P3",
+   "pt": "Chargé d'Etude N° 2",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "11;17;44",
+   "crequired": "38;34;",
+   "activity": "2;3",
+   "task": "31;33"
+ },
+ {
+   "codept": "247-2P4",
+   "pt": "Chargé d'Etude N° 3",
+   "off": "1",
+   "nbtotraite": "48",
+   "prequired": "11;17;44",
+   "crequired": "38;34;",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "247-2P5",
+   "pt": "Cadre d'Appui",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "11;17;56",
+   "crequired": "9;17;15",
+   "activity": "",
+   "task": "31;33"
+ },
+ {
+   "codept": "247-3P1",
+   "pt": "Sous-Directeur du Personnel",
+   "off": "",
+   "nbtotraite": "24",
+   "prequired": "4,58;59;7",
+   "crequired": "1;9;16;20",
+   "activity": "1;7;15",
+   "task": "48;24;28; 29;44;47;57;45;73"
+ },
+ {
+   "codept": "247-3P2",
+   "pt": "Chef de Service du Personnel Fonctionnaire",
+   "off": "",
+   "nbtotraite": "24",
+   "prequired": "17;11;58;61",
+   "crequired": "1;9;15;20",
+   "activity": "15;7",
+   "task": "7;21;22;26;31;33;46;45;63;72;74"
+ },
+ {
+   "codept": "247-3P3",
+   "pt": "Chef de Service du Personnel  Non Fonctionnaire",
+   "off": "",
+   "nbtotraite": "24",
+   "prequired": "17;39; 44",
+   "crequired": "15;20;2",
+   "activity": "15;7",
+   "task": "7;21;22;26;31;33;46;45;63;72;74"
+ },
+ {
+   "codept": "247-3P4",
+   "pt": "Chef de Service de l'Action Sociale",
+   "off": "",
+   "nbtotraite": "24",
+   "prequired": "60;36;55",
+   "crequired": "15;2",
+   "activity": "16",
+   "task": "52"
+ },
+ {
+   "codept": "247-3P5",
+   "pt": "Chef de Bureau du Personnel Fonctionnaire/Gestion carrière",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "60;55;54",
+   "crequired": "15;20",
+   "activity": "15;7",
+   "task": "21;72;44;12; 22;63;6"
+ },
+ {
+   "codept": "247-3P6",
+   "pt": "Chef de Bureau du Personnel Fonctionnaire/Contrôle et discipline",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "60;55;54",
+   "crequired": "20;40",
+   "activity": "15;7",
+   "task": "21;72;44;12; 22;60;6"
+ },
+ {
+   "codept": "247-3P7",
+   "pt": "Chef de Bureau du Personnel Non Fonctionnaire/Gestion carrière",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "22;55;54",
+   "crequired": "20;40",
+   "activity": "15;7",
+   "task": "21;72;44;12; 22;63;6"
+ },
+ {
+   "codept": "247-3P8",
+   "pt": "Chef de Bureau du Personnel Non Fonctionnaire/Contrôle et discipline",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "22;55;54",
+   "crequired": "20;40",
+   "activity": "15;7",
+   "task": "21;72;44;12; 22;60;6"
+ },
+ {
+   "codept": "247-3P9",
+   "pt": "Agent de bureau 1",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "50;51;90;62",
+   "crequired": "21",
+   "activity": "",
+   "task": "46;15;13;10;11;19;75;76"
+ },
+ {
+   "codept": "247-3P10",
+   "pt": "Agent de bureau 2",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "50;51;90;62",
+   "crequired": "21",
+   "activity": "",
+   "task": "46;15;13;10;11;19;75;76"
+ },
+ {
+   "codept": "247-4P1",
+   "pt": "Sous-Directeur du Budget et du Matériel",
+   "off": "",
+   "nbtotraite": "24",
+   "prequired": "11,17;58;61",
+   "crequired": "19;15;16;21",
+   "activity": "1;7;17",
+   "task": "32;1;23;28;29;45;53;73;69;70;54"
+ },
+ {
+   "codept": "247-4P2",
+   "pt": "Chef de Service du Budget",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "58;61;56;57;17;8",
+   "crequired": "41;21",
+   "activity": "17",
+   "task": "39;78;74;26;53;38;50;49"
+ },
+ {
+   "codept": "247-4P3",
+   "pt": "Chef de Service du Matériel",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "58;61;56;57;17;8",
+   "crequired": "11",
+   "activity": "4",
+   "task": "39;64;65;69;74;26;69;70;48"
+ },
+ {
+   "codept": "247-4P4",
+   "pt": "Cadre",
+   "off": "1",
+   "nbtotraite": "24",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "247-4P5",
+   "pt": "Chef de Bureau de la Préparation des Budgets",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "60;24",
+   "crequired": "41;2;1",
+   "activity": "17",
+   "task": "71;6;49"
+ },
+ {
+   "codept": "247-4P6",
+   "pt": "Chef de Bureau des Engagements",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "55;54",
+   "crequired": "41",
+   "activity": "17",
+   "task": "23;6;38;50"
+ },
+ {
+   "codept": "247-4P7",
+   "pt": "Chef de Bureau du Matériel",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "23;53",
+   "crequired": "11",
+   "activity": "4",
+   "task": "6;5;39;48"
+ },
+ {
+   "codept": "247-4P8",
+   "pt": "Chef de Bureau de la Maintenance",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "53",
+   "crequired": "24;25;8",
+   "activity": "4",
+   "task": "6;40;80;64"
+ },
+ {
+   "codept": "247-4P9",
+   "pt": "Cadre d'Appui",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "29;23",
+   "crequired": "1;2;11",
+   "activity": "",
+   "task": "5"
+ },
+ {
+   "codept": "247-4P10",
+   "pt": "Sécretaire",
+   "off": "",
+   "nbtotraite": "48",
+   "prequired": "51;52",
+   "crequired": "34",
+   "activity": "19",
+   "task": "81;83;10;11;4;2;18;68;12;15;18"
+ },
+ {
+   "codept": "247-4P11",
+   "pt": "Chauffeur 1",
+   "off": "",
+   "nbtotraite": "",
+   "prequired": "47;48;49;50;51",
+   "crequired": "28;13",
+   "activity": "",
+   "task": "79;17"
+ },
+ {
+   "codept": "247-4P12",
+   "pt": "Chauffeur 2",
+   "off": "",
+   "nbtotraite": "",
+   "prequired": "47;48;49;50;51",
+   "crequired": "28;13",
+   "activity": "",
+   "task": "79;17"
+ },
+ {
+   "codept": "247-4P13",
+   "pt": "Chauffeur 3",
+   "off": "",
+   "nbtotraite": "",
+   "prequired": "47;48;49;50;51",
+   "crequired": "28;13",
+   "activity": "",
+   "task": "79;17"
+ },
+ {
+   "codept": "247-4P14",
+   "pt": "Chauffeur 4",
+   "off": "",
+   "nbtotraite": "",
+   "prequired": "47;48;49;50;51",
+   "crequired": "28;13",
+   "activity": "",
+   "task": "79;17"
+ }
+]

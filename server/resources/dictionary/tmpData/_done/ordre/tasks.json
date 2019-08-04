@@ -1,0 +1,102 @@
+[
+    {
+        "id": "1",
+        "task": "Assure La Transmission Des Dossiers"
+    },
+    {
+        "id": "2",
+        "task": "Classe Les Documents"
+    },
+    {
+        "id": "3",
+        "task": "Classe Les Documents"
+    },
+    {
+        "id": "4",
+        "task": "La Réception Du Tri Du Traitement Et De La Ventilation Du Courrier"
+    },
+    {
+        "id": "5",
+        "task": "Dépouille Le Courrier"
+    },
+    {
+        "id": "6",
+        "task": "Informe Les Usagers"
+    },
+    {
+        "id": "7",
+        "task": "L’accueil L’information Et L’orientation Des Usagers"
+    },
+    {
+        "id": "8",
+        "task": "La Mesure Des Performances Du Service  Au Vu Des Indicateurs Retenus"
+    },
+    {
+        "id": "9",
+        "task": "La Relance Des  Services"
+    },
+    {
+        "id": "10",
+        "task": "Organise L’accueil Des Usagers"
+    },
+    {
+        "id": "11",
+        "task": "Organise La Notification Des Actes Signés"
+    },
+    {
+        "id": "12",
+        "task": "Organise La Réception Des Dossiers Et Des Requêtes"
+    },
+    {
+        "id": "13",
+        "task": "Organise La Ventilation Du Courrier"
+    },
+    {
+        "id": "14",
+        "task": "Organise La Ventilation Du Courrier"
+    },
+    {
+        "id": "15",
+        "task": "Procède  à La Recherche Documentaire"
+    },
+    {
+        "id": "16",
+        "task": "Procède  à La Recherche Documentaire"
+    },
+    {
+        "id": "17",
+        "task": "Reçoit Trie Et Enregistre Le Courrier"
+    },
+    {
+        "id": "18",
+        "task": "Reçoit Trie Et Enregistre Le Courrier"
+    },
+    {
+        "id": "19",
+        "task": "Veille à La Tenue Et à La Conservation Des Supports Fixes D’information Registres Fichiers Chrono Minutiers"
+    },
+    {
+        "id": "20",
+        "task": "Veille à La Tenue Et à La Conservation Des Supports Fixes D’information Registres Fichiers Chrono Minutiers"
+    },
+    {
+        "id": "21",
+        "task": "Veille Au Respect Des Délais De Traitement Des Dossiers"
+    },
+    {
+        "id": "22",
+        "task": "Vérifie L’enregistrement Du Courrier"
+    },
+    {
+        "id": "23",
+        "task": "Assure L’exécution Des Activités Du Bureau"
+    },
+    {
+        "id": "24",
+        "task": "Assure L’exécution Des Activités Du Bureau"
+    },
+    {
+        "id": "25",
+        "task": "Prépare Et Assure L’exécution Des Activités Du Service Notamment"
+    }
+]

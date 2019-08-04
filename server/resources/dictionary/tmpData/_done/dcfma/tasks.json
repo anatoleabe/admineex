@@ -1,0 +1,350 @@
+[
+ {
+   "id": "1",
+   "task": "Assure la collecte et la tenue des statistiques du marché monétaire "
+ },
+ {
+   "id": "2",
+   "task": "Assure la collecte et le suivi des agrégats monétaires "
+ },
+ {
+   "id": "3",
+   "task": "Assure la recherche documentaire "
+ },
+ {
+   "id": "4",
+   "task": "Assure la saisie des documents "
+ },
+ {
+   "id": "5",
+   "task": "Assure le transport et les déplacements par  véhicule de service "
+ },
+ {
+   "id": "6",
+   "task": "Classe les documents "
+ },
+ {
+   "id": "7",
+   "task": "Conduit les études relatives à la monnaie et au crédit "
+ },
+ {
+   "id": "8",
+   "task": "Agrément des bureaux de change "
+ },
+ {
+   "id": "9",
+   "task": "Elaboration des notes de synthèse liées à l’environnement économique et financière internationale "
+ },
+ {
+   "id": "10",
+   "task": "Elaboration du tableau de bord de la Cellule "
+ },
+ {
+   "id": "11",
+   "task": "Elaboration du tableau de bord de la Sous Direction "
+ },
+ {
+   "id": "12",
+   "task": "Elaboration et l’exécution du plan d’action de la Cellule "
+ },
+ {
+   "id": "13",
+   "task": "Elaboration et l’exécution du plan d’action de la SousDirection "
+ },
+ {
+   "id": "14",
+   "task": "Elaboration et le suivi de la mise en œuvre du plan d’action du Service "
+ },
+ {
+   "id": "15",
+   "task": "Exécution des enquêtes auprès des établissements de crédit et des intermédiaires financiers "
+ },
+ {
+   "id": "16",
+   "task": "Exécution des enquêtes auprès des établissements de crédit "
+ },
+ {
+   "id": "17",
+   "task": "Collecte et la tenue des statistiques bancaires "
+ },
+ {
+   "id": "18",
+   "task": "Conduite des études relatives à la monnaie au crédit et au financement de l’économie  et des études sur la programmation monétaire "
+ },
+ {
+   "id": "19",
+   "task": "Gestion du contentieux "
+ },
+ {
+   "id": "20",
+   "task": "Mise en œuvre des plans d’actions arrêtés "
+ },
+ {
+   "id": "21",
+   "task": "Préparation de la liste des spécialistes en valeur du trésor agréés "
+ },
+ {
+   "id": "22",
+   "task": "Tenue et la mise à jour du fichier des bureaux de change "
+ },
+ {
+   "id": "23",
+   "task": "Développement des stratégies de mobilisation de l’emploi de l’épargne dans son secteur "
+ },
+ {
+   "id": "24",
+   "task": "Développement et le suivi des activités des établissements de crédit  et des  marchés financiers "
+ },
+ {
+   "id": "25",
+   "task": "Suivi de la centrale des risques et des incidents de paiement en liaison avec l’institut d’émission "
+ },
+ {
+   "id": "26",
+   "task": "Suivi de la délivrance des autorisations de transferts "
+ },
+ {
+   "id": "27",
+   "task": "Suivi de la monétique bancaire en liaison avec l’Institut d’émission"
+ },
+ {
+   "id": "28",
+   "task": "Suivi de la position nette du Gouvernement "
+ },
+ {
+   "id": "29",
+   "task": "Suivi de la publication de la liste des bureaux de changes agréés "
+ },
+ {
+   "id": "30",
+   "task": "Suivi des activités relatives à la monnaie et la monétique bancaire en liaison avec l’institut d’émission "
+ },
+ {
+   "id": "31",
+   "task": "Suivi des opérations de rapatriement des recettes d’exportation "
+ },
+ {
+   "id": "32",
+   "task": "Suivi du coût de crédit "
+ },
+ {
+   "id": "33",
+   "task": "Traitement  des demandes d’agrément des bureaux de change "
+ },
+ {
+   "id": "34",
+   "task": "Traitement des statistiques sur les transactions financières les opérations courantes et les mouvements des capitaux dans les Zones Franc Euro et  Commonwealth "
+ },
+ {
+   "id": "35",
+   "task": "Procèder  à la recherche documentaire"
+ },
+ {
+   "id": "36",
+   "task": "Suivi du marché monétaire "
+ },
+ {
+   "id": "37",
+   "task": "Suivi des investissements directs "
+ },
+ {
+   "id": "38",
+   "task": "Veiller à l’entretien du véhicule"
+ },
+ {
+   "id": "39",
+   "task": "Veiller à la tenue et à la conservation des supports fixes d’information registres fichiers chrono minutiers "
+ },
+ {
+   "id": "40",
+   "task": "Accueille et oriente les usagers "
+ },
+ {
+   "id": "41",
+   "task": "Assurer le classement et la conservation des actes et des documents "
+ },
+ {
+   "id": "42",
+   "task": "Dépoillement tri et dispaching du courrier "
+ },
+ {
+   "id": "43",
+   "task": "Elaboration du tableau des statistiques des agrégats monétaires"
+ },
+ {
+   "id": "44",
+   "task": "Habillage des dossiers "
+ },
+ {
+   "id": "45",
+   "task": "Elaboration des indicateurs de performance "
+ },
+ {
+   "id": "46",
+   "task": "Etude des dossiers de demandes d’agrément des établissements de crédit "
+ },
+ {
+   "id": "47",
+   "task": "Instruction des dossiers d’agrément des spécialistes en valeur du Trésor "
+ },
+ {
+   "id": "48",
+   "task": "Confection de la centrale des bilans des établissements de crédit en liaison avec les organes de supervision "
+ },
+ {
+   "id": "49",
+   "task": "Délivrance et le suivi des autorisations de transfert "
+ },
+ {
+   "id": "50",
+   "task": "Mesure des performances du Service  au vu des indicateurs retenus"
+ },
+ {
+   "id": "51",
+   "task": "Participation à la définition et l’élaboration de la programmation monétaire nationale en liaison avec l’Institut d’émission "
+ },
+ {
+   "id": "52",
+   "task": "Supervision du suivi de la lutte contre le blanchiment d’argent et le financement du terrorisme "
+ },
+ {
+   "id": "53",
+   "task": "Contrôle des mouvements de capitaux avec l’extérieur "
+ },
+ {
+   "id": "54",
+   "task": "Suivi de la mise en œuvre de la réglementation des changes "
+ },
+ {
+   "id": "55",
+   "task": "Contrôle des mouvements de capitaux "
+ },
+ {
+   "id": "56",
+   "task": "Suivi de l’application de la réglementation prudentielle "
+ },
+ {
+   "id": "57",
+   "task": "Suivi de la publication des spécialistes en valeur du Trésor agréés "
+ },
+ {
+   "id": "58",
+   "task": "Suivi des activités des bureaux de change "
+ },
+ {
+   "id": "59",
+   "task": "Suivi des dossiers d’emprunts des entreprises privées à l’étranger "
+ },
+ {
+   "id": "60",
+   "task": "Suivi des prêts et emprunts à l’étranger du secteur privé de  la tenue des statistiques monétaires et financières et des marchés financiers "
+ },
+ {
+   "id": "61",
+   "task": "Procèder  à la recherche documentaire"
+ },
+ {
+   "id": "62",
+   "task": "Reçoit trie et enregistre le courrier "
+ },
+ {
+   "id": "63",
+   "task": "Elaboration du tableau de bord de suivi des activités du Service "
+ },
+ {
+   "id": "64",
+   "task": "Tenue et le suivi des agrégats monétaires "
+ },
+ {
+   "id": "65",
+   "task": "Suivi des investissements directs à l’étranger et au Cameroun "
+ },
+ {
+   "id": "66",
+   "task": "Elaborer le plan d’action et le tableau de bord de la Direction "
+ },
+ {
+   "id": "67",
+   "task": "Apprêter et dépouiller les parapheurs "
+ },
+ {
+   "id": "68",
+   "task": "Apurer les comptes"
+ },
+ {
+   "id": "69",
+   "task": "Assurer l’entrée  la sortie et la conservation du matériel "
+ },
+ {
+   "id": "70",
+   "task": "Assurer l’exécution des activités du bureau"
+ },
+ {
+   "id": "71",
+   "task": "Assurer la collecte et la tenue des statistiques bancaires "
+ },
+ {
+   "id": "72",
+   "task": "Assurer la transmission des dossiers "
+ },
+ {
+   "id": "73",
+   "task": "Conserver les pièces comptables"
+ },
+ {
+   "id": "74",
+   "task": "Effectuer les courses de service"
+ },
+ {
+   "id": "75",
+   "task": "Elaborer le tableau des statistiques bancaires"
+ },
+ {
+   "id": "76",
+   "task": "Elaborer les agréments des bureaux de change "
+ },
+ {
+   "id": "77",
+   "task": "Etudier les dossiers de demandes d’agrément des établissements de crédit "
+ },
+ {
+   "id": "78",
+   "task": "Gère le standard et les liaisons téléphoniques "
+ },
+ {
+   "id": "79",
+   "task": "Elaboration des indicateurs de performance des activités du Service "
+ },
+ {
+   "id": "80",
+   "task": "Mesure des performances de la Cellule et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "81",
+   "task": "Mesure des performances de la Sous Direction et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "82",
+   "task": "Mesure des performances du Service  au vu des indicateurs retenus"
+ },
+ {
+   "id": "83",
+   "task": "Tenue du fichier des agréments "
+ },
+ {
+   "id": "84",
+   "task": "Organiser diriger contrôle et évalue les activités de la Cellule"
+ },
+ {
+   "id": "85",
+   "task": "Prépare et assure l’exécution des activités du  Service notamment "
+ },
+ {
+   "id": "86",
+   "task": "Traite les dossiers à lui confiés par le Chef de Cellule"
+ },
+ {
+   "id": "87",
+   "task": "Veille à la tenue et à la conservation des supports fixes d’information registres fichiers chrono minutiers "
+ }
+]

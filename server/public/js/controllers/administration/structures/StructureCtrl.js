@@ -120,7 +120,7 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
 
                     $scope.structureChange = function () {
                         if ($scope.selected.structure) {
-                            if ($scope.structure.code && !($scope.structure.code.indexOf(JSON.parse($scope.selected.structure).code) > -1)){
+                            if (($scope.structure.code && !($scope.structure.code.indexOf(JSON.parse($scope.selected.structure).code) > -1)) || !$scope.structure.code){
                                 $scope.structure.code = JSON.parse($scope.selected.structure).code + "-";
                             }
                         }

@@ -1,0 +1,198 @@
+[
+ {
+   "id": "1",
+   "task": "La coordination et la supervision des activités techniques des Services Centraux et Déconcentrés de la DGTCFM"
+ },
+ {
+   "id": "2",
+   "task": "La tenue de la comptabilité générale et auxiliaire de l’Etat et des comptabilités particulières des tiers et autres correspondants du trésor"
+ },
+ {
+   "id": "3",
+   "task": "La  production des comptes de gestion par les comptables publics"
+ },
+ {
+   "id": "4",
+   "task": "La mise en état d’examen des comptes de gestion de l’Etat des Collectivités Territoriales Décentralisées  et des Etablissements Publics Administratifs"
+ },
+ {
+   "id": "5",
+   "task": "Les relations avec la juridiction des comptes en ce qui concerne les comptes de gestion des comptables principaux"
+ },
+ {
+   "id": "6",
+   "task": "La supervision la coordination et le contrôle des activités des postes comptables du trésor et des administrations financières des CTD et des EPA"
+ },
+ {
+   "id": "7",
+   "task": "La perception et la centralisation des recettes publiques sous réserve des dispositions des textes particuliers"
+ },
+ {
+   "id": "8",
+   "task": "Le règlement des dépenses de l’etat des collectivités territoriales décentralisées  et des etablissements publics  administratifs"
+ },
+ {
+   "id": "9",
+   "task": "Le suivi de la gestion des dépôts autorisés par les lois et règlements"
+ },
+ {
+   "id": "10",
+   "task": "Le suivi comptable de la dette intérieure et extérieure"
+ },
+ {
+   "id": "11",
+   "task": "La centralisation des données chiffrées relatives aux opérations budgétaires des comptes spéciaux"
+ },
+ {
+   "id": "12",
+   "task": "La réalisation des études monétaires"
+ },
+ {
+   "id": "13",
+   "task": "La politique d’émission et de gestion des titres publics à souscription libre"
+ },
+ {
+   "id": "14",
+   "task": "L’élaboration des projets de textes législatifs et réglementaires relatifs aux marchés d’instruments financiers"
+ },
+ {
+   "id": "15",
+   "task": "La réglementation et le suivi du marché de la titrisation"
+ },
+ {
+   "id": "16",
+   "task": "L’organisation et le suivi des marchés financiers et monétaires"
+ },
+ {
+   "id": "17",
+   "task": "Le suivi de la politique monétaire"
+ },
+ {
+   "id": "18",
+   "task": "La coopération financière et monétaire internationale avec le FMI la banque mondiale la BAD la BEAC la zone franc et les autres unions et zones monétaires"
+ },
+ {
+   "id": "19",
+   "task": "La régulation des systèmes financiers décentralisés et des marchés financiers en liaison avec la commission bancaire de l’afrique centrale et la commission des marchés financiers"
+ },
+ {
+   "id": "20",
+   "task": "L’élaboration le suivi et le contrôle de la réglementation applicable aux assurances"
+ },
+ {
+   "id": "21",
+   "task": "Le suivi des activités des établissements de crédit et de microfinance"
+ },
+ {
+   "id": "22",
+   "task": "L’élaboration de la réglementation bancaire et financière sa mise en œuvre et le contrôle des établissements de crédit en liaison avec la beac et la COBAC"
+ },
+ {
+   "id": "23",
+   "task": "Le contrôle des finances extérieures et de la réglementation des changes"
+ },
+ {
+   "id": "24",
+   "task": "La liaison avec les associations professionnelles des établissements de crédits et du marché des assurances"
+ },
+ {
+   "id": "25",
+   "task": "Les relations avec les organismes internationaux d’assurance"
+ },
+ {
+   "id": "26",
+   "task": "La protection de l’épargne détenue par les compagnies d’assurance"
+ },
+ {
+   "id": "27",
+   "task": "La contribution à l’élaboration de la politique de financement de l’économie"
+ },
+ {
+   "id": "28",
+   "task": "La lutte contre la criminalité économique et le blanchiment d’argent"
+ },
+ {
+   "id": "29",
+   "task": "La mesure des performances de la direction générale et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "30",
+   "task": "Assure la réception du courrier"
+ },
+ {
+   "id": "31",
+   "task": "Traite le courrier"
+ },
+ {
+   "id": "32",
+   "task": "Habille les dossiers"
+ },
+ {
+   "id": "33",
+   "task": "Apprête et dépouille les parapheurs"
+ },
+ {
+   "id": "34",
+   "task": "Gère le standard et les liaisons téléphoniques"
+ },
+ {
+   "id": "35",
+   "task": "Accueille et oriente les usagers"
+ },
+ {
+   "id": "36",
+   "task": "Assure la saisie des documents"
+ },
+ {
+   "id": "37",
+   "task": "Assure le classement et la conservation des actes et des documents"
+ },
+ {
+   "id": "38",
+   "task": "Assure la recherche documentaire"
+ },
+ {
+   "id": "39",
+   "task": "Gère les appels téléphoniques"
+ },
+ {
+   "id": "40",
+   "task": "Assure la conservation du matériel"
+ },
+ {
+   "id": "41",
+   "task": "Assure l’entrée et la sortie du matériel"
+ },
+ {
+   "id": "42",
+   "task": "Tient le fichier des stocks du Cabinet"
+ },
+ {
+   "id": "43",
+   "task": "Conserve les pièces comptables"
+ },
+ {
+   "id": "44",
+   "task": "Reçoit trie et enregistre le courrier"
+ },
+ {
+   "id": "45",
+   "task": "Veille à la tenue et à la conservation des supports fixes d’information registres fichiers chrono minutiers"
+ },
+ {
+   "id": "46",
+   "task": "Procède  à la recherche documentaire"
+ },
+ {
+   "id": "47",
+   "task": "Assure la transmission des dossiers"
+ },
+ {
+   "id": "48",
+   "task": "Effectue les courses de service"
+ },
+ {
+   "id": "49",
+   "task": "Veille à l’entretien du véhicule"
+ }
+]

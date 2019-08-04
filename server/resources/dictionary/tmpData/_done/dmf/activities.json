@@ -1,0 +1,86 @@
+[
+ {
+   "id": "1",
+   "activity": "Planifier organiser diriger et évaluer les activités de la DMF"
+ },
+ {
+   "id": "2",
+   "activity": "Préparer et assurer lexécution des activités du Service des Agréments"
+ },
+ {
+   "id": "3",
+   "activity": "Organiser diriger contrôler et évaluer les activités de la Cellule"
+ },
+ {
+   "id": "4",
+   "activity": "Organiser diriger contrôler et évaluer les activités de la Bigade de contrôle des EMF"
+ },
+ {
+   "id": "5",
+   "activity": "Donner lAgrément aux établissements de microfinance"
+ },
+ {
+   "id": "6",
+   "activity": "Etablir la carte des établissements de microfinance"
+ },
+ {
+   "id": "7",
+   "activity": "Tenue du fichier des établissements de microfinance"
+ },
+ {
+   "id": "8",
+   "activity": "Assurer le suivi de lapplication et de la règlementation relative à la microfinance"
+ },
+ {
+   "id": "9",
+   "activity": "Assurer la création et laménagement dun cadre administratif et juridique propice au développement des EMF"
+ },
+ {
+   "id": "10",
+   "activity": "Promouvoir le partenariat entre les pouvoirs publics les établissements de microfinance et le secteur bancaire"
+ },
+ {
+   "id": "11",
+   "activity": "Suivre et encadrer les relations entre les établissements de microfinance et les organisations socioprofessionnelles"
+ },
+ {
+   "id": "12",
+   "activity": "Elaboration et suivi des programmes de professionnalisation"
+ },
+ {
+   "id": "13",
+   "activity": "Suivi et amélioration des performances des établissements de microfinance"
+ },
+ {
+   "id": "14",
+   "activity": "Conception et suivi des programmes dencadrement et de professionnalisation des établissements de microfinance"
+ },
+ {
+   "id": "15",
+   "activity": "Production des statistiques relatives au secteur de la microfinance"
+ },
+ {
+   "id": "16",
+   "activity": "Suivi et supervision des établissements de microfinance"
+ },
+ {
+   "id": "17",
+   "activity": "Contrôle des établissements de microfinance en liaison avec la COBAC"
+ },
+ {
+   "id": "18",
+   "activity": "Exploitation et analyse des rapports et des états financiers des établissements de microfinance"
+ },
+ {
+   "id": "19",
+   "activity": "Coordination des activités du secrétariat"
+ },
+ {
+   "id": "20",
+   "activity": "Organisation de lAgenda du Chef de Division"
+ },
+ {
+   "id": "21",
+   "activity": "Assurer la gestion du matériel"
+ }
+]

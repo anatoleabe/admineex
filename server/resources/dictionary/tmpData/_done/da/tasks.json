@@ -1,0 +1,454 @@
+[
+ {
+   "id": "1",
+   "task": "L’élaboration du tableau de bord de suivi des activités du Service "
+ },
+ {
+   "id": "2",
+   "task": "L’élaboration et le suivi de la mise en œuvre du plan d’action du Service "
+ },
+ {
+   "id": "3",
+   "task": "Assure l’entrée et la sortie du Matériel "
+ },
+ {
+   "id": "4",
+   "task": "Assure la Conservation du Matériel "
+ },
+ {
+   "id": "5",
+   "task": "Conserve les Pièces Comptables"
+ },
+ {
+   "id": "6",
+   "task": "Tient le Fichier des Stocks de la Division "
+ },
+ {
+   "id": "7",
+   "task": "Accueilleoriente et renseigne les Usagers "
+ },
+ {
+   "id": "8",
+   "task": "Apprête et dépouille les Parapheurs "
+ },
+ {
+   "id": "9",
+   "task": "Apprête les documents relatifs aux échanges avec les organisations internationales d’assurances "
+ },
+ {
+   "id": "10",
+   "task": "Assure la Réception le tri le traitement et la distribution du Courrier "
+ },
+ {
+   "id": "11",
+   "task": "Assure la recherche documentaire "
+ },
+ {
+   "id": "12",
+   "task": "Assure la saisie des Documents "
+ },
+ {
+   "id": "13",
+   "task": "Assurela Transmission des Dossiers "
+ },
+ {
+   "id": "14",
+   "task": "Assure le Classement et la Conservation des Actes et des Documents "
+ },
+ {
+   "id": "15",
+   "task": "Assure le Transport et les Déplacements par Véhicule de Service "
+ },
+ {
+   "id": "16",
+   "task": "Classe les Actes et les Documents "
+ },
+ {
+   "id": "17",
+   "task": "Collecte les données et les informations "
+ },
+ {
+   "id": "18",
+   "task": "Collecte les données statistiques et Comptables relatives à l’activité des Compagnies d’assurances "
+ },
+ {
+   "id": "19",
+   "task": "Collecte les données Statistiques et Comptables relatives à l’activité des Intermédiaires des Assurances "
+ },
+ {
+   "id": "20",
+   "task": "Collecte les états provisoires relatifs aux Opérations de la Branche Automobile "
+ },
+ {
+   "id": "21",
+   "task": "Collecte les états provisoires relatifs aux Opérations de son Domaine de Compétence "
+ },
+ {
+   "id": "22",
+   "task": "Contrôle des Experts Techniques et des Professions Connexes aux activités d’assurances "
+ },
+ {
+   "id": "23",
+   "task": "Le Contrôle et la Surveillance des Compagnies et des Intermédiaires d’assurance "
+ },
+ {
+   "id": "24",
+   "task": "Effectue l’analyse économique des Placements des Compagnies d’assurances "
+ },
+ {
+   "id": "25",
+   "task": "Effectue l’analyse économique des Placements des Intermédiaires d’assurances "
+ },
+ {
+   "id": "26",
+   "task": "Effectue les Courses de Service"
+ },
+ {
+   "id": "27",
+   "task": "Effectue les Vérifications Analyses Economiques des Placements des Compagnies d’assurances "
+ },
+ {
+   "id": "28",
+   "task": "Effectue les Vérifications Analyses Economiques des Placements des Intermédiaires d’assurances "
+ },
+ {
+   "id": "29",
+   "task": "Exécute les Travaux Techniques du Secrétariat "
+ },
+ {
+   "id": "30",
+   "task": "Gère le Standard les appels et les Liaisons Téléphoniques "
+ },
+ {
+   "id": "31",
+   "task": "Habille et transmet les Dossiers entre les services "
+ },
+ {
+   "id": "32",
+   "task": "Initie les projets de contrats d’assurances présentés par les administrations publiques "
+ },
+ {
+   "id": "33",
+   "task": "Instruit et suit les réclamations des assurés et bénéficiaires de contrats "
+ },
+ {
+   "id": "34",
+   "task": "L’agrément à la profession d’intermédiaire d’assurances et des professions connexes "
+ },
+ {
+   "id": "35",
+   "task": "L’agrément des Intermédiaires et des Compagnies d’assurances en Liaison avec la Commission Régionale de Contrôle des Assurances "
+ },
+ {
+   "id": "36",
+   "task": "L’analyse économique des Placements des Compagnies d’assurances "
+ },
+ {
+   "id": "37",
+   "task": "L’approbation et du visa des polices des tarifs et des documents d’assurances destinés au public "
+ },
+ {
+   "id": "38",
+   "task": "L’assurance scolaire "
+ },
+ {
+   "id": "39",
+   "task": "L’élaboration des Indicateurs d’évaluation des Performances du Service "
+ },
+ {
+   "id": "40",
+   "task": "L’élaboration des Rapports sur le Marché des Assurances "
+ },
+ {
+   "id": "41",
+   "task": "L’élaboration du Tableau de Bord de l’Inspection "
+ },
+ {
+   "id": "42",
+   "task": "L’élaboration du Tableau de Bord de la Direction "
+ },
+ {
+   "id": "43",
+   "task": "L’élaboration du Tableau de Bord de la Sous Direction "
+ },
+ {
+   "id": "44",
+   "task": "L’élaboration du tableau de bord de suivi des activités du Service "
+ },
+ {
+   "id": "45",
+   "task": "L’élaboration et l’exécution du Plan D’action de l’Inspection "
+ },
+ {
+   "id": "46",
+   "task": "L’élaboration et l’exécution du Plan d’action de la Direction "
+ },
+ {
+   "id": "47",
+   "task": "L’élaboration et l’exécution du Plan d’action de la Sous Direction "
+ },
+ {
+   "id": "48",
+   "task": "L’élaboration et le suivi de la mise en œuvre du plan d’action du Service "
+ },
+ {
+   "id": "49",
+   "task": "L’entretien des Liaisons avec les Associations Professionnelles du Marché de l’assurance et de la Réassurance "
+ },
+ {
+   "id": "50",
+   "task": "L’établissement des Relations avec la Commission Régionale de Contrôle des Assurances "
+ },
+ {
+   "id": "51",
+   "task": "L’établissement des Relations avec les Organisations Internationales d’assurances "
+ },
+ {
+   "id": "52",
+   "task": "L’établissement et le Suivi des Rapports des Institutions Etrangères et Organismes Internationaux"
+ },
+ {
+   "id": "53",
+   "task": "L’étude des dossiers d’agréments des compagnies d’assurances "
+ },
+ {
+   "id": "54",
+   "task": "L’expertise et le Conseil des Autorités Nationales en matière d’assurance "
+ },
+ {
+   "id": "55",
+   "task": "L’instruction et le suivi des réclamations des assurés et bénéficiaires de contrats et des litiges entre assurés et assureurs "
+ },
+ {
+   "id": "56",
+   "task": "L’octroi du visa des projets de contrats d’assurances présentés par les administrations publiques "
+ },
+ {
+   "id": "57",
+   "task": "La Collecte des données statistiques et Comptables relatives à l’activité des Compagnies et Intermédiaires des Assurances "
+ },
+ {
+   "id": "58",
+   "task": "La Collecte des états provisoires relatifs aux Opérations de la Branche Automobile "
+ },
+ {
+   "id": "59",
+   "task": "La Conception des Etudes d’ordre économique ou statistique concernant l’assurance "
+ },
+ {
+   "id": "60",
+   "task": "La Coordination des Contrôles au Niveau National "
+ },
+ {
+   "id": "61",
+   "task": "La Formalisation de la Politique de Contrôle et de Planification "
+ },
+ {
+   "id": "62",
+   "task": "La Gestion des Assurances Administratives "
+ },
+ {
+   "id": "63",
+   "task": "La Mesure des Performances de l’Inspection et de celles de ses Personnels au vu des Indicateurs Retenus"
+ },
+ {
+   "id": "64",
+   "task": "La Mesure des Performances de la SousDirection et de celles de ses Personnels au vu des Indicateurs Retenus"
+ },
+ {
+   "id": "65",
+   "task": "La Mesure des Performances du Service et de celles de ses Personnels au vu des Indicateurs Retenus"
+ },
+ {
+   "id": "66",
+   "task": "La Mise en Œuvre des Plans d’actions Arrêtés "
+ },
+ {
+   "id": "67",
+   "task": "La Préparation et le Suivi de l’application des Accords et Traités en matière d’assurance "
+ },
+ {
+   "id": "68",
+   "task": "La Rédaction des Rapports sur le Marché des Assurances "
+ },
+ {
+   "id": "69",
+   "task": "La Rédaction et la Mise à Jour des Guides de Contrôle des Assurances "
+ },
+ {
+   "id": "70",
+   "task": "La Surveillance du Marché des Assurances et de Réassurance "
+ },
+ {
+   "id": "71",
+   "task": "La Tenue du Fichier et de la Carte Nationale des Compagnies d’assurances et des Intermédiaires "
+ },
+ {
+   "id": "72",
+   "task": "La Tenue du Fichier Statistique du Marché des Assurances "
+ },
+ {
+   "id": "73",
+   "task": "La Tenue et la Mise à Jour du Fichier des Organisations Internationales d’assurances "
+ },
+ {
+   "id": "74",
+   "task": "La Tenue et la Mise à Jour du Fichier des Compagnies d’assurances et des Intermédiaires "
+ },
+ {
+   "id": "75",
+   "task": "La Vérification et l’analyse économique des Placements des Compagnies d’assurances "
+ },
+ {
+   "id": "76",
+   "task": "Le Contrôle des Experts Techniques et des Professions Connexes aux Activités d’assurances "
+ },
+ {
+   "id": "77",
+   "task": "Le Contrôle et la Surveillance des Compagnies et des Intermédiaires d’assurance "
+ },
+ {
+   "id": "78",
+   "task": "Le Suivi des Activités des Centres de Formation Professionnelle en Assurance "
+ },
+ {
+   "id": "79",
+   "task": "Le Suivi des Assurances Administratives "
+ },
+ {
+   "id": "80",
+   "task": "Le Suivi des Branches Obligatoires "
+ },
+ {
+   "id": "81",
+   "task": "Le suivi des contrats d’assurances des administrations publiques en liaison avec les administrations concernées "
+ },
+ {
+   "id": "82",
+   "task": "Le Suivi des Dispositifs de Contrôle Interne "
+ },
+ {
+   "id": "83",
+   "task": "Le Suivi des Intérêts de l’Etat au sein des Organismes Internationaux à Caractère Commercial notamment de La CCR et de La SAR "
+ },
+ {
+   "id": "84",
+   "task": "Le Suivi des Relations avec la Commission Régionale de Contrôle des Assurances "
+ },
+ {
+   "id": "85",
+   "task": "Le Suivi du Contentieux Relatif aux Sinistres "
+ },
+ {
+   "id": "86",
+   "task": "Le suivi technique de la couverture des risques du patrimoine de l’Etat et de l’assurance scolaire "
+ },
+ {
+   "id": "87",
+   "task": "Les Contrôles au Niveau National "
+ },
+ {
+   "id": "88",
+   "task": "Procède à la recherche documentaire"
+ },
+ {
+   "id": "89",
+   "task": "Reçoit et enregistre les dossiers et les requêtes en vue de leur ventilation ou transmission vers les structures compétentes "
+ },
+ {
+   "id": "90",
+   "task": "Reçoit trie et enregistre le courrier "
+ },
+ {
+   "id": "91",
+   "task": "Rédige les Rapports sur le Marché des Assurances et des Intermédiaires dassurances "
+ },
+ {
+   "id": "92",
+   "task": "Saisit les Documents "
+ },
+ {
+   "id": "93",
+   "task": "Suit la couverture des risques du patrimoine de l’etat et de l’assurance scolaire"
+ },
+ {
+   "id": "94",
+   "task": "Suit les contrats d’assurance scolaire"
+ },
+ {
+   "id": "95",
+   "task": "Tient le Fichier Statistique des Intermédiaires d’assurances"
+ },
+ {
+   "id": "96",
+   "task": "Tient le Fichier Statistique du Marché des Assurances"
+ },
+ {
+   "id": "97",
+   "task": "Traite le Courrier "
+ },
+ {
+   "id": "98",
+   "task": "Veille à l’entretien du Véhicule"
+ },
+ {
+   "id": "99",
+   "task": "Veille à la tenue et à la conservation des supports fixes d’information registres fichiers chrono minutiers "
+ },
+ {
+   "id": "100",
+   "task": "Assiste Le Chef d’Inspection dans l’accomplissement de ses Missions de Contrôle et d’évaluation"
+ },
+ {
+   "id": "101",
+   "task": "Initie les projets d’agrément des compagnies d’assurances"
+ },
+ {
+   "id": "102",
+   "task": "Initie les projets d’agrément des intermédiaires d’assurances et des professions connexes"
+ },
+ {
+   "id": "103",
+   "task": "Instruit et suit les litiges entre assurés et assureurs"
+ },
+ {
+   "id": "104",
+   "task": "L’élaboration des Indicateurs de Performance des Activités du Service "
+ },
+ {
+   "id": "105",
+   "task": "La Mesure des Performances de la Sous Direction et de celles de ses Personnels au vu des Indicateurs Retenus"
+ },
+ {
+   "id": "106",
+   "task": "La Mesure des Performances du Service au vu des Indicateurs Retenus"
+ },
+ {
+   "id": "107",
+   "task": "Met à jour le fichier des organisations internationales d’assurances"
+ },
+ {
+   "id": "108",
+   "task": "Prépare et Assure l’exécution des Activités du Service"
+ },
+ {
+   "id": "109",
+   "task": "Prépare les informations et les documents relatifs au suivi des intérêts de l’etat au sein des organismes internat à caractère commercial"
+ },
+ {
+   "id": "110",
+   "task": "la mesure des performances de la Direction et de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "111",
+   "task": "la rédaction et la mise à jour des guides de contrôle des postes comptables"
+ },
+ {
+   "id": "112",
+   "task": "la rédaction des rapports sur le marché des intermédiaires d’assurances"
+ },
+ {
+   "id": "113",
+   "task": "la tenue et la mise à jour du fichier des compagnies d’assurance"
+ }
+]

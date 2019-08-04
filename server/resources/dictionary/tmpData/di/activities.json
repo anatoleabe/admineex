@@ -1,0 +1,54 @@
+[
+ {
+   "id": "1",
+   "activity": "Gestion et administration des bases de données"
+ },
+ {
+   "id": "2",
+   "activity": "Exploitation des bases de données"
+ },
+ {
+   "id": "3",
+   "activity": "Exploitation et maintenance des applications informatiques"
+ },
+ {
+   "id": "4",
+   "activity": "Gestion du stock des consommables informatiques"
+ },
+ {
+   "id": "5",
+   "activity": "Gestion et administration des réseaux de communication"
+ },
+ {
+   "id": "6",
+   "activity": "le suivi de l’exécution des contrats de maintenance"
+ },
+ {
+   "id": "7",
+   "activity": "met en œuvre des plans et programmes en matière d’informatique à la Direction Générale"
+ },
+ {
+   "id": "8",
+   "activity": "Met en œuvre la stratégie de communication gouvernementale de la Direction Générale"
+ },
+ {
+   "id": "9",
+   "activity": "Planifie organise dirige contrôle et évalue les activités de son domaine de compétence"
+ },
+ {
+   "id": "10",
+   "activity": "Prépare et assure l’exécution des activités du  Service"
+ },
+ {
+   "id": "11",
+   "activity": "Assure la maintenance des équipements informatiques de la Direction Générale"
+ },
+ {
+   "id": "12",
+   "activity": "Assure l’exploitation et  la maintenance des applications informatiques des impôts"
+ },
+ {
+   "id": "13",
+   "activity": "Exécute les travaux techniques du secrétariat"
+ }
+]

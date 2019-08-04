@@ -1,0 +1,639 @@
+[
+ {
+   "identifier": "358 098-M",
+   "codeposte": "247-P3",
+   "nbTraited": "",
+   "preel": 50,
+   "creel": "35;15;62;65;67;73"
+ },
+ {
+   "identifier": "515 609 -X",
+   "codeposte": "192-P24",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": "8;44;27"
+ },
+ {
+   "identifier": "520 913-F",
+   "codeposte": "247-P1",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "53;24;8;5;35;67;69;73"
+ },
+ {
+   "identifier": "528 045 -Q",
+   "codeposte": "192-P23",
+   "nbTraited": "",
+   "preel": 11,
+   "creel": 53
+ },
+ {
+   "identifier": "540 865 -J",
+   "codeposte": "192-P36",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27"
+ },
+ {
+   "identifier": "550 134 -J",
+   "codeposte": "192-P33",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": "8;27"
+ },
+ {
+   "identifier": "550 268 -N",
+   "codeposte": "192-P4",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27;63;35"
+ },
+ {
+   "identifier": "550 398-I",
+   "codeposte": "192-P34",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27"
+ },
+ {
+   "identifier": "554 449 -Z",
+   "codeposte": "192-P8",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27;42;63;35"
+ },
+ {
+   "identifier": "554 451 -I",
+   "codeposte": "192-P22",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": "56;8"
+ },
+ {
+   "identifier": "554 483 -C",
+   "codeposte": "192-P37",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": "8;27"
+ },
+ {
+   "identifier": "554 484 -L",
+   "codeposte": "192-P3",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27;63;35"
+ },
+ {
+   "identifier": "561 760 -M",
+   "codeposte": "192-P1",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27;42;63;35"
+ },
+ {
+   "identifier": "561 770 -B",
+   "codeposte": "192-P2",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27;63;35"
+ },
+ {
+   "identifier": "567 219 -O",
+   "codeposte": "192-P42",
+   "nbTraited": "",
+   "preel": "",
+   "creel": ""
+ },
+ {
+   "identifier": "567 308 -F",
+   "codeposte": "192-P10",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27;35;63"
+ },
+ {
+   "identifier": "567 434-A",
+   "codeposte": "192-P15",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": "42;8"
+ },
+ {
+   "identifier": "567 435-J",
+   "codeposte": "192-P32",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27;44"
+ },
+ {
+   "identifier": "572 394 -J",
+   "codeposte": "192-P19",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": 8
+ },
+ {
+   "identifier": "572 455 -Q",
+   "codeposte": "192-P17",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": "42;8"
+ },
+ {
+   "identifier": "572419-M",
+   "codeposte": "192-P7",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;35;63"
+ },
+ {
+   "identifier": "586 366 -K",
+   "codeposte": "192-P21",
+   "nbTraited": "",
+   "preel": 17,
+   "creel": ""
+ },
+ {
+   "identifier": "586 575 -E",
+   "codeposte": "192-P9",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27;35;63"
+ },
+ {
+   "identifier": "586 667 -E",
+   "codeposte": "192-P38",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": "8;27"
+ },
+ {
+   "identifier": "586532 J",
+   "codeposte": "192-P20",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": 8.27
+ },
+ {
+   "identifier": "589 050-J",
+   "codeposte": "247-P12",
+   "nbTraited": 8,
+   "preel": 55,
+   "creel": "1;41;49"
+ },
+ {
+   "identifier": "589 120-Q",
+   "codeposte": "192-P39",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": "8,27;53"
+ },
+ {
+   "identifier": "589 174-D",
+   "codeposte": "247-P11",
+   "nbTraited": 24,
+   "preel": 52,
+   "creel": "1;44;67;73;5"
+ },
+ {
+   "identifier": "593 288 -A",
+   "codeposte": "192-P14",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": 44
+ },
+ {
+   "identifier": "593 289 -J",
+   "codeposte": "192-P5",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27;47;63;35"
+ },
+ {
+   "identifier": "593 296-M",
+   "codeposte": "192-P27",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": "8;27;56"
+ },
+ {
+   "identifier": "593 305 -B",
+   "codeposte": "192-P35",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27"
+ },
+ {
+   "identifier": "593 319 -U",
+   "codeposte": "192-P6",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27;44;63;35"
+ },
+ {
+   "identifier": "601 036-M",
+   "codeposte": "247-P7",
+   "nbTraited": 20,
+   "preel": 44,
+   "creel": "8;56;67;69"
+ },
+ {
+   "identifier": "601 058 -L",
+   "codeposte": "192-P31",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27;54"
+ },
+ {
+   "identifier": "601 248-U",
+   "codeposte": "247-P4",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;42;35;67;69"
+ },
+ {
+   "identifier": "612 328-U",
+   "codeposte": "192-P40",
+   "nbTraited": "",
+   "preel": "",
+   "creel": ""
+ },
+ {
+   "identifier": "615 553-S",
+   "codeposte": "247-P23",
+   "nbTraited": 4,
+   "preel": 43,
+   "creel": "8;35;54"
+ },
+ {
+   "identifier": "636 534-A",
+   "codeposte": "192-P28",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": "8;27;47"
+ },
+ {
+   "identifier": "638 439-S",
+   "codeposte": "193-P1",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": "8;35;43"
+ },
+ {
+   "identifier": "646 719-K",
+   "codeposte": "247-P20",
+   "nbTraited": "",
+   "preel": 40,
+   "creel": "9;35;38;47"
+ },
+ {
+   "identifier": "646 903-S",
+   "codeposte": "247-P35",
+   "nbTraited": "",
+   "preel": 24,
+   "creel": "8;41;69"
+ },
+ {
+   "identifier": "648 736-F",
+   "codeposte": "192-P18",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": "45;8"
+ },
+ {
+   "identifier": "654 130-U",
+   "codeposte": "247-P42",
+   "nbTraited": "",
+   "preel": 6,
+   "creel": "10;25"
+ },
+ {
+   "identifier": "654 164-Y",
+   "codeposte": "247-P44",
+   "nbTraited": "",
+   "preel": 6,
+   "creel": "10;25"
+ },
+ {
+   "identifier": "654 325-F",
+   "codeposte": "247-P45",
+   "nbTraited": "",
+   "preel": 6,
+   "creel": "10;25"
+ },
+ {
+   "identifier": "654 360-M",
+   "codeposte": "247-P43",
+   "nbTraited": "",
+   "preel": 6,
+   "creel": "10;25"
+ },
+ {
+   "identifier": "655 647-T",
+   "codeposte": "192-P29",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27"
+ },
+ {
+   "identifier": "655 719-N",
+   "codeposte": "192-P25",
+   "nbTraited": "",
+   "preel": 44,
+   "creel": "8;27"
+ },
+ {
+   "identifier": "656 047-X",
+   "codeposte": "191-P2",
+   "nbTraited": "",
+   "preel": 6,
+   "creel": ""
+ },
+ {
+   "identifier": "664 557-K",
+   "codeposte": "191-P6",
+   "nbTraited": "",
+   "preel": 4,
+   "creel": 10
+ },
+ {
+   "identifier": "664 717-J",
+   "codeposte": "247-P5",
+   "nbTraited": "",
+   "preel": 17,
+   "creel": "38;67"
+ },
+ {
+   "identifier": "664 866-W",
+   "codeposte": "247-P16",
+   "nbTraited": "",
+   "preel": 11,
+   "creel": "44;38"
+ },
+ {
+   "identifier": "665 216-E",
+   "codeposte": "247-P14",
+   "nbTraited": 11,
+   "preel": 11,
+   "creel": "31;35;56;67"
+ },
+ {
+   "identifier": "666 890-J",
+   "codeposte": "247-P15",
+   "nbTraited": 24,
+   "preel": 11,
+   "creel": "44;41"
+ },
+ {
+   "identifier": "670 497-A",
+   "codeposte": "247-P41",
+   "nbTraited": "",
+   "preel": 6,
+   "creel": 10
+ },
+ {
+   "identifier": "671358-P",
+   "codeposte": "192-P12",
+   "nbTraited": "",
+   "preel": 17,
+   "creel": 31
+ },
+ {
+   "identifier": "672 651-M",
+   "codeposte": "247-P10",
+   "nbTraited": 12,
+   "preel": 17,
+   "creel": 18
+ },
+ {
+   "identifier": "674 416-O",
+   "codeposte": "193-P10",
+   "nbTraited": "",
+   "preel": 13,
+   "creel": "46;79;8"
+ },
+ {
+   "identifier": "675 370-B",
+   "codeposte": "247-P39",
+   "nbTraited": "",
+   "preel": 6,
+   "creel": 31
+ },
+ {
+   "identifier": "675 564-U",
+   "codeposte": "191-P1",
+   "nbTraited": "",
+   "preel": 17,
+   "creel": 35
+ },
+ {
+   "identifier": "680 412-B",
+   "codeposte": "191-P3",
+   "nbTraited": "",
+   "preel": 6,
+   "creel": ""
+ },
+ {
+   "identifier": "688 786-M",
+   "codeposte": "247-P17",
+   "nbTraited": "",
+   "preel": 25,
+   "creel": "48;8;5"
+ },
+ {
+   "identifier": "688 889-L",
+   "codeposte": "247-P8",
+   "nbTraited": 24,
+   "preel": 25,
+   "creel": "8;17;53;44;59;64;67;68"
+ },
+ {
+   "identifier": "700 297-R",
+   "codeposte": "193-P2",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": 8
+ },
+ {
+   "identifier": "733 752-C",
+   "codeposte": "247-P36",
+   "nbTraited": "",
+   "preel": 9,
+   "creel": "18;31;34"
+ },
+ {
+   "identifier": "736 169-M",
+   "codeposte": "191-P4",
+   "nbTraited": "",
+   "preel": 26,
+   "creel": ""
+ },
+ {
+   "identifier": "738 302-Q",
+   "codeposte": "247-P38",
+   "nbTraited": "",
+   "preel": 27,
+   "creel": "3;34"
+ },
+ {
+   "identifier": "738 949-A",
+   "codeposte": "247-P21",
+   "nbTraited": "",
+   "preel": 17,
+   "creel": 61
+ },
+ {
+   "identifier": "738 949-A",
+   "codeposte": "247-P22",
+   "nbTraited": "",
+   "preel": 17,
+   "creel": ""
+ },
+ {
+   "identifier": "740 993-G",
+   "codeposte": "193-P8",
+   "nbTraited": "",
+   "preel": 11,
+   "creel": ""
+ },
+ {
+   "identifier": "742 526-G",
+   "codeposte": "191-P7",
+   "nbTraited": "",
+   "preel": 4,
+   "creel": ""
+ },
+ {
+   "identifier": "749 553-G",
+   "codeposte": "247-P33",
+   "nbTraited": "",
+   "preel": 17,
+   "creel": "18;31"
+ },
+ {
+   "identifier": "752 172-H",
+   "codeposte": "193-P9",
+   "nbTraited": "",
+   "preel": 11,
+   "creel": 80
+ },
+ {
+   "identifier": "752 595-V",
+   "codeposte": "193-P12",
+   "nbTraited": "",
+   "preel": 17,
+   "creel": 31
+ },
+ {
+   "identifier": "755 101-C",
+   "codeposte": "247-P40",
+   "nbTraited": "",
+   "preel": 6,
+   "creel": 31
+ },
+ {
+   "identifier": "758 559-X",
+   "codeposte": "193-P4",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": 8
+ },
+ {
+   "identifier": "758 974-C",
+   "codeposte": "193-P3",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": 8
+ },
+ {
+   "identifier": "781 398-K",
+   "codeposte": "192-P26",
+   "nbTraited": "",
+   "preel": "",
+   "creel": ""
+ },
+ {
+   "identifier": "782 199-A",
+   "codeposte": "191-P5",
+   "nbTraited": "",
+   "preel": 26,
+   "creel": ""
+ },
+ {
+   "identifier": "785591-Q",
+   "codeposte": "247-P24",
+   "nbTraited": "",
+   "preel": 24,
+   "creel": 8
+ },
+ {
+   "identifier": "788 025-H",
+   "codeposte": "192-P41",
+   "nbTraited": "",
+   "preel": 26,
+   "creel": ""
+ },
+ {
+   "identifier": "788025-H",
+   "codeposte": "192-P13",
+   "nbTraited": "",
+   "preel": 26,
+   "creel": 31
+ },
+ {
+   "identifier": "ECI",
+   "codeposte": "247-P37",
+   "nbTraited": "",
+   "preel": 9,
+   "creel": 3
+ },
+ {
+   "identifier": "G096998",
+   "codeposte": "192-P30",
+   "nbTraited": "",
+   "preel": 4,
+   "creel": 10
+ },
+ {
+   "identifier": "L-077 326",
+   "codeposte": "247-P6",
+   "nbTraited": "",
+   "preel": 53,
+   "creel": "34;18"
+ },
+ {
+   "identifier": "M-011 479",
+   "codeposte": "193-P5",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": 8
+ },
+ {
+   "identifier": "M-011 537",
+   "codeposte": "247-P18",
+   "nbTraited": "",
+   "preel": 24,
+   "creel": "47;35;8"
+ },
+ {
+   "identifier": "U-011 486",
+   "codeposte": "247-P13",
+   "nbTraited": 3,
+   "preel": 1,
+   "creel": "18;54"
+ },
+ {
+   "identifier": "X-035 562",
+   "codeposte": "193-P7",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": 8
+ },
+ {
+   "identifier": "Y-011 431",
+   "codeposte": "193-P6",
+   "nbTraited": "",
+   "preel": 43,
+   "creel": 8
+ }
+]

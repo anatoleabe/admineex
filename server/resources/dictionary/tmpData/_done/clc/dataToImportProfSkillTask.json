@@ -1,0 +1,110 @@
+[
+ {
+   "codept": "193-1P1",
+   "pt": "Chef de Cellule de la Legislation et de la Codification",
+   "prequired": "4;11",
+   "crequired": "30;9;28;38;16;",
+   "activity": "1;2;5;6",
+   "task": "10;11;12;13;14;15;17;18;20;21;28;29",
+   "off": ""
+ },
+ {
+   "codept": "193-1P2",
+   "pt": "Secrétaire",
+   "prequired": "53;54",
+   "crequired": "38;34",
+   "activity": "3;4",
+   "task": "34;33;32;31;1;2;3;4;5;6;7;8;9",
+   "off": ""
+ },
+ {
+   "codept": "193-1P3",
+   "pt": "Chargé d'Etude Assistant 1",
+   "prequired": "11;17;",
+   "crequired": "30;15;9;38;",
+   "activity": "3;4",
+   "task": "17",
+   "off": ""
+ },
+ {
+   "codept": "193-1P4",
+   "pt": "Chargé d'Etude Assistant 2",
+   "prequired": "11;17;",
+   "crequired": "30;16;9;38;",
+   "activity": "3;4",
+   "task": "27",
+   "off": ""
+ },
+ {
+   "codept": "193-1P5",
+   "pt": "Chargé d'Etude Assistant 3",
+   "prequired": "11;17;",
+   "crequired": "30;16;9;38;",
+   "activity": "3;4",
+   "task": "14;13;11",
+   "off": ""
+ },
+ {
+   "codept": "193-1P6",
+   "pt": "Chargé d'Etude Assistant 4",
+   "prequired": "11;17;",
+   "crequired": "30;16;9;38;",
+   "activity": "3;4",
+   "task": "23",
+   "off": ""
+ },
+ {
+   "codept": "193-1P7",
+   "pt": "Chargé d'Etude Assistant 5",
+   "prequired": "11;17;",
+   "crequired": "30;16;9;38;",
+   "activity": "3;4",
+   "task": "28",
+   "off": ""
+ },
+ {
+   "codept": "193-1P8",
+   "pt": "Chargé d'Etude Assistant 6",
+   "prequired": "11;17;",
+   "crequired": "30;16;9;38;",
+   "activity": "3;4",
+   "task": "29",
+   "off": ""
+ },
+ {
+   "codept": "193-1P9",
+   "pt": "Cadre 1",
+   "prequired": "11;56;17",
+   "crequired": "30;9;17;15;",
+   "activity": "3;4",
+   "task": "29",
+   "off": ""
+ },
+ {
+   "codept": "193-1P10",
+   "pt": "Cadre 2",
+   "prequired": "11;56;17",
+   "crequired": "30;9;17;15;",
+   "activity": "3;4",
+   "task": "19",
+   "off": ""
+ },
+ {
+   "codept": "193-1P11",
+   "pt": "Cadre 3",
+   "prequired": "11;56;17",
+   "crequired": "30;9;17;15;",
+   "activity": "3;4",
+   "task": "30",
+   "off": ""
+ },
+ {
+   "codept": "193-1P12",
+   "pt": "Cadre 4",
+   "prequired": "11;56;17",
+   "crequired": "30;9;17;15;",
+   "activity": "3;4",
+   "task": "24",
+   "off": ""
+ }
+]

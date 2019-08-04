@@ -1,0 +1,218 @@
+[
+ {
+   "id": "1",
+   "task": "Accueil et Orientation des Usagers"
+ },
+ {
+   "id": "2",
+   "task": "Réception des appels téléphoniques"
+ },
+ {
+   "id": "3",
+   "task": "Réception et traitement du du Courrier"
+ },
+ {
+   "id": "4",
+   "task": "Tenue des registres et des parapheurs"
+ },
+ {
+   "id": "5",
+   "task": "Saisie des notes et autres correspondances"
+ },
+ {
+   "id": "6",
+   "task": "Classement et conservation des actes et des documents"
+ },
+ {
+   "id": "7",
+   "task": "Recherche des documents"
+ },
+ {
+   "id": "8",
+   "task": "Transmission des documents"
+ },
+ {
+   "id": "9",
+   "task": "Gestion des registres ou fiches dentrée et de sortie des matériels"
+ },
+ {
+   "id": "10",
+   "task": "Transport du personnel"
+ },
+ {
+   "id": "11",
+   "task": "Entretien du Véhicule"
+ },
+ {
+   "id": "12",
+   "task": "Coodonation des activités de la Sousdirection"
+ },
+ {
+   "id": "13",
+   "task": "Elaboration du Plan daction et du TABORD de suivi des activités des services rattachés"
+ },
+ {
+   "id": "14",
+   "task": "Elaboration des indicateurs de performance des activités de la Sousdirection"
+ },
+ {
+   "id": "15",
+   "task": "Conception des études et enquêtes relatives aux marchés financiers"
+ },
+ {
+   "id": "16",
+   "task": "Cotation des dossiers aux collaborateurs placés sous ses ordres"
+ },
+ {
+   "id": "17",
+   "task": "Suiviévaluation des activités des collaborateurs"
+ },
+ {
+   "id": "18",
+   "task": "Tenue du fichier disciplinaire de la Sousdirection"
+ },
+ {
+   "id": "19",
+   "task": "Validation des rapports dactivités présentés par les chefs de services"
+ },
+ {
+   "id": "20",
+   "task": "Transmission des rapports dactivité au Directeur"
+ },
+ {
+   "id": "21",
+   "task": "Tenue et animation des réunions de la Sous direction"
+ },
+ {
+   "id": "22",
+   "task": "Collecte des données et des informations"
+ },
+ {
+   "id": "23",
+   "task": "Centralisation des états de RAP de lEtat"
+ },
+ {
+   "id": "24",
+   "task": "Centralisation des recettes fiscales et douanières et des autres recettes de lEtat"
+ },
+ {
+   "id": "25",
+   "task": "Centralisation des informations sur la remontée des données budgétaires de lEtat"
+ },
+ {
+   "id": "26",
+   "task": "Suivi des réalisations par rapport aux prévisions du plan de trésorerie"
+ },
+ {
+   "id": "27",
+   "task": "Mesure des performances du Service au vu des indicateurs retenus"
+ },
+ {
+   "id": "28",
+   "task": "Assure le suivi des marchés financiers nationaux"
+ },
+ {
+   "id": "29",
+   "task": "Elaboration des notes de synthèse sur lévolution des marchés financiers nationaux et internationaux"
+ },
+ {
+   "id": "30",
+   "task": "Tenue et mise à jour du fichier et de la carte des intermédiaires financiers"
+ },
+ {
+   "id": "31",
+   "task": "Suivi de la gestion des comptes de dépôts"
+ },
+ {
+   "id": "32",
+   "task": "Assister le Chef de Service dans lexécution de ses tâches"
+ },
+ {
+   "id": "33",
+   "task": "Conception des stratégies de suivi des recettes et des dépenses publiques"
+ },
+ {
+   "id": "34",
+   "task": "Elaboration du TABORD des FIPU du TOFE et de la situation résumée des opérations de lEtat"
+ },
+ {
+   "id": "35",
+   "task": "Elaboration des statistiques de recettes et de dépenses"
+ },
+ {
+   "id": "36",
+   "task": "Elaboration et Centralisation des données statistiques et financières"
+ },
+ {
+   "id": "37",
+   "task": "Analyse des situations périodiques"
+ },
+ {
+   "id": "38",
+   "task": "Evaluation des arriérés des organismes publics"
+ },
+ {
+   "id": "39",
+   "task": "Assure le suivi financier des participations et contributions de lEtat en relation avec les Administrations concernées"
+ },
+ {
+   "id": "40",
+   "task": "Suivi des conventions de titrisation et des opérations daccroissement ou de décroissement des titres"
+ },
+ {
+   "id": "41",
+   "task": "Suivi de lendettement de lEtat et du service prévisionnel de la dette"
+ },
+ {
+   "id": "42",
+   "task": "Suivi et gestion des arriérés du Trésor"
+ },
+ {
+   "id": "43",
+   "task": "Emission des Bon du Trésor à souscription libre en liaison avec la BEAC"
+ },
+ {
+   "id": "44",
+   "task": "Suivi des adjudications"
+ },
+ {
+   "id": "45",
+   "task": "Elaboration des appels doffres aux établissements financiers ayant signé avec le Trésor des conventions spéciales"
+ },
+ {
+   "id": "46",
+   "task": "Dépouillement des appels doffres"
+ },
+ {
+   "id": "47",
+   "task": "Suivi de la maturité des titres émis"
+ },
+ {
+   "id": "48",
+   "task": "Préparation des états de règlement des titres"
+ },
+ {
+   "id": "49",
+   "task": "Suivi de lendettement intérieur et extérieur de lEtat en relation avec les Administrations concernées"
+ },
+ {
+   "id": "50",
+   "task": "Suivi et mise à jour des arriérés du Trésor dans les Postes Comptables"
+ },
+ {
+   "id": "51",
+   "task": "Suivi des opérations damortissement de la dette de lEtat"
+ },
+ {
+   "id": "52",
+   "task": "Réalisation de laudit financier des RAP du Trésor des EP et des CTD"
+ },
+ {
+   "id": "53",
+   "task": "Synthèse des données et élaboration des statistiques"
+ },
+ {
+   "id": "54",
+   "task": "Elaboration du TABORD des FIPU et du TOFE"
+ }
+]

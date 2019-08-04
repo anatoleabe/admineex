@@ -1,0 +1,290 @@
+[
+ {
+   "id": "1",
+   "task": "Accueille et oriente les usagers"
+ },
+ {
+   "id": "2",
+   "task": "Apprête et dépouille les parapheurs"
+ },
+ {
+   "id": "3",
+   "task": "Assure l’entrée et la sortie du matériel"
+ },
+ {
+   "id": "4",
+   "task": "Assure la collecte des données et des informations"
+ },
+ {
+   "id": "5",
+   "task": "Assure la conservation du matériel"
+ },
+ {
+   "id": "6",
+   "task": "Assure la réception du courrier"
+ },
+ {
+   "id": "7",
+   "task": "Assure la recherche documentaire"
+ },
+ {
+   "id": "8",
+   "task": "Assure la saisie des documents"
+ },
+ {
+   "id": "9",
+   "task": "Assure la transmission des dossiers"
+ },
+ {
+   "id": "10",
+   "task": "Assure le classement et la conservation des actes et des documents"
+ },
+ {
+   "id": "11",
+   "task": "Assure le transport et les déplacements par  véhicule de service"
+ },
+ {
+   "id": "12",
+   "task": "Collecte l’exploite et conserve la documentation journalistique"
+ },
+ {
+   "id": "13",
+   "task": "Conçoit et met en forme des communications de la Direction Générale"
+ },
+ {
+   "id": "14",
+   "task": "Conserve les pièces comptables"
+ },
+ {
+   "id": "15",
+   "task": "Coordonne les activités du secrétariat"
+ },
+ {
+   "id": "16",
+   "task": "L’élaboration des cahiers de charges et des termes de référence des projets informatiques"
+ },
+ {
+   "id": "17",
+   "task": "Effectue les courses de service"
+ },
+ {
+   "id": "18",
+   "task": "Exécute le programme d’actions de la Direction Générale en matière de sécurité du système informatique des impôts"
+ },
+ {
+   "id": "19",
+   "task": "Gère le matériel de la Division"
+ },
+ {
+   "id": "20",
+   "task": "Gère le standard et les liaisons téléphoniques"
+ },
+ {
+   "id": "21",
+   "task": "Gère les appels téléphoniques"
+ },
+ {
+   "id": "22",
+   "task": "Gère les relations Publiques de la Direction Générale"
+ },
+ {
+   "id": "23",
+   "task": "Habille les dossiers"
+ },
+ {
+   "id": "24",
+   "task": "Initie le plan de formation des personnels de la Direction Générale en informatique"
+ },
+ {
+   "id": "25",
+   "task": "Initie les indicateurs d’évaluation des activités de la Cellule"
+ },
+ {
+   "id": "26",
+   "task": "Initie les indicateurs de gestion de stocks des consommables informatiques"
+ },
+ {
+   "id": "27",
+   "task": "Initie les indicateurs de sécurité du système informatique"
+ },
+ {
+   "id": "28",
+   "task": "Elaborer les cahiers des charges et les termes de références des projets informatiques"
+ },
+ {
+   "id": "29",
+   "task": "Elaborer le tableau de bord de la Cellule"
+ },
+ {
+   "id": "30",
+   "task": "Elaborer le tableau de bord de la Division"
+ },
+ {
+   "id": "31",
+   "task": "L’élaboration et l’exécution du plan d’action de la Cellule"
+ },
+ {
+   "id": "32",
+   "task": "L’élaboration et l’exécution du plan d’action de la Division"
+ },
+ {
+   "id": "33",
+   "task": "L’enregistrement des références du matériel d’équipement de la Direction Générale reçu"
+ },
+ {
+   "id": "34",
+   "task": "Assure l’évolution des applications opérationnelles "
+ },
+ {
+   "id": "35",
+   "task": "L’exploitation et la maintenance des applications informatiques de la Direction Générale "
+ },
+ {
+   "id": "36",
+   "task": "L’expression des besoins de formation"
+ },
+ {
+   "id": "37",
+   "task": "La  formation et le recyclage des personnels techniques"
+ },
+ {
+   "id": "38",
+   "task": "La conception et du développement de solutions technologiques en conformité avec les orientations du Ministère"
+ },
+ {
+   "id": "39",
+   "task": "La coordination des activités informatiques de la Direction Générale"
+ },
+ {
+   "id": "40",
+   "task": "La formation des utilisateurs de la Direction Générale"
+ },
+ {
+   "id": "41",
+   "task": "La gestion des stocks des consommables informatiques et la gestion électronique des documents"
+ },
+ {
+   "id": "42",
+   "task": "La gestion des stocks des équipements actifs des réseaux"
+ },
+ {
+   "id": "43",
+   "task": "La gestion et  la maintenance du matériel informatique"
+ },
+ {
+   "id": "44",
+   "task": "La gestion et de l’administration des réseaux de communication"
+ },
+ {
+   "id": "45",
+   "task": "La gestion et l’administration des bases de données"
+ },
+ {
+   "id": "46",
+   "task": "La maintenance des équipements informatiques"
+ },
+ {
+   "id": "47",
+   "task": "La maintenance évolutive des applications opérationnelles"
+ },
+ {
+   "id": "48",
+   "task": "La mesure des performances de la Division de celles de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "49",
+   "task": "La mesure des performances du Service  au vu des indicateurs retenus"
+ },
+ {
+   "id": "50",
+   "task": "La mise en œuvre des plans d’actions arrêtés"
+ },
+ {
+   "id": "51",
+   "task": "La mise en œuvre des programmes et projets en matière d’informatique à la Direction Générale"
+ },
+ {
+   "id": "52",
+   "task": "La rédaction du rapport trimestriel sur l’état des équipements informatique du service"
+ },
+ {
+   "id": "53",
+   "task": "La rédaction du rapport trimestriel sur l’état des équipements informatiques de la Direction Générale"
+ },
+ {
+   "id": "54",
+   "task": "La sécurité informatique en matière de réseau de communication"
+ },
+ {
+   "id": "55",
+   "task": "Le développement des solutions technologiques en conformité avec les orientations du ministère"
+ },
+ {
+   "id": "56",
+   "task": "Le développement et  le déploiement des applications"
+ },
+ {
+   "id": "57",
+   "task": "Le recueil et l’analyse des besoins"
+ },
+ {
+   "id": "58",
+   "task": "Le recyclage des personnels techniques"
+ },
+ {
+   "id": "59",
+   "task": "Organise l’agenda du Chef de Division"
+ },
+ {
+   "id": "60",
+   "task": "Participe au classement des documents de maintenance"
+ },
+ {
+   "id": "61",
+   "task": "Participe au suivi de l’exécution des contrats de maintenance"
+ },
+ {
+   "id": "62",
+   "task": "Procède  à la recherche documentaire"
+ },
+ {
+   "id": "63",
+   "task": "Reçoit le matériel informatique de la Division"
+ },
+ {
+   "id": "64",
+   "task": "Reçoit trie et enregistre le courrier"
+ },
+ {
+   "id": "65",
+   "task": "Rédige les publications intéressant la Direction Générale"
+ },
+ {
+   "id": "66",
+   "task": "Saisit les documents"
+ },
+ {
+   "id": "67",
+   "task": "Tient la fiche de stocks des consommables informatiques"
+ },
+ {
+   "id": "68",
+   "task": "Tient le fichier des stocks du Cabinet"
+ },
+ {
+   "id": "69",
+   "task": "Traite le courrier"
+ },
+ {
+   "id": "70",
+   "task": "Veille à l’entretien du véhicule"
+ },
+ {
+   "id": "71",
+   "task": "Veille à la réception au tri et à l’enregistrement du courrier"
+ },
+ {
+   "id": "72",
+   "task": "Veille à la tenue et à la conservation des supports fixes d’information registres fichiers chrono minutiers"
+ }
+]
