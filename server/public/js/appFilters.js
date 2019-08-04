@@ -143,10 +143,10 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
                 toReturn = gettextCatalog.getString("System Administrator");
                 break;
             case '2':
-                toReturn = gettextCatalog.getString("Progress");
+                toReturn = gettextCatalog.getString("Administrator");
                 break;
             case '3':
-                toReturn = gettextCatalog.getString("Sales");
+                toReturn = gettextCatalog.getString("Simple user");
                 break;
                    }
         return toReturn;

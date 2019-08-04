@@ -14,8 +14,8 @@ angular.module('UserCtrl', []).controller('UserController', function($scope, $wi
         {name:'Русский', value:'RU'}
     ];
     $scope.rolesList = [
-        {name: gettextCatalog.getString('Progress'), value: '2'},
-        {name: gettextCatalog.getString('Sales'), value: '3'}
+        {name: gettextCatalog.getString('Administrator'), value: '2'},
+        {name: gettextCatalog.getString('Simple user'), value: '3'}
     ];
     $scope.loading = false;
     $scope.sending = false;

@@ -1,11 +1,11 @@
-var User            = require('../models/user').User;
-var Project         = require('../models/project').Project;
-var log             = require('../utils/log');
-var audit           = require('../utils/audit-log');
-var _               = require('underscore');
-var formidable      = require('formidable');
-var chartsList      = require('../../resources/dictionary/app/charts.json');
-var nconf           = require('nconf');
+var User = require('../models/user').User;
+var Project = require('../models/project').Project;
+var log = require('../utils/log');
+var audit = require('../utils/audit-log');
+var _ = require('underscore');
+var formidable = require('formidable');
+var chartsList = require('../../resources/dictionary/app/charts.json');
+var nconf = require('nconf');
 var dictionary = require('../utils/dictionary');
 
 // API
@@ -18,15 +18,15 @@ var controllers = {
 };
 
 // Build navbar
-exports.api.nav = function(req,res){
-    if(req.actor){
+exports.api.nav = function (req, res) {
+    if (req.actor) {
         User.findOne({_id: req.actor.id}, function (err, user) {
-            if(err){
+            if (err) {
                 log.error(err);
                 return res.status(500).send(err);
             } else {
                 if (user !== null) {
-                    buildNav(user, function(navBuilt){
+                    buildNav(user, function (navBuilt) {
                         return res.json({
                             nav: navBuilt,
                             serverName: controllers.configuration.getConf().server.name,
@@ -44,12 +44,12 @@ exports.api.nav = function(req,res){
 };
 
 // Build widgets (charts)
-exports.api.charts = function(req,res){
-    if(req.actor){
+exports.api.charts = function (req, res) {
+    if (req.actor) {
         User.findOne({_id: req.actor.id}, function (err, user) {
             if (!err && user != null) {
-                buildCharts(user, function(err, chartsBuilt){
-                    if(err) {
+                buildCharts(user, function (err, chartsBuilt) {
+                    if (err) {
                         return res.status(500).send(err);
                     } else {
                         return res.json({
@@ -66,21 +66,21 @@ exports.api.charts = function(req,res){
     }
 };
 
-function buildNav(user, callback){
+function buildNav(user, callback) {
     var server = controllers.configuration.getConf().server;
     var gt = dictionary.translator(user.language);
     // Const.
     var nav = {
         left: [{
-            header: '',
-            items: []
-        },{
-            header: 'Server',
-            items: []
-        },{
-            header: 'Account',
-            items: []
-        }]
+                header: '',
+                items: []
+            }, {
+                header: 'Server',
+                items: []
+            }, {
+                header: 'Account',
+                items: []
+            }]
     }
     var dashboard = {
         href: 'home.dashboard.main',
@@ -95,7 +95,7 @@ function buildNav(user, callback){
         name: 'Staff management',
         items: []
     };
-    
+
     // Staff Management tabs
     var staffManagementTab1 = {
         href: 'home.staffs.personnalrecords',
@@ -117,7 +117,7 @@ function buildNav(user, callback){
 //        label: 'Discipline',
 //        name: 'Discipline'
 //    };
-    
+
     var administration = {
         href: 'home.administration.positions',
         icon: 'folder',
@@ -125,7 +125,7 @@ function buildNav(user, callback){
         name: 'Administration',
         items: []
     };
-    
+
     // Administration tabs
     var administrationTab1 = {
         href: 'home.administration.positions',
@@ -147,7 +147,7 @@ function buildNav(user, callback){
 //        label: 'Duplicates',
 //        name: 'Duplicates'
 //    };
-    
+
     var monitoring = {
         href: 'home.monitor.main',
         icon: 'verified_user',
@@ -155,7 +155,7 @@ function buildNav(user, callback){
         name: 'Monitoring & Evaluation',
         items: []
     };
-    
+
     var monitoringTab1 = {
         href: 'home.monitor.monitor',
         label: 'Monitoring & Evaluation',
@@ -217,34 +217,45 @@ function buildNav(user, callback){
     //END DIAMA MENU
     // Build the nav
     nav.left[0].items.push(dashboard);
-    
+
     //nav.left[0].items.push(import_export);
-    switch(user.role){
+    switch (user.role) {
         case '1':
             // LEFT MENU STAFF MANAGEMENT
             nav.left[0].items.push(staffManagement);
             // LEFT MENU TABS FOR STAFF MANAGEMENT
-            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab1);
-            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab2);
-//            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab3);
-//            nav.left[0].items[nav.left[0].items.length-1].items.push(staffManagementTab4);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
             // LEFT MENU MONITOR
             nav.left[0].items.push(monitoring);
-            nav.left[0].items[nav.left[0].items.length-1].items.push(monitoringTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
             // LEFT MENU STATISTICS
-//            nav.left[0].items.push(statistics);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
             // LEFT MENU TABS FOR ADMINISTRATION
-            nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab1);
-            nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab2);
-//            nav.left[0].items[nav.left[0].items.length-1].items.push(administrationTab3);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
 //            //LEFT MENU REPORTS
-//            nav.left[0].items.push(reports);
             // PREFERNCES
             nav.left[1].items.push(users);
             nav.left[1].items.push(configuration);
             nav.left[1].items.push(audit);
+            break;
+        case '2':
+            // LEFT MENU STAFF MANAGEMENT
+            nav.left[0].items.push(staffManagement);
+            // LEFT MENU TABS FOR STAFF MANAGEMENT
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+            // LEFT MENU MONITOR
+            nav.left[0].items.push(monitoring);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
+            // PREFERNCES
+            nav.left[1].items.push(users);
+            break;
+            case '3':
+            // LEFT MENU STAFF MANAGEMENT
+            nav.left[0].items.push(staffManagement);
             break;
     }
     // LEFT MENU
@@ -254,14 +265,16 @@ function buildNav(user, callback){
 
     // Nav Built
     callback(nav);
-};
+}
+;
 
-function buildCharts(user, callback){
-    var role =  parseInt(user.role);
+function buildCharts(user, callback) {
+    var role = parseInt(user.role);
     var charts = JSON.parse(JSON.stringify(chartsList));
-    charts = _.filter(charts, function (kChart){
+    charts = _.filter(charts, function (kChart) {
         return kChart.roles.indexOf(role) > -1;
     });
     charts = _.sortBy(charts, 'priority');
     callback(null, charts);
-};
+}
+;

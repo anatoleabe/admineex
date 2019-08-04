@@ -187,12 +187,12 @@ and open the template in the editor.
         <thead>
             <tr>
                 <th width="60"><center translate>Code</center></th>
-                <th ><center translate>Position name</center></th>
+                <th ><center translate>Poste</center></th>
             </tr>
         </thead>
         <tbody>
             {{#each this.children}}
-            <tr ><td colspan="2"><b><center>{{this.code}} - {{this.name}}</center></b></td></tr>
+            <tr ><td colspan="2"><b>{{this.code}} : {{this.name}}</b></td></tr>
             {{#each this.positions}}
             <tr>
                 <td>{{this.code}}</td>
