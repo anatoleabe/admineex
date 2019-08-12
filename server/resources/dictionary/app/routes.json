@@ -229,7 +229,7 @@
     },
     {
         "id": 40,
-        "uri": "/api/positions/id/:id/restric/:restric",
+        "uri": "/api/positions/id/:id/restric/:restric/:limit/:skip",
         "method": "GET",
         "roles": [1,2,3]
     },

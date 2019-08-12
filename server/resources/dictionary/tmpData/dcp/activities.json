@@ -1,0 +1,122 @@
+[
+ {
+   "id": "1",
+   "activity": "Coordonne le Recouvrement et la Centralisation des Recettes publiques"
+ },
+ {
+   "id": "2",
+   "activity": "Planifie, organise, dirige, contrôle et évalue les activités de son domaine de compétence"
+ },
+ {
+   "id": "3",
+   "activity": "Pilotage du réseau comptable de l’Etat"
+ },
+ {
+   "id": "4",
+   "activity": "Organise, dirige, contrôle et évalue les activités de la Cellule"
+ },
+ {
+   "id": "5",
+   "activity": "Exploitation et Analyse des résultats comptables"
+ },
+ {
+   "id": "6",
+   "activity": "Production du compte de gestion de l’Etat et des comptes consolidés"
+ },
+ {
+   "id": "7",
+   "activity": "Tenue de la comptabilité des opérations qui lui sont propres"
+ },
+ {
+   "id": "8",
+   "activity": "Tenue et Gestion du CUT, des comptes CCP et des Chèques Spéciaux du Trésor ouverts à la BEAC"
+ },
+ {
+   "id": "9",
+   "activity": "Production  des états de synthèse consolidés"
+ },
+ {
+   "id": "10",
+   "activity": "Suivi des incidents issus du traitement des opérations dans le système"
+ },
+ {
+   "id": "11",
+   "activity": "Consolidation des opérations budgétaires et comptables de l'Etat"
+ },
+ {
+   "id": "12",
+   "activity": "Contrôle formel et Contrôle de validation des dépenses"
+ },
+ {
+   "id": "13",
+   "activity": "Mise en œuvre et suivi des réformes des systèmes de paiement en zone CEMAC"
+ },
+ {
+   "id": "14",
+   "activity": "Consolidation et production de la Balance Nationale des comptes"
+ },
+ {
+   "id": "15",
+   "activity": "Gestion et administration de la base des données"
+ },
+ {
+   "id": "16",
+   "activity": "Exploitation des bases de données"
+ },
+ {
+   "id": "17",
+   "activity": "Coordonne les activités du secrétariat ;"
+ },
+ {
+   "id": "18",
+   "activity": "Organise l’agenda du Directeur"
+ },
+ {
+   "id": "19",
+   "activity": "Planifie, organise, dirige, contrôle et évalue les activités de la Sous-Direction"
+ },
+ {
+   "id": "20",
+   "activity": "Prépare et assure l’exécution des activités du  Service"
+ },
+ {
+   "id": "21",
+   "activity": "Assure l’exécution des activités du bureau."
+ },
+ {
+   "id": "22",
+   "activity": "Planifie, organise, dirige, contrôle et évalue les activités de son domaine de compétence"
+ },
+ {
+   "id": "23",
+   "activity": "Assiste l’Agent Comptable dans l’exercice de ses missions."
+ },
+ {
+   "id": "24",
+   "activity": "Prépare et assure l’exécution des activités de la Brigade"
+ },
+ {
+   "id": "25",
+   "activity": "Evalue l’organisation et le fonctionnement des services de la trésorerie ;"
+ },
+ {
+   "id": "26",
+   "activity": "Audite les Services."
+ },
+ {
+   "id": "27",
+   "activity": "Planifie, organise, dirige, contrôle et évalue les activités de la Sous-Direction"
+ },
+ {
+   "id": "28",
+   "activity": "Prépare et assure l’exécution des activités du  Service"
+ },
+ {
+   "id": "29",
+   "activity": "Assure l’exécution des activités du bureau."
+ },
+ {
+   "id": "30",
+   "activity": "Assiste le Chef de Cellule dans l'execution de ses fonctions"
+ }
+]

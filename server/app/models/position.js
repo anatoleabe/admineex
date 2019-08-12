@@ -7,6 +7,8 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 var PositionSchema = new Schema({
     structureId: { type: ObjectId, required: true },
     code: { type: String, required: true },
+    order: { type: String, required: false },//This order is used to sort positions in list
+    comesAfter: { type: String, required: false },//This indicate the order of the current position in list *
     en: { type: String, required: true },
     fr: { type: String, required: false },
     requiredProfiles: [],//Code of existing profiles taken from a global lists

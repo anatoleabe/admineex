@@ -101,7 +101,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row data-ng-repeat="position in positions| filter:positionFilter | filter:vacanciesOnly | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" style="min-width: 80px;">
+                    <tr md-row data-ng-repeat="position in positions.data| filter:positionFilter | filter:vacanciesOnly | orderBy: query.order" style="min-width: 80px;">
                         <td md-cell ng-click="details({id: position._id})">{{position.code| uppercase | unknown}}</td>
                         <td md-cell ng-click="details({id: position._id})">{{position.name}} </td>
                         <td md-cell ng-click="details({id: position._id})">{{position.structure.father.name| unknown}} <br/><span><md-icon class="material-icons">subdirectory_arrow_right</md-icon><small><i>{{position.structure.name}}</i></small></span> </td>
@@ -119,8 +119,8 @@
                 </tbody>
             </table>
         </md-table-container>
-        <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 50, 100]" md-page="query.page" md-total="{{positions.length}}" 
-                              md-page-select="true" md-label="{{label}}" >
+        <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 50, 100]" md-page="query.page" md-total="{{positions.count}}" 
+                              md-page-select="true" md-label="{{label}}" md-on-paginate="load">
 
     </md-card>
     <div style="margin-bottom: 100px"></div>

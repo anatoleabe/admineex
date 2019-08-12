@@ -5,7 +5,7 @@
  },
  {
    "id": "2",
-   "task": "Assure l’entrée  la sortie et la conservation du matériel"
+   "task": "Assure l’entrée , la sortie et la conservation du matériel"
  },
  {
    "id": "3",
@@ -13,7 +13,7 @@
  },
  {
    "id": "4",
-   "task": "Accueille informe et oriente les usagers"
+   "task": "Accueille, informe et oriente les usagers"
  },
  {
    "id": "5",
@@ -25,7 +25,7 @@
  },
  {
    "id": "7",
-   "task": "Suit les relations avec la Chambre des Comptes de la CS en ce qui   concerne les comptes de gestion des Agents Comptables"
+   "task": "Suit les relations avec la Chambre des Comptes de la CS, en ce qui   concerne les comptes de gestion des Agents Comptables"
  },
  {
    "id": "8",
@@ -117,7 +117,7 @@
  },
  {
    "id": "30",
-   "task": "Gère le standard les appels et les liaisons téléphoniques"
+   "task": "Gère le standard, les appels et les liaisons téléphoniques"
  },
  {
    "id": "31",
@@ -125,7 +125,7 @@
  },
  {
    "id": "32",
-   "task": "Lanalyse des productions comptables et de l’établissement des statistiques comptables"
+   "task": "L'analyse des productions comptables et de l’établissement des statistiques comptables"
  },
  {
    "id": "33",
@@ -153,15 +153,15 @@
  },
  {
    "id": "39",
-   "task": "L’élaboration des stratégies des feuilles de route et des plans d’actions de la Direction"
+   "task": "L’élaboration des stratégies, des feuilles de route et des plans d’actions de la Direction"
  },
  {
    "id": "40",
-   "task": "L’élaboration des textes législatifs et règlementaires relatifs au  règlement des dépenses de l’Etat des CTD  et desEPA"
+   "task": "L’élaboration des textes législatifs et règlementaires relatifs au  règlement des dépenses de l’Etat, des CTD  et desEPA"
  },
  {
    "id": "41",
-   "task": "Lélaboration du tableau de bord de l’Agence Comptable Centrale"
+   "task": "L'élaboration du tableau de bord de l’Agence Comptable Centrale"
  },
  {
    "id": "42",
@@ -173,7 +173,7 @@
  },
  {
    "id": "44",
-   "task": "L’élaboration du tableau de bord de la Sous Direction"
+   "task": "L’élaboration du tableau de bord de la Sous- Direction"
  },
  {
    "id": "45",
@@ -189,7 +189,7 @@
  },
  {
    "id": "48",
-   "task": "L’élaboration et l’exécution du plan d’action de la SousDirection"
+   "task": "L’élaboration et l’exécution du plan d’action de la Sous-Direction"
  },
  {
    "id": "49",
@@ -201,15 +201,15 @@
  },
  {
    "id": "51",
-   "task": "L’élaboration la mise à jour le classement et la diffusion des instructions et textes réglementaires de ressort"
+   "task": "L’élaboration, la mise à jour, le classement et la diffusion des instructions et textes réglementaires de ressort"
  },
  {
    "id": "52",
-   "task": "L’élaboration la mise en œuvre et le suivi des plans et programmes en matière de règlement du budget de l’Etat et des comptes"
+   "task": "L’élaboration, la mise en œuvre et le suivi des plans et programmes en matière de règlement du budget de l’Etat et des comptes"
  },
  {
    "id": "53",
-   "task": "L’établissement des relations avec la CDC  de la CS en ce qui concerne les comptes de gestion des comptables principaux de l’Etat"
+   "task": "L’établissement des relations avec la CDC  de la CS, en ce qui concerne les comptes de gestion des comptables principaux de l’Etat"
  },
  {
    "id": "54",
@@ -269,7 +269,7 @@
  },
  {
    "id": "68",
-   "task": "La gestion et au suivi du compte unique des comptes CCP et des comptes spéciaux du Trésor ouverts à la BEAC"
+   "task": "La gestion et au suivi du compte unique, des comptes CCP et des comptes spéciaux du Trésor ouverts à la BEAC"
  },
  {
    "id": "69",
@@ -277,19 +277,19 @@
  },
  {
    "id": "70",
-   "task": "La mesure des performances de la Sous Direction et de celles de ses personnels au vu des indicateurs retenus"
+   "task": "La mesure des performances de la Sous- Direction et de celles de ses personnels au vu des indicateurs retenus."
  },
  {
    "id": "71",
-   "task": "La mesure des performances du Service  au vu des indicateurs retenus"
+   "task": "La mesure des performances du Service  au vu des indicateurs retenus."
  },
  {
    "id": "72",
-   "task": "La mise à jour de la nomenclature comptable de l’Etat "
+   "task": "La mise à jour de la nomenclature comptable de l’Etat ;"
  },
  {
    "id": "73",
-   "task": "La mise en état d’examen des comptes de gestion de l’Etat  des comptes spéciaux des CTD et des EPA"
+   "task": "La mise en état d’examen des comptes de gestion de l’Etat,  des comptes spéciaux, des CTD et des EPA"
  },
  {
    "id": "74",
@@ -357,7 +357,7 @@
  },
  {
    "id": "90",
-   "task": "La tenue et la gestion du compte unique des comptes CCP et des comptes spéciaux du Trésor ouverts à la BEAC"
+   "task": "La tenue et la gestion du compte unique, des comptes CCP et des comptes spéciaux du Trésor ouverts à la BEAC"
  },
  {
    "id": "91",
@@ -365,7 +365,7 @@
  },
  {
    "id": "92",
-   "task": "Le contrôle des postes comptable spécialisés Impôts Douanes Agences Comptables Régies des Recettes"
+   "task": "Le contrôle des postes comptable spécialisés (Impôts, Douanes, Agences Comptables, Régies des Recettes)"
  },
  {
    "id": "93",
@@ -393,7 +393,7 @@
  },
  {
    "id": "99",
-   "task": "Le suivi de l’exécution des opérations de règlement du budget de l’Etat des EPA et des CTD"
+   "task": "Le suivi de l’exécution des opérations de règlement du budget de l’Etat, des EPA et des CTD"
  },
  {
    "id": "100",
@@ -445,7 +445,7 @@
  },
  {
    "id": "112",
-   "task": "Les relations avec la Chambre des Comptes de la Cour Suprême en ce qui concerne les comptes de gestion des comptables principaux"
+   "task": "Les relations avec la Chambre des Comptes de la Cour Suprême, en ce qui concerne les comptes de gestion des comptables principaux"
  },
  {
    "id": "113",
@@ -473,7 +473,7 @@
  },
  {
    "id": "119",
-   "task": "Reçoit trie et enregistre le courrier"
+   "task": "Reçoit, trie et enregistre le courrier"
  },
  {
    "id": "120",
@@ -501,11 +501,11 @@
  },
  {
    "id": "126",
-   "task": "Suit la mise en état d’examen des comptes de gestion des receveurs municipaux en liaison avec la Chambre des Comptes de la CS"
+   "task": "Suit la mise en état d’examen des comptes de gestion des receveurs municipaux, en liaison avec la Chambre des Comptes de la CS"
  },
  {
    "id": "127",
-   "task": "Supervise le pilotage  le suivi et la gestion du réseau comptable"
+   "task": "Supervise le pilotage,  le suivi et la gestion du réseau comptable"
  },
  {
    "id": "128",
@@ -521,11 +521,11 @@
  },
  {
    "id": "131",
-   "task": "Veille à la réception au tri et à l’enregistrement du courrier"
+   "task": "Veille à la réception, au tri et à l’enregistrement du courrier"
  },
  {
    "id": "132",
-   "task": "Veille à la tenue et à la conservation des supports fixes d’information registres fichiers chrono minutiers"
+   "task": "Veille à la tenue et à la conservation des supports fixes d’information (registres, fichiers, chrono minutiers)"
  },
  {
    "id": "133",
@@ -533,7 +533,7 @@
  },
  {
    "id": "134",
-   "task": "Analyse l’exécution des budgets de l’Etat  des Collectivités Territoriales Décentralisées et des Etablissements Publics Administratifs"
+   "task": "Analyse l’exécution des budgets de l’Etat,  des Collectivités Territoriales Décentralisées et des Etablissements Publics Administratifs"
  },
  {
    "id": "135",
@@ -573,7 +573,7 @@
  },
  {
    "id": "144",
-   "task": "gère les appels téléphoniques"
+   "task": "gère les appels téléphoniques."
  },
  {
    "id": "145",
@@ -593,7 +593,7 @@
  },
  {
    "id": "149",
-   "task": "la mesure des performances de la Sous Direction et de celles de ses personnels au vu des indicateurs retenus"
+   "task": "la mesure des performances de la Sous- Direction et de celles de ses personnels au vu des indicateurs retenus"
  },
  {
    "id": "150",
@@ -613,19 +613,19 @@
  },
  {
    "id": "154",
-   "task": "reçoit et enregistre les dossiers et les requêtes en vue de leur ventilation ou transmission vers les structures compétentes"
+   "task": "reçoit et enregistre les dossiers et les requêtes en vue de leur ventilation ou transmission vers les structures compétentes."
  },
  {
    "id": "155",
-   "task": "suit les incidents issus du traitement des opérations dans le système"
+   "task": "suit les incidents issus du traitement des opérations dans le système."
  },
  {
    "id": "156",
-   "task": "suit les relations avec la  Chambre des Comptes de la CS en ce qui  concerne les comptes de gestion des Receveurs Municip"
+   "task": "suit les relations avec la  Chambre des Comptes de la CS, en ce qui  concerne les comptes de gestion des Receveurs Municip"
  },
  {
    "id": "157",
-   "task": "suit les relations avec la Chambre des Comptes de la Cour Suprême en ce qui   concerne les comptes de gestion des agents comptables"
+   "task": "suit les relations avec la Chambre des Comptes de la Cour Suprême, en ce qui   concerne les comptes de gestion des agents comptables."
  },
  {
    "id": "158",

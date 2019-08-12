@@ -36,22 +36,33 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
             };
 
             $scope.toggleVacancies = function () {
-                getPositions($scope.filters.structure ? $scope.filters.structure : "-1", $scope.showOnlyVacancies ? "0" : "-1");
+                var structureCode = $scope.filters.subStructure ? JSON.parse($scope.filters.subStructure).code : ($scope.filters.structure ? JSON.parse($scope.filters.structure).code:"-1");
+                getPositions(structureCode, $scope.showOnlyVacancies ? "0" : "-1");
+            };
+
+            $scope.load = function () {
+                var structureCode = $scope.filters.subStructure ? JSON.parse($scope.filters.subStructure).code : ($scope.filters.structure ? JSON.parse($scope.filters.structure).code:"-1");
+                getPositions(structureCode, $scope.showOnlyVacancies ? "0" : "-1");
             };
 
             function getPositions(idStructure, restric) {
+                var limit = $scope.query.limit;
+                var skip = $scope.query.limit*($scope.query.page - 1);
                 $scope.helper = [];
                 $rootScope.kernel.loading = 0;
                 var deferred = $q.defer();
                 $scope.promise = deferred.promise;
-                Position.list({id: idStructure, restric: restric}).then(function (response) {
-                    var data = response.data;
+                Position.list({id: idStructure, restric: restric, limit:limit, skip:skip}).then(function (response) {
+                    var data = response.data.data;
                     if (data.length == 0 && $scope.helper.length == 0) {
                         $scope.helper = helper;
                     }
                     console.log(data);
                     $rootScope.kernel.loading = 100;
-                    $scope.positions = data;
+                    $scope.positions = {
+                        data: response.data.data,
+                        count: response.data.count
+                    };
                     deferred.resolve();
                 }).catch(function (response) {
                     console.error(response);
@@ -91,6 +102,7 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
             $scope.$watch('filters.structure', function (newval, oldval) {
                 if (newval) {
                     newval = JSON.parse(newval).code;
+                    $scope.positionFilter = newval;
                     getPositions(newval ? newval : "-1", $scope.showOnlyVacancies ? "0" : "-1");
                 }
             });

@@ -175,7 +175,7 @@ exports.api.affectToPosition = function (req, res) {
 //This read data from json files (matricule and position code , then link position and personnel in db
 //DO NOT USE THIS
 exports.affectToPositionFromJson = function (callback) {
-    var affectations = dictionary.getToJSONList("../../resources/dictionary/tmp/di/fulldata.json");
+    var affectations = dictionary.getToJSONList("../../resources/dictionary/tmpData/dcp/fulldata.json");
     var avoided = [];
 
     String.prototype.isNumber = function () {
@@ -193,10 +193,10 @@ exports.affectToPositionFromJson = function (callback) {
             var skills = affectations[a].creel.split(";");
             var profiles = affectations[a].preel.split(";");
             var affectationDate = (affectations[a].date && affectations[a].date != "") ? affectations[a].date.split("/") : undefined;
-            if (affectationDate){
+            if (affectationDate) {
                 affectationDate = new Date(+affectationDate[2], affectationDate[1] - 1, +affectationDate[0]);
             }
-            
+
             Position.findOne({code: codep}, projection, function (err, post) {
                 if (err) {
                     log.error(err);
@@ -233,13 +233,14 @@ exports.affectToPositionFromJson = function (callback) {
                                             mouvement: "1",
                                             nature: "1"
                                         };
-                                        if (!pers.history ) {
+                                        if (!pers.history) {
                                             pers.history = {positions: []};
                                         }
                                         if (pers.history && !pers.history.positions) {
                                             pers.history.positions = [];
                                         }
-                                        pers.history.positions.push(history);
+                                        pers.history.positions = history;
+                                        //pers.history.positions.push(history);
                                         pers.profiles = profiles;
                                         pers.skills = skills;
 
@@ -294,7 +295,14 @@ exports.api.findPositionByCode = function (req, res) {
 exports.api.list = function (req, res) {
     if (req.actor) {
         var restriction = req.params.restric;
-        filter = {};
+        var limit = 0;
+        var skip = 0;
+        if (req.params.limit && req.params.skip) {
+            limit = parseInt(req.params.limit, 10);
+            skip = parseInt(req.params.skip, 10);
+        }
+
+        var filter = {};
         if (req.params.id && req.params.id != "-1") {
             filter = {$and: []};
             if (req.params.id.indexOf("-") > -1) {
@@ -307,50 +315,56 @@ exports.api.list = function (req, res) {
                 });
             }
         }
-
-
-        Position.find(filter, function (err, result) {
+        
+        Position.count(filter).exec(function (err, count) {
             if (err) {
                 log.error(err);
-                audit.logEvent('[mongodb]', 'Positions', 'List', '', '', 'failed', 'Mongodb attempted to retrieve positions list');
-                return res.status(500).send(err);
+                callback(err);
             } else {
-                var positions = JSON.parse(JSON.stringify(result));
-                var positionsFiltered = [];
-                function LoopA(o) {
-                    if (o < positions.length) {
-
-                        exports.findPositionHelder(positions[o]._id, function (err, affectation) {
-                            if (err) {
-                                audit.logEvent('[mongodb]', 'Positions', 'findPositionHelder', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
-                                return res.status(500).send(err);
-                            } else {
-                                if (affectation) {
-                                    positions[o].actualEffective = 1;//We can also put the real effective in case we are using effective for position
-                                } else {
-                                    positions[o].actualEffective = 0;
-                                }
-                                positions[o].vacancies = 1 - positions[o].actualEffective;
-
-                                if (restriction && restriction == "0" && positions[o].vacancies > 0) {
-                                    positionsFiltered.push(positions[o]);
-                                } else {
-                                    positionsFiltered.push(positions[o]);
-                                }
-                                LoopA(o + 1);
-                            }
-                        });
+                Position.find(filter).limit(limit).skip(skip).lean().exec(function (err, result) {
+                    if (err) {
+                        log.error(err);
+                        audit.logEvent('[mongodb]', 'Positions', 'List', '', '', 'failed', 'Mongodb attempted to retrieve positions list');
+                        return res.status(500).send(err);
                     } else {
-                        beautify({actor: req.actor, language: req.actor.language, beautify: true}, positionsFiltered, function (err, objects) {
-                            if (err) {
-                                return res.status(500).send(err);
+                        var positions = JSON.parse(JSON.stringify(result));
+                        var positionsFiltered = [];
+                        function LoopA(o) {
+                            if (o < positions.length) {
+
+                                exports.findPositionHelder(positions[o]._id, function (err, affectation) {
+                                    if (err) {
+                                        audit.logEvent('[mongodb]', 'Positions', 'findPositionHelder', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
+                                        return res.status(500).send(err);
+                                    } else {
+                                        if (affectation) {
+                                            positions[o].actualEffective = 1;//We can also put the real effective in case we are using effective for position
+                                        } else {
+                                            positions[o].actualEffective = 0;
+                                        }
+                                        positions[o].vacancies = 1 - positions[o].actualEffective;
+
+                                        if (restriction && restriction == "0" && positions[o].vacancies > 0) {
+                                            positionsFiltered.push(positions[o]);
+                                        } else {
+                                            positionsFiltered.push(positions[o]);
+                                        }
+                                        LoopA(o + 1);
+                                    }
+                                });
                             } else {
-                                return res.json(objects);
+                                beautify({actor: req.actor, language: req.actor.language, beautify: true}, positionsFiltered, function (err, objects) {
+                                    if (err) {
+                                        return res.status(500).send(err);
+                                    } else {
+                                        return res.json({data: objects, count: count});
+                                    }
+                                });
                             }
-                        });
+                        }
+                        LoopA(0);
                     }
-                }
-                LoopA(0);
+                });
             }
         });
 
@@ -491,7 +505,7 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
     }
 
     if (initialize.positions) {
-        var positions = dictionary.getJSONList("../../resources/dictionary/tmp/di/fulldata.json", "en");
+        var positions = dictionary.getJSONList("../../resources/dictionary/tmpData/dcp/fulldata.json", "en");
         var avoidedPositionsCode = [];
         function loopA(a) {
             if (a < positions.length) {
@@ -512,7 +526,7 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
 
                 for (var s in activities) {
                     if (activities[s] && activities[s] != "") {
-                        var activity = dictionary.getJSONById('../../resources/dictionary/tmp/di/activities.json', activities[s].trim());
+                        var activity = dictionary.getJSONById('../../resources/dictionary/tmpData/dcp/activities.json', activities[s].trim());
                         console.log(activities[s].trim())
                         activitiesValues.push(activity.activity.capitalize());
                     }
@@ -521,7 +535,7 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                 for (var s in tasks) {
                     if (tasks[s] && tasks[s] != "") {
                         console.log(tasks, tasks[s]);
-                        var task = dictionary.getJSONById('../../resources/dictionary/tmp/di/tasks.json', tasks[s].trim());
+                        var task = dictionary.getJSONById('../../resources/dictionary/tmpData/dcp/tasks.json', tasks[s].trim());
                         taskValues.push(task.task.capitalize());
                     }
                 }
@@ -578,6 +592,42 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
 
             } else {
                 callback(null, avoidedPositionsCode);
+            }
+        }
+        loopA(0);
+    }
+}
+
+exports.SETPOSITIONORDERFROMJSON = function (callback) {
+    var initialize = controllers.configuration.getConf().initialize;
+
+    if (initialize.positions) {
+        var positions = dictionary.getJSONList("../../resources/dictionary/tmpData/orderingDCP.json", "en");
+        function loopA(a) {
+            if (a < positions.length) {
+
+                exports.findPositionByCode(positions[a].codept, function (err, position) {
+                    if (err) {
+                        log.error(err);
+                        callback(err);
+                    } else {
+                        console.log(position);
+                        if (position) {// If this position already exist
+                            position.order = positions[a].order;
+
+                            exports.upsert(position, function (err) {
+                                if (err) {
+                                    log.error(err);
+                                } else {
+                                    loopA(a + 1);
+                                }
+                            });
+                        }
+                    }
+                });
+
+            } else {
+                callback(null);
             }
         }
         loopA(0);
