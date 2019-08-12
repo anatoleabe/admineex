@@ -14,7 +14,7 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
             $scope.structures = [];
             $scope.showOnlyVacancies = false;
             $scope.query = {
-                limit: 50,
+                limit: 25,
                 page: 1,
                 order: "code"
             };
