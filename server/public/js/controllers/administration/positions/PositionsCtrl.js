@@ -57,7 +57,6 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                     if (data.length == 0 && $scope.helper.length == 0) {
                         $scope.helper = helper;
                     }
-                    console.log(data);
                     $rootScope.kernel.loading = 100;
                     $scope.positions = {
                         data: response.data.data,

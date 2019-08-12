@@ -9,7 +9,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                 icon: "class"
             };
             $scope.query = {
-                limit: 50,
+                limit: 25,
                 page: 1,
                 order: "name"
             };
@@ -149,29 +149,43 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                 });
             }
 
-            function getAgents() {
+            $scope.getAgents = function () {
                 $scope.helper = [];
-                StaffAgent.list({minify: true}).then(function (response) {
-                    var data = response.data;
+                var limit = $scope.query.limit;
+                var skip = $scope.query.limit * ($scope.query.page - 1);
+                StaffAgent.list({minify: true, limit: limit, skip: skip, search: $scope.staffsFilter}).then(function (response) {
+                    console.log(response)
+                    var data = response.data.data;
                     if (data.length == 0 && $scope.helper.length == 0) {
                         $scope.helper = helper;
                     }
                     $rootScope.kernel.loading = 100;
-                    console.log("Agent", $rootScope.kernel.loading)
-                    $scope.personnels = data;
+                    $scope.personnels = {
+                        data: response.data.data,
+                        count: response.data.count
+                    };
 
                 }).catch(function (response) {
                     console.log(response);
                 });
             }
-            getAgents();
+            $scope.getAgents();
 
+            var watch = {};
+            watch.staffsFilter = $scope.$watch('staffsFilter', function (newval, oldval) {
+                if (newval) {
+                    $scope.getAgents();
+                }
+            });
+            $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
+                watch.staffsFilter();
+            });
 
             function deleteAgent(id) {
                 StaffAgent.delete({
                     id: id
                 }).then(function (response) {
-                    getAgents();
+                    $scope.getAgents();
                     $rootScope.kernel.alerts.push({
                         type: 3,
                         msg: gettextCatalog.getString('The Agent has been deleted'),

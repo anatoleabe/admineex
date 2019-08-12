@@ -1,7 +1,10 @@
 angular.module('StaffService', []).factory('Staff', function($http) {
     return {
         list: function(info) {
-            return $http.get('/api/personnel/'+info.minify);
+            var limit = info.limit?info.limit:0;
+            var skip = info.skip?info.skip:0;
+            var search = info.search?info.search:"-";
+            return $http.get('/api/personnel/'+info.minify+ '/' + limit + '/' + skip+ '/'+search);
         },
         read: function(info) {
             return $http.get('/api/personnel/read/' + info.id+'/'+info.beautify);

@@ -259,7 +259,7 @@
     },
     {
         "id": 45,
-        "uri": "/api/personnel/:minify",
+        "uri": "/api/personnel/:minify/:limit/:skip/:search",
         "method": "GET",
         "roles": [1,2,3]
     },

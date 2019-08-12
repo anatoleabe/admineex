@@ -132,6 +132,7 @@ var PersonnelSchema = new Schema({
 
 // Define the model
 var Personnel = mongoose.model('Personnel', PersonnelSchema);
+PersonnelSchema.index({'$**': 'text'});
 
 // Export the model
 exports.Personnel = Personnel;

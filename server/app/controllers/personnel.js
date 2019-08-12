@@ -198,22 +198,40 @@ exports.DONOTUSETHISMETHODE = function (callback) {
 }
 
 exports.api.list = function (req, res) {
+
     var minify = false;
     if (req.params.minify && req.params.minify == "true") {
         minify = true;
     }
+    var limit = 0;
+    var skip = 0;
+    if (req.params.limit && req.params.skip) {
+        limit = parseInt(req.params.limit, 10);
+        skip = parseInt(req.params.skip, 10);
+    }
+
     if (req.actor) {
         var options = {
             minify: minify,
-            req: req
+            req: req,
+            limit: limit,
+            skip: skip,
+            search: req.params.search
         }
 
-        exports.list(options, function (err, personnels) {
+        Personnel.count({}).exec(function (err, count) {
             if (err) {
                 log.error(err);
-                res.status(500).send(err);
+                callback(err);
             } else {
-                return res.json(personnels);
+                exports.list(options, function (err, personnels) {
+                    if (err) {
+                        log.error(err);
+                        res.status(500).send(err);
+                    } else {
+                        return res.json({data: personnels, count: count});
+                    }
+                });
             }
         });
 
@@ -344,8 +362,22 @@ exports.list = function (options, callback) {
     if (options.query) {
         query = options.query;
     }
+    var concat = ["$name.family", " ", "$name.given"];
     var sort = {"name.family": 'asc'};
-    var q = Personnel.find(query).sort(sort).limit(0).skip(0).lean();
+    var q;
+    if (options.search && options.search != "-" && options.search != "") {
+        q = Personnel.aggregate([
+                {"$unwind": "$name"},
+                {"$unwind": "$name.family"},
+                {"$unwind": "$name.given"},
+                {"$addFields": {"fname": {$concat: concat}}},
+                {$match: {"fname": dictionary.makePattern(options.search)}},
+                {"$limit": options.skip + options.limit},
+                {"$skip": options.skip}
+        ]);
+    } else {
+        q = Personnel.find(query).sort(sort).limit(options.limit).skip(options.skip).lean();
+    }
     q.exec(function (err, personnels) {
         if (err) {
             log.error(err);
