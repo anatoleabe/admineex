@@ -134,8 +134,8 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                 $rootScope.kernel.loading = 0;
                                                 var deferred = $q.defer();
                                                 $scope.promise = deferred.promise;
-                                                Position.list({id: idStructure, restric: restric}).then(function (response) {
-                                                    var data = response.data;
+                                                Position.list({id: idStructure, restric: restric, limit:0, skip:0}).then(function (response) {
+                                                    var data = response.data.data;
 
                                                     $rootScope.kernel.loading = 100;
                                                     $scope.positions = data;
