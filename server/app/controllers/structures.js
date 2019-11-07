@@ -385,7 +385,8 @@ function beautify(options, objects, callback) {
     var gt = dictionary.translator(language);
     if (options.beautify && options.beautify === true) {
         //Address
-        //objects = controllers.configuration.beautifyAddress({language: language}, objects);
+        objects = controllers.configuration.beautifyAddress({language: language}, objects);
+        
         function Loop(o) {
             if (o < objects.length) {
                 objects[o].typeValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);

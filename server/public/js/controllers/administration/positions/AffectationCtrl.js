@@ -121,7 +121,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
 
                                         Staff.list({minify: false}).then(function (response) {
                                             var data = response.data;
-                                            $scope.personnels = data;
+                                            $scope.personnels = data.data;
 
                                             $scope.$watch('structure', function (newval, oldval) {
                                                 if (newval) {

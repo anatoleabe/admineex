@@ -14,6 +14,7 @@ var UserSchema = new Schema({
     activationToken: { type: String, required: true },
     resetPasswordToken: { type: String, required: false },
     resetPasswordExpires: { type: Date, required: false },
+    structures: { type: [String], required: false },
     role: { type: String, required: true },
     language: { type: String, required: true },
     phone: { type: String, required: false },

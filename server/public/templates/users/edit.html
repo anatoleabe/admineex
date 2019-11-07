@@ -33,6 +33,14 @@
                     </md-option>
                 </md-select>
             </md-input-container>
+            <md-input-container class="md-block" ng-if="user.role === '2'">
+                <label translate>Direction</label>
+                <md-select ng-model="user.structures" multiple max="1">
+                    <md-option ng-repeat="struc in structures| filter:onlyDirection " value="{{struc._id}}" >
+                        {{struc.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
             <md-input-container class="md-block">
                 <label translate>Language</label>
                 <md-select ng-model="user.language" required>

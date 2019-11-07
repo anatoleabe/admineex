@@ -41,7 +41,7 @@
                     <div layout="row">
                         <md-input-container flex>
                             <label translate>Select a personnel</label>
-                            <md-select name="selectedPersonnel" ng-disabled="personnelFromParams" required ng-model="selectedPersonnel"  style="min-width: 150px;">
+                            <md-select name="selectedPersonnel" required ng-model="selectedPersonnel"  style="min-width: 150px;">
                                 <md-option ng-repeat="perso in personnels" value="{{perso._id}}" >
                                     {{perso.name.family[0]}} {{perso.name.given[0]}} <small>{{"(Mle: " + (perso.identifier) + ")"}}</small>
 

@@ -8,7 +8,7 @@
         "id": 1,
         "uri": "/api/audit/from/:from/to/:to",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1]
     },
     {
         "id": 2,
@@ -24,13 +24,13 @@
         "id": 4,
         "uri": "/api/account",
         "method": "PUT",
-        "roles": [1,2,3]
+        "roles": [1]
     },
     {
         "id": 5,
         "uri": "/api/account/password/change",
         "method": "POST",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 6,
@@ -51,13 +51,13 @@
         "id": 9,
         "uri": "/api/account/profile",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 10,
         "uri": "/api/users",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1]
     },
     {
         "id": 11,
@@ -87,19 +87,19 @@
         "id": 15,
         "uri": "/api/users/:id",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1]
     },
     {
         "id": 16,
         "uri": "/api/ui/nav",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 17,
         "uri": "/api/ui/charts",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 18,
@@ -144,13 +144,13 @@
         "id": 25,
         "uri": "/api/configuration",
         "method": "PUT",
-        "roles": [1,2,3]
+        "roles": [1]
     },
     {
         "id": 26,
         "uri": "/api/configuration",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1]
     },
     {
         "id": 27,
@@ -166,7 +166,7 @@
         "id": 29,
         "uri": "/api/charts/:name/from/:from/to/:to/group/:group",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 30,
@@ -177,13 +177,13 @@
         "id": 31,
         "uri": "/api/notifications",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 32,
         "uri": "/api/notifications/:id",
         "method": "PUT",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 33,
@@ -237,61 +237,61 @@
         "id": 41,
         "uri": "/api/positions/read/:id",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 42,
         "uri": "/api/positions",
         "method": "PUT",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 43,
         "uri": "/api/personnel",
         "method": "PUT",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 44,
         "uri": "/api/personnel/read/:id/:beautify",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 45,
         "uri": "/api/personnel/:minify/:limit/:skip/:search",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 46,
         "uri": "/api/structures/read/:id",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 47,
         "uri": "/api/structures",
         "method": "PUT",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 48,
         "uri": "/api/positions/find/:code",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 49,
         "uri": "/api/positions/affect/",
         "method": "PUT",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 50,
         "uri": "/api/personnel/search/:text",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 51,
@@ -309,30 +309,30 @@
         "id": 53,
         "uri": "/api/personnel/checkExistance/:mat",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 54,
         "uri": "/api/personnel/retired/:from/:to",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 55,
         "uri": "/api/monitor/:year/:quarter/:structure",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 56,
         "uri": "/api/export/pdf/positions/:structure/:vacancies/:nomenclature",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 57,
         "uri": "/api/export/pdf/structures/",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     }
 ]

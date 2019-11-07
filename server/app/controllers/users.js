@@ -31,8 +31,8 @@ exports.api.create = function(req, res) {
                 var language = fields.language || '';
                 var role = fields.role || '';
                 var regions = fields.regions || '';
-                var laboratories = fields.laboratories || '';
-
+                var structures = fields.structures || '';
+                
 
                 if (email === '' || firstname === '' || lastname === '' || role === '' || password !== passwordConfirmation) {
                     audit.logEvent(req.actor.id, 'Users', 'Create', '', '', 'failed',
@@ -50,8 +50,8 @@ exports.api.create = function(req, res) {
                         user.regions = regions;
                     }
 
-                    if(laboratories !== ''){
-                        user.laboratories = laboratories;
+                    if(structures !== ''){
+                        user.structures = structures;
                     }
 
                     if(language !== ''){
@@ -250,7 +250,7 @@ exports.api.update = function(req, res) {
                                 var passwordConfirmation = fields.passwordConfirmation;
                                 var role = fields.role;
                                 var regions = fields.regions;
-                                var laboratories = fields.laboratories;
+                                var structures = fields.structures;
 
                                 if(password != passwordConfirmation){
                                     audit.logEvent(req.actor.id, 'Users', 'Update', '', '', 'failed',
@@ -298,10 +298,10 @@ exports.api.update = function(req, res) {
                                     } else if (regions === ''){
                                         toRemove['regions'] = 1;
                                     };
-                                    if (laboratories !== undefined && laboratories !== ''){
-                                        toUpdate['laboratories'] = laboratories;
-                                    } else if (laboratories === ''){
-                                        toRemove['laboratories'] = 1;
+                                    if (structures !== undefined && structures !== ''){
+                                        toUpdate['structures'] = structures;
+                                    } else if (structures === ''){
+                                        toRemove['structures'] = 1;
                                     };
 
                                     // TODO
@@ -408,7 +408,7 @@ exports.api.read = function(req, res){
             query.lastname = 1;
             query.language = 1;
             query.regions = 1;
-            query.laboratories = 1;
+            query.structures = 1;
             query.address = 1;
 
             User.findOne({

@@ -1,5 +1,4 @@
 angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope) {
-    console.log("hshahahah")
     $ocLazyLoad.load('js/services/StaffService.js').then(function () {
         var StaffAgent = $injector.get('Staff');
         $ocLazyLoad.load('js/services/StructureService.js').then(function () {
@@ -154,7 +153,6 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                 var limit = $scope.query.limit;
                 var skip = $scope.query.limit * ($scope.query.page - 1);
                 StaffAgent.list({minify: true, limit: limit, skip: skip, search: $scope.staffsFilter}).then(function (response) {
-                    console.log(response)
                     var data = response.data.data;
                     if (data.length == 0 && $scope.helper.length == 0) {
                         $scope.helper = helper;
