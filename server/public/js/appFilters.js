@@ -140,13 +140,16 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
         var toReturn = gettextCatalog.getString("unknown");
         switch(role){
             case '1':
-                toReturn = gettextCatalog.getString("System Administrator");
-                break;
-            case '2':
                 toReturn = gettextCatalog.getString("Administrator");
                 break;
+            case '2':
+                toReturn = gettextCatalog.getString("Manager");
+                break;
             case '3':
-                toReturn = gettextCatalog.getString("Simple user");
+                toReturn = gettextCatalog.getString("Global supervisor");
+                break;
+            case '4':
+                toReturn = gettextCatalog.getString("Editor");
                 break;
                    }
         return toReturn;

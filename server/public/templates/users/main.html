@@ -11,7 +11,7 @@
                         {{user.firstname.substr(0, 1).toUpperCase()}}
                     </div>
                     {{kernel.namingOrder === 'lf' ? user.lastname + ' ' + user.firstname : user.firstname + ' ' + user.lastname}}
-                    <md-button class="md-secondary md-icon-button" aria-label="Status" ng-click="activate(user)" ng-if="account.role == '1'">
+                    <md-button class="md-secondary md-icon-button" aria-label="Status" ng-click="activate(user)" ng-if="account.role == '1' || account.role == '3'">
                         <md-icon aria-label="Status" style="color: #F44336">
                             radio_button_unchecked
                         </md-icon>
@@ -19,13 +19,13 @@
                             <span translate>Activate</span>
                         </md-tooltip>
                     </md-button>
-                    <md-button class="md-secondary md-icon-button" aria-label="Edit" ng-click="edit({id:user._id})" ng-if="account.role == '1'">
+                    <md-button class="md-secondary md-icon-button" aria-label="Edit" ng-click="edit({id:user._id})" ng-if="account.role == '1' || account.role == '3'">
                         <md-icon aria-label="Edit">edit</md-icon>
                         <md-tooltip>
                             <span translate>Edit</span>
                         </md-tooltip>
                     </md-button>
-                    <md-button class="md-secondary md-icon-button" aria-label="Delete" ng-click="showConfirm(user)" ng-if="account.role == '1'">
+                    <md-button class="md-secondary md-icon-button" aria-label="Delete" ng-click="showConfirm(user)" ng-if="account.role == '1' || account.role == '3'">
                         <md-icon aria-label="Delete">delete</md-icon>
                         <md-tooltip>
                             <span translate>Delete</span>
@@ -49,13 +49,13 @@
                         {{user.firstname.substr(0, 1).toUpperCase()}}
                     </div>
                     {{kernel.namingOrder === 'lf' ? user.lastname + ' ' + user.firstname : user.firstname + ' ' + user.lastname}} <small class="diy-chip">{{user.email}}</small><small class="diy-chip">{{user.role | role}}</small>
-                    <md-button class="md-secondary md-icon-button" aria-label="Edit" ng-click="edit({id:user._id})" ng-if="account.role == '1'">
+                    <md-button class="md-secondary md-icon-button" aria-label="Edit" ng-click="edit({id:user._id})" ng-if="account.role == '1' || account.role == '3'">
                         <md-icon aria-label="Edit">edit</md-icon>
                         <md-tooltip>
                             <span translate>Edit</span>
                         </md-tooltip>
                     </md-button>
-                    <md-button class="md-secondary md-icon-button" aria-label="Delete" ng-click="showConfirm(user)" ng-if="account.role == '1'">
+                    <md-button class="md-secondary md-icon-button" aria-label="Delete" ng-click="showConfirm(user)" ng-if="account.role == '1' || account.role == '3'">
                         <md-icon aria-label="Delete">delete</md-icon>
                         <md-tooltip>
                             <span translate>Delete</span>
@@ -70,7 +70,7 @@
     <md-icon aria-label="{{helper.title}}" class="material-icons" style="font-size: 120px;height: 120px;width: 120px;">{{helper.icon}}</md-icon>
     <h2 class="md-title">{{helper.title}}</h2>
 </div>
-<md-button class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ui-sref="home.users.new" ng-if="account.role == '1'">
+<md-button class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ui-sref="home.users.new" ng-if="account.role == '1' || account.role == '3'">
     <md-icon class="material-icons">add</md-icon>
     <md-tooltip md-direction="top">
         <span translate>New</span>

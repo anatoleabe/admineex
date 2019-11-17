@@ -1,4 +1,5 @@
 var Personnel = require('../models/personnel').Personnel;
+var Affectation = require('../models/affectation').Affectation;
 var audit = require('../utils/audit-log');
 var log = require('../utils/log');
 var mail = require('../utils/mail');
@@ -15,7 +16,8 @@ exports.api = {};
 var controllers = {
     configuration: require('./configuration'),
     users: require('./users'),
-    positions: require('./positions')
+    positions: require('./positions'),
+    structures: require('./structures')
 };
 
 exports.upsert = function (fields, callback) {
@@ -211,29 +213,86 @@ exports.api.list = function (req, res) {
     }
 
     if (req.actor) {
-        var options = {
-            minify: minify,
-            req: req,
-            limit: limit,
-            skip: skip,
-            search: req.params.search
-        }
-
-        Personnel.count({}).exec(function (err, count) {
+        controllers.users.findUser(req.actor.id, function (err, user) {
             if (err) {
                 log.error(err);
                 callback(err);
             } else {
-                exports.list(options, function (err, personnels) {
-                    if (err) {
-                        log.error(err);
-                        res.status(500).send(err);
+                var userStructure = [];
+                var userStructureCodes = [];
+                function LoopS(s) {
+                    if (user.structures && s < user.structures.length && user.structures[s]) {
+                        controllers.structures.find(user.structures[s], "en", function (err, structure) {
+                            if (err) {
+                                log.error(err);
+                                callback(err);
+                            } else {
+                                userStructure.push({id: structure._id, code: structure.code});
+                                userStructureCodes.push(new RegExp("^" + structure.code + "-"));
+                                LoopS(s + 1);
+                            }
+                        });
                     } else {
-                        return res.json({data: personnels, count: count});
+                        var options = {
+                            minify: minify,
+                            req: req,
+                            limit: limit,
+                            skip: skip,
+                            search: req.params.search
+                        }
+
+                        if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4") {
+                            Personnel.count({}).exec(function (err, count) {
+                                if (err) {
+                                    log.error(err);
+                                    callback(err);
+                                } else {
+                                    exports.list(options, function (err, personnels) {
+                                        if (err) {
+                                            log.error(err);
+                                            res.status(500).send(err);
+                                        } else {
+                                            return res.json({data: personnels, count: count});
+                                        }
+                                    });
+                                }
+                            });
+                        } else {
+                            var aggregat = [
+                                {"$match": {"positionCode": {$in: userStructureCodes}}},
+                                {$group: {_id: null, theCount: {$sum: 1}}},
+                                {$project: {_id: 0}}
+                            ];
+                            q = Affectation.aggregate(aggregat);
+                            q.exec(function (err, affectations) {
+                                if (err) {
+                                    log.error(err);
+                                    callback(err);
+                                } else {
+                                    exports.list(options, function (err, personnels) {
+                                        if (err) {
+                                            log.error(err);
+                                            res.status(500).send(err);
+                                        } else {
+                                            return res.json({data: personnels, count: affectations[0].theCount});
+                                        }
+                                    });
+                                }
+                            })
+                        }
+
                     }
-                });
+                }
+                LoopS(0);
             }
         });
+
+
+
+
+
+
+
 
     } else {
         audit.logEvent('[anonymous]', 'Personnel', 'List', '', '', 'failed', 'The actor was not authenticated');
@@ -253,7 +312,8 @@ exports.api.retired = function (req, res) {
 
         var options = {
             query: query1,
-            req: req
+            req: req,
+            retiredOnly: true
         }
         exports.list(options, function (err, personnels) {
             if (err) {
@@ -357,54 +417,153 @@ exports.checkRetirement = function (callback) {
 
 
 exports.list = function (options, callback) {
-
-    var query = {};
-    if (options.query) {
-        query = options.query;
-    }
-    var concat = ["$name.family", " ", "$name.given"];
-    var sort = {"name.family": 'asc'};
-    var q;
-    if (options.search && options.search != "-" && options.search != "") {
-        q = Personnel.aggregate([
-                {"$unwind": "$name"},
-                {"$unwind": "$name.family"},
-                {"$unwind": "$name.given"},
-                {"$addFields": {"fname": {$concat: concat}}},
-                {$match: {"fname": dictionary.makePattern(options.search)}},
-                {"$limit": options.skip + options.limit},
-                {"$skip": options.skip}
-        ]);
-    } else {
-        q = Personnel.find(query).sort(sort).limit(options.limit).skip(options.skip).lean();
-    }
-    q.exec(function (err, personnels) {
+    controllers.users.findUser(options.req.actor.id, function (err, user) {
         if (err) {
             log.error(err);
-            audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
             callback(err);
         } else {
-            if (options.minify == true) {
-                personnels = JSON.parse(JSON.stringify(personnels));
-                function LoopA(a) {
-                    if (a < personnels.length && personnels[a]) {
-                        controllers.positions.findPositionHelderBystaffId({req: options.req}, personnels[a]._id, function (err, affectation) {
+            var userStructure = [];
+            var userStructureCodes = [];
+            function LoopS(s) {
+                if (user.structures && s < user.structures.length && user.structures[s]) {
+                    controllers.structures.find(user.structures[s], "en", function (err, structure) {
+                        if (err) {
+                            log.error(err);
+                            callback(err);
+                        } else {
+                            userStructure.push({id: structure._id, code: structure.code});
+                            userStructureCodes.push(new RegExp("^" + structure.code + "-"));
+                            LoopS(s + 1);
+                        }
+                    });
+                } else {
+                    if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4") {
+                        var query = {};
+                        if (options.query) {
+                            query = options.query;
+                        }
+                        var concat = ["$name.family", " ", "$name.given"];
+                        var sort = {"name.family": 'asc'};
+                        var q;
+                        if (options.search && options.search != "-" && options.search != "") {
+                            q = Personnel.aggregate([
+                                {"$unwind": "$name"},
+                                {"$unwind": "$name.family"},
+                                {"$unwind": "$name.given"},
+                                {"$addFields": {"fname": {$concat: concat}}},
+                                {"$addFields": {"matricule": "$AffectedPersonnal.identifier"}},
+                                {$match: {$or: [{"fname": dictionary.makePattern(options.search)}, {"matricule": dictionary.makePattern(options.search)}]}},
+                                {"$limit": options.skip + options.limit},
+                                {"$skip": options.skip}
+                            ]);
+                        } else {
+                            q = Personnel.find(query).sort(sort).limit(options.limit).skip(options.skip).lean();
+                        }
+                        q.exec(function (err, personnels) {
+                            if (err) {
+                                log.error(err);
+                                audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
+                                callback(err);
+                            } else {
+                                if (options.minify == true) {
+                                    personnels = JSON.parse(JSON.stringify(personnels));
+                                    function LoopA(a) {
+                                        if (a < personnels.length && personnels[a]) {
+                                            controllers.positions.findPositionHelderBystaffId({req: options.req}, personnels[a]._id, function (err, affectation) {
+                                                if (err) {
+                                                    log.error(err);
+                                                    callback(err);
+                                                } else {
+                                                    personnels[a].affectedTo = affectation;
+                                                    LoopA(a + 1);
+                                                }
+                                            });
+                                        } else {
+                                            callback(null, personnels);
+                                        }
+                                    }
+                                    LoopA(0);
+                                } else {
+                                    callback(null, personnels);
+                                }
+                            }
+                        });
+                    } else {//This view is restricted for structure manager (Role = 2)
+                        var q;
+                        var query = {positionCode: {$in: userStructureCodes}};
+                        var concat = ["$AffectedPersonnal.name.family", " ", "$AffectedPersonnal.name.given"];
+                        var sort = {"name.family": 'asc'};
+                        var aggregat = [
+                            {"$match": {"positionCode": {$in: userStructureCodes}}},
+                            {
+                                "$lookup": {
+                                    "from": "personnels",
+                                    "localField": "personnelId",
+                                    "foreignField": "_id",
+                                    "as": "AffectedPersonnal"
+                                }
+                            },
+                            {"$unwind": "$AffectedPersonnal"},
+                            {"$unwind": "$AffectedPersonnal.name"},
+                            {"$unwind": "$AffectedPersonnal.name.family"},
+                            {"$unwind": "$AffectedPersonnal.name.given"},
+                            {"$addFields": {"fname": {$concat: concat}}},
+                            {"$addFields": {"matricule": "$AffectedPersonnal.identifier"}},
+                        ]
+
+                        //Filter by key word
+                        if (options.search && options.search != "-" && options.search != "") {
+                            aggregat.push({$match: {$or: [{"fname": dictionary.makePattern(options.search)}, {"matricule": dictionary.makePattern(options.search)}]}})
+                        }
+                        //If retiredOnly
+                        if (options.retiredOnly) {
+                            aggregat.push({"$addFields": {"retirement": "$AffectedPersonnal.retirement.retirement"}});
+                            aggregat.push({"$addFields": {"notified": "$AffectedPersonnal.retirement.notified"}});
+                            aggregat.push({"$addFields": {"extended": "$AffectedPersonnal.retirement.extended"}});
+                            aggregat.push({"$match": {"retirement": true}});
+                            aggregat.push({"$match": {"notified": {$exists: true}}});
+                            aggregat.push({"$match": {$or: [{"extended": {$exists: false}}, {"extended": false}]}});
+                        }
+                        //If Limit per page
+                        if (options.skip && options.limit) {
+                            aggregat.push({"$limit": options.skip + options.limit})
+                            aggregat.push({"$skip": options.skip})
+                        }
+                        //Start
+                        q = Affectation.aggregate(aggregat);
+                        q.exec(function (err, affectations) {
                             if (err) {
                                 log.error(err);
                                 callback(err);
                             } else {
-                                personnels[a].affectedTo = affectation;
-                                LoopA(a + 1);
+                                var personnelsManaged = [];
+                                var personne;
+
+                                function LoopAf(a) {
+                                    if (affectations && a < affectations.length) {
+                                        personne = affectations[a].AffectedPersonnal;
+                                        personne.fname = affectations[a].fname;
+                                        controllers.positions.findPositionByCodeAndBeautify(affectations[a].positionCode, options, function (err, position) {
+                                            if (err) {
+                                                log.error(err);
+                                                callback(err);
+                                            } else {
+                                                personne.affectedTo = position;
+                                                personnelsManaged.push(personne);
+                                                LoopAf(a + 1);
+                                            }
+                                        });
+                                    } else {
+                                        callback(null, personnelsManaged);
+                                    }
+                                }
+                                LoopAf(0);
                             }
                         });
-                    } else {
-                        callback(null, personnels);
                     }
                 }
-                LoopA(0);
-            } else {
-                callback(null, personnels);
             }
+            LoopS(0);
         }
     });
 }

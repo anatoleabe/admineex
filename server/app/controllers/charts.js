@@ -127,7 +127,12 @@ var chart1 = function (config, callback) {
         totalWomen: 0,
         totalMen: 0
     };
-    controllers.personnel.list({}, function (err, personnels) {
+    var options = {
+        req: {
+            actor: config.actor
+        }
+    }
+    controllers.personnel.list(options, function (err, personnels) {
         if (err) {
             log.error(err);
             audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
@@ -167,7 +172,12 @@ var card2 = function (config, callback) {
         commis: 0,
         totalCorpsTresor: 0
     };
-    controllers.personnel.list({}, function (err, personnels) {
+    var options = {
+        req: {
+            actor: config.actor
+        }
+    }
+    controllers.personnel.list(options, function (err, personnels) {
         if (err) {
             log.error(err);
             audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
@@ -230,7 +240,12 @@ var chart2 = function (config, callback) {
         totalMen: 0,
         totalCorpsTresor: 0,
     };
-    controllers.personnel.list({}, function (err, personnels) {
+    var options = {
+        req: {
+            actor: config.actor
+        }
+    }
+    controllers.personnel.list(options, function (err, personnels) {
         if (err) {
             log.error(err);
             audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
@@ -279,8 +294,13 @@ var card4 = function (config, callback) {
     var options = {
         query: {
             status: "2"
-        }
+        },
+        req: {
+            actor: config.actor
+        },
+        aggregation : {"$match": {"status": "2"}}
     }
+
     controllers.personnel.list(options, function (err, personnels) {
         if (err) {
             log.error(err);
@@ -338,7 +358,12 @@ var card6 = function (config, callback) {
         totalWomen: 0,
         totalMen: 0,
     };
-    controllers.personnel.list({}, function (err, personnels) {
+    var options = {
+        req: {
+            actor: config.actor
+        }
+    }
+    controllers.personnel.list(options, function (err, personnels) {
         if (err) {
             log.error(err);
             audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
@@ -379,7 +404,12 @@ var global = function (config, callback) {
         positions: 0
     };
 
-    controllers.personnel.list({}, function (err, personnels) {
+    var options = {
+        req: {
+            actor: config.actor
+        }
+    }
+    controllers.personnel.list(options, function (err, personnels) {
         if (err) {
             log.error(err);
             audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');

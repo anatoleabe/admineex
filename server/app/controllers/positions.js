@@ -315,7 +315,7 @@ exports.api.list = function (req, res) {
                 });
             }
         }
-        
+
         Position.count(filter).exec(function (err, count) {
             if (err) {
                 log.error(err);
@@ -820,6 +820,24 @@ exports.findPositionByCode = function (code, callback) {
             } else {
                 callback(null);
             }
+        }
+    });
+}
+
+exports.findPositionByCodeAndBeautify = function (code, options, callback) {
+    exports.findPositionByCode(code, function (err, position) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            beautify({actor: options.req.actor, language: options.req.actor.language, beautify: true}, [position], function (err, objects) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, objects[0]);
+                }
+            });
+
         }
     });
 }

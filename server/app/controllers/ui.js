@@ -250,12 +250,31 @@ function buildNav(user, callback) {
             // LEFT MENU MONITOR
             nav.left[0].items.push(monitoring);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
-            // PREFERNCES
-            nav.left[1].items.push(users);
             break;
-            case '3':
+        case '3':
             // LEFT MENU STAFF MANAGEMENT
             nav.left[0].items.push(staffManagement);
+            // LEFT MENU TABS FOR STAFF MANAGEMENT
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+            // LEFT MENU ADMINISTRATION
+            nav.left[0].items.push(administration);
+            // LEFT MENU TABS FOR ADMINISTRATION
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
+            nav.left[1].items.push(users);
+            break;
+        case '4':
+            // LEFT MENU STAFF MANAGEMENT
+            nav.left[0].items.push(staffManagement);
+            // LEFT MENU TABS FOR STAFF MANAGEMENT
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+            // LEFT MENU ADMINISTRATION
+            nav.left[0].items.push(administration);
+            // LEFT MENU TABS FOR ADMINISTRATION
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
             break;
     }
     // LEFT MENU

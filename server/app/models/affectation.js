@@ -7,7 +7,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 var AffectationSchema = new Schema({
     positionId: { type: ObjectId, required: true },
     positionCode: { type: String, required: false },
-    personnelId: { type: ObjectId, required: true },//Personnel id
+    personnelId: { type: Schema.ObjectId, ref: 'Personnel', required: true },//Personnel id
     interim: { type: Boolean, required: false , default: false },
     date: Date,
     lastModified: { type: Date, default: Date.now, required: true }

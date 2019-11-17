@@ -147,6 +147,11 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                     });
                 });
             }
+            
+            
+            $scope.onlyDirection = function (item) {
+                return item.rank == "2";
+            };
 
             $scope.getAgents = function () {
                 $scope.helper = [];

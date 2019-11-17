@@ -57,37 +57,37 @@
         "id": 10,
         "uri": "/api/users",
         "method": "GET",
-        "roles": [1]
+        "roles": [1,3]
     },
     {
         "id": 11,
         "uri": "/api/users",
         "method": "POST",
-        "roles": [1]
+        "roles": [1,3]
     },
     {
         "id": 12,
         "uri": "/api/users/password",
         "method": "POST",
-        "roles": [1]
+        "roles": [1,3]
     },
     {
         "id": 13,
         "uri": "/api/users/:id",
         "method": "PUT",
-        "roles": [1]
+        "roles": [1,3]
     },
     {
         "id": 14,
         "uri": "/api/users/:id",
         "method": "DELETE",
-        "roles": [1]
+        "roles": [1,3]
     },
     {
         "id": 15,
         "uri": "/api/users/:id",
         "method": "GET",
-        "roles": [1]
+        "roles": [1,3]
     },
     {
         "id": 16,
@@ -225,13 +225,13 @@
         "id": 39,
         "uri": "/api/structures",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2, 3,4]
     },
     {
         "id": 40,
         "uri": "/api/positions/id/:id/restric/:restric/:limit/:skip",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 41,
@@ -267,25 +267,25 @@
         "id": 46,
         "uri": "/api/structures/read/:id",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,3,4]
     },
     {
         "id": 47,
         "uri": "/api/structures",
         "method": "PUT",
-        "roles": [1,2,3,4]
+        "roles": [1,3,4]
     },
     {
         "id": 48,
         "uri": "/api/positions/find/:code",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,3,4]
     },
     {
         "id": 49,
         "uri": "/api/positions/affect/",
         "method": "PUT",
-        "roles": [1,2,3,4]
+        "roles": [1,3]
     },
     {
         "id": 50,
@@ -297,13 +297,13 @@
         "id": 51,
         "uri": "/api/personnel/eligible/:id",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,3,4]
     },
     {
         "id": 52,
         "uri": "/api/pdf/pdf1/",
         "method": "GET",
-        "roles": [1,2,3]
+        "roles": [1,2,3,4]
     },
     {
         "id": 53,
