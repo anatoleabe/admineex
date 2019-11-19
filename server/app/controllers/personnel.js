@@ -252,6 +252,15 @@ exports.api.list = function (req, res) {
                                             log.error(err);
                                             res.status(500).send(err);
                                         } else {
+                                            personnels.sort(function (a, b) {
+                                                if (a.fname < b.fname) {
+                                                    return -1;
+                                                }else
+                                                if (a.fname > b.fname) {
+                                                    return 1;
+                                                }else
+                                                return 0;
+                                            })
                                             return res.json({data: personnels, count: count});
                                         }
                                     });
@@ -269,11 +278,21 @@ exports.api.list = function (req, res) {
                                     log.error(err);
                                     callback(err);
                                 } else {
+
                                     exports.list(options, function (err, personnels) {
                                         if (err) {
                                             log.error(err);
                                             res.status(500).send(err);
                                         } else {
+                                            personnels.sort(function (a, b) {
+                                                if (a.fname < b.fname) {
+                                                    return -1;
+                                                }else
+                                                if (a.fname > b.fname) {
+                                                    return 1;
+                                                }else
+                                                return 0;
+                                            })
                                             return res.json({data: personnels, count: affectations[0].theCount});
                                         }
                                     });
@@ -548,7 +567,9 @@ exports.list = function (options, callback) {
                                                 log.error(err);
                                                 callback(err);
                                             } else {
-                                                personne.affectedTo = position;
+                                                personne.affectedTo = {
+                                                    position: position
+                                                };
                                                 personnelsManaged.push(personne);
                                                 LoopAf(a + 1);
                                             }

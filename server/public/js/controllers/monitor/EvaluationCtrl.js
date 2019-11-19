@@ -17,9 +17,9 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
     $scope.stopPropagation = function (event) {
         event.stopPropagation();
     };
-    console.log(personnelfromParams);
     $scope.fromParam = false;
     $scope.personnelSelected = undefined;
+    $scope.selectedStructure = undefined;
 
     $scope.personnelSearchText = null;
     $scope.selectedPersonnelChange = null;
@@ -34,6 +34,9 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
         };
     }
 
+    $scope.onlyDirection = function (item) {
+        return item.rank == "2";
+    };
 
     $scope.close = function () {
         $mdDialog.hide();
@@ -73,11 +76,13 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
                                     });
 
                                     $scope.loadStaff = function () {
+                                        $scope.notation.structure = JSON.parse($scope.selectedStructure)._id;
                                         $scope.selectedPersonnel = undefined;
                                         $rootScope.kernel.loading = 0;
                                         Staff.list({minify: true}).then(function (response) {
                                             var data = response.data;
-                                            $scope.personnels = data;
+                                            $scope.personnels = data.data;
+                                            console.log(data.data);
                                             $rootScope.kernel.loading = 100;
                                             $scope.selectedPersonnel = personnelfromParams;
                                         });
@@ -95,14 +100,17 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
                                     }
 
                                     $scope.onlyThisStructure = function (item) {
-                                        if ($scope.notation && item.affectedTo && item.affectedTo.position && item.affectedTo.position.structure && $scope.notation.structure == item.affectedTo.position.structure._id) {
-                                            return true;
+                                        console.log(JSON.parse($scope.selectedStructure))
+                                        if ($scope.selectedStructure) {
+                                            if (item.affectedTo && item.affectedTo.position && item.affectedTo.position && item.affectedTo.position.code.startsWith(JSON.parse($scope.selectedStructure).code)) {
+                                                return true;
+                                            } else {
+                                                return false;
+                                            }
                                         } else {
-                                            return false;
+                                            return true;
                                         }
                                     };
-
-
 
                                     // Modify or Add ?
                                     if ($scope.params) {

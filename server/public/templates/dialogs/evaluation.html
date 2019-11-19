@@ -17,8 +17,8 @@
                     <div layout="row">
                         <md-input-container flex>
                             <label translate>Structure</label>
-                            <md-select name="structure" ng-disabled="fromParam == true" required ng-model="notation.structure" ng-change="loadStaff()" style="min-width: 150px;">
-                                <md-option ng-repeat="struc in structures" value="{{struc._id}}" >
+                            <md-select name="structure" ng-disabled="fromParam == true" required ng-model="selectedStructure" ng-change="loadStaff()" style="min-width: 150px;">
+                                <md-option ng-repeat="struc in structures | filter:onlyDirection" value="{{struc}}" >
                                     {{struc.name}} (code: {{struc.code}})
                                 </md-option>
                             </md-select>
@@ -34,8 +34,7 @@
                             <label translate>Select an agent</label>
                             <md-select name="selectedPersonnel" ng-disabled="personnelFromParams"  required ng-model="selectedPersonnel" ng-change="checkSelectedAgent()" style="min-width: 150px;">
                                 <md-option ng-repeat="perso in personnels | filter:onlyThisStructure" value="{{perso}}" >
-                                    {{perso.name.family[0]}} {{perso.name.given[0]}} <small>{{"(Mle: " + (perso.identifier) + ")"}}</small>
-
+                                    {{perso.fname}} <small>{{"(Mle: " + (perso.identifier) + ")"}}</small>
                                 </md-option>
                             </md-select>
                             <div ng-messages="selectedPersonnel.$error">
