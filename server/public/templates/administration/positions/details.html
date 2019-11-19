@@ -7,7 +7,7 @@
                 <span translate>Back</span>
             </md-button>
             <div layout="row" layout-align="center center" flex >
-                <md-button class="md-secondary"  aria-label="See" ng-click="eligibility(position)">
+                <md-button class="md-secondary"  aria-label="See" ng-click="eligibility(position)" ng-if="account.role == '1' || account.role == '3'">
                     <md-icon aria-label="person_add">person_adsd</md-icon>
                     <md-tooltip>
                         <span translate>Show eligible persons to this position</span>
@@ -15,7 +15,7 @@
                     <span translate>Show eligible persons to this position</span>
                 </md-button>
             </div>
-            <md-button  class="md-raised md-primary" ng-click="edit({id: position._id})" aria-label="Edit" >
+            <md-button  class="md-raised md-primary" ng-click="edit({id: position._id})" aria-label="Edit" ng-if="account.role == '1' || account.role == '3' || account.role == '4'">
                 <md-icon>edit</md-icon>
                 <span translate>Edit</span>
             </md-button>
@@ -106,7 +106,7 @@
                         <md-divider></md-divider>
                     </div>
                 </md-list>
-                <div layout="row" layout-align="center center"  >
+                <div layout="row" layout-align="center center" ng-if="account.role == '1' || account.role == '3'" >
                     <md-button class="md-secondary" ng-class="{'green':true}" aria-label="See" ng-click="affectTo(position)"
                                >
                         <md-icon aria-label="person_add">person_add</md-icon>
@@ -124,7 +124,7 @@
                 <md-card-title-text class="card-container-left">
                     <span class="md-headline" translate>Required profiles</span>
                 </md-card-title-text>
-                <md-card-actions layout="row" >
+                <md-card-actions layout="row" ng-if="account.role == '1' || account.role == '3' || account.role == '4'">
                     <span flex></span>
                     <md-button ng-click="add(position, 'requiredProfiles', 'profiles')" aria-label="Edit" >
                         <md-icon>edit</md-icon>
@@ -152,7 +152,7 @@
                 <md-card-title-text class="card-container-left">
                     <span class="md-headline" translate>Required skill</span>
                 </md-card-title-text>
-                <md-card-actions layout="row" >
+                <md-card-actions layout="row" ng-if="account.role == '1' || account.role == '3' || account.role == '4'">
                     <span flex></span>
                     <md-button ng-click="add(position, 'requiredSkills', 'skills')" aria-label="Edit" >
                         <md-icon>edit</md-icon>
@@ -218,7 +218,7 @@
         </md-card>
 
         <div layout="row" layout-align="center center"  >
-            <md-button class="md-secondary"  aria-label="See" ng-click="eligibility(position)">
+            <md-button class="md-secondary"  aria-label="See" ng-click="eligibility(position)" ng-if="account.role == '1' || account.role == '3'">
                 <md-icon aria-label="person_add">person_adsd</md-icon>
                 <md-tooltip>
                     <span translate>Show eligible persons to this position</span>
@@ -233,7 +233,7 @@
                 <span translate>Back</span>
             </md-button>
             <span flex></span>
-            <md-button  class="md-raised md-primary" ng-click="edit({id: position._id})" aria-label="Edit" >
+            <md-button  class="md-raised md-primary" ng-click="edit({id: position._id})" aria-label="Edit" ng-if="account.role == '1' || account.role == '3' || account.role == '4'">
                 <md-icon>edit</md-icon>
                 <span translate>Edit</span>
             </md-button>

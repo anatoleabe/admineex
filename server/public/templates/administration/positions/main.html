@@ -124,7 +124,7 @@
 
     </md-card>
     <div style="margin-bottom: 100px"></div>
-    <md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" ng-click="new ()" >
+    <md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" ng-click="new ()" ng-if="account.role == '1' || account.role == '4'">
         <md-icon>add</md-icon>
         <md-tooltip md-direction="top">
             <span translate>New</span>

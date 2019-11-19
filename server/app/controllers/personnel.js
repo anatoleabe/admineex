@@ -609,7 +609,8 @@ exports.api.search = function (req, res) {
                     {"$unwind": "$name.family"},
                     {"$unwind": "$name.given"},
                     {"$addFields": {"fname": {$concat: concat}}},
-                    {$match: {"fname": dictionary.makePattern(name)}}
+                    {"$addFields": {"matricule": "$identifier"}},
+                    {$match: {$or: [{"fname": dictionary.makePattern(name)}, {"matricule": dictionary.makePattern(name)}]}}
                 ]).exec(function (err, personnels) {
                     if (err) {
                         log.error(err);

@@ -15,7 +15,8 @@ exports.api = {};
 var controllers = {
     configuration: require('./configuration'),
     users: require('./users'),
-    positions: require('./positions')
+    positions: require('./positions'),
+    structures: require('./structures')
 };
 
 
@@ -84,67 +85,97 @@ exports.api.list = function (req, res) {
                 "code": req.params.code
             });
         }
-
-        Structure.find({}, function (err, result) {
+        controllers.users.findUser(req.actor.id, function (err, user) {
             if (err) {
                 log.error(err);
-                audit.logEvent('[mongodb]', 'Structures', 'List', '', '', 'failed', 'Mongodb attempted to retrieve structures list');
-                return res.status(500).send(err);
+                callback(err);
             } else {
-                var structures = JSON.parse(JSON.stringify(result));
-                function loopA(a) {
-                    if (a < structures.length) {
-                        var filterCode = structures[a].code + "P";
-                        if (structures[a].rank == "2") {
-                            filterCode = structures[a].code;
-                        }
-                        structures[a].name = ((language && language !== "" && structures[a][language] != undefined && structures[a][language] != "") ? structures[a][language] : structures[a]['en']);
-                        controllers.positions.findPositionsByStructureCode({code: filterCode}, function (err, positions) {
+                var userStructure = [];
+                var userStructureCodes = [];
+                function LoopS(s) {
+                    if (user.structures && s < user.structures.length && user.structures[s]) {
+                        controllers.structures.find(user.structures[s], "en", function (err, structure) {
                             if (err) {
-                                return res.status(500).send(err);
+                                log.error(err);
+                                callback(err);
                             } else {
-                                if (positions) {
-                                    structures[a].workstationsNb = positions.length;
-                                } else {
-                                    structures[a].workstationsNb = 0;
-                                }
-
-                                var requiredEffective = positions.length;
-
-                                var filterCode = {'$regex': structures[a].code + "P"};
-                                if (structures[a].rank == "2") {
-                                    filterCode = {'$regex': structures[a].code};
-                                }
-                                controllers.positions.findHelderPositionsByStructureCode(filterCode, function (err, affectations) {
-                                    if (err) {
-                                        audit.logEvent('[mongodb]', 'Positions', 'findHelderPositionsByStructureCode', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
-                                        return res.status(500).send(err);
-                                    } else {
-                                        if (affectations && affectations.length > 0) {
-                                            structures[a].actualEffective = affectations.length;
-                                        } else {
-                                            structures[a].actualEffective = 0;
-                                        }
-                                        structures[a].requiredEffective = requiredEffective;
-                                        structures[a].vacancies = requiredEffective - structures[a].actualEffective;
-                                        loopA(a + 1);
-                                    }
-                                });
-
+                                userStructure.push({id: structure._id, code: structure.code});
+                                userStructureCodes.push(new RegExp("^" + structure.code ));
+                                LoopS(s + 1);
                             }
                         });
-
                     } else {
-                        beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
+                        var query = {}
+                        if (req.actor.role == "2") {
+                            query = {
+                                "code": {$in: userStructureCodes}
+                            }
+                        }
+                        Structure.find(query, function (err, result) {
                             if (err) {
+                                log.error(err);
+                                audit.logEvent('[mongodb]', 'Structures', 'List', '', '', 'failed', 'Mongodb attempted to retrieve structures list');
                                 return res.status(500).send(err);
                             } else {
-                                return res.json(objects);
+                                var structures = JSON.parse(JSON.stringify(result));
+                                function loopA(a) {
+                                    if (a < structures.length) {
+                                        var filterCode = structures[a].code + "P";
+                                        if (structures[a].rank == "2") {
+                                            filterCode = structures[a].code;
+                                        }
+                                        structures[a].name = ((language && language !== "" && structures[a][language] != undefined && structures[a][language] != "") ? structures[a][language] : structures[a]['en']);
+                                        controllers.positions.findPositionsByStructureCode({code: filterCode}, function (err, positions) {
+                                            if (err) {
+                                                return res.status(500).send(err);
+                                            } else {
+                                                if (positions) {
+                                                    structures[a].workstationsNb = positions.length;
+                                                } else {
+                                                    structures[a].workstationsNb = 0;
+                                                }
+
+                                                var requiredEffective = positions.length;
+
+                                                var filterCode = {'$regex': structures[a].code + "P"};
+                                                if (structures[a].rank == "2") {
+                                                    filterCode = {'$regex': structures[a].code};
+                                                }
+                                                controllers.positions.findHelderPositionsByStructureCode(filterCode, function (err, affectations) {
+                                                    if (err) {
+                                                        audit.logEvent('[mongodb]', 'Positions', 'findHelderPositionsByStructureCode', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
+                                                        return res.status(500).send(err);
+                                                    } else {
+                                                        if (affectations && affectations.length > 0) {
+                                                            structures[a].actualEffective = affectations.length;
+                                                        } else {
+                                                            structures[a].actualEffective = 0;
+                                                        }
+                                                        structures[a].requiredEffective = requiredEffective;
+                                                        structures[a].vacancies = requiredEffective - structures[a].actualEffective;
+                                                        loopA(a + 1);
+                                                    }
+                                                });
+
+                                            }
+                                        });
+
+                                    } else {
+                                        beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
+                                            if (err) {
+                                                return res.status(500).send(err);
+                                            } else {
+                                                return res.json(objects);
+                                            }
+                                        });
+                                    }
+                                }
+                                loopA(0);
                             }
                         });
                     }
                 }
-                loopA(0);
+                LoopS(0);
             }
         });
     } else {
@@ -361,7 +392,7 @@ exports.find = function (id, language, callback) {
 
 exports.count = function (options, callback) {
     var filter = {};
-    if (options.filter){
+    if (options.filter) {
         filter = options.filter;
     }
     Structure.count(filter).exec(function (err, count) {
@@ -386,7 +417,7 @@ function beautify(options, objects, callback) {
     if (options.beautify && options.beautify === true) {
         //Address
         objects = controllers.configuration.beautifyAddress({language: language}, objects);
-        
+
         function Loop(o) {
             if (o < objects.length) {
                 objects[o].typeValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);

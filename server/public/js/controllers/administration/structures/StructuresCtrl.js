@@ -17,7 +17,9 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
         };
 
         $scope.edit = function (params) {
-            $state.go("home.administration.structures.edit", params);
+            if ($rootScope.account.role == '1' || $rootScope.account.role == '3' || $rootScope.account.role == '4'){
+                $state.go("home.administration.structures.edit", params);
+            }
         };
 
         function getStructures() {

@@ -43,7 +43,7 @@
                         <th md-column md-order-by="typeValue" translate style="min-width: 200px">Type</th>
                         <th md-column md-order-by="workstations" translate >Workstations </th>
                         <th md-column md-order-by="vacancies" translate >Vacancies</th>
-                        <th md-column translate>Actions</th>
+                        <th md-column translate ng-if="account.role == '1' || account.role == '3' || account.role == '4'">Actions</th>
                     </tr>
                 </thead>
                 <tbody md-body>
@@ -54,8 +54,8 @@
                         <td md-cell>{{structure.typeValue| unknown}}</td>
                         <td md-cell><span class="diy-chip" ng-class="{'green': true}">{{structure.workstationsNb}} <small translate>positions</small></span></td>
                         <td md-cell><small class="diy-chip" ng-class="{'red': structure.vacancies > 0}">{{structure.vacancies}}</small></td>
-                        <td md-cell >
-                            <md-button ng-click="edit(position)" aria-label="Edit" >
+                        <td md-cell ng-if="account.role == '1' || account.role == '3' || account.role == '4'">
+                            <md-button ng-click="edit(position)" aria-label="Edit"  >
                                 <md-icon>edit</md-icon>
                                 <md-tooltip md-direction="top">
                                     <span translate>Edit</span>
@@ -73,7 +73,7 @@
     </md-card>
 </div>
 <div style="margin-bottom: 100px"></div>
-<md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" ui-sref="home.administration.structures.new" >
+<md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" ui-sref="home.administration.structures.new" ng-if="account.role == '1' || account.role == '4'">
     <md-icon>add</md-icon>
     <md-tooltip md-direction="top">
         <span translate>New</span>
