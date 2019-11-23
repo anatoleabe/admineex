@@ -6,6 +6,7 @@ var fs = require("fs");
 var pdf = require('dynamic-html-pdf');
 var keyGenerator = require("generate-key");
 var dictionary = require('../utils/dictionary');
+var phantomjs = require('phantomjs');
 
 
 
@@ -39,6 +40,7 @@ exports.api.positions = function (req, res) {
     var foot = 'SYGEPE-DGTCFM<br/>Imprimé le ' + dictionary.dateformater(new Date(), "dd/MM/yyyy HH:mm:s");
 
     var options = {
+        phantomPath: phantomjs.path,
         format: "A4",
         orientation: "landscape",
         border: "10mm",
@@ -133,6 +135,7 @@ exports.api.structures = function (req, res) {
     var foot = 'SYGEPE-DGTCFM<br/>Imprimé le ' + dictionary.dateformater(new Date(), "dd/MM/yyyy HH:mm:s");
     
     var options = {
+        phantomPath: phantomjs.path,
         format: "A4",
         orientation: "landscape",
         border: "10mm",
