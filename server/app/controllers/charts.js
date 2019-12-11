@@ -258,6 +258,7 @@ var chart2 = function (config, callback) {
 
                     if (status == "1") {
                         var thisgrade = dictionary.getJSONById('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), "en");
+                        var corps = undefined;
                         if (thisgrade) {
                             corps = ((personnels[a].corps) ? personnels[a].corps : thisgrade.corps);
                         }
@@ -426,6 +427,7 @@ var global = function (config, callback) {
 
                     if (status != "") {
                         var thisgrade = dictionary.getJSONById('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), "en");
+                        var corps = undefined;
                         if (thisgrade) {
                             corps = ((personnels[a].corps) ? personnels[a].corps : thisgrade.corps);
                         }

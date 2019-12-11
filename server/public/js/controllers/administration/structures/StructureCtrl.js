@@ -85,6 +85,7 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
                             id: $stateParams.id
                         }).then(function (response) {
                             $scope.structure = response.data;
+                            console.log($scope.structure);
                             $scope.selected.structure = {
                                 _id:$scope.structure.fatherId
                             }
