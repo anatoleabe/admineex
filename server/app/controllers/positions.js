@@ -174,8 +174,8 @@ exports.api.affectToPosition = function (req, res) {
 
 //This read data from json files (matricule and position code , then link position and personnel in db
 //DO NOT USE THIS
-exports.affectToPositionFromJson = function (callback) {
-    var affectations = dictionary.getToJSONList("../../resources/dictionary/tmpData/dcp/fulldata.json");
+exports.affectToPositionFromJson = function (path, callback) {
+    var affectations = dictionary.getToJSONList("../../resources/dictionary/tmpData/" + path + "/fulldata.json");
     var avoided = [];
 
     String.prototype.isNumber = function () {
@@ -192,6 +192,24 @@ exports.affectToPositionFromJson = function (callback) {
 
             var skills = affectations[a].creel.split(";");
             var profiles = affectations[a].preel.split(";");
+
+            for (var s in skills) {
+                if (skills[s] != "") {
+                    var thisSkill = dictionary.getJSONById('../../resources/dictionary/personnel/tmp_skills.json', skills[s].trim());
+                    console.log(skills[s], thisSkill)
+                    skills[s] = thisSkill.realId;//FIXE LE PB DES LISTES DES COMPETENCES POSSIBLES(Service Deconcentre uniquement)
+                }
+            }
+
+            for (var s in profiles) {
+                if (profiles[s] != "") {
+                    var thisProfile = dictionary.getJSONById('../../resources/dictionary/personnel/tmp_profile.json', profiles[s].trim());
+                    console.log(profiles[s], thisProfile)
+                    profiles[s] = thisProfile.realId;//FIXE LE PB DES LISTES DES PROFILES POSSIBLES(Service Deconcentre uniquement)
+                }
+            }
+
+
             var affectationDate = (affectations[a].date && affectations[a].date != "") ? affectations[a].date.split("/") : undefined;
             if (affectationDate) {
                 affectationDate = new Date(+affectationDate[2], affectationDate[1] - 1, +affectationDate[0]);
@@ -305,15 +323,15 @@ exports.api.list = function (req, res) {
         var filter = {};
         if (req.params.id && req.params.id != "-1") {
             filter = {$and: []};
-            if (req.params.id.indexOf("-") > -1) {
-                filter.$and.push({
-                    "code": {'$regex': req.params.id + "P"}
-                });
-            } else {
-                filter.$and.push({
-                    "code": {'$regex': req.params.id}
-                });
-            }
+//            if (req.params.id.indexOf("-") > -1) {
+//                filter.$and.push({
+//                    "code": {'$regex': req.params.id + "P"}
+//                });
+//            } else {
+            filter.$and.push({
+                "code": {'$regex': req.params.id}
+            });
+//            }
         }
 
         Position.count(filter).exec(function (err, count) {
@@ -494,7 +512,7 @@ exports.initialize = function (callback) {
 }
 
 
-exports.INITPOSITIONDATAFROMJSON = function (callback) {
+exports.INITPOSITIONDATAFROMJSON = function (path, callback) {
     var initialize = controllers.configuration.getConf().initialize;
 
     String.prototype.isNumber = function () {
@@ -505,7 +523,7 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
     }
 
     if (initialize.positions) {
-        var positions = dictionary.getJSONList("../../resources/dictionary/tmpData/dcp/fulldata.json", "en");
+        var positions = dictionary.getJSONList("../../resources/dictionary/tmpData/" + path + "/fulldata.json", "en");
         var avoidedPositionsCode = [];
         function loopA(a) {
             if (a < positions.length) {
@@ -517,16 +535,24 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                 var activitiesValues = [];
 
                 for (var s in skillRequired) {
-                    skillRequired[s] = skillRequired[s];
+                    if (skillRequired[s] != "") {
+                        var thisSkill = dictionary.getJSONById('../../resources/dictionary/personnel/tmp_skills.json', skillRequired[s].trim());
+                        console.log(skillRequired[s], thisSkill)
+                        skillRequired[s] = thisSkill.realId;//FIXE LE PB DES LISTES DES COMPETENCES POSSIBLES(Service Deconcentre uniquement)
+                    }
                 }
 
                 for (var s in profilelRequired) {
-                    profilelRequired[s] = profilelRequired[s];
+                    if (profilelRequired[s] != "") {
+                        var thisProfile = dictionary.getJSONById('../../resources/dictionary/personnel/tmp_profile.json', profilelRequired[s].trim());
+                        console.log(profilelRequired[s], thisProfile)
+                        profilelRequired[s] = thisProfile.realId;//FIXE LE PB DES LISTES DES PROFILES POSSIBLES(Service Deconcentre uniquement)
+                    }
                 }
 
                 for (var s in activities) {
                     if (activities[s] && activities[s] != "") {
-                        var activity = dictionary.getJSONById('../../resources/dictionary/tmpData/dcp/activities.json', activities[s].trim());
+                        var activity = dictionary.getJSONById("../../resources/dictionary/tmpData/" + path + "/activities.json", activities[s].trim());
                         console.log(activities[s].trim())
                         activitiesValues.push(activity.activity.capitalize());
                     }
@@ -535,7 +561,7 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                 for (var s in tasks) {
                     if (tasks[s] && tasks[s] != "") {
                         console.log(tasks, tasks[s]);
-                        var task = dictionary.getJSONById('../../resources/dictionary/tmpData/dcp/tasks.json', tasks[s].trim());
+                        var task = dictionary.getJSONById("../../resources/dictionary/tmpData/" + path + "/tasks.json", tasks[s].trim());
                         taskValues.push(task.task.capitalize());
                     }
                 }
@@ -566,8 +592,8 @@ exports.INITPOSITIONDATAFROMJSON = function (callback) {
                         log.error(err);
                         callback(err);
                     } else {
-                        console.log(positions[a].codept)
-                        controllers.structures.findStructureByCode(positions[a].codept.substring(0, positions[a].codept.indexOf('P')), "en", function (err, structure) {
+                        console.log(positions[a].codept, positions[a].codept.substring(0, positions[a].codept.indexOf('-',4)+2))
+                        controllers.structures.findStructureByCode(positions[a].codept.substring(0, positions[a].codept.indexOf('-',4)+2), "en", function (err, structure) {
                             if (err) {
                                 log.error(err);
                                 callback(err);
@@ -844,7 +870,7 @@ exports.findPositionByCodeAndBeautify = function (code, options, callback) {
 
 exports.findPositionsByStructureCode = function (options, callback) {
     Position.find({
-        code: {'$regex': options.code}
+        code: {'$regex': new RegExp("^" + options.code)}
     }).lean().exec(function (err, positions) {
         if (err) {
             log.error(err);

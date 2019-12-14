@@ -1,0 +1,367 @@
+[
+ {
+   "id": "1",
+   "fr": "Administration",
+   "realId": "1"
+ },
+ {
+   "id": "2",
+   "fr": "Administration générale",
+   "realId": "2"
+ },
+ {
+   "id": "3",
+   "fr": "Economie et finance",
+   "realId": "3"
+ },
+ {
+   "id": "4",
+   "fr": "Archives",
+   "realId": "5"
+ },
+ {
+   "id": "5",
+   "fr": "Assurances",
+   "realId": "6"
+ },
+ {
+   "id": "6",
+   "fr": "Banque et monnaie",
+   "realId": "7"
+ },
+ {
+   "id": "7",
+   "fr": "Comptabilité Publique",
+   "realId": "9"
+ },
+ {
+   "id": "8",
+   "fr": "Comptabilité Privée",
+   "realId": "10"
+ },
+ {
+   "id": "9",
+   "fr": "Comptabilité-matière",
+   "realId": "11"
+ },
+ {
+   "id": "10",
+   "fr": "Courier",
+   "realId": "12"
+ },
+ {
+   "id": "11",
+   "fr": "Conduite automobile",
+   "realId": "13"
+ },
+ {
+   "id": "12",
+   "fr": "Documentation",
+   "realId": "14"
+ },
+ {
+   "id": "13",
+   "fr": "Droit Publique",
+   "realId": "15"
+ },
+ {
+   "id": "14",
+   "fr": "Droit Privé",
+   "realId": "16"
+ },
+ {
+   "id": "15",
+   "fr": "Sciences économiques",
+   "realId": "17"
+ },
+ {
+   "id": "16",
+   "fr": "Electronique",
+   "realId": "18"
+ },
+ {
+   "id": "17",
+   "fr": "Finances publiques",
+   "realId": "19"
+ },
+ {
+   "id": "18",
+   "fr": "Gestion des Ressources Humaines",
+   "realId": "20"
+ },
+ {
+   "id": "19",
+   "fr": "Informatique",
+   "realId": "21"
+ },
+ {
+   "id": "20",
+   "fr": "Maintenance automobile",
+   "realId": "24"
+ },
+ {
+   "id": "21",
+   "fr": "Maintenance électronique",
+   "realId": "25"
+ },
+ {
+   "id": "22",
+   "fr": "Maintenance informatique ",
+   "realId": "26"
+ },
+ {
+   "id": "23",
+   "fr": "Management ",
+   "realId": "27"
+ },
+ {
+   "id": "24",
+   "fr": "Mécanique automobile ",
+   "realId": "28"
+ },
+ {
+   "id": "25",
+   "fr": "Régies financières (Trésor)",
+   "realId": "29"
+ },
+ {
+   "id": "26",
+   "fr": "Sciences humaines",
+   "realId": "32"
+ },
+ {
+   "id": "27",
+   "fr": "Sciences sociales",
+   "realId": "33"
+ },
+ {
+   "id": "28",
+   "fr": "Secrétariat",
+   "realId": "34"
+ },
+ {
+   "id": "29",
+   "fr": "Statistiques",
+   "realId": "35"
+ },
+ {
+   "id": "30",
+   "fr": "Statistiques économiques",
+   "realId": "36"
+ },
+ {
+   "id": "31",
+   "fr": "Techniques de la documentation",
+   "realId": "37"
+ },
+ {
+   "id": "32",
+   "fr": "Techniques administratives",
+   "realId": "38"
+ },
+ {
+   "id": "33",
+   "fr": "Reglementation du travail",
+   "realId": "40"
+ },
+ {
+   "id": "34",
+   "fr": "Procédures budgetaires",
+   "realId": "41"
+ },
+ {
+   "id": "35",
+   "fr": "Fiscalité",
+   "realId": "44"
+ },
+ {
+   "id": "36",
+   "fr": "Programmation financiere",
+   "realId": "45"
+ },
+ {
+   "id": "37",
+   "fr": "Gestion des stocks",
+   "realId": "46"
+ },
+ {
+   "id": "38",
+   "fr": "Gestion de la trésorerie",
+   "realId": "47"
+ },
+ {
+   "id": "39",
+   "fr": "Audit et Contrôle",
+   "realId": "48"
+ },
+ {
+   "id": "40",
+   "fr": "Contrôle de Gestion",
+   "realId": "49"
+ },
+ {
+   "id": "41",
+   "fr": "Traducteur",
+   "realId": "50"
+ },
+ {
+   "id": "42",
+   "fr": "Moins de 3 ans d'Expérience dans le Metier de la trésorerie et des finances",
+   "realId": "51"
+ },
+ {
+   "id": "43",
+   "fr": "Plus de 3 ans d'Expérience dans le Metier de la trésorerie et des finances",
+   "realId": "52"
+ },
+ {
+   "id": "44",
+   "fr": "Moins de 3 ans d'Expérience dans le Metier de l'administration",
+   "realId": "53"
+ },
+ {
+   "id": "45",
+   "fr": "Plus de 3 ans d'Expérience dans le Metier de l'administration",
+   "realId": "54"
+ },
+ {
+   "id": "46",
+   "fr": "Moins de 3 ans d'Expérience dans le Métier de la comptabilité",
+   "realId": "55"
+ },
+ {
+   "id": "47",
+   "fr": "Plus de 3 ans d'Expérience dans le Métier de la comptabilité",
+   "realId": "56"
+ },
+ {
+   "id": "48",
+   "fr": "Moins de 3 ans d'Expérience dans le Métier de l'informatique",
+   "realId": "57"
+ },
+ {
+   "id": "49",
+   "fr": "Plus de 3 ans d'Expérience dans le Métier de l'informatique",
+   "realId": "58"
+ },
+ {
+   "id": "50",
+   "fr": "Moins de 3 ans d'Expérience dans le Métier des banques et monaies",
+   "realId": "59"
+ },
+ {
+   "id": "51",
+   "fr": "Plus de 3 ans d'Expérience dans le Métier des banques et monaies",
+   "realId": "60"
+ },
+ {
+   "id": "52",
+   "fr": "Moins de 3 ans d'Expérience dans le Métier des assurances ",
+   "realId": "61"
+ },
+ {
+   "id": "53",
+   "fr": "Plus de 3 ans d'Expérience dans le Métier des assurances ",
+   "realId": "62"
+ },
+ {
+   "id": "54",
+   "fr": "Moins de 3 ans d'Expérience dans le Métier de la formation",
+   "realId": "63"
+ },
+ {
+   "id": "55",
+   "fr": "Plus de 3 ans d'Expérience dans le Métier de la formation",
+   "realId": "64"
+ },
+ {
+   "id": "56",
+   "fr": "Moins de 3 ans d'Expérience dans le Métier de l'Audit et contrôle",
+   "realId": "65"
+ },
+ {
+   "id": "57",
+   "fr": "Plus de 3 ans d'Expérience dans le Métier de l'Audit et contrôle",
+   "realId": "66"
+ },
+ {
+   "id": "58",
+   "fr": "5 ans d'Expérience dans le Metier de la trésorerie et des finances",
+   "realId": "67"
+ },
+ {
+   "id": "59",
+   "fr": "5 ans d'Expérience dans le Metier de l'administration",
+   "realId": "68"
+ },
+ {
+   "id": "60",
+   "fr": "5 ans d'Expérience dans le Métier de la comptabilité",
+   "realId": "69"
+ },
+ {
+   "id": "61",
+   "fr": "5 ans d'Expérience dans le Métier de l'informatique",
+   "realId": "70"
+ },
+ {
+   "id": "62",
+   "fr": "5 ans d'Expérience dans le Métier des banques et monaies",
+   "realId": "71"
+ },
+ {
+   "id": "63",
+   "fr": "5 ans d'Expérience dans le Métier des assurances ",
+   "realId": "72"
+ },
+ {
+   "id": "64",
+   "fr": "5 ans d'Expérience dans le Métier de la formation",
+   "realId": "73"
+ },
+ {
+   "id": "65",
+   "fr": "5 ans d'Expérience dans le Métier de l'Audit et contrôle",
+   "realId": "75"
+ },
+ {
+   "id": "66",
+   "fr": "15 ans d'Expérience dans l'administration publique",
+   "realId": "75"
+ },
+ {
+   "id": "67",
+   "fr": "Bureautique",
+   "realId": "76"
+ },
+ {
+   "id": "68",
+   "fr": "Sciences Juridiques",
+   "realId": "77"
+ },
+ {
+   "id": "69",
+   "fr": "Avoir au moins 10 ans d’ancienneté dans l’Administration ou /et avoir été Sous- Directeur ou assimilé pendant 5 ans au moins.",
+   "realId": "78"
+ },
+ {
+   "id": "70",
+   "fr": "Avoir au moins 7 ans dans les régies financières",
+   "realId": "79"
+ },
+ {
+   "id": "71",
+   "fr": "Avoir au moins 7 ans d’ancienneté dans l’Administration",
+   "realId": "80"
+ },
+ {
+   "id": "72",
+   "fr": "Avoir été Chef de Service ou assimilé pendant 3 ans au moins",
+   "realId": "81"
+ },
+ {
+   "id": "73",
+   "fr": "Autres",
+   "realId": "82"
+ }
+]

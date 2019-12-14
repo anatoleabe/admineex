@@ -597,34 +597,34 @@ function ensureAuthorized(req, res, next) {
 
 function startBot() {
     //1
-    controllers.structures.initialize(function (err, avoided) {
-        if (err) {
-            log.error(err);
-            console.log(err);
-        } else {
-            var avoidedmsg = "";
-            if (avoided && avoided.length > 0) {
-                avoidedmsg = "Skipped structure: " + avoided;
-                log.warn(avoidedmsg);
-            }
-            audit.logEvent('[anonymous]', 'Routes', 'startBot', "", "", 'Success', "Initialization of structures succesful done. " + avoidedmsg);
-            //2
-        }
-    });
-
-    controllers.positions.initialize(function (err, avoided) {
-        if (err) {
-            log.error(err);
-            console.log(err);
-        } else {
-            var avoidedmsg = "";
-            if (avoided && avoided.length > 0) {
-                avoidedmsg = "Skipped positions: " + avoided;
-                log.warn(avoidedmsg);
-            }
-            audit.logEvent('[anonymous]', 'Routes', 'startBot', "", "", 'Success', "Initialization of position succesfully done. " + avoidedmsg);
-        }
-    });
+//    controllers.structures.initialize(function (err, avoided) {
+//        if (err) {
+//            log.error(err);
+//            console.log(err);
+//        } else {
+//            var avoidedmsg = "";
+//            if (avoided && avoided.length > 0) {
+//                avoidedmsg = "Skipped structure: " + avoided;
+//                log.warn(avoidedmsg);
+//            }
+//            audit.logEvent('[anonymous]', 'Routes', 'startBot', "", "", 'Success', "Initialization of structures succesful done. " + avoidedmsg);
+//            //2
+//        }
+//    });
+//
+//    controllers.positions.initialize(function (err, avoided) {
+//        if (err) {
+//            log.error(err);
+//            console.log(err);
+//        } else {
+//            var avoidedmsg = "";
+//            if (avoided && avoided.length > 0) {
+//                avoidedmsg = "Skipped positions: " + avoided;
+//                log.warn(avoidedmsg);
+//            }
+//            audit.logEvent('[anonymous]', 'Routes', 'startBot', "", "", 'Success', "Initialization of position succesfully done. " + avoidedmsg);
+//        }
+//    });
 
 //    controllers.personnel.initializeFromMysql(function (err, avoided) {
 //        if (err) {
@@ -645,14 +645,14 @@ function startBot() {
         }
     });
 
-//    controllers.positions.INITPOSITIONDATAFROMJSON(function (err, avoided) {
+//    controllers.positions.INITPOSITIONDATAFROMJSON("SD/adamaoua", function (err, avoided) {
 //        if (err) {
 //            log.error(err);
 //            console.log(err);
 //        } else {
 //            console.log(avoided)
 //
-//            controllers.positions.affectToPositionFromJson(function (err, avoided) {
+//            controllers.positions.affectToPositionFromJson("SD/adamaoua",function (err, avoided) {
 //                if (err) {
 //                    log.error(err);
 //                    console.log(err);

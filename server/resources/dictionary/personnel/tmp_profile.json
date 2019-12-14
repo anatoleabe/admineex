@@ -1,0 +1,302 @@
+[
+ {
+   "id": "1",
+   "fr": "Inspecteur principal du Trésor ",
+   "realId": "4"
+ },
+ {
+   "id": "2",
+   "fr": "Inspecteur de la comptabilité Matière",
+   "realId": "8"
+ },
+ {
+   "id": "3",
+   "fr": "Inspecteur du Trésor ",
+   "realId": "11"
+ },
+ {
+   "id": "4",
+   "fr": "Contrôleur principal du Travail ",
+   "realId": "15"
+ },
+ {
+   "id": "5",
+   "fr": "Contrôleur principal de la Comptabilité Matière",
+   "realId": "16"
+ },
+ {
+   "id": "6",
+   "fr": "Contrôleur principal du Trésor",
+   "realId": "17"
+ },
+ {
+   "id": "7",
+   "fr": "Contrôleur principal de la Documentation",
+   "realId": "21"
+ },
+ {
+   "id": "8",
+   "fr": "Contrôleur  du Travail ",
+   "realId": "22"
+ },
+ {
+   "id": "9",
+   "fr": "Contrôleur de la Comptabilité Matière",
+   "realId": "23"
+ },
+ {
+   "id": "10",
+   "fr": "Contrôleur du Trésor",
+   "realId": "24"
+ },
+ {
+   "id": "11",
+   "fr": "Contrôleur de la Documentation",
+   "realId": "28"
+ },
+ {
+   "id": "12",
+   "fr": "Contrôleur Adjoint de la Comptabilité matière",
+   "realId": "29"
+ },
+ {
+   "id": "13",
+   "fr": "Contrôleur Adjoint de la Documentation",
+   "realId": "30"
+ },
+ {
+   "id": "14",
+   "fr": "Contrôleur Adjoint des prix poids et mesures",
+   "realId": "31"
+ },
+ {
+   "id": "15",
+   "fr": "Contrôleur Adjoint du Trésor",
+   "realId": "32"
+ },
+ {
+   "id": "16",
+   "fr": "Contrôleur Adjoint des impots",
+   "realId": "33"
+ },
+ {
+   "id": "17",
+   "fr": "Commis d'Administration",
+   "realId": "34"
+ },
+ {
+   "id": "18",
+   "fr": "Commis de la Documentation",
+   "realId": "35"
+ },
+ {
+   "id": "19",
+   "fr": "Commis du Trésor",
+   "realId": "36"
+ },
+ {
+   "id": "20",
+   "fr": "Commis des impots",
+   "realId": "37"
+ },
+ {
+   "id": "21",
+   "fr": "Commis des douanes",
+   "realId": "38"
+ },
+ {
+   "id": "22",
+   "fr": "Secrétaire d'Administration",
+   "realId": "43"
+ },
+ {
+   "id": "23",
+   "fr": "Secrétaire d'Administration Principal",
+   "realId": "44"
+ },
+ {
+   "id": "24",
+   "fr": "Secrétaire",
+   "realId": "45"
+ },
+ {
+   "id": "25",
+   "fr": "Agent  de l'Etat 1e ",
+   "realId": "46"
+ },
+ {
+   "id": "26",
+   "fr": "Agent  de l'Etat 2e ",
+   "realId": "47"
+ },
+ {
+   "id": "27",
+   "fr": "Agent  de l'Etat 3e ",
+   "realId": "48"
+ },
+ {
+   "id": "28",
+   "fr": "Agent  de l'Etat 4e ",
+   "realId": "49"
+ },
+ {
+   "id": "29",
+   "fr": "Agent  de l'Etat 5e ",
+   "realId": "50"
+ },
+ {
+   "id": "30",
+   "fr": "Agent de l'Etat 6e ",
+   "realId": "51"
+ },
+ {
+   "id": "31",
+   "fr": "Agent de l'Etat 7e ",
+   "realId": "52"
+ },
+ {
+   "id": "32",
+   "fr": "Contractuel d'Administration 8e ",
+   "realId": "53"
+ },
+ {
+   "id": "33",
+   "fr": "Contractuel d'Administration 9e ",
+   "realId": "54"
+ },
+ {
+   "id": "34",
+   "fr": "Cadre Contractuel d'Administration 10e ",
+   "realId": "55"
+ },
+ {
+   "id": "35",
+   "fr": "Cadre Contractuel d'Administration 11e ",
+   "realId": "56"
+ },
+ {
+   "id": "36",
+   "fr": "Cadre Contractuel d'Administration 12e ",
+   "realId": "57"
+ },
+ {
+   "id": "37",
+   "fr": "Fonctionnaire Catégorie A1",
+   "realId": "58"
+ },
+ {
+   "id": "38",
+   "fr": "Fonctionnaire Catégorie A2",
+   "realId": "59"
+ },
+ {
+   "id": "39",
+   "fr": "Fonctionnaire Catégorie B1",
+   "realId": "60"
+ },
+ {
+   "id": "40",
+   "fr": "Fonctionnaire Catégorie B2",
+   "realId": "61"
+ },
+ {
+   "id": "41",
+   "fr": "Fonctionnaire Catégorie C",
+   "realId": "62"
+ },
+ {
+   "id": "42",
+   "fr": "Fonctionnaire Catégorie D",
+   "realId": "63"
+ },
+ {
+   "id": "43",
+   "fr": "Ingénieur des Travaux de la Statistique",
+   "realId": "67"
+ },
+ {
+   "id": "44",
+   "fr": "Ingénieur des travaux Informatiques",
+   "realId": "68"
+ },
+ {
+   "id": "45",
+   "fr": "Ingénieur général en Informatique",
+   "realId": "69"
+ },
+ {
+   "id": "46",
+   "fr": "Ingénieur de conception en Informatique",
+   "realId": "70"
+ },
+ {
+   "id": "47",
+   "fr": "Ingénieur Statisticien Economiste",
+   "realId": "71"
+ },
+ {
+   "id": "48",
+   "fr": "Ingénieur Statisticien",
+   "realId": "72"
+ },
+ {
+   "id": "49",
+   "fr": "Ingénieur Principal des Travaux de la Statistique",
+   "realId": "74"
+ },
+ {
+   "id": "50",
+   "fr": "Technicien Principal de la Statistique",
+   "realId": "75"
+ },
+ {
+   "id": "51",
+   "fr": "Technicien des télécommunications",
+   "realId": "76"
+ },
+ {
+   "id": "52",
+   "fr": "Technicien en informatique",
+   "realId": "77"
+ },
+ {
+   "id": "53",
+   "fr": "Pupitreur",
+   "realId": "78"
+ },
+ {
+   "id": "54",
+   "fr": "Analyste Programmeur",
+   "realId": "79"
+ },
+ {
+   "id": "55",
+   "fr": "Programmeur",
+   "realId": "80"
+ },
+ {
+   "id": "56",
+   "fr": "Cadre d'appui",
+   "realId": "89"
+ },
+ {
+   "id": "57",
+   "fr": "Agent de bureau",
+   "realId": "90"
+ },
+ {
+   "id": "58",
+   "fr": "Chauffeur",
+   "realId": "91"
+ },
+ {
+   "id": "59",
+   "fr": "Agent de liaison",
+   "realId": "92"
+ },
+ {
+   "id": "60",
+   "fr": "Autres",
+   "realId": "93"
+ }
+]

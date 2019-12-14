@@ -1,4 +1,5 @@
 var Structure = require('../models/structure').Structure;
+var Position = require('../models/position').Position;
 var nconf = require('nconf');
 nconf.file("config/server.json");
 var audit = require('../utils/audit-log');
@@ -100,7 +101,7 @@ exports.api.list = function (req, res) {
                                 callback(err);
                             } else {
                                 userStructure.push({id: structure._id, code: structure.code});
-                                userStructureCodes.push(new RegExp("^" + structure.code ));
+                                userStructureCodes.push(new RegExp("^" + structure.code));
                                 LoopS(s + 1);
                             }
                         });
@@ -121,8 +122,12 @@ exports.api.list = function (req, res) {
                                 function loopA(a) {
                                     if (a < structures.length) {
                                         var filterCode = structures[a].code + "P";
-                                        if (structures[a].rank == "2") {
-                                            filterCode = structures[a].code;
+                                        if (structures[a].rank == "2") {//For Direction
+                                            if (structures[a].type == "2") {//For deconcentred Service
+                                                filterCode = structures[a].code + "-";
+                                            } else {
+                                                filterCode = structures[a].code;
+                                            }
                                         }
                                         structures[a].name = ((language && language !== "" && structures[a][language] != undefined && structures[a][language] != "") ? structures[a][language] : structures[a]['en']);
                                         controllers.positions.findPositionsByStructureCode({code: filterCode}, function (err, positions) {
@@ -137,23 +142,39 @@ exports.api.list = function (req, res) {
 
                                                 var requiredEffective = positions.length;
 
-                                                var filterCode = {'$regex': structures[a].code + "P"};
+                                                var filterCode = {'$regex': new RegExp("^" + structures[a].code + "P")};
                                                 if (structures[a].rank == "2") {
                                                     filterCode = {'$regex': structures[a].code};
+                                                    if (structures[a].type == "2") {//For deconcentred Service
+                                                        filterCode = {'$regex': new RegExp("^" + structures[a].code + "-")};
+                                                    } else {
+                                                        filterCode = {'$regex': new RegExp("^" + structures[a].code)};
+                                                    }
                                                 }
                                                 controllers.positions.findHelderPositionsByStructureCode(filterCode, function (err, affectations) {
                                                     if (err) {
                                                         audit.logEvent('[mongodb]', 'Positions', 'findHelderPositionsByStructureCode', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
                                                         return res.status(500).send(err);
                                                     } else {
-                                                        if (affectations && affectations.length > 0) {
-                                                            structures[a].actualEffective = affectations.length;
-                                                        } else {
-                                                            structures[a].actualEffective = 0;
+                                                        var affectationLength = 0;
+                                                        function loopD(d) {
+                                                            if (affectations && d < affectations.length) {
+                                                                Position.find({
+                                                                    _id: affectations[d].positionId
+                                                                }, {"_id": 1}).lean().exec(function (err, positions) {
+                                                                    if (positions && positions.length > 0) {
+                                                                        affectationLength = affectationLength + 1;
+                                                                    }
+                                                                    loopD(d + 1);
+                                                                });
+                                                            } else {
+                                                                structures[a].actualEffective = affectationLength;
+                                                                structures[a].requiredEffective = requiredEffective;
+                                                                structures[a].vacancies = requiredEffective - structures[a].actualEffective;
+                                                                loopA(a + 1);
+                                                            }
                                                         }
-                                                        structures[a].requiredEffective = requiredEffective;
-                                                        structures[a].vacancies = requiredEffective - structures[a].actualEffective;
-                                                        loopA(a + 1);
+                                                        loopD(0);
                                                     }
                                                 });
 

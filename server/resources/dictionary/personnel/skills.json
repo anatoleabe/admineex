@@ -383,5 +383,30 @@
         "id": "77",
         "fr": "Sciences Juridiques",
         "en": "Legal Sciences"
+    },
+    {
+        "id": "78",
+        "fr": "Avoir au moins 10 ans d’ancienneté dans l’Administration ou /et avoir été Sous- Directeur ou assimilé pendant 5 ans au moins.",
+        "en": "Avoir au moins 10 ans d’ancienneté dans l’Administration ou /et avoir été Sous- Directeur ou assimilé pendant 5 ans au moins."
+    },
+    {
+        "id": "79",
+        "fr": "Avoir au moins 7 ans dans les régies financières",
+        "en": "Avoir au moins 7 ans dans les régies financières"
+    },
+    {
+        "id": "80",
+        "fr": "Avoir au moins 7 ans d’ancienneté dans l’Administration",
+        "en": "Avoir au moins 7 ans d’ancienneté dans l’Administration"
+    },
+    {
+        "id": "81",
+        "fr": "Avoir été Chef de Service ou assimilé pendant 3 ans au moins",
+        "en": "Avoir été Chef de Service ou assimilé pendant 3 ans au moins"
+    },
+    {
+        "id": "82",
+        "fr": "Autres",
+        "en": "Autres"
     }
 ]

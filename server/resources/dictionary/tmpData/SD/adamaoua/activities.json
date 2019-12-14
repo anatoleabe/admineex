@@ -1,0 +1,314 @@
+[
+ {
+   "id": "1",
+   "activity": "assure la collecte des données et des informations;"
+ },
+ {
+   "id": "2",
+   "activity": "Assure l’exécution des activités de la Caisse;"
+ },
+ {
+   "id": "3",
+   "activity": "Assure l’exécution des activités du Bureau;"
+ },
+ {
+   "id": "4",
+   "activity": "assure la confection du compte de gestion de la commune;"
+ },
+ {
+   "id": "5",
+   "activity": "Assure la coordination des activités de comptabilité et de la caisse;"
+ },
+ {
+   "id": "6",
+   "activity": "assure la gestion des autres valeurs inactives;"
+ },
+ {
+   "id": "7",
+   "activity": "assure la gestion des timbres, vignettes et des machines à timbrer ;"
+ },
+ {
+   "id": "8",
+   "activity": "assure la maintenance informatique dans les Collectivités Territoriales Décentralisées;"
+ },
+ {
+   "id": "9",
+   "activity": "assure la production de la comptabilité ;"
+ },
+ {
+   "id": "10",
+   "activity": "assure la tenue des opérations de la comptabilité et de caisse;"
+ },
+ {
+   "id": "11",
+   "activity": "assure le suivi des mouvements de fonds et des comptes réciproques ;"
+ },
+ {
+   "id": "12",
+   "activity": "assure le suivi des mouvements de fonds et des comptes réciproques des collectivités territoriales décentralisées ;"
+ },
+ {
+   "id": "13",
+   "activity": "assure le contrôle de codification des pièces comptables et des comptabilités ;"
+ },
+ {
+   "id": "14",
+   "activity": "assure le contrôle de la régularité et la validation des opérations de dépense ;"
+ },
+ {
+   "id": "15",
+   "activity": "assure le dépouillement et le dispatching des bons de caisse ;"
+ },
+ {
+   "id": "16",
+   "activity": "assure le remboursement des dépôts et des consignations diverses;"
+ },
+ {
+   "id": "17",
+   "activity": "assure le suivi des dépôts et des consignations diverses ;"
+ },
+ {
+   "id": "18",
+   "activity": "assure le suivi et le traitement des engagements budgétaires ;"
+ },
+ {
+   "id": "19",
+   "activity": "centralise les archives;"
+ },
+ {
+   "id": "20",
+   "activity": "contrôle les perceptions du département;"
+ },
+ {
+   "id": "21",
+   "activity": "Coordonne les activités de la caisse;"
+ },
+ {
+   "id": "22",
+   "activity": "effectue la confection et la mise en état d’examen des comptes de gestion de l’Etat ;"
+ },
+ {
+   "id": "23",
+   "activity": "effectue la confection et la mise en état d’examens des comptes de gestion des Etablissements Publics Administratifs ;"
+ },
+ {
+   "id": "24",
+   "activity": "Effectue les activités de contrôle et d'audit;"
+ },
+ {
+   "id": "25",
+   "activity": "Effectue les activités de contrôle, d'audit et poursuites;"
+ },
+ {
+   "id": "26",
+   "activity": "Exécute les travaux techniques du secrétariat ;"
+ },
+ {
+   "id": "27",
+   "activity": "l’élaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "28",
+   "activity": "l’élaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "29",
+   "activity": "l’élaboration des indicateurs de performance de l’Agence Comptable ;"
+ },
+ {
+   "id": "30",
+   "activity": "l’élaboration du tableau de bord de l’Agence Comptable ;"
+ },
+ {
+   "id": "31",
+   "activity": "l’élaboration du tableau de bord de la Perception ;"
+ },
+ {
+   "id": "32",
+   "activity": "l’élaboration du tableau de bord de la Trésorerie Générale ;"
+ },
+ {
+   "id": "33",
+   "activity": "l’élaboration du tableau de bord du Service;"
+ },
+ {
+   "id": "34",
+   "activity": "l’élaboration et l’exécution du plan d’action de l’Agence Comptable ;"
+ },
+ {
+   "id": "35",
+   "activity": "l’élaboration et l’exécution du plan d’action de la Perception ;"
+ },
+ {
+   "id": "36",
+   "activity": "l’élaboration et l’exécution du plan d’action de la Trésorerie Générale ;"
+ },
+ {
+   "id": "37",
+   "activity": "l’élaboration et la mise en œuvre du plan d’action du Service ;"
+ },
+ {
+   "id": "38",
+   "activity": "la confection et de la mise en état d’examens des comptes de gestion de l’établissement public administratif ;"
+ },
+ {
+   "id": "39",
+   "activity": "la mesure des performances de la Perception et de celles de ses personnels au vu des indicateurs retenus;"
+ },
+ {
+   "id": "40",
+   "activity": "la mesure des performances de la Trésorerie Générale et de celles de ses personnels au vu des indicateurs retenus;"
+ },
+ {
+   "id": "41",
+   "activity": "la mesure des performances du Service et de celle de ses personnels au vu des indicateurs retenus;"
+ },
+ {
+   "id": "42",
+   "activity": "la mise en œuvre des plans d’actions arrêtés ;"
+ },
+ {
+   "id": "43",
+   "activity": "la production des différents états périodiques ;"
+ },
+ {
+   "id": "44",
+   "activity": "la production du compte de gestion;"
+ },
+ {
+   "id": "45",
+   "activity": "le contrôle de codification des pièces comptables et des comptabilités ;"
+ },
+ {
+   "id": "46",
+   "activity": "le contrôle et l’apurement des comptes d’imputation provisoire et des rejets ;"
+ },
+ {
+   "id": "47",
+   "activity": "le contrôle formel et la régularité des comptabilités de la Trésorerie Générale et des postes comptables rattachés ;"
+ },
+ {
+   "id": "48",
+   "activity": "le suivi des activités et des opérations sur les comptes de dépôt des Collectivités Territoriales Décentralisées;"
+ },
+ {
+   "id": "49",
+   "activity": "le suivi des mouvements de fonds et des comptes réciproques ;"
+ },
+ {
+   "id": "50",
+   "activity": "le suivi et le traitement des engagements budgétaires ainsi que la saisie dans le logiciel ;"
+ },
+ {
+   "id": "51",
+   "activity": "organise l’archivage des centralisateurs et annexes, des carnets d’état des opérations à transférer (EDOT);"
+ },
+ {
+   "id": "52",
+   "activity": "Organise les activités de comptabilité matière;"
+ },
+ {
+   "id": "53",
+   "activity": "Organise les activités de contrôle et de vérification des services de la Trésorerie Générale et des postes comptable E68rattachés ;"
+ },
+ {
+   "id": "54",
+   "activity": "Organise les activités de maintenance et de mise à disposition des véhicules;"
+ },
+ {
+   "id": "55",
+   "activity": "Organiser le calendrier d 'activités du TPG ;"
+ },
+ {
+   "id": "56",
+   "activity": "participe à l’analyse et au traitement de la balance ;"
+ },
+ {
+   "id": "57",
+   "activity": "participe à l’élaboration du tableau de bord de suivi des activités du secteur de compétence du poste ;"
+ },
+ {
+   "id": "58",
+   "activity": "participe à la coordination à l’exploitation des rapports, des états de synthèse et de balance des comptes en provenance des missions diplomatiques et consulaires ainsi que celles des représentations permanentes du Cameroun à l’étranger;"
+ },
+ {
+   "id": "59",
+   "activity": "participe à la coordination des opérations comptables à son initiative ou celles des payeurs spécialisés ;"
+ },
+ {
+   "id": "60",
+   "activity": "participe à la coordination du suivi des opérations comptables des missions diplomatiques et consulaires ainsi que celles des représentations permanentes du Cameroun à l’étranger ;"
+ },
+ {
+   "id": "61",
+   "activity": "participe à la coordination et à la supervision de la mise en œuvre des plans d’actions arrêtés ;"
+ },
+ {
+   "id": "62",
+   "activity": "participe à la coordination, à la centralisation des opérations des paieries et des missions diplomatiques et consulaires ainsi que celles des représentations permanentes du Cameroun à l’étranger ;"
+ },
+ {
+   "id": "63",
+   "activity": "participe à la supervision de l’élaboration du tableau de bord de suivi des activités de trésorerie ;"
+ },
+ {
+   "id": "64",
+   "activity": "participe au classement des documents et à la recherche documentaire ;"
+ },
+ {
+   "id": "65",
+   "activity": "participe au contrôle et à l’évaluation du travail effectué en fonction des indicateurs arrêtés ;"
+ },
+ {
+   "id": "66",
+   "activity": "Planifie, organise, dirige, contrôle et évalue les activités de la Recette des Finances;"
+ },
+ {
+   "id": "67",
+   "activity": "Prépare et assure l’exécution des activités du Service;"
+ },
+ {
+   "id": "68",
+   "activity": "prépare les états de synthèse des CTD;"
+ },
+ {
+   "id": "69",
+   "activity": "produit les comptabilités et les états mensuels;"
+ },
+ {
+   "id": "70",
+   "activity": "produit les états de synthèse et la balance des comptes ;"
+ },
+ {
+   "id": "71",
+   "activity": "suit l’exécution du budget de la Trésorerie ;"
+ },
+ {
+   "id": "72",
+   "activity": "suit le rythme de l’apurement des comptabilités;"
+ },
+ {
+   "id": "73",
+   "activity": "suit les corrections des anomalies comptables avant la saisie ;"
+ },
+ {
+   "id": "74",
+   "activity": "supervise les opérations de recouvrement;"
+ },
+ {
+   "id": "75",
+   "activity": "tient les livres journaux des diverses;"
+ },
+ {
+   "id": "76",
+   "activity": "veille à la relance des Chefs de Poste retardataires;"
+ },
+ {
+   "id": "77",
+   "activity": "veille à la tenue et à la conservation des supports fixes d’information (registres, fichiers, chrono minutiers) ;"
+ },
+ {
+   "id": "78",
+   "activity": "veille sur la mise en œuvre des instructions du de la hiérarchie."
+ }
+]
