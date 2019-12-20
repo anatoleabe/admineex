@@ -86,6 +86,20 @@ exports.api.list = function (req, res) {
                 "code": req.params.code
             });
         }
+
+        if (req.params.id && req.params.id != "-1") {
+            filter.$and.push({
+                "code": new RegExp("^" + req.params.id.toUpperCase())
+            });
+        }
+
+        var limit = 0;
+        var skip = 0;
+        if (req.params.limit && req.params.skip) {
+            limit = parseInt(req.params.limit, 10);
+            skip = parseInt(req.params.skip, 10);
+        }
+        
         controllers.users.findUser(req.actor.id, function (err, user) {
             if (err) {
                 log.error(err);
@@ -112,86 +126,93 @@ exports.api.list = function (req, res) {
                                 "code": {$in: userStructureCodes}
                             }
                         }
-                        Structure.find(query, function (err, result) {
+                        Structure.count(query).exec(function (err, count) {
                             if (err) {
                                 log.error(err);
-                                audit.logEvent('[mongodb]', 'Structures', 'List', '', '', 'failed', 'Mongodb attempted to retrieve structures list');
-                                return res.status(500).send(err);
+                                callback(err);
                             } else {
-                                var structures = JSON.parse(JSON.stringify(result));
-                                function loopA(a) {
-                                    if (a < structures.length) {
-                                        var filterCode = structures[a].code + "P";
-                                        if (structures[a].rank == "2") {//For Direction
-                                            if (structures[a].type == "2") {//For deconcentred Service
-                                                filterCode = structures[a].code + "-";
-                                            } else {
-                                                filterCode = structures[a].code;
-                                            }
-                                        }
-                                        structures[a].name = ((language && language !== "" && structures[a][language] != undefined && structures[a][language] != "") ? structures[a][language] : structures[a]['en']);
-                                        controllers.positions.findPositionsByStructureCode({code: filterCode}, function (err, positions) {
-                                            if (err) {
-                                                return res.status(500).send(err);
-                                            } else {
-                                                if (positions) {
-                                                    structures[a].workstationsNb = positions.length;
-                                                } else {
-                                                    structures[a].workstationsNb = 0;
-                                                }
-
-                                                var requiredEffective = positions.length;
-
-                                                var filterCode = {'$regex': new RegExp("^" + structures[a].code + "P")};
-                                                if (structures[a].rank == "2") {
-                                                    filterCode = {'$regex': structures[a].code};
+                                Structure.find(query).limit(limit).skip(skip).lean().exec(function (err, result) {
+                                    if (err) {
+                                        log.error(err);
+                                        audit.logEvent('[mongodb]', 'Structures', 'List', '', '', 'failed', 'Mongodb attempted to retrieve structures list');
+                                        return res.status(500).send(err);
+                                    } else {
+                                        var structures = JSON.parse(JSON.stringify(result));
+                                        function loopA(a) {
+                                            if (a < structures.length) {
+                                                var filterCode = structures[a].code + "P";
+                                                if (structures[a].rank == "2") {//For Direction
                                                     if (structures[a].type == "2") {//For deconcentred Service
-                                                        filterCode = {'$regex': new RegExp("^" + structures[a].code + "-")};
+                                                        filterCode = structures[a].code + "-";
                                                     } else {
-                                                        filterCode = {'$regex': new RegExp("^" + structures[a].code)};
+                                                        filterCode = structures[a].code;
                                                     }
                                                 }
-                                                controllers.positions.findHelderPositionsByStructureCode(filterCode, function (err, affectations) {
+                                                structures[a].name = ((language && language !== "" && structures[a][language] != undefined && structures[a][language] != "") ? structures[a][language] : structures[a]['en']);
+                                                controllers.positions.findPositionsByStructureCode({code: filterCode}, function (err, positions) {
                                                     if (err) {
-                                                        audit.logEvent('[mongodb]', 'Positions', 'findHelderPositionsByStructureCode', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
                                                         return res.status(500).send(err);
                                                     } else {
-                                                        var affectationLength = 0;
-                                                        function loopD(d) {
-                                                            if (affectations && d < affectations.length) {
-                                                                Position.find({
-                                                                    _id: affectations[d].positionId
-                                                                }, {"_id": 1}).lean().exec(function (err, positions) {
-                                                                    if (positions && positions.length > 0) {
-                                                                        affectationLength = affectationLength + 1;
-                                                                    }
-                                                                    loopD(d + 1);
-                                                                });
+                                                        if (positions) {
+                                                            structures[a].workstationsNb = positions.length;
+                                                        } else {
+                                                            structures[a].workstationsNb = 0;
+                                                        }
+
+                                                        var requiredEffective = positions.length;
+
+                                                        var filterCode = {'$regex': new RegExp("^" + structures[a].code + "P")};
+                                                        if (structures[a].rank == "2") {
+                                                            filterCode = {'$regex': structures[a].code};
+                                                            if (structures[a].type == "2") {//For deconcentred Service
+                                                                filterCode = {'$regex': new RegExp("^" + structures[a].code + "-")};
                                                             } else {
-                                                                structures[a].actualEffective = affectationLength;
-                                                                structures[a].requiredEffective = requiredEffective;
-                                                                structures[a].vacancies = requiredEffective - structures[a].actualEffective;
-                                                                loopA(a + 1);
+                                                                filterCode = {'$regex': new RegExp("^" + structures[a].code)};
                                                             }
                                                         }
-                                                        loopD(0);
+                                                        controllers.positions.findHelderPositionsByStructureCode(filterCode, function (err, affectations) {
+                                                            if (err) {
+                                                                audit.logEvent('[mongodb]', 'Positions', 'findHelderPositionsByStructureCode', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
+                                                                return res.status(500).send(err);
+                                                            } else {
+                                                                var affectationLength = 0;
+                                                                function loopD(d) {
+                                                                    if (affectations && d < affectations.length) {
+                                                                        Position.find({
+                                                                            _id: affectations[d].positionId
+                                                                        }, {"_id": 1}).lean().exec(function (err, positions) {
+                                                                            if (positions && positions.length > 0) {
+                                                                                affectationLength = affectationLength + 1;
+                                                                            }
+                                                                            loopD(d + 1);
+                                                                        });
+                                                                    } else {
+                                                                        structures[a].actualEffective = affectationLength;
+                                                                        structures[a].requiredEffective = requiredEffective;
+                                                                        structures[a].vacancies = requiredEffective - structures[a].actualEffective;
+                                                                        loopA(a + 1);
+                                                                    }
+                                                                }
+                                                                loopD(0);
+                                                            }
+                                                        });
+
                                                     }
                                                 });
 
-                                            }
-                                        });
-
-                                    } else {
-                                        beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
-                                            if (err) {
-                                                return res.status(500).send(err);
                                             } else {
-                                                return res.json(objects);
+                                                beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
+                                                    if (err) {
+                                                        return res.status(500).send(err);
+                                                    } else {
+                                                        return res.json({data: objects, count: count});
+                                                    }
+                                                });
                                             }
-                                        });
+                                        }
+                                        loopA(0);
                                     }
-                                }
-                                loopA(0);
+                                });
                             }
                         });
                     }
@@ -208,7 +229,7 @@ exports.api.list = function (req, res) {
 exports.api.minimalList = function (req, res) {
     if (req.actor) {
         var language = req.actor.language.toLowerCase();
-        
+
         controllers.users.findUser(req.actor.id, function (err, user) {
             if (err) {
                 log.error(err);
@@ -372,7 +393,7 @@ exports.initialize = function (path, callback) {
     var initialize = controllers.configuration.getConf().initialize;
 
     if (true) {
-        var structures = dictionary.getJSONList("../../resources/dictionary/tmpData/"+path+"/structures.json", "en");
+        var structures = dictionary.getJSONList("../../resources/dictionary/tmpData/" + path + "/structures.json", "en");
         var avoidedStructuresCode = [];
         function loopA(a) {
             if (a < structures.length) {

@@ -1,7 +1,7 @@
 angular.module('StructureService', []).factory('Structure', function($http) {
     return {
-        list: function() {
-            return $http.get('/api/structures');
+        list: function(filter) {
+            return $http.get('/api/structures/id/' + filter.id+'/' + filter.limit + '/' + filter.skip);
         },
         minimalList: function(info) {
             if (info){

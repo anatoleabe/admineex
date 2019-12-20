@@ -1,4 +1,4 @@
-angular.module('StructuresCtrl', []).controller('StructuresController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope , $q, $http) {
+angular.module('StructuresCtrl', []).controller('StructuresController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope, $q, $http) {
     console.log("hshahahah")
     $ocLazyLoad.load('js/services/StructureService.js').then(function () {
         var Structure = $injector.get('Structure');
@@ -6,32 +6,39 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
             title: gettextCatalog.getString("No structure"),
             icon: "account_balance"
         };
-        console.log("11", $rootScope.kernel.loading)
-        
+
         $scope.organizations = [], $scope.helper = [];
         $scope.search = false;
         $scope.query = {
-            limit: 50,
+            limit: 25,
             page: 1,
             order: "code"
         };
 
         $scope.edit = function (params) {
-            if ($rootScope.account.role == '1' || $rootScope.account.role == '3' || $rootScope.account.role == '4'){
+            if ($rootScope.account.role == '1' || $rootScope.account.role == '3' || $rootScope.account.role == '4') {
                 $state.go("home.administration.structures.edit", params);
             }
         };
 
         function getStructures() {
+            var limit = $scope.query.limit;
+            var skip = $scope.query.limit * ($scope.query.page - 1);
             $scope.helper = [];
-            Structure.list().then(function (response) {
+            Structure.list({id: "-1", limit: limit, skip: skip}).then(function (response) {
                 var data = response.data;
                 if (data.length == 0 && $scope.helper.length == 0) {
                     $scope.helper = helper;
                 }
+                console.log("aasssa")
+                
+                
+                $scope.structures = {
+                        data: response.data.data,
+                        count: response.data.count
+                    };
+                console.log($scope.structures)
                 $rootScope.kernel.loading = 100;
-                console.log("222", $rootScope.kernel.loading)
-                $scope.structures = data;
             }).catch(function (response) {
                 console.error(response);
             });
@@ -54,13 +61,18 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
             });
         }
 
+        $scope.load = function () {
+            //var structureCode = $scope.filters.subStructure ? JSON.parse($scope.filters.subStructure).code : ($scope.filters.structure ? JSON.parse($scope.filters.structure).code : "-1");
+            getStructures();
+        };
+
         $scope.openPdf = function () {
             $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
                 var FileSaver = $injector.get('FileSaver');
                 $rootScope.kernel.loading = 0;
                 var deferred = $q.defer();
                 $scope.promise = deferred.promise;
-                
+
                 $http({
                     method: 'GET',
                     url: '/api/export/pdf/structures/',

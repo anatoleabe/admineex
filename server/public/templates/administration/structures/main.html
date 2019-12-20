@@ -47,7 +47,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row data-ng-repeat="structure in structures| filter:structureFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" ng-click="edit({id:structure._id})">
+                    <tr md-row data-ng-repeat="structure in structures.data| filter:structureFilter | orderBy: query.order" ng-click="edit({id:structure._id})">
                         <td md-cell>{{structure.code| uppercase | unknown}}</td>
                         <td md-cell style="min-width: 200px">{{structure.name}} </td>
                         <td md-cell>{{structure.rankValue| unknown}}</td>
@@ -67,8 +67,8 @@
                 </tbody>
             </table>
         </md-table-container>
-        <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 50, 100]" md-page="query.page" md-total="{{structures.length}}" 
-                              md-page-select="true" md-label="{{label}}" >
+        <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 50, 100]" md-page="query.page" md-total="{{structures.count}}" 
+                              md-page-select="true" md-label="{{label}}" md-on-paginate="load">
 
     </md-card>
 </div>

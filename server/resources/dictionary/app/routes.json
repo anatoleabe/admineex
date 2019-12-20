@@ -223,7 +223,7 @@
     },
     {
         "id": 39,
-        "uri": "/api/structures",
+        "uri": "/api/structures/id/:id/:limit/:skip",
         "method": "GET",
         "roles": [1,2, 3,4]
     },
