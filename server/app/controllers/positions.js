@@ -325,7 +325,7 @@ exports.api.list = function (req, res) {
         if (req.params.id && req.params.id != "-1") {
             filter = {$and: []};
             filter.$and.push({
-                "code": new RegExp("^" + req.params.id)
+                "code": new RegExp("^" + req.params.id.toUpperCase())
             });
         }
 
