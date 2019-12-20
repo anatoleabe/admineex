@@ -334,5 +334,11 @@
         "uri": "/api/export/pdf/structures/",
         "method": "GET",
         "roles": [1,2,3,4]
+    },
+    {
+        "id": 58,
+        "uri": "/api/structures/minimal/:structure",
+        "method": "GET",
+        "roles": [1,2, 3,4]
     }
 ]

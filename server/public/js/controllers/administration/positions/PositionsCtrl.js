@@ -88,33 +88,55 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                     return item.rank == "2";
             };
 
+            $scope.resetForm = function () {
+                    $scope.filters.structure = undefined;
+                    $scope.filters.soustructure = undefined;
+                    $scope.positionFilter = "";
+                    getPositions("-1", $scope.showOnlyVacancies ? "0" : "-1");
+            };
+
             $scope.onlySubDirection = function (item) {
                 if ($scope.filters.structure) {
                     var code = JSON.parse($scope.filters.structure).code;
-                    return item.rank == "3" && item.code.indexOf(code) > -1;
+                    return item.rank == "3" && item.code.indexOf(code+"-") == 0;
                 } else {
                     return false;
                 }
 
             };
 
-            $scope.$watch('filters.structure', function (newval, oldval) {
+            $scope.$watch('positionFilter', function (newval, oldval) {
                 if (newval) {
-                    newval = JSON.parse(newval).code;
-                    $scope.positionFilter = newval;
                     getPositions(newval ? newval : "-1", $scope.showOnlyVacancies ? "0" : "-1");
+                }
+            });
+            
+            $scope.$watch('filters.structure', function (newval, oldval) {
+                if (newval ) {
+                    newval = JSON.parse(newval).code;
+                    if (newval != undefined && newval != "undefined"){
+                        $scope.positionFilter = newval+"-";
+                    }else{
+                         $scope.positionFilter = "";
+                    }
+                    //getPositions(newval ? newval : "-1", $scope.showOnlyVacancies ? "0" : "-1");
                 }
             });
 
             $scope.$watch('filters.subStructure', function (newval, oldval) {
-                if (newval) {
+                if (newval && newval != undefined && newval != "undefined") {
                     newval = JSON.parse(newval).code;
-                    $scope.positionFilter = newval;
+                    if (newval != undefined && newval != "undefined"){
+                        $scope.positionFilter = newval+"P";
+                    }else{
+                         $scope.positionFilter = "";
+                    }
+                    //getPositions(newval ? newval+"P" : "-1", $scope.showOnlyVacancies ? "0" : "-1");
                 }
             });
 
             //Load structure list
-            Structure.list().then(function (response) {
+            Structure.minimalList().then(function (response) {
                 var data = response.data;
                 if (data.length == 0 && $scope.helper.length == 0) {
                     $scope.helper = helper;

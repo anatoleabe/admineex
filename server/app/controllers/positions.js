@@ -319,19 +319,14 @@ exports.api.list = function (req, res) {
             limit = parseInt(req.params.limit, 10);
             skip = parseInt(req.params.skip, 10);
         }
+        
 
         var filter = {};
         if (req.params.id && req.params.id != "-1") {
             filter = {$and: []};
-//            if (req.params.id.indexOf("-") > -1) {
-//                filter.$and.push({
-//                    "code": {'$regex': req.params.id + "P"}
-//                });
-//            } else {
             filter.$and.push({
-                "code": {'$regex': req.params.id}
+                "code": new RegExp("^" + req.params.id)
             });
-//            }
         }
 
         Position.count(filter).exec(function (err, count) {

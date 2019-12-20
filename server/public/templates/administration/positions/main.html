@@ -84,7 +84,7 @@
                 <form flex>
                     <input type="text" name="search" ng-model="positionFilter" placeholder="{{ 'search among workstations...' | translate }}">
                 </form>
-                <md-button class="md-icon-button" ng-click="positionFilter = '';filters.subStructure = undefined " aria-label="close">
+                <md-button class="md-icon-button" ng-click="positionFilter = '';filters.subStructure = undefined ; resetForm()" aria-label="close">
                     <md-icon class="material-icons">close</md-icon>
                 </md-button>
             </div>

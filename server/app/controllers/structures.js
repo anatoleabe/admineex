@@ -205,6 +205,71 @@ exports.api.list = function (req, res) {
     }
 }
 
+exports.api.minimalList = function (req, res) {
+    if (req.actor) {
+        var language = req.actor.language.toLowerCase();
+        
+        controllers.users.findUser(req.actor.id, function (err, user) {
+            if (err) {
+                log.error(err);
+                callback(err);
+            } else {
+                var userStructure = [];
+                var userStructureCodes = [];
+                function LoopS(s) {
+                    if (user.structures && s < user.structures.length && user.structures[s]) {
+                        controllers.structures.find(user.structures[s], "en", function (err, structure) {
+                            if (err) {
+                                log.error(err);
+                                callback(err);
+                            } else {
+                                userStructure.push({id: structure._id, code: structure.code});
+                                userStructureCodes.push(new RegExp("^" + structure.code));
+                                LoopS(s + 1);
+                            }
+                        });
+                    } else {
+                        var query = {}
+                        if (req.actor.role == "2") {
+                            query = {
+                                "code": {$in: userStructureCodes}
+                            }
+                        }
+                        Structure.find(query, function (err, result) {
+                            if (err) {
+                                log.error(err);
+                                audit.logEvent('[mongodb]', 'Structures', 'List', '', '', 'failed', 'Mongodb attempted to retrieve structures list');
+                                return res.status(500).send(err);
+                            } else {
+                                var structures = JSON.parse(JSON.stringify(result));
+                                function loopA(a) {
+                                    if (a < structures.length) {
+                                        structures[a].name = ((language && language !== "" && structures[a][language] != undefined && structures[a][language] != "") ? structures[a][language] : structures[a]['en']);
+                                        loopA(a + 1);
+                                    } else {
+                                        beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
+                                            if (err) {
+                                                return res.status(500).send(err);
+                                            } else {
+                                                return res.json(objects);
+                                            }
+                                        });
+                                    }
+                                }
+                                loopA(0);
+                            }
+                        });
+                    }
+                }
+                LoopS(0);
+            }
+        });
+    } else {
+        audit.logEvent('[anonymous]', 'Structures', 'List', '', '', 'failed', 'The actor was not authenticated');
+        return res.sendStatus(401);
+    }
+}
+
 exports.api.read = function (req, res) {
     if (req.actor) {
         if (req.params.id === undefined) {

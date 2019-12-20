@@ -277,6 +277,13 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.structures.api.list],
         access: _.findWhere(aclRoutes, {id: 39}).roles
     },
+    // Get structures minimal
+    {
+        path: _.findWhere(aclRoutes, {id: 58}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 58}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.structures.api.minimalList],
+        access: _.findWhere(aclRoutes, {id: 58}).roles
+    },
     // Read struture
     {
         path: _.findWhere(aclRoutes, {id: 46}).uri,
