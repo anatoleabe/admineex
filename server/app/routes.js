@@ -596,8 +596,8 @@ function ensureAuthorized(req, res, next) {
 }
 
 function startBot() {
-    //1
-//    controllers.structures.initialize(function (err, avoided) {
+//    //1
+//    controllers.structures.initialize("SD/sudouest", function (err, avoided) {
 //        if (err) {
 //            log.error(err);
 //            console.log(err);
@@ -645,14 +645,14 @@ function startBot() {
         }
     });
 
-//    controllers.positions.INITPOSITIONDATAFROMJSON("SD/adamaoua", function (err, avoided) {
+//    controllers.positions.INITPOSITIONDATAFROMJSON("SD/sudouest", function (err, avoided) {
 //        if (err) {
 //            log.error(err);
 //            console.log(err);
 //        } else {
 //            console.log(avoided)
 //
-//            controllers.positions.affectToPositionFromJson("SD/adamaoua",function (err, avoided) {
+//            controllers.positions.affectToPositionFromJson("SD/sudouest",function (err, avoided) {
 //                if (err) {
 //                    log.error(err);
 //                    console.log(err);

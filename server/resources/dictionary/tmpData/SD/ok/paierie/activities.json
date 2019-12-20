@@ -1,0 +1,430 @@
+[
+ {
+   "id": "100",
+   "activity": "Elaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "101",
+   "activity": "Elaboration du tableau de bord de la Paierie Générale ;"
+ },
+ {
+   "id": "102",
+   "activity": "Elaboration du tableau de bord du Service ;"
+ },
+ {
+   "id": "103",
+   "activity": "Elaboration du tableau de bord de la Paierie Générale ;"
+ },
+ {
+   "id": "104",
+   "activity": "Elaboration et l’exécution du plan d’action de la Paierie Générale ;"
+ },
+ {
+   "id": "105",
+   "activity": "la coordination des opérations comptables à son initiative ou celles des payeurs spécialisés ;"
+ },
+ {
+   "id": "106",
+   "activity": "la mise en œuvre des plans d’actions arrêtés ;"
+ },
+ {
+   "id": "107",
+   "activity": "le contrôle des opérations comptables de sa circonscription financière ;"
+ },
+ {
+   "id": "108",
+   "activity": "Suivi des travaux de confection du compte de gestion ;"
+ },
+ {
+   "id": "109",
+   "activity": "Mesure des performances de la Paierie Générale et de celles de ses personnels au vu des indicateurs retenus."
+ },
+ {
+   "id": "200",
+   "activity": "élabore le programme de contrôle ;"
+ },
+ {
+   "id": "201",
+   "activity": "évalue  l’organisation et le fonctionnement des services de la Paierie Générale ;"
+ },
+ {
+   "id": "202",
+   "activity": "initie les missions de contrôle et d’audit des services."
+ },
+ {
+   "id": "203",
+   "activity": "Elaboration du tableau de bord de la Paierie Générale ;"
+ },
+ {
+   "id": "204",
+   "activity": "Elaboration et l’exécution du plan d’action de la Paierie Générale ;"
+ },
+ {
+   "id": "205",
+   "activity": "la coordination des opérations comptables à son initiative ou celles des payeurs spécialisés ;"
+ },
+ {
+   "id": "206",
+   "activity": "la mise en œuvre des plans d’actions arrêtés ;"
+ },
+ {
+   "id": "207",
+   "activity": "le contrôle des opérations comptables de sa circonscription financière ;"
+ },
+ {
+   "id": "208",
+   "activity": "le suivi des travaux de confection du compte de gestion ;"
+ },
+ {
+   "id": "209",
+   "activity": "participe à l’exécution du plan d’action de la Paierie Générale ;"
+ },
+ {
+   "id": "210",
+   "activity": "participe à la coordination à l’exploitation des rapports, des états de synthèse et de balance des comptes en provenance des missions diplomatiques et consulaires ainsi que celles des représentations permanentes du Cameroun à Etranger"
+ },
+ {
+   "id": "211",
+   "activity": "participe à la coordination à la centralisation des opérations des paieries auprès des missions diplomatiques et consulaires ainsi que celles des représentations permanentes du Cameroun à Etranger ;"
+ },
+ {
+   "id": "212",
+   "activity": "participe à la coordination des opérations comptables à son initiative ou celles des payeurs spécialisés ;"
+ },
+ {
+   "id": "300",
+   "activity": "participe à la supervision de  Elaboration du tableau de bord de suivi des activités de trésorerie ;"
+ },
+ {
+   "id": "301",
+   "activity": "anime les opérations de recouvrement des créances publiques ;"
+ },
+ {
+   "id": "302",
+   "activity": "gère le personnel, le matériel et le parc automobile ;"
+ },
+ {
+   "id": "303",
+   "activity": "participe à la coordination et à la supervision de la mise en œuvre des plans d’actions arrêtés ;"
+ },
+ {
+   "id": "304",
+   "activity": "participe à la supervision du contrôle et à Evaluation du travail effectué en fonction des indicateurs arrêtés ;"
+ },
+ {
+   "id": "305",
+   "activity": "veille sur la mise en œuvre des instructions du de la hiérarchie ;"
+ },
+ {
+   "id": "306",
+   "activity": "veille sur le respect de la discipline ;"
+ },
+ {
+   "id": "400",
+   "activity": "élabore le programme de contrôle ;"
+ },
+ {
+   "id": "401",
+   "activity": "évalue  l’organisation et le fonctionnement des services de la Paierie Générale ;"
+ },
+ {
+   "id": "402",
+   "activity": "initie les missions de contrôle et d’audit des services."
+ },
+ {
+   "id": "403",
+   "activity": "participe à l’exécution du plan d’action de la Paierie Générale ;"
+ },
+ {
+   "id": "404",
+   "activity": "suit et contrôle les services de la Paierie Générale, des Paieries Spécialisées et des Paieries auprès des Missions Diplomatiques et Consulaires ;"
+ },
+ {
+   "id": "405",
+   "activity": "veille aux opérations de recouvrement et aux poursuites ;"
+ },
+ {
+   "id": "406",
+   "activity": "Procède au contrôle et audit des services de la Paierie Générale, des Paieries Spécialisées, des Paieries auprès des Missions Diplomatiques et Consulaires ;"
+ },
+ {
+   "id": "407",
+   "activity": "supervise les opérations de recouvrement et de poursuites."
+ },
+ {
+   "id": "408",
+   "activity": "l’exécution des saisies et vente pour le compte du trésor public ;"
+ },
+ {
+   "id": "409",
+   "activity": "Assure l’exécution des activités du Bureau."
+ },
+ {
+   "id": "410",
+   "activity": "effectue les opérations comptables de la Paierie Générale du Trésor ;"
+ },
+ {
+   "id": "411",
+   "activity": "effectue les opérations de comptabilité et de caisse de la Paierie Générale ;"
+ },
+ {
+   "id": "412",
+   "activity": "effectue les opérations comptables de la Paierie Générale du Trésor auprès des banques;"
+ },
+ {
+   "id": "413",
+   "activity": "assure la tenue des comptes de disponibilités de la Paierie Générale du Trésor."
+ },
+ {
+   "id": "414",
+   "activity": "assure la conservation et la manipulation des fonds et des valeurs des règlements par bon et virement à la Paierie Générale du Trésor ;"
+ },
+ {
+   "id": "415",
+   "activity": "Assure l’exécution des activités du Bureau. A ce titre, il assure la production des états périodiques de synthèse et de la balance des comptes à la Paierie Générale du Trésor."
+ },
+ {
+   "id": "500",
+   "activity": "Elaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "501",
+   "activity": "Elaboration du tableau de bord du Service ;"
+ },
+ {
+   "id": "502",
+   "activity": "Elaboration et la mise en œuvre du plan d’action du Service ;"
+ },
+ {
+   "id": "503",
+   "activity": "la mesure des performances du Service  au vu des indicateurs retenus."
+ },
+ {
+   "id": "600",
+   "activity": "Elaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "601",
+   "activity": "Elaboration du tableau de bord du Service ;"
+ },
+ {
+   "id": "602",
+   "activity": "Elaboration et la mise en œuvre du plan d’action du Service ;"
+ },
+ {
+   "id": "603",
+   "activity": "la mesure des performances du Service  et de celle de ses personnels au vu des indicateurs retenus."
+ },
+ {
+   "id": "604",
+   "activity": "le suivi des opérations de comptabilité et de caisse ;"
+ },
+ {
+   "id": "700",
+   "activity": "Elaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "701",
+   "activity": "Elaboration du tableau de bord du Service ;"
+ },
+ {
+   "id": "702",
+   "activity": "Elaboration et la mise en œuvre du plan d’action du Service ;"
+ },
+ {
+   "id": "703",
+   "activity": "la mesure des performances du Service  au vu des indicateurs retenus."
+ },
+ {
+   "id": "704",
+   "activity": "la production des états périodiques ;"
+ },
+ {
+   "id": "800",
+   "activity": "Elaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "801",
+   "activity": "Elaboration du tableau de bord du Service ;"
+ },
+ {
+   "id": "802",
+   "activity": "Elaboration et la mise en œuvre du plan d’action du Service ;"
+ },
+ {
+   "id": "803",
+   "activity": "la mesure des performances du Service  au vu des indicateurs retenus."
+ },
+ {
+   "id": "804",
+   "activity": "le contrôle de la régularité juridique, la liquidation et le visa des actes administratifs portant attribution des pensions et rentes viagères ;"
+ },
+ {
+   "id": "900",
+   "activity": "Elaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "901",
+   "activity": "Elaboration du tableau de bord du Service ;"
+ },
+ {
+   "id": "902",
+   "activity": "Elaboration et la mise en œuvre du plan d’action du Service ;"
+ },
+ {
+   "id": "903",
+   "activity": "la gestion du contentieux des titres de règlement ;"
+ },
+ {
+   "id": "904",
+   "activity": "la mesure des performances du Service  au vu des indicateurs retenus."
+ },
+ {
+   "id": "1000",
+   "activity": "Elaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "1001",
+   "activity": "Elaboration du tableau de bord du Service ;"
+ },
+ {
+   "id": "1002",
+   "activity": "Elaboration et la mise en œuvre du plan d’action du Service ;"
+ },
+ {
+   "id": "1003",
+   "activity": "la confection et la mise en état d’examens des comptes de gestion ;"
+ },
+ {
+   "id": "1004",
+   "activity": "la mesure des performances du Service  et de celle de ses personnels au vu des indicateurs retenus."
+ },
+ {
+   "id": "1005",
+   "activity": "la reddition du compte de gestion de la Paierie Générale et de sa transmission à l’organisme chargé de l’apurement ;"
+ },
+ {
+   "id": "1100",
+   "activity": "Elaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "1101",
+   "activity": "Elaboration du tableau de bord du Service ;"
+ },
+ {
+   "id": "1200",
+   "activity": "Elaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "1201",
+   "activity": "Elaboration du tableau de bord du Service ;"
+ },
+ {
+   "id": "1202",
+   "activity": "Elaboration et à la mise en œuvre du plan d’action du Service ;"
+ },
+ {
+   "id": "1203",
+   "activity": "la mesure des performances du Service  et de celle de ses personnels au vu des indicateurs retenus."
+ },
+ {
+   "id": "1204",
+   "activity": "le suivi des activités et des opérations sur les comptes de dépôt des déposants domiciliés à la Paierie Générale du Trésor ;"
+ },
+ {
+   "id": "1205",
+   "activity": "Prépare et assure l’exécution des activités du Service, notamment :"
+ },
+ {
+   "id": "1300",
+   "activity": "Elaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "1301",
+   "activity": "Elaboration du tableau de bord du Service ;"
+ },
+ {
+   "id": "1302",
+   "activity": "Elaboration et à la mise en œuvre du plan d’action du Service ;"
+ },
+ {
+   "id": "1303",
+   "activity": "la confection du compte d’emploi des ventes de timbres pour la Paierie Générale et ses postes rattachés ;"
+ },
+ {
+   "id": "1304",
+   "activity": "la gestion des valeurs inactives ;"
+ },
+ {
+   "id": "1305",
+   "activity": "la mesure des performances du Service  et de celle de ses personnels au vu des indicateurs retenus."
+ },
+ {
+   "id": "1306",
+   "activity": "effectue la production des états périodiques ;"
+ },
+ {
+   "id": "1307",
+   "activity": "Elaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "1308",
+   "activity": "Elaboration du tableau de bord du Service ;"
+ },
+ {
+   "id": "1309",
+   "activity": "Elaboration et la mise en œuvre du plan d’action du Service ;"
+ },
+ {
+   "id": "1310",
+   "activity": "la gestion du contentieux des titres de règlement ;"
+ },
+ {
+   "id": "1311",
+   "activity": "la mesure des performances du Service  au vu des indicateurs retenus."
+ },
+ {
+   "id": "1312",
+   "activity": "Elaboration des indicateurs d’évaluation des performances du Service ;"
+ },
+ {
+   "id": "1313",
+   "activity": "Elaboration du tableau de bord du Service ;"
+ },
+ {
+   "id": "1314",
+   "activity": "Elaboration et la mise en œuvre du plan d’action du Service ;"
+ },
+ {
+   "id": "1315",
+   "activity": "la gestion du contentieux des titres de règlement ;"
+ },
+ {
+   "id": "1316",
+   "activity": "la mesure des performances du Service  au vu des indicateurs retenus."
+ },
+ {
+   "id": "1317",
+   "activity": "produit le compte de gestion sur chiffre et pièces de la circonscription financière ;"
+ },
+ {
+   "id": "1318",
+   "activity": "effectue la reddition du compte de gestion de la Paierie Générale et de sa transmission à l’organisme chargé de l’apurement."
+ },
+ {
+   "id": "1319",
+   "activity": "il suit les activités et les opérations sur les comptes de dépôt des Etablissements Publics Administratifs."
+ },
+ {
+   "id": "1320",
+   "activity": "assure la gestion des valeurs inactives ;"
+ },
+ {
+   "id": "1321",
+   "activity": "il assure le suivi de l’exécution des opérations de dépenses ou de recettes spécifiques."
+ },
+ {
+   "id": "1322",
+   "activity": "Assiste le Chef de Service dans l’exercice de ses fonctions."
+ }
+]

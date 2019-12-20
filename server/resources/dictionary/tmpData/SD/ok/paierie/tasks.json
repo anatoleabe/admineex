@@ -1,0 +1,446 @@
+[
+ {
+   "id": "1",
+   "task": "apprête et dépouille les parapheurs ;"
+ },
+ {
+   "id": "2",
+   "task": "assure la saisie des documents ;"
+ },
+ {
+   "id": "3",
+   "task": "classe les actes et documents ;"
+ },
+ {
+   "id": "4",
+   "task": "Exécute les travaux techniques du secrétariat ;"
+ },
+ {
+   "id": "5",
+   "task": "habille les dossiers ;"
+ },
+ {
+   "id": "6",
+   "task": "traite le courrier ;"
+ },
+ {
+   "id": "7",
+   "task": "gère les appels téléphoniques"
+ },
+ {
+   "id": "8",
+   "task": "assure l’entretien des sommes recouvrés en liaison avec le Chef du Service de la Comptabilité."
+ },
+ {
+   "id": "9",
+   "task": "la signification des actes de poursuite pour le compte du Trésor public ;"
+ },
+ {
+   "id": "10",
+   "task": "suit l’exécution des recouvrements ;"
+ },
+ {
+   "id": "11",
+   "task": "il assure le contrôle formel et la validation des engagements des caisses d’avance"
+ },
+ {
+   "id": "12",
+   "task": "il assure le contrôle formel et le contrôle de validation des frais de déplacements."
+ },
+ {
+   "id": "13",
+   "task": "assure la relance des administrations."
+ },
+ {
+   "id": "14",
+   "task": "effectue la notification, le suivi des rejets techniques, administratifs des dossiers relatifs aux locations administratives ;"
+ },
+ {
+   "id": "15",
+   "task": "A ce titre, il assure la tenue des fiches de contrôle des engagements relatifs aux marchés publics."
+ },
+ {
+   "id": "16",
+   "task": "assure le contrôle formel et le contrôle de validation des dépenses de matériel."
+ },
+ {
+   "id": "17",
+   "task": "la notification, le suivi des rejets techniques et administratifs et la relance des administrations ;"
+ },
+ {
+   "id": "18",
+   "task": "la tenue des fiches de contrôle des engagements ;"
+ },
+ {
+   "id": "19",
+   "task": "le contrôle formel et la validation des comptabilités des caisses d’avance ;"
+ },
+ {
+   "id": "20",
+   "task": "le contrôle formel et le contrôle de validation des dépenses de matériel ;"
+ },
+ {
+   "id": "21",
+   "task": "la conservation et de la manipulation des fonds et des valeurs ;"
+ },
+ {
+   "id": "22",
+   "task": "la production de la comptabilité ;"
+ },
+ {
+   "id": "23",
+   "task": "la production des états de synthèse et de la balance des comptes ;"
+ },
+ {
+   "id": "24",
+   "task": "la tenue des comptes de disponibilités ;"
+ },
+ {
+   "id": "25",
+   "task": "la tenue des livres et documents comptables ;"
+ },
+ {
+   "id": "26",
+   "task": "le suivi de l’encaissement des recettes ;"
+ },
+ {
+   "id": "27",
+   "task": "le suivi de la tenue des registres  auxiliaires et journaux comptables ;"
+ },
+ {
+   "id": "28",
+   "task": "organise la réception des requêtes ;"
+ },
+ {
+   "id": "29",
+   "task": "organise la ventilation du courrier ;"
+ },
+ {
+   "id": "30",
+   "task": "veille au respect des délais de traitement des dossiers."
+ },
+ {
+   "id": "31",
+   "task": "assure la tenue des comptes de disponibilités ;"
+ },
+ {
+   "id": "32",
+   "task": "assure la tenue des livres et documents comptables ;"
+ },
+ {
+   "id": "33",
+   "task": "produit les états de synthèse et de la balance des comptes."
+ },
+ {
+   "id": "34",
+   "task": "assure l’encaissement des recettes diverses ;"
+ },
+ {
+   "id": "35",
+   "task": "assure la conservation et de la manipulation des fonds et des valeurs de la Paierie Générale du Trésor auprès des banques ;"
+ },
+ {
+   "id": "36",
+   "task": "assure la tenue des comptes de disponibilités auprès des banques ;"
+ },
+ {
+   "id": "37",
+   "task": "assure la tenue des livres et documents comptables de la Paierie Générale du Trésor auprès de la BEAC ;"
+ },
+ {
+   "id": "38",
+   "task": "effectue les opérations de comptabilité et de caisse de la Paierie Générale du Trésor auprès des banques;"
+ },
+ {
+   "id": "39",
+   "task": "tient les opérations de prise en charge et d’extinction des droits ;"
+ },
+ {
+   "id": "40",
+   "task": "assure l’enregistrement des dépenses et recettes diverses."
+ },
+ {
+   "id": "41",
+   "task": "assure la tenue des comptes de disponibilités des règlements par bon et virement à la Paierie Générale du Trésor ;"
+ },
+ {
+   "id": "42",
+   "task": "effectue les opérations de comptabilité des règlements par bon et virement à la Paierie Générale du Trésor ;"
+ },
+ {
+   "id": "43",
+   "task": "assure la tenue des livres et documents comptables des règlements par bon et virement à la Paierie Générale du Trésor"
+ },
+ {
+   "id": "44",
+   "task": "assure la tenue des comptes de disponibilités des règlements par chèque spécial du Trésor à la Paierie Générale du Trésor ;"
+ },
+ {
+   "id": "45",
+   "task": "assure la conservation et la manipulation des valeurs des règlements par chèque spécial du Trésor à la Paierie Générale du Trésor ;"
+ },
+ {
+   "id": "46",
+   "task": "effectue les opérations de comptabilité des règlements par chèque spécial du Trésor à la Paierie Générale du Trésor ;"
+ },
+ {
+   "id": "47",
+   "task": "veille à l’encaissement des recettes diverses par chèque spécial du Trésor."
+ },
+ {
+   "id": "48",
+   "task": "assure le contrôle formel et la validation des comptabilités des caisses ;"
+ },
+ {
+   "id": "49",
+   "task": "effectue l’encaissement des recettes ;"
+ },
+ {
+   "id": "50",
+   "task": "effectue les décaissements des fonds nécessaires ;"
+ },
+ {
+   "id": "51",
+   "task": "suit les approvisionnements en fonds et en valeurs ;"
+ },
+ {
+   "id": "52",
+   "task": "tient les registres de caisse et des valeurs en portefeuille ;"
+ },
+ {
+   "id": "53",
+   "task": "tient le calepin de caisse."
+ },
+ {
+   "id": "54",
+   "task": "Assiste le caissier Principal ;"
+ },
+ {
+   "id": "55",
+   "task": "encaisse les fonds ;"
+ },
+ {
+   "id": "56",
+   "task": "paie la dépense autorisée."
+ },
+ {
+   "id": "57",
+   "task": "assure la gestion des fiches de précomptes ;"
+ },
+ {
+   "id": "58",
+   "task": "assure l’exploitation des bordereaux de retenues."
+ },
+ {
+   "id": "59",
+   "task": "gère les ordres de recettes."
+ },
+ {
+   "id": "60",
+   "task": "il effectue le reversement des sommes retenues aux divers bénéficiaires"
+ },
+ {
+   "id": "61",
+   "task": "il effectue le reversement des sommes retenues aux divers bénéficiaires"
+ },
+ {
+   "id": "62",
+   "task": "enregistre et ventile le courrier électronique et physique ;"
+ },
+ {
+   "id": "63",
+   "task": "Reçoit les requêtes ;"
+ },
+ {
+   "id": "64",
+   "task": "veille au respect des délais de traitement des dossiers."
+ },
+ {
+   "id": "65",
+   "task": "enregistre et ventile le courrier électronique et physique ;"
+ },
+ {
+   "id": "66",
+   "task": "Reçoit les requêtes ;"
+ },
+ {
+   "id": "67",
+   "task": "veille au respect des délais de traitement des dossiers."
+ },
+ {
+   "id": "68",
+   "task": "assure le contrôle de la régularité juridique, de la liquidation et du visa des actes  administratifs portant attribution des pensions et rentes viagères des personnels éducatifs et sociaux de l’Etat ;"
+ },
+ {
+   "id": "69",
+   "task": "assure le suivi et du visa de la rémunération des personnels éducatifs et sociaux de l’Etat ;"
+ },
+ {
+   "id": "70",
+   "task": "veille  la retenue à la source des sommes indûment perçues par les des personnels éducatifs et sociaux de l’Etat."
+ },
+ {
+   "id": "71",
+   "task": "assure le contrôle de la régularité juridique, de la liquidation et du visa des actes  administratifs portant attribution des pensions et rentes viagères des personnels judiciaires et techniques de l’Etat ;"
+ },
+ {
+   "id": "72",
+   "task": "assure le suivi et du visa de la rémunération des personnels judiciaires et techniques de l’Etat ;"
+ },
+ {
+   "id": "73",
+   "task": "veille  la retenue à la source des sommes indûment perçues par les des personnels judiciaires et techniques de l’Etat."
+ },
+ {
+   "id": "74",
+   "task": "assure le contrôle de la régularité juridique, de la liquidation et du visa des actes  administratifs portant attribution des pensions et rentes viagères ;"
+ },
+ {
+   "id": "75",
+   "task": "assure le suivi et du visa de la rémunération des personnels de l’Etat ;"
+ },
+ {
+   "id": "76",
+   "task": "veille à la retenue à la source des sommes indûment perçues par les des personnels de l’Etat."
+ },
+ {
+   "id": "77",
+   "task": "enregistre et ventile le courrier électronique et physique ;"
+ },
+ {
+   "id": "78",
+   "task": "Reçoit les requêtes ;"
+ },
+ {
+   "id": "79",
+   "task": "veille au respect des délais de traitement des dossiers."
+ },
+ {
+   "id": "80",
+   "task": "le traitement et la distribution des titres de règlement ;"
+ },
+ {
+   "id": "81",
+   "task": "le traitement et la distribution des titres de règlement ;"
+ },
+ {
+   "id": "82",
+   "task": "classe les pièces par nature des opérations en recette et dépenses ;"
+ },
+ {
+   "id": "83",
+   "task": "contrôle comptables des pièces justificatives des recettes et des dépenses."
+ },
+ {
+   "id": "84",
+   "task": "procède au rapprochement entre les chiffres de la balance des comptes du Trésor et les pièces justificatives ;"
+ },
+ {
+   "id": "85",
+   "task": "centralise les archives ;"
+ },
+ {
+   "id": "86",
+   "task": "assure la conservation et l’archivage des documents comptables."
+ },
+ {
+   "id": "87",
+   "task": "des différents, postes comptables de  la circonscription financière auprès des apureurs."
+ },
+ {
+   "id": "88",
+   "task": "assure la vérification, le contrôle formel et la régularité des comptabilités de la Paierie Générale et de ses postes  rattachés ;"
+ },
+ {
+   "id": "89",
+   "task": "réceptionne et ventile les comptabilités"
+ },
+ {
+   "id": "90",
+   "task": "il assure la vérification, le contrôle formel et la régularité des comptabilités de la Paierie Générale et de ses postes  rattachés."
+ },
+ {
+   "id": "91",
+   "task": "assure l’édition des états de synthèse ;"
+ },
+ {
+   "id": "92",
+   "task": "assure la saisie des comptabilités des postes comptables de la circonscription financière."
+ },
+ {
+   "id": "93",
+   "task": "suit la régularisation des rejets comptables."
+ },
+ {
+   "id": "94",
+   "task": "initie les rejets comptables ;"
+ },
+ {
+   "id": "95",
+   "task": "s’assure de la régularité des pièces comptables ;"
+ },
+ {
+   "id": "96",
+   "task": "assure le contrôle formel et le contrôle de validation des dépenses de matériel."
+ },
+ {
+   "id": "97",
+   "task": "l’exploitation des pièces justificatives des dépenses spécifiques ;"
+ },
+ {
+   "id": "98",
+   "task": "la tenue du fichier sur le cautionnement des comptables ;"
+ },
+ {
+   "id": "99",
+   "task": "le suivi de l’exécution des débets comptables ;"
+ },
+ {
+   "id": "100",
+   "task": "le suivi de l’exécution des opérations de dépenses ou de recettes spécifiques ;"
+ },
+ {
+   "id": "101",
+   "task": "le suivi des précomptes sur crédit automobile des personnels civils et militaires ;"
+ },
+ {
+   "id": "102",
+   "task": "assure la confection du compte d’emploi des ventes de timbres pour la Paierie Générale et ses postes rattachés ;"
+ },
+ {
+   "id": "103",
+   "task": "assure la tenue du fichier sur le cautionnement des comptables."
+ },
+ {
+   "id": "104",
+   "task": "il assure le suivi des précomptes sur crédit automobile des personnels civils et militaires."
+ },
+ {
+   "id": "105",
+   "task": "Assure le transport du Payeur Général ou la liaison entre le cabinet  et l’hôtel particulier du Payeur Général ;"
+ },
+ {
+   "id": "106",
+   "task": "effectue toute autre tâche à lui confié par le ministre ;"
+ },
+ {
+   "id": "107",
+   "task": "veille à l’entretien du véhicule."
+ },
+ {
+   "id": "108",
+   "task": "Reçoit, trie et enregistre le courrier ;"
+ },
+ {
+   "id": "109",
+   "task": "participe au classement des documents et à la recherche documentaire ;"
+ },
+ {
+   "id": "110",
+   "task": "veille à la tenue et à la conservation des supports fixes d’information (registres, fichiers, chrono minutiers) ;"
+ },
+ {
+   "id": "111",
+   "task": "assure la collecte des données et des informations"
+ }
+]

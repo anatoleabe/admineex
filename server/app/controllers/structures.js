@@ -303,11 +303,11 @@ exports.api.delete = function (req, res) {
     }
 }
 
-exports.initialize = function (callback) {
+exports.initialize = function (path, callback) {
     var initialize = controllers.configuration.getConf().initialize;
 
-    if (initialize.structures == "0") {
-        var structures = dictionary.getJSONList("../../resources/dictionary/structure/structures.json", "en");
+    if (true) {
+        var structures = dictionary.getJSONList("../../resources/dictionary/tmpData/"+path+"/structures.json", "en");
         var avoidedStructuresCode = [];
         function loopA(a) {
             if (a < structures.length) {
@@ -315,11 +315,20 @@ exports.initialize = function (callback) {
                     code: structures[a].code,
                     en: structures[a].en,
                     fr: structures[a].fr,
-                    fatherIdentifier: structures[a].father,
+//                    fatherIdentifier: "10",//FOR CENTRE
+                    fatherId: structures[a].father,
                     rank: structures[a].rank,
                     type: structures[a].type,
-                    activities: structures[a].activities | [],
-                    tasks: structures[a].tasks | [],
+                    activities: [],
+                    tasks: [],
+                    address: [
+                        {
+                            country: "CMR", //From json
+                            region: structures[a].region,
+                            department: structures[a].department,
+                            arrondissement: ""
+                        }
+                    ],
                     lastModified: new Date(),
                     created: new Date()
                 }

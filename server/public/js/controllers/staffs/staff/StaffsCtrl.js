@@ -163,6 +163,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                         $scope.helper = helper;
                     }
                     $rootScope.kernel.loading = 100;
+                    console.log(response.data.data)
                     $scope.personnels = {
                         data: response.data.data,
                         count: response.data.count

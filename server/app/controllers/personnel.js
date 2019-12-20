@@ -255,11 +255,11 @@ exports.api.list = function (req, res) {
                                             personnels.sort(function (a, b) {
                                                 if (a.fname < b.fname) {
                                                     return -1;
-                                                }else
+                                                } else
                                                 if (a.fname > b.fname) {
                                                     return 1;
-                                                }else
-                                                return 0;
+                                                } else
+                                                    return 0;
                                             })
                                             return res.json({data: personnels, count: count});
                                         }
@@ -287,11 +287,11 @@ exports.api.list = function (req, res) {
                                             personnels.sort(function (a, b) {
                                                 if (a.fname < b.fname) {
                                                     return -1;
-                                                }else
+                                                } else
                                                 if (a.fname > b.fname) {
                                                     return 1;
-                                                }else
-                                                return 0;
+                                                } else
+                                                    return 0;
                                             })
                                             return res.json({data: personnels, count: affectations[0].theCount});
                                         }
@@ -458,10 +458,12 @@ exports.list = function (options, callback) {
                 } else {
                     if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4") {
                         var query = {};
+                        console.log("MSMSMSMSMS 2", options.search)
                         if (options.query) {
                             query = options.query;
                         }
                         var concat = ["$name.family", " ", "$name.given"];
+                        var concatMeta = ["$name.family", "$name.given", "$identifier"];
                         var sort = {"name.family": 'asc'};
                         var q;
                         if (options.search && options.search != "-" && options.search != "") {
@@ -470,8 +472,9 @@ exports.list = function (options, callback) {
                                 {"$unwind": "$name.family"},
                                 {"$unwind": "$name.given"},
                                 {"$addFields": {"fname": {$concat: concat}}},
-                                {"$addFields": {"matricule": "$AffectedPersonnal.identifier"}},
-                                {$match: {$or: [{"fname": dictionary.makePattern(options.search)}, {"matricule": dictionary.makePattern(options.search)}]}},
+                                {"$addFields": {"matricule": "$identifier"}},
+                                {"$addFields": {"metainfo": {$concat: concatMeta}}},
+                                {$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}},
                                 {"$limit": options.skip + options.limit},
                                 {"$skip": options.skip}
                             ]);
@@ -511,6 +514,7 @@ exports.list = function (options, callback) {
                         var q;
                         var query = {positionCode: {$in: userStructureCodes}};
                         var concat = ["$AffectedPersonnal.name.family", " ", "$AffectedPersonnal.name.given"];
+                        var concatMeta = ["$AffectedPersonnal.name.family", "$AffectedPersonnal.name.given", "$AffectedPersonnal.identifier", "$positionCode"];
                         var sort = {"name.family": 'asc'};
                         var aggregat = [
                             {"$match": {"positionCode": {$in: userStructureCodes}}},
@@ -527,18 +531,20 @@ exports.list = function (options, callback) {
                             {"$unwind": "$AffectedPersonnal.name.family"},
                             {"$unwind": "$AffectedPersonnal.name.given"},
                             {"$addFields": {"fname": {$concat: concat}}},
-                            {"$addFields": {"matricule": "$AffectedPersonnal.identifier"}},
+                            {"$addFields": {"matricule": "$identifier"}},
+                            {"$addFields": {"metainfo": {$concat: concatMeta}}}
                         ]
 
                         //Filter by key word
                         if (options.search && options.search != "-" && options.search != "") {
-                            aggregat.push({$match: {$or: [{"fname": dictionary.makePattern(options.search)}, {"matricule": dictionary.makePattern(options.search)}]}})
+                            aggregat.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
                         }
                         //If retiredOnly
                         if (options.retiredOnly) {
                             aggregat.push({"$addFields": {"retirement": "$AffectedPersonnal.retirement.retirement"}});
                             aggregat.push({"$addFields": {"notified": "$AffectedPersonnal.retirement.notified"}});
                             aggregat.push({"$addFields": {"extended": "$AffectedPersonnal.retirement.extended"}});
+                            aggregat.push({"$addFields": {"positionCode": "$positionCode"}});
                             aggregat.push({"$match": {"retirement": true}});
                             aggregat.push({"$match": {"notified": {$exists: true}}});
                             aggregat.push({"$match": {$or: [{"extended": {$exists: false}}, {"extended": false}]}});
@@ -562,6 +568,7 @@ exports.list = function (options, callback) {
                                     if (affectations && a < affectations.length) {
                                         personne = affectations[a].AffectedPersonnal;
                                         personne.fname = affectations[a].fname;
+                                        personne.metainfo = affectations[a].metainfo;
                                         controllers.positions.findPositionByCodeAndBeautify(affectations[a].positionCode, options, function (err, position) {
                                             if (err) {
                                                 log.error(err);
@@ -602,6 +609,7 @@ exports.api.search = function (req, res) {
             var concat;
 
             concat = ["$name.family", " ", "$name.given"];
+            var concatMeta = ["$name.family", "$name.given", "$identifier"];
 
             if (name !== '') {
                 Personnel.aggregate([
@@ -610,7 +618,8 @@ exports.api.search = function (req, res) {
                     {"$unwind": "$name.given"},
                     {"$addFields": {"fname": {$concat: concat}}},
                     {"$addFields": {"matricule": "$identifier"}},
-                    {$match: {$or: [{"fname": dictionary.makePattern(name)}, {"matricule": dictionary.makePattern(name)}]}}
+                    {"$addFields": {"metainfo": {$concat: concatMeta}}},
+                    {$match: {$or: [{"metainfo": dictionary.makePattern(name)}]}}
                 ]).exec(function (err, personnels) {
                     if (err) {
                         log.error(err);

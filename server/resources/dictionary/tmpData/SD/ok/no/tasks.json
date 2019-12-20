@@ -1,0 +1,898 @@
+[
+ {
+   "id": "1",
+   "task": "accueille et oriente les usagers"
+ },
+ {
+   "id": "2",
+   "task": "anime les opérations de recouvrement des créances publiques"
+ },
+ {
+   "id": "3",
+   "task": "anime les services du compte de gestion"
+ },
+ {
+   "id": "4",
+   "task": "apporte l’appui à la gestion des applications au sein des Collectivités Territoriales Décentralisées"
+ },
+ {
+   "id": "5",
+   "task": "apprête et dépouille les parapheurs"
+ },
+ {
+   "id": "6",
+   "task": "assiste le caissier Principal"
+ },
+ {
+   "id": "7",
+   "task": "assure l’entrée et la sortie du matériel"
+ },
+ {
+   "id": "8",
+   "task": "assure l’entretien des sommes recouvrés en liaison avec le Service de la Comptabilité"
+ },
+ {
+   "id": "9",
+   "task": "assure l’exécution des ordres de recettes"
+ },
+ {
+   "id": "10",
+   "task": "assure l’expédition du courrier"
+ },
+ {
+   "id": "11",
+   "task": "assure la collecte des données et des informations"
+ },
+ {
+   "id": "12",
+   "task": "assure la conservation du matériel"
+ },
+ {
+   "id": "13",
+   "task": "assure la conservation et l’archivage des documents comptables"
+ },
+ {
+   "id": "14",
+   "task": "assure la discipline au sein de la Recette des Finances et des Perceptions de son ressort"
+ },
+ {
+   "id": "15",
+   "task": "assure la mise en forme de la comptabilité"
+ },
+ {
+   "id": "16",
+   "task": "assure la préparation des dossiers de remboursement"
+ },
+ {
+   "id": "17",
+   "task": "assure la prise en charge des titres de recettes et des dépenses"
+ },
+ {
+   "id": "18",
+   "task": "assure la production de la comptabilité"
+ },
+ {
+   "id": "19",
+   "task": "assure la production des états de synthèse"
+ },
+ {
+   "id": "20",
+   "task": "assure la production du certificat de concordance entre le compte administratif et le compte de gestion"
+ },
+ {
+   "id": "21",
+   "task": "assure la réception et le traitement des dépenses du personnel"
+ },
+ {
+   "id": "22",
+   "task": "assure la réception la ventilation et l’expédition du courrier"
+ },
+ {
+   "id": "23",
+   "task": "assure la saisie des documents"
+ },
+ {
+   "id": "24",
+   "task": "assure la tenue des opérations de la comptabilité et de caisse"
+ },
+ {
+   "id": "25",
+   "task": "assure la tenue des opérations de recouvrement"
+ },
+ {
+   "id": "26",
+   "task": "assure la tenue des opérations diverses de la comptabilité "
+ },
+ {
+   "id": "27",
+   "task": "assure la tenue des registres auxiliaires et des journaux comptables de son ressort de compétence"
+ },
+ {
+   "id": "28",
+   "task": "assure la tenue et le suivi des comptes de disponibilités diverses"
+ },
+ {
+   "id": "29",
+   "task": "Assure la transmission des dossiers"
+ },
+ {
+   "id": "30",
+   "task": "assure le  suivi des mouvements de fonds et des comptes réciproques"
+ },
+ {
+   "id": "31",
+   "task": "assure le  suivi des mouvements de fonds"
+ },
+ {
+   "id": "32",
+   "task": "assure le classement et la conservation des actes et des documents"
+ },
+ {
+   "id": "33",
+   "task": "assure le contrôle de codification des pièces comptables et des comptabilités"
+ },
+ {
+   "id": "34",
+   "task": "assure le contrôle de la régularité et la validation des opérations de dépense"
+ },
+ {
+   "id": "35",
+   "task": "assure le contrôle et de l’exploitation des états de concordance bancaire"
+ },
+ {
+   "id": "36",
+   "task": "assure le contrôle formel et  la régularité des comptabilités de l’Agence Comptable "
+ },
+ {
+   "id": "37",
+   "task": "assure le contrôle formel et  la régularité des comptabilités de la Perception"
+ },
+ {
+   "id": "38",
+   "task": "assure le contrôle formel et  la régularité des comptabilités de la Trésorerie Générale et des postes comptables rattachés"
+ },
+ {
+   "id": "39",
+   "task": "assure le contrôle formel et  la régularité des comptabilités des collectivités territoriales décentralisées"
+ },
+ {
+   "id": "40",
+   "task": "assure le contrôle formel et la validation des comptabilités des caisses"
+ },
+ {
+   "id": "41",
+   "task": "assure le contrôle juridique du compte de dépense"
+ },
+ {
+   "id": "42",
+   "task": "assure le contrôle la tenue et le suivi des comptes de disponibilités"
+ },
+ {
+   "id": "43",
+   "task": "assure le déroulement des opérations de la comptabilité et de caisse"
+ },
+ {
+   "id": "44",
+   "task": "assure le suivi des engagements"
+ },
+ {
+   "id": "45",
+   "task": "assure le suivi des opérations de transfert des compétences"
+ },
+ {
+   "id": "46",
+   "task": "assure le suivi du déblocage des subventions"
+ },
+ {
+   "id": "47",
+   "task": "assure le suivi du recouvrement des recettes propres aux Etablissements Publics Administratifs"
+ },
+ {
+   "id": "48",
+   "task": "Assure le transport de l’Agent Comptable ou les liaisons "
+ },
+ {
+   "id": "49",
+   "task": "assure le transport du Receveur des Finances ou la liaison entre le cabinet  et l’hôtel particulier du Receveur des Finances"
+ },
+ {
+   "id": "50",
+   "task": "assure le transport du service "
+ },
+ {
+   "id": "51",
+   "task": "assure le transport du Trésorier Payeur Général ou la liaison entre le cabinet  et l’hôtel particulier du Trésorier Payeur Général "
+ },
+ {
+   "id": "52",
+   "task": "assure les liaisons"
+ },
+ {
+   "id": "53",
+   "task": "audite les postes rattachés"
+ },
+ {
+   "id": "54",
+   "task": "audite les postes rattachés"
+ },
+ {
+   "id": "55",
+   "task": "centralise et contrôle les états de remise des frais de poursuite et autres gratifications accordées au personnel de la circonscription"
+ },
+ {
+   "id": "56",
+   "task": "centralise et contrôle les états de remise des frais de poursuite et autres gratifications accordées aux personnels de la Paierie Générale du Trésor"
+ },
+ {
+   "id": "57",
+   "task": "chargé des opérations de courrier"
+ },
+ {
+   "id": "58",
+   "task": "classe les actes et documents"
+ },
+ {
+   "id": "59",
+   "task": "conserve et sécurise les autorisations de dépenses "
+ },
+ {
+   "id": "60",
+   "task": "conserve les pièces comptables"
+ },
+ {
+   "id": "61",
+   "task": "contribue à l’exécution des opérations de comptabilité et de caisse"
+ },
+ {
+   "id": "62",
+   "task": "contrôle des états de vente mensuels"
+ },
+ {
+   "id": "63",
+   "task": "contrôle la consommation des crédits"
+ },
+ {
+   "id": "64",
+   "task": "contrôle la production dans les délais de l’état de concordance banque et CCP"
+ },
+ {
+   "id": "65",
+   "task": "contrôle la situation des recouvrements"
+ },
+ {
+   "id": "66",
+   "task": "contrôle les opérations de caisse et de comptabilité  contrôle les régies de recettes"
+ },
+ {
+   "id": "67",
+   "task": "contrôle les opérations de dépense"
+ },
+ {
+   "id": "68",
+   "task": "contrôle les perceptions du département"
+ },
+ {
+   "id": "69",
+   "task": "Coordonne les activités du secrétariat"
+ },
+ {
+   "id": "70",
+   "task": "dépouille le courrier"
+ },
+ {
+   "id": "71",
+   "task": "effectue l’apurement des comptes"
+ },
+ {
+   "id": "72",
+   "task": "effectue l’encaissement des recettes"
+ },
+ {
+   "id": "73",
+   "task": "effectue l’encaissement des recettes et le décaissement"
+ },
+ {
+   "id": "74",
+   "task": "effectue la confection et la mise en état d’examens des comptes de gestion de l’Etat "
+ },
+ {
+   "id": "75",
+   "task": "effectue la recherche sur la documentation"
+ },
+ {
+   "id": "76",
+   "task": "effectue le contrôle de codification des pièces comptables et des comptabilités"
+ },
+ {
+   "id": "77",
+   "task": "effectue le contrôle formel et  la régularité des comptabilités de la Trésorerie Générale et des postes comptables rattachés"
+ },
+ {
+   "id": "78",
+   "task": "effectue les courses de service"
+ },
+ {
+   "id": "79",
+   "task": "effectue les décaissements des fonds nécessaires"
+ },
+ {
+   "id": "80",
+   "task": "effectue les enregistrements dans le livre journal"
+ },
+ {
+   "id": "81",
+   "task": "effectue les opérations de recouvrement des collectivités territoriales décentralisées"
+ },
+ {
+   "id": "83",
+   "task": "effectue les opérations des dépenses"
+ },
+ {
+   "id": "84",
+   "task": "effectue toute autre tâche à lui confié par le ministre"
+ },
+ {
+   "id": "85",
+   "task": "encaisse les fonds"
+ },
+ {
+   "id": "86",
+   "task": "évalue l’organisation et le fonctionnement des services de la trésorerie"
+ },
+ {
+   "id": "87",
+   "task": "exécute les courses du cabinet du TPG"
+ },
+ {
+   "id": "88",
+   "task": "exécute les opérations de recouvrement"
+ },
+ {
+   "id": "89",
+   "task": "Exécute les travaux techniques du secrétariat"
+ },
+ {
+   "id": "90",
+   "task": "gère le personnel le matériel et le parc automobile "
+ },
+ {
+   "id": "91",
+   "task": "gère le standard et les liaisons téléphoniques"
+ },
+ {
+   "id": "92",
+   "task": "gère les appels téléphoniques"
+ },
+ {
+   "id": "93",
+   "task": "gère les documents comptables sécurisés"
+ },
+ {
+   "id": "94",
+   "task": "habille les dossiers"
+ },
+ {
+   "id": "95",
+   "task": "il assure la conservation des titres de règlement"
+ },
+ {
+   "id": "96",
+   "task": "il traite les salaires des personnels et les pensions des retraités"
+ },
+ {
+   "id": "97",
+   "task": "Il veille au contrôle de la régularité et à la validation des opérations de dépense de matériel"
+ },
+ {
+   "id": "98",
+   "task": "l’analyse des balances mensuelles déposées par les Collectivités Territoriales Décentralisées "
+ },
+ {
+   "id": "99",
+   "task": "l’archivage des centralisateurs et annexes des carnets d’état des opérations à transférer"
+ },
+ {
+   "id": "100",
+   "task": "l’audit de tous les services rattachés"
+ },
+ {
+   "id": "101",
+   "task": "l’édition des documents de synthèse et de balance des comptes"
+ },
+ {
+   "id": "102",
+   "task": "l’élaboration des indicateurs d’évaluation des performances du Service"
+ },
+ {
+   "id": "103",
+   "task": "l’élaboration du tableau de bord de la Recette des Finances "
+ },
+ {
+   "id": "104",
+   "task": "l’élaboration du tableau de bord du Service"
+ },
+ {
+   "id": "105",
+   "task": "l’élaboration et l’exécution du plan d’action de la Recette des Finances"
+ },
+ {
+   "id": "106",
+   "task": "l’élaboration et la mise en œuvre du plan d’action du Service "
+ },
+ {
+   "id": "107",
+   "task": "l’encaissement des recettes sur la plateforme SYSTAC"
+ },
+ {
+   "id": "108",
+   "task": "l’encaissement des recettes"
+ },
+ {
+   "id": "109",
+   "task": "l’établissement de la fiche d’imputation"
+ },
+ {
+   "id": "110",
+   "task": "l’établissement des certificats des recettes et des dépenses"
+ },
+ {
+   "id": "111",
+   "task": "l’établissement des restes à payer sur bon de commande bon de caisse et autres titres"
+ },
+ {
+   "id": "112",
+   "task": "l’évaluation de l’organisation et du fonctionnement des services de la trésorerie"
+ },
+ {
+   "id": "114",
+   "task": "l’exécution des opérations de la comptabilité et de caisse"
+ },
+ {
+   "id": "115",
+   "task": "l’exécution des opérations de recouvrement"
+ },
+ {
+   "id": "116",
+   "task": "l’exécution des saisies et vente pour le compte du trésor public"
+ },
+ {
+   "id": "117",
+   "task": "la centralisation des états de restes à recouvrer et éventuellement des comptabilités des perceptions de son ressort"
+ },
+ {
+   "id": "118",
+   "task": "la commande des valeurs inactives à savoir les timbres fiscaux les vignettes automobiles les certificats médicaux en début d’année "
+ },
+ {
+   "id": "119",
+   "task": "la concordance des comptes entre le service et le service du contrôle et du traitement informatique des comptabilités"
+ },
+ {
+   "id": "120",
+   "task": "la confection et la mise en état d’examens des comptes de gestion"
+ },
+ {
+   "id": "121",
+   "task": "la confection régulière de l’état de concordance bancaire "
+ },
+ {
+   "id": "122",
+   "task": "la formation et l’animation"
+ },
+ {
+   "id": "123",
+   "task": "la garde et le maniement des fonds "
+ },
+ {
+   "id": "124",
+   "task": "la gestion de la trésorerie "
+ },
+ {
+   "id": "125",
+   "task": "la gestion des documents sécurisés tels que les quittanciers les déclarations des recettes etc"
+ },
+ {
+   "id": "126",
+   "task": "la gestion des valeurs inactives  à savoir les timbres fiscaux les vignettes automobiles les certificats médicaux etc"
+ },
+ {
+   "id": "127",
+   "task": "la liaison entre DEPMICADRE et le contrôle des finances"
+ },
+ {
+   "id": "128",
+   "task": "la mesure des performances du Service  et de celle de ses personnels au vu des indicateurs retenus"
+ },
+ {
+   "id": "129",
+   "task": "la mise en œuvre des plans d’actions arrêtés"
+ },
+ {
+   "id": "130",
+   "task": "la perception des recettes autorisées "
+ },
+ {
+   "id": "131",
+   "task": "la prise en charge des titres de recettes et des dépenses"
+ },
+ {
+   "id": "132",
+   "task": "la production de l’état d’exécution du budget de la circonscription financière"
+ },
+ {
+   "id": "133",
+   "task": "la production de la comptabilité"
+ },
+ {
+   "id": "134",
+   "task": "la production des documents de synthèse budgétaire et de trésorerie"
+ },
+ {
+   "id": "135",
+   "task": "la production des états de rapprochement des fichiers"
+ },
+ {
+   "id": "136",
+   "task": "la production des états de synthèse"
+ },
+ {
+   "id": "137",
+   "task": "la production des états de vente de timbres et vignettes  du poste "
+ },
+ {
+   "id": "138",
+   "task": "la relance avant et après traitement des comptabilités"
+ },
+ {
+   "id": "139",
+   "task": "la saisie des comptabilités des postes comptables rattachés"
+ },
+ {
+   "id": "140",
+   "task": "la signification des actes de poursuite pour le compte du Trésor public "
+ },
+ {
+   "id": "141",
+   "task": "la tenue des états de rapprochement entre les émissions et les recouvrements"
+ },
+ {
+   "id": "142",
+   "task": "la tenue des registres et journaux comptables"
+ },
+ {
+   "id": "143",
+   "task": "la tenue et du suivi des comptes de disponibilités"
+ },
+ {
+   "id": "144",
+   "task": "la tenue et la production de la comptabilité générale et auxiliaire "
+ },
+ {
+   "id": "145",
+   "task": "la tenue et le suivi des comptes de disponibilités"
+ },
+ {
+   "id": "146",
+   "task": "la tenue et le suivi des opérations diverses de la comptabilité et de caisse"
+ },
+ {
+   "id": "147",
+   "task": "la tenue le classement et la conservation des pièces des documents de comptabilité générale et des archives du poste"
+ },
+ {
+   "id": "148",
+   "task": "la transmission des comptabilités au Service du Compte de Gestion"
+ },
+ {
+   "id": "149",
+   "task": "le classement des pièces justificatives des recettes et des dépenses"
+ },
+ {
+   "id": "150",
+   "task": "le contrôle comptable des dépenses"
+ },
+ {
+   "id": "151",
+   "task": "le contrôle de la régularité et la validation des opérations de dépense"
+ },
+ {
+   "id": "152",
+   "task": "le contrôle des activités de la circonscription financière"
+ },
+ {
+   "id": "153",
+   "task": "le contrôle des opérations comptables de sa circonscription financière"
+ },
+ {
+   "id": "155",
+   "task": "le contrôle des perceptions du département"
+ },
+ {
+   "id": "156",
+   "task": "le contrôle des postes comptable spécialisés Impôts Douanes Agences Comptables Régies des Recettes"
+ },
+ {
+   "id": "157",
+   "task": "le contrôle des régies des recettes de son ressort"
+ },
+ {
+   "id": "158",
+   "task": "le contrôle et la vérification de la caisse"
+ },
+ {
+   "id": "159",
+   "task": "le contrôle juridique de la dépense"
+ },
+ {
+   "id": "161",
+   "task": "le fonctionnement du portefeuille des postes comptables rattachés à travers les approvisionnements l’approbation de leurs commandes  et les vérifications des percepteurs "
+ },
+ {
+   "id": "162",
+   "task": "le paiement SYSTAC"
+ },
+ {
+   "id": "163",
+   "task": "le rapprochement des états"
+ },
+ {
+   "id": "164",
+   "task": "le règlement des dépenses "
+ },
+ {
+   "id": "166",
+   "task": "le suivi des dépôts et des consignations diverses"
+ },
+ {
+   "id": "167",
+   "task": "le suivi des opérations de la comptabilité et de caisse"
+ },
+ {
+   "id": "168",
+   "task": "le suivi des opérations de recouvrement"
+ },
+ {
+   "id": "169",
+   "task": "le suivi des opérations de transfert des compétences"
+ },
+ {
+   "id": "170",
+   "task": "le suivi des opérations du système de télé compensation en Afrique Centrale  SYSTAC en recette et en dépense  et du système de gestion des gros montants automatisés  SYGMA"
+ },
+ {
+   "id": "171",
+   "task": "le suivi des travaux de confection de la balance des comptes"
+ },
+ {
+   "id": "172",
+   "task": "le suivi des ventes"
+ },
+ {
+   "id": "173",
+   "task": "le suivi du recouvrement des recettes"
+ },
+ {
+   "id": "174",
+   "task": "le suivi et le contrôle des régies de recettes de son ressort éventuellement des comptabilités des perceptions de son ressort"
+ },
+ {
+   "id": "175",
+   "task": "Notifie les actes de recouvrement des créances de l’Etat"
+ },
+ {
+   "id": "176",
+   "task": "organise et suit les activités socio professionnelles"
+ },
+ {
+   "id": "178",
+   "task": "organise l’agenda du Directeur"
+ },
+ {
+   "id": "179",
+   "task": "organise la notification des actes signés"
+ },
+ {
+   "id": "180",
+   "task": "organise la ventilation du courrier"
+ },
+ {
+   "id": "181",
+   "task": "paie la dépense autorisée"
+ },
+ {
+   "id": "182",
+   "task": "participe à la production de l’état d’exécution du budget de la circonscription financière"
+ },
+ {
+   "id": "183",
+   "task": "passe les commandes du matériel et des prestations de services"
+ },
+ {
+   "id": "184",
+   "task": "procède à la réception et à la saisie des comptabilités circonscription financière"
+ },
+ {
+   "id": "185",
+   "task": "procède à la saisie des fiches de suivi de l’exécution du budget"
+ },
+ {
+   "id": "186",
+   "task": "procède à la saisie des pièces de recettes et de dépenses"
+ },
+ {
+   "id": "187",
+   "task": "procède au traitement informatique et à l’édition des documents de synthèse"
+ },
+ {
+   "id": "188",
+   "task": "produit les états de synthèse et la balance des comptes"
+ },
+ {
+   "id": "189",
+   "task": "produit une situation périodique des rejets"
+ },
+ {
+   "id": "190",
+   "task": "reçoit trie et enregistre le courrier"
+ },
+ {
+   "id": "191",
+   "task": "relève les retards dans le dépôt des comptabilités"
+ },
+ {
+   "id": "192",
+   "task": "saisit les documents"
+ },
+ {
+   "id": "193",
+   "task": "suit l’exécution des recouvrements"
+ },
+ {
+   "id": "194",
+   "task": "suit l’exécution du budget de la Trésorerie"
+ },
+ {
+   "id": "195",
+   "task": "suit la maintenance de parc automobile"
+ },
+ {
+   "id": "196",
+   "task": "suit la production des états des restes à recouvrer"
+ },
+ {
+   "id": "197",
+   "task": "suit la régularisation des rejets par les postes comptables de la circonscription"
+ },
+ {
+   "id": "198",
+   "task": "suit le classement des comptabilités avant leur transmission au compte de gestion"
+ },
+ {
+   "id": "199",
+   "task": "suit le compte de gestion sur chiffre"
+ },
+ {
+   "id": "200",
+   "task": "suit les approvisionnements en fonds et en valeurs"
+ },
+ {
+   "id": "201",
+   "task": "suit les mouvements de fonds et les comptes réciproques"
+ },
+ {
+   "id": "202",
+   "task": "suit les recettes et les dépenses"
+ },
+ {
+   "id": "203",
+   "task": "suit les régies des recettes"
+ },
+ {
+   "id": "204",
+   "task": "suit les rejets"
+ },
+ {
+   "id": "205",
+   "task": "tient la comptabilité"
+ },
+ {
+   "id": "206",
+   "task": "tient le calepin de caisse"
+ },
+ {
+   "id": "207",
+   "task": "tient le fichier de suivi des engagements"
+ },
+ {
+   "id": "208",
+   "task": "tient le fichier des stocks de la Recette"
+ },
+ {
+   "id": "209",
+   "task": "tient le fichier des stocks de la Trésorerie"
+ },
+ {
+   "id": "210",
+   "task": "tient le fichier des stocks du Cabinet"
+ },
+ {
+   "id": "211",
+   "task": "tient le fichier des restes à recouvrer"
+ },
+ {
+   "id": "212",
+   "task": "tient les fichiers des personnels de l’Agence Comptable"
+ },
+ {
+   "id": "213",
+   "task": "tient les livres journaux des diverses  opérations "
+ },
+ {
+   "id": "214",
+   "task": "tient les livres journaux les quittanciers les fiches de recettes"
+ },
+ {
+   "id": "215",
+   "task": "tient les opérations de recouvrement"
+ },
+ {
+   "id": "216",
+   "task": "tient les registres de caisse et des valeurs en portefeuille"
+ },
+ {
+   "id": "217",
+   "task": "tient les registres des dépôts et des consignations divers"
+ },
+ {
+   "id": "219",
+   "task": "utilise la machine à timbrer"
+ },
+ {
+   "id": "220",
+   "task": "veille à l’émargement dans les registres après chaque remboursement"
+ },
+ {
+   "id": "221",
+   "task": "veille à l’encaissement des recettes"
+ },
+ {
+   "id": "222",
+   "task": "veille à l’entretien du véhicule"
+ },
+ {
+   "id": "223",
+   "task": "veille à la mise à jour des régistres après chaque remboursement"
+ },
+ {
+   "id": "224",
+   "task": "veille à la tenue des registres des rejets"
+ },
+ {
+   "id": "225",
+   "task": "veille à la tenue et à la conservation des supports fixes d’information registres fichiers chrono minutiers"
+ },
+ {
+   "id": "226",
+   "task": "veille au classement des pièces justificatives des recettes et des dépenses de l’établissement public administratif "
+ },
+ {
+   "id": "227",
+   "task": "veille au classement des pièces justificatives des recettes et des dépenses de l’Etat "
+ },
+ {
+   "id": "228",
+   "task": "veille au rapprochement des états de l’établissement public administratif"
+ },
+ {
+   "id": "229",
+   "task": "veille au rapprochement des états de l’Etat"
+ },
+ {
+   "id": "230",
+   "task": "veille au rapprochement des états de synthèse"
+ },
+ {
+   "id": "231",
+   "task": "veille sur le respect de la discipline"
+ }
+]
