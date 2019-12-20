@@ -202,7 +202,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
 
 
             //Load structure list
-            Structure.list().then(function (response) {
+            Structure.minimalList().then(function (response) {
                 var data = response.data;
                 $scope.structures = data;
             }).catch(function (response) {

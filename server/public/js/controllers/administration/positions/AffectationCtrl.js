@@ -112,7 +112,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                     $ocLazyLoad.load('js/services/PositionService.js').then(function () {
                                         var Position = $injector.get('Position');
 
-                                        Structure.list().then(function (response) {
+                                        Structure.minimalList().then(function (response) {
                                             var data = response.data;
                                             $scope.structures = data;
                                         }).catch(function (response) {

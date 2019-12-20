@@ -31,7 +31,7 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                             Dictionary.jsonList({dictionary: "personnel", levels: ['skills']}).then(function (response) {
                                 dictionary.skills = response.data.jsonList;
 
-                                Structure.list().then(function (response) {
+                                Structure.minimalList().then(function (response) {
                                     var data = response.data;
                                     $scope.structures = data;
 
@@ -65,7 +65,7 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
 
                                     $scope.substructureFilter = function (item) {
                                         if ($scope.structure) {
-                                            return item.code.indexOf($scope.structure.code+"-") > -1 && parseInt(item.rank, 10) == 3;
+                                            return item.code.indexOf($scope.structure.code+"-") == 0 && parseInt(item.rank, 10) == 3;
                                         } else {
                                             return false
                                         }

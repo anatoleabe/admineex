@@ -63,7 +63,7 @@ angular.module('EvaluationCtrl', []).controller('EvaluationController', function
                                 $ocLazyLoad.load('js/services/StaffService.js').then(function () {
                                     var Staff = $injector.get('Staff');
 
-                                    Structure.list().then(function (response) {
+                                    Structure.minimalList().then(function (response) {
                                         var data = response.data;
                                         $scope.structures = data;
                                         if (personnelfromParams && personnelfromParams.affectedTo && personnelfromParams.affectedTo.position && personnelfromParams.affectedTo.position.structure) {

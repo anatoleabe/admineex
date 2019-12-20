@@ -36,7 +36,7 @@ angular.module('UserCtrl', []).controller('UserController', function ($scope, $w
             $rootScope.kernel.loading = 100;
 
             //Load structure list
-            Structure.list().then(function (response) {
+            Structure.minimalList().then(function (response) {
                 var dataStruc = response.data;
                 $scope.structures = dataStruc;
 

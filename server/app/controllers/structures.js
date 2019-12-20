@@ -80,14 +80,11 @@ exports.upsert = function (fields, callback) {
 exports.api.list = function (req, res) {
     if (req.actor) {
         var language = req.actor.language.toLowerCase();
-        filter = {$and: []};
-        if (req.params.code) {
-            filter.$and.push({
-                "code": req.params.code
-            });
-        }
+        filter = {};
+        console.log("req.params.id",req.params.id)
 
         if (req.params.id && req.params.id != "-1") {
+            filter = {$and: []};
             filter.$and.push({
                 "code": new RegExp("^" + req.params.id.toUpperCase())
             });
@@ -120,7 +117,7 @@ exports.api.list = function (req, res) {
                             }
                         });
                     } else {
-                        var query = {}
+                        var query = filter
                         if (req.actor.role == "2") {
                             query = {
                                 "code": {$in: userStructureCodes}

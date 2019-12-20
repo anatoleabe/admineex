@@ -70,7 +70,7 @@ angular.module('MonitorCtrl', [[
                     }
 
                     //Load structure list
-                    Structure.list().then(function (response) {
+                    Structure.minimalList().then(function (response) {
                         var data = response.data;
                         $scope.structures = data;
                         $scope.load();

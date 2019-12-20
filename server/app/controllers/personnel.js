@@ -458,7 +458,6 @@ exports.list = function (options, callback) {
                 } else {
                     if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4") {
                         var query = {};
-                        console.log("MSMSMSMSMS 2", options.search)
                         if (options.query) {
                             query = options.query;
                         }

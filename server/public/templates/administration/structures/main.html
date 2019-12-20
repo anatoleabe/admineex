@@ -2,6 +2,22 @@
     <md-toolbar class="toolbar-filter">
         <div class="md-toolbar-tools md-default">
             <div flex >
+                <span style="display: inline-block;margin-top: 18px;" >
+                    <md-input-container flex>
+                        <label translate>Filter by structure</label>
+                        <md-select ng-model="filters.structure"  style="min-width: 150px;">
+                            <md-optgroup label="{{'Filtre by structure'| translate}}">
+                                <md-option value="-1" >
+                                    {{'All structures'| translate}}
+                                </md-option>
+                                <md-option ng-repeat="struc in structuresDropDown | filter:onlyDirection " value="{{struc}}" >
+                                    {{struc.name}}
+                                </md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+
+                </span>
 
             </div>
             <md-button class="md-icon-button" aria-label="Print" ng-click="openPdf()">
@@ -27,7 +43,7 @@
                     <input type="text" name="search" ng-model="structureFilter" placeholder="{{ 'Search among structure...' | translate }}">
                 </form>
 
-                <md-button class="md-icon-button" ng-click="search = false" aria-label="close">
+                <md-button class="md-icon-button" ng-click="search = false; resetForm()" aria-label="close">
                     <md-icon class="material-icons">close</md-icon>
                 </md-button>
             </div>
@@ -47,7 +63,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row data-ng-repeat="structure in structures.data| filter:structureFilter | orderBy: query.order" ng-click="edit({id:structure._id})">
+                    <tr md-row data-ng-repeat="structure in structures.data | filter:structureFilter | orderBy: query.order" ng-click="edit({id:structure._id})">
                         <td md-cell>{{structure.code| uppercase | unknown}}</td>
                         <td md-cell style="min-width: 200px">{{structure.name}} </td>
                         <td md-cell>{{structure.rankValue| unknown}}</td>

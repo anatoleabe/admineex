@@ -9,6 +9,7 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
 
         $scope.organizations = [], $scope.helper = [];
         $scope.search = false;
+        $scope.filters = {};
         $scope.query = {
             limit: 25,
             page: 1,
@@ -21,36 +22,34 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
             }
         };
 
-        function getStructures() {
+        function getStructures(id) {
             var limit = $scope.query.limit;
             var skip = $scope.query.limit * ($scope.query.page - 1);
             $scope.helper = [];
-            Structure.list({id: "-1", limit: limit, skip: skip}).then(function (response) {
+            Structure.list({id: id, limit: limit, skip: skip}).then(function (response) {
                 var data = response.data;
                 if (data.length == 0 && $scope.helper.length == 0) {
                     $scope.helper = helper;
                 }
-                console.log("aasssa")
-                
                 
                 $scope.structures = {
-                        data: response.data.data,
-                        count: response.data.count
-                    };
+                    data: response.data.data,
+                    count: response.data.count
+                };
                 console.log($scope.structures)
                 $rootScope.kernel.loading = 100;
             }).catch(function (response) {
                 console.error(response);
             });
         }
-        getStructures();
+        getStructures("-1");
 
 
         function deleteStructures(id) {
             Structure.delete({
                 id: id
             }).then(function (response) {
-                getStructures();
+                getStructures("-1");
                 $rootScope.kernel.alerts.push({
                     type: 3,
                     msg: gettextCatalog.getString('The organization has been deleted'),
@@ -63,7 +62,7 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
 
         $scope.load = function () {
             //var structureCode = $scope.filters.subStructure ? JSON.parse($scope.filters.subStructure).code : ($scope.filters.structure ? JSON.parse($scope.filters.structure).code : "-1");
-            getStructures();
+            getStructures("-1");
         };
 
         $scope.openPdf = function () {
@@ -89,6 +88,55 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
             });
 
         };
+
+        $scope.onlyDirection = function (item) {
+            return item.rank == "2";
+        };
+
+        $scope.resetForm = function () {
+            $scope.filters.structure = undefined;
+            $scope.filters.soustructure = undefined;
+            $scope.structureFilter = "";
+            getStructures("-1");
+        };
+
+        $scope.onlySubDirection = function (item) {
+            if ($scope.filters.structure) {
+                var code = JSON.parse($scope.filters.structure).code;
+                return item.rank == "3" && item.code.indexOf(code + "-") == 0;
+            } else {
+                return false;
+            }
+
+        };
+
+        $scope.$watch('structureFilter', function (newval, oldval) {
+            if (newval) {
+                getStructures(newval ? newval : "-1");
+            }
+        });
+
+        $scope.$watch('filters.structure', function (newval, oldval) {
+            if (newval) {
+                newval = JSON.parse(newval).code;
+                if (newval != undefined && newval != "undefined") {
+                    $scope.structureFilter = newval + "-";
+                } else {
+                    $scope.structureFilter = "";
+                }
+            }
+        });
+
+        //Load structure list
+        Structure.minimalList().then(function (response) {
+            var data = response.data;
+            if (data.length == 0 && $scope.helper.length == 0) {
+                $scope.helper = helper;
+            }
+            $scope.structuresDropDown = data;
+        }).catch(function (response) {
+            console.error(response);
+        });
 
         $scope.showConfirm = function (organization) {
             var confirm = $mdDialog.confirm()
