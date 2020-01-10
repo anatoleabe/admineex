@@ -604,7 +604,8 @@ function ensureAuthorized(req, res, next) {
 
 function startBot() {
 //    //1
-//    controllers.structures.initialize("SD/sudouest", function (err, avoided) {
+//var path = "SD/ok/sudouest";
+//    controllers.structures.initialize(path, function (err, avoided) {
 //        if (err) {
 //            log.error(err);
 //            console.log(err);
@@ -615,6 +616,23 @@ function startBot() {
 //                log.warn(avoidedmsg);
 //            }
 //            audit.logEvent('[anonymous]', 'Routes', 'startBot', "", "", 'Success', "Initialization of structures succesful done. " + avoidedmsg);
+//            controllers.positions.INITPOSITIONDATAFROMJSON(path, function (err, avoided) {
+//                if (err) {
+//                    log.error(err);
+//                    console.log(err);
+//                } else {
+//                    console.log(avoided)
+//
+//                    controllers.positions.affectToPositionFromJson(path, function (err, avoided) {
+//                        if (err) {
+//                            log.error(err);
+//                            console.log(err);
+//                        } else {
+//                            console.log(avoided)
+//                        }
+//                    });
+//                }
+//            });
 //            //2
 //        }
 //    });
@@ -651,24 +669,8 @@ function startBot() {
 
         }
     });
-
-//    controllers.positions.INITPOSITIONDATAFROMJSON("SD/sudouest", function (err, avoided) {
-//        if (err) {
-//            log.error(err);
-//            console.log(err);
-//        } else {
-//            console.log(avoided)
 //
-//            controllers.positions.affectToPositionFromJson("SD/sudouest",function (err, avoided) {
-//                if (err) {
-//                    log.error(err);
-//                    console.log(err);
-//                } else {
-//                    console.log(avoided)
-//                }
-//            });
-//        }
-//    });
+
 
 //    controllers.positions.SETPOSITIONORDERFROMJSON(function (err) {
 //        if (err) {

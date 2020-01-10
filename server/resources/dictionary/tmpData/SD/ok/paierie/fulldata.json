@@ -252,7 +252,7 @@
    "off": ""
  },
  {
-   "occupant": "ENANIGN Y'OUBILITEK Estelle Laure\nEpse BOOTO",
+   "occupant": "ENANIGN Y'OUBILITEK Estelle Laure\\nEpse BOOTO",
    "identifier": "649360-N",
    "codept": "9-002-5PCS1",
    "pt": "Chef de service des depenses de matériel",
@@ -882,7 +882,7 @@
    "off": ""
  },
  {
-   "occupant": "SAMBA AMASSA Louisette Marie\nEpse KINGUE",
+   "occupant": "SAMBA AMASSA Louisette Marie\\nEpse KINGUE",
    "identifier": "C-035798",
    "codept": "9-002-8PCA15",
    "pt": "Cadre 3",
@@ -1022,7 +1022,7 @@
    "off": ""
  },
  {
-   "occupant": "ATEBA MALLA NDJANA Jacqueline \nEpse EMAH",
+   "occupant": "ATEBA MALLA NDJANA Jacqueline \\nEpse EMAH",
    "identifier": "659762-A",
    "codept": "9-002-9PAB4",
    "pt": "Agent de bureau",

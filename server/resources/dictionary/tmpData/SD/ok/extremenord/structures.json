@@ -1,0 +1,1542 @@
+[
+    {
+        "_id": "ObjectId('5df1072faf921121ed35226d')",
+        "code": "20-201-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:11:43.250Z')",
+        "lastModified": "ISODate('2019-12-11T15:11:43.248Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "CABINET DU TRESORIER  PAYEUR GENERAL",
+        "fr": "CABINET DU TRESORIER  PAYEUR GENERAL",
+        "rank": "3",
+        "type": "2",
+
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10809af921121ed352271')",
+        "code": "20-201-2",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:15:21.332Z')",
+        "lastModified": "ISODate('2019-12-11T15:15:21.327Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICES DU FONDE DE POUVOIRS N° 1",
+        "fr": "SERVICES DU FONDE DE POUVOIRS N° 1",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df108beaf921121ed352275')",
+        "code": "20-201-3",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:18:22.924Z')",
+        "lastModified": "ISODate('2019-12-11T15:18:22.922Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICES DU FONDE DE POUVOIRS N° 2",
+        "fr": "SERVICES DU FONDE DE POUVOIRS N° 2",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1090caf921121ed352279')",
+        "code": "20-201-4",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:19:40.220Z')",
+        "lastModified": "ISODate('2019-12-11T15:19:40.220Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "BRIGADE DE CONTRÔLE ET DE VERIFICATION",
+        "fr": "BRIGADE DE CONTRÔLE ET DE VERIFICATION",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10a00af921121ed352281')",
+        "code": "20-201-5",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:23:44.420Z')",
+        "lastModified": "ISODate('2019-12-11T15:23:44.419Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10a9e5eba073ef3214337')",
+        "code": "20-201-6",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:26:22.787Z')",
+        "lastModified": "ISODate('2019-12-11T15:26:22.784Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10ae95eba073ef321433b')",
+        "code": "20-201-7",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:27:37.570Z')",
+        "lastModified": "ISODate('2019-12-11T15:27:37.568Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DES  COMPTES DE GESTION",
+        "fr": "SERVICE DES  COMPTES DE GESTION",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10b425eba073ef321433f')",
+        "code": "20-201-8",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:29:06.370Z')",
+        "lastModified": "ISODate('2019-12-11T15:29:06.369Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE PORTE FEUILLE, DEPÔTS ET CONSIGNATIONS",
+        "fr": "SERVICE PORTE FEUILLE, DEPÔTS ET CONSIGNATIONS",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10b8e5eba073ef3214341')",
+        "code": "20-201-9",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:30:22.681Z')",
+        "lastModified": "ISODate('2019-12-11T15:30:22.680Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DU CONTRÔLE ET DU TRAITEMENT INFORMATIQUE DES COMPTABILITES",
+        "fr": "SERVICE DU CONTRÔLE ET DU TRAITEMENT INFORMATIQUE DES COMPTABILITES",
+        "rank": "3",
+        "type": "2",
+
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10bd15eba073ef3214345')",
+        "code": "20-201-10",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:31:29.155Z')",
+        "lastModified": "ISODate('2019-12-11T15:31:29.154Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DES COLLECTIVITES TERRITORIALES DECENTRALISEES",
+        "fr": "SERVICE DES COLLECTIVITES TERRITORIALES DECENTRALISEES",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10c815eba073ef321434b')",
+        "code": "20-200-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:34:25.781Z')",
+        "lastModified": "ISODate('2019-12-11T15:34:25.780Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "RECETTE  DES FINANCES de KAELE",
+        "fr": "RECETTE  DES FINANCES de KAELE",
+        "rank": "3",
+        "type": "2",
+
+        "country": "CMR",
+        "region": "4",
+        "department": "23"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10d605eba073ef321434f')",
+        "code": "20-200-2",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:38:08.764Z')",
+        "lastModified": "ISODate('2019-12-11T15:38:08.761Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "23"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10d9d5eba073ef3214353')",
+        "code": "20-200-3",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:39:09.936Z')",
+        "lastModified": "ISODate('2019-12-11T15:39:09.935Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "23"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10e135eba073ef3214357')",
+        "code": "20-280-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:41:07.750Z')",
+        "lastModified": "ISODate('2019-12-11T15:41:07.749Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "RECETTE  DES FINANCES  DE MOKOLO",
+        "fr": "RECETTE  DES FINANCES  DE MOKOLO",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "16"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10e4d5eba073ef321435b')",
+        "code": "20-280-2",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:42:05.874Z')",
+        "lastModified": "ISODate('2019-12-11T15:42:05.873Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+
+        "country": "CMR",
+        "region": "4",
+        "department": "16"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10e885eba073ef321435f')",
+        "code": "20-280-3",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:43:04.109Z')",
+        "lastModified": "ISODate('2019-12-11T15:43:04.108Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "16"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10ee55eba073ef3214363')",
+        "code": "20-209-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:44:37.108Z')",
+        "lastModified": "ISODate('2019-12-11T15:44:37.107Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "RECETTE  DES FINANCES DE MORA",
+        "fr": "RECETTE  DES FINANCES DE MORA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "18"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10f265eba073ef3214365')",
+        "code": "20-209-2",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:45:42.360Z')",
+        "lastModified": "ISODate('2019-12-11T15:45:42.355Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "18"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10f745eba073ef3214369')",
+        "code": "20-209-3",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:47:00.553Z')",
+        "lastModified": "ISODate('2019-12-11T15:47:00.552Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+
+        "country": "CMR",
+        "region": "4",
+        "department": "18"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10fdf5eba073ef321436f')",
+        "code": "20-210-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:48:47.352Z')",
+        "lastModified": "ISODate('2019-12-11T15:48:47.350Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "RECETTE  DES FINANCES DE YAGOUA",
+        "fr": "RECETTE  DES FINANCES DE YAGOUA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "36"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df110295eba073ef3214371')",
+        "code": "20-210-2",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:50:01.719Z')",
+        "lastModified": "ISODate('2019-12-11T15:50:01.717Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "36"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df110a95eba073ef3214377')",
+        "code": "20-210-3",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:52:09.208Z')",
+        "lastModified": "ISODate('2019-12-11T15:52:09.206Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "36"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df110fa5eba073ef3214379')",
+        "code": "20-421RM-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:53:30.843Z')",
+        "lastModified": "ISODate('2019-12-11T15:53:30.842Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "COMMUNAUTE URBAINE DE MAROUA",
+        "fr": "COMMUNAUTE URBAINE DE MAROUA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1114c5eba073ef321437d')",
+        "code": "20-421RM-2",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:54:52.095Z')",
+        "lastModified": "ISODate('2019-12-11T15:54:52.094Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df111875eba073ef321437f')",
+        "code": "20-421RM-3",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:55:51.614Z')",
+        "lastModified": "ISODate('2019-12-11T15:55:51.613Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df112265eba073ef3214387')",
+        "code": "20-422RM-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T15:58:30.411Z')",
+        "lastModified": "ISODate('2019-12-11T15:58:30.410Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "RECETTE MUNICIPALE DE BOGO",
+        "fr": "RECETTE MUNICIPALE DE BOGO",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df112985eba073ef3214389')",
+        "code": "20-423RM-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:00:24.182Z')",
+        "lastModified": "ISODate('2019-12-11T16:00:24.180Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "RECETTE MUNICIPALE DE KAELE",
+        "fr": "RECETTE MUNICIPALE DE KAELE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "23"
+    }
+    ,
+    {
+        "_id": "ObjectId('5df1130d5eba073ef321438b')",
+        "code": "20-215-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:02:21.246Z')",
+        "lastModified": "ISODate('2019-12-11T16:02:21.245Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "RECETTE  DES FINANCES DE KOUSSERI",
+        "fr": "RECETTE  DES FINANCES DE KOUSSERI",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df113435eba073ef321438d')",
+        "code": "20-215-2",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:03:15.634Z')",
+        "lastModified": "ISODate('2019-12-11T16:03:15.632Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df113855eba073ef321438f')",
+        "code": "20-215-3",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:04:21.525Z')",
+        "lastModified": "ISODate('2019-12-11T16:04:21.523Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df113ce5eba073ef3214391')",
+        "code": "20-430RDM-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:05:34.076Z')",
+        "lastModified": "ISODate('2019-12-11T16:24:23.911Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "RECETTE  DES DOMAINES DE KOUSSERI",
+        "fr": "RECETTE  DES DOMAINES DE KOUSSERI",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1140d5eba073ef3214393')",
+        "code": "20-421RDM-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:06:37.879Z')",
+        "lastModified": "ISODate('2019-12-11T16:19:45.322Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "RECETTE  DES DOMAINES DE MAROUA",
+        "fr": "RECETTE  DES DOMAINES DE MAROUA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1144b5eba073ef3214397')",
+        "code": "20-421RD-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:07:39.273Z')",
+        "lastModified": "ISODate('2019-12-11T16:18:16.393Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "RECETTE  DES DOUANES DE MAROUA",
+        "fr": "RECETTE  DES DOUANES DE MAROUA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1148c5eba073ef321439b')",
+        "code": "20-430RD-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:08:44.228Z')",
+        "lastModified": "ISODate('2019-12-11T16:31:00.311Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "RECETTE  DES DOUANES DE KOUSSERI",
+        "fr": "RECETTE  DES DOUANES DE KOUSSERI",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+    ,
+    {
+        "_id": "ObjectId('5df1152f5eba073ef321439f')",
+        "code": "20-035-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:11:27.920Z')",
+        "lastModified": "ISODate('2019-12-11T16:11:27.919Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE GAZAWA",
+        "fr": "PERCEPTION DE GAZAWA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11a325eba073ef32143c1')",
+        "code": "20-036-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:32:50.472Z')",
+        "lastModified": "ISODate('2019-12-11T16:32:50.471Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE FOTOKOL",
+        "fr": "PERCEPTION DE FOTOKOL",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11a985eba073ef32143c5')",
+        "code": "20-037-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:34:32.756Z')",
+        "lastModified": "ISODate('2019-12-11T16:34:32.754Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE HILE ALIFA",
+        "fr": "PERCEPTION DE HILE ALIFA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11b125eba073ef32143c9')",
+        "code": "20-038-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:36:34.476Z')",
+        "lastModified": "ISODate('2019-12-11T16:36:34.475Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE KALFOU",
+        "fr": "PERCEPTION DE KALFOU",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "36"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11c675eba073ef32143d1')",
+        "code": "20-039-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:42:15.589Z')",
+        "lastModified": "ISODate('2019-12-11T16:42:15.588Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE VIRI",
+        "fr": "PERCEPTION DE VIRI",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "36"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11cd05eba073ef32143d7')",
+        "code": "20-040-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:44:00.209Z')",
+        "lastModified": "ISODate('2019-12-11T16:44:00.208Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE HINA",
+        "fr": "PERCEPTION DE HINA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "16"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11d2a5eba073ef32143db')",
+        "code": "20-042-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:45:30.155Z')",
+        "lastModified": "ISODate('2019-12-11T16:45:30.154Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE  KOLOFATA",
+        "fr": "PERCEPTION DE  KOLOFATA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "18"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11d805eba073ef32143df')",
+        "code": "20-043-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:46:56.288Z')",
+        "lastModified": "ISODate('2019-12-11T16:46:56.286Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE MOUTOURWA",
+        "fr": "PERCEPTION DE MOUTOURWA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "23"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11dd35eba073ef32143e3')",
+        "code": "20-044-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:48:19.815Z')",
+        "lastModified": "ISODate('2019-12-11T16:48:19.814Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE MOULVOUDAYE",
+        "fr": "PERCEPTION DE MOULVOUDAYE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "23"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11e355eba073ef32143e7')",
+        "code": "20-067-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:49:57.453Z')",
+        "lastModified": "ISODate('2019-12-11T16:49:57.452Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE BLANGOUA",
+        "fr": "PERCEPTION DE BLANGOUA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11eb45eba073ef32143eb')",
+        "code": "20-113-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:52:04.769Z')",
+        "lastModified": "ISODate('2019-12-11T16:52:04.768Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE GUIDIGUIS",
+        "fr": "PERCEPTION DE GUIDIGUIS",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "23"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11f125eba073ef32143ed')",
+        "code": "20-114-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:53:38.923Z')",
+        "lastModified": "ISODate('2019-12-11T16:53:38.922Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE  WAZA",
+        "fr": "PERCEPTION DE  WAZA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11f785eba073ef32143f3')",
+        "code": "20-115-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:55:20.951Z')",
+        "lastModified": "ISODate('2019-12-11T16:55:20.950Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE TOKOMBERE",
+        "fr": "PERCEPTION DE TOKOMBERE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "18"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11ff85eba073ef32143f7')",
+        "code": "20-183-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:57:28.447Z')",
+        "lastModified": "ISODate('2019-12-11T16:57:28.444Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE MAGA",
+        "fr": "PERCEPTION DE MAGA",
+        "type": "2",
+        "rank": "3",
+        "country": "CMR",
+        "region": "4",
+        "department": "36"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1204a5eba073ef32143fb')",
+        "code": "20-202-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T16:58:50.858Z')",
+        "lastModified": "ISODate('2019-12-11T16:58:50.857Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE MERI",
+        "fr": "PERCEPTION DE MERI",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df120e25eba073ef3214401')",
+        "code": "20-208-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:01:22.537Z')",
+        "lastModified": "ISODate('2019-12-11T17:01:22.535Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE KAR-HAY",
+        "fr": "PERCEPTION DE KAR-HAY",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "36"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df121375eba073ef3214403')",
+        "code": "20-211-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:02:47.662Z')",
+        "lastModified": "ISODate('2019-12-11T17:02:47.660Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE BOURHA",
+        "fr": "PERCEPTION DE BOURHA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "16"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df121a95eba073ef3214407')",
+        "code": "20-212-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:04:41.367Z')",
+        "lastModified": "ISODate('2019-12-11T17:04:41.366Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE KOZA",
+        "fr": "PERCEPTION DE KOZA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "16"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df121ff5eba073ef321440b')",
+        "code": "20-216-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:06:07.296Z')",
+        "lastModified": "ISODate('2019-12-11T17:06:07.294Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE MAKARY",
+        "fr": "PERCEPTION DE MAKARY",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+    ,
+    {
+        "_id": "ObjectId('5df122765eba073ef321440f')",
+        "code": "20-218-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:08:06.070Z')",
+        "lastModified": "ISODate('2019-12-11T17:08:06.067Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE BOGO",
+        "fr": "PERCEPTION DE BOGO",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df122c65eba073ef3214415')",
+        "code": "20-219-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:09:26.945Z')",
+        "lastModified": "ISODate('2019-12-11T17:09:26.944Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE MINDIF",
+        "fr": "PERCEPTION DE MINDIF",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "23"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1235c5eba073ef3214419')",
+        "code": "20-229-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:11:56.995Z')",
+        "lastModified": "ISODate('2019-12-11T17:11:56.994Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE GOULFEY",
+        "fr": "PERCEPTION DE GOULFEY",
+        "rank": "3",
+        "type": "2",
+
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df123ca5eba073ef321441b')",
+        "code": "20-232-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:13:46.440Z')",
+        "lastModified": "ISODate('2019-12-11T17:13:46.440Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE LOGONE-BIRNI",
+        "fr": "PERCEPTION DE LOGONE-BIRNI",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df124195eba073ef321441f')",
+        "code": "20-361-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:15:05.792Z')",
+        "lastModified": "ISODate('2019-12-11T17:15:05.788Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE ZINA",
+        "fr": "PERCEPTION DE ZINA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1245f5eba073ef3214423')",
+        "code": "20-362-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:16:15.458Z')",
+        "lastModified": "ISODate('2019-12-11T17:16:15.457Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE SOULEDE-ROUA",
+        "fr": "PERCEPTION DE SOULEDE-ROUA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "16"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df124b05eba073ef3214425')",
+        "code": "20-363-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:17:36.807Z')",
+        "lastModified": "ISODate('2019-12-11T17:17:36.805Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE NDOUKOULA",
+        "fr": "PERCEPTION DE NDOUKOULA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df124fb5eba073ef3214429')",
+        "code": "20-364-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:18:51.809Z')",
+        "lastModified": "ISODate('2019-12-11T17:18:51.808Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE DARGALA",
+        "fr": "PERCEPTION DE DARGALA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df125745eba073ef321442f')",
+        "code": "20-365-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:20:52.112Z')",
+        "lastModified": "ISODate('2019-12-11T17:20:52.110Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE DATCHEKA",
+        "fr": "PERCEPTION DE DATCHEKA",
+        "type": "2",
+        "rank": "3",
+        "country": "CMR",
+        "region": "4",
+        "department": "36"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df125b95eba073ef3214433')",
+        "code": "20-366-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:22:01.102Z')",
+        "lastModified": "ISODate('2019-12-11T17:22:01.100Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE MOZOGO",
+        "fr": "PERCEPTION DE MOZOGO",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "16"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1262d5eba073ef3214435')",
+        "code": "20-367-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:23:57.571Z')",
+        "lastModified": "ISODate('2019-12-11T17:23:57.561Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE MOGODE",
+        "fr": "PERCEPTION DE MOGODE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "16"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1268e5eba073ef3214437')",
+        "code": "20-370-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:25:34.375Z')",
+        "lastModified": "ISODate('2019-12-11T17:25:34.374Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE GOBO",
+        "fr": "PERCEPTION DE GOBO",
+        "type": "2",
+        "rank": "3",
+        "country": "CMR",
+        "region": "4",
+        "department": "36"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df126e05eba073ef3214439')",
+        "code": "20-389-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:26:56.421Z')",
+        "lastModified": "ISODate('2019-12-11T17:26:56.420Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE KAIKAI",
+        "fr": "PERCEPTION DE KAIKAI",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "36"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df127245eba073ef321443b')",
+        "code": "20-403-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:28:04.863Z')",
+        "lastModified": "ISODate('2019-12-11T17:28:04.862Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE TOULOUM",
+        "fr": "PERCEPTION DE TOULOUM",
+        "type": "2",
+        "rank": "3",
+        "country": "CMR",
+        "region": "4",
+        "department": "23"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1276d5eba073ef321443d')",
+        "code": "20-404-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-11T17:29:17.992Z')",
+        "lastModified": "ISODate('2019-12-11T17:29:17.991Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE DZIGUILAO",
+        "fr": "PERCEPTION DE DZIGUILAO",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "23"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df390ac4d5b791f58a86253')",
+        "code": "20-419-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:22:52.124Z')",
+        "lastModified": "ISODate('2019-12-13T13:22:52.112Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE PETTE",
+        "fr": "PERCEPTION DE PETTE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "16"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df391084d5b791f58a86255')",
+        "code": "20-368-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:24:24.752Z')",
+        "lastModified": "ISODate('2019-12-13T13:24:24.751Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE TCHATIBALI",
+        "fr": "PERCEPTION DE TCHATIBALI",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df391534d5b791f58a86257')",
+        "code": "20-507-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:25:39.450Z')",
+        "lastModified": "ISODate('2019-12-13T13:25:39.448Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "PERCEPTION DE DARAK",
+        "fr": "PERCEPTION DE DARAK",
+        "rank": "3",
+        "type": "2",
+
+        "country": "CMR",
+        "region": "4",
+        "department": "18"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df391ad4d5b791f58a86259')",
+        "code": "20-429UMA-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:27:09.150Z')",
+        "lastModified": "ISODate('2019-12-13T13:27:09.148Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "AGENCE COMPTABLE UNIVERSITE DE MAROUA",
+        "fr": "AGENCE COMPTABLE UNIVERSITE DE MAROUA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df392864d5b791f58a8625b')",
+        "code": "20-429UMA-2",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:30:46.758Z')",
+        "lastModified": "ISODate('2019-12-13T13:30:46.755Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA COMPTABILITE ET DE LA CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET DE LA CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df393134d5b791f58a8625d')",
+        "code": "20-429UMA-3",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:33:07.872Z')",
+        "lastModified": "ISODate('2019-12-13T13:33:07.869Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df3935f4d5b791f58a8625f')",
+        "code": "20-429UMI-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:34:23.654Z')",
+        "lastModified": "ISODate('2019-12-13T13:34:23.651Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "AGENCE COMPTABLE MIDIMA",
+        "fr": "AGENCE COMPTABLE MIDIMA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "4"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df393ea4d5b791f58a86261')",
+        "code": "20-429UMI-2",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:36:42.478Z')",
+        "lastModified": "ISODate('2019-12-13T13:36:42.475Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA COMPTABILITE ET DE LA CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET DE LA CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "23"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df394424d5b791f58a86263')",
+        "code": "20-429UMI-3",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:38:10.770Z')",
+        "lastModified": "ISODate('2019-12-13T13:38:10.767Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "16"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df394844d5b791f58a86265')",
+        "code": "20-429SMY-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:39:16.519Z')",
+        "lastModified": "ISODate('2019-12-13T13:39:16.518Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "AGENCE COMPTABLE SEMRY",
+        "fr": "AGENCE COMPTABLE SEMRY",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "16"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df394bd4d5b791f58a86267')",
+        "code": "20-429SMY-2",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:40:13.972Z')",
+        "lastModified": "ISODate('2019-12-13T13:40:13.971Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA COMPTABILITE ET DE LA CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET DE LA CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "23"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df3950a4d5b791f58a86269')",
+        "code": "20-429SMY-3",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:41:30.658Z')",
+        "lastModified": "ISODate('2019-12-13T13:41:30.657Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "4",
+        "department": "36"
+    }
+    ,
+    {
+        "_id": "ObjectId('5df3954c4d5b791f58a8626b')",
+        "code": "20-424-1",
+        "__v": 0,
+        "activities": [],
+        "tasks": [],
+        "created": "ISODate('2019-12-13T13:42:36.915Z')",
+        "lastModified": "ISODate('2019-12-13T13:42:36.913Z')",
+        "father": "5df104d8af921121ed352269",
+        "en": "SERVICE REGIONAL DES AFFAIRES MONETAIRES ET DES ASSURANCES",
+        "fr": "SERVICE REGIONAL DES AFFAIRES MONETAIRES ET DES ASSURANCES",
+        "rank": "3",
+        "type": "2",
+
+        "country": "CMR",
+        "region": "4",
+        "department": "27"
+    }]

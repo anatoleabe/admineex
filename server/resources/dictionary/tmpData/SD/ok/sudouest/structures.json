@@ -8,7 +8,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "1"
  },
  {
    "code": "13-101-2",
@@ -19,7 +20,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "2"
  },
  {
    "code": "13-101-3",
@@ -30,7 +32,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "3"
  },
  {
    "code": "13-101-4",
@@ -41,7 +44,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "4"
  },
  {
    "code": "13-101-5",
@@ -52,7 +56,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "5"
  },
  {
    "code": "13-101-6",
@@ -63,7 +68,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "6"
  },
  {
    "code": "13-101-7",
@@ -74,7 +80,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "7"
  },
  {
    "code": "13-101-8",
@@ -85,7 +92,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "8"
  },
  {
    "code": "13-101-9",
@@ -96,7 +104,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "9"
  },
  {
    "code": "13-101-10",
@@ -107,7 +116,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "10"
  },
  {
    "code": "13-121-1",
@@ -118,7 +128,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "11"
  },
  {
    "code": "13-121-2",
@@ -129,7 +140,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "12"
  },
  {
    "code": "13-121-3",
@@ -140,7 +152,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "13"
  },
  {
    "code": "13-122-1",
@@ -151,7 +164,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "14"
  },
  {
    "code": "13-122-2",
@@ -162,7 +176,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "15"
  },
  {
    "code": "13-122-3",
@@ -173,7 +188,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "16"
  },
  {
    "code": "13-124-1",
@@ -184,7 +200,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "17"
  },
  {
    "code": "13-124-2",
@@ -195,7 +212,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "18"
  },
  {
    "code": "13-124-3",
@@ -206,7 +224,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "19"
  },
  {
    "code": "13-127-1",
@@ -217,7 +236,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "20"
  },
  {
    "code": "13-129-1",
@@ -228,7 +248,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "21"
  },
  {
    "code": "13-129-2",
@@ -239,7 +260,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "22"
  },
  {
    "code": "13-129-3",
@@ -250,7 +272,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "23"
  },
  {
    "code": "13-130-1",
@@ -261,7 +284,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "24"
  },
  {
    "code": "13-137-1",
@@ -272,7 +296,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "25"
  },
  {
    "code": "13-168-1",
@@ -283,7 +308,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "26"
  },
  {
    "code": "13-168-2",
@@ -294,7 +320,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "27"
  },
  {
    "code": "13-168-3",
@@ -305,7 +332,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "28"
  },
  {
    "code": "13-204-1",
@@ -316,7 +344,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "29"
  },
  {
    "code": "13-225-1",
@@ -327,7 +356,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "30"
  },
  {
    "code": "13-234-1",
@@ -338,7 +368,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "31"
  },
  {
    "code": "13-234-2",
@@ -349,7 +380,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "32"
  },
  {
    "code": "13-234-3",
@@ -360,7 +392,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "33"
  },
  {
    "code": "13-239-1",
@@ -371,7 +404,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "34"
  },
  {
    "code": "13-249-1",
@@ -382,7 +416,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "35"
  },
  {
    "code": "13-296-1",
@@ -393,7 +428,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "36"
  },
  {
    "code": "13-297-1",
@@ -404,7 +440,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "37"
  },
  {
    "code": "13-298-1",
@@ -415,7 +452,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "38"
  },
  {
    "code": "13-299-1",
@@ -426,7 +464,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "39"
  },
  {
    "code": "13-372-1",
@@ -437,7 +476,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "40"
  },
  {
    "code": "13-373-1",
@@ -448,7 +488,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "41"
  },
  {
    "code": "13-374-1",
@@ -459,7 +500,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "42"
  },
  {
    "code": "13-375-1",
@@ -470,7 +512,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "43"
  },
  {
    "code": "13-376-1",
@@ -481,7 +524,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "44"
  },
  {
    "code": "13-409-1",
@@ -492,7 +536,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "45"
  },
  {
    "code": "13-410-1",
@@ -503,7 +548,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "46"
  },
  {
    "code": "13-412-1",
@@ -514,150 +560,8 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
- },
- {
-   "code": "13-424SW-1",
-   "fr": "SERVICE REGIONAL DES AFFAIRES MONETAIRES ET DES ASSURANCES BUEA",
-   "en": "SERVICE REGIONAL DES AFFAIRES MONETAIRES ET DES ASSURANCES BUEA",
-   "type": "2",
-   "rank": "3",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "CMR",
-   "region": "10",
-   "department": ""
- },
- {
-   "code": "13-429CFM-1",
-   "fr": "AGENCE COMPTABLE  CEFAM",
-   "en": "AGENCE COMPTABLE  CEFAM",
-   "type": "2",
-   "rank": "3",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "CMR",
-   "region": "10",
-   "department": ""
- },
- {
-   "code": "13-429GCE-1",
-   "fr": "AGENCE COMPTABLE Cameroon GCE BOARD",
-   "en": "AGENCE COMPTABLE Cameroon GCE BOARD",
-   "type": "2",
-   "rank": "3",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "CMR",
-   "region": "10",
-   "department": ""
- },
- {
-   "code": "13-429LFI-1",
-   "fr": "AGENCE COMPTABLE  LINAFI",
-   "en": "AGENCE COMPTABLE  LINAFI",
-   "type": "2",
-   "rank": "3",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "CMR",
-   "region": "10",
-   "department": ""
- },
- {
-   "code": "13-888SWA-1",
-   "fr": "AGENCE COMPTABLE  SOWEDA",
-   "en": "AGENCE COMPTABLE  SOWEDA",
-   "type": "2",
-   "rank": "3",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "CMR",
-   "region": "10",
-   "department": ""
- },
- {
-   "code": "13-429TA-1",
-   "fr": "AGENCE COMPTABLE  P&T ANNEX SCHOOL",
-   "en": "AGENCE COMPTABLE  P&T ANNEX SCHOOL",
-   "type": "2",
-   "rank": "3",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "CMR",
-   "region": "10",
-   "department": ""
- },
- {
-   "code": "13-429UB-1",
-   "fr": "AGENCE COMPTABLE UNIVERSITE DE BUEA",
-   "en": "AGENCE COMPTABLE UNIVERSITE DE BUEA",
-   "type": "2",
-   "rank": "3",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "CMR",
-   "region": "10",
-   "department": ""
- },
- {
-   "code": "13-701-1",
-   "fr": "RECETTE MUNICIPALE DE LIMBE",
-   "en": "RECETTE MUNICIPALE DE LIMBE",
-   "type": "",
-   "rank": "",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "",
-   "region": "",
-   "department": ""
- },
- {
-   "code": "13-720-1",
-   "fr": "RECETTE MUNICIPALE DE KUMBA",
-   "en": "RECETTE MUNICIPALE DE KUMBA",
-   "type": "",
-   "rank": "",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "",
-   "region": "",
-   "department": ""
- },
- {
-   "code": "13-726-1",
-   "fr": "RECETTE MUNICIPALE DE KUMBA 1",
-   "en": "RECETTE MUNICIPALE DE KUMBA 1",
-   "type": "2",
-   "rank": "3",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "CMR",
-   "region": "10",
-   "department": ""
- },
- {
-   "code": "13-701RD-1",
-   "fr": "RECETTE DES DOUANES DE LIMBE",
-   "en": "RECETTE DES DOUANES DE LIMBE",
-   "type": "2",
-   "rank": "3",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "CMR",
-   "region": "10",
-   "department": ""
- },
- {
-   "code": "13-704PG-1",
-   "fr": "PEAGE DE BONAKO/TIKO",
-   "en": "PEAGE DE BONAKO/TIKO",
-   "type": "2",
-   "rank": "3",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "CMR",
-   "region": "10",
-   "department": ""
- },
- {
-   "code": "13-713G-1",
-   "fr": "PEAGE D' EKOK",
-   "en": "PEAGE D' EKOK",
-   "type": "2",
-   "rank": "3",
-   "father": "5dfc4c21005f5e8c603dd56c",
-   "country": "CMR",
-   "region": "10",
-   "department": ""
+   "department": "",
+   "order": "47"
  },
  {
    "code": "13-119-1",
@@ -668,6 +572,175 @@
    "father": "5dfc4c21005f5e8c603dd56c",
    "country": "CMR",
    "region": "10",
-   "department": ""
+   "department": "",
+   "order": "48"
+ },
+ {
+   "code": "13-701VAR-1",
+   "fr": "VILLAGE ARTISANAL DE LIMBE",
+   "en": "VILLAGE ARTISANAL DE LIMBE",
+   "type": "2",
+   "rank": "3",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "CMR",
+   "region": "10",
+   "department": "",
+   "order": "48"
+ },
+ {
+   "code": "13-821CFM-1",
+   "fr": "AGENCE COMPTABLE  CEFAM",
+   "en": "AGENCE COMPTABLE  CEFAM",
+   "type": "2",
+   "rank": "3",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "CMR",
+   "region": "10",
+   "department": "",
+   "order": "49"
+ },
+ {
+   "code": "13-861GCEB-1",
+   "fr": "AGENCE COMPTABLE Cameroon GCE BOARD",
+   "en": "AGENCE COMPTABLE Cameroon GCE BOARD",
+   "type": "2",
+   "rank": "3",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "CMR",
+   "region": "10",
+   "department": "",
+   "order": "50"
+ },
+ {
+   "code": "13-429LFI-1",
+   "fr": "AGENCE COMPTABLE  LINAFI",
+   "en": "AGENCE COMPTABLE  LINAFI",
+   "type": "2",
+   "rank": "3",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "CMR",
+   "region": "10",
+   "department": "",
+   "order": "51"
+ },
+ {
+   "code": "13-888SWA-1",
+   "fr": "AGENCE COMPTABLE  SOWEDA",
+   "en": "AGENCE COMPTABLE  SOWEDA",
+   "type": "2",
+   "rank": "3",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "CMR",
+   "region": "10",
+   "department": "",
+   "order": "52"
+ },
+ {
+   "code": "13-429PTA-1",
+   "fr": "AGENCE COMPTABLE  P&T ANNEX SCHOOL",
+   "en": "AGENCE COMPTABLE  P&T ANNEX SCHOOL",
+   "type": "2",
+   "rank": "3",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "CMR",
+   "region": "10",
+   "department": "",
+   "order": "53"
+ },
+ {
+   "code": "13-890UB-1",
+   "fr": "AGENCE COMPTABLE UNIVERSITE DE BUEA",
+   "en": "AGENCE COMPTABLE UNIVERSITE DE BUEA",
+   "type": "2",
+   "rank": "3",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "CMR",
+   "region": "10",
+   "department": "",
+   "order": "54"
+ },
+ {
+   "code": "13-701-1",
+   "fr": "RECETTE MUNICIPALE DE LIMBE",
+   "en": "RECETTE MUNICIPALE DE LIMBE",
+   "type": "",
+   "rank": "",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "",
+   "region": "",
+   "department": "",
+   "order": "55"
+ },
+ {
+   "code": "13-720-1",
+   "fr": "RECETTE MUNICIPALE DE KUMBA",
+   "en": "RECETTE MUNICIPALE DE KUMBA",
+   "type": "",
+   "rank": "",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "",
+   "region": "",
+   "department": "",
+   "order": "56"
+ },
+ {
+   "code": "13-726-1",
+   "fr": "RECETTE MUNICIPALE DE KUMBA 1",
+   "en": "RECETTE MUNICIPALE DE KUMBA 1",
+   "type": "2",
+   "rank": "3",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "CMR",
+   "region": "10",
+   "department": "",
+   "order": "57"
+ },
+ {
+   "code": "13-701RD-1",
+   "fr": "RECETTE DES DOUANES DE LIMBE",
+   "en": "RECETTE DES DOUANES DE LIMBE",
+   "type": "2",
+   "rank": "3",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "CMR",
+   "region": "10",
+   "department": "",
+   "order": "58"
+ },
+ {
+   "code": "13-704PG-1",
+   "fr": "PEAGE DE BONAKO/TIKO",
+   "en": "PEAGE DE BONAKO/TIKO",
+   "type": "2",
+   "rank": "3",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "CMR",
+   "region": "10",
+   "department": "",
+   "order": "59"
+ },
+ {
+   "code": "13-713G-1",
+   "fr": "PEAGE D' EKOK",
+   "en": "PEAGE D' EKOK",
+   "type": "2",
+   "rank": "3",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "CMR",
+   "region": "10",
+   "department": "",
+   "order": "60"
+ },
+ {
+   "code": "13-424SW-1",
+   "fr": "SERVICE REGIONAL DES AFFAIRES MONETAIRES ET DES ASSURANCES BUEA",
+   "en": "SERVICE REGIONAL DES AFFAIRES MONETAIRES ET DES ASSURANCES BUEA",
+   "type": "2",
+   "rank": "3",
+   "father": "5dfc4c21005f5e8c603dd56c",
+   "country": "CMR",
+   "region": "10",
+   "department": "",
+   "order": "61"
  }
 ]

@@ -42,7 +42,7 @@ exports.api.positions = function (req, res) {
     var options = {
         phantomPath: phantomjs.path,
         format: "A4",
-        orientation: "landscape",
+        orientation: "portrait",
         border: "10mm",
         "border-bottom": "10mm",
         pagination: true,
@@ -137,7 +137,7 @@ exports.api.structures = function (req, res) {
     var options = {
         phantomPath: phantomjs.path,
         format: "A4",
-        orientation: "landscape",
+        orientation: "portrait",
         border: "10mm",
         "border-bottom": "10mm",
         pagination: true,

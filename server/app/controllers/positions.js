@@ -587,18 +587,19 @@ exports.INITPOSITIONDATAFROMJSON = function (path, callback) {
                         log.error(err);
                         callback(err);
                     } else {
-                        console.log(positions[a].codept, positions[a].codept.substring(0, positions[a].codept.indexOf('-',4)+2))
-                        controllers.structures.findStructureByCode(positions[a].codept.substring(0, positions[a].codept.indexOf('-',4)+2), "en", function (err, structure) {
+                        console.log(positions[a].codept, positions[a].codept.substring(0, positions[a].codept.indexOf('P')))
+                        controllers.structures.findStructureByCode(positions[a].codept.substring(0, positions[a].codept.indexOf('P')), "en", function (err, structure) {
                             if (err) {
                                 log.error(err);
                                 callback(err);
                             } else {
                                 var fields = fieldsCreate;
-                                fields.structureId = structure._id;
+                                
                                 if (position) {// If this position already exist
                                     fields = fieldsUpdate;
                                     fields._id = position._id;
                                 }
+                                fields.structureId = structure._id;
                                 exports.upsert(fields, function (err) {
                                     if (err) {
                                         log.error(err);

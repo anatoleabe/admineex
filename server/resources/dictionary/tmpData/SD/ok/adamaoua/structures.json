@@ -1,0 +1,1170 @@
+[
+    {
+        "code": "18-197-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "father": "5def230627176802323d54f3",
+        "en": "CABINET DU TRESORIER  PAYEUR GENERAL",
+        "fr": "CABINET DU TRESORIER  PAYEUR GENERAL",
+        "rank": "3",
+        "type": "2",
+
+        "country": "CMR",
+        "region": "1",
+        "department": "57"
+    },
+    {
+
+        "code": "18-197-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICES DU FONDE DE POUVOIRS N° 1",
+        "fr": "SERVICES DU FONDE DE POUVOIRS N° 1",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10771af921121ed35226f')",
+        "code": "18-197-3",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:12:49.798Z')",
+        "lastModified": "ISODate('2019-12-11T15:12:49.797Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICES DU FONDE DE POUVOIRS N° 2",
+        "fr": "SERVICES DU FONDE DE POUVOIRS N° 2",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1083daf921121ed352273')",
+        "code": "18-197-4",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:16:13.905Z')",
+        "lastModified": "ISODate('2019-12-11T15:16:13.904Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "BRIGADE DE CONTRÔLE ET DE VERIFICATION",
+        "fr": "BRIGADE DE CONTRÔLE ET DE VERIFICATION",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df108c7af921121ed352277')",
+        "code": "18-197-5",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:18:31.200Z')",
+        "lastModified": "ISODate('2019-12-11T15:18:31.199Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10920af921121ed35227b')",
+        "code": "18-197-6",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:20:00.456Z')",
+        "lastModified": "ISODate('2019-12-11T15:20:00.455Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10983af921121ed35227d')",
+        "code": "18-197-7",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:21:39.598Z')",
+        "lastModified": "ISODate('2019-12-11T15:21:39.596Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DES  COMPTES DE GESTION",
+        "fr": "SERVICE DES  COMPTES DE GESTION",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df109d4af921121ed35227f')",
+        "code": "18-197-8",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:23:00.665Z')",
+        "lastModified": "ISODate('2019-12-11T15:23:00.663Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DU CONTRÔLE ET DU TRAITEMENT INFORMATIQUE DES COMPTABILITES",
+        "fr": "SERVICE DU CONTRÔLE ET DU TRAITEMENT INFORMATIQUE DES COMPTABILITES",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10aad5eba073ef3214339')",
+        "code": "18-197-9",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:26:37.141Z')",
+        "lastModified": "ISODate('2019-12-11T15:26:37.138Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DU PORTEFEUILLE, DES DEPOTS ET CONSIGNATIONS",
+        "fr": "SERVICE DU PORTEFEUILLE, DES DEPOTS ET CONSIGNATIONS",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10b005eba073ef321433d')",
+        "code": "18-197-10",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:28:00.736Z')",
+        "lastModified": "ISODate('2019-12-11T15:28:00.735Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DES COLLECTIVITES TERRITORIALES DECENTRALISEES",
+        "fr": "SERVICE DES COLLECTIVITES TERRITORIALES DECENTRALISEES",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10ba35eba073ef3214343')",
+        "code": "18-195-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:30:43.077Z')",
+        "lastModified": "ISODate('2019-12-11T15:30:43.074Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "RECETTE  DES FINANCES de BANYO",
+        "fr": "RECETTE  DES FINANCES de BANYO",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10be35eba073ef3214347')",
+        "code": "18-195-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:31:47.486Z')",
+        "lastModified": "ISODate('2019-12-11T15:31:47.485Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10c295eba073ef3214349')",
+        "code": "18-195-3",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:32:57.834Z')",
+        "lastModified": "ISODate('2019-12-11T15:32:57.833Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10d1b5eba073ef321434d')",
+        "code": "18-196-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:36:59.853Z')",
+        "lastModified": "ISODate('2019-12-11T15:36:59.851Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "RECETTE  DES FINANCES de MEIGANGA",
+        "fr": "RECETTE  DES FINANCES de MEIGANGA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "48"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10d865eba073ef3214351')",
+        "code": "18-196-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:38:46.844Z')",
+        "lastModified": "ISODate('2019-12-11T15:38:46.843Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10dd05eba073ef3214355')",
+        "code": "18-196-3",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:40:00.744Z')",
+        "lastModified": "ISODate('2019-12-11T15:40:00.743Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10e135eba073ef3214359')",
+        "code": "18-198-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:41:07.797Z')",
+        "lastModified": "ISODate('2019-12-11T17:21:36.761Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "RECETTE  DES FINANCES de TIBATI",
+        "fr": "RECETTE  DES FINANCES de TIBATI",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10e705eba073ef321435d')",
+        "code": "18-198-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:42:40.830Z')",
+        "lastModified": "ISODate('2019-12-11T15:42:40.828Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10ed85eba073ef3214361')",
+        "code": "18-198-3",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:44:24.815Z')",
+        "lastModified": "ISODate('2019-12-11T15:44:24.814Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10f395eba073ef3214367')",
+        "code": "18-199-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:46:01.304Z')",
+        "lastModified": "ISODate('2019-12-11T15:46:01.304Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "RECETTE  DES FINANCES de TIGNERE",
+        "fr": "RECETTE  DES FINANCES de TIGNERE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "10"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10f7f5eba073ef321436b')",
+        "code": "18-199-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:47:11.500Z')",
+        "lastModified": "ISODate('2019-12-11T15:47:11.498Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df10fbb5eba073ef321436d')",
+        "code": "18-199-3",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:48:11.947Z')",
+        "lastModified": "ISODate('2019-12-11T15:48:11.945Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1102b5eba073ef3214373')",
+        "code": "18-401-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:50:03.060Z')",
+        "lastModified": "ISODate('2019-12-11T17:20:34.014Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "RECETTE MUNICIPALE COMMUNAUTE URBAINE NGAOUNDERE",
+        "fr": "RECETTE MUNICIPALE COMMUNAUTE URBAINE NGAOUNDERE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "57"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1107d5eba073ef3214375')",
+        "code": "18-401-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:51:25.905Z')",
+        "lastModified": "ISODate('2019-12-11T16:32:41.415Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1110c5eba073ef321437b')",
+        "code": "18-401-3",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:53:48.424Z')",
+        "lastModified": "ISODate('2019-12-11T16:36:04.043Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df111935eba073ef3214381')",
+        "code": "18-405-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:56:03.489Z')",
+        "lastModified": "ISODate('2019-12-11T15:56:03.487Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "RECETTE MUNICIPALE TIBATI",
+        "fr": "RECETTE MUNICIPALE TIBATI",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df111d45eba073ef3214383')",
+        "code": "18-405-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:57:08.569Z')",
+        "lastModified": "ISODate('2019-12-11T15:57:08.567Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df112205eba073ef3214385')",
+        "code": "18-405-3",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T15:58:24.762Z')",
+        "lastModified": "ISODate('2019-12-11T15:58:24.761Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1142e5eba073ef3214395')",
+        "code": "18-408-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:07:10.790Z')",
+        "lastModified": "ISODate('2019-12-11T17:19:09.843Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "RECETTE MUNICIPALE MBE",
+        "fr": "RECETTE MUNICIPALE MBE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "57"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df114785eba073ef3214399')",
+        "code": "18-408-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:08:24.954Z')",
+        "lastModified": "ISODate('2019-12-11T16:08:24.954Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df114be5eba073ef321439d')",
+        "code": "18-408-3",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:09:34.511Z')",
+        "lastModified": "ISODate('2019-12-11T16:09:34.510Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df115d25eba073ef32143a1')",
+        "code": "18-409-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:14:10.497Z')",
+        "lastModified": "ISODate('2019-12-11T17:18:13.380Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "RECETTE MUNICIPALE MAYO BALEO",
+        "fr": "RECETTE MUNICIPALE MAYO BALEO",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "10"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df116285eba073ef32143a3')",
+        "code": "18-409-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:15:36.992Z')",
+        "lastModified": "ISODate('2019-12-11T16:15:36.991Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df116e45eba073ef32143a7')",
+        "code": "18-409-3",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:18:44.765Z')",
+        "lastModified": "ISODate('2019-12-11T16:18:44.758Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df118ee5eba073ef32143b5')",
+        "code": "18-403-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:27:26.250Z')",
+        "lastModified": "ISODate('2019-12-11T16:27:26.246Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "RECETTE DIVISIONNAIRE DES IMPOTS DE BANYO",
+        "fr": "RECETTE DIVISIONNAIRE DES IMPOTS DE BANYO",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df119375eba073ef32143b7')",
+        "code": "18-403-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:28:39.736Z')",
+        "lastModified": "ISODate('2019-12-11T16:28:39.735Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df119a95eba073ef32143b9')",
+        "code": "18-403-3",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:30:33.290Z')",
+        "lastModified": "ISODate('2019-12-11T16:30:33.289Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11b445eba073ef32143cb')",
+        "code": "18-406-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:37:24.763Z')",
+        "lastModified": "ISODate('2019-12-11T16:37:24.761Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "RECETTE DES DOMAINES DE TIGNERE",
+        "fr": "RECETTE DES DOMAINES DE TIGNERE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "10"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11b895eba073ef32143cd')",
+        "code": "18-406-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:38:33.142Z')",
+        "lastModified": "ISODate('2019-12-11T16:38:33.137Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11bd15eba073ef32143cf')",
+        "code": "18-406-3",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:39:45.755Z')",
+        "lastModified": "ISODate('2019-12-11T16:39:45.754Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11c955eba073ef32143d3')",
+        "code": "18-429UNGD-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:43:01.996Z')",
+        "lastModified": "ISODate('2019-12-11T16:43:01.994Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "AGENCE COMPTABLE AUPRES DE L’UNIVERSITE DE NGAOUNDERE",
+        "fr": "AGENCE COMPTABLE AUPRES DE L’UNIVERSITE DE NGAOUNDERE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11ccf5eba073ef32143d5')",
+        "code": "18-429UNGD-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:43:59.194Z')",
+        "lastModified": "ISODate('2019-12-11T16:43:59.192Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11d105eba073ef32143d9')",
+        "code": "18-429UNGD-3",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:45:04.505Z')",
+        "lastModified": "ISODate('2019-12-11T16:45:04.504Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "fr": "SERVICE DE LA DEPENSE ET DU RECOUVREMENT",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11d725eba073ef32143dd')",
+        "code": "18-401RC-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:46:42.276Z')",
+        "lastModified": "ISODate('2019-12-11T16:46:42.275Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "REGIE DES RECETTES AUPRES DU CENTRE MULTIFONCTIONNEL DE PROMOTION DES JEUNES",
+        "fr": "REGIE DES RECETTES AUPRES DU CENTRE MULTIFONCTIONNEL DE PROMOTION DES JEUNES",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11db55eba073ef32143e1')",
+        "code": "18-401RC-2",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:47:49.783Z')",
+        "lastModified": "ISODate('2019-12-11T16:47:49.782Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "STATION DE PESAGE DE MANWI",
+        "fr": "STATION DE PESAGE DE MANWI",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11df95eba073ef32143e5')",
+        "code": "18-404RSP-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:48:57.587Z')",
+        "lastModified": "ISODate('2019-12-11T17:15:49.793Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "STATION DE PESAGE DE MEIGANGA",
+        "fr": "STATION DE PESAGE DE MEIGANGA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "48"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11e825eba073ef32143e9')",
+        "code": "18-401CU-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:51:14.812Z')",
+        "lastModified": "ISODate('2019-12-11T16:51:14.810Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "CONTROLEUR FINANCIER AUPRES DE LA COMMUNAUTE URBAINE DE NGAOUNDERE",
+        "fr": "CONTROLEUR FINANCIER AUPRES DE LA COMMUNAUTE URBAINE DE NGAOUNDERE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "57"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11f265eba073ef32143ef')",
+        "code": "18-309-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:53:58.356Z')",
+        "lastModified": "ISODate('2019-12-11T16:53:58.355Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "PERCEPTION MAYO DARLE",
+        "fr": "PERCEPTION MAYO DARLE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "7"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11f745eba073ef32143f1')",
+        "code": "18-284-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:55:16.823Z')",
+        "lastModified": "ISODate('2019-12-11T16:55:16.822Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "PERCEPTION BANKIM",
+        "fr": "PERCEPTION BANKIM",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "7"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df11fd05eba073ef32143f5')",
+        "code": "18-041-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:56:48.044Z')",
+        "lastModified": "ISODate('2019-12-11T16:56:48.043Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "PERCEPTION NGAOUNDAL",
+        "fr": "PERCEPTION NGAOUNDAL",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df120225eba073ef32143f9')",
+        "code": "18-288-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:58:10.213Z')",
+        "lastModified": "ISODate('2019-12-11T16:58:10.210Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "PERCEPTION MBE",
+        "fr": "PERCEPTION MBE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "57"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1207d5eba073ef32143fd')",
+        "code": "18-264-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T16:59:41.797Z')",
+        "lastModified": "ISODate('2019-12-11T16:59:41.795Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "PERCEPTION BELEL",
+        "fr": "PERCEPTION BELEL",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "57"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df120db5eba073ef32143ff')",
+        "code": "18-268-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T17:01:15.624Z')",
+        "lastModified": "ISODate('2019-12-11T17:14:37.980Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "PERCEPTION MAYO BALEO",
+        "fr": "PERCEPTION MAYO BALEO",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "10"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1215d5eba073ef3214405')",
+        "code": "18-494-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T17:03:25.381Z')",
+        "lastModified": "ISODate('2019-12-11T17:03:25.378Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "PERCEPTION KONTCHA",
+        "fr": "PERCEPTION KONTCHA",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "10"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df121de5eba073ef3214409')",
+        "code": "18-287-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T17:05:34.059Z')",
+        "lastModified": "ISODate('2019-12-11T17:05:34.058Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "PERCEPTION DJOHONG",
+        "fr": "PERCEPTION DJOHONG",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "48"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1222b5eba073ef321440d')",
+        "code": "18-310-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T17:06:51.467Z')",
+        "lastModified": "ISODate('2019-12-11T17:06:51.466Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "PERCEPTION NGAOUI",
+        "fr": "PERCEPTION NGAOUI",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "48"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1227b5eba073ef3214411')",
+        "code": "18-017-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T17:08:11.137Z')",
+        "lastModified": "ISODate('2019-12-11T17:08:11.134Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "PERCEPTION GALIM TIGNERE",
+        "fr": "PERCEPTION GALIM TIGNERE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "10"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df122c25eba073ef3214413')",
+        "code": "18-311-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T17:09:22.964Z')",
+        "lastModified": "ISODate('2019-12-11T17:09:22.963Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "PERCEPTION DIR",
+        "fr": "PERCEPTION DIR",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "48"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df1231c5eba073ef3214417')",
+        "code": "18-427AD-1",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-11T17:10:52.543Z')",
+        "lastModified": "ISODate('2019-12-11T17:10:52.542Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE REGIONAL DES AFFAIRES MONETAIRES ET DES ASSURANCES",
+        "fr": "SERVICE REGIONAL DES AFFAIRES MONETAIRES ET DES ASSURANCES",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df44b082802422832241ef7')",
+        "code": "18-197-11",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-14T02:38:00.680Z')",
+        "lastModified": "ISODate('2019-12-14T02:38:00.679Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "RECETTE REGIONALE DES IMPOTS DE NGAOUNDERE",
+        "fr": "RECETTE REGIONALE DES IMPOTS DE NGAOUNDERE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df44b812802422832241ef9')",
+        "code": "18-197-12",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-14T02:40:01.780Z')",
+        "lastModified": "ISODate('2019-12-14T02:40:01.779Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DE LA COMPTABILITE ET CAISSE (RRINGA)",
+        "fr": "SERVICE DE LA COMPTABILITE ET CAISSE (RRINGA)",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }
+
+    ,
+    {
+        "_id": "ObjectId('5df44bc42802422832241efb')",
+        "code": "18-197-13",
+        "__v": 0,
+        "activities": "",
+        "tasks": "",
+        "created": "ISODate('2019-12-14T02:41:08.643Z')",
+        "lastModified": "ISODate('2019-12-14T02:41:08.642Z')",
+        "father": "5def230627176802323d54f3",
+        "en": "SERVICE DES VALEURS FISCALES DE NGAOUNDERE",
+        "fr": "SERVICE DES VALEURS FISCALES DE NGAOUNDERE",
+        "rank": "3",
+        "type": "2",
+        "country": "CMR",
+        "region": "1",
+        "department": "40"
+    }]
