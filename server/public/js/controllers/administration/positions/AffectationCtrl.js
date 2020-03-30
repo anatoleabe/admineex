@@ -14,7 +14,8 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
         nature: undefined
     };
 
-    $scope.loading = false;
+    $scope.loading = true;
+    $rootScope.kernel.loading = 0
     $scope.sending = false;
     $scope.personnels = [];
     $scope.postes = [];
@@ -112,19 +113,34 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                     $ocLazyLoad.load('js/services/PositionService.js').then(function () {
                                         var Position = $injector.get('Position');
 
-                                        Structure.minimalList().then(function (response) {
-                                            var data = response.data;
-                                            $scope.structures = data;
-                                        }).catch(function (response) {
-                                            console.error(response);
-                                        });
 
                                         Staff.list({minify: false}).then(function (response) {
                                             var data = response.data;
                                             $scope.personnels = data.data;
+                                            $scope.loading = false;
+                                            $rootScope.kernel.loading = 100;
+
+
+                                            $scope.loadStructures = function (type) {
+                                                $scope.loading = true;
+                                                $rootScope.kernel.loading = 0;
+                                                $scope.structures = undefined;
+                                                $scope.structures = undefined;
+                                                $scope.affectation.positionId = undefined
+                                                Structure.minimalList({type: "t=" + type}).then(function (response) {
+                                                    var data = response.data;
+                                                    $scope.structures = data;
+                                                    $scope.loading = false;
+                                                    $rootScope.kernel.loading = 100
+                                                }).catch(function (response) {
+                                                    console.error(response);
+                                                });
+                                            }
+
 
                                             $scope.$watch('structure', function (newval, oldval) {
                                                 if (newval) {
+                                                    console.log("structure rquired", newval);
                                                     getPositions(newval ? newval : "-1", $scope.showOnlyVacancies ? "0" : "-1");
                                                 }
                                             });
@@ -134,7 +150,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                 $rootScope.kernel.loading = 0;
                                                 var deferred = $q.defer();
                                                 $scope.promise = deferred.promise;
-                                                Position.list({id: idStructure, restric: restric, limit:0, skip:0}).then(function (response) {
+                                                Position.list({id: idStructure, restric: restric, limit: 0, skip: 0}).then(function (response) {
                                                     var data = response.data.data;
 
                                                     $rootScope.kernel.loading = 100;
@@ -154,7 +170,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                     $scope.affectation.positionId = $scope.params.positionTo._id;
                                                     $scope.affectation.positionCode = $scope.params.positionTo.code;
                                                 }
-                                                
+
                                                 if ($scope.params.personnel) {
                                                     $scope.personnelFromParams = true;
                                                     $scope.selectedPersonnel = $scope.params.personnel._id;
@@ -170,10 +186,10 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                     $rootScope.kernel.loading = 100;
                                                     if ($scope.params.positionTo) {
                                                         $state.go('home.administration.positions');
-                                                    }else if ($scope.params.personnel) {
+                                                    } else if ($scope.params.personnel) {
                                                         $state.go('home.staffs.main');
                                                     }
-                                                    
+
                                                     $rootScope.kernel.alerts.push({
                                                         type: 3,
                                                         msg: gettextCatalog.getString('The operation has been saved'),

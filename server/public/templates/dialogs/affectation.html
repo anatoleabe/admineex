@@ -1,4 +1,4 @@
-<md-dialog flex="50">
+<md-dialog flex="30">
     <form ng-submit="save()">
         <md-toolbar class="md-accent">
             <div class="md-toolbar-tools">
@@ -57,7 +57,20 @@
                     <!--                <div layout="row" ng-if="!selectedPersonnel" style="margin-top: -40px; font-size: 12px; color: #E6504C">
                                         <span ng-if="selectedPersonnel">Poste actuel: {{selectedPersonnelPosteActuel}} ({{selectedPersonnelStructureactuel}}) </span>
                                     </div>-->
-                    <div layout="row">
+                    <md-input-container class="md-block" flex>
+                        <label translate>Type of structure</label>
+                        <md-select name="typeStructre" ng-model="typeStructre" required ng-change="loadStructures(typeStructre)">
+                            <md-option ng-repeat="t in types" value="{{t.id}}" >
+                                {{t.name}} 
+                            </md-option>
+                        </md-select>
+                        <div ng-messages="nature.$error">
+                            <div ng-message="required">
+                                This field is required to proceed on next step.
+                            </div>
+                        </div>
+                    </md-input-container>
+                    <div layout="row" >
                         <md-input-container flex>
                             <label translate>Structure</label>
                             <md-select name="structure" ng-disabled="positionFromParams" required ng-model="structure"  style="min-width: 150px;">
@@ -72,7 +85,7 @@
                             </div>
                         </md-input-container>
                     </div>
-                    <div layout="row" >
+                    <div layout="row" ng-if="structures">
                         <md-input-container class="md-block" flex>
                             <label translate>New position </label>
                             <md-select name="newPosition" ng-disabled="positionFromParams" ng-model="affectation.positionId" required data-md-container-class="selectdemoSelectHeader" >
@@ -88,7 +101,7 @@
                         </md-input-container>
 
                     </div>
-                    <div layout="row" >
+                    <div layout="row" ng-if="structures">
                         <md-input-container class="md-block" flex>
                             <label translate>Type of movement</label>
                             <md-select name="mouvement" ng-model="affectation.mouvement" required >
@@ -116,7 +129,7 @@
                             </div>
                         </md-input-container>
                     </div>
-                    <div layout="row" >
+                    <div layout="row" ng-if="structures">
                         <md-input-container class="md-block" flex>
                             <label translate>Reference or Number</label>
                             <input name="number" ng-model="affectation.numAct" required>
@@ -127,12 +140,12 @@
                             </div>
                         </md-input-container>
                     </div>
-                    <div flex-gt-sm="50">
+                    <div flex-gt-sm="50" ng-if="structures">
                         <md-checkbox ng-model="affectation.isCurrent" ng-checked="affectation.isCurrent" aria-label="Checkbox 1">
                             Currently holds this position 
                         </md-checkbox>
                     </div>
-                    <div layout="row" >
+                    <div layout="row" ng-if="structures">
                         <md-input-container class="datepicker-xl" >
                             <label translate>Signature date</label>
                             <md-datepicker name="signatureDate" class="md-block"  ng-model="affectation.signatureDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
@@ -160,7 +173,7 @@
                                 </div>
                             </div>
                         </md-input-container>
-                        
+
                     </div>
                 </md-card-content>
             </md-card>

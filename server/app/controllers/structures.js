@@ -226,6 +226,10 @@ exports.api.list = function (req, res) {
 exports.api.minimalList = function (req, res) {
     if (req.actor) {
         var language = req.actor.language.toLowerCase();
+        var types = undefined;
+        if (req.params.structure && req.params.structure.indexOf('t=') != -1 ){
+            types = req.params.structure.split("=");
+        }
 
         controllers.users.findUser(req.actor.id, function (err, user) {
             if (err) {
@@ -247,7 +251,10 @@ exports.api.minimalList = function (req, res) {
                             }
                         });
                     } else {
-                        var query = {}
+                        var query = {};
+                        if (types){
+                            var query = {"type": types[1]};
+                        }
                         if (req.actor.role == "2") {
                             query = {
                                 "code": {$in: userStructureCodes}

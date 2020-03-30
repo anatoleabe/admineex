@@ -116,8 +116,7 @@ exports.api.affectToPosition = function (req, res) {
                             lastModified: new Date()
                         };
                         var filter = {
-                            positionId: fields.positionId,
-                            positionCode: result.code,
+                            personnelId: fields.occupiedBy
                         };
                         Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
                             if (err) {
@@ -144,6 +143,11 @@ exports.api.affectToPosition = function (req, res) {
                                             };
                                             if (!perso.history) {
                                                 perso.history = {positions: []};
+                                            }
+                                            if (perso.history.positions.length > 0){
+                                                for (var i in perso.history.positions) {
+                                                    perso.history.positions[i].isCurrent = false;
+                                                }
                                             }
                                             perso.history.positions.push(history);
 
