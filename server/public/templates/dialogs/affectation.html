@@ -43,7 +43,7 @@
                             <label translate>Select a personnel</label>
                             <md-select name="selectedPersonnel" required ng-model="selectedPersonnel"  style="min-width: 150px;">
                                 <md-option ng-repeat="perso in personnels" value="{{perso._id}}" >
-                                    {{perso.name.family[0]}} {{perso.name.given[0]}} <small>{{"(Mle: " + (perso.identifier) + ")"}}</small>
+                                    {{perso.fname}} <small>{{"(Mle: " + (perso.identifier) + ")"}}</small>
 
                                 </md-option>
                             </md-select>

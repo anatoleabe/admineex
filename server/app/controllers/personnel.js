@@ -463,23 +463,26 @@ exports.list = function (options, callback) {
                         }
                         var concat = ["$name.family", " ", "$name.given"];
                         var concatMeta = ["$name.family", "$name.given", "$identifier"];
-                        var sort = {"name.family": 'asc'};
+                        var sort = {"metainfo": 'asc'};
                         var q;
-                        if (options.search && options.search != "-" && options.search != "") {
-                            q = Personnel.aggregate([
-                                {"$unwind": "$name"},
-                                {"$unwind": "$name.family"},
-                                {"$unwind": "$name.given"},
-                                {"$addFields": {"fname": {$concat: concat}}},
-                                {"$addFields": {"matricule": "$identifier"}},
-                                {"$addFields": {"metainfo": {$concat: concatMeta}}},
-                                {$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}},
-                                {"$limit": options.skip + options.limit},
-                                {"$skip": options.skip}
-                            ]);
-                        } else {
-                            q = Personnel.find(query).sort(sort).limit(options.limit).skip(options.skip).lean();
+                        if (options.search && (options.search == "-" || options.search == "")) {
+                            options.search = "";
                         }
+                        var aggregate = [
+                            {"$unwind": "$name"},
+                            {"$unwind": "$name.family"},
+                            {"$unwind": "$name.given"},
+                            {"$addFields": {"fname": {$concat: concat}}},
+                            {"$addFields": {"matricule": "$identifier"}},
+                            {"$addFields": {"metainfo": {$concat: concatMeta}}},
+                            {$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}}
+                        ];
+                        if ((options.skip + options.limit) > 0){
+                            aggregate.push({"$limit": options.skip + options.limit})
+                            aggregate.push({"$skip": options.skip})
+                        }
+                        q = Personnel.aggregate(aggregate);
+
                         q.exec(function (err, personnels) {
                             if (err) {
                                 log.error(err);

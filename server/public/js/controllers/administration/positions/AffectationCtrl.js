@@ -127,7 +127,12 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                 $scope.structures = undefined;
                                                 $scope.structures = undefined;
                                                 $scope.affectation.positionId = undefined
-                                                Structure.minimalList({type: "t=" + type}).then(function (response) {
+                                                var option = {type: "t=" + type};
+                                                if (type == 2){
+                                                    option = {type: "t=" + type+"=r="+2};
+                                                }
+                                                
+                                                Structure.minimalList(option).then(function (response) {
                                                     var data = response.data;
                                                     $scope.structures = data;
                                                     $scope.loading = false;

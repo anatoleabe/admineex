@@ -230,7 +230,6 @@ exports.api.minimalList = function (req, res) {
         if (req.params.structure && req.params.structure.indexOf('t=') != -1 ){
             types = req.params.structure.split("=");
         }
-
         controllers.users.findUser(req.actor.id, function (err, user) {
             if (err) {
                 log.error(err);
@@ -254,6 +253,9 @@ exports.api.minimalList = function (req, res) {
                         var query = {};
                         if (types){
                             var query = {"type": types[1]};
+                        }
+                        if (types && types[3]){
+                            query.rank = types[3];
                         }
                         if (req.actor.role == "2") {
                             query = {
