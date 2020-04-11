@@ -474,9 +474,13 @@ exports.list = function (options, callback) {
                             {"$unwind": "$name.given"},
                             {"$addFields": {"fname": {$concat: concat}}},
                             {"$addFields": {"matricule": "$identifier"}},
-                            {"$addFields": {"metainfo": {$concat: concatMeta}}},
-                            {$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}}
+                            {"$addFields": {"metainfo": {$concat: concatMeta}}}
                         ];
+                        
+                        if (options.search){
+                            aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
+                        }
+                        
                         if ((options.skip + options.limit) > 0){
                             aggregate.push({"$limit": options.skip + options.limit})
                             aggregate.push({"$skip": options.skip})
