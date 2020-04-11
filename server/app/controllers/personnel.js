@@ -470,21 +470,30 @@ exports.list = function (options, callback) {
                         }
                         var aggregate = [
                             {"$unwind": "$name"},
+                            {"$unwind": "$retirement"},
                             {"$unwind": "$name.family"},
                             {"$unwind": "$name.given"},
                             {"$addFields": {"fname": {$concat: concat}}},
                             {"$addFields": {"matricule": "$identifier"}},
                             {"$addFields": {"metainfo": {$concat: concatMeta}}}
                         ];
-                        
-                        if (options.search){
+
+                        //Filter by key word
+                        if (options.search) {
                             aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
                         }
-                        
-                        if ((options.skip + options.limit) > 0){
-                            aggregate.push({"$limit": options.skip + options.limit})
-                            aggregate.push({"$skip": options.skip})
+                        //If retiredOnly
+                        if (options.retiredOnly) {
+                            aggregate.push({"$match": {"retirement.retirement": true}});
+                            aggregate.push({"$match": {"retirement.notified": {$exists: false}}});
+                            aggregate.push({"$match": {$or: [{"retirement.extended": {$exists: false}}, {"retirement.extended": false}]}});
+                        } else {
+                            if ((options.skip + options.limit) > 0) {
+                                aggregate.push({"$limit": options.skip + options.limit})
+                                aggregate.push({"$skip": options.skip})
+                            }
                         }
+
                         q = Personnel.aggregate(aggregate);
 
                         q.exec(function (err, personnels) {
@@ -493,19 +502,31 @@ exports.list = function (options, callback) {
                                 audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
                                 callback(err);
                             } else {
-                                if (options.minify == true) {
+                                if (options.minify == true || options.retiredOnly) {
                                     personnels = JSON.parse(JSON.stringify(personnels));
                                     function LoopA(a) {
                                         if (a < personnels.length && personnels[a]) {
-                                            controllers.positions.findPositionHelderBystaffId({req: options.req}, personnels[a]._id, function (err, affectation) {
-                                                if (err) {
-                                                    log.error(err);
-                                                    callback(err);
-                                                } else {
-                                                    personnels[a].affectedTo = affectation;
-                                                    LoopA(a + 1);
-                                                }
-                                            });
+                                            if (options.minify === true) {
+                                                controllers.positions.findPositionHelderBystaffId({req: options.req}, personnels[a]._id, function (err, affectation) {
+                                                    if (err) {
+                                                        log.error(err);
+                                                        callback(err);
+                                                    } else {
+                                                        personnels[a].affectedTo = affectation;
+                                                        personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
+                                                        LoopA(a + 1);
+                                                    }
+                                                });
+                                            } else {
+                                                var status = (personnels[a].status) ? personnels[a].status : "";
+                                                var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                                                var language = options.language || "";
+                                                language = language.toLowerCase();
+                                                personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
+                                                personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
+                                                LoopA(a + 1);
+                                            }
+
                                         } else {
                                             callback(null, personnels);
                                         }
