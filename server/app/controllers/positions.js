@@ -12,6 +12,7 @@ var dictionary = require('../utils/dictionary');
 var formidable = require("formidable");
 var ObjectID = require('mongoose').mongo.ObjectID;
 var moment = require('moment');
+var util = require('util');
 
 // API
 exports.api = {};
@@ -143,11 +144,14 @@ exports.api.affectToPosition = function (req, res) {
                                             };
                                             if (!perso.history) {
                                                 perso.history = {positions: []};
-                                            }
-                                            if (perso.history.positions.length > 0){
+                                            }else if (perso.history && !perso.history.positions) {
+                                                perso.history.positions = [];
+                                            }else if (perso.history && util.isArray(perso.history.positions) && perso.history.positions.length > 0) {
                                                 for (var i in perso.history.positions) {
                                                     perso.history.positions[i].isCurrent = false;
                                                 }
+                                            }else{
+                                                perso.history.positions = [];
                                             }
                                             perso.history.positions.push(history);
 
@@ -323,7 +327,7 @@ exports.api.list = function (req, res) {
             limit = parseInt(req.params.limit, 10);
             skip = parseInt(req.params.skip, 10);
         }
-        
+
 
         var filter = {};
         if (req.params.id && req.params.id != "-1") {
@@ -598,7 +602,7 @@ exports.INITPOSITIONDATAFROMJSON = function (path, callback) {
                                 callback(err);
                             } else {
                                 var fields = fieldsCreate;
-                                
+
                                 if (position) {// If this position already exist
                                     fields = fieldsUpdate;
                                     fields._id = position._id;
