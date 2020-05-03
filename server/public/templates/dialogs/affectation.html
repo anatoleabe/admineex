@@ -73,12 +73,27 @@
                     <div layout="row" >
                         <md-input-container flex>
                             <label translate>Structure</label>
-                            <md-select name="structure" ng-disabled="positionFromParams" required ng-model="structure"  style="min-width: 150px;">
+                            <md-select name="structure" ng-disabled="positionFromParams" required ng-model="structure" ng-change="loadSubStructures(typeStructre)" style="min-width: 150px;">
                                 <md-option ng-repeat="struc in structures" value="{{struc.code}}" >
                                     {{struc.name}} ({{struc.code}})
                                 </md-option>
                             </md-select>
                             <div ng-messages="structure.$error">
+                                <div ng-message="required">
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" >
+                        <md-input-container flex>
+                            <label translate>Sub structure</label>
+                            <md-select name="substructure" ng-disabled="positionFromParams" required ng-model="substructure" ng-change="consoleme()"  style="min-width: 150px;">
+                                <md-option ng-repeat="substruc in substructures | filter:onlySubDirection" value="{{substruc.code}}" >
+                                    {{substruc.name}} ({{substruc.code}})
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="substructure.$error">
                                 <div ng-message="required">
                                     This field is required to proceed on next step.
                                 </div>
@@ -101,7 +116,7 @@
                         </md-input-container>
 
                     </div>
-                    <div layout="row" ng-if="structures">
+                    <div layout="row" ng-if="substructure">
                         <md-input-container class="md-block" flex>
                             <label translate>Type of movement</label>
                             <md-select name="mouvement" ng-model="affectation.mouvement" required >
@@ -129,7 +144,7 @@
                             </div>
                         </md-input-container>
                     </div>
-                    <div layout="row" ng-if="structures">
+                    <div layout="row" ng-if="substructure">
                         <md-input-container class="md-block" flex>
                             <label translate>Reference or Number</label>
                             <input name="number" ng-model="affectation.numAct" required>
@@ -140,12 +155,12 @@
                             </div>
                         </md-input-container>
                     </div>
-                    <div flex-gt-sm="50" ng-if="structures">
+                    <div flex-gt-sm="50" ng-if="substructure">
                         <md-checkbox ng-model="affectation.isCurrent" ng-checked="affectation.isCurrent" aria-label="Checkbox 1">
                             Currently holds this position 
                         </md-checkbox>
                     </div>
-                    <div layout="row" ng-if="structures">
+                    <div layout="row" ng-if="substructure">
                         <md-input-container class="datepicker-xl" >
                             <label translate>Signature date</label>
                             <md-datepicker name="signatureDate" class="md-block"  ng-model="affectation.signatureDate" md-max-date="max" required style="width: 200px;"></md-datepicker>

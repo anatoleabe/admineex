@@ -93,6 +93,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
         $mdDialog.cancel();
     };
 
+
     $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
         var Dictionary = $injector.get('Dictionary');
 
@@ -128,13 +129,38 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                 $scope.structures = undefined;
                                                 $scope.affectation.positionId = undefined
                                                 var option = {type: "t=" + type};
-                                                if (type == 2){
-                                                    option = {type: "t=" + type+"=r="+2};
+                                                if (type == 2) {
+                                                    option = {type: "t=" + type + "=r=" + 2};
                                                 }
-                                                
+
                                                 Structure.minimalList(option).then(function (response) {
                                                     var data = response.data;
                                                     $scope.structures = data;
+                                                    console.log($scope.structures)
+                                                    $scope.loading = false;
+                                                    $rootScope.kernel.loading = 100
+                                                }).catch(function (response) {
+                                                    console.error(response);
+                                                });
+                                            }
+
+                                            $scope.consoleme = function () {
+                                                console.log($scope.substructure)
+                                            }
+                                            $scope.loadSubStructures = function (type, structureCode) {
+                                                $scope.loading = true;
+                                                $rootScope.kernel.loading = 0;
+                                                $scope.substructures = undefined;
+                                                $scope.affectation.positionId = undefined
+                                                var option = {type: "t=" + type};
+                                                if (type == 2) {
+                                                    option = {type: "t=" + type + "=r=" + 3};
+                                                }
+                                                //option.type = option.type+"=structureCode=" + structureCode;
+
+                                                Structure.minimalList(option).then(function (response) {
+                                                    var data = response.data;
+                                                    $scope.substructures = data;
                                                     $scope.loading = false;
                                                     $rootScope.kernel.loading = 100
                                                 }).catch(function (response) {
@@ -143,9 +169,27 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                             }
 
 
-                                            $scope.$watch('structure', function (newval, oldval) {
+                                            $scope.onlySubDirection = function (item) {
+                                                if ($scope.structure) {
+                                                    var code = $scope.structure;
+                                                    return item.rank == "3" && item.code.indexOf(code + "-") == 0;
+                                                } else {
+                                                    return false;
+                                                }
+                                            };
+
+
+//
+//                                            $scope.$watch('structure', function (newval, oldval) {
+//                                                if (newval) {
+//                                                    getPositions(newval ? newval : "-1", $scope.showOnlyVacancies ? "0" : "-1");
+//                                                }
+//                                            });
+
+                                            $scope.$watch('substructure', function (newval, oldval) {
+                                                console.log(newval)
+                                                $scope.affectation.positionId = undefined
                                                 if (newval) {
-                                                    console.log("structure rquired", newval);
                                                     getPositions(newval ? newval : "-1", $scope.showOnlyVacancies ? "0" : "-1");
                                                 }
                                             });
@@ -157,6 +201,8 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                 $scope.promise = deferred.promise;
                                                 Position.list({id: idStructure, restric: restric, limit: 0, skip: 0}).then(function (response) {
                                                     var data = response.data.data;
+                                                    console.log("data")
+                                                    console.log(data)
 
                                                     $rootScope.kernel.loading = 100;
                                                     $scope.positions = data;
