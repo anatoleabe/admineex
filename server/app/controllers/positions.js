@@ -144,13 +144,13 @@ exports.api.affectToPosition = function (req, res) {
                                             };
                                             if (!perso.history) {
                                                 perso.history = {positions: []};
-                                            }else if (perso.history && !perso.history.positions) {
+                                            } else if (perso.history && !perso.history.positions) {
                                                 perso.history.positions = [];
-                                            }else if (perso.history && util.isArray(perso.history.positions) && perso.history.positions.length > 0) {
+                                            } else if (perso.history && util.isArray(perso.history.positions) && perso.history.positions.length > 0) {
                                                 for (var i in perso.history.positions) {
                                                     perso.history.positions[i].isCurrent = false;
                                                 }
-                                            }else{
+                                            } else {
                                                 perso.history.positions = [];
                                             }
                                             perso.history.positions.push(history);

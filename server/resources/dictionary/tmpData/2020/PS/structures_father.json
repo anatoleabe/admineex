@@ -1,0 +1,79 @@
+[
+ {
+   "code": "23565",
+   "fr": "PAIERIE SPECIALISEE AUPRES DU MINESEC/MINEBASE ",
+   "en": "PAIERIE SPECIALISEE AUPRES DU MINESEC/MINEBASE ",
+   "type": "2",
+   "rank": "2",
+   "father": "0",
+   "country": "CMR",
+   "region": "2",
+   "department": "21"
+ },
+ {
+   "code": "22564",
+   "fr": "PAIERIE SPECIALISEE AUPRES DU MINDEF",
+   "en": "PAIERIE SPECIALISEE AUPRES DU MINDEF",
+   "type": "2",
+   "rank": "2",
+   "father": "0",
+   "country": "CMR",
+   "region": "2",
+   "department": "21"
+ },
+ {
+   "code": "25567",
+   "fr": "PAIERIE SPECIALISEE AUPRES DU MINSANTE",
+   "en": "PAIERIE SPECIALISEE AUPRES DU MINSANTE",
+   "type": "2",
+   "rank": "2",
+   "father": "0",
+   "country": "CMR",
+   "region": "2",
+   "department": "21"
+ },
+ {
+   "code": "27569",
+   "fr": "PAIERIE SPECIALISEE AUPRES DE LA DGSN",
+   "en": "PAIERIE SPECIALISEE AUPRES DE LA DGSN",
+   "type": "2",
+   "rank": "2",
+   "father": "0",
+   "country": "CMR",
+   "region": "2",
+   "department": "21"
+ },
+ {
+   "code": "26569",
+   "fr": "PAIERIE SPECIALISEE AUPRES DU MINTP",
+   "en": "PAIERIE SPECIALISEE AUPRES DU MINTP",
+   "type": "2",
+   "rank": "2",
+   "father": "0",
+   "country": "CMR",
+   "region": "2",
+   "department": "21"
+ },
+ {
+   "code": "24566",
+   "fr": "PAIERIE SPECIALISEE AUPRES DU MINEE ",
+   "en": "PAIERIE SPECIALISEE AUPRES DU MINEE ",
+   "type": "2",
+   "rank": "2",
+   "father": "0",
+   "country": "CMR",
+   "region": "2",
+   "department": "21"
+ },
+ {
+   "code": "21563",
+   "fr": "PAIERIE SPECIALISEE AUPRES DU MINADER",
+   "en": "PAIERIE SPECIALISEE AUPRES DU MINADER",
+   "type": "2",
+   "rank": "2",
+   "father": "0",
+   "country": "CMR",
+   "region": "2",
+   "department": "21"
+ }
+]

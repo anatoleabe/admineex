@@ -81,7 +81,7 @@ exports.api.list = function (req, res) {
     if (req.actor) {
         var language = req.actor.language.toLowerCase();
         filter = {};
-        console.log("req.params.id",req.params.id)
+        console.log("req.params.id", req.params.id)
 
         if (req.params.id && req.params.id != "-1") {
             filter = {$and: []};
@@ -96,7 +96,7 @@ exports.api.list = function (req, res) {
             limit = parseInt(req.params.limit, 10);
             skip = parseInt(req.params.skip, 10);
         }
-        
+
         controllers.users.findUser(req.actor.id, function (err, user) {
             if (err) {
                 log.error(err);
@@ -128,7 +128,7 @@ exports.api.list = function (req, res) {
                                 log.error(err);
                                 callback(err);
                             } else {
-                                Structure.find(query).limit(limit).skip(skip).lean().exec(function (err, result) {
+                                Structure.find(query).sort({"fr": 'asc'}).limit(limit).skip(skip).lean().exec(function (err, result) {
                                     if (err) {
                                         log.error(err);
                                         audit.logEvent('[mongodb]', 'Structures', 'List', '', '', 'failed', 'Mongodb attempted to retrieve structures list');
@@ -227,7 +227,7 @@ exports.api.minimalList = function (req, res) {
     if (req.actor) {
         var language = req.actor.language.toLowerCase();
         var types = undefined;
-        if (req.params.structure && req.params.structure.indexOf('t=') != -1 ){
+        if (req.params.structure && req.params.structure.indexOf('t=') != -1) {
             types = req.params.structure.split("=");
         }
         controllers.users.findUser(req.actor.id, function (err, user) {
@@ -251,10 +251,10 @@ exports.api.minimalList = function (req, res) {
                         });
                     } else {
                         var query = {};
-                        if (types){
+                        if (types) {
                             var query = {"type": types[1]};
                         }
-                        if (types && types[3]){
+                        if (types && types[3]) {
                             query.rank = types[3];
                         }
                         if (req.actor.role == "2") {
@@ -262,7 +262,7 @@ exports.api.minimalList = function (req, res) {
                                 "code": {$in: userStructureCodes}
                             }
                         }
-                        Structure.find(query, function (err, result) {
+                        Structure.find(query).sort({"fr": 'asc'}).lean().exec(function (err, result) {
                             if (err) {
                                 log.error(err);
                                 audit.logEvent('[mongodb]', 'Structures', 'List', '', '', 'failed', 'Mongodb attempted to retrieve structures list');
@@ -353,7 +353,7 @@ exports.list = function (options, callback) {
     if (options.filter) {
         filter = options.filter;
     }
-    Structure.find(filter, function (err, result) {
+    Structure.find(filter).sort({"fr": 'asc'}).lean().exec(function (err, result) {
         if (err) {
             log.error(err);
             callback(err);
@@ -362,7 +362,7 @@ exports.list = function (options, callback) {
             function LoopA(a) {
                 if (a < structures.length) {
                     filter = {fatherId: structures[a]._id};
-                    Structure.find(filter, function (err, subStructures) {
+                    Structure.find(filter).sort({"fr": 'asc'}).lean().exec(function (err, subStructures) {
                         if (err) {
                             log.error(err);
                             callback(err);
@@ -408,7 +408,7 @@ exports.initialize = function (path, callback) {
                     en: structures[a].en,
                     fr: structures[a].fr,
 //                    fatherIdentifier: "10",//FOR CENTRE
-                    fatherId: structures[a].father,
+                    //fatherId: structures[a].father,
                     rank: structures[a].rank,
                     type: structures[a].type,
                     activities: [],
@@ -431,15 +431,33 @@ exports.initialize = function (path, callback) {
                     } else {
                         if (structure != null) {// If this structure already exist
                             avoidedStructuresCode.push(structures[a].code);
+//                            exports.upsert(fields, function (err, structure) {
+//                                if (err) {
+//                                    log.error(err);
+//                                } else {
+//                                    loopA(a + 1);
+//                                }
+//                            });
                             loopA(a + 1);
                         } else {
-                            exports.upsert(fields, function (err, structure) {
+                            //Set the father id
+                            exports.findStructureByCode(structures[a].father, "en", function (err, structure) {
                                 if (err) {
                                     log.error(err);
+                                    callback(err);
                                 } else {
-                                    loopA(a + 1);
+                                    fields.fatherId = structure._id;
+                                    exports.upsert(fields, function (err, structure) {
+                                        if (err) {
+                                            log.error(err);
+                                        } else {
+                                            loopA(a + 1);
+                                        }
+                                    });
+
                                 }
                             });
+
                         }
                     }
                 });

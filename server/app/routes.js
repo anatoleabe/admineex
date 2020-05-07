@@ -604,7 +604,7 @@ function ensureAuthorized(req, res, next) {
 
 function startBot() {
 //    //1
-//var path = "SD/ok/sudouest";
+//var path = "2020/PS/";
 //    controllers.structures.initialize(path, function (err, avoided) {
 //        if (err) {
 //            log.error(err);
