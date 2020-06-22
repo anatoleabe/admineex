@@ -10,7 +10,7 @@
                                 <md-option value="-1" >
                                     {{'All structures'| translate}}
                                 </md-option>
-                                <md-option ng-repeat="struc in structuresDropDown | filter:onlyDirection " value="{{struc}}" >
+                                <md-option ng-repeat="struc in structuresDropDown| filter:onlyDirection " value="{{struc}}" >
                                     {{struc.name}}
                                 </md-option>
                             </md-optgroup>
@@ -20,6 +20,26 @@
                 </span>
 
             </div>
+            <div flex ng-show="filters.structure">
+                <span style="display: inline-block;margin-top: 18px;" >
+                    <md-input-container flex>
+                        <label translate>Filter by sub structure</label>
+                        <md-select ng-model="filters.subStructure"  style="min-width: 150px;">
+                            <md-optgroup label="{{'Filtre by sub structure'| translate}}">
+                                <md-option value="-1" >
+                                    {{'All sub structures'| translate}}
+                                </md-option>
+                                <md-option ng-repeat="struc in structuresDropDown| filter:onlySubDirection" value="{{struc}}" >
+                                    {{struc.name}}
+                                </md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+
+                </span>
+
+            </div>
+            <div flex></div>
             <md-button class="md-icon-button" aria-label="Print" ng-click="openPdf()">
                 <md-icon>print</md-icon>
                 <md-tooltip md-direction="top">
@@ -40,7 +60,9 @@
             <div class="md-toolbar-tools">
                 <md-icon>search</md-icon>
                 <form flex>
-                    <input type="text" name="search" ng-model="structureFilter" placeholder="{{ 'Search among structure...' | translate }}">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <input flex type="text" name="search3" ng-model="filters.structureFilter" placeholder="{{ 'Search among structure...' | translate }}">
+                    </md-input-container>
                 </form>
 
                 <md-button class="md-icon-button" ng-click="search = false; resetForm()" aria-label="close">
@@ -63,7 +85,7 @@
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row data-ng-repeat="structure in structures.data | filter:structureFilter | orderBy: query.order" ng-click="edit({id:structure._id})">
+                    <tr md-row data-ng-repeat="structure in structures.data| filter:structureFilter | orderBy: query.order" ng-click="edit({id: structure._id})">
                         <td md-cell>{{structure.code| uppercase | unknown}}</td>
                         <td md-cell style="min-width: 200px">{{structure.name}} </td>
                         <td md-cell>{{structure.rankValue| unknown}}</td>
@@ -71,15 +93,15 @@
                         <td md-cell><span class="diy-chip" ng-class="{'green': true}">{{structure.workstationsNb}} <small translate>positions</small></span></td>
                         <td md-cell><small class="diy-chip" ng-class="{'red': structure.vacancies > 0}">{{structure.vacancies}}</small></td>
                         <td md-cell ng-if="account.role == '1' || account.role == '3' || account.role == '4'">
-                            <md-button ng-click="edit(position)" aria-label="Edit"  >
-                                <md-icon>edit</md-icon>
-                                <md-tooltip md-direction="top">
-                                    <span translate>Edit</span>
-                                </md-tooltip>
-                                <span translate>Edit</span>
-                            </md-button>
-                        </td>
-                    </tr>
+                <md-button ng-click="edit(position)" aria-label="Edit"  >
+                    <md-icon>edit</md-icon>
+                    <md-tooltip md-direction="top">
+                        <span translate>Edit</span>
+                    </md-tooltip>
+                    <span translate>Edit</span>
+                </md-button>
+                </td>
+                </tr>
                 </tbody>
             </table>
         </md-table-container>

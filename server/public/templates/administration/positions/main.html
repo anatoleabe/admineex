@@ -11,7 +11,7 @@
                                 <md-option value="-1" >
                                     {{'All structures'| translate}}
                                 </md-option>
-                                <md-option ng-repeat="struc in structures | filter:onlyDirection " value="{{struc}}" >
+                                <md-option ng-repeat="struc in structures| filter:onlyDirection " value="{{struc}}" >
                                     {{struc.name}}
                                 </md-option>
                             </md-optgroup>
@@ -30,7 +30,7 @@
                                 <md-option value="-1" >
                                     {{'All sub structures'| translate}}
                                 </md-option>
-                                <md-option ng-repeat="struc in structures | filter:onlySubDirection" value="{{struc}}" >
+                                <md-option ng-repeat="struc in structures| filter:onlySubDirection" value="{{struc}}" >
                                     {{struc.name}}
                                 </md-option>
                             </md-optgroup>
@@ -82,9 +82,11 @@
             <div class="md-toolbar-tools" >
                 <md-icon>search</md-icon>
                 <form flex>
-                    <input type="text" name="search" ng-model="positionFilter" placeholder="{{ 'search among workstations...' | translate }}">
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <input type="text" name="search" ng-model="positionFilter" placeholder="{{ 'search among workstations...' | translate }}">
+                    </md-input-container>
                 </form>
-                <md-button class="md-icon-button" ng-click="positionFilter = '';filters.subStructure = undefined ; resetForm()" aria-label="close">
+                <md-button class="md-icon-button" ng-click="positionFilter = '';filters.subStructure = undefined; resetForm()" aria-label="close">
                     <md-icon class="material-icons">close</md-icon>
                 </md-button>
             </div>

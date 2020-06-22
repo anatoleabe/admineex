@@ -81,12 +81,18 @@ exports.api.list = function (req, res) {
     if (req.actor) {
         var language = req.actor.language.toLowerCase();
         filter = {};
-        console.log("req.params.id", req.params.id)
 
         if (req.params.id && req.params.id != "-1") {
             filter = {$and: []};
-            filter.$and.push({
+            filter.$and.push({$or: []});
+            filter.$and[0].$or.push({
                 "code": new RegExp("^" + req.params.id.toUpperCase())
+            });
+            filter.$and[0].$or.push({
+                "fr": new RegExp(req.params.id.toUpperCase())
+            });
+            filter.$and[0].$or.push({
+                "en": new RegExp(req.params.id.toUpperCase())
             });
         }
 
@@ -274,10 +280,11 @@ exports.api.minimalList = function (req, res) {
                                         structures[a].name = ((language && language !== "" && structures[a][language] != undefined && structures[a][language] != "") ? structures[a][language] : structures[a]['en']);
                                         loopA(a + 1);
                                     } else {
-                                        beautify({actor: req.actor, language: req.actor.language, beautify: true}, structures, function (err, objects) {
+                                        beautify({actor: req.actor, language: req.actor.language, beautify: false}, structures, function (err, objects) {
                                             if (err) {
                                                 return res.status(500).send(err);
                                             } else {
+                                                console.log("End...")
                                                 return res.json(objects);
                                             }
                                         });

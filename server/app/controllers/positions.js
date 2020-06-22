@@ -782,6 +782,36 @@ exports.patrol0 = function (callback) {
     });
 };
 
+/***
+ * Find the person who held a posisition info
+ * @param {type} code
+ * @param {type} callback
+ * @returns json
+ */
+exports.findPositionHolder = function (options, affectation, callback) {
+    if (affectation) {
+        exports.findPositionByCode(affectation.positionCode, function (err, position) {
+            if (err) {
+                log.error(err);
+                callback(err);
+            } else {
+                beautify({actor: options.req.actor, language: options.req.actor.language, beautify: true}, [position], function (err, objects) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        affectation.position = objects[0];
+                        callback(null, affectation);
+                    }
+                });
+
+            }
+        });
+    } else {
+        callback(null, affectation);
+    }
+};
+
+
 /**
  * Find the person who held a posisition
  * @param {type} code
@@ -792,30 +822,30 @@ exports.findPositionHelderBystaffId = function (options, staffId, callback) {
     Affectation.findOne({
         personnelId: staffId
     }).lean().exec(function (err, affectation) {
-        if (err) {
-            log.error(err);
-            callback(err);
-        } else {
+            if (err) {
+                log.error(err);
+                callback(err);
+            } else {
             if (affectation) {
                 exports.findPositionByCode(affectation.positionCode, function (err, position) {
                     if (err) {
                         log.error(err);
                         callback(err);
                     } else {
-                        beautify({actor: options.req.actor, language: options.req.actor.language, beautify: true}, [position], function (err, objects) {
-                            if (err) {
-                                callback(err);
-                            } else {
-                                affectation.position = objects[0];
-                                callback(null, affectation);
-                            }
-                        });
-
+                beautify({actor: options.req.actor, language: options.req.actor.language, beautify: true}, [position], function (err, objects) {
+                    if (err) {
+                        callback(err);
+                    } else {
+                        affectation.position = objects[0];
+                        callback(null, affectation);
                     }
                 });
-            } else {
-                callback(null, affectation);
+
             }
+        });
+    } else {
+        callback(null, affectation);
+    }
         }
     });
 };

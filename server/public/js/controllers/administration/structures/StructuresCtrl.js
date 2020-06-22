@@ -1,5 +1,4 @@
 angular.module('StructuresCtrl', []).controller('StructuresController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope, $q, $http) {
-    console.log("hshahahah")
     $ocLazyLoad.load('js/services/StructureService.js').then(function () {
         var Structure = $injector.get('Structure');
         var helper = {
@@ -31,12 +30,11 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
                 if (data.length == 0 && $scope.helper.length == 0) {
                     $scope.helper = helper;
                 }
-                
+
                 $scope.structures = {
                     data: response.data.data,
                     count: response.data.count
                 };
-                console.log($scope.structures)
                 $rootScope.kernel.loading = 100;
             }).catch(function (response) {
                 console.error(response);
@@ -96,7 +94,7 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
         $scope.resetForm = function () {
             $scope.filters.structure = undefined;
             $scope.filters.soustructure = undefined;
-            $scope.structureFilter = "";
+            $scope.filters.structureFilter = "";
             getStructures("-1");
         };
 
@@ -110,22 +108,43 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
 
         };
 
-        $scope.$watch('structureFilter', function (newval, oldval) {
+        var watch = {};
+        
+        watch.structureFilter2 = $scope.$watch('filters.structureFilter', function (newval, oldval) {
             if (newval) {
-                getStructures(newval ? newval : "-1");
+                getStructures(newval ? newval!=="" ? newval : "-1" : "-1");
             }
         });
 
-        $scope.$watch('filters.structure', function (newval, oldval) {
+        watch.structure = $scope.$watch('filters.structure', function (newval, oldval) {
+            console.log(newval)
             if (newval) {
                 newval = JSON.parse(newval).code;
                 if (newval != undefined && newval != "undefined") {
-                    $scope.structureFilter = newval + "-";
+                    $scope.filters.structureFilter = newval + "-";
                 } else {
-                    $scope.structureFilter = "";
+                    $scope.filters.structureFilter = "";
                 }
             }
         });
+
+        watch.subStructure = $scope.$watch('filters.subStructure', function (newval, oldval) {
+            if (newval && newval != undefined && newval != "undefined") {
+                newval = JSON.parse(newval).code;
+                if (newval != undefined && newval != "undefined") {
+                    $scope.filters.structureFilter = newval;
+                } else {
+                    $scope.filters.structureFilter = "";
+                }
+            }
+        });
+        
+        $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
+            watch.structureFilter2();
+            watch.structure();
+            watch.subStructure();
+        });
+
 
         //Load structure list
         Structure.minimalList().then(function (response) {

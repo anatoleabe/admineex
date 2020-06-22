@@ -239,14 +239,21 @@ exports.api.list = function (req, res) {
                             limit: limit,
                             skip: skip,
                             search: req.params.search
+
                         }
 
                         if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4") {
-                            Personnel.count({}).exec(function (err, count) {
+                            var query1 = {$and: []};
+                            query1.$and.push({"retirement.notified": {$exists: false}});//..et notifiés
+
+                            Personnel.count(query1).exec(function (err, count) {
                                 if (err) {
                                     log.error(err);
                                     callback(err);
                                 } else {
+                                    var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, affectation: 1};
+                                    options.projection = projection;
+                                    console.log(projection)
                                     exports.list(options, function (err, personnels) {
                                         if (err) {
                                             log.error(err);
@@ -268,7 +275,11 @@ exports.api.list = function (req, res) {
                             });
                         } else {
                             var aggregat = [
-                                {"$match": {"positionCode": {$in: userStructureCodes}}},
+                                {"$match": {
+                                        "positionCode": {$in: userStructureCodes},
+                                        "retirement.notified": {$exists: false}
+                                    }
+                                },
                                 {$group: {_id: null, theCount: {$sum: 1}}},
                                 {$project: {_id: 0}}
                             ];
@@ -468,15 +479,41 @@ exports.list = function (options, callback) {
                         if (options.search && (options.search == "-" || options.search == "")) {
                             options.search = "";
                         }
-                        var aggregate = [
-                            {"$unwind": "$name"},
-                            {"$unwind": "$retirement"},
-                            {"$unwind": "$name.family"},
-                            {"$unwind": "$name.given"},
-                            {"$addFields": {"fname": {$concat: concat}}},
-                            {"$addFields": {"matricule": "$identifier"}},
-                            {"$addFields": {"metainfo": {$concat: concatMeta}}}
-                        ];
+
+                        var aggregate = [];
+                        aggregate.push({"$unwind": "$name"});
+                        aggregate.push({"$unwind": "$retirement"});
+                        aggregate.push({"$unwind": "$name.family"});
+                        aggregate.push({"$unwind": "$name.given"});
+                        aggregate.push({"$addFields": {"fname": {$concat: concat}}});
+                        aggregate.push({"$addFields": {"matricule": "$identifier"}});
+                        aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
+                        aggregate.push(
+                                {
+                                    $lookup: {
+                                        from: 'affectations',
+                                        localField: '_id',
+                                        foreignField: 'personnelId',
+                                        as: 'affectation',
+                                    }
+                                }
+                        );
+
+                        aggregate.push(
+                                {
+                                    $unwind: {
+                                        path: '$affectation',
+                                        preserveNullAndEmptyArrays: true
+                                    }
+                                }
+                        );
+
+                        if (options.projection) {
+                            projection = {
+                                $project: options.projection
+                            };
+                            aggregate.push(projection);
+                        }
 
                         //Filter by key word
                         if (options.search) {
@@ -507,7 +544,7 @@ exports.list = function (options, callback) {
                                     function LoopA(a) {
                                         if (a < personnels.length && personnels[a]) {
                                             if (options.minify === true) {
-                                                controllers.positions.findPositionHelderBystaffId({req: options.req}, personnels[a]._id, function (err, affectation) {
+                                                controllers.positions.findPositionHolder({req: options.req}, personnels[a].affectation, function (err, affectation) {
                                                     if (err) {
                                                         log.error(err);
                                                         callback(err);
