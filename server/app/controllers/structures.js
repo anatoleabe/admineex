@@ -284,7 +284,6 @@ exports.api.minimalList = function (req, res) {
                                             if (err) {
                                                 return res.status(500).send(err);
                                             } else {
-                                                console.log("End...")
                                                 return res.json(objects);
                                             }
                                         });

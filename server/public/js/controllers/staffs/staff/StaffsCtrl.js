@@ -29,14 +29,13 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                 $scope.staffsFilter = structureCode;
             };
 
-
-            $scope.$watch('filters.structure', function (newval, oldval) {
+            var watch = {};
+            watch.structure = $scope.$watch('filters.structure', function (newval, oldval) {
                 if (newval) {
                     newval = JSON.parse(newval).code;
                     if (newval && newval != "-1") {
-                        $scope.staffsFilter = newval;
+                        $scope.staffsFilter = "code:"+newval;
                     }
-
                 }
             });
 
@@ -154,16 +153,20 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
             };
 
             $scope.getAgents = function () {
+                $rootScope.kernel.loading = 0;
                 $scope.helper = [];
                 var limit = $scope.query.limit;
                 var skip = $scope.query.limit * ($scope.query.page - 1);
-                StaffAgent.list({minify: true, limit: limit, skip: skip, search: $scope.staffsFilter}).then(function (response) {
+                var filterParams = {
+                    gender: $scope.filters.gender,
+                    grade: undefined
+                }
+                StaffAgent.list({minify: true, limit: limit, skip: skip, search: $scope.staffsFilter, filters:JSON.stringify(filterParams)}).then(function (response) {
                     var data = response.data.data;
                     if (data.length == 0 && $scope.helper.length == 0) {
                         $scope.helper = helper;
                     }
                     $rootScope.kernel.loading = 100;
-                    console.log(response.data.data)
                     $scope.personnels = {
                         data: response.data.data,
                         count: response.data.count
@@ -174,14 +177,45 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                 });
             }
             $scope.getAgents();
+            
+            $scope.onlySubDirection = function (item) {
+                if ($scope.filters.structure) {
+                    var code = JSON.parse($scope.filters.structure).code;
+                    return item.rank == "3" && item.code.indexOf(code+"-") == 0;
+                } else {
+                    return false;
+                }
 
-            var watch = {};
+            };
+
+            
             watch.staffsFilter = $scope.$watch('staffsFilter', function (newval, oldval) {
                 if (newval) {
                     $scope.getAgents();
                 }
             });
+            
+            watch.gender = $scope.$watch('filters.gender', function (newval, oldval) {
+                if (newval) {
+                    $scope.getAgents();
+                }
+            });
+            
+            watch.subStructure = $scope.$watch('filters.subStructure', function (newval, oldval) {
+                
+                if (newval && newval != undefined && newval != "undefined") {
+                    newval = JSON.parse(newval).code;
+                    if (newval != undefined && newval != "undefined") {
+                        $scope.staffsFilter = "code:"+newval;
+                    } else {
+                        $scope.staffsFilter = "";
+                    }
+                }
+            });
+
             $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
+                watch.structure();
+                watch.subStructure();
                 watch.staffsFilter();
             });
 

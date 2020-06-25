@@ -9,13 +9,32 @@
                             <md-option value="-1" >
                                 {{'All structures'| translate}}
                             </md-option>
-                            <md-option ng-repeat="struc in structures | filter:onlyDirection " value="{{struc}}" >
+                            <md-option ng-repeat="struc in structures| filter:onlyDirection " value="{{struc}}" >
                                 {{struc.name}}
                             </md-option>
                         </md-optgroup>
                     </md-select>
                 </md-input-container>
             </span>
+        </div>
+        <div flex ng-show="filters.structure">
+            <span style="display: inline-block;margin-top: 18px;" >
+                <md-input-container flex>
+                    <label translate>Filter by sub structure</label>
+                    <md-select ng-model="filters.subStructure"  style="min-width: 150px;">
+                        <md-optgroup label="{{'Filtre by sub structure'| translate}}">
+                            <md-option value="-1" >
+                                {{'All sub structures'| translate}}
+                            </md-option>
+                            <md-option ng-repeat="struc in structures| filter:onlySubDirection" value="{{struc}}" >
+                                {{struc.name}}
+                            </md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+
+            </span>
+
         </div>
         <span flex></span>
 
@@ -29,6 +48,12 @@
             <md-icon class="material-icons" >search</md-icon>
             <md-tooltip>
                 <span translate>Search</span>
+            </md-tooltip>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
+            <md-icon class="material-icons" >filter_list</md-icon>
+            <md-tooltip>
+                <span translate>Filter more</span>
             </md-tooltip>
         </md-button>
 
@@ -54,6 +79,58 @@
 
 <md-card>
     <md-toolbar class="md-table-toolbar md-default" >
+        <div class="md-toolbar-tools">
+            <md-icon>filter_list</md-icon>
+            <md-input-container >
+                <label translate>Gender</label>
+                <md-select ng-model="filters.gender"  style="min-width: 130px;">
+                    <md-option ng-selected value="-" >
+                        {{'All'| translate}}
+                    </md-option>
+                    <md-option value="M" >
+                        {{'Male'| translate}}
+                    </md-option>
+                    <md-option value="F" >
+                        {{'Female'| translate}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container flex>
+                <label translate>Filter 2</label>
+                <md-select ng-model="filters.subStructure"  style="min-width: 150px;">
+                    <md-option value="-1" >
+                        {{'xxxxx'| translate}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container flex>
+                <label translate>Filter 1</label>
+                <md-select ng-model="filters.subStructure"  style="min-width: 150px;">
+                    <md-option value="-1" >
+                        {{'xxxxxx 3'| translate}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container flex>
+                <label translate>Filter 1</label>
+                <md-select ng-model="filters.subStructure"  style="min-width: 150px;">
+                    <md-option value="-1" >
+                        {{'xxxxxx 4'| translate}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container flex>
+                <label translate>Filter 1</label>
+                <md-select ng-model="filters.subStructure"  style="min-width: 150px;">
+                    <md-option value="-1" >
+                        {{'xxxxxx 5'| translate}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-button class="md-icon-button" ng-click="" aria-label="close">
+                <md-icon class="material-icons">close</md-icon>
+            </md-button>
+        </div>
         <div class="md-toolbar-tools">
             <md-icon>search</md-icon>
             <form flex>
@@ -123,12 +200,12 @@
                         </md-button>
                     </md-menu-item>
                     <md-divider ></md-divider>
-<!--                    <md-menu-item >
-                        <md-button ng-click="evaluate(personnel)" ng-disabled="!personnel.affectedTo || personnel.affectedTo === null || personnel.affectedTo === 'null' ">
-                            <md-icon class="material-icons" >verified_user</md-icon>
-                            <span translate>New quarter evaluation</span>
-                        </md-button>
-                    </md-menu-item>-->
+                    <!--                    <md-menu-item >
+                                            <md-button ng-click="evaluate(personnel)" ng-disabled="!personnel.affectedTo || personnel.affectedTo === null || personnel.affectedTo === 'null' ">
+                                                <md-icon class="material-icons" >verified_user</md-icon>
+                                                <span translate>New quarter evaluation</span>
+                                            </md-button>
+                                        </md-menu-item>-->
                 </md-menu-content>
             </md-menu>
             </td>

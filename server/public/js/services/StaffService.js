@@ -4,7 +4,8 @@ angular.module('StaffService', []).factory('Staff', function($http) {
             var limit = info.limit?info.limit:0;
             var skip = info.skip?info.skip:0;
             var search = info.search?info.search:"-";
-            return $http.get('/api/personnel/'+info.minify+ '/' + limit + '/' + skip+ '/'+search);
+            var filters = info.filters?info.filters:"-";
+            return $http.get('/api/personnel/'+info.minify+ '/' + limit + '/' + skip+ '/'+search + '/'+filters);
         },
         read: function(info) {
             return $http.get('/api/personnel/read/' + info.id+'/'+info.beautify);

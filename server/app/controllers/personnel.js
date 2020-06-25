@@ -211,6 +211,10 @@ exports.api.list = function (req, res) {
         limit = parseInt(req.params.limit, 10);
         skip = parseInt(req.params.skip, 10);
     }
+    var filtersParam ={}
+    if (req.params.filters && req.params.filters != "-" && req.params.filters != ""){
+        filtersParam = JSON.parse(req.params.filters);
+    }
 
     if (req.actor) {
         controllers.users.findUser(req.actor.id, function (err, user) {
@@ -238,13 +242,18 @@ exports.api.list = function (req, res) {
                             req: req,
                             limit: limit,
                             skip: skip,
-                            search: req.params.search
+                            search: req.params.search,
+                            filters: filtersParam
 
                         }
 
                         if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4") {
                             var query1 = {$and: []};
                             query1.$and.push({"retirement.notified": {$exists: false}});//..et notifiés
+                            if (filtersParam.gender && filtersParam.gender != "-" && filtersParam.gender != ""){
+                                query1.$and.push({gender:filtersParam.gender});//..et notifiés
+                            }
+                            
 
                             Personnel.count(query1).exec(function (err, count) {
                                 if (err) {
@@ -253,7 +262,6 @@ exports.api.list = function (req, res) {
                                 } else {
                                     var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, affectation: 1};
                                     options.projection = projection;
-                                    console.log(projection)
                                     exports.list(options, function (err, personnels) {
                                         if (err) {
                                             log.error(err);
@@ -316,14 +324,6 @@ exports.api.list = function (req, res) {
                 LoopS(0);
             }
         });
-
-
-
-
-
-
-
-
     } else {
         audit.logEvent('[anonymous]', 'Personnel', 'List', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);
@@ -517,8 +517,20 @@ exports.list = function (options, callback) {
 
                         //Filter by key word
                         if (options.search) {
-                            aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
+                            var codeStructure = undefined;
+                            if (options.search.includes("code")){//Reseach by structure
+                                var splits = options.search.split(":");
+                                codeStructure = splits[1];
+                                aggregate.push({$match: {$or: [{"affectation.positionCode": new RegExp("^" + codeStructure)}]}})
+                            }else{//Reseach by key words
+                                aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
+                            }
                         }
+                        
+                        if (options.filters.gender && options.filters.gender != "-" && options.filters.gender != ""){
+                            aggregate.push({$match: {gender:options.filters.gender}});//..et notifiés
+                        }
+                        
                         //If retiredOnly
                         if (options.retiredOnly) {
                             aggregate.push({"$match": {"retirement.retirement": true}});
