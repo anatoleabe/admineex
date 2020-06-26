@@ -198,10 +198,23 @@ var getJSONList = function (file, language) {
             }
         }
         myLoopA(0);
+        result = result.sort(sortIt("name"));
         return result;
     }
 };
 exports.getJSONList = getJSONList;
+
+
+function sortIt(prop) {
+    return function (a, b) {
+        if (a[prop] > b[prop]) {
+            return 1;
+        } else if (a[prop] < b[prop]) {
+            return -1;
+        }
+        return 0;
+    }
+}
 
 /**
  * build json list from json file
@@ -289,7 +302,7 @@ var translator = function (language) {
 };
 exports.translator = translator;
 
-var dateformater = function (date , format) {
+var dateformater = function (date, format) {
     var DateFormatter = {
         monthNames: [
             "January", "February", "March", "April", "May", "June",

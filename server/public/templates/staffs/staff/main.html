@@ -96,18 +96,24 @@
                 </md-select>
             </md-input-container>
             <md-input-container flex>
-                <label translate>Filter 2</label>
-                <md-select ng-model="filters.subStructure"  style="min-width: 150px;">
-                    <md-option value="-1" >
-                        {{'xxxxx'| translate}}
+                <label translate>Status</label>
+                <md-select ng-model="filters.status"  style="min-width: 150px;">
+                    <md-option ng-selected value="-">
+                        {{'All'| translate}}
+                    </md-option>
+                    <md-option ng-repeat="sta in status" value="{{sta.id}}">
+                        {{sta.name}}
                     </md-option>
                 </md-select>
             </md-input-container>
             <md-input-container flex>
-                <label translate>Filter 1</label>
-                <md-select ng-model="filters.subStructure"  style="min-width: 150px;">
-                    <md-option value="-1" >
-                        {{'xxxxxx 3'| translate}}
+                <label translate>Grade</label>
+                <md-select ng-model="filters.grade"  style="min-width: 150px;">
+                    <md-option ng-selected value="-">
+                        {{'All'| translate}}
+                    </md-option>
+                    <md-option ng-repeat="grade in grades" value="{{grade.id}}">
+                        {{grade.name}}
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -148,10 +154,11 @@
                     <th md-column md-order-by="name"><span translate>Full name</span></th>
                     <th md-column md-order-by="matricule" style="max-width: 60px"><span translate>Reg. number</span></th>
                     <th md-column md-order-by="sexe" style="max-width: 10px"><span translate>Sex</span></th>
+                    <th md-column md-order-by="grade" ><span translate>Grade</span></th>
                     <th md-column md-order-by="posteActuel[0].nom"><span translate>Function</span></th>
                     <th md-column md-order-by="posteActuel[0].structure[0].nom"><span translate>Structure aff.</span></th>
                     <th md-column md-order-by="miseajour" ><span translate>Service began</span></th>
-                    <th md-column md-order-by="telephone"><span translate>Phone</span></th>
+                    <!--<th md-column md-order-by="telephone"><span translate>Phone</span></th>-->
                     <th md-column translate style="width: 200px"><span translate>Actions</span></th>
                 </tr>
             </thead>
@@ -160,10 +167,10 @@
                     <td md-cell ng-click="read(personnel)">{{personnel.fname?personnel.fname:personnel.name.family[0] + " "+ personnel.name.given[0]}}</td>
                     <td md-cell style="max-width: 60px" ng-click="read(personnel)">{{personnel.identifier| uppercase | unknown}}</td>
                     <td md-cell style="max-width: 10px" ng-click="read(personnel)">{{personnel.gender| uppercase | unknown}}</td>
+                    <td md-cell  ng-click="read(personnel)">{{personnel.grade| unknown}}</td>
                     <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.position.name| unknown}}</td>
-                    <!--<td md-cell ng-click="read(personnel)">{{personnel.affectedTo.position.structure.name| unknown}} <span style="color: #999999" ng-if="personnel.posteActuel[0].structure[0]"> - {{personnel.posteActuel[0].structure[0].code}} </span></td>-->
                     <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.position.structure.name| unknown}}<span ng-if="personnel.affectedTo.position.structure"><br/><md-icon class="material-icons">subdirectory_arrow_right</md-icon><small><i> {{personnel.affectedTo.position.structure.father.name}} </i></small></span>   <span style="color: #999999" ng-if="personnel.posteActuel[0].structure[0]"> - {{personnel.posteActuel[0].structure[0].code}} </span></td>
-                    <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.date| date:'dd/MM/yyyy'|unknown}}</td>
+                    <!--<td md-cell ng-click="read(personnel)">{{personnel.affectedTo.date| date:'dd/MM/yyyy'|unknown}}</td>-->
                     <td md-cell ng-click="read(personnel)">{{personnel.telecom[0].value| unknown}}</td>
                     <td md-cell style="width: 200px">
             <md-button ng-click="affect(personnel)" class="md-fab md-primary md-hue-2 md-mini"  aria-label="Affecte" ng-if="account.role == '1' || account.role == '3'" >

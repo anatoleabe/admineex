@@ -250,8 +250,17 @@ exports.api.list = function (req, res) {
                         if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4") {
                             var query1 = {$and: []};
                             query1.$and.push({"retirement.notified": {$exists: false}});//..et notifiés
+                            
                             if (filtersParam.gender && filtersParam.gender != "-" && filtersParam.gender != ""){
-                                query1.$and.push({gender:filtersParam.gender});//..et notifiés
+                                query1.$and.push({gender:filtersParam.gender});
+                            }
+                            
+                            if (filtersParam.status && filtersParam.status != "-" && filtersParam.status != ""){
+                                query1.$and.push({status:filtersParam.status});
+                            }
+                            
+                            if (filtersParam.grade && filtersParam.grade != "-" && filtersParam.grade != ""){
+                                query1.$and.push({grade:filtersParam.grade});
                             }
                             
 
@@ -260,7 +269,7 @@ exports.api.list = function (req, res) {
                                     log.error(err);
                                     callback(err);
                                 } else {
-                                    var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, affectation: 1};
+                                    var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, affectation: 1};
                                     options.projection = projection;
                                     exports.list(options, function (err, personnels) {
                                         if (err) {
@@ -297,7 +306,7 @@ exports.api.list = function (req, res) {
                                     log.error(err);
                                     callback(err);
                                 } else {
-
+                                    
                                     exports.list(options, function (err, personnels) {
                                         if (err) {
                                             log.error(err);
@@ -527,8 +536,17 @@ exports.list = function (options, callback) {
                             }
                         }
                         
-                        if (options.filters.gender && options.filters.gender != "-" && options.filters.gender != ""){
+                        
+                        if (options.filters && options.filters.gender && options.filters.gender != "-" && options.filters.gender != ""){
                             aggregate.push({$match: {gender:options.filters.gender}});//..et notifiés
+                        }
+                        
+                        if (options.filters && options.filters.status && options.filters.status != "-" && options.filters.status != ""){
+                            aggregate.push({$match: {status:options.filters.status}});//..et notifiés
+                        }
+                        
+                        if (options.filters && options.filters.grade && options.filters.grade != "-" && options.filters.grade != ""){
+                            aggregate.push({$match: {grade:options.filters.grade}});//..et notifiés
                         }
                         
                         //If retiredOnly
@@ -562,6 +580,11 @@ exports.list = function (options, callback) {
                                                         callback(err);
                                                     } else {
                                                         personnels[a].affectedTo = affectation;
+                                                        var status = (personnels[a].status) ? personnels[a].status : "";
+                                                        var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                                                        var language = options.language || "";
+                                                        language = language.toLowerCase();
+                                                        personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
                                                         personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
                                                         LoopA(a + 1);
                                                     }
