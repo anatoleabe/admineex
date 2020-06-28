@@ -515,7 +515,6 @@ exports.list = function (options, callback) {
                         if (options.search) {
                             aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
                         }
-                        console.log(options.filters)
                         //Set the filters
                         if (options.filters) {
                             if (options.filters.structure && options.filters.structure != "-" && options.filters.structure != "") {
@@ -550,8 +549,6 @@ exports.list = function (options, callback) {
                                     aggregate.push({$match: {"situations.0.situation": options.filters.situation}});
                                 }
                             }
-
-
                         }
 
                         //If retiredOnly
