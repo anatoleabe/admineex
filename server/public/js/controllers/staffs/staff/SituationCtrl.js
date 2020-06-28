@@ -36,7 +36,12 @@ angular.module('SituationCtrl', []).controller('SituationController', function (
                     
                     $scope.save = function () {
                         $rootScope.kernel.loading = 0;
-                        $scope.personnel.situations.push($scope.situation);
+                        if ($scope.personnel.situations){
+                            $scope.personnel.situations.push($scope.situation);
+                        }else{
+                            $scope.personnel.situations = [];
+                            $scope.personnel.situations.push($scope.situation);
+                        }
 
                         Staff.upsert($scope.personnel).then(function (response) {
                             $rootScope.kernel.loading = 100;

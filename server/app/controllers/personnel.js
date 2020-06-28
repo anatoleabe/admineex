@@ -247,9 +247,9 @@ exports.api.list = function (req, res) {
                         }
 
                         if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4") {
-                            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category:1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1,  "affectation.positionCode": 1};
+                            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1, };
                             options.projection = projection;
-                                    exports.list(options, function (err, personnels) {
+                            exports.list(options, function (err, personnels) {
                                 if (err) {
                                     log.error(err);
                                     res.status(500).send(err);
@@ -263,7 +263,7 @@ exports.api.list = function (req, res) {
                                         } else
                                             return 0;
                                     })
-                                            return res.json({data: personnels, count: 0});
+                                    return res.json({data: personnels, count: 0});
                                 }
                             });
 
@@ -407,9 +407,23 @@ exports.checkRetirement = function (callback) {
                 } else {
                     function LoopB(b) {
                         if (b < candidates.length) {
+                            var situations = candidates[b].situations;
+                            var newSituation = {
+                                situation: "12",
+                                numAct: "#", //Auto genereted by the bot
+                                nature: "#"//Auto genereted by the bot
+                            }
+                            if (situations) {
+                                situations.push(newSituation)
+                            } else {
+                                situations = [];
+                                situations.push(newSituation)
+                            }
+
                             var fields = {
                                 "_id": candidates[b],
-                                "retirement.retirement": true
+                                "retirement.retirement": true,
+                                "situations": situations
                             }
                             exports.upsert(fields, function (err) {
                                 if (err) {
@@ -420,6 +434,9 @@ exports.checkRetirement = function (callback) {
                                 }
                             });
                         } else {
+                            if (candidates.length > 0) {
+                                audit.logEvent('[mongodb]', 'Personnel', 'checkRetirement', '', '', 'failed', "Admineex found " + candidates.length + ' new people of retirement age.');
+                            }
                             callback(null, candidates.length);
                         }
                     }
@@ -498,7 +515,7 @@ exports.list = function (options, callback) {
                         if (options.search) {
                             aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
                         }
-
+                        console.log(options.filters)
                         //Set the filters
                         if (options.filters) {
                             if (options.filters.structure && options.filters.structure != "-" && options.filters.structure != "") {
@@ -520,6 +537,21 @@ exports.list = function (options, callback) {
                             if (options.filters.category && options.filters.category != "-" && options.filters.category != "") {
                                 aggregate.push({$match: {category: options.filters.category}});
                             }
+
+                            if (options.filters.situation && options.filters.situation != "-" && options.filters.situation != "") {
+                                if (options.filters.situation == "12"){
+                                    aggregate.push({"$match": {"retirement.retirement": true}});
+                                    aggregate.push({"$match": {"retirement.notified": {$exists: false}}});
+                                    aggregate.push({"$match": {$or: [{"retirement.extended": {$exists: false}}, {"retirement.extended": false}]}});
+                                }else if (options.filters.situation == "0"){//Active people
+                                    //Check if correspond
+                                }else{
+                                    aggregate.push({$sort: {"situations.lastModified": -1}});
+                                    aggregate.push({$match: {"situations.0.situation": options.filters.situation}});
+                                }
+                            }
+
+
                         }
 
                         //If retiredOnly
