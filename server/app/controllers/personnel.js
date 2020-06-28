@@ -85,7 +85,7 @@ exports.api.upsert = function (req, res) {
     }
 };
 
-exports.DONOTUSETHISMETHODE = function (callback) {
+exports.DONOTUSETHISMETHODE = function (callback) {//Insert a user from mysql database
     var con = mysql.createConnection({
         host: "localhost",
         user: "root",
@@ -211,8 +211,8 @@ exports.api.list = function (req, res) {
         limit = parseInt(req.params.limit, 10);
         skip = parseInt(req.params.skip, 10);
     }
-    var filtersParam ={}
-    if (req.params.filters && req.params.filters != "-" && req.params.filters != ""){
+    var filtersParam = {}
+    if (req.params.filters && req.params.filters != "-" && req.params.filters != "") {
         filtersParam = JSON.parse(req.params.filters);
     }
 
@@ -244,52 +244,29 @@ exports.api.list = function (req, res) {
                             skip: skip,
                             search: req.params.search,
                             filters: filtersParam
-
                         }
 
                         if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4") {
-                            var query1 = {$and: []};
-                            query1.$and.push({"retirement.notified": {$exists: false}});//..et notifiés
-                            
-                            if (filtersParam.gender && filtersParam.gender != "-" && filtersParam.gender != ""){
-                                query1.$and.push({gender:filtersParam.gender});
-                            }
-                            
-                            if (filtersParam.status && filtersParam.status != "-" && filtersParam.status != ""){
-                                query1.$and.push({status:filtersParam.status});
-                            }
-                            
-                            if (filtersParam.grade && filtersParam.grade != "-" && filtersParam.grade != ""){
-                                query1.$and.push({grade:filtersParam.grade});
-                            }
-                            
-
-                            Personnel.count(query1).exec(function (err, count) {
+                            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category:1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1,  "affectation.positionCode": 1};
+                            options.projection = projection;
+                                    exports.list(options, function (err, personnels) {
                                 if (err) {
                                     log.error(err);
-                                    callback(err);
+                                    res.status(500).send(err);
                                 } else {
-                                    var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, affectation: 1};
-                                    options.projection = projection;
-                                    exports.list(options, function (err, personnels) {
-                                        if (err) {
-                                            log.error(err);
-                                            res.status(500).send(err);
-                                        } else {
-                                            personnels.sort(function (a, b) {
-                                                if (a.fname < b.fname) {
-                                                    return -1;
-                                                } else
-                                                if (a.fname > b.fname) {
-                                                    return 1;
-                                                } else
-                                                    return 0;
-                                            })
-                                            return res.json({data: personnels, count: count});
-                                        }
-                                    });
+                                    personnels.sort(function (a, b) {
+                                        if (a.fname < b.fname) {
+                                            return -1;
+                                        } else
+                                        if (a.fname > b.fname) {
+                                            return 1;
+                                        } else
+                                            return 0;
+                                    })
+                                            return res.json({data: personnels, count: 0});
                                 }
                             });
+
                         } else {
                             var aggregat = [
                                 {"$match": {
@@ -306,7 +283,7 @@ exports.api.list = function (req, res) {
                                     log.error(err);
                                     callback(err);
                                 } else {
-                                    
+
                                     exports.list(options, function (err, personnels) {
                                         if (err) {
                                             log.error(err);
@@ -491,9 +468,10 @@ exports.list = function (options, callback) {
 
                         var aggregate = [];
                         aggregate.push({"$unwind": "$name"});
-                        aggregate.push({"$unwind": "$retirement"});
-                        aggregate.push({"$unwind": "$name.family"});
-                        aggregate.push({"$unwind": "$name.given"});
+                        aggregate.push({"$unwind": {path: "$name.family", preserveNullAndEmptyArrays: true}});
+                        aggregate.push({"$unwind": {path: "$name.given", preserveNullAndEmptyArrays: true}});
+                        aggregate.push({"$unwind": {path: "$retirement", preserveNullAndEmptyArrays: true}});
+
                         aggregate.push({"$addFields": {"fname": {$concat: concat}}});
                         aggregate.push({"$addFields": {"matricule": "$identifier"}});
                         aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
@@ -508,14 +486,6 @@ exports.list = function (options, callback) {
                                 }
                         );
 
-                        aggregate.push(
-                                {
-                                    $unwind: {
-                                        path: '$affectation',
-                                        preserveNullAndEmptyArrays: true
-                                    }
-                                }
-                        );
 
                         if (options.projection) {
                             projection = {
@@ -526,39 +496,44 @@ exports.list = function (options, callback) {
 
                         //Filter by key word
                         if (options.search) {
-                            var codeStructure = undefined;
-                            if (options.search.includes("code")){//Reseach by structure
-                                var splits = options.search.split(":");
-                                codeStructure = splits[1];
-                                aggregate.push({$match: {$or: [{"affectation.positionCode": new RegExp("^" + codeStructure)}]}})
-                            }else{//Reseach by key words
-                                aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
+                            aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
+                        }
+
+                        //Set the filters
+                        if (options.filters) {
+                            if (options.filters.structure && options.filters.structure != "-" && options.filters.structure != "") {
+                                aggregate.push({$match: {$or: [{"affectation.0.positionCode": new RegExp("^" + options.filters.structure)}]}})
+                            }
+
+                            if (options.filters.gender && options.filters.gender != "-" && options.filters.gender != "") {
+                                aggregate.push({$match: {gender: options.filters.gender}});
+                            }
+
+                            if (options.filters.status && options.filters.status != "-" && options.filters.status != "") {
+                                aggregate.push({$match: {status: options.filters.status}});
+                            }
+
+                            if (options.filters.grade && options.filters.grade != "-" && options.filters.grade != "") {
+                                aggregate.push({$match: {grade: options.filters.grade}});
+                            }
+
+                            if (options.filters.category && options.filters.category != "-" && options.filters.category != "") {
+                                aggregate.push({$match: {category: options.filters.category}});
                             }
                         }
-                        
-                        
-                        if (options.filters && options.filters.gender && options.filters.gender != "-" && options.filters.gender != ""){
-                            aggregate.push({$match: {gender:options.filters.gender}});//..et notifiés
-                        }
-                        
-                        if (options.filters && options.filters.status && options.filters.status != "-" && options.filters.status != ""){
-                            aggregate.push({$match: {status:options.filters.status}});//..et notifiés
-                        }
-                        
-                        if (options.filters && options.filters.grade && options.filters.grade != "-" && options.filters.grade != ""){
-                            aggregate.push({$match: {grade:options.filters.grade}});//..et notifiés
-                        }
-                        
+
                         //If retiredOnly
                         if (options.retiredOnly) {
                             aggregate.push({"$match": {"retirement.retirement": true}});
                             aggregate.push({"$match": {"retirement.notified": {$exists: false}}});
                             aggregate.push({"$match": {$or: [{"retirement.extended": {$exists: false}}, {"retirement.extended": false}]}});
                         } else {
-                            if ((options.skip + options.limit) > 0) {
-                                aggregate.push({"$limit": options.skip + options.limit})
-                                aggregate.push({"$skip": options.skip})
-                            }
+                            aggregate.push({"$match": {"retirement.notified": {$exists: false}}});
+                        }
+
+                        if ((options.skip + options.limit) > 0) {
+                            aggregate.push({"$limit": options.skip + options.limit})
+                            aggregate.push({"$skip": options.skip})
                         }
 
                         q = Personnel.aggregate(aggregate);
@@ -569,12 +544,13 @@ exports.list = function (options, callback) {
                                 audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
                                 callback(err);
                             } else {
+                                //console.log(personnels[9].affectation)
                                 if (options.minify == true || options.retiredOnly) {
                                     personnels = JSON.parse(JSON.stringify(personnels));
                                     function LoopA(a) {
                                         if (a < personnels.length && personnels[a]) {
                                             if (options.minify === true) {
-                                                controllers.positions.findPositionHolder({req: options.req}, personnels[a].affectation, function (err, affectation) {
+                                                controllers.positions.findPositionHolder({req: options.req}, personnels[a].affectation[0], function (err, affectation) {
                                                     if (err) {
                                                         log.error(err);
                                                         callback(err);

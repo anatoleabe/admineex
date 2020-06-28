@@ -6,7 +6,7 @@
                     <label translate>Filter by structure</label>
                     <md-select ng-model="filters.structure"  style="min-width: 150px;">
                         <md-optgroup label="{{'Filtre by structure'| translate}}">
-                            <md-option value="-1" >
+                            <md-option value="-" >
                                 {{'All structures'| translate}}
                             </md-option>
                             <md-option ng-repeat="struc in structures| filter:onlyDirection " value="{{struc}}" >
@@ -23,7 +23,7 @@
                     <label translate>Filter by sub structure</label>
                     <md-select ng-model="filters.subStructure"  style="min-width: 150px;">
                         <md-optgroup label="{{'Filtre by sub structure'| translate}}">
-                            <md-option value="-1" >
+                            <md-option value="-" >
                                 {{'All sub structures'| translate}}
                             </md-option>
                             <md-option ng-repeat="struc in structures| filter:onlySubDirection" value="{{struc}}" >
@@ -118,18 +118,24 @@
                 </md-select>
             </md-input-container>
             <md-input-container flex>
-                <label translate>Filter 1</label>
-                <md-select ng-model="filters.subStructure"  style="min-width: 150px;">
-                    <md-option value="-1" >
-                        {{'xxxxxx 4'| translate}}
+                <label translate>Category</label>
+                <md-select ng-model="filters.category"  style="min-width: 150px;">
+                    <md-option ng-selected value="-">
+                        {{'All'| translate}}
+                    </md-option>
+                    <md-option ng-repeat="category in categories" value="{{category.id}}">
+                        {{category.code | uppercase}}
                     </md-option>
                 </md-select>
             </md-input-container>
             <md-input-container flex>
-                <label translate>Filter 1</label>
-                <md-select ng-model="filters.subStructure"  style="min-width: 150px;">
-                    <md-option value="-1" >
-                        {{'xxxxxx 5'| translate}}
+                <label translate>Situation</label>
+                <md-select ng-model="filters.situation"  style="min-width: 150px;">
+                    <md-option value="-">
+                        {{'All'| translate}}
+                    </md-option>
+                    <md-option ng-repeat="situation in situations" value="{{situation.id}}">
+                        {{situation.name}}
                     </md-option>
                 </md-select>
             </md-input-container>
@@ -138,13 +144,16 @@
             </md-button>
         </div>
         <div class="md-toolbar-tools">
+            <label flex translate>Nombre de resultats: {{personnels.count}}</label>
             <md-icon>search</md-icon>
-            <form flex>
+            <md-input-container flex>
                 <input type="text" name="search" ng-model="staffsFilter" placeholder="{{ 'Search amongs staff...' | translate }}">
-            </form>
+            </md-input-container>
             <md-button class="md-icon-button" ng-click="filters.structure = '-1';staffsFilter = ''" aria-label="close">
                 <md-icon class="material-icons">close</md-icon>
             </md-button>
+
+
         </div>
     </md-toolbar>
     <md-table-container>

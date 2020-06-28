@@ -18,12 +18,26 @@ angular.module('SituationCtrl', []).controller('SituationController', function (
                 $scope.situations = response.data.jsonList;
                 Dictionary.jsonList({dictionary: 'acts', levels: ['natures']}).then(function (response) {
                     $scope.natures = response.data.jsonList;
-
-
+                    
+                    Staff.read({
+                        id: $scope.personnel._id
+                    }).then(function (response) {
+                        $scope.personnel = response.data;
+                        console.log($scope.personnel);
+                    }).catch(function (response) {
+                        $rootScope.kernel.alerts.push({
+                            type: 1,
+                            msg: gettextCatalog.getString('An error occurred, please try again later'),
+                            priority: 2
+                        });
+                        console.error(response);
+                    });
+                    
+                    
                     $scope.save = function () {
                         $rootScope.kernel.loading = 0;
                         $scope.personnel.situations.push($scope.situation);
-                        
+
                         Staff.upsert($scope.personnel).then(function (response) {
                             $rootScope.kernel.loading = 100;
                             $mdDialog.hide();

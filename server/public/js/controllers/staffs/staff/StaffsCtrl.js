@@ -5,290 +5,333 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
             $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
                 var Dictionary = $injector.get('Dictionary');
                 var Structure = $injector.get('Structure');
-                var helper = {
-                    title: gettextCatalog.getString("No project"),
-                    icon: "class"
-                };
-                $scope.query = {
-                    limit: 25,
-                    page: 1,
-                    order: "name"
-                };
-                $scope.search = false;
-                $scope.filters = {};
+                Dictionary.jsonList({dictionary: 'personnel', levels: ['situations']}).then(function (response) {
+                    $scope.situations = response.data.jsonList;
 
-                $scope.personnels = [], $scope.helper = [];
+                    var helper = {
+                        title: gettextCatalog.getString("No project"),
+                        icon: "class"
+                    };
+                    $scope.query = {
+                        limit: 25,
+                        page: 1,
+                        order: "name"
+                    };
+                    $scope.search = false;
+                    $scope.filters = {
+                        situation: "0",
+                        gender: "-",
+                        status: "-",
+                    };
+                    $scope.codeStructure = undefined;
+                    $scope.total = 0;
 
-                $scope.edit = function (params) {
-                    $state.go("home.staffs.edit", params);
-                };
+                    $scope.personnels = [], $scope.helper = [];
 
-                $scope.read = function (params) {
-                    $state.go("home.staffs.personnalrecords", {id: params._id, opath: "home.staffs.main"});
-                };
+                    $scope.edit = function (params) {
+                        $state.go("home.staffs.edit", params);
+                    };
 
-                $scope.filterByStructure = function (structureCode) {
-                    $scope.staffsFilter = structureCode;
-                };
+                    $scope.read = function (params) {
+                        $state.go("home.staffs.personnalrecords", {id: params._id, opath: "home.staffs.main"});
+                    };
 
-                Dictionary.jsonList({dictionary: 'personnel', levels: ['status']}).then(function (response) {
-                    $scope.status = response.data.jsonList;
-                });
+                    $scope.filterByStructure = function (structureCode) {
+                        $scope.staffsFilter = structureCode;
+                    };
 
-                $scope.retiredOnly = function (item) {
-                    if ($scope.showOnlyRetirement == true) {
-                        return item.retirement && item.retirement.retirement == true;
-                    } else {
-                        return true
+                    Dictionary.jsonList({dictionary: 'personnel', levels: ['status']}).then(function (response) {
+                        $scope.status = response.data.jsonList;
+                    });
+
+                    $scope.retiredOnly = function (item) {
+                        if ($scope.showOnlyRetirement == true) {
+                            return item.retirement && item.retirement.retirement == true;
+                        } else {
+                            return true
+                        }
+                    };
+
+                    $scope.openMoreMenu = function ($mdOpenMenu) {
+                        $mdOpenMenu();
+                    };
+
+
+                    $scope.showRetired = function () {
+                        $ocLazyLoad.load('js/controllers/staffs/staff/RetiredCtrl.js').then(function () {
+                            $mdDialog.show({
+                                controller: 'RetiredController',
+                                templateUrl: '../templates/dialogs/retireds.html',
+                                parent: angular.element(document.body),
+                                clickOutsideToClose: true,
+                                locals: {
+                                    params: {
+
+                                    }
+                                }
+                            }).then(function (answer) {
+                            }, function () {
+                            });
+                        });
                     }
-                };
-
-                $scope.openMoreMenu = function ($mdOpenMenu) {
-                    $mdOpenMenu();
-                };
 
 
-                $scope.showRetired = function () {
-                    $ocLazyLoad.load('js/controllers/staffs/staff/RetiredCtrl.js').then(function () {
-                        $mdDialog.show({
-                            controller: 'RetiredController',
-                            templateUrl: '../templates/dialogs/retireds.html',
-                            parent: angular.element(document.body),
-                            clickOutsideToClose: true,
-                            locals: {
-                                params: {
-
+                    $scope.newStaffSituation = function (personnel) {
+                        $ocLazyLoad.load('js/controllers/staffs/staff/SituationCtrl.js').then(function () {
+                            $mdDialog.show({
+                                controller: 'SituationController',
+                                templateUrl: '../templates/dialogs/situation.html',
+                                parent: angular.element(document.body),
+                                clickOutsideToClose: true,
+                                locals: {
+                                    params: {
+                                        personnel: personnel
+                                    }
                                 }
-                            }
-                        }).then(function (answer) {
-                        }, function () {
+                            }).then(function (answer) {
+                            }, function () {
+                            });
                         });
-                    });
-                }
+                    }
 
 
-                $scope.newStaffSituation = function (personnel) {
-                    $ocLazyLoad.load('js/controllers/staffs/staff/SituationCtrl.js').then(function () {
-                        $mdDialog.show({
-                            controller: 'SituationController',
-                            templateUrl: '../templates/dialogs/situation.html',
-                            parent: angular.element(document.body),
-                            clickOutsideToClose: true,
-                            locals: {
-                                params: {
-                                    personnel: personnel
+                    $scope.newStaffSanction = function (personnel) {
+                        $ocLazyLoad.load('js/controllers/staffs/staff/SanctionCtrl.js').then(function () {
+                            $mdDialog.show({
+                                controller: 'SanctionController',
+                                templateUrl: '../templates/dialogs/sanction.html',
+                                parent: angular.element(document.body),
+                                clickOutsideToClose: true,
+                                locals: {
+                                    params: {
+                                        personnel: personnel
+                                    }
                                 }
-                            }
-                        }).then(function (answer) {
-                        }, function () {
+                            }).then(function (answer) {
+                            }, function () {
+                            });
                         });
-                    });
-                }
+                    }
 
-
-                $scope.newStaffSanction = function (personnel) {
-                    $ocLazyLoad.load('js/controllers/staffs/staff/SanctionCtrl.js').then(function () {
-                        $mdDialog.show({
-                            controller: 'SanctionController',
-                            templateUrl: '../templates/dialogs/sanction.html',
-                            parent: angular.element(document.body),
-                            clickOutsideToClose: true,
-                            locals: {
-                                params: {
-                                    personnel: personnel
+                    $scope.affect = function (personnel) {
+                        $ocLazyLoad.load('js/controllers/administration/positions/AffectationCtrl.js').then(function () {
+                            $mdDialog.show({
+                                controller: 'AffectationController',
+                                templateUrl: '../templates/dialogs/affectation.html',
+                                parent: angular.element(document.body),
+                                clickOutsideToClose: true,
+                                locals: {
+                                    params: {
+                                        personnel: personnel
+                                    }
                                 }
-                            }
-                        }).then(function (answer) {
-                        }, function () {
-                        });
-                    });
-                }
-
-                $scope.affect = function (personnel) {
-                    $ocLazyLoad.load('js/controllers/administration/positions/AffectationCtrl.js').then(function () {
-                        $mdDialog.show({
-                            controller: 'AffectationController',
-                            templateUrl: '../templates/dialogs/affectation.html',
-                            parent: angular.element(document.body),
-                            clickOutsideToClose: true,
-                            locals: {
-                                params: {
-                                    personnel: personnel
-                                }
-                            }
-                        }).then(function (answer) {
+                            }).then(function (answer) {
 //                                    $scope.profile.work[0].organisationID = answer._id;
 //                                    $scope.organisationSearchText = answer.name;
 //                                    showAlert();
-                        }, function () {
-                        });
-                    });
-                };
-
-                $scope.evaluate = function (personnel) {
-                    $ocLazyLoad.load('js/controllers/monitor/EvaluationCtrl.js').then(function () {
-                        $mdDialog.show({
-                            controller: 'EvaluationController',
-                            templateUrl: '../templates/dialogs/evaluation.html',
-                            parent: angular.element(document.body),
-                            clickOutsideToClose: true,
-                            locals: {
-                                params: {
-                                    personnel: personnel
-                                }
-                            }
-                        }).then(function (answer) {
-                        }, function () {
-                        });
-                    });
-                }
-
-
-                $scope.onlyDirection = function (item) {
-                    return item.rank == "2";
-                };
-
-                $scope.getAgents = function () {
-                    $rootScope.kernel.loading = 0;
-                    $scope.helper = [];
-                    var limit = $scope.query.limit;
-                    var skip = $scope.query.limit * ($scope.query.page - 1);
-                    var filterParams = {
-                        gender: $scope.filters.gender,
-                        status: $scope.filters.status,
-                        grade: $scope.filters.grade
-                    }
-                    StaffAgent.list({minify: true, limit: limit, skip: skip, search: $scope.staffsFilter, filters: JSON.stringify(filterParams)}).then(function (response) {
-                        var data = response.data.data;
-                        if (data.length == 0 && $scope.helper.length == 0) {
-                            $scope.helper = helper;
-                        }
-                        $rootScope.kernel.loading = 100;
-                        $scope.personnels = {
-                            data: response.data.data,
-                            count: response.data.count
-                        };
-
-                    }).catch(function (response) {
-                        console.log(response);
-                    });
-                }
-                $scope.getAgents();
-
-                $scope.onlySubDirection = function (item) {
-                    if ($scope.filters.structure) {
-                        var code = JSON.parse($scope.filters.structure).code;
-                        return item.rank == "3" && item.code.indexOf(code + "-") == 0;
-                    } else {
-                        return false;
-                    }
-
-                };
-
-                var watch = {};
-
-                watch.grades = $scope.$watch('filters.status', function (newval, oldval) {
-                    if (newval) {
-                        if (newval != "-") {
-                            Dictionary.jsonList({dictionary: 'personnel', levels: ['status', $scope.filters.status, "grades"]}).then(function (response) {
-                                $scope.grades = response.data.jsonList;
-                                $scope.filters.grade = "-";
+                            }, function () {
                             });
-                        }else{
-                            $scope.grades = [];
-                            $scope.filters.grade = "-";
-                        }
-                        $scope.getAgents();
-                    } else {
-                        $scope.grades = [];
-                        $scope.filters.grade = "-";
-                    }
-                });
-
-                watch.grades = $scope.$watch('filters.grade', function (newval, oldval) {
-                    if (newval) {
-                        $scope.getAgents();
-                    }
-                });
-
-                watch.structure = $scope.$watch('filters.structure', function (newval, oldval) {
-                    if (newval) {
-                        newval = JSON.parse(newval).code;
-                        if (newval && newval != "-1") {
-                            $scope.staffsFilter = "code:" + newval;
-                        }
-                    }
-                });
-
-                watch.staffsFilter = $scope.$watch('staffsFilter', function (newval, oldval) {
-                    if (newval) {
-                        $scope.getAgents();
-                    }
-                });
-
-                watch.gender = $scope.$watch('filters.gender', function (newval, oldval) {
-                    if (newval) {
-                        $scope.getAgents();
-                    }
-                });
-
-                watch.subStructure = $scope.$watch('filters.subStructure', function (newval, oldval) {
-
-                    if (newval && newval != undefined && newval != "undefined") {
-                        newval = JSON.parse(newval).code;
-                        if (newval != undefined && newval != "undefined") {
-                            $scope.staffsFilter = "code:" + newval;
-                        } else {
-                            $scope.staffsFilter = "";
-                        }
-                    }
-                });
-
-                $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
-                    watch.structure();
-                    watch.subStructure();
-                    watch.staffsFilter();
-                    watch.grades();
-                });
-
-                function deleteAgent(id) {
-                    StaffAgent.delete({
-                        id: id
-                    }).then(function (response) {
-                        $scope.getAgents();
-                        $rootScope.kernel.alerts.push({
-                            type: 3,
-                            msg: gettextCatalog.getString('The Agent has been deleted'),
-                            priority: 4
                         });
+                    };
+
+                    $scope.evaluate = function (personnel) {
+                        $ocLazyLoad.load('js/controllers/monitor/EvaluationCtrl.js').then(function () {
+                            $mdDialog.show({
+                                controller: 'EvaluationController',
+                                templateUrl: '../templates/dialogs/evaluation.html',
+                                parent: angular.element(document.body),
+                                clickOutsideToClose: true,
+                                locals: {
+                                    params: {
+                                        personnel: personnel
+                                    }
+                                }
+                            }).then(function (answer) {
+                            }, function () {
+                            });
+                        });
+                    }
+
+
+                    $scope.onlyDirection = function (item) {
+                        return item.rank == "2";
+                    };
+
+                    $scope.getAgents = function () {
+                        $rootScope.kernel.loading = 0;
+                        $scope.helper = [];
+                        var limit = $scope.query.limit;
+                        var skip = $scope.query.limit * ($scope.query.page - 1);
+                        var filterParams = {
+                            structure: $scope.codeStructure,
+                            gender: $scope.filters.gender,
+                            status: $scope.filters.status,
+                            grade: $scope.filters.grade,
+                            category: $scope.filters.category,
+                            situation: $scope.filters.situation
+                        }
+                        StaffAgent.list({minify: true, limit: limit, skip: skip, search: $scope.staffsFilter, filters: JSON.stringify(filterParams)}).then(function (response) {
+                            var data = response.data.data;
+                            if (data.length == 0 && $scope.helper.length == 0) {
+                                $scope.helper = helper;
+                            }
+                            $rootScope.kernel.loading = 100;
+                            $scope.personnels = {
+                                data: response.data.data,
+                                count: response.data.count
+                            };
+
+                        }).catch(function (response) {
+                            console.log(response);
+                        });
+                    }
+                    $scope.getAgents();
+
+                    $scope.onlySubDirection = function (item) {
+                        if ($scope.filters.structure && $scope.filters.structure != "-") {
+                            var code = JSON.parse($scope.filters.structure).code;
+                            return item.rank == "3" && item.code.indexOf(code + "-") == 0;
+                        } else {
+                            return false;
+                        }
+
+                    };
+
+                    var watch = {};
+
+                    watch.status = $scope.$watch('filters.status', function (newval, oldval) {
+                        if (newval && oldval &&  newval != oldval) {
+                            if (newval != "-") {
+                                Dictionary.jsonList({dictionary: 'personnel', levels: ['status', $scope.filters.status, "grades"]}).then(function (response) {
+                                    $scope.grades = response.data.jsonList;
+                                    $scope.filters.grade = "-";
+                                });
+                                Dictionary.jsonList({dictionary: 'personnel', levels: ['status', $scope.filters.status, "categories"]}).then(function (response) {
+                                    $scope.categories = response.data.jsonList;
+                                    $scope.filters.category = "-";
+                                });
+                            } else {
+                                $scope.grades = [];
+                                $scope.filters.grade = "-";
+                                $scope.categories = [];
+                                $scope.filters.category = "-";
+                            }
+                            $scope.getAgents();
+                        } else {
+                            $scope.grades = [];
+                            $scope.categories = [];
+                            if (oldval) {
+                                $scope.filters.grade = "-";
+                                $scope.filters.category = "-";
+                            }
+                        }
+                    });
+
+                    watch.grades = $scope.$watch('filters.grade', function (newval, oldval) {
+                        if (newval && oldval &&  newval != oldval) {
+                            $scope.getAgents();
+                        }
+                    });
+
+                    watch.category = $scope.$watch('filters.category', function (newval, oldval) {
+                        if (newval && oldval &&  newval != oldval) {
+                            $scope.getAgents();
+                        }
+                    });
+
+                    watch.situation = $scope.$watch('filters.situation', function (newval, oldval) {
+                        if (newval && oldval &&  newval != oldval) {
+                            $scope.getAgents();
+                        }
+                    });
+
+                    watch.structure = $scope.$watch('filters.structure', function (newval, oldval) {
+                        if (newval && newval != oldval) {
+                            if (newval && newval != "-") {
+                                newval = JSON.parse(newval).code;
+                                $scope.codeStructure = newval + "-";
+                            } else {
+                                $scope.codeStructure = "-";
+                                $scope.filters.subStructure = undefined;
+
+                            }
+                            $scope.getAgents();
+                        }
+                    });
+
+                    watch.staffsFilter = $scope.$watch('staffsFilter', function (newval, oldval) {
+                        if (newval) {
+                            $scope.getAgents();
+                        }
+                    });
+
+                    watch.gender = $scope.$watch('filters.gender', function (newval, oldval) {
+                        if (newval && oldval && newval != oldval) {
+                            $scope.getAgents();
+                        }
+                    });
+
+                    watch.subStructure = $scope.$watch('filters.subStructure', function (newval, oldval) {
+                        if (newval) {
+                            if (newval && newval != "-") {
+                                newval = JSON.parse(newval).code;
+                                $scope.codeStructure = newval;
+                            } else {
+                                $scope.codeStructure = "-";
+                            }
+                            $scope.getAgents();
+                        }
+                    });
+
+                    $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
+                        watch.structure();
+                        watch.subStructure();
+                        watch.staffsFilter();
+                        watch.grades();
+                        watch.status();
+                        watch.category();
+                        watch.situation();
+                    });
+
+                    function deleteAgent(id) {
+                        StaffAgent.delete({
+                            id: id
+                        }).then(function (response) {
+                            $scope.getAgents();
+                            $rootScope.kernel.alerts.push({
+                                type: 3,
+                                msg: gettextCatalog.getString('The Agent has been deleted'),
+                                priority: 4
+                            });
+                        }).catch(function (response) {
+                            console.log(response);
+                        });
+                    }
+
+
+                    //Load structure list
+                    Structure.minimalList().then(function (response) {
+                        var data = response.data;
+                        $scope.structures = data;
                     }).catch(function (response) {
-                        console.log(response);
+                        console.error(response);
                     });
-                }
 
+                    $scope.showConfirm = function (agent) {
+                        var confirm = $mdDialog.confirm()
+                                .title(gettextCatalog.getString("Delete this Agent"))
+                                .textContent(gettextCatalog.getString("Are you sure you want to delete the Agent") + " " + agent.name.use + gettextCatalog.getString("?"))
+                                .ok(gettextCatalog.getString("OK"))
+                                .cancel(gettextCatalog.getString("Cancel"));
 
-                //Load structure list
-                Structure.minimalList().then(function (response) {
-                    var data = response.data;
-                    $scope.structures = data;
-                }).catch(function (response) {
-                    console.error(response);
+                        $mdDialog.show(confirm).then(function () {
+                            // Delete
+                            deleteAgent(agent._id)
+                        }, function () {
+                            // Cancel
+                        });
+                    }
                 });
-
-                $scope.showConfirm = function (agent) {
-                    var confirm = $mdDialog.confirm()
-                            .title(gettextCatalog.getString("Delete this Agent"))
-                            .textContent(gettextCatalog.getString("Are you sure you want to delete the Agent") + " " + agent.name.use + gettextCatalog.getString("?"))
-                            .ok(gettextCatalog.getString("OK"))
-                            .cancel(gettextCatalog.getString("Cancel"));
-
-                    $mdDialog.show(confirm).then(function () {
-                        // Delete
-                        deleteAgent(agent._id)
-                    }, function () {
-                        // Cancel
-                    });
-                }
             });
         });
     });
