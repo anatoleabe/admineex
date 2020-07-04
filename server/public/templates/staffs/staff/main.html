@@ -38,7 +38,7 @@
         </div>
         <span flex></span>
 
-        <md-button class="md-icon-button" aria-label="Print" >
+        <md-button class="md-icon-button" aria-label="Print" ng-click="download()">
             <md-icon>print</md-icon>
             <md-tooltip md-direction="top">
                 <span translate>Print</span>
@@ -166,8 +166,8 @@
                     <th md-column md-order-by="grade" ><span translate>Grade</span></th>
                     <th md-column md-order-by="posteActuel[0].nom"><span translate>Function</span></th>
                     <th md-column md-order-by="posteActuel[0].structure[0].nom"><span translate>Structure aff.</span></th>
-                    <th md-column md-order-by="miseajour" ><span translate>Service began</span></th>
-                    <!--<th md-column md-order-by="telephone"><span translate>Phone</span></th>-->
+                    <!--<th md-column md-order-by="miseajour" ><span translate>Service began</span></th>-->
+                    <th md-column md-order-by="telephone"><span translate>Phone</span></th>
                     <th md-column translate style="width: 200px"><span translate>Actions</span></th>
                 </tr>
             </thead>

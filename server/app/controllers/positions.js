@@ -795,15 +795,19 @@ exports.findPositionHolder = function (options, affectation, callback) {
                 log.error(err);
                 callback(err);
             } else {
-                beautify({actor: options.req.actor, language: options.req.actor.language, beautify: true}, [position], function (err, objects) {
-                    if (err) {
-                        callback(err);
-                    } else {
-                        affectation.position = objects[0];
-                        callback(null, affectation);
-                    }
-                });
-
+                if (options.beautify && options.beautify == false) {
+                    affectation.position = position;
+                    callback(null, affectation);
+                } else {
+                    beautify({actor: options.req.actor, language: options.req.actor.language, beautify: true, toExport: options.toExport}, [position], function (err, objects) {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            affectation.position = objects[0];
+                            callback(null, affectation);
+                        }
+                    });
+                }
             }
         });
     } else {
@@ -822,30 +826,30 @@ exports.findPositionHelderBystaffId = function (options, staffId, callback) {
     Affectation.findOne({
         personnelId: staffId
     }).lean().exec(function (err, affectation) {
-            if (err) {
-                log.error(err);
-                callback(err);
-            } else {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
             if (affectation) {
                 exports.findPositionByCode(affectation.positionCode, function (err, position) {
                     if (err) {
                         log.error(err);
                         callback(err);
                     } else {
-                beautify({actor: options.req.actor, language: options.req.actor.language, beautify: true}, [position], function (err, objects) {
-                    if (err) {
-                        callback(err);
-                    } else {
-                        affectation.position = objects[0];
-                        callback(null, affectation);
+                        beautify({actor: options.req.actor, language: options.req.actor.language, beautify: true}, [position], function (err, objects) {
+                            if (err) {
+                                callback(err);
+                            } else {
+                                affectation.position = objects[0];
+                                callback(null, affectation);
+                            }
+                        });
+
                     }
                 });
-
+            } else {
+                callback(null, affectation);
             }
-        });
-    } else {
-        callback(null, affectation);
-    }
         }
     });
 };
@@ -1054,25 +1058,28 @@ function beautify(options, objects, callback) {
                             callback(err);
                         } else {
                             objects[o].structure = structure;
-
-                            exports.findPositionHelder(objects[o]._id, function (err, affectation) {
-                                if (err) {
-                                    console.log(err);
-                                } else {
-                                    var name = "";
-                                    if (affectation && affectation.personnel) {
-                                        name = affectation.personnel.name.family[0] + " " + affectation.personnel.name.given[0];
+                            if (options.toExport == true) {
+                                objectsLoop(o + 1);
+                            }else{
+                                exports.findPositionHelder(objects[o]._id, function (err, affectation) {
+                                    if (err) {
+                                        console.log(err);
                                     } else {
-                                        vacancies.push(objects[o]);
-                                    }
-                                    objects[o].helderName = name;
+                                        var name = "";
+                                        if (affectation && affectation.personnel) {
+                                            name = affectation.personnel.name.family[0] + " " + affectation.personnel.name.given[0];
+                                        } else {
+                                            vacancies.push(objects[o]);
+                                        }
+                                        objects[o].helderName = name;
 
-                                    objectsLoop(o + 1);
-                                }
-                            });
+                                        objectsLoop(o + 1);
+                                    }
+                                });
+                            }
                         }
                     });
-                }
+            }
             } else {
                 if (options.vacancies == true) {
                     callback(null, vacancies);

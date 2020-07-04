@@ -1,4 +1,4 @@
-angular.module('StaffCtrl', []).controller('StaffController', function ($scope, $window, gettextCatalog, $stateParams, $state, $q, $ocLazyLoad, $injector, $rootScope, $location) {
+angular.module('StaffCtrl', []).controller('StaffController', function ($scope, $window, gettextCatalog, $stateParams, $state, $q, $ocLazyLoad, $injector, $rootScope, $location, $filter) {
 
 
     $rootScope.kernel.loading = 0;

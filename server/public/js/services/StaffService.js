@@ -30,6 +30,11 @@ angular.module('StaffService', []).factory('Staff', function($http) {
         },
         retired: function(info) {
             return $http.get('/api/personnel/retired/'+info.from+'/'+info.to);
+        },
+        export: function(info) {
+            var search = info.search?info.search:"-";
+            var filters = info.filters?info.filters:"-";
+            return $http.get('/api/personnel/export/'+search+'/'+filters);
         }
     }
 });

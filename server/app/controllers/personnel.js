@@ -3,6 +3,9 @@ var Affectation = require('../models/affectation').Affectation;
 var audit = require('../utils/audit-log');
 var log = require('../utils/log');
 var mail = require('../utils/mail');
+var fs = require('fs');
+var Excel = require('exceljs');
+var keyGenerator = require("generate-key");
 var _ = require('lodash');
 var crypto = require('crypto');
 var dictionary = require('../utils/dictionary');
@@ -511,6 +514,8 @@ exports.list = function (options, callback) {
                             aggregate.push(projection);
                         }
 
+                        console.log()
+
                         //Filter by key word
                         if (options.search) {
                             aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
@@ -538,13 +543,13 @@ exports.list = function (options, callback) {
                             }
 
                             if (options.filters.situation && options.filters.situation != "-" && options.filters.situation != "") {
-                                if (options.filters.situation == "12"){
+                                if (options.filters.situation == "12") {
                                     aggregate.push({"$match": {"retirement.retirement": true}});
                                     aggregate.push({"$match": {"retirement.notified": {$exists: false}}});
                                     aggregate.push({"$match": {$or: [{"retirement.extended": {$exists: false}}, {"retirement.extended": false}]}});
-                                }else if (options.filters.situation == "0"){//Active people
+                                } else if (options.filters.situation == "0") {//Active people
                                     //Check if correspond
-                                }else{
+                                } else {
                                     aggregate.push({$sort: {"situations.lastModified": -1}});
                                     aggregate.push({$match: {"situations.0.situation": options.filters.situation}});
                                 }
@@ -573,23 +578,44 @@ exports.list = function (options, callback) {
                                 audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
                                 callback(err);
                             } else {
-                                //console.log(personnels[9].affectation)
+
                                 if (options.minify == true || options.retiredOnly) {
                                     personnels = JSON.parse(JSON.stringify(personnels));
                                     function LoopA(a) {
                                         if (a < personnels.length && personnels[a]) {
                                             if (options.minify === true) {
-                                                controllers.positions.findPositionHolder({req: options.req}, personnels[a].affectation[0], function (err, affectation) {
+                                                var options2 = {
+                                                    req: options.req
+                                                };
+                                                options2.beautifyPosition = true;
+                                                if (options.beautifyPosition == false) {
+                                                    options2.beautifyPosition = false;
+                                                }
+                                                //console.log("Perso", options.toExport)
+                                                if (options.toExport == true) {
+                                                    options2.toExport = true;
+                                                }
+                                                controllers.positions.findPositionHolder(options2, personnels[a].affectation[0], function (err, affectation) {
                                                     if (err) {
                                                         log.error(err);
                                                         callback(err);
                                                     } else {
                                                         personnels[a].affectedTo = affectation;
+
                                                         var status = (personnels[a].status) ? personnels[a].status : "";
                                                         var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                                                        var actif = (personnels[a].retirement.retirement == false) ? "Actif" : "En age de retraite";
                                                         var language = options.language || "";
                                                         language = language.toLowerCase();
-                                                        personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
+                                                        var status = (personnels[a].status) ? personnels[a].status : "";
+                                                        var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                                                        var category = (personnels[a].category) ? personnels[a].category : "";
+                                                        personnels[a].active = actif;
+                                                        personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
+                                                        if (status != "") {
+                                                            personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
+                                                            personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, language);
+                                                        }
                                                         personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
                                                         LoopA(a + 1);
                                                     }
@@ -700,6 +726,132 @@ exports.list = function (options, callback) {
     });
 }
 
+
+
+
+exports.api.export = function (req, res) {
+    if (req.actor) {
+        if (req.params.filters == undefined) {
+            audit.logEvent(req.actor.id, 'Personnel', 'Export', '', '', 'failed',
+                    'The actor could not export the personnel list because one or more params of the request was not defined');
+            return res.sendStatus(400);
+        } else {
+            var filtersParam = {}
+            if (req.params.filters && req.params.filters != "-" && req.params.filters != "") {
+                filtersParam = JSON.parse(req.params.filters);
+            }
+
+            var filter = {rank: "2"};
+            if (filtersParam.structure != "-1" && filtersParam.structure != "undefined" && filtersParam.structure) {
+                filter.code = filtersParam.structure;
+            }
+            var option = {
+                actor: req.actor, language: req.actor.language, beautify: true, filter: filter
+            }
+            controllers.structures.list(option, function (err, structures) {
+                if (err) {
+                    log.error(err);
+                    res.status(500).send(err);
+                } else {
+                    //console.log(structures)
+                    var options = {
+                        minify: true,
+                        req: req,
+                        filters: filtersParam,
+                        language: req.actor.language,
+                        beautifyPosition: false,
+                        toExport: true
+                    }
+                    var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "affectation.date": 1, "situations": 1, };
+                    options.projection = projection;
+
+                    exports.list(options, function (err, personnels) {
+                        if (err) {
+                            log.error(err);
+                            res.status(500).send(err);
+                        } else {
+                            //console.log(personnels[6].affectedTo.position.structure);
+                            personnels.sort(function (a, b) {
+                                if (a.fname < b.fname) {
+                                    return -1;
+                                } else
+                                if (a.fname > b.fname) {
+                                    return 1;
+                                } else
+                                    return 0;
+                            })
+
+                            var groupedPersonnelByStructureChildren = _.groupBy(personnels, function (item) {
+                                if (item.affectedTo && item.affectedTo.position && item.affectedTo.position.structureId) {
+                                    return item.affectedTo.position.structureId;
+                                } else {
+                                    return "undefined";
+                                }
+
+                            });
+                            //console.log(groupedPersonnelByStructureChildren["undefined"])
+                            //console.log(z)
+
+                            for (var s in structures) {
+                                if (structures[s].children) {
+                                    for (var c in structures[s].children) {
+                                        structures[s].children[c].personnels = groupedPersonnelByStructureChildren[structures[s].children[c]._id]
+
+                                    }
+                                }
+                            }
+                            if (groupedPersonnelByStructureChildren["undefined"]) {
+                                var undefinedStructure = {
+                                    code: "000",
+                                    name: "STRUCTURE INCONNUE",
+                                    children: [{
+                                        code: "000 - 0",
+                                        fr: "Inconue",
+                                        personnels: groupedPersonnelByStructureChildren["undefined"]
+                                    }]
+                                }
+                                structures.push(undefinedStructure);
+                            }
+
+                            //console.log(z);
+                            var gt = dictionary.translator(req.actor.language);
+                            //Build XLSX
+                            var options = buildFields(req.actor.language);
+                            options.data = structures;
+                            options.title = gt.gettext("Admineex: Liste du personnel");
+                            buildXLSX(options, function (err, filePath) {
+                                if (err) {
+                                    log.error(err);
+                                } else {
+                                    var fileName = 'report.xlsx';
+                                    res.set('Content-disposition', 'attachment; filename=' + fileName);
+                                    res.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                                    var fileStream = fs.createReadStream(filePath);
+                                    var pipeStream = fileStream.pipe(res);
+                                    pipeStream.on('finish', function () {
+                                        fs.unlinkSync(filePath);
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+
+        }
+    }
+}
+
+function buildFields(language) {
+    var fields = require("../../resources/dictionary/export/fieldNames.json");
+    var options = {fields: [], fieldNames: []};
+    for (i = 0; i < fields.length; i++) {
+        options.fieldNames.push(((language != "" && fields[i][language] != undefined && fields[i][language] != "") ? fields[i][language] : fields[i]['en']));
+        options.fields.push(fields[i].id);
+    }
+    return options;
+}
 
 exports.api.search = function (req, res) {
     if (req.actor) {
@@ -1084,4 +1236,239 @@ function beautify(options, personnels, callback) {
     } else {
         callback(null, personnels);
     }
+}
+
+function buildXLSX(options, callback) {
+    var add = 0;
+    var defaultCellStyle = {font: {name: "Calibri", sz: 11}, fill: {fgColor: {rgb: "FFFFAA00"}}};
+    var alpha = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    var columns = [];
+    var a = 0;
+    // Generate fields
+
+    for (n = 0; n < options.fields.length; n++) {
+        if (n <= alpha.length * 1 - 1) {
+            columns.push(alpha[a]);
+        } else if (n <= alpha.length * 2 - 1) {
+            columns.push(alpha[0] + alpha[a]);
+        } else if (n <= alpha.length * 3 - 1) {
+            columns.push(alpha[1] + alpha[a]);
+        } else if (n <= alpha.length * 4 - 1) {
+            columns.push(alpha[2] + alpha[a]);
+        } else if (n <= alpha.length * 5 - 1) {
+            columns.push(alpha[3] + alpha[a]);
+        } else {
+            columns.push(alpha[4] + alpha[a]);
+        }
+        a++;
+        if (a > 25) {
+            a = 0;
+        }
+    }
+
+    // create workbook & add worksheet
+    var workbook = new Excel.Workbook();
+    //2. Start holding the work sheet
+    var ws = workbook.addWorksheet('Admineex export');
+
+    //3. set style around A1
+    ws.getCell('A1').value = options.title;
+    ws.getCell('A1').border = {
+        top: {style: 'thick', color: {argb: 'FF964714'}},
+        left: {style: 'thick', color: {argb: 'FF964714'}},
+        bottom: {style: 'thick', color: {argb: 'FF964714'}}
+    };
+    ws.getCell('A1').fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+    ws.getCell('A1').font = {
+        color: {argb: 'FFFFFF'},
+        size: 16,
+        bold: true
+    };
+    ws.getCell('A1').alignment = {vertical: 'middle', horizontal: 'center'};
+
+
+    //4. Row 1
+    for (i = 1; i < options.fieldNames.length; i++) {
+        // For the last column, add right border
+        if (i == options.fieldNames.length - 1) {
+            ws.getCell(columns[i] + "1").border = {
+                top: {style: 'thick', color: {argb: 'FF964714'}},
+                right: {style: 'medium', color: {argb: 'FF964714'}},
+                bottom: {style: 'thick', color: {argb: 'FF964714'}}
+            };
+        } else {//Set this border for the middle cells
+            ws.getCell(columns[i] + "1").border = {
+                top: {style: 'thick', color: {argb: 'FF964714'}},
+                bottom: {style: 'thick', color: {argb: 'FF964714'}}
+            };
+        }
+        ws.getCell(columns[i] + "1").fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+        ws.getCell(columns[i] + "1").alignment = {vertical: 'middle', horizontal: 'center', "wrapText": true};
+    }
+
+    //5 Row 2
+    for (i = 0; i < options.fieldNames.length; i++) {
+        ws.getCell(columns[i] + "2").value = options.fieldNames[i];
+        ws.getCell(columns[i] + "2").alignment = {vertical: 'middle', horizontal: 'left', "wrapText": true};
+        ws.getCell(columns[i] + "2").border = {
+            top: {style: 'thin', color: {argb: 'FF000000'}},
+            bottom: {style: 'medium', color: {argb: 'FF000000'}},
+            left: {style: 'thin', color: {argb: 'FF000000'}},
+            right: {style: 'thin', color: {argb: 'FF000000'}}
+        };
+    }
+
+    //6. Fill data rows    
+    var nextRow = 3;
+    for (i = 0; i < options.data.length; i++) {
+
+        //6.1 Row 3 set the style
+        ws.getCell('A' + nextRow).value = options.data[i].name + " - " + options.data[i].code;
+        ws.getCell('A' + nextRow).border = {
+            top: {style: 'thick', color: {argb: 'FF964714'}},
+            left: {style: 'thick', color: {argb: 'FF964714'}},
+            bottom: {style: 'thick', color: {argb: 'FF964714'}}
+        };
+        ws.getCell('A' + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+        ws.getCell('A' + nextRow).font = {
+            color: {argb: 'FFFFFF'},
+            size: 16,
+            bold: true
+        };
+        ws.getCell('A' + nextRow).alignment = {vertical: 'middle', horizontal: 'center'};
+        //6.2 Row 3 set the length
+        for (r = 1; r < options.fieldNames.length; r++) {
+            // For the last column, add right border
+            if (r == options.fieldNames.length - 1) {
+                ws.getCell(columns[r] + nextRow).border = {
+                    top: {style: 'thick', color: {argb: 'FF964714'}},
+                    right: {style: 'medium', color: {argb: 'FF964714'}},
+                    bottom: {style: 'thick', color: {argb: 'FF964714'}}
+                };
+            } else {//Set this border for the middle cells
+                ws.getCell(columns[r] + nextRow).border = {
+                    top: {style: 'thick', color: {argb: 'FF964714'}},
+                    bottom: {style: 'thick', color: {argb: 'FF964714'}}
+                };
+            }
+            ws.getCell(columns[r] + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+            ws.getCell(columns[r] + nextRow).alignment = {vertical: 'middle', horizontal: 'center', "wrapText": true};
+        }
+        /// 6.3 Merges Structure name cells
+        ws.mergeCells('A' + nextRow + ":" + columns[options.fieldNames.length - 1] + nextRow);
+
+
+        if (options.data[i].children) {
+            nextRow = nextRow + 1;
+            /// 6.4 fill data
+            for (c = 0; c < options.data[i].children.length; c++) {
+                //6.4.1 Row 3 set the style
+                ws.getCell('A' + nextRow).value = options.data[i].children[c].fr + " - " + options.data[i].children[c].code;
+                ws.getCell('A' + nextRow).border = {
+                    top: {style: 'thick', color: {argb: '96969696'}},
+                    left: {style: 'thick', color: {argb: '96969696'}},
+                    bottom: {style: 'thick', color: {argb: '96969696'}}
+                };
+                ws.getCell('A' + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'A1a8a1a1'}};
+                ws.getCell('A' + nextRow).font = {
+                    color: {argb: 'FFFFFF'},
+                    size: 16,
+                    bold: true
+                };
+                ws.getCell('A' + nextRow).alignment = {vertical: 'middle', horizontal: 'center'};
+                //6.4.2 Row 3 set the length
+                for (r = 1; r < options.fieldNames.length; r++) {
+                    // For the last column, add right border
+                    if (r == options.fieldNames.length - 1) {
+                        ws.getCell(columns[r] + nextRow).border = {
+                            top: {style: 'thick', color: {argb: '96969696'}},
+                            right: {style: 'medium', color: {argb: '96969696'}},
+                            bottom: {style: 'thick', color: {argb: '96969696'}}
+                        };
+                    } else {//Set this border for the middle cells
+                        ws.getCell(columns[r] + nextRow).border = {
+                            top: {style: 'thick', color: {argb: '96969696'}},
+                            bottom: {style: 'thick', color: {argb: '96969696'}}
+                        };
+                    }
+                    ws.getCell(columns[r] + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'A1a8a1a1'}};
+                    ws.getCell(columns[r] + nextRow).alignment = {vertical: 'middle', horizontal: 'left', "wrapText": true};
+                }
+                /// 6.4.3 Merges Structure name cells
+                ws.mergeCells('A' + nextRow + ":" + columns[options.fieldNames.length - 1] + nextRow);
+
+
+                if (options.data[i].children[c].personnels) {
+
+                    for (k = 0; k < options.data[i].children[c].personnels.length; k++) {
+
+                        for (j = 0; j < options.fields.length; j++) {
+                            var query = options.fields[j].split(".");
+                            var value, field;
+
+                            if (query.length == 1) {
+                                value = options.data[i].children[c].personnels[k][query[0]] || "";
+                                field = query[0];
+                            } else if (query.length == 2) {
+                                if (options.data[i].children[c].personnels[k][query[0]]) {
+                                    value = options.data[i].children[c].personnels[k][query[0]][query[1]] || "";
+                                } else {
+                                    value = "";
+                                }
+                                field = query[1];
+                            } else if (query.length == 3) {
+                                if (options.data[i].children[c].personnels[k][query[0]] && options.data[i].children[c].personnels[k][query[0]][query[1]]) {
+                                    value = options.data[i].children[c].personnels[k][query[0]][query[1]][query[2]] || "";
+                                } else {
+                                    value = "";
+                                }
+                                field = query[2];
+                            }
+
+                            if ((field == "testDate" || field == "requestDate" || field == "birthDate" || field == "positiveResultDate" || field == "startdate" || field == "cartridgeExpiryDate") && value != undefined && value != "" && value != null && value != "null") {
+                                value = moment(value).format("DD/MM/YYYY");
+                            }
+
+                            ws.getCell(columns[j] + (nextRow + 1 + add)).value = (value != undefined && value != null && value != "null") ? value : "";
+                            ws.getCell(columns[j] + (nextRow + 1 + add)).border = {
+                                left: {style: 'thin', color: {argb: 'FF000000'}},
+                                right: {style: 'thin', color: {argb: 'FF000000'}}
+                            };
+
+                            // Last row: Add border
+                            if (i == options.data.length - 1) {
+                                ws.getCell(columns[j] + (nextRow + 1 + add)).border.bottom = {style: 'thin', color: {argb: 'FF000000'}};
+                            }
+                        }
+                        nextRow += 1;
+                    }
+                }
+                nextRow += 1;
+            }
+            nextRow += 1;
+        }
+    }
+
+    ///7. Set the columns width to 12
+    for (k = 0; k < ws.columns.length; k++) {
+        ws.columns[k].width = 30;
+    }
+    ws.columns[0].width = 50;
+    ws.columns[1].width = 12;
+    ws.columns[2].width = 12;
+    ws.columns[6].width = 50;
+    ws.columns[7].width = 15;
+
+    ///7. Merges cells
+    ws.mergeCells('A1:' + columns[options.fieldNames.length - 1] + "1");
+
+
+    // save workbook to disk
+    var tmpFile = "./tmp/" + keyGenerator.generateKey() + ".xlsx";
+    if (!fs.existsSync("./tmp")) {
+        fs.mkdirSync("./tmp");
+    }
+    workbook.xlsx.writeFile(tmpFile).then(function () {
+        callback(null, tmpFile);
+    });
 }

@@ -1,4 +1,4 @@
-angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope) {
+angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope, $q) {
     $ocLazyLoad.load('js/services/StaffService.js').then(function () {
         var StaffAgent = $injector.get('Staff');
         $ocLazyLoad.load('js/services/StructureService.js').then(function () {
@@ -200,7 +200,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                     var watch = {};
 
                     watch.status = $scope.$watch('filters.status', function (newval, oldval) {
-                        if (newval && oldval &&  newval != oldval) {
+                        if (newval && oldval && newval != oldval) {
                             if (newval != "-") {
                                 Dictionary.jsonList({dictionary: 'personnel', levels: ['status', $scope.filters.status, "grades"]}).then(function (response) {
                                     $scope.grades = response.data.jsonList;
@@ -228,19 +228,19 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                     });
 
                     watch.grades = $scope.$watch('filters.grade', function (newval, oldval) {
-                        if (newval && oldval &&  newval != oldval) {
+                        if (newval && oldval && newval != oldval) {
                             $scope.getAgents();
                         }
                     });
 
                     watch.category = $scope.$watch('filters.category', function (newval, oldval) {
-                        if (newval && oldval &&  newval != oldval) {
+                        if (newval && oldval && newval != oldval) {
                             $scope.getAgents();
                         }
                     });
 
                     watch.situation = $scope.$watch('filters.situation', function (newval, oldval) {
-                        if (newval && oldval &&  newval != oldval) {
+                        if (newval && oldval && newval != oldval) {
                             $scope.getAgents();
                         }
                     });
@@ -250,8 +250,10 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                             if (newval && newval != "-") {
                                 newval = JSON.parse(newval).code;
                                 $scope.codeStructure = newval + "-";
+                                $scope.codeStructureExport = newval ;
                             } else {
                                 $scope.codeStructure = "-";
+                                $scope.codeStructureExport = "-1";
                                 $scope.filters.subStructure = undefined;
 
                             }
@@ -276,8 +278,10 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                             if (newval && newval != "-") {
                                 newval = JSON.parse(newval).code;
                                 $scope.codeStructure = newval;
+                                $scope.codeStructureExport = newval;
                             } else {
                                 $scope.codeStructure = "-";
+                                $scope.codeStructureExport = "-";
                             }
                             $scope.getAgents();
                         }
@@ -329,6 +333,62 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                             deleteAgent(agent._id)
                         }, function () {
                             // Cancel
+                        });
+                    }
+
+                    $scope.download = function () {
+                        $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
+                            var FileSaver = $injector.get('FileSaver');
+                            $rootScope.kernel.loading = 0;
+                            var deferred = $q.defer();
+                            $scope.promise = deferred.promise;
+                            function jsonBufferToObject(data, headersGetter, status) {
+                                var type = headersGetter("Content-Type");
+                                if (!type.startsWith("application/json")) {
+                                    return data;
+                                }
+                                ;
+                                var decoder = new TextDecoder("utf-8");
+                                var domString = decoder.decode(data);
+                                var json = JSON.parse(domString);
+                                return json;
+                            }
+
+                            var filterParams = {
+                                structure: $scope.codeStructureExport,
+                                gender: $scope.filters.gender,
+                                status: $scope.filters.status,
+                                grade: $scope.filters.grade,
+                                category: $scope.filters.category,
+                                situation: $scope.filters.situation
+                            }
+
+                            $ocLazyLoad.load('js/services/DownloadService.js').then(function () {
+                                var Download = $injector.get('Download');
+                                Download.start({
+                                    method: 'GET',
+                                    url: '/api/personnel/export/' + $scope.staffsFilter + '/' + JSON.stringify(filterParams),
+                                    headers: {'Content-Type': "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+                                    transformResponse: jsonBufferToObject
+                                }).then(function (response) {
+                                    console.log(response)
+                                    var d = new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+                                    var filename = 'Admineex';
+                                    FileSaver.saveAs(d, filename + gettextCatalog.getString('Adminex_Staff_Export') + '_' +  '.xlsx');
+                                    $rootScope.kernel.loading = 100;
+                                    deferred.resolve(response.data);
+                                }).catch(function (response) {
+                                    console.error(response);
+                                    if (response.data && response.data.error === '9500') {
+                                        $rootScope.kernel.alerts.push({
+                                            type: 1,
+                                            msg: gettextCatalog.getString('The Export is too big. Please reduce the date range'),
+                                            priority: 1
+                                        });
+                                        $rootScope.kernel.loading = 100;
+                                    }
+                                });
+                            });
                         });
                     }
                 });

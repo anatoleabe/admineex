@@ -510,6 +510,20 @@ exports.findStructureByCode = function (code, language, callback) {
     });
 }
 
+exports.findStructureByCodeNoBeautify = function (code, language, callback) {
+    Structure.findOne({
+        code: code
+    }).lean().exec(function (err, result) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            var structure = JSON.parse(JSON.stringify(result));
+            callback(null, result);
+        }
+    });
+}
+
 exports.find = function (id, language, callback) {
     Structure.findOne({
         _id: id

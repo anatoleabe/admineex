@@ -340,5 +340,11 @@
         "uri": "/api/structures/minimal/:structure",
         "method": "GET",
         "roles": [1,2, 3,4]
+    },
+    {
+        "id": 59,
+        "uri": "/api/personnel/export/:search/:filters",
+        "method": "GET",
+        "roles": [1,2,3,4]
     }
 ]

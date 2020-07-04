@@ -1,51 +1,35 @@
 [
     {
-        "id": "name",
+        "id": "fname",
         "en": "Name",
         "fr": "Nom"
     },{
-        "id": "enablers",
-        "en": "Enablers",
-        "fr": "Facilitateurs"
+        "id": "matricule",
+        "en": "Matricule",
+        "fr": "Matricule"
     },{
-        "id": "value",
-        "en": "Value",
-        "fr": "Valeur"
+        "id": "gender",
+        "en": "Gender",
+        "fr": "Sex"
     },{
-        "id": "paymentDate",
-        "en": "Payment Date",
-        "fr": "Date de paiement"
-    },{
-        "id": "successProbability",
-        "en": "Probability of Success",
-        "fr": "Probabilité de succès"
+        "id": "grade",
+        "en": "Grade",
+        "fr": "Grade"
     },{
         "id": "status",
         "en": "Status",
         "fr": "Statut"
     },{
-        "id": "finance.funders",
-        "en": "Funders",
-        "fr": "Bailleurs de fonds"
+        "id": "phone",
+        "en": "Phone",
+        "fr": "Téléphone"
     },{
-        "id": "finance.providers",
-        "en": "Fund Providers",
-        "fr": "Fournisseurs de fonds"
+        "id": "affectedTo.position.name",
+        "en": "Function",
+        "fr": "Fonction"
     },{
-        "id": "finance.revenueType",
-        "en": "Revenue Type",
-        "fr": "Type de revenu"
-    },{
-        "id": "context.countries",
-        "en": "Countries",
-        "fr": "Pays"
-    },{
-        "id": "context.sicknesses",
-        "en": "Sicknesses",
-        "fr": "Maladies"
-    },{
-        "id": "context.product",
-        "en": "Product",
-        "fr": "Produit"
+        "id": "active",
+        "en": "Situation",
+        "fr": "Situation"
     }
 ]
