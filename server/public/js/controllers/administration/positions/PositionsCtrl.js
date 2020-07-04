@@ -10,7 +10,11 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
 
             $scope.organizations = [], $scope.helper = [];
             $scope.search = false;
-            $scope.filters = {};
+            $scope.filters = {
+                status: "-"
+            };
+            $scope.codeStructure = undefined;
+            $scope.total = 0;
             $scope.structures = [];
             $scope.showOnlyVacancies = false;
             $scope.query = {
@@ -41,18 +45,21 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
             };
 
             $scope.load = function () {
-                var structureCode = $scope.filters.subStructure ? JSON.parse($scope.filters.subStructure).code : ($scope.filters.structure ? JSON.parse($scope.filters.structure).code : "-1");
-                getPositions(structureCode, $scope.showOnlyVacancies ? "0" : "-1");
+                getPositions();
             };
 
-            function getPositions(idStructure, restric) {
+            function getPositions() {
                 var limit = $scope.query.limit;
                 var skip = $scope.query.limit * ($scope.query.page - 1);
+                var filterParams = {
+                    structure: $scope.codeStructure,
+                    status: $scope.filters.status
+                }
                 $scope.helper = [];
                 $rootScope.kernel.loading = 0;
                 var deferred = $q.defer();
                 $scope.promise = deferred.promise;
-                Position.list({id: idStructure, restric: restric, limit: limit, skip: skip}).then(function (response) {
+                Position.list({search: $scope.positionFilter, filters: JSON.stringify(filterParams), limit: limit, skip: skip}).then(function (response) {
                     var data = response.data.data;
                     if (data.length == 0 && $scope.helper.length == 0) {
                         $scope.helper = helper;
@@ -85,20 +92,20 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
             };
 
             $scope.onlyDirection = function (item) {
-                    return item.rank == "2";
+                return item.rank == "2";
             };
 
             $scope.resetForm = function () {
-                    $scope.filters.structure = undefined;
-                    $scope.filters.soustructure = undefined;
-                    $scope.positionFilter = "";
-                    getPositions("-1", $scope.showOnlyVacancies ? "0" : "-1");
+                $scope.filters.structure = undefined;
+                $scope.filters.soustructure = undefined;
+                $scope.positionFilter = "";
+                getPositions("-1", $scope.showOnlyVacancies ? "0" : "-1");
             };
 
             $scope.onlySubDirection = function (item) {
                 if ($scope.filters.structure) {
                     var code = JSON.parse($scope.filters.structure).code;
-                    return item.rank == "3" && item.code.indexOf(code+"-") == 0;
+                    return item.rank == "3" && item.code.indexOf(code + "-") == 0;
                 } else {
                     return false;
                 }
@@ -107,32 +114,51 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
 
             $scope.$watch('positionFilter', function (newval, oldval) {
                 if (newval) {
-                    getPositions(newval ? newval : "-1", $scope.showOnlyVacancies ? "0" : "-1");
-                }
-            });
-            
-            $scope.$watch('filters.structure', function (newval, oldval) {
-                if (newval ) {
-                    newval = JSON.parse(newval).code;
-                    if (newval != undefined && newval != "undefined"){
-                        $scope.positionFilter = newval+"-";
-                    }else{
-                         $scope.positionFilter = "";
-                    }
-                    //getPositions(newval ? newval : "-1", $scope.showOnlyVacancies ? "0" : "-1");
+                    getPositions();
                 }
             });
 
-            $scope.$watch('filters.subStructure', function (newval, oldval) {
-                if (newval && newval != undefined && newval != "undefined") {
+            var watch = {};
+
+            watch.structure = $scope.$watch('filters.structure', function (newval, oldval) {
+                if (newval) {
                     newval = JSON.parse(newval).code;
-                    if (newval != undefined && newval != "undefined"){
-                        $scope.positionFilter = newval+"P";
-                    }else{
-                         $scope.positionFilter = "";
+                    if (newval != undefined && newval != "undefined" && newval != "-") {
+                        $scope.codeStructure = newval + "-";
+                        $scope.codeStructureExport = newval;
+                    } else {
+                        $scope.codeStructure = "-";
+                        $scope.codeStructureExport = "-1";
                     }
-                    //getPositions(newval ? newval+"P" : "-1", $scope.showOnlyVacancies ? "0" : "-1");
+                    getPositions();
                 }
+            });
+
+            watch.subStructure = $scope.$watch('filters.subStructure', function (newval, oldval) {
+                if (newval && newval != undefined && newval != "undefined" ) {
+                    newval = JSON.parse(newval).code;
+                    if (newval != undefined && newval != "undefined" && newval != "-") {
+                        $scope.codeStructure = newval + "P";
+                        $scope.codeStructureExport = newval;
+                    } else {
+                        $scope.codeStructure = "-";
+                        $scope.codeStructureExport = "-";
+                    }
+                    getPositions();
+                }
+            });
+
+            watch.gender = $scope.$watch('filters.status', function (newval, oldval) {
+                if (newval && oldval && newval != oldval) {
+                    getPositions();
+                }
+            });
+
+
+            $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
+                watch.structure();
+                watch.subStructure();
+                watch.status();
             });
 
             //Load structure list

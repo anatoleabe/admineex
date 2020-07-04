@@ -320,7 +320,7 @@ exports.api.findPositionByCode = function (req, res) {
 
 exports.api.list = function (req, res) {
     if (req.actor) {
-        var restriction = req.params.restric;
+        var restriction = "-1";
         var limit = 0;
         var skip = 0;
         if (req.params.limit && req.params.skip) {
@@ -328,53 +328,99 @@ exports.api.list = function (req, res) {
             skip = parseInt(req.params.skip, 10);
         }
 
+        var filtersParam = {}
+        if (req.params.filters && req.params.filters != "-" && req.params.filters != "") {
+            filtersParam = JSON.parse(req.params.filters);
+        }
 
         var filter = {};
-        if (req.params.id && req.params.id != "-1") {
+        if (req.params.search && req.params.search != "-1" && req.params.search != "" && req.params.search != "undefined") {
             filter = {$and: []};
             filter.$and.push({
-                "code": new RegExp("^" + req.params.id.toUpperCase())
+                "code": new RegExp("^" + req.params.search)
+            });
+            filter.$and.push({
+                "fr": new RegExp("^" + req.params.search)
+            });
+            filter.$and.push({
+                "en": new RegExp("^" + req.params.search)
+            });
+        }
+        if (filtersParam.structure && filtersParam.structure != "-1" && filtersParam.structure != "-") {
+            if (!filter.$and) {
+                filter = {$and: []};
+            }
+            filter.$and.push({
+                "code": new RegExp("^" + filtersParam.structure.toUpperCase())
             });
         }
 
-        Position.count(filter).exec(function (err, count) {
+        restriction = filtersParam.status;
+
+        var concatMeta = ["$fr", "$en", "$code"];
+        var aggregate = [];
+        aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
+        aggregate.push(
+                {
+                    $lookup: {
+                        from: 'affectations',
+                        localField: '_id',
+                        foreignField: 'positionId',
+                        as: 'affectation'
+                    }
+                }
+        );
+
+        if (req.params.search && req.params.search != "-1" && req.params.search != "" && req.params.search != "undefined") {
+            aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(req.params.search)}]}})
+        }
+        if (filtersParam.structure && filtersParam.structure != "-1" && filtersParam.structure != "-") {
+            aggregate.push({$match: {$or: [{"code": new RegExp("^" + filtersParam.structure)}]}})
+        }
+        if (restriction == "1") {
+            aggregate.push({$match: {"affectation": {$ne: []}}});
+        }
+        if (restriction == "0") {
+            aggregate.push({$match: {"affectation": {$eq: []}}});
+        }
+        
+        aggregate.push({$count: "total"});
+        q = Position.aggregate(aggregate);
+        q.exec(function (err, count) {
             if (err) {
                 log.error(err);
                 callback(err);
             } else {
-                Position.find(filter).limit(limit).skip(skip).lean().exec(function (err, result) {
+                aggregate.pop();//Remove the count(Last element added)
+                if (count && count[0]){
+                    count = count[0].total;
+                }
+                
+                if ((skip + limit) > 0) {
+                    aggregate.push({"$limit": skip + limit})
+                    aggregate.push({"$skip": skip})
+                }
+                
+                q = Position.aggregate(aggregate);
+                q.exec(function (err, result) {
                     if (err) {
                         log.error(err);
                         audit.logEvent('[mongodb]', 'Positions', 'List', '', '', 'failed', 'Mongodb attempted to retrieve positions list');
                         return res.status(500).send(err);
                     } else {
                         var positions = JSON.parse(JSON.stringify(result));
-                        var positionsFiltered = [];
                         function LoopA(o) {
                             if (o < positions.length) {
 
-                                exports.findPositionHelder(positions[o]._id, function (err, affectation) {
-                                    if (err) {
-                                        audit.logEvent('[mongodb]', 'Positions', 'findPositionHelder', "code", req.params.code, 'failed', "Mongodb attempted to find the affection detail");
-                                        return res.status(500).send(err);
-                                    } else {
-                                        if (affectation) {
-                                            positions[o].actualEffective = 1;//We can also put the real effective in case we are using effective for position
-                                        } else {
-                                            positions[o].actualEffective = 0;
-                                        }
-                                        positions[o].vacancies = 1 - positions[o].actualEffective;
-
-                                        if (restriction && restriction == "0" && positions[o].vacancies > 0) {
-                                            positionsFiltered.push(positions[o]);
-                                        } else {
-                                            positionsFiltered.push(positions[o]);
-                                        }
-                                        LoopA(o + 1);
-                                    }
-                                });
+                                if (positions[o].affectation && positions[o].affectation.length > 0) {
+                                    positions[o].actualEffective = 1;//We can also put the real effective in case we are using effective for position
+                                } else {
+                                    positions[o].actualEffective = 0;
+                                }
+                                positions[o].vacancies = 1 - positions[o].actualEffective;
+                                LoopA(o + 1);
                             } else {
-                                beautify({actor: req.actor, language: req.actor.language, beautify: true}, positionsFiltered, function (err, objects) {
+                                beautify({actor: req.actor, language: req.actor.language, beautify: true}, positions, function (err, objects) {
                                     if (err) {
                                         return res.status(500).send(err);
                                     } else {
@@ -1060,7 +1106,7 @@ function beautify(options, objects, callback) {
                             objects[o].structure = structure;
                             if (options.toExport == true) {
                                 objectsLoop(o + 1);
-                            }else{
+                            } else {
                                 exports.findPositionHelder(objects[o]._id, function (err, affectation) {
                                     if (err) {
                                         console.log(err);
@@ -1079,7 +1125,7 @@ function beautify(options, objects, callback) {
                             }
                         }
                     });
-            }
+                }
             } else {
                 if (options.vacancies == true) {
                     callback(null, vacancies);
