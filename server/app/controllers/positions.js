@@ -451,7 +451,7 @@ exports.list = function (options, callback) {
                             LoopA(o + 1);
                         } else {
 
-                            beautify({actor: options.actor, language: options.language, beautify: options.beautify}, positions, function (err, objects) {
+                            beautify({actor: options.actor, language: options.language, beautify: options.beautify, deepBeautify: options.deepBeautify}, positions, function (err, objects) {
                                 if (err) {
                                     callback(err);
                                 } else {
@@ -483,11 +483,14 @@ exports.api.download = function (req, res) {
             if (filtersParam.structure != "-1" && filtersParam.structure != "undefined" && filtersParam.structure) {
                 filter.code = filtersParam.structure;
             }
+            if (filtersParam.type && filtersParam.type != "-1" && filtersParam.type != "-") {
+                filter.type = filtersParam.type;
+            }
             var subFilter = {};
             if (filtersParam.subStructure != "-1" && filtersParam.subStructure != "undefined" && filtersParam.subStructure) {
                 subFilter.code = filtersParam.subStructure;
             }
-            
+
             var option = {
                 actor: req.actor, language: req.actor.language, beautify: true, filter: filter, subFilter: subFilter
             }
@@ -501,16 +504,17 @@ exports.api.download = function (req, res) {
                         filtersParam: filtersParam,
                         actor: req.actor,
                         language: req.actor.language,
-                        beautify: true
+                        beautify: true,
+                        deepBeautify: true
                     }
-                    
+
                     exports.list(options, function (err, positions) {
                         if (err) {
                             log.error(err);
                             res.status(500).send(err);
                         } else {
                             positions = positions.data;
-                            var groupedPositionByStructureChildren =_.groupBy(positions, 'structureId');
+                            var groupedPositionByStructureChildren = _.groupBy(positions, 'structureId');
 
                             for (var s in structures) {
                                 if (structures[s].children) {
@@ -1178,6 +1182,26 @@ function beautify(options, objects, callback) {
             if (o < objects.length && objects[o]) {
                 objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
 
+                if (options.deepBeautify == true) {
+                    var requiredSkills = objects[o].requiredSkills;
+                    var value = "";
+                    var requiredProfiles = objects[o].requiredProfiles;
+                    for (var s in requiredSkills) {
+                        if (requiredSkills[s] != "") {
+                            value = value + "\r\n - " + dictionary.getValueFromJSON('../../resources/dictionary/personnel/skills.json', requiredSkills[s].trim(), language);
+                        }
+                    }
+                    objects[o].requiredSkills = value;
+                    value = "";
+                    for (var s in requiredProfiles) {
+                        if (requiredProfiles[s] != "") {
+                            value = value + "\r\n - " + dictionary.getValueFromJSON('../../resources/dictionary/personnel/profile.json', requiredProfiles[s].trim(), language);
+                        }
+                    }
+
+                    objects[o].requiredProfiles = value;
+                }
+
                 if (options.nomenclature && options.nomenclature == true) {//This mean that, wil don't need positions's occupants
                     objectsLoop(o + 1);
                 } else if (options.structures && options.structures == false) {
@@ -1215,11 +1239,38 @@ function beautify(options, objects, callback) {
                                         if (affectation && affectation.personnel) {
                                             name = affectation.personnel.name.family[0] + " " + affectation.personnel.name.given[0];
                                             matricule = affectation.personnel.identifier;
+                                            //Fill real profile and skills
+
+                                            if (options.deepBeautify == true) {
+                                                objects[o].profiles = affectation.personnel.profiles;
+                                                objects[o].skills = affectation.personnel.skills;
+                                                var realSkills = affectation.personnel.skills;
+                                                var value = "";
+                                                var realProfiles = affectation.personnel.profiles;
+                                                if (realSkills) {
+                                                    for (var s in realSkills) {
+                                                        if (realSkills[s] != "") {
+                                                            value = value + "\r\n - " + dictionary.getValueFromJSON('../../resources/dictionary/personnel/skills.json', realSkills[s].trim(), language);
+                                                        }
+                                                    }
+                                                    objects[o].realSkills = value;
+                                                }
+                                                value = "";
+                                                if (realProfiles) {
+                                                    for (var s in realProfiles) {
+                                                        if (realProfiles[s] != "") {
+                                                            value = value + "\r\n - " + dictionary.getValueFromJSON('../../resources/dictionary/personnel/profile.json', realProfiles[s].trim(), language);
+                                                        }
+                                                    }
+                                                    objects[o].realProfiles = value;
+                                                }
+                                            }
                                         } else {
                                             vacancies.push(objects[o]);
                                         }
                                         objects[o].helderName = name;
                                         objects[o].helderMatricule = matricule;
+
 
                                         objectsLoop(o + 1);
                                     }
@@ -1243,7 +1294,7 @@ function beautify(options, objects, callback) {
 }
 
 function buildXLSX(options, callback) {
-    
+
     var add = 0;
     var defaultCellStyle = {font: {name: "Calibri", sz: 11}, fill: {fgColor: {rgb: "FFFFAA00"}}};
     var alpha = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
@@ -1322,7 +1373,7 @@ function buildXLSX(options, callback) {
             right: {style: 'thin', color: {argb: 'FF000000'}}
         };
     }
-    
+
     //6. Fill data rows    
     var nextRow = 3;
     for (i = 0; i < options.data.length; i++) {
@@ -1459,9 +1510,14 @@ function buildXLSX(options, callback) {
         ws.columns[k].width = 30;
     }
     ws.columns[0].width = 20;
-    ws.columns[1].width = 70;
-    ws.columns[2].width = 20;
-    ws.columns[3].width = 70;
+    ws.columns[1].width = 20;
+    ws.columns[2].width = 50;
+    ws.columns[3].width = 20;
+    ws.columns[4].width = 50;
+    ws.columns[5].width = 50;
+    ws.columns[6].width = 50;
+    ws.columns[7].width = 50;
+    ws.columns[8].width = 50;
 
     ///7. Merges cells
     ws.mergeCells('A1:' + columns[options.fieldNames.length - 1] + "1");

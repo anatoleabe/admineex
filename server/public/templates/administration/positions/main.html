@@ -87,6 +87,17 @@
                         </md-option>
                     </md-select>
                 </md-input-container>
+                <md-input-container flex >
+                    <label translate>Filter by type of service</label>
+                    <md-select ng-model="filters.type"  >
+                        <md-option ng-selected value="-1" >
+                            {{'All'| translate}}
+                        </md-option>
+                        <md-option ng-repeat="t in types" value="{{t.id}}" >
+                            {{t.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
                 <md-button class="md-icon-button" ng-click="" aria-label="close">
                     <md-icon class="material-icons">close</md-icon>
                 </md-button>

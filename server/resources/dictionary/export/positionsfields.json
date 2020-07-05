@@ -1,5 +1,9 @@
 [
     {
+        "id": "structure.typeValue",
+        "en": "Service type",
+        "fr": "Type de service"
+    },{
         "id": "code",
         "en": "Code",
         "fr": "Code"
@@ -15,6 +19,22 @@
         "id": "helderName",
         "en": "Occupied by",
         "fr": "Occupé par"
+    },{
+        "id": "requiredProfiles",
+        "en": "Required profiles",
+        "fr": "Profiles requis"
+    },{
+        "id": "requiredSkills",
+        "en": "Required skills",
+        "fr": "Compétences requises"
+    },{
+        "id": "realProfiles",
+        "en": "Real profile",
+        "fr": "Profil réel"
+    },{
+        "id": "realSkills",
+        "en": "Real skills",
+        "fr": "Compétences réelles"
     },{
         "id": "status",
         "en": "Status",
