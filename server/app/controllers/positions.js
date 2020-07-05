@@ -7,6 +7,9 @@ var audit = require('../utils/audit-log');
 var log = require('../utils/log');
 var mail = require('../utils/mail');
 var _ = require('lodash');
+var fs = require('fs');
+var Excel = require('exceljs');
+var keyGenerator = require("generate-key");
 var crypto = require('crypto');
 var dictionary = require('../utils/dictionary');
 var formidable = require("formidable");
@@ -320,7 +323,6 @@ exports.api.findPositionByCode = function (req, res) {
 
 exports.api.list = function (req, res) {
     if (req.actor) {
-        var restriction = "-1";
         var limit = 0;
         var skip = 0;
         if (req.params.limit && req.params.skip) {
@@ -333,105 +335,21 @@ exports.api.list = function (req, res) {
             filtersParam = JSON.parse(req.params.filters);
         }
 
-        var filter = {};
-        if (req.params.search && req.params.search != "-1" && req.params.search != "" && req.params.search != "undefined") {
-            filter = {$and: []};
-            filter.$and.push({
-                "code": new RegExp("^" + req.params.search)
-            });
-            filter.$and.push({
-                "fr": new RegExp("^" + req.params.search)
-            });
-            filter.$and.push({
-                "en": new RegExp("^" + req.params.search)
-            });
-        }
-        if (filtersParam.structure && filtersParam.structure != "-1" && filtersParam.structure != "-") {
-            if (!filter.$and) {
-                filter = {$and: []};
-            }
-            filter.$and.push({
-                "code": new RegExp("^" + filtersParam.structure.toUpperCase())
-            });
+        var options = {
+            search: req.params.search,
+            filtersParam: filtersParam,
+            limit: limit,
+            skip: skip,
+            actor: req.actor,
+            language: req.actor.language,
+            beautify: true
         }
 
-        restriction = filtersParam.status;
-
-        var concatMeta = ["$fr", "$en", "$code"];
-        var aggregate = [];
-        aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
-        aggregate.push(
-                {
-                    $lookup: {
-                        from: 'affectations',
-                        localField: '_id',
-                        foreignField: 'positionId',
-                        as: 'affectation'
-                    }
-                }
-        );
-
-        if (req.params.search && req.params.search != "-1" && req.params.search != "" && req.params.search != "undefined") {
-            aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(req.params.search)}]}})
-        }
-        if (filtersParam.structure && filtersParam.structure != "-1" && filtersParam.structure != "-") {
-            aggregate.push({$match: {$or: [{"code": new RegExp("^" + filtersParam.structure)}]}})
-        }
-        if (restriction == "1") {
-            aggregate.push({$match: {"affectation": {$ne: []}}});
-        }
-        if (restriction == "0") {
-            aggregate.push({$match: {"affectation": {$eq: []}}});
-        }
-        
-        aggregate.push({$count: "total"});
-        q = Position.aggregate(aggregate);
-        q.exec(function (err, count) {
+        exports.list(options, function (err, data) {
             if (err) {
-                log.error(err);
-                callback(err);
+                return res.status(500).send(err);
             } else {
-                aggregate.pop();//Remove the count(Last element added)
-                if (count && count[0]){
-                    count = count[0].total;
-                }
-                
-                if ((skip + limit) > 0) {
-                    aggregate.push({"$limit": skip + limit})
-                    aggregate.push({"$skip": skip})
-                }
-                
-                q = Position.aggregate(aggregate);
-                q.exec(function (err, result) {
-                    if (err) {
-                        log.error(err);
-                        audit.logEvent('[mongodb]', 'Positions', 'List', '', '', 'failed', 'Mongodb attempted to retrieve positions list');
-                        return res.status(500).send(err);
-                    } else {
-                        var positions = JSON.parse(JSON.stringify(result));
-                        function LoopA(o) {
-                            if (o < positions.length) {
-
-                                if (positions[o].affectation && positions[o].affectation.length > 0) {
-                                    positions[o].actualEffective = 1;//We can also put the real effective in case we are using effective for position
-                                } else {
-                                    positions[o].actualEffective = 0;
-                                }
-                                positions[o].vacancies = 1 - positions[o].actualEffective;
-                                LoopA(o + 1);
-                            } else {
-                                beautify({actor: req.actor, language: req.actor.language, beautify: true}, positions, function (err, objects) {
-                                    if (err) {
-                                        return res.status(500).send(err);
-                                    } else {
-                                        return res.json({data: objects, count: count});
-                                    }
-                                });
-                            }
-                        }
-                        LoopA(0);
-                    }
-                });
+                return res.json(data);
             }
         });
 
@@ -442,22 +360,203 @@ exports.api.list = function (req, res) {
 }
 
 exports.list = function (options, callback) {
-    filter = {};
-    Position.find(filter, function (err, result) {
+    var filter = {};
+    if (options.search && options.search != "-1" && options.search != "" && options.search != "undefined") {
+        filter = {$and: []};
+        filter.$and.push({
+            "code": new RegExp("^" + options.search)
+        });
+        filter.$and.push({
+            "fr": new RegExp("^" + options.search)
+        });
+        filter.$and.push({
+            "en": new RegExp("^" + options.search)
+        });
+    }
+    if (options.filtersParam.structure && options.filtersParam.structure != "-1" && options.filtersParam.structure != "-") {
+        if (!filter.$and) {
+            filter = {$and: []};
+        }
+        filter.$and.push({
+            "code": new RegExp("^" + options.filtersParam.structure.toUpperCase())
+        });
+    }
+
+    restriction = options.filtersParam.status;
+
+    var concatMeta = ["$fr", "$en", "$code"];
+    var aggregate = [];
+    aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
+    aggregate.push(
+            {
+                $lookup: {
+                    from: 'affectations',
+                    localField: '_id',
+                    foreignField: 'positionId',
+                    as: 'affectation'
+                }
+            }
+    );
+
+    if (options.search && options.search != "-1" && options.search != "" && options.search != "undefined") {
+        aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
+    }
+    if (options.filtersParam.structure && options.filtersParam.structure != "-1" && options.filtersParam.structure != "-") {
+        aggregate.push({$match: {$or: [{"code": new RegExp("^" + options.filtersParam.structure)}]}})
+    }
+    if (restriction == "1") {
+        aggregate.push({$match: {"affectation": {$ne: []}}});
+    }
+    if (restriction == "0") {
+        aggregate.push({$match: {"affectation": {$eq: []}}});
+    }
+
+    aggregate.push({$count: "total"});
+    q = Position.aggregate(aggregate);
+    q.exec(function (err, count) {
         if (err) {
             log.error(err);
             callback(err);
         } else {
-            var positions = JSON.parse(JSON.stringify(result));
-            beautify(options, positions, function (err, objects) {
+            aggregate.pop();//Remove the count(Last element added)
+            if (count && count[0]) {
+                count = count[0].total;
+            }
+
+            if ((options.skip + options.limit) > 0) {
+                aggregate.push({"$limit": options.skip + options.limit})
+                aggregate.push({"$skip": options.skip})
+            }
+
+            q = Position.aggregate(aggregate);
+            q.exec(function (err, result) {
                 if (err) {
+                    log.error(err);
+                    audit.logEvent('[mongodb]', 'Positions', 'List', '', '', 'failed', 'Mongodb attempted to retrieve positions list');
                     callback(err);
                 } else {
-                    callback(null, objects);
+                    var positions = JSON.parse(JSON.stringify(result));
+
+                    function LoopA(o) {
+                        if (o < positions.length) {
+                            positions[o]
+                            if (positions[o].affectation && positions[o].affectation.length > 0) {
+                                positions[o].actualEffective = 1;//We can also put the real effective in case we are using effective for position
+                                positions[o].status = "Pourvue";
+                            } else {
+                                positions[o].actualEffective = 0;
+                                positions[o].status = "Non pourvue";
+                            }
+                            positions[o].vacancies = 1 - positions[o].actualEffective;
+                            LoopA(o + 1);
+                        } else {
+
+                            beautify({actor: options.actor, language: options.language, beautify: options.beautify}, positions, function (err, objects) {
+                                if (err) {
+                                    callback(err);
+                                } else {
+                                    return callback(null, {data: objects, count: count});
+                                }
+                            });
+                        }
+                    }
+                    LoopA(0);
                 }
             });
         }
     });
+}
+
+exports.api.download = function (req, res) {
+    if (req.actor) {
+        if (req.params.filters == undefined) {
+            audit.logEvent(req.actor.id, 'Positions', 'Download', '', '', 'failed',
+                    'The actor could not download the positions list because one or more params of the request was not defined');
+            return res.sendStatus(400);
+        } else {
+            var filtersParam = {}
+            if (req.params.filters && req.params.filters != "-" && req.params.filters != "") {
+                filtersParam = JSON.parse(req.params.filters);
+            }
+
+            var filter = {rank: "2"};
+            if (filtersParam.structure != "-1" && filtersParam.structure != "undefined" && filtersParam.structure) {
+                filter.code = filtersParam.structure;
+            }
+            var subFilter = {};
+            if (filtersParam.subStructure != "-1" && filtersParam.subStructure != "undefined" && filtersParam.subStructure) {
+                subFilter.code = filtersParam.subStructure;
+            }
+            
+            var option = {
+                actor: req.actor, language: req.actor.language, beautify: true, filter: filter, subFilter: subFilter
+            }
+            controllers.structures.list(option, function (err, structures) {
+                if (err) {
+                    log.error(err);
+                    res.status(500).send(err);
+                } else {
+                    var options = {
+                        search: req.params.search,
+                        filtersParam: filtersParam,
+                        actor: req.actor,
+                        language: req.actor.language,
+                        beautify: true
+                    }
+                    
+                    exports.list(options, function (err, positions) {
+                        if (err) {
+                            log.error(err);
+                            res.status(500).send(err);
+                        } else {
+                            positions = positions.data;
+                            var groupedPositionByStructureChildren =_.groupBy(positions, 'structureId');
+
+                            for (var s in structures) {
+                                if (structures[s].children) {
+                                    for (var c in structures[s].children) {
+                                        structures[s].children[c].positions = groupedPositionByStructureChildren[structures[s].children[c]._id]
+                                    }
+                                }
+                            }
+
+                            var gt = dictionary.translator(req.actor.language);
+                            //Build XLSX
+                            var options = buildFields(req.actor.language);
+                            options.data = structures;
+                            options.title = gt.gettext("Admineex: Liste des postes de travail");
+                            buildXLSX(options, function (err, filePath) {
+                                if (err) {
+                                    log.error(err);
+                                } else {
+                                    var fileName = 'report.xlsx';
+                                    res.set('Content-disposition', 'attachment; filename=' + fileName);
+                                    res.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                                    var fileStream = fs.createReadStream(filePath);
+                                    var pipeStream = fileStream.pipe(res);
+                                    pipeStream.on('finish', function () {
+                                        fs.unlinkSync(filePath);
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+
+
+        }
+    }
+}
+
+function buildFields(language) {
+    var fields = require("../../resources/dictionary/export/positionsfields.json");
+    var options = {fields: [], fieldNames: []};
+    for (i = 0; i < fields.length; i++) {
+        options.fieldNames.push(((language != "" && fields[i][language] != undefined && fields[i][language] != "") ? fields[i][language] : fields[i]['en']));
+        options.fields.push(fields[i].id);
+    }
+    return options;
 }
 
 
@@ -1112,12 +1211,15 @@ function beautify(options, objects, callback) {
                                         console.log(err);
                                     } else {
                                         var name = "";
+                                        var matricule = "";
                                         if (affectation && affectation.personnel) {
                                             name = affectation.personnel.name.family[0] + " " + affectation.personnel.name.given[0];
+                                            matricule = affectation.personnel.identifier;
                                         } else {
                                             vacancies.push(objects[o]);
                                         }
                                         objects[o].helderName = name;
+                                        objects[o].helderMatricule = matricule;
 
                                         objectsLoop(o + 1);
                                     }
@@ -1138,4 +1240,239 @@ function beautify(options, objects, callback) {
     } else {
         callback(null, objects);
     }
+}
+
+function buildXLSX(options, callback) {
+    
+    var add = 0;
+    var defaultCellStyle = {font: {name: "Calibri", sz: 11}, fill: {fgColor: {rgb: "FFFFAA00"}}};
+    var alpha = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    var columns = [];
+    var a = 0;
+    // Generate fields
+
+    for (n = 0; n < options.fields.length; n++) {
+        if (n <= alpha.length * 1 - 1) {
+            columns.push(alpha[a]);
+        } else if (n <= alpha.length * 2 - 1) {
+            columns.push(alpha[0] + alpha[a]);
+        } else if (n <= alpha.length * 3 - 1) {
+            columns.push(alpha[1] + alpha[a]);
+        } else if (n <= alpha.length * 4 - 1) {
+            columns.push(alpha[2] + alpha[a]);
+        } else if (n <= alpha.length * 5 - 1) {
+            columns.push(alpha[3] + alpha[a]);
+        } else {
+            columns.push(alpha[4] + alpha[a]);
+        }
+        a++;
+        if (a > 25) {
+            a = 0;
+        }
+    }
+
+    // create workbook & add worksheet
+    var workbook = new Excel.Workbook();
+    //2. Start holding the work sheet
+    var ws = workbook.addWorksheet('Admineex - Postions list');
+
+    //3. set style around A1
+    ws.getCell('A1').value = options.title;
+    ws.getCell('A1').border = {
+        top: {style: 'thick', color: {argb: 'FF964714'}},
+        left: {style: 'thick', color: {argb: 'FF964714'}},
+        bottom: {style: 'thick', color: {argb: 'FF964714'}}
+    };
+    ws.getCell('A1').fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+    ws.getCell('A1').font = {
+        color: {argb: 'FFFFFF'},
+        size: 16,
+        bold: true
+    };
+    ws.getCell('A1').alignment = {vertical: 'middle', horizontal: 'center'};
+
+
+    //4. Row 1
+    for (i = 1; i < options.fieldNames.length; i++) {
+        // For the last column, add right border
+        if (i == options.fieldNames.length - 1) {
+            ws.getCell(columns[i] + "1").border = {
+                top: {style: 'thick', color: {argb: 'FF964714'}},
+                right: {style: 'medium', color: {argb: 'FF964714'}},
+                bottom: {style: 'thick', color: {argb: 'FF964714'}}
+            };
+        } else {//Set this border for the middle cells
+            ws.getCell(columns[i] + "1").border = {
+                top: {style: 'thick', color: {argb: 'FF964714'}},
+                bottom: {style: 'thick', color: {argb: 'FF964714'}}
+            };
+        }
+        ws.getCell(columns[i] + "1").fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+        ws.getCell(columns[i] + "1").alignment = {vertical: 'middle', horizontal: 'center', "wrapText": true};
+    }
+
+    //5 Row 2
+    for (i = 0; i < options.fieldNames.length; i++) {
+        ws.getCell(columns[i] + "2").value = options.fieldNames[i];
+        ws.getCell(columns[i] + "2").alignment = {vertical: 'middle', horizontal: 'left', "wrapText": true};
+        ws.getCell(columns[i] + "2").border = {
+            top: {style: 'thin', color: {argb: 'FF000000'}},
+            bottom: {style: 'medium', color: {argb: 'FF000000'}},
+            left: {style: 'thin', color: {argb: 'FF000000'}},
+            right: {style: 'thin', color: {argb: 'FF000000'}}
+        };
+    }
+    
+    //6. Fill data rows    
+    var nextRow = 3;
+    for (i = 0; i < options.data.length; i++) {
+
+        //6.1 Row 3 set the style
+        ws.getCell('A' + nextRow).value = options.data[i].name + " - " + options.data[i].code;
+        ws.getCell('A' + nextRow).border = {
+            top: {style: 'thick', color: {argb: 'FF964714'}},
+            left: {style: 'thick', color: {argb: 'FF964714'}},
+            bottom: {style: 'thick', color: {argb: 'FF964714'}}
+        };
+        ws.getCell('A' + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+        ws.getCell('A' + nextRow).font = {
+            color: {argb: 'FFFFFF'},
+            size: 16,
+            bold: true
+        };
+        ws.getCell('A' + nextRow).alignment = {vertical: 'middle', horizontal: 'center'};
+        //6.2 Row 3 set the length
+        for (r = 1; r < options.fieldNames.length; r++) {
+            // For the last column, add right border
+            if (r == options.fieldNames.length - 1) {
+                ws.getCell(columns[r] + nextRow).border = {
+                    top: {style: 'thick', color: {argb: 'FF964714'}},
+                    right: {style: 'medium', color: {argb: 'FF964714'}},
+                    bottom: {style: 'thick', color: {argb: 'FF964714'}}
+                };
+            } else {//Set this border for the middle cells
+                ws.getCell(columns[r] + nextRow).border = {
+                    top: {style: 'thick', color: {argb: 'FF964714'}},
+                    bottom: {style: 'thick', color: {argb: 'FF964714'}}
+                };
+            }
+            ws.getCell(columns[r] + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+            ws.getCell(columns[r] + nextRow).alignment = {vertical: 'middle', horizontal: 'center', "wrapText": true};
+        }
+        /// 6.3 Merges Structure name cells
+        ws.mergeCells('A' + nextRow + ":" + columns[options.fieldNames.length - 1] + nextRow);
+
+
+        if (options.data[i].children) {
+            nextRow = nextRow + 1;
+            /// 6.4 fill data
+            for (c = 0; c < options.data[i].children.length; c++) {
+                //6.4.1 Row 3 set the style
+                ws.getCell('A' + nextRow).value = options.data[i].children[c].fr + " - " + options.data[i].children[c].code;
+                ws.getCell('A' + nextRow).border = {
+                    top: {style: 'thick', color: {argb: '96969696'}},
+                    left: {style: 'thick', color: {argb: '96969696'}},
+                    bottom: {style: 'thick', color: {argb: '96969696'}}
+                };
+                ws.getCell('A' + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'A1a8a1a1'}};
+                ws.getCell('A' + nextRow).font = {
+                    color: {argb: 'FFFFFF'},
+                    size: 16,
+                    bold: true
+                };
+                ws.getCell('A' + nextRow).alignment = {vertical: 'middle', horizontal: 'center'};
+                //6.4.2 Row 3 set the length
+                for (r = 1; r < options.fieldNames.length; r++) {
+                    // For the last column, add right border
+                    if (r == options.fieldNames.length - 1) {
+                        ws.getCell(columns[r] + nextRow).border = {
+                            top: {style: 'thick', color: {argb: '96969696'}},
+                            right: {style: 'medium', color: {argb: '96969696'}},
+                            bottom: {style: 'thick', color: {argb: '96969696'}}
+                        };
+                    } else {//Set this border for the middle cells
+                        ws.getCell(columns[r] + nextRow).border = {
+                            top: {style: 'thick', color: {argb: '96969696'}},
+                            bottom: {style: 'thick', color: {argb: '96969696'}}
+                        };
+                    }
+                    ws.getCell(columns[r] + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'A1a8a1a1'}};
+                    ws.getCell(columns[r] + nextRow).alignment = {vertical: 'middle', horizontal: 'left', "wrapText": true};
+                }
+                /// 6.4.3 Merges Structure name cells
+                ws.mergeCells('A' + nextRow + ":" + columns[options.fieldNames.length - 1] + nextRow);
+
+
+                if (options.data[i].children[c].positions) {
+
+                    for (k = 0; k < options.data[i].children[c].positions.length; k++) {
+
+                        for (j = 0; j < options.fields.length; j++) {
+                            var query = options.fields[j].split(".");
+                            var value, field;
+
+                            if (query.length == 1) {
+                                value = options.data[i].children[c].positions[k][query[0]] || "";
+                                field = query[0];
+                            } else if (query.length == 2) {
+                                if (options.data[i].children[c].positions[k][query[0]]) {
+                                    value = options.data[i].children[c].positions[k][query[0]][query[1]] || "";
+                                } else {
+                                    value = "";
+                                }
+                                field = query[1];
+                            } else if (query.length == 3) {
+                                if (options.data[i].children[c].positions[k][query[0]] && options.data[i].children[c].positions[k][query[0]][query[1]]) {
+                                    value = options.data[i].children[c].positions[k][query[0]][query[1]][query[2]] || "";
+                                } else {
+                                    value = "";
+                                }
+                                field = query[2];
+                            }
+
+                            if ((field == "testDate" || field == "requestDate" || field == "birthDate" || field == "positiveResultDate" || field == "startdate" || field == "cartridgeExpiryDate") && value != undefined && value != "" && value != null && value != "null") {
+                                value = moment(value).format("DD/MM/YYYY");
+                            }
+
+                            ws.getCell(columns[j] + (nextRow + 1 + add)).value = (value != undefined && value != null && value != "null") ? value : "";
+                            ws.getCell(columns[j] + (nextRow + 1 + add)).border = {
+                                left: {style: 'thin', color: {argb: 'FF000000'}},
+                                right: {style: 'thin', color: {argb: 'FF000000'}}
+                            };
+
+                            // Last row: Add border
+                            if (i == options.data.length - 1) {
+                                ws.getCell(columns[j] + (nextRow + 1 + add)).border.bottom = {style: 'thin', color: {argb: 'FF000000'}};
+                            }
+                        }
+                        nextRow += 1;
+                    }
+                }
+                nextRow += 1;
+            }
+            nextRow += 1;
+        }
+    }
+
+    ///7. Set the columns width to 12
+    for (k = 0; k < ws.columns.length; k++) {
+        ws.columns[k].width = 30;
+    }
+    ws.columns[0].width = 20;
+    ws.columns[1].width = 70;
+    ws.columns[2].width = 20;
+    ws.columns[3].width = 70;
+
+    ///7. Merges cells
+    ws.mergeCells('A1:' + columns[options.fieldNames.length - 1] + "1");
+
+
+    // save workbook to disk
+    var tmpFile = "./tmp/" + keyGenerator.generateKey() + ".xlsx";
+    if (!fs.existsSync("./tmp")) {
+        fs.mkdirSync("./tmp");
+    }
+    workbook.xlsx.writeFile(tmpFile).then(function () {
+        callback(null, tmpFile);
+    });
 }

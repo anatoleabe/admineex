@@ -1,0 +1,23 @@
+[
+    {
+        "id": "code",
+        "en": "Code",
+        "fr": "Code"
+    },{
+        "id": "name",
+        "en": "Name",
+        "fr": "Nom"
+    },{
+        "id": "helderMatricule",
+        "en": "Matricule",
+        "fr": "Matricule"
+    },{
+        "id": "helderName",
+        "en": "Occupied by",
+        "fr": "Occupé par"
+    },{
+        "id": "status",
+        "en": "Status",
+        "fr": "Statut"
+    }
+]

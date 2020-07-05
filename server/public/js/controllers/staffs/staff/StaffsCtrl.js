@@ -1,4 +1,4 @@
-angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope, $q) {
+angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $mdDialog, $rootScope, $q, $http) {
     $ocLazyLoad.load('js/services/StaffService.js').then(function () {
         var StaffAgent = $injector.get('Staff');
         $ocLazyLoad.load('js/services/StructureService.js').then(function () {

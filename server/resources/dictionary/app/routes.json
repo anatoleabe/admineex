@@ -346,5 +346,11 @@
         "uri": "/api/personnel/export/:search/:filters",
         "method": "GET",
         "roles": [1,2,3,4]
+    },
+    {
+        "id": 60,
+        "uri": "/api/positions/download/:search/:filters",
+        "method": "GET",
+        "roles": [1,2,3,4]
     }
 ]

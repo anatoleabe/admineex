@@ -126,23 +126,26 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                     if (newval != undefined && newval != "undefined" && newval != "-") {
                         $scope.codeStructure = newval + "-";
                         $scope.codeStructureExport = newval;
+                        $scope.filters.subStructure = undefined
+                        $scope.codeSubStructureExport = "-1";
                     } else {
                         $scope.codeStructure = "-";
                         $scope.codeStructureExport = "-1";
+                        $scope.codeSubStructureExport = "-1";
                     }
                     getPositions();
                 }
             });
 
             watch.subStructure = $scope.$watch('filters.subStructure', function (newval, oldval) {
-                if (newval && newval != undefined && newval != "undefined" ) {
+                if (newval && newval != undefined && newval != "undefined") {
                     newval = JSON.parse(newval).code;
                     if (newval != undefined && newval != "undefined" && newval != "-") {
                         $scope.codeStructure = newval + "P";
-                        $scope.codeStructureExport = newval;
+                        $scope.codeSubStructureExport = newval;
                     } else {
                         $scope.codeStructure = "-";
-                        $scope.codeStructureExport = "-";
+                        $scope.codeSubStructureExport = "-";
                     }
                     getPositions();
                 }
@@ -213,6 +216,59 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                 });
 
             };
+
+            $scope.download = function () {
+                $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
+                    var FileSaver = $injector.get('FileSaver');
+                    $rootScope.kernel.loading = 0;
+                    var deferred = $q.defer();
+                    $scope.promise = deferred.promise;
+                    function jsonBufferToObject(data, headersGetter, status) {
+                        var type = headersGetter("Content-Type");
+                        if (!type.startsWith("application/json")) {
+                            return data;
+                        }
+                        ;
+                        var decoder = new TextDecoder("utf-8");
+                        var domString = decoder.decode(data);
+                        var json = JSON.parse(domString);
+                        return json;
+                    }
+
+                    var filterParams = {
+                        structure: $scope.codeStructureExport,
+                        subStructure: $scope.codeSubStructureExport,
+                        status: $scope.filters.status
+                    }
+
+                    $ocLazyLoad.load('js/services/DownloadService.js').then(function () {
+                        var Download = $injector.get('Download');
+                        Download.start({
+                            method: 'GET',
+                            url: '/api/positions/download/' + $scope.positionFilter + '/' + JSON.stringify(filterParams),
+                            headers: {'Content-Type': "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+                            transformResponse: jsonBufferToObject
+                        }).then(function (response) {
+                            console.log(response)
+                            var d = new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+                            var filename = 'Admineex';
+                            FileSaver.saveAs(d, filename + gettextCatalog.getString('Adminex_Staff_Export') + '_' + '.xlsx');
+                            $rootScope.kernel.loading = 100;
+                            deferred.resolve(response.data);
+                        }).catch(function (response) {
+                            console.error(response);
+                            if (response.data && response.data.error === '9500') {
+                                $rootScope.kernel.alerts.push({
+                                    type: 1,
+                                    msg: gettextCatalog.getString('The Export is too big. Please reduce the date range'),
+                                    priority: 1
+                                });
+                                $rootScope.kernel.loading = 100;
+                            }
+                        });
+                    });
+                });
+            }
 
 
         });

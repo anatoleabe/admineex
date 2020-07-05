@@ -14,16 +14,22 @@
                 </md-button>
                 <md-menu-content width="4">
                     <md-menu-item>
+                        <md-button ng-click="download()">
+                            <md-icon class="material-icons" >print</md-icon>
+                            <span translate>Export the list (Excel) </span>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
                         <md-button ng-click="exportPDF('nomenclature')">
                             <md-icon class="material-icons" >print</md-icon>
-                            <span translate>Nomenclature of positions</span>
+                            <span translate>Nomenclature of positions (PDF)</span>
                         </md-button>
                     </md-menu-item>
                     <md-divider ></md-divider>
                     <md-menu-item>
                         <md-button ng-click="exportPDF('occupants')">
                             <md-icon class="material-icons" >print</md-icon>
-                            <span translate>Positions and occupant</span>
+                            <span translate>Positions and occupant (PDF)</span>
                         </md-button>
                     </md-menu-item>
                 </md-menu-content>
@@ -68,7 +74,7 @@
                     </md-select>
                 </md-input-container>
                 <md-input-container flex >
-                    <label translate>Status</label>
+                    <label translate>Filter by status</label>
                     <md-select ng-model="filters.status"  >
                         <md-option ng-selected value="-1" >
                             {{'All'| translate}}
