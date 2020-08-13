@@ -1330,11 +1330,11 @@ function buildXLSX(options, callback) {
     //3. set style around A1
     ws.getCell('A1').value = options.title;
     ws.getCell('A1').border = {
-        top: {style: 'thick', color: {argb: 'FF964714'}},
-        left: {style: 'thick', color: {argb: 'FF964714'}},
-        bottom: {style: 'thick', color: {argb: 'FF964714'}}
+        top: {style: 'thick', color: {argb: 'cccccc'}},
+        left: {style: 'thick', color: {argb: 'cccccc'}},
+        bottom: {style: 'thick', color: {argb: 'cccccc'}}
     };
-    ws.getCell('A1').fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+    ws.getCell('A1').fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'cccccc'}};
     ws.getCell('A1').font = {
         color: {argb: 'FFFFFF'},
         size: 16,
@@ -1348,17 +1348,17 @@ function buildXLSX(options, callback) {
         // For the last column, add right border
         if (i == options.fieldNames.length - 1) {
             ws.getCell(columns[i] + "1").border = {
-                top: {style: 'thick', color: {argb: 'FF964714'}},
-                right: {style: 'medium', color: {argb: 'FF964714'}},
-                bottom: {style: 'thick', color: {argb: 'FF964714'}}
+                top: {style: 'thick', color: {argb: 'cccccc'}},
+                right: {style: 'medium', color: {argb: 'cccccc'}},
+                bottom: {style: 'thick', color: {argb: 'cccccc'}}
             };
         } else {//Set this border for the middle cells
             ws.getCell(columns[i] + "1").border = {
-                top: {style: 'thick', color: {argb: 'FF964714'}},
-                bottom: {style: 'thick', color: {argb: 'FF964714'}}
+                top: {style: 'thick', color: {argb: 'cccccc'}},
+                bottom: {style: 'thick', color: {argb: 'cccccc'}}
             };
         }
-        ws.getCell(columns[i] + "1").fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+        ws.getCell(columns[i] + "1").fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'cccccc'}};
         ws.getCell(columns[i] + "1").alignment = {vertical: 'middle', horizontal: 'center', "wrapText": true};
     }
 
@@ -1367,10 +1367,10 @@ function buildXLSX(options, callback) {
         ws.getCell(columns[i] + "2").value = options.fieldNames[i];
         ws.getCell(columns[i] + "2").alignment = {vertical: 'middle', horizontal: 'left', "wrapText": true};
         ws.getCell(columns[i] + "2").border = {
-            top: {style: 'thin', color: {argb: 'FF000000'}},
-            bottom: {style: 'medium', color: {argb: 'FF000000'}},
-            left: {style: 'thin', color: {argb: 'FF000000'}},
-            right: {style: 'thin', color: {argb: 'FF000000'}}
+            top: {style: 'thin', color: {argb: '00000000'}},
+            bottom: {style: 'medium', color: {argb: '00000000'}},
+            left: {style: 'thin', color: {argb: '00000000'}},
+            right: {style: 'thin', color: {argb: '00000000'}}
         };
     }
 
@@ -1381,13 +1381,13 @@ function buildXLSX(options, callback) {
         //6.1 Row 3 set the style
         ws.getCell('A' + nextRow).value = options.data[i].name + " - " + options.data[i].code;
         ws.getCell('A' + nextRow).border = {
-            top: {style: 'thick', color: {argb: 'FF964714'}},
-            left: {style: 'thick', color: {argb: 'FF964714'}},
-            bottom: {style: 'thick', color: {argb: 'FF964714'}}
+            top: {style: 'thick', color: {argb: 'cccccc'}},
+            left: {style: 'thick', color: {argb: 'cccccc'}},
+            bottom: {style: 'thick', color: {argb: 'cccccc'}}
         };
-        ws.getCell('A' + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+        ws.getCell('A' + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'cccccc'}};
         ws.getCell('A' + nextRow).font = {
-            color: {argb: 'FFFFFF'},
+            color: {argb: '000000'},
             size: 16,
             bold: true
         };
@@ -1397,17 +1397,17 @@ function buildXLSX(options, callback) {
             // For the last column, add right border
             if (r == options.fieldNames.length - 1) {
                 ws.getCell(columns[r] + nextRow).border = {
-                    top: {style: 'thick', color: {argb: 'FF964714'}},
-                    right: {style: 'medium', color: {argb: 'FF964714'}},
-                    bottom: {style: 'thick', color: {argb: 'FF964714'}}
+                    top: {style: 'thick', color: {argb: 'cccccc'}},
+                    right: {style: 'medium', color: {argb: 'cccccc'}},
+                    bottom: {style: 'thick', color: {argb: 'cccccc'}}
                 };
             } else {//Set this border for the middle cells
                 ws.getCell(columns[r] + nextRow).border = {
-                    top: {style: 'thick', color: {argb: 'FF964714'}},
-                    bottom: {style: 'thick', color: {argb: 'FF964714'}}
+                    top: {style: 'thick', color: {argb: 'cccccc'}},
+                    bottom: {style: 'thick', color: {argb: 'cccccc'}}
                 };
             }
-            ws.getCell(columns[r] + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+            ws.getCell(columns[r] + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'cccccc'}};
             ws.getCell(columns[r] + nextRow).alignment = {vertical: 'middle', horizontal: 'center', "wrapText": true};
         }
         /// 6.3 Merges Structure name cells
@@ -1419,15 +1419,15 @@ function buildXLSX(options, callback) {
             /// 6.4 fill data
             for (c = 0; c < options.data[i].children.length; c++) {
                 //6.4.1 Row 3 set the style
-                ws.getCell('A' + nextRow).value = options.data[i].children[c].fr + " - " + options.data[i].children[c].code;
+                ws.getCell('A' + nextRow).value = options.data[i].children[c].code +" : "+options.data[i].children[c].fr ;
                 ws.getCell('A' + nextRow).border = {
-                    top: {style: 'thick', color: {argb: '96969696'}},
-                    left: {style: 'thick', color: {argb: '96969696'}},
-                    bottom: {style: 'thick', color: {argb: '96969696'}}
+                    top: {style: 'thick', color: {argb: 'cccccc'}},
+                    left: {style: 'thick', color: {argb: 'cccccc'}},
+                    bottom: {style: 'thick', color: {argb: 'cccccc'}}
                 };
-                ws.getCell('A' + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'A1a8a1a1'}};
+                ws.getCell('A' + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'cccccc'}};
                 ws.getCell('A' + nextRow).font = {
-                    color: {argb: 'FFFFFF'},
+                    color: {argb: '000000'},
                     size: 16,
                     bold: true
                 };
@@ -1437,14 +1437,14 @@ function buildXLSX(options, callback) {
                     // For the last column, add right border
                     if (r == options.fieldNames.length - 1) {
                         ws.getCell(columns[r] + nextRow).border = {
-                            top: {style: 'thick', color: {argb: '96969696'}},
-                            right: {style: 'medium', color: {argb: '96969696'}},
-                            bottom: {style: 'thick', color: {argb: '96969696'}}
+                            top: {style: 'thick', color: {argb: 'cccccc'}},
+                            right: {style: 'medium', color: {argb: 'cccccc'}},
+                            bottom: {style: 'thick', color: {argb: 'cccccc'}}
                         };
                     } else {//Set this border for the middle cells
                         ws.getCell(columns[r] + nextRow).border = {
-                            top: {style: 'thick', color: {argb: '96969696'}},
-                            bottom: {style: 'thick', color: {argb: '96969696'}}
+                            top: {style: 'thick', color: {argb: 'cccccc'}},
+                            bottom: {style: 'thick', color: {argb: 'cccccc'}}
                         };
                     }
                     ws.getCell(columns[r] + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'A1a8a1a1'}};
@@ -1487,13 +1487,13 @@ function buildXLSX(options, callback) {
 
                             ws.getCell(columns[j] + (nextRow + 1 + add)).value = (value != undefined && value != null && value != "null") ? value : "";
                             ws.getCell(columns[j] + (nextRow + 1 + add)).border = {
-                                left: {style: 'thin', color: {argb: 'FF000000'}},
-                                right: {style: 'thin', color: {argb: 'FF000000'}}
+                                left: {style: 'thin', color: {argb: '00000000'}},
+                                right: {style: 'thin', color: {argb: '00000000'}}
                             };
 
                             // Last row: Add border
                             if (i == options.data.length - 1) {
-                                ws.getCell(columns[j] + (nextRow + 1 + add)).border.bottom = {style: 'thin', color: {argb: 'FF000000'}};
+                                ws.getCell(columns[j] + (nextRow + 1 + add)).border.bottom = {style: 'thin', color: {argb: '00000000'}};
                             }
                         }
                         nextRow += 1;
@@ -1511,13 +1511,13 @@ function buildXLSX(options, callback) {
     }
     ws.columns[0].width = 20;
     ws.columns[1].width = 20;
-    ws.columns[2].width = 50;
-    ws.columns[3].width = 20;
-    ws.columns[4].width = 50;
-    ws.columns[5].width = 50;
-    ws.columns[6].width = 50;
-    ws.columns[7].width = 50;
-    ws.columns[8].width = 50;
+//    ws.columns[2].width = 50;
+//    ws.columns[3].width = 20;
+//    ws.columns[4].width = 50;
+//    ws.columns[5].width = 50;
+//    ws.columns[6].width = 50;
+//    ws.columns[7].width = 50;
+//    ws.columns[8].width = 50;
 
     ///7. Merges cells
     ws.mergeCells('A1:' + columns[options.fieldNames.length - 1] + "1");

@@ -35,6 +35,9 @@ angular.module('StaffService', []).factory('Staff', function($http) {
             var search = info.search?info.search:"-";
             var filters = info.filters?info.filters:"-";
             return $http.get('/api/personnel/export/'+search+'/'+filters);
+        },
+        exportEligible: function(info) {
+            return $http.get('/api/personnel/exportEligible/' + info.id);
         }
     }
 });

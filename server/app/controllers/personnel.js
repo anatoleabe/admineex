@@ -805,10 +805,10 @@ exports.api.export = function (req, res) {
                                     code: "000",
                                     name: "STRUCTURE INCONNUE",
                                     children: [{
-                                        code: "000 - 0",
-                                        fr: "Inconue",
-                                        personnels: groupedPersonnelByStructureChildren["undefined"]
-                                    }]
+                                            code: "000 - 0",
+                                            fr: "Inconue",
+                                            personnels: groupedPersonnelByStructureChildren["undefined"]
+                                        }]
                                 }
                                 structures.push(undefinedStructure);
                             }
@@ -816,7 +816,7 @@ exports.api.export = function (req, res) {
                             //console.log(z);
                             var gt = dictionary.translator(req.actor.language);
                             //Build XLSX
-                            var options = buildFields(req.actor.language);
+                            var options = buildFields(req.actor.language, "fieldNames.json");
                             options.data = structures;
                             options.title = gt.gettext("Admineex: Liste du personnel");
                             buildXLSX(options, function (err, filePath) {
@@ -843,8 +843,8 @@ exports.api.export = function (req, res) {
     }
 }
 
-function buildFields(language) {
-    var fields = require("../../resources/dictionary/export/fieldNames.json");
+function buildFields(language, file) {
+    var fields = require("../../resources/dictionary/export/" + file);
     var options = {fields: [], fieldNames: []};
     for (i = 0; i < fields.length; i++) {
         options.fieldNames.push(((language != "" && fields[i][language] != undefined && fields[i][language] != "") ? fields[i][language] : fields[i]['en']));
@@ -949,45 +949,19 @@ exports.api.eligibleTo = function (req, res) {
                     'The actor could not read the personnel eligible because one or more params of the request was not defined');
             return res.sendStatus(400);
         } else {
+            var options = {
+                position: {
+                    id: req.params.id
+                },
+                req: req
+            }
 
-            controllers.positions.find({_id: req.params.id}, function (err, position) {
+            exports.eligibleTo(options, function (err, objects) {
                 if (err) {
                     log.error(err);
                     return res.sendStatus(400);
                 } else {
-                    var requiredProfiles = position.requiredProfiles;
-                    var requiredSkills = position.requiredSkills;
-
-                    if ((requiredProfiles && requiredProfiles.length > 0) || (requiredSkills && requiredSkills.length > 0)) {
-                        var concat;
-
-                        concat = ["$name.family", " ", "$name.given"];
-
-                        var query = {$or: []};
-                        var sort = {"name.family": 'asc'};
-                        query.$or.push({"profiles": {"$in": requiredProfiles}});
-                        query.$or.push({"skills": {"$in": requiredSkills}});
-
-                        var q = Personnel.find(query).sort(sort).limit(0).skip(0).lean();
-                        q.exec(function (err, personnels) {
-                            if (err) {
-                                log.error(err);
-                                audit.logEvent('[mongodb]', 'Personnel', 'EligibleTo', '', '', 'failed', 'Mongodb attempted to retrieve a personnel');
-                                return res.sendStatus(500);
-                            } else {
-                                personnels = JSON.parse(JSON.stringify(personnels));
-                                beautify({req: req, language: req.actor.language, beautify: true, eligibleTo: position._id, position: position}, personnels, function (err, objects) {
-                                    if (err) {
-                                        return res.status(500).send(err);
-                                    } else {
-                                        return res.json(objects);
-                                    }
-                                });
-                            }
-                        });
-                    } else {
-                        return res.json();
-                    }
+                    return res.json(objects);
                 }
             });
         }
@@ -996,6 +970,118 @@ exports.api.eligibleTo = function (req, res) {
         return res.send(401);
     }
 }
+
+/**
+ * This function download the list of staff corresponds to geven position
+ * @param {type} req
+ * @param {type} res
+ * @returns {unresolved}
+ */
+exports.api.downloadEligibleTo = function (req, res) {
+    if (req.actor) {
+        if (req.params.id == undefined) {
+            audit.logEvent(req.actor.id, 'Personnel', 'EligibleTo', '', '', 'failed',
+                    'The actor could not read the personnel eligible because one or more params of the request was not defined');
+            return res.sendStatus(400);
+        } else {
+            var options = {
+                position: {
+                    id: req.params.id
+                },
+                req: req
+            }
+
+            exports.eligibleTo(options, function (err, objects) {
+                if (err) {
+                    log.error(err);
+                    return res.sendStatus(400);
+                } else {
+                    //console.log(z);
+                    var gt = dictionary.translator(req.actor.language);
+                    //Build XLSX
+                    var options = buildFields(req.actor.language, "fieldNamesEligible.json");
+                    options.data = objects;
+                    options.title = gt.gettext("Admineex: Liste des personnes éligibles au poste de: ");
+                    buildXLSX2(options, function (err, filePath) {
+                        if (err) {
+                            log.error(err);
+                        } else {
+                            var fileName = 'report.xlsx';
+                            res.set('Content-disposition', 'attachment; filename=' + fileName);
+                            res.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                            var fileStream = fs.createReadStream(filePath);
+                            var pipeStream = fileStream.pipe(res);
+                            pipeStream.on('finish', function () {
+                                fs.unlinkSync(filePath);
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    } else {
+        audit.logEvent('[anonymous]', 'Personnel', 'Search', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+}
+
+
+exports.eligibleTo = function (options, callback) {
+    controllers.positions.find({_id: options.position.id}, function (err, position) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            console.log(position)
+            var requiredProfiles = position.requiredProfiles;
+            var requiredSkills = position.requiredSkills;
+
+            if ((requiredProfiles && requiredProfiles.length > 0) || (requiredSkills && requiredSkills.length > 0)) {
+                var concat;
+
+                concat = ["$name.family", " ", "$name.given"];
+
+                var query = {$or: []};
+                var sort = {"name.family": 'asc'};
+                query.$or.push({"profiles": {"$in": requiredProfiles}});
+                query.$or.push({"skills": {"$in": requiredSkills}});
+                var projection = {
+                    _id: 1,
+                    name: 1,
+                    profiles: 1,
+                    skills: 1,
+                    identifier: 1,
+                    grade: 1,
+                    corps: 1,
+                    status: 1
+                };
+                var q = Personnel.find(query, projection).sort(sort).limit(0).skip(0).lean();
+                q.exec(function (err, personnels) {
+                    if (err) {
+                        log.error(err);
+                        audit.logEvent('[mongodb]', 'Personnel', 'EligibleTo', '', '', 'failed', 'Mongodb attempted to retrieve a personnel');
+                        callback(err);
+                    } else {
+                        console.log(personnels)
+                        personnels = JSON.parse(JSON.stringify(personnels));
+                        beautify({req: options.req, language: options.req.actor.language, beautify: true, eligibleTo: position._id, position: position, eligible: true}, personnels, function (err, objects) {
+                            if (err) {
+                                callback(err);
+                            } else {
+                                callback(null, objects);
+                            }
+                        });
+                    }
+                });
+            } else {
+                callback(null, []);
+            }
+        }
+    });
+
+}
+
+
 
 
 
@@ -1462,6 +1548,149 @@ function buildXLSX(options, callback) {
     ///7. Merges cells
     ws.mergeCells('A1:' + columns[options.fieldNames.length - 1] + "1");
 
+
+    // save workbook to disk
+    var tmpFile = "./tmp/" + keyGenerator.generateKey() + ".xlsx";
+    if (!fs.existsSync("./tmp")) {
+        fs.mkdirSync("./tmp");
+    }
+    workbook.xlsx.writeFile(tmpFile).then(function () {
+        callback(null, tmpFile);
+    });
+}
+
+function buildXLSX2(options, callback) {
+    var add = 0;
+    var defaultCellStyle = {font: {name: "Calibri", sz: 11}, fill: {fgColor: {rgb: "FFFFAA00"}}};
+    var alpha = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    var columns = [];
+    var a = 0;
+    // Generate fields
+
+    for (n = 0; n < options.fields.length; n++) {
+        if (n <= alpha.length * 1 - 1) {
+            columns.push(alpha[a]);
+        } else if (n <= alpha.length * 2 - 1) {
+            columns.push(alpha[0] + alpha[a]);
+        } else if (n <= alpha.length * 3 - 1) {
+            columns.push(alpha[1] + alpha[a]);
+        } else if (n <= alpha.length * 4 - 1) {
+            columns.push(alpha[2] + alpha[a]);
+        } else if (n <= alpha.length * 5 - 1) {
+            columns.push(alpha[3] + alpha[a]);
+        } else {
+            columns.push(alpha[4] + alpha[a]);
+        }
+        a++;
+        if (a > 25) {
+            a = 0;
+        }
+    }
+
+    // create workbook & add worksheet
+    var workbook = new Excel.Workbook();
+    //2. Start holding the work sheet
+    var ws = workbook.addWorksheet('Datatocare report');
+
+    //3. set style around A1
+    ws.getCell('A1').value = options.title;
+    ws.getCell('A1').border = {
+        top: {style: 'thick', color: {argb: 'FF964714'}},
+        left: {style: 'thick', color: {argb: 'FF964714'}},
+        bottom: {style: 'thick', color: {argb: 'FF964714'}}
+    };
+    ws.getCell('A1').fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+    ws.getCell('A1').font = {
+        color: {argb: 'FFFFFF'},
+        size: 16,
+        bold: true
+    };
+    ws.getCell('A1').alignment = {vertical: 'middle', horizontal: 'center'};
+
+
+    //4. Row 1
+    for (i = 1; i < options.fieldNames.length; i++) {
+        // For the last column, add right border
+        if (i == options.fieldNames.length - 1) {
+            ws.getCell(columns[i] + "1").border = {
+                top: {style: 'thick', color: {argb: 'FF964714'}},
+                right: {style: 'medium', color: {argb: 'FF964714'}},
+                bottom: {style: 'thick', color: {argb: 'FF964714'}}
+            };
+        } else {//Set this border for the middle cells
+            ws.getCell(columns[i] + "1").border = {
+                top: {style: 'thick', color: {argb: 'FF964714'}},
+                bottom: {style: 'thick', color: {argb: 'FF964714'}}
+            };
+        }
+        ws.getCell(columns[i] + "1").fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+        ws.getCell(columns[i] + "1").alignment = {vertical: 'middle', horizontal: 'center', "wrapText": true};
+    }
+
+    //5 Row 2
+    for (i = 0; i < options.fieldNames.length; i++) {
+        ws.getCell(columns[i] + "2").value = options.fieldNames[i];
+        ws.getCell(columns[i] + "2").alignment = {vertical: 'middle', horizontal: 'left', "wrapText": true};
+        ws.getCell(columns[i] + "2").border = {
+            top: {style: 'thin', color: {argb: 'FF000000'}},
+            bottom: {style: 'medium', color: {argb: 'FF000000'}},
+            left: {style: 'thin', color: {argb: 'FF000000'}},
+            right: {style: 'thin', color: {argb: 'FF000000'}}
+        };
+    }
+
+    //6. Fill data rows    
+    for (i = 0; i < options.data.length; i++) {
+        for (j = 0; j < options.fields.length; j++) {
+            var query = options.fields[j].split(".");
+            var value, field;
+            if (query.length == 1) {
+                value = options.data[i][query[0]] == undefined ? "" : options.data[i][query[0]];
+                field = query[0];
+            } else if (query.length == 2) {
+                if (options.data[i][query[0]]) {
+                    value = options.data[i][query[0]][query[1]] == undefined ? "" : options.data[i][query[0]][query[1]];
+                } else {
+                    value = "";
+                }
+                field = query[1];
+            } else if (query.length == 3) {
+                if (options.data[i][query[0]] && options.data[i][query[0]][query[1]]) {
+                    value = options.data[i][query[0]][query[1]][query[2]] == undefined ? "" : options.data[i][query[0]][query[1]][query[2]];
+                } else {
+                    value = "";
+                }
+                field = query[2];
+            }
+
+            if ((field == "testDate" || field == "requestDate" || field == "birthDate" || field == "positiveResultDate" || field == "startdate" || field == "cartridgeExpiryDate" || field == "dateBeginningSymptom") && value != undefined && value != "" && value != null && value != "null") {
+                value = moment(value).format("DD/MM/YYYY");
+            }
+
+            ws.getCell(columns[j] + (i + 3 + add)).value = (value != undefined && value != null && value != "null") ? value : "";
+            ws.getCell(columns[j] + (i + 3 + add)).border = {
+                left: {style: 'thin', color: {argb: 'FF000000'}},
+                right: {style: 'thin', color: {argb: 'FF000000'}}
+            };
+
+            // Last row: Add border
+            if (i == options.data.length - 1) {
+                ws.getCell(columns[j] + (i + 3 + add)).border.bottom = {style: 'thin', color: {argb: 'FF000000'}};
+            }
+        }
+    }
+
+    ///7. Set the columns width to 12
+    for (k = 0; k < ws.columns.length; k++) {
+        ws.columns[k].width = 12;
+    }
+
+    ///7. Merges cells
+    ws.mergeCells('A1:' + columns[options.fieldNames.length - 1] + "1");
+    ws.columns[0].width = 50;
+    ws.columns[1].width = 52;
+    ws.columns[2].width = 12;
+    ws.columns[3].width = 50;
 
     // save workbook to disk
     var tmpFile = "./tmp/" + keyGenerator.generateKey() + ".xlsx";

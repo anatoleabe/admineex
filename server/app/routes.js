@@ -379,6 +379,13 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.eligibleTo],
         access: _.findWhere(aclRoutes, {id: 51}).roles
     },
+    // Eligible staff download
+    {
+        path: _.findWhere(aclRoutes, {id: 61}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 61}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.downloadEligibleTo],
+        access: _.findWhere(aclRoutes, {id: 61}).roles
+    },
     // pdf1
     {
         path: _.findWhere(aclRoutes, {id: 52}).uri,

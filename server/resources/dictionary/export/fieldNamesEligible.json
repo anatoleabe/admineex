@@ -1,0 +1,23 @@
+[
+    {
+        "id": "name.family.0",
+        "en": "Name",
+        "fr": "Nom"
+    },{
+        "id": "name.given.0",
+        "en": "Given",
+        "fr": "Prenom"
+    },{
+        "id": "identifier",
+        "en": "Matricule",
+        "fr": "Matricule"
+    },{
+        "id": "grade",
+        "en": "Grade",
+        "fr": "Grade"
+    },{
+        "id": "corresponding",
+        "en": "Eligibility",
+        "fr": "Eligibilité"
+    }
+]
