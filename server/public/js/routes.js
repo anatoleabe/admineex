@@ -349,6 +349,94 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Staff monitoring and evaluation"]
+        }).state('home.tasks', {
+            abstract: true,
+            url: 'tasks',
+            controller: 'ProcrastinateController',
+            templateUrl: 'templates/procrastinate/procrastinate.html',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/ProcrastinateCtrl.js');
+                    }]
+            }
+        }).state('home.tasks.main', {
+            url: '',
+            templateUrl: 'templates/procrastinate/tasks/main.html',
+            controller: 'TasksController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/tasks/TasksCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Tasks Management"]
+        }).state('home.tasks.edit', {
+            url: '/tasks/edit/:id',
+            templateUrl: 'templates/procrastinate/tasks/edit.html',
+            controller: 'TaskController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/tasks/TaskCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Task Management", "Edit"]
+        }).state('home.tasks.new', {
+            url: '/tasks/new',
+            templateUrl: 'templates/procrastinate/tasks/edit.html',
+            controller: 'TaskController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/tasks/TaskCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Task Management", "New"]
+        }).state('home.tasks.dashboard', {
+            url: '/dashboard',
+            templateUrl: 'templates/procrastinate/dashboard/main.html',
+            controller: 'DashboardController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/DashboardCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Tasks dashboard"]
+        }).state('home.tasks.categories', {
+            url: '/categories',
+            templateUrl: 'templates/procrastinate/categories/main.html',
+            controller: 'CategoriesController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/categories/CategoriesCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Tasks categories"]
+        }).state('home.tasks.category', {
+            url: '/category/new',
+            templateUrl: 'templates/procrastinate/categories/edit.html',
+            controller: 'CategoryController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/categories/CategoryCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Task category", "New"]
+        }).state('home.tasks.category.edit', {
+            url: '/category/edit/:id',
+            templateUrl: 'templates/procrastinate/categories/edit.html',
+            controller: 'CategoryController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/categories/CategoryCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Task category", "Edit"]
         }).state('home.projects.new', {
             url: '/new',
             params: {duplicateID: null},

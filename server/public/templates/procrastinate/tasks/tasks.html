@@ -1,0 +1,10 @@
+
+<div oc-lazy-load="'node_modules/angular-material-data-table/dist/md-data-table.min.js'">
+    <div ui-view>
+        <md-tabs md-dynamic-height md-border-bottom md-selected="currentTab" class="md-primary">
+            <md-tab ng-repeat="tab in tabs" label="{{tab.name}}" ng-click="href(tab.href);">
+            </md-tab>
+        </md-tabs>
+    </div>
+</div>
+

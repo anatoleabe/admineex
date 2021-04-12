@@ -473,3 +473,109 @@ table.md-table tbody.md-body > tr.md-row:hover {
 .tooltip1 {
     height: auto;
 }
+
+
+.listdemoListControls md-divider {
+  margin-top: 0;
+  margin-bottom: 0; }
+
+.listdemoListControls md-list {
+  padding-top: 0; }
+
+.listdemoListControls md-list-item > p,
+.listdemoListControls md-list-item > .md-list-item-inner > p,
+.listdemoListControls md-list-item .md-list-item-inner > p,
+.listdemoListControls md-list-item .md-list-item-inner > .md-list-item-inner > p {
+  -webkit-user-select: none;
+  /* Chrome all / Safari all */
+  -moz-user-select: none;
+  /* Firefox all */
+  -ms-user-select: none;
+  /* IE 10+ */
+  user-select: none;
+  /* Likely future */ }
+.task-list {
+    padding: 0px;
+    margin: 1px 2px;
+    border-radius: 2px;
+    background: rgba(255,255,255,.9);
+    border: 1px solid #eee;
+    position: relative;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.05),0 1px 5px 0 rgba(0,0,0,.2),0 3px 1px -2px rgba(0,0,0,.2)!important;
+    border-left: 3px solid #dddce1;
+}
+
+
+
+/**
+ * The dnd-list should always have a min-height,
+ * otherwise you can't drop to it once it's empty
+ */
+.simpleDemo ul[dnd-list] {
+    min-height: 42px;
+    padding-left: 0px;
+}
+
+/**
+ * The dndDraggingSource class will be applied to
+ * the source element of a drag operation. It makes
+ * sense to hide it to give the user the feeling
+ * that he's actually moving it.
+ */
+.simpleDemo ul[dnd-list] .dndDraggingSource {
+    display: none;
+}
+
+/**
+ * An element with .dndPlaceholder class will be
+ * added to the dnd-list while the user is dragging
+ * over it.
+ */
+.simpleDemo ul[dnd-list] .dndPlaceholder {
+    background-color: #ddd;
+    display: block;
+    min-height: 42px;
+}
+
+.simpleDemo ul[dnd-list] li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    display: block;
+    padding: 10px 15px;
+    height: 45px;
+    margin-bottom: -1px;
+}
+
+/**
+ * Show selected elements in green
+ */
+.simpleDemo ul[dnd-list] li.selected {
+    background-color: #dff0d8;
+    color: #3c763d;
+	cursor: move;
+}
+
+
+
+.simpleDemo .panel-heading span {
+     cursor: pointer; 
+}
+
+.simpleDemo .edit-in-place span {
+  cursor: pointer;
+}
+
+.simpleDemo .edit-in-place input {
+  display: none;
+  /*border-radius: 1px;*/
+}
+
+.simpleDemo .edit-in-place.active span {
+  display: none;
+}
+
+.simpleDemo .edit-in-place.active input {
+  display: inline-block;
+}

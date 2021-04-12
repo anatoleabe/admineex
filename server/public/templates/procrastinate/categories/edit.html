@@ -1,0 +1,28 @@
+<div ui-view >
+    <div flex="70" flex-offset="15" flex-md="50" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" style="height:100%;"> 
+        <form ng-submit="submit();">
+            <md-card>
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2 class="md-display-1">New category</h2>
+                    </div>
+                </md-toolbar>
+                <md-card-content>
+                    <md-input-container class="md-block">
+                        <label translate>Category name</label>
+                        <input name="catname" ng-model="category.name" required>
+                    </md-input-container>
+                    <md-input-container class="md-block">
+                        <label translate>Category color</label>
+                        <input ng-model="category.color" required>
+                    </md-input-container>
+                    <md-card-actions layout="row" layout-align="end center">
+                        <md-button ui-sref="home.tasks.categories"><span translate>Cancel</span></md-button>
+                        <md-button class="md-raised md-accent" type="submit"><span translate>Done</span></md-button>
+                    </md-card-actions>
+
+                </md-card-content>
+            </md-card>
+        </form>
+    </div>
+</div>

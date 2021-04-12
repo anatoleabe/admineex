@@ -358,5 +358,53 @@
         "uri": "/api/personnel/exportEligible/:id",
         "method": "GET",
         "roles": [1,2,3,4]
+    },
+    {
+        "id": 62,
+        "uri": "/api/tasks",
+        "method": "PUT",
+        "roles": [1,2,3,4]
+    },
+    {
+        "id": 63,
+        "uri": "/api/tasks",
+        "method": "GET",
+        "roles": [1,2,3,4]
+    },
+    {
+        "id": 64,
+        "uri": "/api/tasks/:id",
+        "method": "GET",
+        "roles": [1,2,3,4]
+    },
+    {
+        "id": 65,
+        "uri": "/api/tasks/:id",
+        "method": "DELETE",
+        "roles": [1,2,3,4]
+    },
+    {
+        "id": 66,
+        "uri": "/api/categories",
+        "method": "PUT",
+        "roles": [1,2,3,4]
+    },
+    {
+        "id": 67,
+        "uri": "/api/categories",
+        "method": "GET",
+        "roles": [1,2,3,4]
+    },
+    {
+        "id": 68,
+        "uri": "/api/categories/:id",
+        "method": "GET",
+        "roles": [1,2,3,4]
+    },
+    {
+        "id": 69,
+        "uri": "/api/categories/:id",
+        "method": "DELETE",
+        "roles": [1,2,3,4]
     }
 ]

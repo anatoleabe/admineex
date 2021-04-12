@@ -107,16 +107,34 @@ function buildNav(user, callback) {
         label: 'Staff management',
         name: 'Staff management'
     };
-//    var staffManagementTab3 = {
-//        href: 'home.staffs.status.main',
-//        label: 'Status',
-//        name: 'Status'
-//    };
-//    var staffManagementTab4 = {
-//        href: 'home.staffs.discipline.main',
-//        label: 'Discipline',
-//        name: 'Discipline'
-//    };
+    
+    var task = {
+        href: 'home.tasks.main',
+        icon: 'list',
+        label: 'Procrastinate',
+        name: 'Procrastinate',
+        items: []
+    };
+    var taskTab1 = {
+        href: 'home.tasks.main',
+        label: 'Tasks management',
+        name: 'Tasks management'
+    };
+    var taskTab2 = {
+        href: 'home.tasks.dashboard',
+        label: 'Task dashboard',
+        name: 'Task dashboard'
+    };
+    var taskTab3 = {
+        href: 'home.tasks.synthesis',
+        label: 'Synthesis',
+        name: 'Synthèse'
+    };
+    var taskCategoryTab4 = {
+        href: 'home.tasks.categories',
+        label: 'Categories',
+        name: 'Categories'
+    };
 
     var administration = {
         href: 'home.administration.positions',
@@ -226,6 +244,12 @@ function buildNav(user, callback) {
             // LEFT MENU TABS FOR STAFF MANAGEMENT
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+            // LEFT MENU TASK
+            nav.left[0].items.push(task);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab2);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab3);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskCategoryTab4);
             // LEFT MENU MONITOR
             nav.left[0].items.push(monitoring);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);

@@ -1,0 +1,191 @@
+var Task = require('../models/task').Task;
+var audit = require('../utils/audit-log');
+var log = require('../utils/log');
+var mail = require('../utils/mail');
+var crypto = require('crypto');
+var formidable = require("formidable");
+var path = require('path');
+var appDir = path.dirname(require.main.filename);
+var fs = require('fs');
+
+// API
+exports.api = {};
+
+var controllers = {
+    configuration: require('./configuration')
+};
+
+exports.api.upsert = function (req, res) {
+    if (req.actor) {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[formidable]', 'Tasks', 'Upsert', "", "", 'failed', "Formidable attempted to parse task fields");
+                return res.status(500).send(err);
+            } else {
+                var file = files['file[file]'];
+                fields.usersID = JSON.parse(fields.usersID);
+                if (file) {
+                    var _path = path.join(appDir, 'uploads', req.actor.id.toString());
+                    if (!fs.existsSync(_path)) {
+                        fs.mkdirSync(_path, {recursive: true}, (err) => {
+                            if (err) {
+                                console.error(err)
+                                return res.sendStatus(500);
+                            } else {
+                                save(res, fields, file, _path);
+                            }
+                        });
+                    } else {
+                        save(res, fields, file, _path);
+                    }
+                } else {
+                    save(res, fields);
+                }
+            }
+        });
+
+        function save(res, fields, file, _path) {
+            if (file) {
+                fs.rename(file.path, path.join(_path, file.name), (err) => {
+                    if (err) {
+                        console.error(err)
+                        return res.sendStatus(500);
+                    } else {
+                        file.path = path.join(_path, file.name);
+                        fields.attachedFiles = [{name: file.name, path: file.path}]
+                        exports.upsert({actor: req.actor}, fields, function (err) {
+                            if (err) {
+                                console.error(err);
+                                log.error(err);
+                                return res.sendStatus(500);
+                            } else {
+                                res.sendStatus(200);
+                            }
+                        });
+                    }
+                });
+            } else {
+                exports.upsert({actor: req.actor}, fields, function (err) {
+                    if (err) {
+                        console.error(err);
+                        log.error(err);
+                        return res.sendStatus(500);
+                    } else {
+                        res.sendStatus(200);
+                    }
+                });
+            }
+
+
+        }
+    } else {
+        audit.logEvent('[anonymous]', 'Tasks', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
+        return res.sendStatus(401);
+    }
+};
+
+
+exports.api.list = function (req, res) {
+    if (req.actor) {
+        Task.find({}, function (err, tasks) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[mongodb]', 'Tasks', 'List', '', '', 'failed', 'Mongodb attempted to retrieve tasks list');
+                return res.status(500).send(err);
+            } else {
+                return res.json(tasks);
+            }
+        });
+    } else {
+        audit.logEvent('[anonymous]', 'Tasks', 'List', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+}
+
+exports.api.read = function (req, res) {
+    if (req.actor) {
+        Task.findOne({
+            _id: req.params.id
+        }).exec(function (err, task) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[mongodb]', 'Tasks', 'Read', "ID", req.params.id, 'failed', "Mongodb attempted to find the task");
+                return res.status(500).send(err);
+            } else {
+                if (task === null) {
+                    audit.logEvent('[mongodb]', 'Tasks', 'Read', 'ID', req.params.id, 'failed',
+                            'Mongodb attempted to find the task but it revealed not defined');
+                    return res.sendStatus(403);
+                } else {
+                    return res.json(task);
+                }
+            }
+        });
+    } else {
+        audit.logEvent('[anonymous]', 'Tasks', 'Read', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+}
+
+
+exports.api.delete = function (req, res) {
+    if (req.actor) {
+        if (req.params.id == undefined) {
+            audit.logEvent(req.actor.id, 'Tasks', 'Delete', '', '', 'failed', 'The actor could not delete an task because one or more params of the request was not defined');
+            return res.sendStatus(400);
+        } else {
+            Task.remove({_id: req.params.id}, function (err) {
+                if (err) {
+                    log.error(err);
+                    return res.status(500).send(err);
+                } else {
+                    audit.logEvent(req.actor.id, 'Tasks', 'Delete', "ID", req.params.id, 'succeed',
+                            'The actor has successfully deleted an task');
+                    return res.sendStatus(200);
+                }
+            });
+        }
+    } else {
+        audit.logEvent('[anonymous]', 'Tasks', 'Delete', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+}
+
+exports.upsert = function (options, fields, callback) {
+    var title = fields.title || '';
+    var description = fields.description || '';
+    var categoryId = fields.categoryId || '';
+    if (title === '' || description === '' || categoryId) {
+        audit.logEvent(options.actor.id, 'Tasks', 'Upsert', 'title', title,
+                'The actor could not create a new task because one or more parameters of the request was not correct');
+        return callback(400);
+    } else {
+        var filter = fields._id ? {_id: fields._id} : fields;
+        fields.lastModified = new Date();
+        fields.authorID = options.actor.id;
+        Task.findOneAndUpdate(filter, fields, {upsert: true, setDefaultsOnInsert: true}, function (err) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[mongodb]', 'Tasks', 'Upsert', "", '', 'failed', "Mongodb attempted to save the new task");
+                return callback(err);
+            } else {
+                return callback(null);
+            }
+        });
+    }
+}
+
+exports.getTask = function (task, callback) {
+    Task.findOne({
+        _id: task.id
+    }).exec(function (err, task) {
+        if (err) {
+            log.error(err);
+            callback(err)
+        } else {
+            callback(null, task);
+        }
+    });
+}
