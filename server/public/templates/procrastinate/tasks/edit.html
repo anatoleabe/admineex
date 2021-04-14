@@ -34,45 +34,28 @@
                                     </md-input-container>
                                 </div>
 
-
-
-                                <div layout="column">
-                                    <span flex class="md-no-sticky">Deadline </span> 
-                                    <md-input-container class="md-block" flex >
-                                        <md-button class="md-raised">Today</md-button>
-                                        <md-button class="md-raised md-primary">ASAP</md-button>
-                                        <md-button ng-disabled="true" class="md-raised md-primary">Ongoing</md-button>
-                                        <md-button class="md-raised md-accent">Custom date</md-button>
-                                    </md-input-container>
-                                </div>
-                                <div layout="column">
-                                    <span flex class="md-no-sticky">Priority </span> 
-                                    <md-input-container class="md-block" flex >
-                                        <md-button class="md-raised">High</md-button>
-                                        <md-button class="md-raised md-primary">Medium</md-button>
-                                        <md-button ng-disabled="true" class="md-raised md-primary">Low</md-button>
-                                        <md-button class="md-raised md-accent">N/A</md-button>
-                                    </md-input-container>
-                                </div>
                                 <div class="md-dialog-content" oc-lazy-load="'node_modules/ng-file-upload/dist/ng-file-upload.min.js'">
                                     <span flex class="md-no-sticky">Attache files: the time required to perform this task depends on the file size. </span> 
-                                    <div >
+                                    <div >  
                                         <div >
                                             <md-input-container class="md-block" flex >
                                                 <md-button flex class="md-raised" style="min-width: 250px" onclick="document.getElementById('getFile').click()" translate>Attach file(s)</md-button>
                                             </md-input-container>
 
                                             <input type="file" id="getFile" ng-model="uploader.file" ngf-select ngf-pattern="'.pdf,.doc,.docx,.jpg,.png'" title="titleText"
-                                                   ngf-accept="'.pdf,.doc,.docx,.jpg,.png'" ngf-max-size="25MB" aria-label="file" style="width: 100%;display:none" />
-                                            <span ng-show="uploader.file">Your file is: {{uploader.file.name}}</span>
+                                                   ngf-accept="'.pdf,.doc,.docx,.jpg,.png'" ngf-max-size="25MB" aria-label="file" style="width: 100%;display:none" multiple />
+                                            <div ng-show="uploader.file">
+                                                Files:
+                                                <ul><li ng-repeat="file in uploader.file">{{file.name}}</li></ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div layout="row">
                                     <md-input-container>
-                                        <label>Enter date</label>
-                                        <md-datepicker ng-model="user.submissionDate"></md-datepicker>
+                                        <label>Select task deadline </label>
+                                        <md-datepicker ng-model="task.deadline"></md-datepicker>
                                     </md-input-container>
                                 </div>
                                 <div layout="row">

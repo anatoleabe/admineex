@@ -24,9 +24,17 @@ exports.api.upsert = function (req, res) {
                 audit.logEvent('[formidable]', 'Tasks', 'Upsert', "", "", 'failed', "Formidable attempted to parse task fields");
                 return res.status(500).send(err);
             } else {
-                var file = files['file[file]'];
                 fields.usersID = JSON.parse(fields.usersID);
-                if (file) {
+                var uploadedFiles = [];
+                var i = 0;
+                if (files) {
+                    if (Object.keys(files).length > 1) {
+                        for (i = 0; i < Object.keys(files).length; i++) {
+                            uploadedFiles.push(files['file[file][' + i + ']'])
+                        }
+                    } else {
+                        uploadedFiles.push(files['file[file]'])
+                    }
                     var _path = path.join(appDir, 'uploads', req.actor.id.toString());
                     if (!fs.existsSync(_path)) {
                         fs.mkdirSync(_path, {recursive: true}, (err) => {
@@ -34,11 +42,11 @@ exports.api.upsert = function (req, res) {
                                 console.error(err)
                                 return res.sendStatus(500);
                             } else {
-                                save(res, fields, file, _path);
+                                save(res, fields, uploadedFiles, _path);
                             }
                         });
                     } else {
-                        save(res, fields, file, _path);
+                        save(res, fields, uploadedFiles, _path);
                     }
                 } else {
                     save(res, fields);
@@ -46,39 +54,26 @@ exports.api.upsert = function (req, res) {
             }
         });
 
-        function save(res, fields, file, _path) {
-            if (file) {
-                fs.rename(file.path, path.join(_path, file.name), (err) => {
-                    if (err) {
-                        console.error(err)
-                        return res.sendStatus(500);
-                    } else {
-                        file.path = path.join(_path, file.name);
-                        fields.attachedFiles = [{name: file.name, path: file.path}]
-                        exports.upsert({actor: req.actor}, fields, function (err) {
-                            if (err) {
-                                console.error(err);
-                                log.error(err);
-                                return res.sendStatus(500);
-                            } else {
-                                res.sendStatus(200);
-                            }
-                        });
-                    }
-                });
-            } else {
-                exports.upsert({actor: req.actor}, fields, function (err) {
-                    if (err) {
-                        console.error(err);
-                        log.error(err);
-                        return res.sendStatus(500);
-                    } else {
-                        res.sendStatus(200);
-                    }
-                });
+        function save(res, fields, uploadedFiles, _path) {
+
+            fields.attachedFiles = [];
+            if (uploadedFiles) {
+                for (i = 0; i < uploadedFiles.length; i++) {
+                    var file = uploadedFiles[i];
+                    fs.renameSync(file.path, path.join(_path, file.name));
+                    file.path = path.join(_path, file.name);
+                    fields.attachedFiles.push({name: file.name, path: file.path});
+                }
             }
-
-
+            exports.upsert({actor: req.actor}, fields, function (err) {
+                if (err) {
+                    console.error(err);
+                    log.error(err);
+                    return res.sendStatus(500);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
         }
     } else {
         audit.logEvent('[anonymous]', 'Tasks', 'Upsert', '', '', 'failed', 'The actor was not authenticated');

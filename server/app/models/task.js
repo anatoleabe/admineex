@@ -1,33 +1,33 @@
-var mongoose        = require('mongoose');
+var mongoose = require('mongoose');
 
 var Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 // Task schema (Dossier)
 var TaskSchema = new Schema({
-    authorID: { type: ObjectId, required: true },
-    identifier: { type: String, required: true },
-    usersID: [{ type: ObjectId, required: false }],
-    title: { type: String, required: true },
+    authorID: {type: ObjectId, required: true},
+    identifier: {type: String, required: true},
+    usersID: [{type: ObjectId, required: false}],
+    title: {type: String, required: true},
     description: String,
     parent_task: ObjectId,
-    state: String,//todo, inprogress, done
-    started: { type: Date, default: Date.now, required: true },
-    closed: { type: Date, default: Date.now, required: true },
-    dueDate: Date,//Delais
-    priority: String,//Delais
-    deadline: String,//Delais
+    state: String, //todo, inprogress, done
+    started: {type: Date},
+    closed: {type: Date},
+    dueDate: Date, //Delais
+    priority: String, //Delais
+    deadline: {type: Date},
     progression: String, //Niveau de progression
-    categoryID: String,
+    categoryID: {type: ObjectId, required: true},
     status: String,
     ended: Boolean,
-    checklist:[{}],
-    attachedFiles:[{}],
-    context:{},
+    checklist: [{}],
+    attachedFiles: [{}],
+    context: {},
     comments: [{}],
     history: [{}],
-    lastModified: { type: Date, default: Date.now, required: true },
-    created: { type: Date, default: Date.now, required: true }
+    lastModified: {type: Date, default: Date.now, required: true},
+    created: {type: Date, default: Date.now, required: true}
 });
 
 //Define Models
