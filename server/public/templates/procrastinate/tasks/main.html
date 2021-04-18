@@ -6,41 +6,109 @@
 
             <div class="col-md-8">
                 <div class="row">
-                    <div ng-repeat="(listName, list) in models.lists" class="col-md-6">
+                    <div  class="col-md-6">
                         <div class="panel panel-info">
-                            <div class="panel-heading">
-                                <div class="btn-group pull-right">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true" ng-click="addToList(list)">+</span>
-                                </div>
-                                <h3 class="panel-title">List {{listName}}</h3>
-
+                            <div flex>
+                                <h3 class="md-headline" style="margin: 10px 0px 10px 0px;" translate>Tasks</h3>
                             </div>
-                            <div class="panel-body">
-                                <div class="md-no-sticky" layout="row">
-                                    <span flex="50">Title </span> 
-                                    <span flex="15">Category </span> 
-                                    <span flex="15">Members </span>
-                                    <span flex="10">Activities </span>
-                                    <span flex="10">Due </span>
+                            <md-toolbar class="md-table-toolbar md-default">
+                                <div class="md-toolbar-tools">
+                                    <md-icon>filter_list</md-icon>
+                                    <md-input-container flex >
+                                        <label translate>Filter by priority</label>
+                                        <md-select ng-model="filters.priority"  >
+                                            <md-option  value="-1" translate>
+                                                Show all
+                                            </md-option>
+                                            <md-option ng-repeat="priority in priorities" value="{{priority.id}}" >
+                                                {{priority.name}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-input-container flex >
+                                        <label translate>Filter by status</label>
+                                        <md-select ng-model="filters.status"  >
+                                            <md-option  value="-1" translate>
+                                                Show all
+                                            </md-option>
+                                            <md-option ng-repeat="stat in status" value="{{stat.id}}" >
+                                                {{stat.name}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-input-container flex >
+                                        <label translate>Filter by category</label>
+                                        <md-select ng-model="filters.category"  >
+                                            <md-option  value="-1" translate>
+                                                Show all
+                                            </md-option>
+                                            <md-option ng-repeat="c in categories" value="{{c._id}}" >
+                                                {{c.name}}
+                                            </md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-button class="md-icon-button" ng-click="" aria-label="close">
+                                        <md-icon class="material-icons">close</md-icon>
+                                    </md-button>
+                                    <md-icon>search</md-icon>
+                                    <form flex>
+                                        <md-input-container class="md-block" flex-gt-xs>
+                                            <input type="text" name="search" ng-model="filters.research" placeholder="{{ 'Search...' | translate }}">
+                                        </md-input-container>
+                                    </form>
+                                    <md-button class="md-icon-button" ng-click="positionFilter = '';filters.subStructure = undefined; resetForm()" aria-label="close">
+                                        <md-icon class="material-icons">close</md-icon>
+                                    </md-button>
                                 </div>
-                                <!-- The dnd-list directive allows to drop elements into it. The dropped data will be added to the referenced list -->
-                                <ul dnd-list="list" class="ng-scope">
-                                    <!-- The dnd-draggable directive makes an element draggable and will
-                                         transfer the object that was assigned to it. If an element was
-                                         dragged away, you have to remove it from the original list
-                                         yourself using the dnd-moved attribute -->
-                                    <li ng-repeat="task in tasks" dnd-draggable="item" dnd-moved="list.splice($index, 1)" dnd-effect-allowed="move" dnd-selected="models.selected = item" ng-class="{'selected': models.selected === item}" draggable="true">
-                                        <span flex="50">{{task.title}} </span> 
-                                        <span flex="15">{{task.category}} </span>
-                                        
-                                    <md-checkbox class="md-secondary " ng-model="item.selected" style="float: right"></md-checkbox>
-                                    <md-icon ng-click="doSecondaryAction($event)" style="float: right" aria-label="Send Email" class="material-icons md-secondary md-hue-3" >email</md-icon>
-                                    <md-icon ng-click="doSecondaryAction($event)" style="float: right" aria-label="Chat" class="material-icons md-secondary md-hue-3" >message</md-icon>
-                                    <edit-in-place data-ng-include="'templates/procrastinate/directives/editInPlace.html'" value="item.label"></edit-in-place>
-                                    </li>
+                            </md-toolbar>
 
-                                </ul>
-                            </div>
+                            <md-table-container>
+                                <table md-table md-progress="promise">
+                                    <thead md-head md-order="query.order">
+                                        <tr md-row>
+                                            <th md-column md-order-by="code" translate style="width: 50%">Title</th>
+                                            <th md-column md-order-by="structure.name"  translate>Assigned to</th>
+                                            <th md-column md-order-by="name" style="width: 30px" translate>Status</th>
+                                            <th md-column md-order-by="vancancies" style="width: 30px" translate>Creation</th>
+                                            <th md-column translate >Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody md-body dnd-list="list" class="ng-scope">
+                                        <tr md-row data-ng-repeat="task in tasks" dnd-draggable="item" dnd-moved="list.splice($index, 1)" dnd-effect-allowed="move" dnd-selected="models.selected = item" ng-class="{'selected': models.selected === item}" draggable="true">
+                                            <td md-cell ng-click="details({id: task._id})" style="width: 50%">
+                                                <span class="task-title">{{task.title}}</span>
+                                                 <br/> 
+                                                 <small class="chip-normal" ><span translate>Category: </span><span> {{task.category.name}}</span></small>
+                                                 <small ><span class="priority-2" ><span translate>Priority: </span> <span   >{{task.priority}}</span></span></small>
+                                                 <small class="chip-normal" ><span translate>Due : </span><span>{{task.deadline}}</span></small>
+                                            </td>
+                                            <td md-cell flex ng-click="details({id: task._id})" >
+                                                <span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; " >{{task.user.firstname.substr(0, 1).toUpperCase()}}</span>
+                                                {{task.user.lastname}} {{task.user.firstname}}  
+                                            </td>
+                                            <td md-cell flex style="width: 30px" ng-click="details({id: task._id})">{{task.status}} </td>
+                                            <td md-cell style="width: 30px" ng-click="details({id: task._id})">{{task.created |smartDatetime}} </td>
+                                            <td md-cell  >
+                                                <md-button ng-click="edit({id: task._id})" aria-label="Edit" class="md-icon-button">
+                                                    <md-icon>edit</md-icon>
+                                                    <md-tooltip md-direction="top">
+                                                        <span translate>Edit</span>
+                                                    </md-tooltip>
+                                                </md-button>
+                                                <md-button  aria-label="Show more" class="md-icon-button">
+                                                    <md-icon>more_vert</md-icon>
+                                                    <md-tooltip md-direction="top">
+                                                        <span translate>Show more</span>
+                                                    </md-tooltip>
+                                                </md-button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </md-table-container>
+                            <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 25, 50, 100]" md-page="query.page" md-total="{{positions.count}}" 
+                                                  md-page-select="true" md-label="{{label}}" md-on-paginate="load">
+
                         </div>
                     </div>
                 </div>

@@ -7,6 +7,8 @@ var formidable = require("formidable");
 var path = require('path');
 var appDir = path.dirname(require.main.filename);
 var fs = require('fs');
+var dictionary = require('../utils/dictionary');
+var moment = require('moment');
 
 // API
 exports.api = {};
@@ -25,10 +27,11 @@ exports.api.upsert = function (req, res) {
                 return res.status(500).send(err);
             } else {
                 fields.usersID = JSON.parse(fields.usersID);
-                var uploadedFiles = [];
+                console.log(files)
                 var i = 0;
                 if (files) {
-                    if (Object.keys(files).length > 1) {
+                    var uploadedFiles = [];
+                    if (Object.keys(files).length > 0) {
                         for (i = 0; i < Object.keys(files).length; i++) {
                             uploadedFiles.push(files['file[file][' + i + ']'])
                         }
@@ -54,12 +57,13 @@ exports.api.upsert = function (req, res) {
             }
         });
 
-        function save(res, fields, uploadedFiles, _path) {
+        function save(res, fields, filesToSave, _path) {
 
             fields.attachedFiles = [];
-            if (uploadedFiles) {
-                for (i = 0; i < uploadedFiles.length; i++) {
-                    var file = uploadedFiles[i];
+            console.log(filesToSave)
+            if (filesToSave && filesToSave.length >0 && filesToSave[0]) {
+                for (i = 0; i < filesToSave.length; i++) {
+                    var file = filesToSave[i];
                     fs.renameSync(file.path, path.join(_path, file.name));
                     file.path = path.join(_path, file.name);
                     fields.attachedFiles.push({name: file.name, path: file.path});
@@ -84,13 +88,92 @@ exports.api.upsert = function (req, res) {
 
 exports.api.list = function (req, res) {
     if (req.actor) {
-        Task.find({}, function (err, tasks) {
+        var filter = {};
+        var mainQuery = {$and: [{}]};
+        
+        if (req.params.status && req.params.status != "-1") {
+            mainQuery.$and.push({
+                "status": req.params.status
+            });
+        }
+        if (req.params.priority && req.params.priority != "-1") {
+            mainQuery.$and.push({
+                "priority": req.params.priority
+            });
+        }
+//        if (req.params.category) {
+//            mainQuery.$and.push({
+//                "categoryID": filter.category
+//            });
+//        }
+        
+//        mainQuery.$and.push({
+//            "created": {
+//                $gte: moment(filter.from).startOf('day').toDate()
+//            }
+//        });
+//        mainQuery.$and.push({
+//            "created": {
+//                $lte: moment(filter.to).endOf('day').toDate()
+//            }
+//        });
+        var pipe = [];
+        //First projections on interested fields
+        pipe.push({$project: {_id: 1, title: 1, description: 1, authorID: 1, categoryID: 1, deadline: 1, created: 1, lastModified: 1, priority: 1, usersID: 1, status: 1, deadline: 1}});
+        pipe.push({$match: mainQuery});
+        // Sort per testDate selected row
+        pipe.push({$sort: {created: -1}});
+
+        pipe.push(
+                {
+                    $lookup: {
+                        from: 'taskcategories',
+                        localField: 'categoryID',
+                        foreignField: '_id',
+                        as: 'category',
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$category'
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'usersID',
+                        foreignField: '_id',
+                        as: 'user',
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$user',
+                        "preserveNullAndEmptyArrays": true
+                    }
+                }
+        );
+
+        pipe.push({$project: {_id: 1, title: 1, description: 1, authorID: 1, categoryID: 1, deadline: 1, created: 1, lastModified: 1, priority: 1, usersID: 1, status: 1, "category.name": 1, "category._id": 1, "category.color": 1, "user.firstname": 1, "user.lastname": 1, deadline: 1}});
+
+        //Execute
+        var q = Task.aggregate(pipe);
+        q.options = {allowDiskUse: true};
+        //Run it
+        q.exec(function (err, tasks) {
             if (err) {
                 log.error(err);
                 audit.logEvent('[mongodb]', 'Tasks', 'List', '', '', 'failed', 'Mongodb attempted to retrieve tasks list');
                 return res.status(500).send(err);
             } else {
-                return res.json(tasks);
+                beautify({language: req.actor.language, beautify: true}, tasks, function (err, t) {
+                    if (err) {
+                        audit.logEvent('[beautify]', 'Tasks', 'exports.api.list', 'message', '', 'failed', 'Attempted to beautify the tasks');
+                        callback(err);
+                    } else {
+                        return res.json(tasks);
+                    }
+                })
             }
         });
     } else {
@@ -183,4 +266,25 @@ exports.getTask = function (task, callback) {
             callback(null, task);
         }
     });
+}
+
+function beautify(options, objects, callback) {
+    var language = options.language || "";
+    language = language.toLowerCase();
+    var gt = dictionary.translator(language);
+    if (options.beautify && options.beautify === true) {
+        for (i = 0; i < objects.length; i++) {
+            var status = objects[i].status || "";
+            var priority = objects[i].priority || "";
+            if (status !== "") {
+                objects[i].status = dictionary.getValueFromJSON('../../resources/dictionary/task/statuses.json', status, language);
+            }
+            if (priority !== "") {
+                objects[i].priority = dictionary.getValueFromJSON('../../resources/dictionary/task/priorities.json', priority, language);
+            }
+        }
+        callback(null, objects);
+    } else {
+        callback(null, objects);
+    }
 }

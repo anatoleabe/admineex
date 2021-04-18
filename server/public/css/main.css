@@ -476,24 +476,24 @@ table.md-table tbody.md-body > tr.md-row:hover {
 
 
 .listdemoListControls md-divider {
-  margin-top: 0;
-  margin-bottom: 0; }
+    margin-top: 0;
+    margin-bottom: 0; }
 
 .listdemoListControls md-list {
-  padding-top: 0; }
+    padding-top: 0; }
 
 .listdemoListControls md-list-item > p,
 .listdemoListControls md-list-item > .md-list-item-inner > p,
 .listdemoListControls md-list-item .md-list-item-inner > p,
 .listdemoListControls md-list-item .md-list-item-inner > .md-list-item-inner > p {
-  -webkit-user-select: none;
-  /* Chrome all / Safari all */
-  -moz-user-select: none;
-  /* Firefox all */
-  -ms-user-select: none;
-  /* IE 10+ */
-  user-select: none;
-  /* Likely future */ }
+    -webkit-user-select: none;
+    /* Chrome all / Safari all */
+    -moz-user-select: none;
+    /* Firefox all */
+    -ms-user-select: none;
+    /* IE 10+ */
+    user-select: none;
+    /* Likely future */ }
 .task-list {
     padding: 0px;
     margin: 1px 2px;
@@ -554,28 +554,60 @@ table.md-table tbody.md-body > tr.md-row:hover {
 .simpleDemo ul[dnd-list] li.selected {
     background-color: #dff0d8;
     color: #3c763d;
-	cursor: move;
+    cursor: move;
 }
 
 
 
 .simpleDemo .panel-heading span {
-     cursor: pointer; 
+    cursor: pointer; 
 }
 
 .simpleDemo .edit-in-place span {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .simpleDemo .edit-in-place input {
-  display: none;
-  /*border-radius: 1px;*/
+    display: none;
+    /*border-radius: 1px;*/
 }
 
 .simpleDemo .edit-in-place.active span {
-  display: none;
+    display: none;
 }
 
 .simpleDemo .edit-in-place.active input {
-  display: inline-block;
+    display: inline-block;
+}
+
+.priority-2 {/*Medium*/
+    border: 1px solid #f6e5b0;
+    color: #a48012;
+    padding: .1rem .325rem;
+    font-size: 10px;
+    line-height: 1.5;
+    text-transform: uppercase;
+    /*font-weight: 600;*/
+    border-radius: 4px;
+    margin-right: .125rem;
+}
+
+.chip-normal {
+    border: 1px solid rgb(224,224,224);;
+    color: rgb(66,66,66);;
+    padding: .1rem .325rem;
+    font-size: 10px;
+    line-height: 1.5;
+    text-transform: uppercase;
+    /*font-weight: 600;*/
+    border-radius: 4px;
+    margin-right: .125rem;
+}
+
+.task-title {
+    color: #4f5152;
+    padding: .1rem .325rem;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 600;
 }

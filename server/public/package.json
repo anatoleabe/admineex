@@ -21,6 +21,7 @@
     "angularjs-gauge": "1.4.0",
     "angular-base64": "2.0.5",
     "angular-drag-and-drop-lists": "2.1.0",
-    "@flowjs/flow.js": "2.14.1"
+    "@flowjs/flow.js": "2.14.1",
+    "sortablejs": "1.13.0"
   }
 }

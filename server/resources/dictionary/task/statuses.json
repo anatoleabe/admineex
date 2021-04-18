@@ -1,0 +1,22 @@
+[
+    {
+        "id": "1",
+        "en": "Not started",
+        "fr": "Pas commencé"
+    },
+    {
+        "id": "2",
+        "en": "In progress",
+        "fr": "En cours"
+    },
+    {
+        "id": "3",
+        "en": "Completed",
+        "fr": "Terminé"
+    },
+    {
+        "id": "4",
+        "en": "Blocked",
+        "fr": "Bloqué"
+    }
+]

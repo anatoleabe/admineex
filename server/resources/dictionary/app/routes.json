@@ -367,19 +367,19 @@
     },
     {
         "id": 63,
-        "uri": "/api/tasks",
+        "uri": "/api/tasks/:status/:priority/:category",
         "method": "GET",
         "roles": [1,2,3,4]
     },
     {
         "id": 64,
-        "uri": "/api/tasks/:id",
+        "uri": "/api/task/:id",
         "method": "GET",
         "roles": [1,2,3,4]
     },
     {
         "id": 65,
-        "uri": "/api/tasks/:id",
+        "uri": "/api/task/:id",
         "method": "DELETE",
         "roles": [1,2,3,4]
     },
