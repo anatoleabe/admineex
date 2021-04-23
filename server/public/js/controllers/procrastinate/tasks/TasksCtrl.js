@@ -164,6 +164,62 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                         }, true);
 
                         $s.models.selected = $s.models.lists["A"][1];
+
+
+                        $scope.read = function (id) {
+                            var p;
+                            Task.read({
+                                id: id
+                            }).then(function (response) {
+                                var data = response.data;
+                                var p = data;
+                                console.log(p)
+                                $mdDialog.show({
+                                    controller: ['$scope', '$mdDialog', 'p', function ($scope, $mdDialog, p) {
+                                            $scope.task = p;
+                                            $scope.close = function () {
+                                                $mdDialog.hide();
+                                            }
+                                            $scope.cancel = function () {
+                                                $mdDialog.cancel();
+                                            };
+                                            $scope.edit = function (params) {
+                                                $mdDialog.hide();
+                                                $rootScope.kernel.loading = 0;
+                                                $state.go("home.tasks.edit", params);
+                                            };
+
+                                            $scope.showConfirm = function (task) {
+                                                var confirm = $mdDialog.confirm()
+                                                        .title(gettextCatalog.getString("Delete this task"))
+                                                        .textContent(gettextCatalog.getString("Are you sure you want to delete the task") + " " + task.name.given + " " + task.name.family + gettextCatalog.getString("?"))
+                                                        .ok(gettextCatalog.getString("Delete"))
+                                                        .cancel(gettextCatalog.getString("Cancel"));
+
+                                                $mdDialog.show(confirm).then(function () {
+                                                    // Delete
+                                                    deleteContact(task._id)
+                                                }, function () {
+                                                    // Cancel
+                                                });
+                                            }
+
+                                        }],
+                                    templateUrl: '../templates/procrastinate/tasks/dialogs/task.html',
+                                    parent: angular.element(document.body),
+                                    clickOutsideToClose: true,
+                                    locals: {
+                                        p: p
+                                    }
+                                }).then(function (answer) {
+
+                                }, function () {
+
+                                });
+                            }).catch(function (response) {
+                                console.error(response);
+                            });
+                        }
                     });
                 });
             });

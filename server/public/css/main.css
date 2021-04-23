@@ -611,3 +611,62 @@ table.md-table tbody.md-body > tr.md-row:hover {
     line-height: 1.5;
     font-weight: 600;
 }
+
+.task-dialog-title-label {
+    font-weight: 500;
+    font-size: 14px;
+    color: #a0a6c7;
+    letter-spacing: 0;
+}
+.task-dialog-title {
+    display: inline-block!important;
+    align-items: baseline!important;
+    justify-content: flex-start;
+    font-size: 20px;
+    color: #2a7ac4;
+    line-height: 1.462em;
+    word-break: break-word;
+    margin-left: 0px;
+}
+
+
+.task-dialog-title-Header {
+    margin: -20px -20px 15px;
+    padding: 20px 20px 15px;
+    background: #fff;
+    /*border-bottom: 1px solid #edeff2;*/
+}
+.task-dialog-rightside {
+    padding: 20px 20px 15px;
+    /*border-bottom: 1px solid #edeff2;*/
+}
+
+.task-dialog-grey-button {
+    -webkit-box-align: baseline;
+    align-items: baseline;
+    border-width: 0px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-flex;
+    font-size: inherit;
+    font-style: normal;
+    font-family: inherit;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.1s ease-out 0s, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38) 0s;
+     white-space: nowrap;
+    background: rgba(9, 30, 66, 0.04);
+    cursor: pointer; 
+    height: 2.28571em;
+    line-height: 2.28571em;
+    padding: 0px 10px;
+    vertical-align: middle;
+    width: auto;
+    -webkit-box-pack: center;
+    justify-content: center;
+    outline: none;
+    margin: 0px; 
+    margin-right: 8px;
+    color: rgb(66, 82, 110) !important;
+}

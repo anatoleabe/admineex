@@ -7,6 +7,9 @@ angular.module('TaskService', []).factory('Task', function($http) {
         read: function(info) {
             return $http.get('/api/task/' + info.id);
         },
+        readForEdit: function(info) {
+            return $http.get('/api/editTask/' + info.id);
+        },
         upsert: function(info) {
             return $http.put('/api/task', info);
         },

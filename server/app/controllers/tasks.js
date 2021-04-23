@@ -9,6 +9,7 @@ var appDir = path.dirname(require.main.filename);
 var fs = require('fs');
 var dictionary = require('../utils/dictionary');
 var moment = require('moment');
+var ObjectID = require('mongoose').mongo.ObjectID;
 
 // API
 exports.api = {};
@@ -27,7 +28,6 @@ exports.api.upsert = function (req, res) {
                 return res.status(500).send(err);
             } else {
                 fields.usersID = JSON.parse(fields.usersID);
-                console.log(files)
                 var i = 0;
                 if (files) {
                     var uploadedFiles = [];
@@ -58,10 +58,10 @@ exports.api.upsert = function (req, res) {
         });
 
         function save(res, fields, filesToSave, _path) {
-
-            fields.attachedFiles = [];
-            console.log(filesToSave)
-            if (filesToSave && filesToSave.length >0 && filesToSave[0]) {
+            if (filesToSave && filesToSave.length > 0 && filesToSave[0] != undefined) {
+                if (!fields.attachedFiles){
+                    fields.attachedFiles = [];
+                }
                 for (i = 0; i < filesToSave.length; i++) {
                     var file = filesToSave[i];
                     fs.renameSync(file.path, path.join(_path, file.name));
@@ -69,6 +69,7 @@ exports.api.upsert = function (req, res) {
                     fields.attachedFiles.push({name: file.name, path: file.path});
                 }
             }
+            
             exports.upsert({actor: req.actor}, fields, function (err) {
                 if (err) {
                     console.error(err);
@@ -90,7 +91,7 @@ exports.api.list = function (req, res) {
     if (req.actor) {
         var filter = {};
         var mainQuery = {$and: [{}]};
-        
+
         if (req.params.status && req.params.status != "-1") {
             mainQuery.$and.push({
                 "status": req.params.status
@@ -106,7 +107,7 @@ exports.api.list = function (req, res) {
 //                "categoryID": filter.category
 //            });
 //        }
-        
+
 //        mainQuery.$and.push({
 //            "created": {
 //                $gte: moment(filter.from).startOf('day').toDate()
@@ -183,6 +184,72 @@ exports.api.list = function (req, res) {
 }
 
 exports.api.read = function (req, res) {
+    if (req.actor) {
+        var mainQuery = {$and: [{}]};
+        mainQuery.$and.push({
+            "_id": new ObjectID(req.params.id)
+        });
+        var pipe = [];
+        pipe.push({$match: mainQuery});
+        pipe.push(
+                {
+                    $lookup: {
+                        from: 'taskcategories',
+                        localField: 'categoryID',
+                        foreignField: '_id',
+                        as: 'category',
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$category'
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'usersID',
+                        foreignField: '_id',
+                        as: 'user',
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$user',
+                        "preserveNullAndEmptyArrays": true
+                    }
+                }
+        );
+
+        //Execute
+        var q = Task.aggregate(pipe);
+        q.options = {allowDiskUse: true};
+        //Run it
+        q.exec(function (err, tasks) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[mongodb]', 'Tasks', 'Read', "ID", req.params.id, 'failed', "Mongodb attempted to find the task");
+                return res.status(500).send(err);
+            } else {
+
+                beautify({language: req.actor.language, beautify: true}, tasks, function (err, t) {
+                    if (err) {
+                        audit.logEvent('[mongodb]', 'Tasks', 'Read', 'ID', req.params.id, 'failed',
+                                'Mongodb attempted to find the task but it revealed not defined');
+                        callback(err);
+                    } else {
+                        return res.json(tasks[0]);
+                    }
+                })
+            }
+        });
+    } else {
+        audit.logEvent('[anonymous]', 'Tasks', 'Read', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+}
+
+exports.api.readForEdit = function (req, res) {
     if (req.actor) {
         Task.findOne({
             _id: req.params.id

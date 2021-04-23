@@ -69,7 +69,7 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
                                         if ($scope.selectedUsers && $scope.selectedUsers.length > 0) {
                                             for (i = 0; i < $scope.selectedUsers.length; i++) {
                                                 if ($scope.selectedUsers[i]) {
-                                                    selectedUsers.push($scope.selectedUsers[i]._id);
+                                                    selectedUsers.push($scope.selectedUsers[i]);
                                                 }
                                             }
                                         }
@@ -95,10 +95,12 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
                                 // Modify or Add ?
                                 if ($stateParams.id !== undefined) {
                                     $scope.new = false;
-                                    Task.read({
+                                    Task.readForEdit({
                                         id: $stateParams.id
                                     }).then(function (response) {
                                         $scope.task = response.data;
+                                        $scope.selectedUsers = $scope.task.usersID;
+                                        $scope.uploader.file = $scope.task.attachedFiles;
                                     }).catch(function (response) {
                                         $rootScope.kernel.alerts.push({
                                             type: 1,
@@ -111,12 +113,13 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
                                     // Modify an Task
                                     $scope.submit = function () {
                                         $rootScope.kernel.loading = 0;
-
-                                        $scope.uploader.file.upload = Upload.upload({
+                                        prepareDetailsForServer();
+                                        Upload.upload({
                                             url: '/api/tasks',
-                                            fields: $scope.task,
                                             file: $scope.uploader,
-                                            method: 'POST'
+                                            fields: $scope.task,
+                                            method: 'PUT',
+                                            sendObjectsAsJsonBlob: true
                                         }).then(function (response) {
                                             $state.transitionTo('home.tasks.main');
                                             $rootScope.kernel.alerts.push({

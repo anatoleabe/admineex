@@ -487,14 +487,21 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.list],
         access: _.findWhere(aclRoutes, {id: 63}).roles
     },
-    // Read an org
+    // Read task
     {
         path: _.findWhere(aclRoutes, {id: 64}).uri,
         httpMethod: _.findWhere(aclRoutes, {id: 64}).method,
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.read],
         access: _.findWhere(aclRoutes, {id: 64}).roles
     },
-    // Delete an org 
+    // Read for edit task
+    {
+        path: _.findWhere(aclRoutes, {id: 70}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 70}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.readForEdit],
+        access: _.findWhere(aclRoutes, {id: 70}).roles
+    },
+    // Delete task 
     {
         path: _.findWhere(aclRoutes, {id: 65}).uri,
         httpMethod: _.findWhere(aclRoutes, {id: 65}).method,

@@ -406,5 +406,11 @@
         "uri": "/api/categories/:id",
         "method": "DELETE",
         "roles": [1,2,3,4]
+    },
+    {
+        "id": 70,
+        "uri": "/api/editTask/:id",
+        "method": "GET",
+        "roles": [1,2,3,4]
     }
 ]

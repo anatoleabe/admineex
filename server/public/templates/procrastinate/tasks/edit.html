@@ -74,31 +74,22 @@
                                         </md-input-container>
                                     </div>
                                 </div>
-
-                                <md-input-container class="md-block" flex>
-                                    <label translate>Task assignee</label>
-                                    <md-chips  ng-model="selectedUsers" md-max-chips="1" required name='selectedUsers'  md-autocomplete-snap="" md-transform-chip="transformChip($chip)">
-                                        <md-autocomplete  md-selected-item="selectedUser"
-                                                          md-search-text="searchUserText"
-                                                          md-items="item in querySearchInUsersList(searchUserText)"
-                                                          md-item-text="item.firstname"
-                                                          placeholder="{{'Enter task assignee'| translate}}"
-                                                          ng-hide="task.usersID.length == 3">
-                                            <span md-highlight-text="searchUserText">{{item.firstname}} {{item.lastname}}</span>
-                                            <md-not-found>
-                                                <div class="chip-not-found" ng-click="ctrl.notFound(ctrl.searchText)">Not found.</div>
-                                            </md-not-found>
-                                        </md-autocomplete>
-                                        <md-chip-template>
-                                            <span>{{$chip.firstname}} {{$chip.lastname}}</span>
-                                        </md-chip-template>
-                                    </md-chips>
-                                    <div ng-messages="selectedUsers.$error">
-                                        <div ng-message="required">
-                                            This field is required to proceed on next step.
+                                
+                                <div layout="row">
+                                    <md-input-container class="md-block" flex >
+                                        <label translate>Task assignee 2</label>
+                                        <md-select name="user" ng-model="selectedUsers[0]" required placeholder="{{'Select assignee '| translate}}">
+                                            <md-option ng-repeat="user in users" value="{{user._id}}">
+                                                {{user.firstname}} {{user.lastname}}
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="user.$error">
+                                            <div ng-message="required">
+                                                This is required to proceed on next step.
+                                            </div>
                                         </div>
-                                    </div>
-                                </md-input-container>
+                                    </md-input-container>
+                                </div>
 
                                 <div layout="row">
                                     <md-input-container class="md-input-has-value" ng-class="{ 'md-input-invalid' : form.progress.$invalid && form.$submitted }">
