@@ -412,5 +412,11 @@
         "uri": "/api/editTask/:id",
         "method": "GET",
         "roles": [1,2,3,4]
+    },
+    {
+        "id": 71,
+        "uri": "/api/task",
+        "method": "POST",
+        "roles": [1,2,3,4]
     }
 ]

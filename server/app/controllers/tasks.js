@@ -27,7 +27,7 @@ exports.api.upsert = function (req, res) {
                 audit.logEvent('[formidable]', 'Tasks', 'Upsert', "", "", 'failed', "Formidable attempted to parse task fields");
                 return res.status(500).send(err);
             } else {
-                fields.usersID = JSON.parse(fields.usersID);
+
                 var i = 0;
                 if (files) {
                     var uploadedFiles = [];
@@ -45,47 +45,104 @@ exports.api.upsert = function (req, res) {
                                 console.error(err)
                                 return res.sendStatus(500);
                             } else {
-                                save(res, fields, uploadedFiles, _path);
+                                save(req, res, fields, uploadedFiles, _path);
                             }
                         });
                     } else {
-                        save(res, fields, uploadedFiles, _path);
+                        save(req, res, fields, uploadedFiles, _path);
                     }
                 } else {
-                    save(res, fields);
+                    save(req, res, fields);
                 }
             }
         });
 
-        function save(res, fields, filesToSave, _path) {
-            if (filesToSave && filesToSave.length > 0 && filesToSave[0] != undefined) {
-                if (!fields.attachedFiles){
-                    fields.attachedFiles = [];
-                }
-                for (i = 0; i < filesToSave.length; i++) {
-                    var file = filesToSave[i];
-                    fs.renameSync(file.path, path.join(_path, file.name));
-                    file.path = path.join(_path, file.name);
-                    fields.attachedFiles.push({name: file.name, path: file.path});
-                }
-            }
-            
-            exports.upsert({actor: req.actor}, fields, function (err) {
-                if (err) {
-                    console.error(err);
-                    log.error(err);
-                    return res.sendStatus(500);
-                } else {
-                    res.sendStatus(200);
-                }
-            });
-        }
+
     } else {
         audit.logEvent('[anonymous]', 'Tasks', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
         return res.sendStatus(401);
     }
 };
 
+function save(req, res, fields, filesToSave, _path) {
+    if (filesToSave && filesToSave.length > 0 && filesToSave[0] != undefined) {
+        if (!fields.attachedFiles) {
+            fields.attachedFiles = [];
+        }
+        for (i = 0; i < filesToSave.length; i++) {
+            var file = filesToSave[i];
+            fs.renameSync(file.path, path.join(_path, file.name));
+            file.path = path.join(_path, file.name);
+            fields.attachedFiles.push({name: file.name, path: file.path});
+        }
+    }
+
+    exports.upsert({actor: req.actor}, fields, function (err) {
+        if (err) {
+            console.error(err);
+            log.error(err);
+            return res.sendStatus(500);
+        } else {
+            res.sendStatus(200);
+        }
+    });
+}
+
+exports.api.update = function (req, res) {
+    if (req.actor) {
+        var form = new formidable.IncomingForm();
+        form.parse(req, function (err, fields, files) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[formidable]', 'Tasks', 'Upsert', "", "", 'failed', "Formidable attempted to parse task fields");
+                return res.status(500).send(err);
+            } else {
+
+                save(req, res, fields);
+            }
+        });
+    } else {
+        audit.logEvent('[anonymous]', 'Tasks', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
+        return res.sendStatus(401);
+    }
+};
+
+exports.upsert = function (options, fields, callback) {
+    var _id = fields._id || '';
+    var title = fields.title || '';
+    var description = fields.description || '';
+    var categoryId = fields.categoryId || '';
+    if (_id === '' && (title === '' || description === '' || categoryId)) {
+        audit.logEvent(options.actor.id, 'Tasks', 'Upsert', 'title', title,
+                'The actor could not create a new task because one or more parameters of the request was not correct');
+        return callback(400);
+    } else {
+        var filter = fields._id ? {_id: fields._id} : fields;
+        fields.lastModified = new Date();
+
+        if (fields.usersID) {
+            fields.usersID = JSON.parse(fields.usersID);
+        }
+
+        if (_id === '') {//Creation
+            fields.authorID = options.actor.id;
+        } else {
+            var history = {
+                authorID: options.actor.id
+
+            }
+        }
+        Task.findOneAndUpdate(filter, fields, {upsert: true, setDefaultsOnInsert: true}, function (err) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[mongodb]', 'Tasks', 'Upsert', "", '', 'failed', "Mongodb attempted to save the new task");
+                return callback(err);
+            } else {
+                return callback(null);
+            }
+        });
+    }
+}
 
 exports.api.list = function (req, res) {
     if (req.actor) {
@@ -218,6 +275,20 @@ exports.api.read = function (req, res) {
                         path: '$user',
                         "preserveNullAndEmptyArrays": true
                     }
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'authorID',
+                        foreignField: '_id',
+                        as: 'author',
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$author',
+                        "preserveNullAndEmptyArrays": true
+                    }
                 }
         );
 
@@ -231,7 +302,6 @@ exports.api.read = function (req, res) {
                 audit.logEvent('[mongodb]', 'Tasks', 'Read', "ID", req.params.id, 'failed', "Mongodb attempted to find the task");
                 return res.status(500).send(err);
             } else {
-
                 beautify({language: req.actor.language, beautify: true}, tasks, function (err, t) {
                     if (err) {
                         audit.logEvent('[mongodb]', 'Tasks', 'Read', 'ID', req.params.id, 'failed',
@@ -298,29 +368,7 @@ exports.api.delete = function (req, res) {
     }
 }
 
-exports.upsert = function (options, fields, callback) {
-    var title = fields.title || '';
-    var description = fields.description || '';
-    var categoryId = fields.categoryId || '';
-    if (title === '' || description === '' || categoryId) {
-        audit.logEvent(options.actor.id, 'Tasks', 'Upsert', 'title', title,
-                'The actor could not create a new task because one or more parameters of the request was not correct');
-        return callback(400);
-    } else {
-        var filter = fields._id ? {_id: fields._id} : fields;
-        fields.lastModified = new Date();
-        fields.authorID = options.actor.id;
-        Task.findOneAndUpdate(filter, fields, {upsert: true, setDefaultsOnInsert: true}, function (err) {
-            if (err) {
-                log.error(err);
-                audit.logEvent('[mongodb]', 'Tasks', 'Upsert', "", '', 'failed', "Mongodb attempted to save the new task");
-                return callback(err);
-            } else {
-                return callback(null);
-            }
-        });
-    }
-}
+
 
 exports.getTask = function (task, callback) {
     Task.findOne({
@@ -344,10 +392,10 @@ function beautify(options, objects, callback) {
             var status = objects[i].status || "";
             var priority = objects[i].priority || "";
             if (status !== "") {
-                objects[i].status = dictionary.getValueFromJSON('../../resources/dictionary/task/statuses.json', status, language);
+                objects[i].statusbeautified = dictionary.getValueFromJSON('../../resources/dictionary/task/statuses.json', status, language);
             }
             if (priority !== "") {
-                objects[i].priority = dictionary.getValueFromJSON('../../resources/dictionary/task/priorities.json', priority, language);
+                objects[i].prioritybeautified = dictionary.getValueFromJSON('../../resources/dictionary/task/priorities.json', priority, language);
             }
         }
         callback(null, objects);

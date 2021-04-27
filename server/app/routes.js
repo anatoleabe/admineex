@@ -480,6 +480,13 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.upsert],
         access: _.findWhere(aclRoutes, {id: 62}).roles
     },
+    // Update an org
+    {
+        path: _.findWhere(aclRoutes, {id: 71}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 71}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.update],
+        access: _.findWhere(aclRoutes, {id: 71}).roles
+    },
     // Get orgs
     {
         path: _.findWhere(aclRoutes, {id: 63}).uri,

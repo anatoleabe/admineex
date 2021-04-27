@@ -795,6 +795,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                 Account.read().then(function (response) {
                     var profile = response.data;
                     $window.localStorage.language = profile.language;
+                    $rootScope.account.id = profile._id;
                     $rootScope.account.firstname = profile.firstname;
                     $rootScope.account.lastname = profile.lastname;
                     $rootScope.account.email = profile.email;

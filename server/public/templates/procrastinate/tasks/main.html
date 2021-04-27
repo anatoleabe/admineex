@@ -79,14 +79,14 @@
                                                 <span class="task-title">{{task.title}}</span>
                                                  <br/> 
                                                  <small class="chip-normal" ><span translate>Category: </span><span> {{task.category.name}}</span></small>
-                                                 <small ><span class="priority-2" ><span translate>Priority: </span> <span   >{{task.priority}}</span></span></small>
+                                                 <small ><span class="priority-2" ><span translate>Priority: </span> <span   >{{task.prioritybeautified}}</span></span></small>
                                                  <small class="chip-normal" ><span translate>Due : </span><span> {{task.deadline |date}}</span></small>
                                             </td>
                                             <td md-cell flex ng-click="details({id: task._id})" >
                                                 <span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; " >{{task.user.firstname.substr(0, 1).toUpperCase()}}</span>
                                                 {{task.user.lastname}} {{task.user.firstname}}  
                                             </td>
-                                            <td md-cell flex style="width: 30px" ng-click="details({id: task._id})">{{task.status}} </td>
+                                            <td md-cell flex style="width: 30px" ng-click="details({id: task._id})">{{task.statusbeautified}} </td>
                                             <td md-cell style="width: 30px" ng-click="details({id: task._id})">{{task.created |smartDatetime}} </td>
                                             <td md-cell  >
                                                 <md-button ng-click="edit({id: task._id})" aria-label="Edit" class="md-icon-button">

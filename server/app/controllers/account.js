@@ -455,8 +455,6 @@ exports.api.profile = function(req, res){
     if(req.actor){
         User.findOne({
             _id: req.actor.id
-        }, {
-            _id: 0
         }, function (err, user) {
             if (err) {
                 log.error(err);

@@ -8,7 +8,7 @@
             </md-button>
         </div>
     </md-toolbar>
-    <md-dialog-content>
+    <md-dialog-content ng-cloak>
         <div class="md-dialog-content" layout="row">
             <div layout="column" flex="65" >
                 <div class="task-dialog-title-Header" layout="row">
@@ -16,7 +16,7 @@
                         <div class="task-dialog-title-label"><small translate>Title</small></div>
                         <div class="task-dialog-title">{{task.title}}</div>
                         <div layout="row" >
-                            <md-button md-no-ink class="md-primary task-dialog-grey-button" >Start the task</md-button>
+                            <md-button ng-click="startThisTask()" ng-disabled='theTask.status == "2"' md-no-ink class="md-primary task-dialog-grey-button" >Start the task</md-button>
                             <md-button md-no-ink class="md-primary task-dialog-grey-button" >Assigns to a collaborator</md-button>
                             <md-button  aria-label="Show more" class="md-icon-button" >
                                 <md-icon>more_horiz</md-icon>
@@ -36,72 +36,43 @@
                     </div>
                 </div>
                 <div  layout="row" style="margin-top: 20px">
-                    <div layout="column" >
-                        <div class="task-dialog-title-label"><small translate>Activity</small></div>
-                        <md-tabs  md-dynamic-height flex>
-                            <md-tab label="Comments">
-                                <md-tab-body>
-                                        <md-input-container class="md-block">
-                                            <textarea ng-model="user.biography" placeholder="Add a comment please....." md-maxlength="150" rows="2" md-select-on-focus></textarea>
-                                        </md-input-container>
-                                        <md-button class="md-primary">
-                                            <span translate>Save</span>
-                                        </md-button>
+                    <div layout="column" flex>
+                        <div class="task-dialog-title-label" ><small translate>Activity</small></div>
 
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
-                                        Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In
-                                        sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
-                                        feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor,
-                                        orci enim rutrum enim, vel tempor sapien arcu a tellus. Vivamus convallis sodales ante
-                                        varius gravida. Curabitur a purus vel augue ultrices ultricies id a nisl. Nullam</p>
-
-                                </md-tab-body>
-
-                            </md-tab>
-                            <md-tab label="History">
-                                <md-content class="md-padding">
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
-                                        Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In
-                                        sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
-                                        feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor,
-                                        orci enim rutrum enim, vel tempor sapien arcu a tellus. Vivamus convallis sodales ante
-                                        varius gravida. Curabitur a purus vel augue ultrices ultricies id a nisl. Nullam
-                                        malesuada consequat diam, a facilisis tortor volutpat et. Sed urna dolor, aliquet vitae
-                                        posuere vulputate, euismod ac lorem. Sed felis risus, pulvinar at interdum quis,
-                                        vehicula sed odio. Phasellus in enim venenatis, iaculis tortor eu, bibendum ante. Donec
-                                        ac tellus dictum neque volutpat blandit. Praesent efficitur faucibus risus, ac auctor
-                                        purus porttitor vitae. Phasellus ornare dui nec orci posuere, nec luctus mauris
-                                        semper.</p>
-                                    <p>Morbi viverra, ante vel aliquet tincidunt, leo dolor pharetra quam, at semper massa
-                                        orci nec magna. Donec posuere nec sapien sed laoreet. Etiam cursus nunc in condimentum
-                                        facilisis. Etiam in tempor tortor. Vivamus faucibus egestas enim, at convallis diam
-                                        pulvinar vel. Cras ac orci eget nisi maximus cursus. Nunc urna libero, viverra sit amet
-                                        nisl at, hendrerit tempor turpis. Maecenas facilisis convallis mi vel tempor. Nullam
-                                        vitae nunc leo. Cras sed nisl consectetur, rhoncus sapien sit amet, tempus sapien.</p>
-                                    <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur
-                                        posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae
-                                        hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo
-                                        volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo
-                                        lectus.</p>
-                                </md-content>
-                            </md-tab>
-                        </md-tabs>
+                        <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
+                            <md-nav-item md-nav-click="goto('page1')" name="comments">
+                                Comments
+                            </md-nav-item>
+                            <md-nav-item md-nav-click="goto('page2')" name="history">
+                                History
+                            </md-nav-item>
+                        </md-nav-bar>
+                        <div  data-ng-include="'templates/procrastinate/tasks/navs/nav' + currentNavItem + '.html'">
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="task-dialog-rightside" layout="column" flex>
-                <md-button style="width: 200px; margin-top: 25px; margin-left: 20px" class="md-primary md-raised demo-menu-open-button"
-                           ng-click="ctrl.showMenu($event)">
-                    Not started
-                    <md-icon>keyboard_arrow_down</md-icon>
-                </md-button>
+
+                <md-menu md-offset="20 60" style="width: 200px">
+                    <md-button style="width: 200px; margin-top: 25px; margin-left: 20px" ng-model="buttonStatus" ng-click="$mdMenu.open($event)" class="md-primary md-raised demo-menu-open-button"
+                               ng-click="ctrl.showMenu($event)">
+                        {{task.statusbeautified}}
+                        <md-icon>keyboard_arrow_down</md-icon>
+                    </md-button>
+                    <md-menu-content >
+                        <md-menu-item ng-repeat="item in status">
+                            <md-button ng-click="setProgression(item)"> <span md-menu-align-target>{{item.name}} </span> </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
                 <div  layout="row">
                     <p class="md-body-2" flex="50" translate>Assigned to</p>
-                    <p class="md-body-1 md-secondary" flex translate><span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px " >{{task.user.firstname.substr(0, 1).toUpperCase()}}</span> {{task.user.lastname}} {{task.user.firstname}}  </p>
+                    <p class="md-body-1 md-secondary" flex translate><span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px " >{{task.user.firstname.substr(0, 1).toUpperCase()}}</span>{{task.user.firstname}} {{task.user.lastname}} </p>
                 </div>
                 <div  layout="row">
                     <p class="md-body-2" flex="50" translate>Priority</p>
-                    <p class="md-body-1 md-secondary" flex translate>{{task.priority}}</p>
+                    <p class="md-body-1 md-secondary" flex translate>{{task.prioritybeautified}}</p>
                 </div>
                 <div  layout="row">
                     <p class="md-body-2" flex="50" translate>Due date</p>
@@ -113,7 +84,7 @@
                 </div>
                 <div  layout="row">
                     <p class="md-body-2" flex="50" translate>Created By:</p>
-                    <p class="md-body-1 md-secondary" flex translate><span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px " >A</span> Anatole ABE</p>
+                    <p class="md-body-1 md-secondary" flex translate><span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px " >{{task.author.firstname.substr(0, 1).toUpperCase()}}</span>{{task.author.firstname}} {{task.author.lastname}}</p>
                 </div>
                 <div  layout="row">
                     <p class="md-body-2" flex="50" translate>Created on:</p>

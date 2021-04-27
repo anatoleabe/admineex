@@ -13,6 +13,9 @@ angular.module('TaskService', []).factory('Task', function($http) {
         upsert: function(info) {
             return $http.put('/api/task', info);
         },
+        update: function(info) {
+            return $http.post('/api/task', info);
+        },
         delete: function(info) {
             return $http.delete('/api/task/' + info.id);
         }

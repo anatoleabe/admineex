@@ -21,10 +21,10 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
         var Upload = $injector.get('Upload');
         $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
             var Dictionary = $injector.get('Dictionary');
-            
+
             Dictionary.jsonList({dictionary: 'task', levels: ['statuses']}).then(function (response) {
                 $scope.progress = response.data.jsonList;
-                
+
                 $ocLazyLoad.load('js/services/UserService.js').then(function () {
                     var User = $injector.get('User');
                     User.list().then(function (response) {
@@ -41,6 +41,8 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
                                 }).catch(function (response) {
                                     console.error(response);
                                 });
+                                
+                                
 
                                 $scope.querySearchInUsersList = function (text) {
                                     var deferred = $q.defer();

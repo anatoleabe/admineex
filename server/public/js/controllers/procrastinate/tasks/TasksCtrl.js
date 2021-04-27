@@ -62,7 +62,6 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                             $scope.helper = [];
 
                             Task.list($scope.filters).then(function (response) {
-                                console.log(response)
                                 var data = response.data;
                                 if (data.length == 0 && $scope.helper.length == 0) {
                                     $scope.helper = "No task";
@@ -173,43 +172,122 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                             }).then(function (response) {
                                 var data = response.data;
                                 var p = data;
-                                console.log(p)
+                                var s = $scope.status;
                                 $mdDialog.show({
-                                    controller: ['$scope', '$mdDialog', 'p', function ($scope, $mdDialog, p) {
-                                            $scope.task = p;
-                                            $scope.close = function () {
-                                                $mdDialog.hide();
-                                            }
-                                            $scope.cancel = function () {
-                                                $mdDialog.cancel();
-                                            };
-                                            $scope.edit = function (params) {
-                                                $mdDialog.hide();
-                                                $rootScope.kernel.loading = 0;
-                                                $state.go("home.tasks.edit", params);
-                                            };
+                                    controller: ['$scope', '$mdDialog', 'p', 's', function ($scope, $mdDialog, p, s) {
 
-                                            $scope.showConfirm = function (task) {
-                                                var confirm = $mdDialog.confirm()
-                                                        .title(gettextCatalog.getString("Delete this task"))
-                                                        .textContent(gettextCatalog.getString("Are you sure you want to delete the task") + " " + task.name.given + " " + task.name.family + gettextCatalog.getString("?"))
-                                                        .ok(gettextCatalog.getString("Delete"))
-                                                        .cancel(gettextCatalog.getString("Cancel"));
+                                            $ocLazyLoad.load('node_modules/ng-file-upload/dist/ng-file-upload.min.js').then(function () {
+                                                var Upload = $injector.get('Upload');
+                                                $ocLazyLoad.load('js/services/TaskService.js').then(function () {
+                                                    var Task = $injector.get('Task');
+                                                    $scope.task = p;
+                                                    $scope.status = s;
+                                                    $scope.buttonStatus = {id: p.status, name: p.statusbeautified};
+                                                    $scope.theTask = {_id: p._id};
+                                                    $scope.theTask.status = p.status;
+                                                    $scope.uploader = {};
+                                                    $scope.theTask.history = p.history;
 
-                                                $mdDialog.show(confirm).then(function () {
-                                                    // Delete
-                                                    deleteContact(task._id)
-                                                }, function () {
-                                                    // Cancel
+
+                                                    var watch = {};
+
+                                                    watch.buttonStatus = $scope.$watch('buttonStatus', function (newval, oldval) {
+                                                        if (newval && oldval && newval.id != oldval.id) {
+                                                            $scope.task.statusbeautified = newval.name;
+                                                            var historyItem = {
+                                                                authorID: $rootScope.account.id,
+                                                                oldval: oldval.id,
+                                                                newval: newval.id,
+                                                                field: "Status",
+                                                                date: new Date()
+                                                            };
+                                                            $scope.theTask.status = newval.id;
+                                                            $scope.buttonProgress = newval;
+                                                            $scope.theTask.history.push(historyItem);
+                                                            $scope.save();
+                                                        }
+                                                    });
+                                                    $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
+                                                        watch.buttonStatus();
+                                                    });
+
+
+                                                    $scope.startThisTask = function () {
+                                                        console.log($scope.theTask.status)
+                                                        var progress = {id:"2", name: "En cours"}
+                                                        $scope.setProgression(progress);
+                                                        //console.log($scope.theTask.status)
+                                                    }
+
+                                                    $scope.setProgression = function (progression) {
+                                                        $scope.buttonStatus = progression;
+                                                    }
+                                                    $scope.close = function () {
+                                                        $mdDialog.hide();
+                                                    }
+                                                    $scope.cancel = function () {
+                                                        $mdDialog.cancel();
+                                                    };
+                                                    $scope.edit = function (params) {
+                                                        $mdDialog.hide();
+                                                        $rootScope.kernel.loading = 0;
+                                                        $state.go("home.tasks.edit", params);
+                                                    };
+
+                                                    $scope.currentNavItem = 'comments';
+
+                                                    $scope.goto = function (page) {
+                                                        $scope.status = "Goto " + page;
+                                                    };
+
+                                                    // Modify an Task
+                                                    $scope.save = function () {
+                                                        $rootScope.kernel.loading = 0;
+                                                        Task.update($scope.theTask).then(function (response) {
+                                                            $state.transitionTo('home.tasks.main');
+                                                            $rootScope.kernel.alerts.push({
+                                                                type: 3,
+                                                                msg: gettextCatalog.getString('The task has been updated'),
+                                                                priority: 4
+                                                            });
+                                                            $rootScope.kernel.loading = 100;
+                                                        }).catch(function (response) {
+                                                            $rootScope.kernel.loading = 100;
+                                                            $rootScope.kernel.alerts.push({
+                                                                type: 1,
+                                                                msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                                priority: 2
+                                                            });
+                                                            console.error(response);
+                                                        });
+                                                    }
+
+
+                                                    $scope.showConfirm = function (task) {
+                                                        var confirm = $mdDialog.confirm()
+                                                                .title(gettextCatalog.getString("Delete this task"))
+                                                                .textContent(gettextCatalog.getString("Are you sure you want to delete the task") + " " + task.name.given + " " + task.name.family + gettextCatalog.getString("?"))
+                                                                .ok(gettextCatalog.getString("Delete"))
+                                                                .cancel(gettextCatalog.getString("Cancel"));
+
+                                                        $mdDialog.show(confirm).then(function () {
+                                                            // Delete
+                                                            deleteContact(task._id)
+                                                        }, function () {
+                                                            // Cancel
+                                                        });
+                                                    }
+
                                                 });
-                                            }
+                                            });
 
                                         }],
                                     templateUrl: '../templates/procrastinate/tasks/dialogs/task.html',
                                     parent: angular.element(document.body),
                                     clickOutsideToClose: true,
                                     locals: {
-                                        p: p
+                                        p: p,
+                                        s: s
                                     }
                                 }).then(function (answer) {
 
