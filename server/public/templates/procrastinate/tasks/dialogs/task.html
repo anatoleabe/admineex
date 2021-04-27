@@ -16,8 +16,21 @@
                         <div class="task-dialog-title-label"><small translate>Title</small></div>
                         <div class="task-dialog-title">{{task.title}}</div>
                         <div layout="row" >
-                            <md-button ng-click="startThisTask()" ng-disabled='theTask.status == "2"' md-no-ink class="md-primary task-dialog-grey-button" >Start the task</md-button>
-                            <md-button md-no-ink class="md-primary task-dialog-grey-button" >Assigns to a collaborator</md-button>
+                            <md-button ng-click="startThisTask()" ng-disabled='theTask.status == "2"'  md-no-ink class="md-primary task-dialog-grey-button" >Start the task</md-button>
+
+                            <md-menu md-offset="20 60" >
+                                <md-button style="margin-left: 20px" ng-model="buttonAssigns" ng-click="$mdMenu.open($event)" class="md-primary task-dialog-grey-button demo-menu-open-button"
+                                           ng-click="ctrl.showMenu($event)">
+                                    <span>Assigns to a collaborator</span>
+                                    <md-icon>keyboard_arrow_down</md-icon>
+                                </md-button>
+                                <md-menu-content >
+                                    <md-menu-item ng-repeat="user in users">
+                                        <md-button ng-click="assignUserTo(user)"> <span md-menu-align-target>{{user.firstname}} {{user.lastname}} </span> </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+
                             <md-button  aria-label="Show more" class="md-icon-button" >
                                 <md-icon>more_horiz</md-icon>
                                 <md-tooltip md-direction="top">

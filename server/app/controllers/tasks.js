@@ -120,6 +120,7 @@ exports.upsert = function (options, fields, callback) {
         var filter = fields._id ? {_id: fields._id} : fields;
         fields.lastModified = new Date();
 
+        console.log(fields.usersID)
         if (fields.usersID) {
             fields.usersID = JSON.parse(fields.usersID);
         }
@@ -132,6 +133,7 @@ exports.upsert = function (options, fields, callback) {
 
             }
         }
+        console.log(fields)
         Task.findOneAndUpdate(filter, fields, {upsert: true, setDefaultsOnInsert: true}, function (err) {
             if (err) {
                 log.error(err);
