@@ -418,5 +418,11 @@
         "uri": "/api/task",
         "method": "POST",
         "roles": [1,2,3,4]
+    },
+    {
+        "id": 72,
+        "uri": "/api/taskHistory/:id",
+        "method": "GET",
+        "roles": [1,2,3,4]
     }
 ]

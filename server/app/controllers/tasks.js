@@ -65,6 +65,7 @@ exports.api.upsert = function (req, res) {
 };
 
 function save(req, res, fields, filesToSave, _path) {
+    var _id = fields._id || '';
     if (filesToSave && filesToSave.length > 0 && filesToSave[0] != undefined) {
         if (!fields.attachedFiles) {
             fields.attachedFiles = [];
@@ -75,6 +76,14 @@ function save(req, res, fields, filesToSave, _path) {
             file.path = path.join(_path, file.name);
             fields.attachedFiles.push({name: file.name, path: file.path});
         }
+    }
+
+    if (fields.usersID) {
+        fields.usersID = JSON.parse(fields.usersID);
+    }
+
+    if (_id === '') {//Creation
+        fields.authorID = req.actor.id;
     }
 
     exports.upsert({actor: req.actor}, fields, function (err) {
@@ -97,13 +106,132 @@ exports.api.update = function (req, res) {
                 audit.logEvent('[formidable]', 'Tasks', 'Upsert', "", "", 'failed', "Formidable attempted to parse task fields");
                 return res.status(500).send(err);
             } else {
+                Task.findOne({
+                    _id: new ObjectID(fields._id)
+                }).exec(function (err, task) {
+                    if (err) {
+                        log.error(err);
+                        audit.logEvent('[mongodb]', 'Tasks', 'Update', "ID", fields._id, 'failed', "Mongodb attempted to find the task");
+                        return res.status(500).send(err);
+                    } else {
+                        if (task === null) {
+                            audit.logEvent('[mongodb]', 'Tasks', 'Read', 'ID', fields._id, 'failed',
+                                    'Mongodb attempted to find the task but it revealed not defined');
+                            return res.sendStatus(403);
+                        } else {
+                            task.status = fields.status;
+                            if (fields.taskhistory) {
+                                var myTask = {};
+                                myTask.history = {
+                                    field: fields.taskhistory.field,
+                                    date: moment(fields.taskhistory.date).toDate()
+                                }
+                                myTask.history.authorID = new ObjectID(fields.taskhistory.authorID);
 
-                save(req, res, fields);
+                                if (fields.taskhistory.field == "Assignee") {
+                                    myTask.history.oldval = new ObjectID(fields.taskhistory.oldval);
+                                    myTask.history.newval = new ObjectID(fields.taskhistory.newval);
+                                    task.usersID = JSON.parse(fields.usersID);
+                                }
+                                if (fields.taskhistory.field == "status") {
+                                    myTask.history.oldval = fields.taskhistory.oldval;
+                                    myTask.history.newval = fields.taskhistory.newval;
+                                    task.status = fields.status;
+                                }
+                                task.history.push(myTask.history);
+                            }
+
+
+                            exports.upsert({actor: req.actor}, task, function (err) {
+                                if (err) {
+                                    console.error(err);
+                                    log.error(err);
+                                    return res.sendStatus(500);
+                                } else {
+                                    res.sendStatus(200);
+                                }
+                            });
+                        }
+                    }
+                });
             }
         });
     } else {
         audit.logEvent('[anonymous]', 'Tasks', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
         return res.sendStatus(401);
+    }
+};
+
+exports.api.getHistory = function (req, res) {
+    if (req.actor) {
+        var id = req.params.id || '';
+        console.log("get history of ", id)
+        var mainQuery = {$and: [{}]};
+        mainQuery.$and.push({
+            "_id": new ObjectID(req.params.id)
+        });
+
+        var pipe = [];
+        pipe.push({$match: mainQuery});
+        pipe.push({$project: {_id: 1, history: 1, usersID: 1, theId: {$arrayElemAt: ["$history.authorID", 0]}}});
+        pipe.push(
+                {$unwind: "$history"},
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'history.authorID',
+                        foreignField: '_id',
+                        as: 'author',
+                    }
+                },
+                {$unwind: "$author"},
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'history.oldval',
+                        foreignField: '_id',
+                        as: 'oldAssignee',
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$oldAssignee',
+                        "preserveNullAndEmptyArrays": true
+                    }
+                },
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'history.newval',
+                        foreignField: '_id',
+                        as: 'newAssignee',
+                    }
+                },
+                {
+                    $unwind: {
+                        path: '$newAssignee',
+                        "preserveNullAndEmptyArrays": true
+                    }
+                }
+        );
+
+        //Execute
+        var q = Task.aggregate(pipe);
+        q.options = {allowDiskUse: true};
+        //Run it
+        q.exec(function (err, task) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[mongodb]', 'Tasks', 'Read', "ID", req.params.id, 'failed', "Mongodb attempted to find the task");
+                return res.status(500).send(err);
+            } else {
+                console.log(task)
+                return res.json(task);
+            }
+        });
+    } else {
+        audit.logEvent('[anonymous]', 'Tasks', 'Read', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
     }
 };
 
@@ -119,21 +247,6 @@ exports.upsert = function (options, fields, callback) {
     } else {
         var filter = fields._id ? {_id: fields._id} : fields;
         fields.lastModified = new Date();
-
-        console.log(fields.usersID)
-        if (fields.usersID) {
-            fields.usersID = JSON.parse(fields.usersID);
-        }
-
-        if (_id === '') {//Creation
-            fields.authorID = options.actor.id;
-        } else {
-            var history = {
-                authorID: options.actor.id
-
-            }
-        }
-        console.log(fields)
         Task.findOneAndUpdate(filter, fields, {upsert: true, setDefaultsOnInsert: true}, function (err) {
             if (err) {
                 log.error(err);

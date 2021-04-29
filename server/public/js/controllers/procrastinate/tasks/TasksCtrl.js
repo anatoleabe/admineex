@@ -190,7 +190,8 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                                                             $scope.theTask = {_id: p._id};
                                                             $scope.theTask.status = p.status;
                                                             $scope.uploader = {};
-                                                            $scope.theTask.history = p.history;
+                                                            $rootScope.taskhistory = $scope.theTask.history;
+                                                            $rootScope.selectedTaskId = $scope.theTask._id;
 
 
                                                             var watch = {};
@@ -202,12 +203,13 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                                                                         authorID: $rootScope.account.id,
                                                                         oldval: oldval.id,
                                                                         newval: newval.id,
-                                                                        field: "Status",
+                                                                        field: "status",
                                                                         date: new Date()
                                                                     };
                                                                     $scope.theTask.status = newval.id;
                                                                     $scope.buttonProgress = newval;
-                                                                    $scope.theTask.history.push(historyItem);
+                                                                    $scope.theTask.taskhistory = historyItem;
+                                                                    $rootScope.taskhistory = $scope.theTask.taskhistory;
                                                                     $scope.save();
                                                                 }
                                                             });
@@ -237,7 +239,7 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                                                                 };
                                                                 $scope.task.user = user;
                                                                 $scope.theTask.usersID = JSON.stringify([user._id]);
-                                                                $scope.theTask.history.push(historyItem);
+                                                                $scope.theTask.taskhistory = historyItem;
                                                                 $scope.save();
                                                             }
                                                             $scope.close = function () {
@@ -269,6 +271,7 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                                                                         priority: 4
                                                                     });
                                                                     $rootScope.kernel.loading = 100;
+                                                                    $scope.theTask.history = [];
                                                                 }).catch(function (response) {
                                                                     $rootScope.kernel.loading = 100;
                                                                     $rootScope.kernel.alerts.push({

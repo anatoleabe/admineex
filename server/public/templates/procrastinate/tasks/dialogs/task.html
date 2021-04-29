@@ -74,8 +74,8 @@
                         <md-icon>keyboard_arrow_down</md-icon>
                     </md-button>
                     <md-menu-content >
-                        <md-menu-item ng-repeat="item in status">
-                            <md-button ng-click="setProgression(item)"> <span md-menu-align-target>{{item.name}} </span> </md-button>
+                        <md-menu-item ng-repeat="item in status track by $index" >
+                            <md-button ng-click="setProgression(item)" >  <span md-menu-align-target>{{item.name}} </span> </md-button>
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>

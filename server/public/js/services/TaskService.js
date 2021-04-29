@@ -18,6 +18,9 @@ angular.module('TaskService', []).factory('Task', function($http) {
         },
         delete: function(info) {
             return $http.delete('/api/task/' + info.id);
+        },
+        history: function(info) {
+            return $http.get('/api/taskHistory/' + info.id);
         }
     }
 });
