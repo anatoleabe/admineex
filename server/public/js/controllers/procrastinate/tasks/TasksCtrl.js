@@ -256,10 +256,6 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
 
                                                             $scope.currentNavItem = 'comments';
 
-                                                            $scope.goto = function (page) {
-                                                                $scope.status = "Goto " + page;
-                                                            };
-
                                                             // Modify an Task
                                                             $scope.save = function () {
                                                                 $rootScope.kernel.loading = 0;

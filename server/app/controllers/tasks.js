@@ -165,7 +165,6 @@ exports.api.update = function (req, res) {
 exports.api.getHistory = function (req, res) {
     if (req.actor) {
         var id = req.params.id || '';
-        console.log("get history of ", id)
         var mainQuery = {$and: [{}]};
         mainQuery.$and.push({
             "_id": new ObjectID(req.params.id)
@@ -173,7 +172,7 @@ exports.api.getHistory = function (req, res) {
 
         var pipe = [];
         pipe.push({$match: mainQuery});
-        pipe.push({$project: {_id: 1, history: 1, usersID: 1, theId: {$arrayElemAt: ["$history.authorID", 0]}}});
+        pipe.push({$project: {_id: 1, history: 1, usersID: 1}});
         pipe.push(
                 {$unwind: "$history"},
                 {
@@ -214,7 +213,7 @@ exports.api.getHistory = function (req, res) {
                     }
                 }
         );
-
+        pipe.push({$sort: { 'history.date': -1 } },);
         //Execute
         var q = Task.aggregate(pipe);
         q.options = {allowDiskUse: true};
@@ -225,7 +224,6 @@ exports.api.getHistory = function (req, res) {
                 audit.logEvent('[mongodb]', 'Tasks', 'Read', "ID", req.params.id, 'failed', "Mongodb attempted to find the task");
                 return res.status(500).send(err);
             } else {
-                console.log(task)
                 return res.json(task);
             }
         });

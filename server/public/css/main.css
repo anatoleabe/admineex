@@ -670,3 +670,26 @@ table.md-table tbody.md-body > tr.md-row:hover {
     margin-right: 8px;
     color: rgb(66, 82, 110) !important;
 }
+
+
+.history-changement-arrow::before {
+    display: block;
+    content: "→";
+}
+
+.jzUAML {
+    margin: 24px 0px;
+}
+
+.gAtRty {
+    -webkit-box-align: center;
+    align-items: center;
+    margin-top: 8px;
+    margin-left: 40px;
+    color: rgb(66, 82, 110);
+}
+
+.GxLNY {
+    margin-left: 8px;
+    color: rgb(66, 82, 110);
+}

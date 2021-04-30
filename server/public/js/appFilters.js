@@ -314,6 +314,25 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
                    }
         return toReturn;
     }
+}).filter('status', function(gettextCatalog) {
+    return function (value) {
+        var toReturn = gettextCatalog.getString("unknown");
+        switch(value){
+            case '1':
+                toReturn = gettextCatalog.getString("Not started"); 
+                break;
+            case '2':
+                toReturn = gettextCatalog.getString("In progress");
+                break;
+            case '3':
+                toReturn = gettextCatalog.getString("Completed");
+                break;
+            case '4':
+                toReturn = gettextCatalog.getString("Blocked");
+                break;
+                   }
+        return toReturn;
+    }
 }).filter('product', function(gettextCatalog) {
     return function (value) {
         var toReturn = gettextCatalog.getString("unknown");

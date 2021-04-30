@@ -53,11 +53,14 @@
                         <div class="task-dialog-title-label" ><small translate>Activity</small></div>
 
                         <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links">
-                            <md-nav-item md-nav-click="goto('page1')" name="comments">
-                                Comments
+                            <md-nav-item md-nav-click="goto('page1')" name="comments" >
+                                <span translate>Comments</span>
                             </md-nav-item>
-                            <md-nav-item md-nav-click="goto('page2')" name="history">
-                                History
+                            <md-nav-item md-nav-click="goto('page2')" name="path" >
+                                <span translate>Path</span>
+                            </md-nav-item>
+                            <md-nav-item md-nav-click="goto('page2')" name="history" >
+                                <span translate>History</span>
                             </md-nav-item>
                         </md-nav-bar>
                         <div  data-ng-include="'templates/procrastinate/tasks/navs/nav' + currentNavItem + '.html'">
