@@ -1,0 +1,35 @@
+<md-card id="patients_tested_gender_{{disease}}" class="widget" ng-class="{'selectedChart' : selected === true && $root.state ==='home.analysis'}">
+    <md-card-title>
+        <md-card-title-text layout="row">
+            <md-button class="md-icon-button info-labs">
+                <md-icon>fullscreen</md-icon>
+            </md-button>
+            <span class="md-headline">
+                <span translate>Activity</span>
+            </span>
+            <span flex></span>
+            <div cardselect selected="selected"></div>
+            <md-menu class="hide-before-export">
+                <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdMenu.open($event)" ng-disabled="$parent.$parent.$parent.kernel.isLoading == true">
+                    <md-icon>more_vert</md-icon>
+                </md-button>
+                <md-menu-content width="2">
+                    <md-menu-item>
+                        <md-button ng-click="$parent.$parent.exportPNG('patients_tested_gender_'+disease, title);">
+                            <md-icon class="material-icons-outlined" md-menu-align-target>get_app</md-icon> <span translate>Export</span> <small>(png)</small>
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div class="loading" data-ng-if="loadingChart">
+            <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
+        </div>
+        <div ng-class="{'opacity1': loadingChart}">
+            <canvas class="chart chart-bar" chart-data="data" chart-labels="labels" chart-options="options" chart-colors="colors"></canvas>
+        </div>
+        <small class="daterange">{{$parent.range.from.value | date:'dd/MM/yy'}}-{{$parent.range.to.value | date:'dd/MM/yy'}}</small>
+    </md-card-content>
+</md-card>

@@ -1,0 +1,22 @@
+<md-card class="widget">
+    <md-card-title>
+        <md-card-title-text layout="row" style="color: green">
+            <md-button class="md-icon-button md-raised md-primary" style="background-color: green" >
+                <md-icon>done</md-icon>
+            </md-button>
+            <span class="md-headline" style="margin-left: 20px">
+                <span translate><b>Completed</b></span>
+            </span>
+            <span flex></span>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div class="loading" data-ng-if="loadingChart">
+            <md-progress-circular md-mode="indeterminate" md-diameter="60" class="md-accent"></md-progress-circular>
+        </div>
+        <div style="margin-top: 5px; margin-bottom: 15px; font-size: 18pt" ng-class="{'opacity1': loadingChart}">
+            <span><center>{{nbTasks}}</center></span>
+        </div>
+        <small class="daterange">Completed tasks</small>
+    </md-card-content>
+</md-card>
