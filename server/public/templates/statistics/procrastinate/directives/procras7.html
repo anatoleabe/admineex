@@ -1,4 +1,4 @@
-<md-card id="patients_tested_gender_{{disease}}" class="widget" ng-class="{'selectedChart' : selected === true && $root.state ==='home.analysis'}">
+<md-card id="Performance" class="widget" ng-class="{'selectedChart' : selected === true && $root.state ==='home.analysis'}">
     <md-card-title>
         <md-card-title-text layout="row">
             <md-button class="md-icon-button info-labs">
@@ -15,7 +15,7 @@
                 </md-button>
                 <md-menu-content width="2">
                     <md-menu-item>
-                        <md-button ng-click="$parent.$parent.exportPNG('patients_tested_gender_'+disease, title);">
+                        <md-button ng-click="$parent.$parent.exportPNG('Performance', 'Performance' | translate);">
                             <md-icon class="material-icons-outlined" md-menu-align-target>get_app</md-icon> <span translate>Export</span> <small>(png)</small>
                         </md-button>
                     </md-menu-item>
@@ -28,7 +28,7 @@
             <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
         </div>
         <div ng-class="{'opacity1': loadingChart}">
-            <canvas class="chart chart-line" chart-data="data" chart-options="options" chart-labels="labels" chart-series="series" chart-colors="colors"></canvas>
+            <canvas class="chart chart-line" chart-data="data.absolute" chart-options="options" chart-labels="labels" chart-series="series" chart-colors="colors"></canvas>
         </div>
         <small class="daterange">{{$parent.range.from.value | date:'dd/MM/yy'}}-{{$parent.range.to.value | date:'dd/MM/yy'}}</small>
     </md-card-content>

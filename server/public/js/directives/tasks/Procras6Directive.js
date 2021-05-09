@@ -13,7 +13,7 @@ angular.module('Procras6Directive', []).directive('procras6', function (gettextC
                 var Task = $injector.get('Task');
                 $ocLazyLoad.load('js/services/ChartService.js').then(function () {
                     var Card = $injector.get('Chart');
-                    var CARD_NAME = "procras6";
+                    var CARD_NAME = "procras6_7";
                     $scope.absoluteMode = true;
                     $scope.toggleaAsoluteMode = function () {
                         if ($scope.absoluteMode === true) {

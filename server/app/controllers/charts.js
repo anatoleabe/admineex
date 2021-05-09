@@ -121,8 +121,8 @@ var whichChart = function (config, callback) {
                 }
             });
             break;
-        case 'procras6':
-            procras6(config, function (err, chart) {
+        case 'procras6_7':
+            procras6_7(config, function (err, chart) {
                 if (err) {
                     callback(err);
                 } else {
@@ -418,7 +418,7 @@ var card6 = function (config, callback) {
  * @param {json} callback
  * optimized : true
  */
-var procras6 = function (config, callback) {
+var procras6_7 = function (config, callback) {
     var months = getDates(moment(new Date(new Date().setDate(new Date().getDate() - 365))), moment(new Date));
     var data = [];
     var labels = [];
@@ -470,7 +470,7 @@ var procras6 = function (config, callback) {
                     var blocked = (tasks && tasks != undefined && tasks.filter(t => (t._id !== undefined && t._id == '4'))[0]) ? tasks.filter(t => (t._id !== undefined && t._id == '4'))[0].count : 0;
 
                     values.push([notstarted, inprogress, completed])
-                    
+
                     myLoopH(i + 1);
                 }
             });
@@ -521,7 +521,7 @@ var procras0 = function (config, callback) {
         }
     });
 
-    
+
 
     var pipe = [];
     pipe.push({$match: mainQuery});
