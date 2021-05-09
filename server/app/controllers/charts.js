@@ -4,12 +4,14 @@ var log = require('../utils/log');
 var moment = require('moment');
 var dictionary = require('../utils/dictionary');
 var _ = require('underscore');
+var ObjectID = require('mongoose').mongo.ObjectID;
 var controllers = {
     users: require('./users'),
     projects: require('./projects'),
     personnel: require('./personnel'),
     positions: require('./positions'),
     structures: require('./structures'),
+    tasks: require('./tasks'),
     configuration: require('./configuration')
 };
 
@@ -25,7 +27,7 @@ exports.api.build = function (req, res) {
                 name: name,
                 from: new Date(req.params.from),
                 to: new Date(req.params.to),
-                group: req.params.group
+                selecteduser: req.params.selecteduser
             }, function (err, chart) {
                 if (err) {
                     res.sendStatus(500);
@@ -103,6 +105,24 @@ var whichChart = function (config, callback) {
             break;
         case 'card6':
             card6(config, function (err, chart) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, chart);
+                }
+            });
+            break;
+        case 'procras0':
+            procras0(config, function (err, chart) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, chart);
+                }
+            });
+            break;
+        case 'procras6':
+            procras6(config, function (err, chart) {
                 if (err) {
                     callback(err);
                 } else {
@@ -299,7 +319,7 @@ var card4 = function (config, callback) {
         req: {
             actor: config.actor
         },
-        aggregation : {"$match": {"status": "2"}}
+        aggregation: {"$match": {"status": "2"}}
     }
 
     controllers.personnel.list(options, function (err, personnels) {
@@ -392,6 +412,152 @@ var card6 = function (config, callback) {
         }
     });
 };
+/**
+ * Build the number of tasks completed, in progress, overdue, blocked per month
+ * @param {json} config
+ * @param {json} callback
+ * optimized : true
+ */
+var procras6 = function (config, callback) {
+    var months = getDates(moment(new Date(new Date().setDate(new Date().getDate() - 365))), moment(new Date));
+    var data = [];
+    var labels = [];
+    var values = [];
+    var query = {$and: [{}, {}]};
+
+    function myLoopH(i) {
+        if (i < months.length) {
+            query.$and[0] = {
+                "created": {
+                    $gte: moment(months[i].from).startOf('day').toDate()
+                }
+            };
+            query.$and[1] = {
+                "created": {
+                    $lte: moment(months[i].to).endOf('day').toDate()
+                }
+            };
+
+            var pipe = [];
+            pipe.push({$match: query});
+            pipe.push({$project: {_id: 1, authorID: 1, created: 1, lastModified: 1, usersID: 1, status: 1}});
+            pipe.push(
+                    {
+                        $unwind: {
+                            path: '$usersID'
+                        }
+                    }
+            );
+
+            var queryU = {$and: [{}]};
+            if (config.selecteduser != "undefined") {
+                queryU.$and.push({
+                    "usersID": new ObjectID(config.selecteduser)
+                });
+                pipe.push({$match: queryU});
+            }
+            pipe.push({"$group": {_id: "$status", count: {$sum: 1}}});
+
+            controllers.tasks.statistics({pipe: pipe}, function (err, tasks) {
+                if (err) {
+                    log.error(err);
+                    audit.logEvent('[mongodb]', 'Chart', 'procras0', '', '', 'failed', 'Mongodb attempted to build procras0 chart');
+                    callback(err);
+                } else {
+                    var notstarted = (tasks && tasks != undefined && tasks.filter(t => (t._id !== undefined && t._id == '1'))[0]) ? tasks.filter(t => (t._id !== undefined && t._id == '1'))[0].count : 0;
+                    var inprogress = (tasks && tasks != undefined && tasks.filter(t => (t._id !== undefined && t._id == '2'))[0]) ? tasks.filter(t => (t._id !== undefined && t._id == '2'))[0].count : 0;
+                    var completed = (tasks && tasks != undefined && tasks.filter(t => (t._id !== undefined && t._id == '3'))[0]) ? tasks.filter(t => (t._id !== undefined && t._id == '3'))[0].count : 0;
+                    var blocked = (tasks && tasks != undefined && tasks.filter(t => (t._id !== undefined && t._id == '4'))[0]) ? tasks.filter(t => (t._id !== undefined && t._id == '4'))[0].count : 0;
+
+                    values.push([notstarted, inprogress, completed])
+                    
+                    myLoopH(i + 1);
+                }
+            });
+        } else {
+            for (k = 0; k < months.length; k++) {
+                labels.push(months[k].label);
+            }
+            for (m = 0; m < 3; m++) {
+                data[m] = [];
+                for (n = 0; n < values.length; n++) {
+                    data[m][n] = values[n][m];
+                }
+            }
+            callback(null, {data: data, labels: labels});
+        }
+    }
+    myLoopH(0);
+};
+
+/**
+ * Build the number of tasks completed, in progress, overdue, blocked
+ * @param {json} config
+ * @param {json} callback
+ * optimized : true
+ */
+var procras0 = function (config, callback) {
+    var data = {
+        notstarted: 0,
+        completed: 0,
+        inprogress: 0,
+        overdue: 0,
+        blocked: 0
+    };
+    var currentDateRange = {
+        from: config.from,
+        to: config.to
+    };
+    var mainQuery = {$and: [{}]};
+
+    mainQuery.$and.push({
+        "created": {
+            $gte: moment(currentDateRange.from).startOf('day').toDate()
+        }
+    });
+    mainQuery.$and.push({
+        "created": {
+            $lte: moment(currentDateRange.to).endOf('day').toDate()
+        }
+    });
+
+    
+
+    var pipe = [];
+    pipe.push({$match: mainQuery});
+    pipe.push({$project: {_id: 1, authorID: 1, created: 1, lastModified: 1, usersID: 1, status: 1}});
+    pipe.push(
+            {
+                $unwind: {
+                    path: '$usersID'
+                }
+            }
+    );
+    pipe.push({$sort: {created: -1}});
+
+    var query1 = {$and: [{}]};
+    if (config.selecteduser != "undefined") {
+        query1.$and.push({
+            "usersID": new ObjectID(config.selecteduser)
+        });
+        pipe.push({$match: query1});
+    }
+    pipe.push({"$group": {_id: "$status", count: {$sum: 1}}});
+
+    controllers.tasks.statistics({pipe: pipe}, function (err, tasks) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Chart', 'procras0', '', '', 'failed', 'Mongodb attempted to build procras0 chart');
+            callback(err);
+        } else {
+            data.notstarted = (tasks && tasks != undefined && tasks.filter(t => (t._id !== undefined && t._id == '1'))[0]) ? tasks.filter(t => (t._id !== undefined && t._id == '1'))[0].count : 0;
+            data.inprogress = (tasks && tasks != undefined && tasks.filter(t => (t._id !== undefined && t._id == '2'))[0]) ? tasks.filter(t => (t._id !== undefined && t._id == '2'))[0].count : 0;
+            data.completed = (tasks && tasks != undefined && tasks.filter(t => (t._id !== undefined && t._id == '3'))[0]) ? tasks.filter(t => (t._id !== undefined && t._id == '3'))[0].count : 0;
+            data.blocked = (tasks && tasks != undefined && tasks.filter(t => (t._id !== undefined && t._id == '4'))[0]) ? tasks.filter(t => (t._id !== undefined && t._id == '4'))[0].count : 0;
+            callback(null, data);
+        }
+    });
+};
 
 var global = function (config, callback) {
     var data = {
@@ -470,7 +636,7 @@ var global = function (config, callback) {
 
 
 /* startDate=> moment.js date object */
-function getMonths(startDate, endDate) {
+function getDates(startDate, endDate) {
     var endDateNormalized = endDate.clone().startOf("month");
     endDateNormalized.add(1, "M");
     var startDateNormalized = startDate.clone().startOf("month").add(1, "M");

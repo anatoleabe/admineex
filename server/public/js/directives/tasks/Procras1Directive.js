@@ -11,9 +11,15 @@ angular.module('Procras1Directive', []).directive('procras1', function (gettextC
             $scope.loadingChart = true;
             $ocLazyLoad.load('js/services/TaskService.js').then(function () {
                 var Task = $injector.get('Task');
-                $scope.loading = true;
-                $scope.loadingChart = false;
-                $scope.nbTasks = 36;
+                $ocLazyLoad.load('js/services/ChartService.js').then(function () {
+                    var Card = $injector.get('Chart');
+                    $scope.loading = true;
+                    $scope.loadingChart = false;
+                    $scope.nbTasks = 36;
+                    var CARD_NAME = "procras1_2_3_4";
+
+                    
+                });
             });
         }
     };

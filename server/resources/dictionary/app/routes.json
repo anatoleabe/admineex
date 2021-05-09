@@ -164,7 +164,7 @@
     },
     {
         "id": 29,
-        "uri": "/api/charts/:name/from/:from/to/:to/group/:group",
+        "uri": "/api/charts/:name/from/:from/to/:to/selecteduser/:selecteduser",
         "method": "GET",
         "roles": [1,2,3,4]
     },

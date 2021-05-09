@@ -45,7 +45,6 @@ angular.module('Procras7Directive', []).directive('procras7', function (gettextC
                 ];
                 $scope.labels = ["Jan.", "Fev.", "Mars", "Avril.", "Mai", "Juin", "Juil.", "Aou.", "Sept.", "Oct.", "Nov.", "Dec."];
                 $scope.loadingChart = false;
-                build();
             });
         }
     };

@@ -213,7 +213,7 @@ exports.api.getHistory = function (req, res) {
                     }
                 }
         );
-        pipe.push({$sort: { 'history.date': -1 } },);
+        pipe.push({$sort: {'history.date': -1}}, );
         //Execute
         var q = Task.aggregate(pipe);
         q.options = {allowDiskUse: true};
@@ -492,6 +492,22 @@ exports.getTask = function (task, callback) {
             callback(err)
         } else {
             callback(null, task);
+        }
+    });
+}
+
+exports.statistics = function (options, callback) {
+    //Execute
+    var q = Task.aggregate(options.pipe);
+    q.options = {allowDiskUse: true};
+    //Run it
+    q.exec(function (err, tasks) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Tasks', 'statistics', '', '', 'failed', 'Mongodb attempted to retrieve tasks statistics');
+            callback(err)
+        } else {
+            callback(null, tasks);
         }
     });
 }

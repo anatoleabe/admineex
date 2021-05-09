@@ -701,6 +701,11 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
     }]).run(function ($rootScope, $location, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $timeout, $transitions, $filter) {
     $rootScope.kernel = {
     };
+    
+    $rootScope.globalView = {
+        activated: false,
+        selectedUser:undefined
+    };
 
     $transitions.onStart({}, function (trans) {
         var nextState = trans.to();
@@ -740,22 +745,42 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         $rootScope.href = function (state) {
             $state.go(state);
         }
-
+        
         // Build date range
-        $rootScope.range = {
-            min: new Date(1970, 0, 1),
-            max: new Date(2100, 0, 1),
-            from: {
-                isOpen: false,
-                isDisabled: true,
-                value: new Date(2016, 3, 1)
-            },
-            to: {
-                isOpen: false,
-                isDisabled: true,
-                value: new Date(2020, 11, 31)
-            }
-        };
+        if (!$rootScope.range) {
+            var max = new Date();
+            max.setDate(max.getDate() + 1);
+            $rootScope.range = {
+                min: new Date(1970, 0, 1),
+                max: max,
+                from: {
+                    isOpen: false,
+                    isDisabled: true,
+                    value: new Date(new Date(new Date(new Date().setDate(new Date().getDate() - 30))).setHours(0, 0, 0, 0)),
+                    handleShowCalendar: function($event) {
+                        this.isOpen = true;
+                        this.isDisabled = false;
+                    },
+                    handleBlur: function() {
+                        this.isOpen = false;
+                        this.isDisabled = true;
+                    }
+                },
+                to: {
+                    isOpen: false,
+                    isDisabled: true,
+                    value: new Date(new Date(new Date(new Date().setDate(new Date().getDate()))).setHours(23, 59, 59, 999)),
+                    handleShowCalendar: function($event) {
+                        this.isOpen = true;
+                        this.isDisabled = false;
+                    },
+                    handleBlur: function() {
+                        this.isOpen = false;
+                        this.isDisabled = true;
+                    }
+                }
+            };
+        }
 
         // Export a PNG version of the chart/map
         $rootScope.exportPNG = function (content, title) {
