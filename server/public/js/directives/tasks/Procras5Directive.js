@@ -9,13 +9,34 @@ angular.module('Procras5Directive', []).directive('procras5', function (gettextC
         templateUrl: 'templates/statistics/procrastinate/directives/procras5.html',
         link: function ($scope, $element, $attrs, scope) {
             $scope.loadingChart = true;
-            $scope.labels = [gettextCatalog.getString('Not stared'), gettextCatalog.getString('In progress'), gettextCatalog.getString('Completed')];
+            $scope.labels = [ gettextCatalog.getString('Completed'), gettextCatalog.getString('In progress'), gettextCatalog.getString('Not stared')];
             $ocLazyLoad.load('js/services/TaskService.js').then(function () {
                 var Task = $injector.get('Task');
                 $ocLazyLoad.load('js/services/ChartService.js').then(function () {
                     var Card = $injector.get('Chart');
 
-                    $scope.colors = ["#E91E63", "#2196F3", "#CCCCCC"];
+                    $scope.colors = [{
+                            backgroundColor: 'rgba(0, 128, 1, 0.6)',//GRAY - NOT STARTED
+                            pointBackgroundColor: 'rgba(0, 128, 1, 0.6)',
+                            pointHoverBackgroundColor: 'rgba(0, 128, 1, 0.6)',
+                            borderColor: 'rgba(0, 128, 1, 1)',
+                            pointBorderColor: '#fff',
+                            pointHoverBorderColor: 'rgba(0, 128, 1, 0.6)',
+                        },{
+                            backgroundColor: 'rgba(255, 140, 2, 0.6)',//YELLO-INPROGRESS
+                            pointBackgroundColor: 'rgba(255, 140, 2, 0.6)',
+                            pointHoverBackgroundColor: 'rgba(255, 140, 2, 0.6)',
+                            borderColor: 'rgba(255, 140, 2, 0.6)',
+                            pointBorderColor: '#fff',
+                            pointHoverBorderColor: 'rgba(255, 140, 2, 0.6)'
+                        },{
+                            backgroundColor: 'rgba(128, 128, 128, 0.6)',//GREEN-COMPLETED
+                            pointBackgroundColor: 'rgba(128, 128, 128, 0.6)',
+                            pointHoverBackgroundColor: 'rgba(128, 128, 128, 0.6)',
+                            borderColor: 'rgba(128, 128, 128, 0.6)',
+                            pointBorderColor: '#fff',
+                            pointHoverBorderColor: 'rgba(128, 128, 128, 0.6)'
+                        },  ];
                     $scope.options = {
                         tooltips: {
                             callbacks: {
@@ -64,6 +85,25 @@ angular.module('Procras5Directive', []).directive('procras5', function (gettextC
                         });
                     }
                     build();
+                    
+                    var watch = {};
+                    watch.range = $rootScope.$watch('range', function (newValue, oldValue) {
+                        if (newValue.from.value.getTime() !== oldValue.from.value.getTime() || newValue.to.value.getTime() !== oldValue.to.value.getTime()) {
+                            $scope.loadingChart = true;
+                            build();
+                        }
+                    }, true);
+                    watch.selectedUser = $rootScope.$watch('globalView.selectedUser', function (newValue, oldValue) {
+                        if (newValue !== oldValue) {
+                            console.log(newValue)
+                            $scope.loadingChart = true;
+                            build();
+                        }
+                    }, true);
+                    $scope.$on('$destroy', function () {// in case of directive destroy, we destroy the watch
+                        watch.range();
+                        watch.selectedUser();
+                    });
                 });
             });
         }

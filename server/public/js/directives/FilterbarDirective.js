@@ -20,7 +20,7 @@ angular.module('FilterbarDirective', []).directive('filterbar', ['gettextCatalog
                         User.list().then(function (response) {
                             $scope.users = response.data;
                             $scope.rootscope = $rootScope;
-                            
+
                             $scope.$watch(function () {
                                 return $rootScope.range.from.value;
                             }, function () {
@@ -32,14 +32,20 @@ angular.module('FilterbarDirective', []).directive('filterbar', ['gettextCatalog
                             }, function () {
                                 $scope.to = $rootScope.range.to.value;
                             }, true);
-                           
+
 
                             $scope.from = $rootScope.range.from.value;
                             $scope.to = $rootScope.range.to.value;
 
 
-                            $scope.$on('$destroy', function () {
-                                //$rootScope.path.cards = undefined;
+                            var watch = {};
+                            watch.activation = $rootScope.$watch('globalView.activated', function (newValue, oldValue) {
+                                if (newValue == false) {
+                                    $rootScope.globalView.selectedUser = undefined
+                                }
+                            }, true);
+                            $scope.$on('$destroy', function () {// in case of directive destroy, we destroy the watch
+                                watch.activation();
                             });
                         });
                     });

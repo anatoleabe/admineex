@@ -30,8 +30,8 @@ angular.module('Procras0Directive', []).directive('procras0', function (gettextC
                             var data = response.data;
                             $scope.tasks = data;
                             $scope.nbTasks = 50;
-                            
-                            
+
+
                             $scope.loadingChart = false;
                         }).catch(function (response) {
                             if (response.xhrStatus !== "abort") {
@@ -47,6 +47,25 @@ angular.module('Procras0Directive', []).directive('procras0', function (gettextC
                     }
                     $scope.loadingChart = true;
                     build();
+                    
+                    var watch = {};
+                    watch.range = $rootScope.$watch('range', function (newValue, oldValue) {
+                        if (newValue.from.value.getTime() !== oldValue.from.value.getTime() || newValue.to.value.getTime() !== oldValue.to.value.getTime()) {
+                            $scope.loadingChart = true;
+                            build();
+                        }
+                    }, true);
+                    watch.selectedUser = $rootScope.$watch('globalView.selectedUser', function (newValue, oldValue) {
+                        if (newValue !== oldValue) {
+                            console.log(newValue)
+                            $scope.loadingChart = true;
+                            build();
+                        }
+                    }, true);
+                    $scope.$on('$destroy', function () {// in case of directive destroy, we destroy the watch
+                        watch.range();
+                        watch.selectedUser();
+                    });
                 });
             });
         }

@@ -701,10 +701,10 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
     }]).run(function ($rootScope, $location, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $timeout, $transitions, $filter) {
     $rootScope.kernel = {
     };
-    
+
     $rootScope.globalView = {
         activated: false,
-        selectedUser:undefined
+        selectedUser: undefined
     };
 
     $transitions.onStart({}, function (trans) {
@@ -745,7 +745,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         $rootScope.href = function (state) {
             $state.go(state);
         }
-        
+
         // Build date range
         if (!$rootScope.range) {
             var max = new Date();
@@ -757,11 +757,11 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     isOpen: false,
                     isDisabled: true,
                     value: new Date(new Date(new Date(new Date().setDate(new Date().getDate() - 30))).setHours(0, 0, 0, 0)),
-                    handleShowCalendar: function($event) {
+                    handleShowCalendar: function ($event) {
                         this.isOpen = true;
                         this.isDisabled = false;
                     },
-                    handleBlur: function() {
+                    handleBlur: function () {
                         this.isOpen = false;
                         this.isDisabled = true;
                     }
@@ -770,11 +770,11 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     isOpen: false,
                     isDisabled: true,
                     value: new Date(new Date(new Date(new Date().setDate(new Date().getDate()))).setHours(23, 59, 59, 999)),
-                    handleShowCalendar: function($event) {
+                    handleShowCalendar: function ($event) {
                         this.isOpen = true;
                         this.isDisabled = false;
                     },
-                    handleBlur: function() {
+                    handleBlur: function () {
                         this.isOpen = false;
                         this.isDisabled = true;
                     }
@@ -833,6 +833,17 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                 });
             });
         }
+
+        $rootScope.select = function (type) {
+            $rootScope.selectedLaboratoriesTmp = [];
+
+            switch (type) {
+                case 'user':
+                    
+
+                    break;
+            }
+        };
 
         // Build language
         gettextCatalog.currentLanguage = ($window.localStorage.language !== undefined) ? $window.localStorage.language.toLowerCase() : (navigator.language.substr(0, 2) || navigator.userLanguage.substr(0, 2));

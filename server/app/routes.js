@@ -473,7 +473,7 @@ var routes = [
     },
 
     // === TASKS ROUTES ==========================================================
-    // Create an org
+    // Create a task
     {
         path: _.findWhere(aclRoutes, {id: 62}).uri,
         httpMethod: _.findWhere(aclRoutes, {id: 62}).method,

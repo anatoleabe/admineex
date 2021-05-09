@@ -45,6 +45,9 @@
                         <label translate>Select a user</label>
                         <md-select ng-model="$root.globalView.selectedUser" aria-label="users"
                                    ng-change="$root.select('user')" ng-disabled="rootscope.kernel.isLoading == true" class="geo-filter-select">
+                            <md-option ng-value="undefined" translate>
+                                All users
+                            </md-option>
                             <md-option ng-value="user._id" ng-repeat="user in users">
                                 {{user.firstname}} {{user.lastname}}
                             </md-option>

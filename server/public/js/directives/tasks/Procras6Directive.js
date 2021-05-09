@@ -53,12 +53,12 @@ angular.module('Procras6Directive', []).directive('procras6', function (gettextC
                             pointBorderColor: '#fff',
                             pointHoverBorderColor: 'rgba(255, 140, 2, 0.6)'
                         }, {
-                            backgroundColor: 'rgba(0, 128, 1, 1)',
-                            pointBackgroundColor: 'rgba(0, 128, 1, 1)',
-                            pointHoverBackgroundColor: 'rgba(0, 128, 1, 1)',
-                            borderColor: 'rgba(0, 128, 1, 1)',
+                            backgroundColor: 'rgba(0, 128, 1, 0.6)',
+                            pointBackgroundColor: 'rgba(0, 128, 1, 0.6)',
+                            pointHoverBackgroundColor: 'rgba(0, 128, 1, 0.6)',
+                            borderColor: 'rgba(0, 128, 1, 0.6)',
                             pointBorderColor: '#fff',
-                            pointHoverBorderColor: 'rgba(0, 128, 1, 1)',
+                            pointHoverBorderColor: 'rgba(0, 128, 1, 0.6)',
                         }];
                     $scope.options = {
                         legend: {
@@ -126,6 +126,25 @@ angular.module('Procras6Directive', []).directive('procras6', function (gettextC
                     }
                     $scope.loadingChart = true;
                     build();
+                    
+                    var watch = {};
+                    watch.range = $rootScope.$watch('range', function (newValue, oldValue) {
+                        if (newValue.from.value.getTime() !== oldValue.from.value.getTime() || newValue.to.value.getTime() !== oldValue.to.value.getTime()) {
+                            $scope.loadingChart = true;
+                            build();
+                        }
+                    }, true);
+                    watch.selectedUser = $rootScope.$watch('globalView.selectedUser', function (newValue, oldValue) {
+                        if (newValue !== oldValue) {
+                            console.log(newValue)
+                            $scope.loadingChart = true;
+                            build();
+                        }
+                    }, true);
+                    $scope.$on('$destroy', function () {// in case of directive destroy, we destroy the watch
+                        watch.range();
+                        watch.selectedUser();
+                    });
                 });
             });
             function round(value, precision) {

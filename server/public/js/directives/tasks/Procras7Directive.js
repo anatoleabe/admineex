@@ -16,21 +16,21 @@ angular.module('Procras7Directive', []).directive('procras7', function (gettextC
 
                     var CARD_NAME = "procras6_7";
                   
-                    $scope.series = [gettextCatalog.getString('Nb of tasks'), gettextCatalog.getString('Nb of tasks completed')];
+                    $scope.series = [ gettextCatalog.getString('Nb of tasks completed'), gettextCatalog.getString('Nb of tasks')];
                     $scope.colors = [{
-                            backgroundColor: 'rgba(143, 184, 214, 1)',
-                            pointBackgroundColor: 'rgba(143, 184, 214, 1)',
-                            pointHoverBackgroundColor: 'rgba(143, 184, 214, 1)',
-                            borderColor: 'rgba(143, 184, 214, 1)',
+                            backgroundColor: 'rgba(0, 128, 1, 0.6)',
+                            pointBackgroundColor: 'rgba(0, 128, 1, 0.6)',
+                            pointHoverBackgroundColor: 'rgba(0, 128, 1, 0.6)',
+                            borderColor: 'rgba(0, 128, 1, 0.6)',
                             pointBorderColor: '#fff',
-                            pointHoverBorderColor: 'rgba(143, 184, 214, 1)'
+                            pointHoverBorderColor: 'rgba(0, 128, 1, 0.6)',
                         },{
-                            backgroundColor: 'rgba(0, 128, 1, 1)',
-                            pointBackgroundColor: 'rgba(0, 128, 1, 1)',
-                            pointHoverBackgroundColor: 'rgba(0, 128, 1, 1)',
-                            borderColor: 'rgba(0, 128, 1, 1)',
+                            backgroundColor: 'rgba(128, 128, 128, 0.6)',
+                            pointBackgroundColor: 'rgba(128, 128, 128, 0.6)',
+                            pointHoverBackgroundColor: 'rgba(128, 128, 128, 0.6)',
+                            borderColor: 'rgba(128, 128, 128, 0.6)',
                             pointBorderColor: '#fff',
-                            pointHoverBorderColor: 'rgba(0, 128, 1, 1)',
+                            pointHoverBorderColor: 'rgba(128, 128, 128, 0.6)'
                         }]
                     $scope.options = {
                         legend: {
@@ -76,8 +76,8 @@ angular.module('Procras7Directive', []).directive('procras7', function (gettextC
                             for (var j = 0; j < data.data[0].length; j++) {
                                 var total = data.data[0][j] + data.data[1][j] + data.data[2][j];
                                 var p3 = data.data[2][j];
-                                $scope.data.absolute[0].push(total);
-                                $scope.data.absolute[1].push(p3);
+                                $scope.data.absolute[1].push(total);
+                                $scope.data.absolute[0].push(p3);
                             }
                             $scope.loadingChart = false;
                         }).catch(function (response) {
@@ -94,6 +94,25 @@ angular.module('Procras7Directive', []).directive('procras7', function (gettextC
                     }
                     $scope.loadingChart = true;
                     build();
+                    
+                    var watch = {};
+                    watch.range = $rootScope.$watch('range', function (newValue, oldValue) {
+                        if (newValue.from.value.getTime() !== oldValue.from.value.getTime() || newValue.to.value.getTime() !== oldValue.to.value.getTime()) {
+                            $scope.loadingChart = true;
+                            build();
+                        }
+                    }, true);
+                    watch.selectedUser = $rootScope.$watch('globalView.selectedUser', function (newValue, oldValue) {
+                        if (newValue !== oldValue) {
+                            console.log(newValue)
+                            $scope.loadingChart = true;
+                            build();
+                        }
+                    }, true);
+                    $scope.$on('$destroy', function () {// in case of directive destroy, we destroy the watch
+                        watch.range();
+                        watch.selectedUser();
+                    });
                 });
             });
         }
