@@ -393,9 +393,9 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Task Management", "New"]
-        }).state('home.tasks.dashboard', {
-            url: '/dashboard',
-            templateUrl: 'templates/procrastinate/dashboard/main.html',
+        }).state('home.tasks.synthesis', {
+            url: '/synthesis',
+            templateUrl: 'templates/procrastinate/synthesis/main.html',
             controller: 'DashboardController',
             access: {requiredAuthentication: true},
             resolve: {

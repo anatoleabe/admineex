@@ -272,28 +272,36 @@ exports.api.list = function (req, res) {
                 "priority": req.params.priority
             });
         }
-//        if (req.params.category) {
-//            mainQuery.$and.push({
-//                "categoryID": filter.category
-//            });
-//        }
+        if (req.params.category && req.params.category != "-1") {
+            mainQuery.$and.push({
+                "categoryID": new ObjectID(req.params.category)
+            });
+        }
 
-//        mainQuery.$and.push({
-//            "created": {
-//                $gte: moment(filter.from).startOf('day').toDate()
-//            }
-//        });
-//        mainQuery.$and.push({
-//            "created": {
-//                $lte: moment(filter.to).endOf('day').toDate()
-//            }
-//        });
+        mainQuery.$and.push({
+            "created": {
+                $gte: moment(new Date(req.params.from)).startOf('day').toDate()
+            }
+        });
+        mainQuery.$and.push({
+            "created": {
+                $lte: moment(new Date(req.params.to)).endOf('day').toDate()
+            }
+        });
         var pipe = [];
         //First projections on interested fields
         pipe.push({$project: {_id: 1, title: 1, description: 1, authorID: 1, categoryID: 1, deadline: 1, created: 1, lastModified: 1, priority: 1, usersID: 1, status: 1, deadline: 1}});
         pipe.push({$match: mainQuery});
         // Sort per testDate selected row
         pipe.push({$sort: {created: -1}});
+        
+        var queryU = {$and: [{}]};
+        if (req.params.selecteduser != "undefined") {
+            queryU.$and.push({
+                "usersID": new ObjectID(req.params.selecteduser)
+            });
+            pipe.push({$match: queryU});
+        }
 
         pipe.push(
                 {

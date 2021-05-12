@@ -130,6 +130,15 @@ var whichChart = function (config, callback) {
                 }
             });
             break;
+        case 'procras8_synthesis':
+            procras8_synthesis(config, function (err, chart) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, chart);
+                }
+            });
+            break;
         default:
             callback("not found");
             break;
@@ -555,6 +564,97 @@ var procras0 = function (config, callback) {
             data.completed = (tasks && tasks != undefined && tasks.filter(t => (t._id !== undefined && t._id == '3'))[0]) ? tasks.filter(t => (t._id !== undefined && t._id == '3'))[0].count : 0;
             data.blocked = (tasks && tasks != undefined && tasks.filter(t => (t._id !== undefined && t._id == '4'))[0]) ? tasks.filter(t => (t._id !== undefined && t._id == '4'))[0].count : 0;
             callback(null, data);
+        }
+    });
+};
+
+/**
+ * Build the synthesis
+ * @param {json} config
+ * @param {json} callback
+ * optimized : true
+ */
+var procras8_synthesis = function (config, callback) {
+    var data = [];
+    var currentDateRange = {
+        from: config.from,
+        to: config.to
+    };
+    var mainQuery = {$and: [{}]};
+
+    mainQuery.$and.push({
+        "created": {
+            $gte: moment(currentDateRange.from).startOf('day').toDate()
+        }
+    });
+    mainQuery.$and.push({
+        "created": {
+            $lte: moment(currentDateRange.to).endOf('day').toDate()
+        }
+    });
+
+    //Get all tests list projected
+    var pipe = [];
+    pipe.push({$match: mainQuery});
+    pipe.push({$project: {_id: 1, authorID: 1, created: 1, usersID: 1, status: 1}});
+    pipe.push(
+            {
+                $unwind: {
+                    path: '$usersID'
+                }
+            }
+    );
+
+    var query1 = {};
+    if (config.selecteduser != "undefined") {
+        query1 = {$and: [{}]};
+        query1.$and.push({
+            "_id": new ObjectID(config.selecteduser)
+        });
+    }
+
+
+    controllers.tasks.statistics({pipe: pipe}, function (err, tasks) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Chart', 'procras0', '', '', 'failed', 'Mongodb attempted to build procras0 chart');
+            callback(err);
+        } else {
+            var usersGroups = _.groupBy(tasks, 'usersID');
+            controllers.users.list(query1, {_id: 1, firstname: 1, lastname: 1}, function (err, users) {
+                if (err) {
+                    log.error(err);
+                    audit.logEvent('[mongodb]', 'Chart', 'procras0', '', '', 'failed', 'Mongodb attempted to build procras0 chart');
+                    callback(err);
+                } else {
+                    var tmp = {
+                        notstarted: 0,
+                        completed: 0,
+                        inprogress: 0,
+                        overdue: 0,
+                        blocked: 0
+                    };
+
+                    for (i = 0; i < users.length; i++) {
+                        tmp.userName = users[i].name;
+                        tmp._id = users[i]._id;
+                        tmp.notstarted = (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "1").length : 0;
+                        tmp.inprogress = (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "2").length : 0;
+                        tmp.completed = (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "3").length : 0;
+                        tmp.blocked = (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "4").length : 0;
+                        data.push(tmp);
+                        var tmp = {
+                            notstarted: 0,
+                            completed: 0,
+                            inprogress: 0,
+                            overdue: 0,
+                            blocked: 0
+                        };
+                    }
+
+                    callback(null, data);
+                }
+            });
         }
     });
 };

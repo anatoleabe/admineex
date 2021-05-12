@@ -120,11 +120,6 @@ function buildNav(user, callback) {
         label: 'Tasks management',
         name: 'Tasks management'
     };
-    var taskTab2 = {
-        href: 'home.tasks.dashboard',
-        label: 'Task dashboard',
-        name: 'Task dashboard'
-    };
     var taskTab3 = {
         href: 'home.tasks.synthesis',
         label: 'Synthesis',
@@ -247,7 +242,6 @@ function buildNav(user, callback) {
             // LEFT MENU TASK
             nav.left[0].items.push(task);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab1);
-            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab2);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab3);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(taskCategoryTab4);
             // LEFT MENU MONITOR

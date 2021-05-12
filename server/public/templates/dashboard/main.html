@@ -3,7 +3,7 @@
 	<div filterbar daterange="true" labs="account.showLabs" province="account.showProvinces" district="account.showDistricts" path="true" disable-themes="true" search="search"></div>
 </div>
 <div layout="column" layout-wrap>
-    <div style="margin: 0 auto; font-size: 20pt; margin-top: 15px">Welcome Anatole</div>
+    <div style="margin: 0 auto; font-size: 20pt; margin-top: 15px">Welcome {{account.firstname}} </div>
     <div style="margin: 0 auto;  font-size: 12pt; margin-top: 5px; margin-bottom: 20px">How are you today?</div>
 </div>
 
@@ -23,6 +23,10 @@
     </div>
 </div>
 
-
-
+<div layout-xs="column" layout="row" layout-wrap>
+    
+    <div flex-xs="100" flex-gt-xs="100" data-ng-include="'templates/statistics/procrastinate/procras8_synthesis.html'" >
+    </div>
+    
+</div>
 

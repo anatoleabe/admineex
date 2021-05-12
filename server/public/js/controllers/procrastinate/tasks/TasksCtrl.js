@@ -60,7 +60,10 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
 
                         function getMyTasks() {
                             $scope.helper = [];
-
+                            $scope.filters.from = $rootScope.range.from.value;
+                            $scope.filters.to = $rootScope.range.to.value;
+                            $scope.filters.globalView = $rootScope.globalView;
+                            
                             Task.list($scope.filters).then(function (response) {
                                 var data = response.data;
                                 if (data.length == 0 && $scope.helper.length == 0) {
@@ -75,6 +78,20 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                         getMyTasks();
 
                         var watch = {};
+
+                        watch.range = $rootScope.$watch('range', function (newValue, oldValue) {
+                            if (newValue.from.value.getTime() !== oldValue.from.value.getTime() || newValue.to.value.getTime() !== oldValue.to.value.getTime()) {
+                                $scope.loadingChart = true;
+                                getMyTasks();
+                            }
+                        }, true);
+                        watch.selectedUser = $rootScope.$watch('globalView.selectedUser', function (newValue, oldValue) {
+                            console.log(newValue)
+                            if (newValue !== oldValue) {
+                                $scope.loadingChart = true;
+                                getMyTasks();
+                            }
+                        }, true);
 
                         watch.status = $scope.$watch('filters.status', function (newval, oldval) {
                             if (newval && oldval && newval != oldval) {
@@ -97,6 +114,8 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                             watch.category();
                             watch.priority();
                             watch.status();
+                            watch.selectedUser();
+                            watch.range();
                         });
 
 
