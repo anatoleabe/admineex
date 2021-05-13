@@ -612,6 +612,16 @@ var procras8_synthesis = function (config, callback) {
             "_id": new ObjectID(config.selecteduser)
         });
     }
+    
+    var data = {
+        counter: {},
+        synthesis: []
+    };
+    var totalOfnotstarted = 0;
+    var totalOfcompleted = 0;
+    var totalOfinprogress = 0;
+    var totalOfoverdue = 0;
+    var totalOfblocked = 0;
 
 
     controllers.tasks.statistics({pipe: pipe}, function (err, tasks) {
@@ -627,30 +637,30 @@ var procras8_synthesis = function (config, callback) {
                     audit.logEvent('[mongodb]', 'Chart', 'procras0', '', '', 'failed', 'Mongodb attempted to build procras0 chart');
                     callback(err);
                 } else {
-                    var tmp = {
-                        notstarted: 0,
-                        completed: 0,
-                        inprogress: 0,
-                        overdue: 0,
-                        blocked: 0
-                    };
 
                     for (i = 0; i < users.length; i++) {
-                        tmp.userName = users[i].name;
-                        tmp._id = users[i]._id;
-                        tmp.notstarted = (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "1").length : 0;
-                        tmp.inprogress = (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "2").length : 0;
-                        tmp.completed = (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "3").length : 0;
-                        tmp.blocked = (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "4").length : 0;
-                        data.push(tmp);
                         var tmp = {
-                            notstarted: 0,
-                            completed: 0,
-                            inprogress: 0,
+                            userName : users[i].name,
+                            _id : users[i]._id,
+                            notstarted : (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "1").length : 0,
+                            inprogress : (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "2").length : 0,
+                            completed : (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "3").length : 0,
+                            blocked : (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "4").length : 0,
                             overdue: 0,
-                            blocked: 0
                         };
+                        totalOfnotstarted += tmp.notstarted;
+                        totalOfcompleted += tmp.completed;
+                        totalOfinprogress += tmp.inprogress;
+                        totalOfoverdue += tmp.overdue;
+                        totalOfblocked += tmp.blocked;
+                        data.synthesis.push(tmp);
+                        
                     }
+                    data.counter.totalOfnotstarted = totalOfnotstarted;
+                    data.counter.totalOfcompleted = totalOfcompleted;
+                    data.counter.totalOfinprogress = totalOfinprogress;
+                    data.counter.totalOfblocked = totalOfblocked;
+                    data.counter.totalOfoverdue = totalOfoverdue;
 
                     callback(null, data);
                 }

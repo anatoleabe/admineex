@@ -1,4 +1,4 @@
-<div >
+<div data-oc-lazy-load="['js/directives/FixedColumnHeaderDirective.js']">
     <md-card class="widget" >
         <md-card-title>
             <md-card-title-text layout="row">
@@ -50,18 +50,18 @@
                                 <td md-cell>{{user.inprogress}}</td>
                                 <td md-cell>{{user.overdue}}</td>
                                 <td md-cell>{{user.blocked}}</td>
-                                <td md-cell>0</td>
+                                <td md-cell><b>{{user.notstarted + user.completed + user.inprogress + user.overdue + user.blocked}}</b></td>
                             </tr>
                         </tbody>
                         <tfoot md-foot>
                             <tr md-row>
                                 <td md-cell><b><span translate>Total</span></b></td>
-                                <td md-cell><b>{{counter.totalOfPatients}}</b></td>
-                                <td md-cell><b>{{counter.totalOfTests}}</b></td>
-                                <td md-cell><b>{{counter.totalOfOperator}}</b></td>
-                                <td md-cell><b>{{counter.totalOfPrescriber}}</b></td>
-                                <td md-cell><b>{{counter.totalOfComputer}}</b></td>
-                                <td md-cell><b>-</b></td>
+                                <td md-cell><b>{{counter.totalOfnotstarted}}</b></td>
+                                <td md-cell><b>{{counter.totalOfinprogress}}</b></td>
+                                <td md-cell><b>{{counter.totalOfcompleted}}</b></td>
+                                <td md-cell><b>{{counter.totalOfoverdue}}</b></td>
+                                <td md-cell><b>{{counter.totalOfblocked}}</b></td>
+                                <td md-cell><b>{{counter.totalOfnotstarted + counter.totalOfinprogress + counter.totalOfcompleted + counter.totalOfoverdue + counter.totalOfblocked}}</b></td>
                             </tr>
                         </tfoot>
                     </table>

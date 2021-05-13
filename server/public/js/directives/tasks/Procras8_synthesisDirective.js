@@ -27,7 +27,8 @@ angular.module('Procras8_synthesisDirective', [[
                             globalView: $rootScope.globalView
                         };
                         Card.build(params).then(function (response) {
-                            $scope.synthesis = response.data;
+                            $scope.synthesis = response.data.synthesis;
+                            $scope.counter = response.data.counter;
                             $scope.loadingChart = false;
                         }).catch(function (response) {
                             if (response.xhrStatus !== "abort") {

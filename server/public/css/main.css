@@ -693,3 +693,39 @@ table.md-table tbody.md-body > tr.md-row:hover {
     margin-left: 8px;
     color: rgb(66, 82, 110);
 }
+
+
+/*Fixed Columns*/
+.container {
+    height: 100% ;
+    overflow: scroll;
+    position: relative;
+}
+
+.container-card {
+    height: 402px ;
+    /* overflow: scroll; */
+    position: relative;
+}
+
+.table-fixed {
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    position: absolute;
+    width: 100%;
+}
+
+th{
+    background-color: #fff;
+}
+
+.cross {
+    position: relative;
+    z-index: 1;
+}
+
+.fixed-column-header, .fixed-column-header md-card, main{
+    height: 100%;
+}
+/*End Fixed Columns*/
