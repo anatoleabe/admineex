@@ -1,6 +1,6 @@
 angular.module('Procras8_synthesisDirective', [[
-    'node_modules/angular-material-data-table/dist/md-data-table.min.css'
-]]).directive('procras8synthesis', function (gettextCatalog, $ocLazyLoad, $injector, $rootScope) {
+        'node_modules/angular-material-data-table/dist/md-data-table.min.css'
+    ]]).directive('procras8synthesis', function (gettextCatalog, $ocLazyLoad, $injector, $rootScope) {
     return {
         restrict: 'AE',
         scope: {
@@ -17,8 +17,8 @@ angular.module('Procras8_synthesisDirective', [[
                     var Card = $injector.get('Chart');
 
                     var CARD_NAME = "procras8_synthesis";
-                  
-                    
+
+
                     function build() {
                         var params = {
                             name: CARD_NAME,
@@ -44,7 +44,16 @@ angular.module('Procras8_synthesisDirective', [[
                     }
                     $scope.loadingChart = true;
                     build();
-                    
+
+                    $scope.export = function () {
+                        return {
+                            title: gettextCatalog.getString("Synthesis"),
+                            fields: ["userName", "notstarted", "inprogress", "completed", "overdue", "blocked"],
+                            fieldNames: [gettextCatalog.getString("User"), gettextCatalog.getString("Not started"), gettextCatalog.getString("In progress"), gettextCatalog.getString("Completed"), gettextCatalog.getString("Over due"), gettextCatalog.getString("blocked")],
+                            data: $scope.synthesis
+                        };
+                    }
+
                     var watch = {};
                     watch.range = $rootScope.$watch('range', function (newValue, oldValue) {
                         if (newValue.from.value.getTime() !== oldValue.from.value.getTime() || newValue.to.value.getTime() !== oldValue.to.value.getTime()) {

@@ -24,10 +24,7 @@
                     var topHeaders = [].concat.apply([], container.querySelectorAll('thead th'));
                     var crossHeaders = [].concat.apply([], container.querySelectorAll('thead th.cross'));
 
-                    console.log('line before setting up event handler');
-                    
                     container.addEventListener('scroll', function () {
-                        console.log('scroll event handler hit');
                         var x = container.scrollLeft;
                         var y = container.scrollTop;
 

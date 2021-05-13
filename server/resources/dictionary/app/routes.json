@@ -424,5 +424,11 @@
         "uri": "/api/taskHistory/:id",
         "method": "GET",
         "roles": [1,2,3,4]
+    },
+    {
+        "id": 73,
+        "uri": "/api/excelExport/card",
+        "method": "POST",
+        "roles": [1,2,3,4]
     }
 ]

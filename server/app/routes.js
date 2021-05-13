@@ -416,6 +416,14 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.export],
         access: _.findWhere(aclRoutes, {id: 59}).roles
     },
+    
+    // Download .xls file of a card
+    {
+        path: _.findWhere(aclRoutes, { id: 73 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 73 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.export.api.table],
+        access: _.findWhere(aclRoutes, { id: 73 }).roles
+    },
 
     // === EXPORT PDF ROUTES ==========================================================
 

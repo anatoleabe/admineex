@@ -1,8 +1,8 @@
-angular.module('DownloadService', []).factory('Download', function($http) {
+angular.module('DownloadService', []).factory('Download', ['CancellableHTTP', function(CancellableHTTP) {
     return {
         start: function(config) {
             config.responseType = "arraybuffer";
-            return $http.get(config.url, config);
+            return CancellableHTTP.get(config.url, config);
         }
     }
-});
+}]);

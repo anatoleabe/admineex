@@ -33,21 +33,21 @@
                     <table md-table md-progress="promise" class="table-fixed">
                         <thead md-head md-order="name">
                             <tr md-row>
-                                <th md-column md-order-by="name"><span translate>User name</span></th>
-                                <th md-column md-order-by="numberOfPatients"><span translate>Not started</span></th>
-                                <th md-column md-order-by="numberOfTests"><span translate>In progress</span></th>
-                                <th md-column md-order-by="numberOfOperators"><span translate>Completed</span></th>
-                                <th md-column md-order-by="numberOfPrescribers"><span>Over due</span></th>
-                                <th md-column md-order-by="numberOfComputers"><span translate>Blocked</span></th>
-                                <th md-column md-order-by="lastTestReceived"><span translate>Total</span></th>
+                                <th md-column md-order-by="userName"><span translate>User name</span></th>
+                                <th md-column md-order-by="notstarted"><span translate>Not started</span></th>
+                                <th md-column md-order-by="inprogress"><span translate>In progress</span></th>
+                                <th md-column md-order-by="completed"><span translate>Completed</span></th>
+                                <th md-column md-order-by="overdue"><span>Over due</span></th>
+                                <th md-column md-order-by="blocked"><span translate>Blocked</span></th>
+                                <th md-column md-order-by="total"><span translate>Total</span></th>
                             </tr>
                         </thead>
                         <tbody md-body>
                             <tr md-row data-ng-repeat="user in synthesis">
                                 <td md-cell>{{user.userName}}</td>
                                 <td md-cell>{{user.notstarted}}</td>
-                                <td md-cell>{{user.completed}}</td>
                                 <td md-cell>{{user.inprogress}}</td>
+                                <td md-cell>{{user.completed}}</td>
                                 <td md-cell>{{user.overdue}}</td>
                                 <td md-cell>{{user.blocked}}</td>
                                 <td md-cell><b>{{user.notstarted + user.completed + user.inprogress + user.overdue + user.blocked}}</b></td>
