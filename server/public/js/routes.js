@@ -785,25 +785,40 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         // Export a PNG version of the chart/map
         $rootScope.exportPNG = function (content, title) {
             $rootScope.kernel.loading = 0;
-            var filename = 'Admineex_DGTCFM_' + title.replace(/ /g, '-');
-            if (typeof content === 'string') {
-                filename += '_';
-                $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
-                    var url_base64 = document.getElementById(content).toDataURL('image/png').replace("data:image/png;base64,", "");
-                    var data = atob(url_base64);
-                    var asArray = new Uint8Array(data.length);
-                    for (var i = 0, len = data.length; i < len; ++i) {
-                        asArray[i] = data.charCodeAt(i);
-                    }
-                    var FileSaver = $injector.get('FileSaver');
-                    var d = new Blob([asArray.buffer], {type: "data:image/png;base64"});
-                    FileSaver.saveAs(d, filename + '.png');
-                    $rootScope.kernel.loading = 100;
-                });
-            } else {
-                content.getHighcharts().exportChartLocal({type: 'image/png', filename: filename}, {title: {text: title}});
-                $rootScope.kernel.loading = 100;
+            var filename = 'DataToCare-server_' + title.replace(/ /g, '-');
+            filename += '_' + $filter('ddMMyyyy')($rootScope.range.from.value) + '-' + $filter('ddMMyyyy')($rootScope.range.to.value);
+
+            //Hidding unwanted items
+            var toHide = document.getElementsByClassName("hide-before-export");
+            for (var j = 0; j < toHide.length; j++) {
+                toHide[j].style.display = 'none';
             }
+
+            // converting HTML to canvas
+            $ocLazyLoad.load('js/services/CanvasService.js').then(function () {
+                var Canvas = $injector.get('Canvas');
+                Canvas.getCanvas(content, function (canvas) {
+                    //Canvas to png
+                    var url_base64 = canvas.toDataURL('image/png').replace("data:image/png;base64,", "");
+
+                    //dispaying back items that were hidden
+                    for (var j = 0; j < toHide.length; j++) {
+                        toHide[j].style.display = null;
+                    }
+                    //Saving the file
+                    $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
+                        var data = atob(url_base64);
+                        var asArray = new Uint8Array(data.length);
+                        for (var i = 0, len = data.length; i < len; ++i) {
+                            asArray[i] = data.charCodeAt(i);
+                        }
+                        var FileSaver = $injector.get('FileSaver');
+                        var d = new Blob([asArray.buffer], { type: "data:image/png;base64" });
+                        FileSaver.saveAs(d, filename + '.png');
+                        $rootScope.kernel.loading = 100;
+                    });
+                });
+            });
         }
 
         // Set a focus on the specified input

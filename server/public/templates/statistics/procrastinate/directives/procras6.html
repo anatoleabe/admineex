@@ -11,6 +11,9 @@
             </span>
             <span flex></span>
             <div cardselect selected="selected"></div>
+            <md-button class="md-icon-button info-labs" ng-click="$parent.$parent.exportPNG('procras6', 'Activity' | translate);" ng-disabled="$parent.$parent.$parent.kernel.isLoading == true">
+                <md-icon>file_download</md-icon>
+            </md-button>
             <md-menu class="hide-before-export" md-offset="0 -7" md-position-mode="target-right target">
                 <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)" ng-disabled="$parent.$parent.$parent.kernel.isLoading == true">
                     <md-icon>more_vert</md-icon>
@@ -22,7 +25,7 @@
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button ng-click="$parent.$parent.exportPNG('mdr-procras6', 'Activity' | translate);">
+                        <md-button ng-click="$parent.$parent.exportPNG('procras6', 'Activity' | translate);">
                             <md-icon class="material-icons-outlined" md-menu-align-target>get_app</md-icon> <span translate>Export</span> <small>(png)</small>
                         </md-button>
                     </md-menu-item>

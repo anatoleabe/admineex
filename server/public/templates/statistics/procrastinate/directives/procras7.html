@@ -9,18 +9,9 @@
             </span>
             <span flex></span>
             <div cardselect selected="selected"></div>
-            <md-menu class="hide-before-export">
-                <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdMenu.open($event)" ng-disabled="$parent.$parent.$parent.kernel.isLoading == true">
-                    <md-icon>more_vert</md-icon>
-                </md-button>
-                <md-menu-content width="2">
-                    <md-menu-item>
-                        <md-button ng-click="$parent.$parent.exportPNG('Performance', 'Performance' | translate);">
-                            <md-icon class="material-icons-outlined" md-menu-align-target>get_app</md-icon> <span translate>Export</span> <small>(png)</small>
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
+            <md-button class="md-icon-button info-labs" ng-click="$parent.$parent.exportPNG('Performance', 'Performance' | translate);" ng-disabled="$parent.$parent.$parent.kernel.isLoading == true">
+                <md-icon>file_download</md-icon>
+            </md-button>
         </md-card-title-text>
     </md-card-title>
     <md-card-content>

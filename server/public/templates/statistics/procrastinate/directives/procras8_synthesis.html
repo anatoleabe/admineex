@@ -11,7 +11,7 @@
                 </span>
                 <span flex></span>
                 <div cardselect selected="selected"></div>
-                <md-button class="md-icon-button info-labs" ng-click="$parent.$parent.exportXLSX(export());">
+                <md-button class="md-icon-button info-labs" ng-click="$parent.$parent.exportXLSX(export());" ng-disabled="$parent.$parent.$parent.kernel.isLoading == true">
                     <md-icon>file_download</md-icon>
                 </md-button>
             </md-card-title-text>
