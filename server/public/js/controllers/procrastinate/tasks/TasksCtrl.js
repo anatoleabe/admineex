@@ -63,7 +63,7 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                             $scope.filters.from = $rootScope.range.from.value;
                             $scope.filters.to = $rootScope.range.to.value;
                             $scope.filters.globalView = $rootScope.globalView;
-                            
+
                             Task.list($scope.filters).then(function (response) {
                                 var data = response.data;
                                 if (data.length == 0 && $scope.helper.length == 0) {
@@ -247,6 +247,7 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                                                             $scope.setProgression = function (progression) {
                                                                 $scope.buttonStatus = progression;
                                                             }
+
 
                                                             $scope.assignUserTo = function (user) {
                                                                 var historyItem = {

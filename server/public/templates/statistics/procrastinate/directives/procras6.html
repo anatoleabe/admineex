@@ -13,24 +13,11 @@
             <div cardselect selected="selected"></div>
             <md-button class="md-icon-button info-labs" ng-click="$parent.$parent.exportPNG('procras6', 'Activity' | translate);" ng-disabled="$parent.$parent.$parent.kernel.isLoading == true">
                 <md-icon>file_download</md-icon>
+            </md-button>&nbsp;&nbsp;
+            <md-button class="md-icon-button info-labs" ng-click="toggleaAsoluteMode();" ng-disabled="$parent.$parent.$parent.kernel.isLoading == true">
+                <md-icon md-menu-align-target>refresh</md-icon> 
             </md-button>
-            <md-menu class="hide-before-export" md-offset="0 -7" md-position-mode="target-right target">
-                <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdOpenMenu($event)" ng-disabled="$parent.$parent.$parent.kernel.isLoading == true">
-                    <md-icon>more_vert</md-icon>
-                </md-button>
-                <md-menu-content width="2">
-                    <md-menu-item>
-                        <md-button ng-click="toggleaAsoluteMode();">
-                            <md-icon md-menu-align-target>refresh</md-icon> <span ng-hide="absoluteMode==false" translate>Switch to Percentage</span><span ng-hide="absoluteMode==true" translate>Switch to Absolute</span>
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button ng-click="$parent.$parent.exportPNG('procras6', 'Activity' | translate);">
-                            <md-icon class="material-icons-outlined" md-menu-align-target>get_app</md-icon> <span translate>Export</span> <small>(png)</small>
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
+
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
@@ -40,7 +27,7 @@
         <div ng-class="{'opacity1': loadingChart}">
             <canvas class="chart chart-bar" chart-data="(absoluteMode==true?data.absolute:data.percentage)" chart-options="options" chart-labels="labels" chart-series="series" chart-colors="colors"></canvas>
         </div>
-        <small class="daterange">{{$parent.range.from.value | date:'dd/MM/yy'}}-{{$parent.range.to.value | date:'dd/MM/yy'}}</small>
+        <small class="daterange">{{$parent.range.from.value| date:'dd/MM/yy'}}-{{$parent.range.to.value| date:'dd/MM/yy'}}</small>
     </md-card-content>
 </md-card>
 

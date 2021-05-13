@@ -70,7 +70,8 @@
                                 <table md-table md-progress="promise">
                                     <thead md-head md-order="query.order">
                                         <tr md-row>
-                                            <th md-column md-order-by="code" translate style="width: 50%">Title</th>
+                                            <th md-column md-order-by="code" translate style="width: 10px">Code</th>
+                                            <th md-column md-order-by="title" translate style="width: 50%">Title</th>
                                             <th md-column md-order-by="structure.name"  translate>Assigned to</th>
                                             <th md-column md-order-by="name" style="width: 30px" translate>Status</th>
                                             <th md-column md-order-by="vancancies" style="width: 30px" translate>Creation</th>
@@ -79,6 +80,7 @@
                                     </thead>
                                     <tbody md-body dnd-list="list" class="ng-scope">
                                         <tr md-row data-ng-repeat="task in tasks" ng-click="read(task._id)" dnd-draggable="item" dnd-moved="list.splice($index, 1)" dnd-effect-allowed="move" dnd-selected="models.selected = item" ng-class="{'selected': models.selected === item}" draggable="true">
+                                            <td md-cell  style="width: 10px" >{{task.identifier}} </td>
                                             <td md-cell ng-click="details({id: task._id})" style="width: 50%">
                                                 <span class="task-title">{{task.title}}</span>
                                                  <br/> 

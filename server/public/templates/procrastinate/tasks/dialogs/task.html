@@ -83,6 +83,12 @@
                     </md-menu-content>
                 </md-menu>
                 <div  layout="row">
+                    <p class="md-body-2" flex="50" translate>Code: </p>
+                    <p class="md-body-1 md-secondary" flex translate >
+                        <b>{{task.identifier}} </b>
+                    </p>
+                </div>
+                <div  layout="row">
                     <p class="md-body-2" flex="50" translate>Assigned to</p>
                     <p class="md-body-1 md-secondary" flex translate><span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px " >{{task.user.firstname.substr(0, 1).toUpperCase()}}</span>{{task.user.firstname}} {{task.user.lastname}} </p>
                 </div>
