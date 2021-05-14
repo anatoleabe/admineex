@@ -18,5 +18,10 @@
         "id": "4",
         "en": "Blocked",
         "fr": "Bloqué"
+    },
+    {
+        "id": "5",
+        "en": "Archived",
+        "fr": "Archivée"
     }
 ]

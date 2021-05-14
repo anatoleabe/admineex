@@ -81,9 +81,9 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
 
                         watch.filtersearch = $scope.$watch('filters.research', function (newValue, oldValue) {
                             if (newValue != undefined) {
-                                if (newValue == ""){
+                                if (newValue == "") {
                                     $scope.filters.searchterms = "undefined";
-                                }else{
+                                } else {
                                     $scope.filters.searchterms = newValue;
                                 }
                                 getMyTasks();
@@ -282,6 +282,11 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                                                                 $mdDialog.hide();
                                                                 $rootScope.kernel.loading = 0;
                                                                 $state.go("home.tasks.edit", params);
+                                                            };
+
+                                                            console.log( $rootScope.account.role)
+                                                            $scope.activeStatusOnly = function (item) {
+                                                                return item.id !== "5";
                                                             };
 
                                                             $scope.currentNavItem = 'comments';

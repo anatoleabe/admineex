@@ -92,6 +92,10 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
                                     watch.file();
                                 });
 
+                                $scope.activeStatusOnly = function (item) {
+                                    return item.id !== "5";
+                                };
+
 
                                 // Modify or Add ?
                                 if ($stateParams.id !== undefined) {
