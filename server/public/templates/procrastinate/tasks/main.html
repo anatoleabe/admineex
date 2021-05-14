@@ -73,8 +73,8 @@
                                             <th md-column md-order-by="code" translate style="width: 10px">Code</th>
                                             <th md-column md-order-by="title" translate style="width: 50%">Title</th>
                                             <th md-column md-order-by="structure.name"  translate>Assigned to</th>
-                                            <th md-column md-order-by="name" style="width: 30px" translate>Status</th>
-                                            <th md-column md-order-by="vancancies" style="width: 30px" translate>Creation</th>
+                                            <th md-column md-order-by="name" style="width: 100px" translate>Status</th>
+                                            <th md-column md-order-by="vancancies" style="width: 80px" translate>Creation</th>
                                             <th md-column translate >Actions</th>
                                         </tr>
                                     </thead>
@@ -92,8 +92,11 @@
                                                 <span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; " >{{task.user.firstname.substr(0, 1).toUpperCase()}}</span>
                                                {{task.user.firstname}}  {{task.user.lastname}}
                                             </td>
-                                            <td md-cell flex style="width: 30px" ng-click="details({id: task._id})">{{task.statusbeautified}} </td>
-                                            <td md-cell style="width: 30px" ng-click="details({id: task._id})">{{task.created |smartDatetime}} </td>
+                                            <td md-cell flex style="width: 100px" ng-click="details({id: task._id})">
+                                                
+                                                <small class="chip-normal status-{{task.status}}" >{{task.statusbeautified}} </small>
+                                            </td>
+                                            <td md-cell style="width: 80px" ng-click="details({id: task._id})">{{task.created |smartDatetime}} </td>
                                             <td md-cell  >
                                                 <md-button  aria-label="Show more" class="md-icon-button">
                                                     <md-icon>more_vert</md-icon>

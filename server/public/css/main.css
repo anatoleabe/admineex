@@ -730,6 +730,19 @@ th{
 }
 /*End Fixed Columns*/
 
-.disabled {
-    pointer-events: none;
+/*In progress*/
+.status-2 {
+    background-color: rgba(255, 140, 2, 0.3);
+    font-weight: bold
+}
+/*Completed*/
+.status-3 {
+    background-color: rgb(227, 252, 239);
+    font-weight: bold
+}
+/*Blocked*/
+.status-4 {
+    background-color: rgba(220, 22, 63, 0.7);
+    color: #fff;
+    font-weight: bold;
 }
