@@ -14,5 +14,9 @@
     {
         "id": 4,
         "title": "Editor"
+    },
+    {
+        "id": 5,
+        "title": "Task editor"
     }
 ]

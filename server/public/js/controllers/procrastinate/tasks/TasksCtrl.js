@@ -31,6 +31,18 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
 
             Dictionary.jsonList({dictionary: 'task', levels: ['statuses']}).then(function (response) {
                 $scope.status = response.data.jsonList;
+                $scope.status.sort(sortIt("id"));
+                function sortIt(prop) {
+                    return function (a, b) {
+                        if (a[prop] > b[prop]) {
+                            return 1;
+                        } else if (a[prop] < b[prop]) {
+                            return -1;
+                        }
+                        return 0;
+                    }
+                }
+
                 Dictionary.jsonList({dictionary: 'task', levels: ['priorities']}).then(function (response) {
                     $scope.priorities = response.data.jsonList;
                     $ocLazyLoad.load('js/services/CategoryService.js').then(function () {
@@ -248,10 +260,8 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
 
 
                                                             $scope.startThisTask = function () {
-                                                                console.log($scope.theTask.status)
                                                                 var progress = {id: "2", name: "En cours"}
                                                                 $scope.setProgression(progress);
-                                                                //console.log($scope.theTask.status)
                                                             }
 
                                                             $scope.setProgression = function (progression) {
@@ -284,9 +294,12 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                                                                 $state.go("home.tasks.edit", params);
                                                             };
 
-                                                            console.log( $rootScope.account.role)
                                                             $scope.activeStatusOnly = function (item) {
-                                                                return item.id !== "5";
+                                                                if ($rootScope.account.role == "1") {
+                                                                    return true;
+                                                                } else {
+                                                                    return item.id !== "5";
+                                                                }
                                                             };
 
                                                             $scope.currentNavItem = 'comments';

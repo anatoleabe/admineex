@@ -24,6 +24,17 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
 
             Dictionary.jsonList({dictionary: 'task', levels: ['statuses']}).then(function (response) {
                 $scope.progress = response.data.jsonList;
+                $scope.progress.sort(sortIt("id"));
+                function sortIt(prop) {
+                    return function (a, b) {
+                        if (a[prop] > b[prop]) {
+                            return 1;
+                        } else if (a[prop] < b[prop]) {
+                            return -1;
+                        }
+                        return 0;
+                    }
+                }
 
                 $ocLazyLoad.load('js/services/UserService.js').then(function () {
                     var User = $injector.get('User');

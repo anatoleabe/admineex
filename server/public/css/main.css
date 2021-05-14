@@ -729,3 +729,7 @@ th{
     height: 100%;
 }
 /*End Fixed Columns*/
+
+.disabled {
+    pointer-events: none;
+}

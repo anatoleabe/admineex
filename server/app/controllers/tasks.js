@@ -265,10 +265,10 @@ exports.upsert = function (options, fields, callback) {
 
 exports.api.list = function (req, res) {
     if (req.actor) {
-        var filter = {};
         var mainQuery = {$and: [{}]};
 
         if (req.params.status && req.params.status != "-1") {
+            
             mainQuery.$and.push({
                 "status": req.params.status
             });
@@ -306,6 +306,10 @@ exports.api.list = function (req, res) {
         //Filter by key word
         if (req.params.search != undefined && req.params.search != "undefined" && req.params.search != "") {
             pipe.push({$match: {$and: [{"metainfo": dictionary.makePattern(req.params.search)}]}})
+        }else{
+            mainQuery.$and.push({
+                "status": { $ne: "5" },
+            });
         }
         // Sort per testDate selected row
         pipe.push({$sort: {created: -1}});
