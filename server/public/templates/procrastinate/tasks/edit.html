@@ -95,7 +95,7 @@
                                     <md-input-container class="md-input-has-value" ng-class="{ 'md-input-invalid' : form.progress.$invalid && form.$submitted }">
                                         <label class="md-required" translate style="margin-bottom: 5px">Status</label>
 
-                                        <md-radio-group md-autofocus name="progress" ng-model="task.status" layout="row" required>
+                                        <md-radio-group md-autofocus name="progress" ng-model="task.status " layout="row" required>
                                             <md-radio-button ng-repeat="p in progress" value="{{p.id}}" class="md-primary">{{p.name}} </md-radio-button>
                                         </md-radio-group>
 

@@ -41,8 +41,8 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
                                 }).catch(function (response) {
                                     console.error(response);
                                 });
-                                
-                                
+
+
 
                                 $scope.querySearchInUsersList = function (text) {
                                     var deferred = $q.defer();
@@ -83,7 +83,6 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
                                 watch.file = $scope.$watch('uploader.file', function (newval, oldval) {
 
                                     if (newval) {
-                                        console.log("scope.release.publicKey 1 = ", newval)
                                         var initialName = newval.name;
 
                                         $scope.uploader.file.name = initialName;
@@ -115,65 +114,84 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
                                     // Modify an Task
                                     $scope.submit = function () {
                                         $rootScope.kernel.loading = 0;
-                                        prepareDetailsForServer();
-                                        Upload.upload({
-                                            url: '/api/tasks',
-                                            file: $scope.uploader,
-                                            fields: $scope.task,
-                                            method: 'PUT',
-                                            sendObjectsAsJsonBlob: true
-                                        }).then(function (response) {
-                                            $state.transitionTo('home.tasks.main');
-                                            $rootScope.kernel.alerts.push({
-                                                type: 3,
-                                                msg: gettextCatalog.getString('The task has been updated'),
-                                                priority: 4
+                                        if ($scope.task.status != undefined && $scope.task.categoryID != undefined && $scope.task.priority != undefined && $scope.task.deadline != undefined && $scope.selectedUsers[0] != undefined) {
+                                            prepareDetailsForServer();
+                                            Upload.upload({
+                                                url: '/api/tasks',
+                                                file: $scope.uploader,
+                                                fields: $scope.task,
+                                                method: 'PUT',
+                                                sendObjectsAsJsonBlob: true
+                                            }).then(function (response) {
+                                                $state.transitionTo('home.tasks.main');
+                                                $rootScope.kernel.alerts.push({
+                                                    type: 3,
+                                                    msg: gettextCatalog.getString('The task has been updated'),
+                                                    priority: 4
+                                                });
+                                                $rootScope.kernel.loading = 100;
+                                            }).catch(function (response) {
+                                                $rootScope.kernel.loading = 100;
+                                                $rootScope.kernel.alerts.push({
+                                                    type: 1,
+                                                    msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                    priority: 2
+                                                });
+                                                console.error(response);
                                             });
-                                            $rootScope.kernel.loading = 100;
-                                        }).catch(function (response) {
+                                        } else {
                                             $rootScope.kernel.loading = 100;
                                             $rootScope.kernel.alerts.push({
-                                                type: 1,
-                                                msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                                priority: 2
+                                                type: 2,
+                                                msg: gettextCatalog.getString("Please fill all required fields"),
+                                                priority: 3
                                             });
-                                            console.error(response);
-                                        });
+                                        }
                                     }
                                 } else {
                                     $scope.new = true;
                                     $scope.title = gettextCatalog.getString('New');
                                     $scope.task.usersID = [];
+                                    $scope.task.status = "1";
 
                                     // Add a new task
                                     $scope.submit = function () {
                                         console.log("jeeenen")
                                         $scope.loading = 0;
-                                        prepareDetailsForServer();
+                                        if ($scope.task.status != undefined && $scope.task.categoryID != undefined && $scope.task.priority != undefined && $scope.task.deadline != undefined && $scope.selectedUsers[0] != undefined) {
+                                            prepareDetailsForServer();
 
-                                        Upload.upload({
-                                            url: '/api/tasks',
-                                            file: $scope.uploader,
-                                            fields: $scope.task,
-                                            method: 'PUT',
-                                            sendObjectsAsJsonBlob: true
-                                        }).then(function (response) {
-                                            $scope.loading = 100;
-                                            $state.transitionTo('home.tasks.main');
-                                            $rootScope.kernel.alerts.push({
-                                                type: 3,
-                                                msg: gettextCatalog.getString('The task has been created'),
-                                                priority: 4
+                                            Upload.upload({
+                                                url: '/api/tasks',
+                                                file: $scope.uploader,
+                                                fields: $scope.task,
+                                                method: 'PUT',
+                                                sendObjectsAsJsonBlob: true
+                                            }).then(function (response) {
+                                                $scope.loading = 100;
+                                                $state.transitionTo('home.tasks.main');
+                                                $rootScope.kernel.alerts.push({
+                                                    type: 3,
+                                                    msg: gettextCatalog.getString('The task has been created'),
+                                                    priority: 4
+                                                });
+                                            }).catch(function (response) {
+                                                $scope.loading = 100;
+                                                console.error(response);
+                                                $rootScope.kernel.alerts.push({
+                                                    type: 1,
+                                                    msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                    priority: 2
+                                                });
                                             });
-                                        }).catch(function (response) {
-                                            $scope.loading = 100;
-                                            console.error(response);
+                                        } else {
+                                            $rootScope.kernel.loading = 100;
                                             $rootScope.kernel.alerts.push({
-                                                type: 1,
-                                                msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                                priority: 2
+                                                type: 2,
+                                                msg: gettextCatalog.getString("Please fill all required fields"),
+                                                priority: 3
                                             });
-                                        });
+                                        }
                                     }
                                 }
                             });
