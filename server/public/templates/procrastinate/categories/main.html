@@ -20,7 +20,7 @@
             <md-list ng-cloak>
                 <md-list-item data-ng-repeat="category in categories| filter:searchText" ui-sref="home.categories.profile({id:category._id})">
                     <md-truncate flex>
-                        {{category.name}} <small class="diy-chip">{{category.value| currency:"€":0}}</small><small class="diy-chip">{{category.paymentDate| date:'MM/yyyy'}}</small><small class="diy-chip" ng-class="{'green': category.successProbability >= 50, 'red': category.successProbability < 50}">P: {{category.successProbability + "%"}}</small><small class="diy-chip">{{category.status| projectStatus}}</small>
+                        <md-icon style="color:{{category.color}}">fiber_manual_record  </md-icon> {{category.name}}
                     </md-truncate>
                     <md-button class="md-secondary md-icon-button" aria-label="Edit" ng-click="edit({id: category._id})">
                         <md-icon aria-label="Edit">edit</md-icon>

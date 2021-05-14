@@ -106,7 +106,6 @@ exports.api.delete = function(req, res) {
 }
 
 exports.upsert = function(options, fields, callback){
-    console.log(fields)
     var name = fields.name || '';
     var color = fields.color || '';
     if (name === '' || color === '') {
