@@ -79,6 +79,17 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
 
                         var watch = {};
 
+                        watch.filtersearch = $scope.$watch('filters.research', function (newValue, oldValue) {
+                            if (newValue != undefined) {
+                                if (newValue == ""){
+                                    $scope.filters.searchterms = "undefined";
+                                }else{
+                                    $scope.filters.searchterms = newValue;
+                                }
+                                getMyTasks();
+                            }
+                        }, true);
+
                         watch.range = $rootScope.$watch('range', function (newValue, oldValue) {
                             if (newValue.from.value.getTime() !== oldValue.from.value.getTime() || newValue.to.value.getTime() !== oldValue.to.value.getTime()) {
                                 $scope.loadingChart = true;
@@ -86,7 +97,6 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                             }
                         }, true);
                         watch.selectedUser = $rootScope.$watch('globalView.selectedUser', function (newValue, oldValue) {
-                            console.log(newValue)
                             if (newValue !== oldValue) {
                                 $scope.loadingChart = true;
                                 getMyTasks();

@@ -11,7 +11,7 @@ var dictionary = require('../utils/dictionary');
 var moment = require('moment');
 var ObjectID = require('mongoose').mongo.ObjectID;
 
-var { customAlphabet } = require('nanoid');
+var {customAlphabet} = require('nanoid');
 var alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const nanoid = customAlphabet(alphabet, 8);
 
@@ -89,9 +89,9 @@ function save(req, res, fields, filesToSave, _path) {
 
     if (_id === '') {//Creation
         fields.authorID = req.actor.id;
-        fields.identifier = new Date().getFullYear()+""+nanoid(); //Generate New Random ID :=> "2020-B2G03JV2". ~1 year needed, in order to have a 1% probability of at least one collision.
+        fields.identifier = new Date().getFullYear() + "" + nanoid(); //Generate New Random ID :=> "2020-B2G03JV2". ~1 year needed, in order to have a 1% probability of at least one collision.
     }
-    
+
     exports.upsert({actor: req.actor}, fields, function (err) {
         if (err) {
             console.error(err);
@@ -294,13 +294,22 @@ exports.api.list = function (req, res) {
                 $lte: moment(new Date(req.params.to)).endOf('day').toDate()
             }
         });
+        var concatMeta = ["$title", "$identifier"];
+
         var pipe = [];
+        pipe.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
         //First projections on interested fields
-        pipe.push({$project: {_id: 1, identifier:1, title: 1, description: 1, authorID: 1, categoryID: 1, deadline: 1, created: 1, lastModified: 1, priority: 1, usersID: 1, status: 1, deadline: 1}});
+        pipe.push({$project: {_id: 1, identifier: 1, title: 1, metainfo: 1, description: 1, authorID: 1, categoryID: 1, deadline: 1, created: 1, lastModified: 1, priority: 1, usersID: 1, status: 1, deadline: 1}});
+
         pipe.push({$match: mainQuery});
+
+        //Filter by key word
+        if (req.params.search != undefined && req.params.search != "undefined" && req.params.search != "") {
+            pipe.push({$match: {$and: [{"metainfo": dictionary.makePattern(req.params.search)}]}})
+        }
         // Sort per testDate selected row
         pipe.push({$sort: {created: -1}});
-        
+
         var queryU = {$and: [{}]};
         if (req.params.selecteduser != "undefined") {
             queryU.$and.push({
@@ -339,7 +348,7 @@ exports.api.list = function (req, res) {
                 }
         );
 
-        pipe.push({$project: {_id: 1, identifier:1, title: 1, description: 1, authorID: 1, categoryID: 1, deadline: 1, created: 1, lastModified: 1, priority: 1, usersID: 1, status: 1, "category.name": 1, "category._id": 1, "category.color": 1, "user.firstname": 1, "user.lastname": 1, deadline: 1}});
+        pipe.push({$project: {_id: 1, identifier: 1, title: 1, description: 1, authorID: 1, categoryID: 1, deadline: 1, created: 1, lastModified: 1, priority: 1, usersID: 1, status: 1, "category.name": 1, "category._id": 1, "category.color": 1, "user.firstname": 1, "user.lastname": 1, deadline: 1}});
 
         //Execute
         var q = Task.aggregate(pipe);

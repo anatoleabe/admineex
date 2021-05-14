@@ -1,11 +1,11 @@
 angular.module('TaskService', []).factory('Task', function($http) {
     return {
         list: function(filters) {
-            console.log(filters)
             return $http.get('/api/tasks/'+filters.status+'/'+filters.priority+'/'+filters.category
                     + '/' + filters.from 
                     + '/' + filters.to 
-                    + '/' + ((filters.globalView && filters.globalView.activated == true && filters.globalView.selectedUser != undefined ) ? filters.globalView.selectedUser:'undefined') );
+                    + '/' + ((filters.globalView && filters.globalView.activated == true && filters.globalView.selectedUser != undefined ) ? filters.globalView.selectedUser:'undefined')
+                    + '/' + filters.searchterms ) ;
         },
         read: function(info) {
             return $http.get('/api/task/' + info.id);

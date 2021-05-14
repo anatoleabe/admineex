@@ -367,7 +367,7 @@
     },
     {
         "id": 63,
-        "uri": "/api/tasks/:status/:priority/:category/:from/:to/:selecteduser",
+        "uri": "/api/tasks/:status/:priority/:category/:from/:to/:selecteduser/:search",
         "method": "GET",
         "roles": [1,2,3,4]
     },
