@@ -1,22 +1,18 @@
 [
     {
         "id": 1,
-        "en": "Todo",
-        "fr": "A faire"
+        "title": "Administrator"
     },
     {
         "id": 2,
-        "en": "In progress",
-        "fr": "En cours"
+        "title": "Manager"
     },
     {
         "id": 3,
-        "en": "Done",
-        "fr": "Terminé"
+        "title": "Supervisor"
     },
     {
         "id": 4,
-        "en": "Archived",
-        "fr": "Archivé"
+        "title": "Editor"
     }
 ]
