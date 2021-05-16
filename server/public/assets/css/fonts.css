@@ -1,0 +1,122 @@
+/* Roboto Thin */
+@font-face {
+  font-family: 'Savics';
+  font-style: normal;
+  font-weight: 300;
+  src: url(../../fonts/Roboto/Roboto-Thin.eot); /* For IE6-8 */
+  src: local('Roboto Thin'),
+       local('Roboto-Thin'),
+       url(../../fonts/Roboto/Roboto-Thin.woff2) format('woff2'),
+       url(../../fonts/Roboto/Roboto-Thin.woff) format('woff'),
+       url(../../fonts/Roboto/Roboto-Thin.ttf) format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+/* Roboto Light */
+@font-face {
+  font-family: 'Savics';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../../fonts/Roboto/Roboto-Light.eot); /* For IE6-8 */
+  src: local('Roboto Light'),
+       local('Roboto-Light'),
+       url(../../fonts/Roboto/Roboto-Light.woff2) format('woff2'),
+       url(../../fonts/Roboto/Roboto-Light.woff) format('woff'),
+       url(../../fonts/Roboto/Roboto-Light.ttf) format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+
+/* Roboto Regular */
+@font-face {
+  font-family: 'Savics';
+  font-style: normal;
+  font-weight: 500;
+  src: url(../../fonts/Roboto/Roboto-Regular.eot); /* For IE6-8 */
+  src: local('Roboto'),
+       local('Roboto-Regular'),
+       url(../../fonts/Roboto/Roboto-Regular.woff2) format('woff2'),
+       url(../../fonts/Roboto/Roboto-Regular.woff) format('woff'),
+       url(../../fonts/Roboto/Roboto-Regular.ttf) format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+/* Roboto Medium */
+@font-face {
+  font-family: 'Savics';
+  font-style: normal;
+  font-weight: 700;
+  src: url(../../fonts/Roboto/Roboto-Medium.eot); /* For IE6-8 */
+  src: local('Roboto Medium'),
+       local('Roboto-Medium'),
+       url(../../fonts/Roboto/Roboto-Medium.woff2) format('woff2'),
+       url(../../fonts/Roboto/Roboto-Medium.woff) format('woff'),
+       url(../../fonts/Roboto/Roboto-Medium.ttf) format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+/* Roboto Bold */
+@font-face {
+  font-family: 'Savics';
+  font-style: normal;
+  font-weight: 900;
+  src: url(../../fonts/Roboto/Roboto-Bold.eot); /* For IE6-8 */
+  src: local('Roboto Bold'),
+       local('Roboto-Bold'),
+       url(../../fonts/Roboto/Roboto-Bold.woff2) format('woff2'),
+       url(../../fonts/Roboto/Roboto-Bold.woff) format('woff'),
+       url(../../fonts/Roboto/Roboto-Bold.ttf) format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+/* Roboto Italic */
+@font-face {
+  font-family: 'Savics';
+  font-style: italic;
+  font-weight: 400;
+  src: url(../../fonts/Roboto/Roboto-Italic.eot); /* For IE6-8 */
+  src: local('Roboto Italic'),
+       local('Roboto-Italic'),
+       url(../../fonts/Roboto/Roboto-Italic.woff2) format('woff2'),
+       url(../../fonts/Roboto/Roboto-Italic.woff) format('woff'),
+       url(../../fonts/Roboto/Roboto-Italic.ttf) format('truetype');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+
+/* Material Icons */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../../fonts/MaterialIcons/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(../../fonts/MaterialIcons/MaterialIcons-Regular.woff2) format('woff2'),
+       url(../../fonts/MaterialIcons/MaterialIcons-Regular.woff) format('woff'),
+       url(../../fonts/MaterialIcons/MaterialIcons-Regular.ttf) format('truetype');
+}
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}

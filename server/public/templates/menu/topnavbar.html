@@ -1,0 +1,31 @@
+<ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+        <a href="#" class="navbar-nav-link">
+            Text link
+        </a>
+    </li>
+
+    <li class="nav-item dropdown">
+        <a href="#" class="navbar-nav-link">
+            <i class="icon-bell2"></i>
+            <span class="d-md-none ml-2">Notifications</span>
+            <span class="badge badge-mark border-white ml-auto ml-md-0"></span>
+        </a>					
+    </li>
+
+    <li class="nav-item dropdown dropdown-user">
+        <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+            <div class="avatar" ng-style="{'background-color': account.avatar}">
+                {{account.firstname.substr(0, 1).toUpperCase()}}
+            </div>
+            <span>{{account.firstname}} {{account.lastname}}</span>
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right">
+            <a ui-sref="home.profile.main" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
+            <div class="dropdown-divider"></div>
+            <a ui-sref="home.settings.main" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a>
+            <a ng-click="go('#');" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
+        </div>
+    </li>
+</ul>

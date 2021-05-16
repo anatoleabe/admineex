@@ -87,12 +87,27 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
             abstract: true,
             url: '/',
             views: {
+                'topnavbar': {
+                    templateUrl: 'templates/menu/topnavbar.html',
+                    controller: 'MenuController'
+                },
+                'leftsidebar': {
+                    templateUrl: 'templates/menu/leftsidebar.html',
+                    controller: 'MenuController'
+                },
                 'header': {
                     templateUrl: 'templates/menu/menu.html',
                     controller: 'MenuController'
                 },
+                'contentheader': {
+                    templateUrl: 'templates/menu/contentheader.html',
+                    controller: 'MenuController'
+                },
                 'content': {
                     templateUrl: 'templates/home.html'
+                },
+                'footer': {
+                    templateUrl: 'templates/menu/footer.html'
                 }
             },
             access: {requiredAuthentication: true},

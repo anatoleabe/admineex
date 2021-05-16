@@ -1,4 +1,4 @@
-angular.module('MenuCtrl', []).controller('MenuController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $rootScope, $mdSidenav, $mdToast, $mdDialog, $sanitize, $mdBottomSheet) {
+angular.module('MenuCtrl', []).controller('MenuController', function ($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $rootScope, $location, $mdSidenav, $mdToast, $mdDialog, $sanitize, $mdBottomSheet) {
     $ocLazyLoad.load('js/services/NotificationService.js').then(function () {
         var Notification = $injector.get('Notification');
 
@@ -14,18 +14,14 @@ angular.module('MenuCtrl', []).controller('MenuController', function ($scope, $s
 
             UI.nav().then(function (response) {
                 var data = response.data;
-
-                $scope.nav = [];
-                for (var i = 0; i < data.nav.left.length; i++) {
-                    data.nav.left[i].header = gettextCatalog.getString(data.nav.left[i].header);
-                    for (var j = 0; j < data.nav.left[i].items.length; j++) {
-                        data.nav.left[i].items[j].name = gettextCatalog.getString(data.nav.left[i].items[j].name);
-                    }
-                }
                 $scope.nav = data.nav.left;
+                console.log($scope.nav)
             }).catch(function (response) {
                 console.log(response);
             });
+            
+            $scope.activepath = $location.path();
+            console.log($scope.activepath)
 
             function getNotifications() {
                 $scope.pending = 0;
