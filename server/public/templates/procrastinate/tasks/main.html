@@ -58,18 +58,18 @@
         </md-toolbar>
 
         <md-table-container>
-            <table md-table md-progress="promise">
-                <thead md-head md-order="query.order">
+            <table id="procrastinate" md-table md-progress="promise">
+                <thead md-head md-order="query.order" class="procrastinateTable">
                     <tr md-row>
                         <th md-column md-order-by="code" translate style="width: 10px">Code</th>
-                        <th md-column md-order-by="title" translate style="width: 50%">Title</th>
+                        <th md-column md-order-by="title" translate style="width: 40%">Title</th>
                         <th md-column md-order-by="structure.name"  translate>Assigned to</th>
-                        <th md-column md-order-by="name" style="width: 100px" translate>Status</th>
+                        <th md-column md-order-by="name" style="width: 160px" translate>Status</th>
                         <th md-column md-order-by="vancancies" style="width: 80px" translate>Creation</th>
                         <th md-column translate >Actions</th>
                     </tr>
                 </thead>
-                <tbody md-body dnd-list="list" class="ng-scope">
+                <tbody md-body dnd-list="list" class="ng-scope" class="procrastinateTable">
                     <tr md-row data-ng-repeat="task in tasks" ng-click="read(task._id)" dnd-draggable="item" dnd-moved="list.splice($index, 1)" dnd-effect-allowed="move" dnd-selected="models.selected = item" ng-class="{'selected': models.selected === item}" draggable="true">
                         <td md-cell  style="width: 10px" >{{task.identifier}} </td>
                         <td md-cell ng-click="details({id: task._id})" style="width: 50%">
@@ -81,9 +81,9 @@
                         </td>
                         <td md-cell flex ng-click="details({id: task._id})" >
                             <span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; " >{{task.user.firstname.substr(0, 1).toUpperCase()}}</span>
-                            {{task.user.firstname}}  {{task.user.lastname}}
+                            {{task.user.firstname}} 
                         </td>
-                        <td md-cell flex style="width: 100px" ng-click="details({id: task._id})">
+                        <td md-cell flex style="width: 160px" ng-click="details({id: task._id})">
 
                             <small class="chip-normal status-{{task.status}}" >{{task.statusbeautified}} </small>
                         </td>

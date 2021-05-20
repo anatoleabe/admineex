@@ -226,6 +226,8 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                                                         User.list().then(function (response) {
                                                             $scope.users = response.data;
                                                             $scope.task = p;
+                                                            $('#summernote').summernote('code', $scope.task.description);
+                                                            $('#summernote').summernote('destroy');
                                                             $scope.status = s;
                                                             $scope.buttonStatus = {id: p.status, name: p.statusbeautified};
                                                             $scope.theTask = {_id: p._id};

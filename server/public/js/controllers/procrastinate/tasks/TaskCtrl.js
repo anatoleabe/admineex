@@ -16,7 +16,11 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
     $scope.myFilter = function (item) {
         return item.selected;
     };
-
+    
+    angular.element(document).ready(function () {
+        $('#summernote').summernote();
+    });
+    
     $ocLazyLoad.load('node_modules/ng-file-upload/dist/ng-file-upload.min.js').then(function () {
         var Upload = $injector.get('Upload');
         $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
@@ -117,6 +121,8 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
                                         $scope.task = response.data;
                                         $scope.selectedUsers = $scope.task.usersID;
                                         $scope.uploader.file = $scope.task.attachedFiles;
+                                        $('#summernote').summernote('code', $scope.task.description);
+                                        
                                     }).catch(function (response) {
                                         $rootScope.kernel.alerts.push({
                                             type: 1,
@@ -129,6 +135,7 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
                                     // Modify an Task
                                     $scope.submit = function () {
                                         $rootScope.kernel.loading = 0;
+                                        $scope.task.description = $('#summernote').summernote('code');
                                         if ($scope.task.status != undefined && $scope.task.categoryID != undefined && $scope.task.priority != undefined && $scope.task.deadline != undefined && $scope.selectedUsers[0] != undefined) {
                                             prepareDetailsForServer();
                                             Upload.upload({
@@ -171,7 +178,7 @@ angular.module('TaskCtrl', []).controller('TaskController', function ($scope, $w
 
                                     // Add a new task
                                     $scope.submit = function () {
-                                        console.log("jeeenen")
+                                        $scope.task.description = $('#summernote').summernote('code');
                                         $scope.loading = 0;
                                         if ($scope.task.status != undefined && $scope.task.categoryID != undefined && $scope.task.priority != undefined && $scope.task.deadline != undefined && $scope.selectedUsers[0] != undefined) {
                                             prepareDetailsForServer();

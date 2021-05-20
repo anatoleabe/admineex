@@ -25,7 +25,7 @@
                                 <div layout="row">
                                     <md-input-container class="md-block" flex >
                                         <label translate>Details</label>
-                                        <textarea ng-model="task.description" placeholder="{{'Enter task details'| translate}}" name="description" md-maxlength="350" rows="2" md-select-on-focus required></textarea>
+                                        <div id="summernote"  placeholder="{{'Enter task details'| translate}}" >{{task.description}}</div>
                                         <div ng-messages="description.$error">
                                             <div ng-message="required">
                                                 This is required to proceed on next step.
@@ -33,6 +33,7 @@
                                         </div>
                                     </md-input-container>
                                 </div>
+                                
                                 <div layout="row">
                                     <md-input-container class="md-block" flex >
                                         <label translate>Task category</label>
@@ -74,7 +75,7 @@
                                         </md-input-container>
                                     </div>
                                 </div>
-                                
+
                                 <div layout="row">
                                     <md-input-container class="md-block" flex >
                                         <label translate>Task assignee 2</label>
@@ -95,8 +96,8 @@
                                     <md-input-container class="md-input-has-value" ng-class="{ 'md-input-invalid' : form.progress.$invalid && form.$submitted }">
                                         <label class="md-required" translate style="margin-bottom: 5px">Status</label>
 
-                                        <md-radio-group md-autofocus name="progress" ng-model="task.status " layout="row" required>
-                                            <md-radio-button ng-repeat="p in progress | filter:activeStatusOnly" value="{{p.id}}" class="md-primary">{{p.name}} </md-radio-button>
+                                        <md-radio-group md-autofocus name="progress" ng-model="task.status" layout="row" required>
+                                            <md-radio-button ng-repeat="p in progress| filter:activeStatusOnly" value="{{p.id}}" class="md-primary">{{p.name}} </md-radio-button>
                                         </md-radio-group>
 
                                         <div ng-messages="form.progress.$error">

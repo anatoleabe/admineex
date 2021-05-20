@@ -790,3 +790,8 @@ th{
 [class*=bg-]:not(.bg-transparent):not(.bg-light):not(.bg-white):not(.btn-outline):not(body) {
     color: #fff;
 }*/
+
+.taskdialogmargin {
+    margin-top: 7px;
+    margin-bottom: 7px;
+}

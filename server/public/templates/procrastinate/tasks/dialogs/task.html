@@ -49,7 +49,7 @@
                 <div  layout="row">
                     <div layout="column" >
                         <div class="task-dialog-title-label"><small translate>Description</small></div>
-                        <div class="task-dialog-description">{{task.description}}</div>
+                        <div id="summernote" class="task-dialog-description">{{task.description}}</div>
                     </div>
                 </div>
                 <div  layout="row" style="margin-top: 20px">
@@ -92,37 +92,37 @@
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
-                <div  layout="row">
+                <div  layout="row" class="taskdialogmargin">
                     <p class="md-body-2" flex="50" translate>Code: </p>
                     <p class="md-body-1 md-secondary" flex translate >
                         <b>{{task.identifier}} </b>
                     </p>
                 </div>
-                <div  layout="row">
+                <div  layout="row" class="taskdialogmargin">
                     <p class="md-body-2" flex="50" translate>Assigned to</p>
                     <p class="md-body-1 md-secondary" flex translate><span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px " >{{task.user.firstname.substr(0, 1).toUpperCase()}}</span>{{task.user.firstname}} {{task.user.lastname}} </p>
                 </div>
-                <div  layout="row">
+                <div  layout="row" class="taskdialogmargin">
                     <p class="md-body-2" flex="50" translate>Priority</p>
                     <p class="md-body-1 md-secondary" flex translate>{{task.prioritybeautified}}</p>
                 </div>
-                <div  layout="row">
+                <div  layout="row" class="taskdialogmargin">
                     <p class="md-body-2" flex="50" translate>Due date</p>
                     <p class="md-body-1 md-secondary" flex translate>{{task.deadline|date}}</p>
                 </div>
-                <div  layout="row">
+                <div  layout="row" class="taskdialogmargin">
                     <p class="md-body-2" flex="50" translate>Category</p>
                     <p class="md-body-1 md-secondary" flex translate>{{task.category.name}}</p>
                 </div>
-                <div  layout="row">
+                <div  layout="row" class="taskdialogmargin">
                     <p class="md-body-2" flex="50" translate>Created By:</p>
                     <p class="md-body-1 md-secondary" flex translate><span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px " >{{task.author.firstname.substr(0, 1).toUpperCase()}}</span>{{task.author.firstname}} {{task.author.lastname}}</p>
                 </div>
-                <div  layout="row">
+                <div  layout="row" class="taskdialogmargin">
                     <p class="md-body-2" flex="50" translate>Created on:</p>
                     <p class="md-body-1 md-secondary" flex translate>{{task.created|smartDatetime}}</p>
                 </div>
-                <div  layout="row">
+                <div  layout="row" class="taskdialogmargin">
                     <p class="md-body-2" flex="50" translate>Last modification:</p>
                     <p class="md-body-1 md-secondary" flex translate>{{task.created|smartDatetime}}</p>
                 </div>

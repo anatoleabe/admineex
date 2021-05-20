@@ -17,6 +17,7 @@
         <link href="assets/css/layout.min.css" rel="stylesheet" type="text/css">
         <link href="assets/css/components.min.css" rel="stylesheet" type="text/css">
         <link href="assets/css/colors.min.css" rel="stylesheet" type="text/css">
+        <link href="node_modules/summernote/dist/summernote.min.css" rel="stylesheet" type="text/css">
         <!-- /global stylesheets -->
 
     </head>
@@ -47,7 +48,7 @@
 
                     <!-- Content area -->
                     <md-content flex="flex"  class="main">
-                        <main class="bg-slate-800" ui-view="content"></main>
+                        <main ui-view="content" style="height: 100%"></main>
                     </md-content>
                     <!-- /content area -->
 
@@ -108,6 +109,8 @@
 
         <!-- Theme JS files -->
         <script src="assets/js/app.js"></script>
+        <!-- Theme JS files -->
+	<script src="node_modules/summernote/dist/summernote.min.js"></script>
         <!-- /theme JS files -->
     </body>
 </html>
