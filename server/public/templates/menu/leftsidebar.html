@@ -1,5 +1,5 @@
 <!-- Main sidebar -->
-<div >
+<div class="sidebar sidebar-dark sidebar-main sidebar-expand-md" style="height: 100%;">
 
     <!-- Sidebar mobile toggler -->
     <div class="sidebar-mobile-toggler text-center">
@@ -48,7 +48,7 @@
                 <div class="nav nav-sidebar" ng-repeat="n in nav" >
                     <li class="nav-item-header" ng-if="n.header != '' && n.items.length > 0"><div class="text-uppercase font-size-xs line-height-xs" >{{n.header}}</div> <i class="icon-menu" title="{{n.header}}"></i></li>
                     <li  class="nav-item " ng-class='(item.items && item.items.length > 0) ? "nav-item-submenu" : ""' ui-sref="{{item.sref}}" ui-sref-active='nav-item-expanded nav-item-open' ng-repeat="item in n.items">
-                        <a ui-sref="{{item.href}}" class="nav-link"><i class="icon-home4"></i><span>{{item.name}}</span></a>
+                        <a ui-sref="{{item.href}}" class="nav-link"><i class="{{item.icomoon}}"></i><span>{{item.name}}</span></a>
                         <ul class="nav nav-group-sub" data-submenu-title="Layouts" ng-if="item.items && item.items.length > 0" >
                             <li class="nav-item" ng-repeat="subItem in item.items"><a ui-sref="{{subItem.href}}" class="nav-link " ui-sref-active='active'>{{subItem.name}}</a></li>
 

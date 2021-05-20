@@ -20,73 +20,40 @@
         <!-- /global stylesheets -->
 
     </head>
-    <body ng-app="app">
+    <body  ng-app="app">
 
         <div layout="column" layout-fill="layout-fill">
-            <div class="loading-general" layout="row" layout-sm="column" layout-align="space-around" ng-if="kernel.loading < 100">
-                <md-progress-circular md-mode="{'determinate': kernel.loading > 0 && kernel.loading < 100, 'indeterminate': kernel.loading === 0 || kernel.loading === 100" md-diameter="30" class="md-accent" value="{{kernel.loading}}"></md-progress-circular>
-            </div>
 
-            <!-- Main navbar -->
-            <div class="navbar navbar-expand-md navbar-dark">
-                <div class="navbar-brand">
-                    <a href="../full/index.html" class="d-inline-block">
-                        <img src="global_assets/images/logo_light.png" alt="">
-                    </a>
-                </div>
-
-                <div class="d-md-none">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
-                        <i class="icon-tree5"></i>
-                    </button>
-                    <button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
-                        <i class="icon-paragraph-justify3"></i>
-                    </button>
-                </div>
-
-                <div class="collapse navbar-collapse" id="navbar-mobile">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block">
-                                <i class="icon-paragraph-justify3"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav ml-auto" ui-view="topnavbar">
-
-                    </ul>
-                </div>
+            <div  ui-view="topnavbar">
+                
             </div>
             <!-- Page content -->
             <div class="page-content">
 
                 <!-- Left sidebar -->
-                <div class="sidebar sidebar-dark sidebar-main sidebar-expand-md" ui-view="leftsidebar">
-                    
+                <div ui-view="leftsidebar">
+
                 </div>
                 <!-- /main sidebar -->
 
-
                 <!-- Main content -->
                 <div class="content-wrapper">
-                    
+
                     <!-- Page content header -->
                     <div ui-view="contentheader">
-                        
+
                     </div>
                     <!-- /page header -->
 
                     <!-- Content area -->
-                    <div class="content">
-                        <md-content flex="flex" class="main">
-                            <main ui-view="content"></main>
-                        </md-content>
-                    </div>
+                    <md-content flex="flex"  class="main">
+                        <main class="bg-slate-800" ui-view="content"></main>
+                    </md-content>
                     <!-- /content area -->
 
                     <!-- Footer -->
                     <div ui-view="footer">
-                        
+
                     </div>
                     <!-- /footer -->
 

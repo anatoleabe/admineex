@@ -86,6 +86,7 @@ function buildNav(user, callback) {
         href: 'home.dashboard.main',
         sref: 'home.dashboard.main',
         icon: 'dashboard',
+        icomoon: 'icon-home4',
         label: gt.gettext('Dashboard'),
         name: gt.gettext('Dashboard')
     };
@@ -93,6 +94,7 @@ function buildNav(user, callback) {
         href: 'home.staffs.main',
         sref: '.staffs',
         icon: 'class',
+        icomoon: 'icon-users4',
         label: 'Staff management',
         name: 'Staff management',
         items: []
@@ -116,6 +118,7 @@ function buildNav(user, callback) {
         href: 'home.tasks.main',
         sref: '.tasks',
         icon: 'list',
+        icomoon: 'icon-task',
         label: 'Procrastinate',
         name: 'Procrastinate',
         items: []
@@ -143,6 +146,7 @@ function buildNav(user, callback) {
         href: 'home.administration.positions',
         sref: '.administration',
         icon: 'folder',
+        icomoon: 'icon-folder4',
         label: 'Administration',
         name: 'Administration',
         items: []
@@ -176,6 +180,7 @@ function buildNav(user, callback) {
         href: 'home.monitor.main',
         sref: '.monitor',
         icon: 'verified_user',
+        icomoon: 'icon-hat',
         label: 'Monitoring & Evaluation',
         name: 'Monitoring & Evaluation',
         items: []
@@ -204,6 +209,7 @@ function buildNav(user, callback) {
         href: 'home.users.main',
         sref: 'home.users.main',
         icon: 'supervisor_account',
+        icomoon: 'icon-users2',
         label: gt.gettext('Users'),
         name: gt.gettext('Users')
     };
@@ -213,6 +219,7 @@ function buildNav(user, callback) {
         href: 'home.configuration',
         sref: 'home.configuration',
         icon: 'settings',
+        icomoon: 'icon-equalizer',
         label: 'Configuration',
         name: 'Configuration'
     };
@@ -220,6 +227,7 @@ function buildNav(user, callback) {
         href: 'home.audit',
         sref: 'home.audit',
         icon: 'history',
+        icomoon: 'icon-history',
         label: 'Audit',
         name: 'Audit'
     };

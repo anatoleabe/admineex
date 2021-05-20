@@ -32,15 +32,15 @@
                     </md-datepicker>
                 </md-button>
             </div>
-            <div >
+            <div  style="float: right">
                 <span style="display: inline-block;margin-top: 5px;">
                     <md-switch ng-model="$root.globalView.activated" aria-label="Global view">
                         Global view
                     </md-switch>
                 </span>
             </div>
-            <div  >
-                <div style="text-align: right;" ng-show="$root.globalView.activated == true" layout-margin>
+            <div  flex="30">
+                <div style="text-align: left;" ng-show="$root.globalView.activated == true" layout-margin>
                     <md-input-container class="md-block" flex >
                         <label translate>Select a user</label>
                         <md-select ng-model="$root.globalView.selectedUser" aria-label="users"

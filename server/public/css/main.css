@@ -782,3 +782,11 @@ th{
     color: #fff;
     font-weight: bold;
 }
+
+.toolbar-filter  md-switch {
+    margin: 0px 0;
+}
+/*
+[class*=bg-]:not(.bg-transparent):not(.bg-light):not(.bg-white):not(.btn-outline):not(body) {
+    color: #fff;
+}*/
