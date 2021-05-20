@@ -1,24 +1,32 @@
 <div class="loading" layout="row" layout-sm="column" layout-align="space-around" ng-if="loading">
     <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
 </div>
-<div layout="column" layout-align="center center">
-    <md-card class="signupBox md-whiteframe-z1" style="margin-top: 10px;">
-        <md-card-content>
-            <h3 class="md-title" style="text-align:center;" translate>Having trouble signing in?</h3>
-            <h3 class="md-subhead" translate>Give us your email address and we will send you a link to reset your password.</h3>
-            <form ng-submit="submit();">
-                <div layout="column">
-                    <md-input-container class="md-block" style="margin: 0;">
-                        <label translate>Email</label>
-                        <input type="email" ng-model="email" required>
-                    </md-input-container>
-                    <div layout="row" layout-align="center center">
-                        <md-button class="md-raised" ui-sref="signin"><span translate>Back</span></md-button>
-                        <div flex="flex"></div>
-                        <md-button class="md-raised md-accent" type="submit" ng-disabled="loading"><span translate>Submit</span></md-button>
+<!-- Content area -->
+<div class="content d-flex justify-content-center align-items-center">
+
+    <!-- Password recovery form -->
+    <form class="login-form" ng-submit="submit();">
+        <div class="card mb-0">
+            <div class="card-body">
+                <div class="text-center mb-3">
+                    <i class="icon-spinner11 icon-2x text-warning border-warning border-3 rounded-round p-3 mb-3 mt-1"></i>
+                    <h5 class="mb-0" style="color: rgba(0,0,0,0.87);" translate>Password recovery</h5>
+                    <span class="d-block text-muted" translate>Give us your email address and we will send you a link to reset your password.</span>
+                </div>
+
+                <div class="form-group form-group-feedback form-group-feedback-right">
+                    <input type="email" class="form-control" ng-model="email" placeholder="{{'Your email'| translate}}">
+                    <div class="form-control-feedback">
+                        <i class="icon-mail5 text-muted"></i>
                     </div>
                 </div>
-            </form>
-        </md-card-content>
-    </md-card>
+
+                <button type="submit" class="btn bg-blue btn-block"><i class="icon-spinner11 mr-2"></i><span translate>Reset password</span> </button>
+                <button ui-sref="signin" class="btn btn-block"><i class="icon-back mr-2" ></i> <span translate> Back to login</span></button>
+            </div>
+        </div>
+    </form>
+    <!-- /password recovery form -->
+
 </div>
+<!-- /content area -->
