@@ -15,13 +15,11 @@ angular.module('MenuCtrl', []).controller('MenuController', function ($scope, $s
             UI.nav().then(function (response) {
                 var data = response.data;
                 $scope.nav = data.nav.left;
-                console.log($scope.nav)
             }).catch(function (response) {
                 console.log(response);
             });
             
             $scope.activepath = $location.path();
-            console.log($scope.activepath)
 
             function getNotifications() {
                 $scope.pending = 0;

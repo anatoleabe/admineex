@@ -7,7 +7,7 @@ angular.module('NavCommentsDirective', []).directive('navcomments', function (ge
             $scope.loading = true;
             
             
-            console.log("mama nav comment")
+            //console.log("mama nav comment")
         }
     };
 });
