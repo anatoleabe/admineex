@@ -125,7 +125,10 @@ exports.api.update = function (req, res) {
                                     'Mongodb attempted to find the task but it revealed not defined');
                             return res.sendStatus(403);
                         } else {
-                            task.status = fields.status;
+                            if (fields.status){
+                                task.status = fields.status;
+                            }
+                            
                             if (fields.taskhistory) {
                                 var myTask = {};
                                 myTask.history = {
@@ -146,7 +149,15 @@ exports.api.update = function (req, res) {
                                 }
                                 task.history.push(myTask.history);
                             }
-
+                            
+                            if (fields.comment) {
+                                var myComment = {
+                                    authorID : new ObjectID(fields.comment.authorID),
+                                    comment : fields.comment.comment,
+                                    creation: moment(fields.comment.date).toDate()
+                                };
+                                task.comments.push(myComment)
+                            }
 
                             exports.upsert({actor: req.actor}, task, function (err) {
                                 if (err) {
@@ -220,6 +231,51 @@ exports.api.getHistory = function (req, res) {
                 }
         );
         pipe.push({$sort: {'history.date': -1}}, );
+        //Execute
+        var q = Task.aggregate(pipe);
+        q.options = {allowDiskUse: true};
+        //Run it
+        q.exec(function (err, task) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[mongodb]', 'Tasks', 'Read', "ID", req.params.id, 'failed', "Mongodb attempted to find the task");
+                return res.status(500).send(err);
+            } else {
+                return res.json(task);
+            }
+        });
+    } else {
+        audit.logEvent('[anonymous]', 'Tasks', 'Read', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+};
+
+exports.api.getComments = function (req, res) {
+    if (req.actor) {
+        var id = req.params.id || '';
+        var mainQuery = {$and: [{}]};
+        mainQuery.$and.push({
+            "_id": new ObjectID(req.params.id)
+        });
+
+        var pipe = [];
+        pipe.push({$match: mainQuery});
+        pipe.push({$project: {_id: 1, comments: 1, usersID: 1}});
+        pipe.push(
+                {$unwind: "$comments"},
+                {
+                    $lookup: {
+                        from: 'users',
+                        localField: 'comments.authorID',
+                        foreignField: '_id',
+                        as: 'author',
+                    }
+                },
+                {$unwind: "$author"},
+                
+        );
+        pipe.push({$sort: {'comments.creation': -1}}, );
+        pipe.push({$project: {_id: 1, "author.firstname": 1,"author.lastname": 1, creation:"$comments.creation", comment:"$comments.comment"}});
         //Execute
         var q = Task.aggregate(pipe);
         q.options = {allowDiskUse: true};

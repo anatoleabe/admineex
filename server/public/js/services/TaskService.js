@@ -24,6 +24,9 @@ angular.module('TaskService', []).factory('Task', function($http) {
         },
         history: function(info) {
             return $http.get('/api/taskHistory/' + info.id);
+        },
+        comments: function(info) {
+            return $http.get('/api/taskComments/' + info.id);
         }
     }
 });

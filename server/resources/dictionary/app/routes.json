@@ -430,5 +430,11 @@
         "uri": "/api/excelExport/card",
         "method": "POST",
         "roles": [1,2,3,4]
+    },
+    {
+        "id": 74,
+        "uri": "/api/taskComments/:id",
+        "method": "GET",
+        "roles": [1,2,3,4]
     }
 ]

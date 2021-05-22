@@ -502,6 +502,13 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.getHistory],
         access: _.findWhere(aclRoutes, {id: 72}).roles
     },
+    // Tasks comments
+    {
+        path: _.findWhere(aclRoutes, {id: 74}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 74}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.getComments],
+        access: _.findWhere(aclRoutes, {id: 74}).roles
+    },
     // Get orgs
     {
         path: _.findWhere(aclRoutes, {id: 63}).uri,
