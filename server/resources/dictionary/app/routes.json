@@ -436,5 +436,11 @@
         "uri": "/api/taskComments/:id",
         "method": "GET",
         "roles": [1,2,3,4]
+    },
+    {
+        "id": 75,
+        "uri": "/api/taskCommentDelete/:id/:commentIndex",
+        "method": "DELETE",
+        "roles": [1,2,3,4]
     }
 ]

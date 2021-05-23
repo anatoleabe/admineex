@@ -217,6 +217,7 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                                 $mdDialog.show({
                                     controller: ['$scope', '$mdDialog', 'p', 's', function ($scope, $mdDialog, p, s) {
                                             $scope.currentNavItem = 'comments';
+                                            $rootScope.selectedTaskId = p._id;
                                             $ocLazyLoad.load('js/services/TaskService.js').then(function () {
                                                 var Task = $injector.get('Task');
                                                 $ocLazyLoad.load('js/services/UserService.js').then(function () {
@@ -233,7 +234,7 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                                                         $scope.theTask.status = p.status;
                                                         $scope.uploader = {};
                                                         $rootScope.taskhistory = $scope.theTask.history;
-                                                        $rootScope.selectedTaskId = $scope.theTask._id;
+                                                        
 
 
                                                         var watch = {};

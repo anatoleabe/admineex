@@ -6,17 +6,20 @@
 
     <div class="text-right">
         <button type="submit" class="btn btn-primary">Save <i class="icon-paperplane ml-2"></i></button>
-    </div>·
+    </div>
 </form>
 
 
-        <div ng-repeat="comment in comments | filter:onlyAssignee" class="jzUAML">
-            <div layout="row">
-                <span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px; margin-top: -5px" >{{comment.author.firstname.substr(0, 1).toUpperCase()}}</span><span><b>{{comment.author.firstname}} {{comment.author.lastname}}</b></span> &nbsp;&nbsp;
-                <span class="GxLNY">{{comment.creation|smartDatetime}}</span>
-            </div>
-            <div layout="row" class="gAtRty" >
-                {{comment.comment}}
-            </div>
-        </div>
+<div ng-repeat="comment in comments| filter:onlyAssignee" class="jzUAML">
+    <div layout="row">
+        <span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px; margin-top: -5px" >{{comment.author.firstname.substr(0, 1).toUpperCase()}}</span><span><b>{{comment.author.firstname}} {{comment.author.lastname}}</b></span> &nbsp;&nbsp;
+        <span class="GxLNY">{{comment.creation|smartDatetime}}</span>
+    </div>
+    <div layout="row" class="gAtRty" >
+        {{comment.comment}}
+    </div>
+    <div id="commentActions" class="text-right" >
+        <button type="button" ng-click="deleteComment(comment.arrayIndex)" class="btn btn-outline bg-grey-400 text-grey-800 btn-icon rounded-round ml-2"><i class="icon-trash-alt ml-2"></i></button>
+    </div>
+</div>
 

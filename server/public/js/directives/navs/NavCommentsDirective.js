@@ -10,7 +10,8 @@ angular.module('NavCommentsDirective', []).directive('navcomments', function (ge
 
 
             $scope.task = {
-                _id: $rootScope.selectedTaskId
+                _id: $rootScope.selectedTaskId,
+                comments:undefined
             };
 
             angular.element(document).ready(function () {
@@ -22,6 +23,7 @@ angular.module('NavCommentsDirective', []).directive('navcomments', function (ge
 
                 $scope.loading = true;
                 $scope.currentNavItem = "Histoire";
+                $scope.commentActions = false;
 
                 loadComments = function () {
                     Task.comments({
@@ -29,7 +31,6 @@ angular.module('NavCommentsDirective', []).directive('navcomments', function (ge
                     }).then(function (response) {
                         $scope.comments = response.data;
                         $scope.task.comments = response.data;
-                        console.log($scope.comments)
                     }).catch(function (response) {
                         console.log(response);
                         $rootScope.kernel.alerts.push({
@@ -41,6 +42,23 @@ angular.module('NavCommentsDirective', []).directive('navcomments', function (ge
                 };
                 loadComments();
 
+
+                // Add a new task
+                $scope.deleteComment = function (cIndex) {
+                    Task.deleteComments({
+                        id: $rootScope.selectedTaskId,
+                        cindex:cIndex
+                    }).then(function (response) {
+                        loadComments();
+                    }).catch(function (response) {
+                        console.log(response);
+                        $rootScope.kernel.alerts.push({
+                            type: 1,
+                            msg: gettextCatalog.getString('An error occurred, please try again later'),
+                            priority: 2
+                        });
+                    });
+                }
 
                 // Add a new task
                 $scope.submit = function () {

@@ -125,10 +125,10 @@ exports.api.update = function (req, res) {
                                     'Mongodb attempted to find the task but it revealed not defined');
                             return res.sendStatus(403);
                         } else {
-                            if (fields.status){
+                            if (fields.status) {
                                 task.status = fields.status;
                             }
-                            
+
                             if (fields.taskhistory) {
                                 var myTask = {};
                                 myTask.history = {
@@ -149,11 +149,11 @@ exports.api.update = function (req, res) {
                                 }
                                 task.history.push(myTask.history);
                             }
-                            
+
                             if (fields.comment) {
                                 var myComment = {
-                                    authorID : new ObjectID(fields.comment.authorID),
-                                    comment : fields.comment.comment,
+                                    authorID: new ObjectID(fields.comment.authorID),
+                                    comment: fields.comment.comment,
                                     creation: moment(fields.comment.date).toDate()
                                 };
                                 task.comments.push(myComment)
@@ -262,7 +262,12 @@ exports.api.getComments = function (req, res) {
         pipe.push({$match: mainQuery});
         pipe.push({$project: {_id: 1, comments: 1, usersID: 1}});
         pipe.push(
-                {$unwind: "$comments"},
+                {
+                    $unwind: {
+                        path: "$comments",
+                        includeArrayIndex: "arrayIndex"
+                    }
+                },
                 {
                     $lookup: {
                         from: 'users',
@@ -272,10 +277,9 @@ exports.api.getComments = function (req, res) {
                     }
                 },
                 {$unwind: "$author"},
-                
-        );
+                );
         pipe.push({$sort: {'comments.creation': -1}}, );
-        pipe.push({$project: {_id: 1, "author.firstname": 1,"author.lastname": 1, creation:"$comments.creation", comment:"$comments.comment"}});
+        pipe.push({$project: {_id: 1, "author.firstname": 1, "author.lastname": 1,"arrayIndex": 1, creation: "$comments.creation", comment: "$comments.comment"}});
         //Execute
         var q = Task.aggregate(pipe);
         q.options = {allowDiskUse: true};
@@ -288,6 +292,28 @@ exports.api.getComments = function (req, res) {
             } else {
                 return res.json(task);
             }
+        });
+    } else {
+        audit.logEvent('[anonymous]', 'Tasks', 'Read', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+};
+
+exports.api.deleteComment = function (req, res) {
+    if (req.actor) {
+        var id = req.params.id || '';
+        var commentIndex = req.params.commentIndex || '';
+        var mainQuery = {$and: [{}]};
+        mainQuery.$and.push({
+            "_id": new ObjectID(req.params.id)
+        });
+        var inde = "comments." + commentIndex;
+        var unset = {$unset: {[inde]: 1}}
+        var pull = {$pull: {"comments": null}}
+        Task.findOneAndUpdate(mainQuery, unset).then(() => {
+            Task.findOneAndUpdate(mainQuery, pull).then(() => {
+                return res.json();
+            })
         });
     } else {
         audit.logEvent('[anonymous]', 'Tasks', 'Read', '', '', 'failed', 'The actor was not authenticated');
@@ -324,7 +350,7 @@ exports.api.list = function (req, res) {
         var mainQuery = {$and: [{}]};
 
         if (req.params.status && req.params.status != "-1") {
-            
+
             mainQuery.$and.push({
                 "status": req.params.status
             });
@@ -362,9 +388,9 @@ exports.api.list = function (req, res) {
         //Filter by key word
         if (req.params.search != undefined && req.params.search != "undefined" && req.params.search != "") {
             pipe.push({$match: {$and: [{"metainfo": dictionary.makePattern(req.params.search)}]}})
-        }else{
+        } else {
             mainQuery.$and.push({
-                "status": { $ne: "5" },
+                "status": {$ne: "5"},
             });
         }
         // Sort per testDate selected row

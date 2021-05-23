@@ -27,6 +27,10 @@ angular.module('TaskService', []).factory('Task', function($http) {
         },
         comments: function(info) {
             return $http.get('/api/taskComments/' + info.id);
+        },
+        deleteComments: function(info) {
+            console.log(info)
+            return $http.delete('/api/taskCommentDelete/' + info.id+'/'+info.cindex);
         }
     }
 });
