@@ -255,24 +255,24 @@ function buildNav(user, callback) {
     switch (user.role) {
         case '1'://Administrator
             // LEFT MENU STAFF MANAGEMENT
-            nav.left[0].items.push(staffManagement);
-            // LEFT MENU TABS FOR STAFF MANAGEMENT
-            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
-            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+//            nav.left[0].items.push(staffManagement);
+//            // LEFT MENU TABS FOR STAFF MANAGEMENT
+//            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
+//            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
             // LEFT MENU TASK
             nav.left[0].items.push(task);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab1);
-            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab3);
+//            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab3);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(taskCategoryTab4);
-            // LEFT MENU MONITOR
-            nav.left[0].items.push(monitoring);
-            nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
+//            // LEFT MENU MONITOR
+//            nav.left[0].items.push(monitoring);
+//            nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
             // LEFT MENU STATISTICS
             // LEFT MENU ADMINISTRATION
-            nav.left[0].items.push(administration);
-            // LEFT MENU TABS FOR ADMINISTRATION
-            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
-            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
+//            nav.left[0].items.push(administration);
+//            // LEFT MENU TABS FOR ADMINISTRATION
+//            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
+//            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
 //            //LEFT MENU REPORTS
             // PREFERNCES
             nav.left[1].items.push(users);
@@ -318,6 +318,14 @@ function buildNav(user, callback) {
             // LEFT MENU TABS FOR ADMINISTRATION
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
+            break;
+        case '5'://Task user
+            // LEFT MENU TASK
+            nav.left[0].items.push(task);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab3);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskCategoryTab4);
+
             break;
     }
 //    // LEFT MENU

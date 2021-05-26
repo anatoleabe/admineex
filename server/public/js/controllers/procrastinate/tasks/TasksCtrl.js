@@ -69,6 +69,21 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
 
                         $rootScope.kernel.loading = 100;
 
+                        function deleteTask(id) {
+                            Task.delete({
+                                id: id
+                            }).then(function (response) {
+                                getMyTasks();
+                                $rootScope.kernel.alerts.push({
+                                    type: 3,
+                                    msg: gettextCatalog.getString('The task has been deleted'),
+                                    priority: 4
+                                });
+                            }).catch(function (response) {
+                                console.error(response);
+                            });
+                        }
+
 
                         function getMyTasks() {
                             $scope.helper = [];
@@ -234,7 +249,7 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
                                                         $scope.theTask.status = p.status;
                                                         $scope.uploader = {};
                                                         $rootScope.taskhistory = $scope.theTask.history;
-                                                        
+
 
 
                                                         var watch = {};
@@ -331,15 +346,16 @@ angular.module('TasksCtrl', ['dndLists']).controller('TasksController', function
 
 
                                                         $scope.showConfirm = function (task) {
+                                                            console.log("lalalal")
                                                             var confirm = $mdDialog.confirm()
                                                                     .title(gettextCatalog.getString("Delete this task"))
-                                                                    .textContent(gettextCatalog.getString("Are you sure you want to delete the task") + " " + task.name.given + " " + task.name.family + gettextCatalog.getString("?"))
+                                                                    .textContent(gettextCatalog.getString("Are you sure you want to delete the task ") + " << " + task.title + gettextCatalog.getString(">>?"))
                                                                     .ok(gettextCatalog.getString("Delete"))
                                                                     .cancel(gettextCatalog.getString("Cancel"));
 
                                                             $mdDialog.show(confirm).then(function () {
                                                                 // Delete
-                                                                deleteContact(task._id)
+                                                                deleteTask(task._id)
                                                             }, function () {
                                                                 // Cancel
                                                             });
