@@ -26,7 +26,11 @@ exports.sendMail = function (mail, callback) {
                     pass: mailerConfig.auth.pass
                 },
                 debug: false,
-                logger: false
+                logger: false,
+                tls: {
+                    // do not fail on invalid certs
+                    rejectUnauthorized: false
+                }
             });
 
             var mailOptions = {
@@ -35,11 +39,9 @@ exports.sendMail = function (mail, callback) {
                 subject: mail.subject,
                 html: result
             };
-
             if (mail.attachments) {
                 mailOptions.attachments = mail.attachments;
             }
-
             smtpTransport.sendMail(mailOptions, function (err) {
                 if (err) {
                     log.error(err);

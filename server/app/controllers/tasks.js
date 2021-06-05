@@ -20,7 +20,8 @@ const nanoid = customAlphabet(alphabet, 8);
 exports.api = {};
 
 var controllers = {
-    configuration: require('./configuration')
+    configuration: require('./configuration'),
+    notifications: require('./notifications')
 };
 
 exports.api.upsert = function (req, res) {
@@ -279,7 +280,7 @@ exports.api.getComments = function (req, res) {
                 {$unwind: "$author"},
                 );
         pipe.push({$sort: {'comments.creation': -1}}, );
-        pipe.push({$project: {_id: 1, "author.firstname": 1, "author.lastname": 1,"arrayIndex": 1, creation: "$comments.creation", comment: "$comments.comment"}});
+        pipe.push({$project: {_id: 1, "author.firstname": 1, "author.lastname": 1, "arrayIndex": 1, creation: "$comments.creation", comment: "$comments.comment"}});
         //Execute
         var q = Task.aggregate(pipe);
         q.options = {allowDiskUse: true};
@@ -333,12 +334,22 @@ exports.upsert = function (options, fields, callback) {
     } else {
         var filter = fields._id ? {_id: fields._id} : fields;
         fields.lastModified = new Date();
-        Task.findOneAndUpdate(filter, fields, {upsert: true, setDefaultsOnInsert: true}, function (err) {
+        Task.findOneAndUpdate(filter, fields, {upsert: true, setDefaultsOnInsert: true}, function (err, task) {
             if (err) {
                 log.error(err);
                 audit.logEvent('[mongodb]', 'Tasks', 'Upsert', "", '', 'failed', "Mongodb attempted to save the new task");
                 return callback(err);
             } else {
+                console.log(fields)
+                if (_id === '') {//Creation
+                    beautify({language: options.actor.language, beautify: true}, [fields], function (err, t) {
+                        if (err) {
+                            log.error(err)
+                        }else{
+                            //sendEmailNotification(t)
+                        }
+                    })
+                }
                 return callback(null);
             }
         });
@@ -530,6 +541,7 @@ exports.api.read = function (req, res) {
                                 'Mongodb attempted to find the task but it revealed not defined');
                         callback(err);
                     } else {
+
                         return res.json(tasks[0]);
                     }
                 })
@@ -640,4 +652,65 @@ function beautify(options, objects, callback) {
     } else {
         callback(null, objects);
     }
+}
+
+function sendEmailNotification(task) {
+    var notification = {
+        type: 'admin',
+        author: 'Admineex'
+    };
+    var server = controllers.configuration.getConf().server;
+    // Send emails
+    var assignee = task.user;
+    var usrLang = assignee.language;
+    var gt = dictionary.translator(usrLang);
+    var closure = server.autoValidate ? gt.gettext("to check it.") : gt.gettext("to review his/her request.")
+    notification.userID = assignee._id;
+    notification.abstract = gt.gettext("You have been assigned a new task! ");
+    notification.content = task.author.firstname + " " + task.author.lastname + " " + gt.gettext("has assigned you a new task.") + ".<br>"
+            + gt.gettext("Due date: ") + " " + task.deadline + ".<br>"
+            + gt.gettext("Category: ") + " " + task.category.name + ".<br>"
+            + gt.gettext("Priority: ") + " " + task.prioritybeautified + ".<br>"
+            + "<br>"
+            + gt.gettext(" <b>Go to the your dashboard task in Admineex to manage it.</b>");
+
+    // Send in-app notification
+    controllers.notifications.create(notification, function (err, notificationId) {
+        if (err) {
+            log.error(err);
+        } else {
+            if (assignee.preferences.notification && assignee.preferences.notification.email) {
+                var subject = gt.gettext("New task assigned - Procrastinate");
+                var holes = [
+                    ['[link]', server.name],
+                    ['[abstract]', notification.abstract],
+                    ['[content]', notification.content],
+                    ['[name]', task.user.firstname + " " + task.user.lastname],
+                    ['[assigner]', task.author.firstname + " " + task.author.lastname],
+                    ['[taskId]', task._id]
+                ];
+
+                mail.sendMail({
+                    to: assignee.email,
+                    subject: subject,
+                    template: 'notification',
+                    language: usrLang,
+                    holes: holes
+                }, function (err, info) {
+                    if (err) {
+                        log.error(err);
+                    } else {
+                        //Mark this notification as mailled
+                        controllers.notifications.markAsMailed(notificationId, function (err) {
+                            if (err) {
+                                log.error(err);
+                            }
+                        });
+                        log.info("Notification sent to: " + assignee.email);
+                    }
+                });
+            }
+        }
+    });
+
 }

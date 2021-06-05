@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "grunt": "1.0.3",
+    "eslint-config-nodemailer": "^1.0.0",
     "grunt-angular-gettext": "2.3.11",
     "grunt-wiredep": "3.0.1"
   }
