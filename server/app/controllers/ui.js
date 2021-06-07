@@ -174,6 +174,12 @@ function buildNav(user, callback) {
         label: 'Reports',
         name: 'Reports'
     };
+    var thresholds = {
+        href: 'home.thresholds',
+        icon: 'lightbulb_outline',
+        label: 'Thresholds',
+        name: 'Thresholds'
+    };
     var users = {
         href: 'home.users.main',
         icon: 'supervisor_account',
@@ -235,6 +241,7 @@ function buildNav(user, callback) {
             // LEFT MENU TABS FOR ADMINISTRATION
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
+            nav.left[0].items.push(thresholds);
 //            //LEFT MENU REPORTS
             // PREFERNCES
             nav.left[1].items.push(users);
@@ -252,6 +259,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
+            nav.left[0].items.push(thresholds);
             // LEFT MENU TABS FOR ADMINISTRATION
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);

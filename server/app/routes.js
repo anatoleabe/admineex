@@ -34,6 +34,7 @@ controllers.dictionary = require('./utils/dictionary');
 controllers.pdfs = require('./controllers/pdfs');
 controllers.monitor = require('./controllers/monitor');
 controllers.export = require('./controllers/export');
+controllers.thresholds = require('./controllers/thresholds');
 controllers.angular = function (req, res) {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 };
@@ -267,6 +268,23 @@ var routes = [
         httpMethod: _.findWhere(aclRoutes, {id: 24}).method,
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.projects.api.delete],
         access: _.findWhere(aclRoutes, {id: 24}).roles
+    },
+
+    // === THRESHOLDS ROUTES ==========================================================
+    // Retrieve thresholds
+    {
+        path: _.findWhere(aclRoutes, { id: 62 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 62 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.thresholds.api.list],
+        access: _.findWhere(aclRoutes, { id: 62 }).roles
+    },
+
+    // Save thresholds
+    {
+        path: _.findWhere(aclRoutes, { id: 63 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 63 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.thresholds.api.save],
+        access: _.findWhere(aclRoutes, { id: 63 }).roles
     },
 
     // === STRUCTURES ROUTES ==========================================================

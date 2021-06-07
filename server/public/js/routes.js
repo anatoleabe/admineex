@@ -460,6 +460,20 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Organizations", "Edit"]
+        }).state("home.thresholds", {
+          url: "thresholds",
+          templateUrl: "templates/thresholds.html",
+          controller: "ThresholdsController",
+          access: { requiredAuthentication: true },
+          resolve: {
+            loadMyCtrl: [
+              "$ocLazyLoad",
+              function ($ocLazyLoad) {
+                return $ocLazyLoad.load("js/controllers/ThresholdsCtrl.js");
+              },
+            ],
+          },
+          breadcrumbs: ["Thresholds"],
         }).state('home.organizations.profile', {
             url: '/preview/:id',
             templateUrl: 'templates/organizations/profile.html',
