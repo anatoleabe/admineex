@@ -88,7 +88,7 @@ exports.api.list = function (req, res) {
 }
 
 // Create a notification
-exports.create = function (options) {
+exports.create = function (options, callback) {
     var n = {
         type: options.type,
         author: options.author,
@@ -102,6 +102,9 @@ exports.create = function (options) {
         if (err) {
             log.error(err);
             audit.logEvent('[mongodb]', 'Notifications', 'Create', '', '', 'failed', 'Mongodb attempted to create a notification');
+            callback(err);
+        } else {
+            callback(null, notification._id);
         }
     });
 }

@@ -9,8 +9,10 @@ var app = angular.module('app', [
     'mappingFilters',
     'limitFilters',
     'gettext',
+    'chart.js',
     'ngSanitize',
-    'chart.js'
+    'PendingRequestService',
+    'CancellableHTTPService'
 ]).config(function($mdThemingProvider) {
     $mdThemingProvider.definePalette('savics', {
         '50': 'ffffff',

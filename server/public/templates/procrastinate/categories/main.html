@@ -1,0 +1,52 @@
+<div flex="70" flex-offset="15" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" ui-view style="height:100%;">
+    <div layout="row" ng-show="categories.length > 0">
+        <div flex>
+            <h3 class="md-headline" style="margin: 10px 0px 10px 0px;" translate>Categories</h3>
+        </div>
+        <div flex style="text-align: right;">
+            <md-button style="margin-top: 6px;margin-right: 0;" class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');">
+                <md-icon class="material-icons">search</md-icon>
+                <md-tooltip>
+                    <span translate>Search</span>
+                </md-tooltip>
+            </md-button>
+            <md-input-container style="margin: 5px 0;" md-no-float>
+                <input type="search" name="search" placeholder="{{'Search'| translate}}" ng-model="searchText">
+            </md-input-container>
+        </div>
+    </div>
+    <md-card style="margin: 0;" data-ng-if="categories.length > 0">
+        <md-card-content>
+            <md-list ng-cloak>
+                <md-list-item data-ng-repeat="category in categories| filter:searchText" ui-sref="home.categories.profile({id:category._id})">
+                    <md-truncate flex>
+                        <md-icon style="color:{{category.color}}">fiber_manual_record  </md-icon> {{category.name}}
+                    </md-truncate>
+                    <md-button class="md-secondary md-icon-button" aria-label="Edit" ng-click="edit({id: category._id})">
+                        <md-icon aria-label="Edit">edit</md-icon>
+                        <md-tooltip>
+                            <span translate>Edit</span>
+                        </md-tooltip>
+                    </md-button>
+                    <md-button class="md-secondary md-icon-button" aria-label="Delete" ng-click="showConfirm(category)">
+                        <md-icon aria-label="Delete">delete</md-icon>
+                        <md-tooltip>
+                            <span translate>Delete</span>
+                        </md-tooltip>
+                    </md-button>
+                </md-list-item>
+            </md-list>
+        </md-card-content>
+    </md-card>
+    <div layout="column" layout-align="center center" data-ng-if="helper.length !== 0" style="opacity:0.2;">
+        <md-icon aria-label="{{helper.title}}" class="material-icons" style="font-size: 120px;height: 120px;width: 120px;">{{helper.icon}}</md-icon>
+        <h2 class="md-title">{{helper.title}}</h2>
+    </div>
+    <div style="margin-bottom: 100px"></div>
+    <md-button class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ng-click="new ()" >
+        <md-icon class="material-icons">add</md-icon>
+        <md-tooltip md-direction="top">
+            <span translate>New</span>
+        </md-tooltip>
+    </md-button>
+</div>

@@ -1,0 +1,22 @@
+[
+    {
+        "id": "1",
+        "en": "None",
+        "fr": "Aucune"
+    },
+    {
+        "id": "2",
+        "en": "Low",
+        "fr": "Faible"
+    },
+    {
+        "id": "3",
+        "en": "Medium",
+        "fr": "Moyenne"
+    },
+    {
+        "id": "4",
+        "en": "High",
+        "fr": "Elevé"
+    }
+]

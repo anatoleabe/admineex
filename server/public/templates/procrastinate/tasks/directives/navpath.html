@@ -1,0 +1,21 @@
+
+<div class="ext-content">
+
+    <div class="md-dialog-content " >
+        <div ng-repeat="history in histories | filter:onlyAssignee" class="jzUAML">
+            <div layout="row">
+                <span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px; margin-top: -5px" >{{history.author.firstname.substr(0, 1).toUpperCase()}}</span><span><b>{{history.author.firstname}} {{history.author.lastname}}</b></span> &nbsp;&nbsp;
+                <span>Changed or updated the</span>&nbsp;&nbsp;
+                <span><b>{{history.history.field}}</b></span>
+                <span class="GxLNY">{{history.history.date|smartDatetime}}</span>
+            </div>
+            <div layout="row" class="gAtRty" >
+                <span><span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px " >{{history.oldAssignee.firstname.substr(0, 1).toUpperCase()}}</span>{{history.oldAssignee.firstname}} {{history.oldAssignee.lastname}}</span> &nbsp;&nbsp;
+                <span class="history-changement-arrow"></span>&nbsp;&nbsp;
+                <span><span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px " >{{history.newAssignee.firstname.substr(0, 1).toUpperCase()}}</span>{{history.newAssignee.firstname}} {{history.newAssignee.lastname}}</span>
+            </div>
+        </div>
+    </div>
+
+
+</div>

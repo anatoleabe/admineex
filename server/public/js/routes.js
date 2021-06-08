@@ -87,12 +87,27 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
             abstract: true,
             url: '/',
             views: {
+                'topnavbar': {
+                    templateUrl: 'templates/menu/topnavbar.html',
+                    controller: 'MenuController'
+                },
+                'leftsidebar': {
+                    templateUrl: 'templates/menu/leftsidebar.html',
+                    controller: 'MenuController'
+                },
                 'header': {
                     templateUrl: 'templates/menu/menu.html',
                     controller: 'MenuController'
                 },
+                'contentheader': {
+                    templateUrl: 'templates/menu/contentheader.html',
+                    controller: 'MenuController'
+                },
                 'content': {
                     templateUrl: 'templates/home.html'
+                },
+                'footer': {
+                    templateUrl: 'templates/menu/footer.html'
                 }
             },
             access: {requiredAuthentication: true},
@@ -349,6 +364,94 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Staff monitoring and evaluation"]
+        }).state('home.tasks', {
+            abstract: true,
+            url: 'tasks',
+            controller: 'ProcrastinateController',
+            templateUrl: 'templates/procrastinate/procrastinate.html',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/ProcrastinateCtrl.js');
+                    }]
+            }
+        }).state('home.tasks.main', {
+            url: '',
+            templateUrl: 'templates/procrastinate/tasks/main.html',
+            controller: 'TasksController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/tasks/TasksCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Tasks Management"]
+        }).state('home.tasks.edit', {
+            url: '/tasks/edit/:id',
+            templateUrl: 'templates/procrastinate/tasks/edit.html',
+            controller: 'TaskController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/tasks/TaskCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Task Management", "Edit"]
+        }).state('home.tasks.new', {
+            url: '/tasks/new',
+            templateUrl: 'templates/procrastinate/tasks/edit.html',
+            controller: 'TaskController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/tasks/TaskCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Task Management", "New"]
+        }).state('home.tasks.synthesis', {
+            url: '/synthesis',
+            templateUrl: 'templates/procrastinate/synthesis/main.html',
+            controller: 'DashboardController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/DashboardCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Tasks dashboard"]
+        }).state('home.tasks.categories', {
+            url: '/categories',
+            templateUrl: 'templates/procrastinate/categories/main.html',
+            controller: 'CategoriesController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/categories/CategoriesCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Tasks categories"]
+        }).state('home.tasks.category', {
+            url: '/category/new',
+            templateUrl: 'templates/procrastinate/categories/edit.html',
+            controller: 'CategoryController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/categories/CategoryCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Task category", "New"]
+        }).state('home.tasks.category.edit', {
+            url: '/category/edit/:id',
+            templateUrl: 'templates/procrastinate/categories/edit.html',
+            controller: 'CategoryController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/procrastinate/categories/CategoryCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Task category", "Edit"]
         }).state('home.projects.new', {
             url: '/new',
             params: {duplicateID: null},
@@ -624,8 +727,13 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
 
         $locationProvider.html5Mode(true);
         $httpProvider.interceptors.push('TokenInterceptor');
-    }]).run(function ($rootScope, $location, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $timeout, $transitions, $filter) {
+    }]).run(function ($rootScope, $location, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $timeout, $transitions, $filter, $q) {
     $rootScope.kernel = {
+    };
+
+    $rootScope.globalView = {
+        activated: false,
+        selectedUser: undefined
     };
 
     $transitions.onStart({}, function (trans) {
@@ -668,43 +776,78 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         }
 
         // Build date range
-        $rootScope.range = {
-            min: new Date(1970, 0, 1),
-            max: new Date(2100, 0, 1),
-            from: {
-                isOpen: false,
-                isDisabled: true,
-                value: new Date(2016, 3, 1)
-            },
-            to: {
-                isOpen: false,
-                isDisabled: true,
-                value: new Date(2020, 11, 31)
-            }
-        };
+        if (!$rootScope.range) {
+            var max = new Date();
+            max.setDate(max.getDate() + 1);
+            $rootScope.range = {
+                min: new Date(1970, 0, 1),
+                max: max,
+                from: {
+                    isOpen: false,
+                    isDisabled: true,
+                    value: new Date(new Date(new Date(new Date().setDate(new Date().getDate() - 30))).setHours(0, 0, 0, 0)),
+                    handleShowCalendar: function ($event) {
+                        this.isOpen = true;
+                        this.isDisabled = false;
+                    },
+                    handleBlur: function () {
+                        this.isOpen = false;
+                        this.isDisabled = true;
+                    }
+                },
+                to: {
+                    isOpen: false,
+                    isDisabled: true,
+                    value: new Date(new Date(new Date(new Date().setDate(new Date().getDate()))).setHours(23, 59, 59, 999)),
+                    handleShowCalendar: function ($event) {
+                        this.isOpen = true;
+                        this.isDisabled = false;
+                    },
+                    handleBlur: function () {
+                        this.isOpen = false;
+                        this.isDisabled = true;
+                    }
+                }
+            };
+        }
 
         // Export a PNG version of the chart/map
         $rootScope.exportPNG = function (content, title) {
             $rootScope.kernel.loading = 0;
-            var filename = 'Admineex_DGTCFM_' + title.replace(/ /g, '-');
-            if (typeof content === 'string') {
-                filename += '_';
-                $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
-                    var url_base64 = document.getElementById(content).toDataURL('image/png').replace("data:image/png;base64,", "");
-                    var data = atob(url_base64);
-                    var asArray = new Uint8Array(data.length);
-                    for (var i = 0, len = data.length; i < len; ++i) {
-                        asArray[i] = data.charCodeAt(i);
-                    }
-                    var FileSaver = $injector.get('FileSaver');
-                    var d = new Blob([asArray.buffer], {type: "data:image/png;base64"});
-                    FileSaver.saveAs(d, filename + '.png');
-                    $rootScope.kernel.loading = 100;
-                });
-            } else {
-                content.getHighcharts().exportChartLocal({type: 'image/png', filename: filename}, {title: {text: title}});
-                $rootScope.kernel.loading = 100;
+            var filename = 'DataToCare-server_' + title.replace(/ /g, '-');
+            filename += '_' + $filter('ddMMyyyy')($rootScope.range.from.value) + '-' + $filter('ddMMyyyy')($rootScope.range.to.value);
+
+            //Hidding unwanted items
+            var toHide = document.getElementsByClassName("hide-before-export");
+            for (var j = 0; j < toHide.length; j++) {
+                toHide[j].style.display = 'none';
             }
+
+            // converting HTML to canvas
+            $ocLazyLoad.load('js/services/CanvasService.js').then(function () {
+                var Canvas = $injector.get('Canvas');
+                Canvas.getCanvas(content, function (canvas) {
+                    //Canvas to png
+                    var url_base64 = canvas.toDataURL('image/png').replace("data:image/png;base64,", "");
+
+                    //dispaying back items that were hidden
+                    for (var j = 0; j < toHide.length; j++) {
+                        toHide[j].style.display = null;
+                    }
+                    //Saving the file
+                    $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
+                        var data = atob(url_base64);
+                        var asArray = new Uint8Array(data.length);
+                        for (var i = 0, len = data.length; i < len; ++i) {
+                            asArray[i] = data.charCodeAt(i);
+                        }
+                        var FileSaver = $injector.get('FileSaver');
+                        var d = new Blob([asArray.buffer], { type: "data:image/png;base64" });
+                        FileSaver.saveAs(d, filename + '.png');
+                        $rootScope.kernel.loading = 100;
+                    });
+                });
+            });
         }
 
         // Set a focus on the specified input
@@ -721,6 +864,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                 Account.read().then(function (response) {
                     var profile = response.data;
                     $window.localStorage.language = profile.language;
+                    $rootScope.account.id = profile._id;
                     $rootScope.account.firstname = profile.firstname;
                     $rootScope.account.lastname = profile.lastname;
                     $rootScope.account.email = profile.email;
@@ -733,6 +877,17 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                 });
             });
         }
+
+        $rootScope.select = function (type) {
+            $rootScope.selectedLaboratoriesTmp = [];
+
+            switch (type) {
+                case 'user':
+                    
+
+                    break;
+            }
+        };
 
         // Build language
         gettextCatalog.currentLanguage = ($window.localStorage.language !== undefined) ? $window.localStorage.language.toLowerCase() : (navigator.language.substr(0, 2) || navigator.userLanguage.substr(0, 2));
@@ -763,5 +918,52 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                 });
             });
         }
+        
+        // Export an Excel version of the table/chart
+        $rootScope.exportXLSX = function (content){
+            $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function() {
+                var FileSaver = $injector.get('FileSaver');
+                $rootScope.kernel.loading = 0;
+                var filename = 'Admineex-server_' + content.title.replace(/ /g, '-');
+                filename += '_' + $filter('ddMMyyyy')($rootScope.range.from.value) + '-' + $filter('ddMMyyyy')($rootScope.range.to.value);
+                var deferred = $q.defer();
+                function jsonBufferToObject (data, headersGetter, status) {
+                    var type = headersGetter("Content-Type");
+                    if (!type.startsWith("application/json")) {
+                        return data;
+                    };
+                    var decoder = new TextDecoder("utf-8");
+                    var domString = decoder.decode(data);
+                    var json = JSON.parse(domString);
+                    return json;
+                };
+
+                $ocLazyLoad.load('js/services/DownloadService.js').then(function () {
+                    var Download = $injector.get('Download');
+                    Download.start({
+                        method: 'POST',
+                        url:'/api/excelExport/card/',
+                        data: content,
+                        transformResponse: jsonBufferToObject
+                    }).then(function(response){
+                        var d = new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+                        FileSaver.saveAs(d, filename + '.xlsx');
+                        $rootScope.kernel.loading = 100;
+                        deferred.resolve(response.data);
+                    }).catch(function(response) {
+                        console.error(response);
+                        if(response.data.error === '9500'){
+                            $rootScope.kernel.alerts.push({
+                                type: 1,
+                                msg: gettextCatalog.getString('The Export is too big. Please reduce the date range'),
+                                priority: 1
+                            });
+                            $rootScope.kernel.loading = 100;
+                        }
+                    });
+                });
+            });
+        }
+        
     });
 });

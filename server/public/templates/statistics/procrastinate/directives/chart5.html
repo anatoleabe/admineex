@@ -1,0 +1,45 @@
+<md-card  id="cash_loss_{{disease}}" class="widget" ng-class="{'selectedChart' : selected === true && $root.state ==='home.analysis'}">
+    <md-card-title>
+        <md-card-title-text layout="row">
+            <md-button class="md-icon-button info-labs">
+                <md-icon>{{$parent.$parent.$parent.selectedLaboratories && $parent.$parent.$parent.selectedLaboratories.length > 0 && $parent.$parent.$parent.selectedLaboratories[0] != "-1" ? 'fullscreen_exit' : 'fullscreen'}}</md-icon>
+                <md-tooltip md-direction="bottom">
+                    <span><span translate>Data coming from:</span> <span ng-if="$parent.$parent.$parent.selectedLaboratories && $parent.$parent.$parent.selectedLaboratories.length > 0" translate>Specified laboratories</span><span ng-if="!($parent.$parent.$parent.selectedLaboratories && $parent.$parent.$parent.selectedLaboratories.length > 0)" translate>All laboratories</span></span>
+                </md-tooltip>
+            </md-button>
+            <span class="md-headline">
+                <span translate>Cash loss</span>
+            </span>
+            <span flex></span>
+            <div cardselect selected="selected"></div>
+            <md-menu class="hide-before-export">
+                <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdMenu.open($event)" ng-disabled="$parent.$parent.$parent.kernel.isLoading == true">
+                    <md-icon>more_vert</md-icon>
+                </md-button>
+                <md-menu-content width="2">
+                    <md-menu-item>
+                        <md-button ng-click="$parent.$parent.exportPNG('cash_loss_'+disease, 'Cash loss' | translate);">
+                            <md-icon class="material-icons-outlined" md-menu-align-target>get_app</md-icon> <span translate>Export</span> <small>(png)</small>
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </md-card-title-text>
+    </md-card-title>
+    <md-card-content>
+        <div class="loading" data-ng-if="loadingChart">
+            <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
+        </div>
+        <div ng-class="{'opacity1': loadingChart}">
+            <canvas class="chart chart-bar" chart-data="data" chart-options="options" chart-labels="labels" chart-series="series" chart-colors="colors"></canvas>
+        </div>
+        <small ng-hide="$root.state ==='home.analysis'" class="path" cardpath selectedDisease="selectedDisease" selectedTheme="selectedTheme" selectedTestType="selectedTestType" selectedDiagnostic="selectedDiagnostic"> </small>
+        <small class="datatocare-credits"><img src="../../../img/logos/logo-small.png"> DataToCare</small>
+        <md-button class="md-icon-button info hide-before-export">
+            <md-icon>info</md-icon>
+            <md-tooltip md-direction="top">
+                <span translate>All <i>invalid</i>, <i>error</i> and <i>no result</i> results are counted and priced at 10$ each.</span>
+            </md-tooltip>
+        </md-button>
+    </md-card-content>
+</md-card>

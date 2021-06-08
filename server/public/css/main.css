@@ -164,10 +164,10 @@ md-sidenav {
     vertical-align: middle;
     color: #fff;
     text-align: center;
-    width: 54px;
-    height: 54px;
-    font-size: 27px;
-    line-height: 57px;
+    width: 34px;
+    height: 34px;
+    font-size: 22px;
+    margin-right: 5px;
 }
 
 .avatar-xs{
@@ -472,4 +472,326 @@ table.md-table tbody.md-body > tr.md-row:hover {
 
 .tooltip1 {
     height: auto;
+}
+
+
+.listdemoListControls md-divider {
+    margin-top: 0;
+    margin-bottom: 0; }
+
+.listdemoListControls md-list {
+    padding-top: 0; }
+
+.listdemoListControls md-list-item > p,
+.listdemoListControls md-list-item > .md-list-item-inner > p,
+.listdemoListControls md-list-item .md-list-item-inner > p,
+.listdemoListControls md-list-item .md-list-item-inner > .md-list-item-inner > p {
+    -webkit-user-select: none;
+    /* Chrome all / Safari all */
+    -moz-user-select: none;
+    /* Firefox all */
+    -ms-user-select: none;
+    /* IE 10+ */
+    user-select: none;
+    /* Likely future */ }
+.task-list {
+    padding: 0px;
+    margin: 1px 2px;
+    border-radius: 2px;
+    background: rgba(255,255,255,.9);
+    border: 1px solid #eee;
+    position: relative;
+    box-shadow: 0 2px 2px 0 rgba(0,0,0,.05),0 1px 5px 0 rgba(0,0,0,.2),0 3px 1px -2px rgba(0,0,0,.2)!important;
+    border-left: 3px solid #dddce1;
+}
+
+
+
+/**
+ * The dnd-list should always have a min-height,
+ * otherwise you can't drop to it once it's empty
+ */
+.simpleDemo ul[dnd-list] {
+    min-height: 42px;
+    padding-left: 0px;
+}
+
+/**
+ * The dndDraggingSource class will be applied to
+ * the source element of a drag operation. It makes
+ * sense to hide it to give the user the feeling
+ * that he's actually moving it.
+ */
+.simpleDemo ul[dnd-list] .dndDraggingSource {
+    display: none;
+}
+
+/**
+ * An element with .dndPlaceholder class will be
+ * added to the dnd-list while the user is dragging
+ * over it.
+ */
+.simpleDemo ul[dnd-list] .dndPlaceholder {
+    background-color: #ddd;
+    display: block;
+    min-height: 42px;
+}
+
+.simpleDemo ul[dnd-list] li {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    display: block;
+    padding: 10px 15px;
+    height: 45px;
+    margin-bottom: -1px;
+}
+
+/**
+ * Show selected elements in green
+ */
+.simpleDemo ul[dnd-list] li.selected {
+    background-color: #dff0d8;
+    color: #3c763d;
+    cursor: move;
+}
+
+
+
+.simpleDemo .panel-heading span {
+    cursor: pointer; 
+}
+
+.simpleDemo .edit-in-place span {
+    cursor: pointer;
+}
+
+.simpleDemo .edit-in-place input {
+    display: none;
+    /*border-radius: 1px;*/
+}
+
+.simpleDemo .edit-in-place.active span {
+    display: none;
+}
+
+.simpleDemo .edit-in-place.active input {
+    display: inline-block;
+}
+
+.priority-1 {/*None*/
+    border: 1px solid rgb(224,224,224);
+    color: rgb(66,66,66);;
+    padding: .1rem .325rem;
+    font-size: 10px;
+    line-height: 1.5;
+    text-transform: uppercase;
+    /*font-weight: 600;*/
+    border-radius: 4px;
+    margin-right: .125rem;
+}
+
+.priority-2 {/*Low*/
+    border: 1px solid #2A8735;
+    color: #2A8735;
+    padding: .1rem .325rem;
+    font-size: 10px;
+    line-height: 1.5;
+    text-transform: uppercase;
+    /*font-weight: 600;*/
+    border-radius: 4px;
+    margin-right: .125rem;
+}
+
+.priority-3 {/*Medium*/
+    border: 1px solid #f6e5b0;
+    color: #a48012;
+    padding: .1rem .325rem;
+    font-size: 10px;
+    line-height: 1.5;
+    text-transform: uppercase;
+    /*font-weight: 600;*/
+    border-radius: 4px;
+    margin-right: .125rem;
+}
+
+.priority-4 {/*High*/
+    border: 1px solid rgba(220, 22, 63, 1);
+    color: rgba(220, 22, 63, 1);
+    padding: .1rem .325rem;
+    font-size: 10px;
+    line-height: 1.5;
+    text-transform: uppercase;
+    /*font-weight: 600;*/
+    border-radius: 4px;
+    margin-right: .125rem;
+}
+
+.chip-normal {
+    border: 1px solid rgb(224,224,224);;
+    color: rgb(66,66,66);;
+    padding: .1rem .325rem;
+    font-size: 10px;
+    line-height: 1.5;
+    text-transform: uppercase;
+    /*font-weight: 600;*/
+    border-radius: 4px;
+    margin-right: .125rem;
+}
+
+.task-title {
+    color: #4f5152;
+    padding: .1rem .325rem;
+    font-size: 16px;
+    line-height: 1.5;
+    font-weight: 600;
+}
+
+.task-dialog-title-label {
+    font-weight: 500;
+    font-size: 14px;
+    color: #a0a6c7;
+    letter-spacing: 0;
+}
+.task-dialog-title {
+    display: inline-block!important;
+    align-items: baseline!important;
+    justify-content: flex-start;
+    font-size: 20px;
+    color: #2a7ac4;
+    line-height: 1.462em;
+    word-break: break-word;
+    margin-left: 0px;
+}
+
+
+.task-dialog-title-Header {
+    margin: -20px -20px 15px;
+    padding: 20px 20px 15px;
+    background: #fff;
+    /*border-bottom: 1px solid #edeff2;*/
+}
+.task-dialog-rightside {
+    padding: 20px 20px 15px;
+    /*border-bottom: 1px solid #edeff2;*/
+}
+
+.task-dialog-grey-button {
+    -webkit-box-align: baseline;
+    align-items: baseline;
+    border-width: 0px;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: inline-flex;
+    font-size: inherit;
+    font-style: normal;
+    font-family: inherit;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.1s ease-out 0s, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38) 0s;
+     white-space: nowrap;
+    background: rgba(9, 30, 66, 0.04);
+    cursor: pointer; 
+    height: 2.28571em;
+    line-height: 2.28571em;
+    padding: 0px 10px;
+    vertical-align: middle;
+    width: auto;
+    -webkit-box-pack: center;
+    justify-content: center;
+    outline: none;
+    margin: 0px; 
+    margin-right: 8px;
+    color: rgb(66, 82, 110) !important;
+}
+
+
+.history-changement-arrow::before {
+    display: block;
+    content: "→";
+}
+
+.jzUAML {
+    margin: 24px 0px;
+}
+
+.gAtRty {
+    -webkit-box-align: center;
+    align-items: center;
+    margin-top: 8px;
+    margin-left: 40px;
+    color: rgb(66, 82, 110);
+}
+
+.GxLNY {
+    margin-left: 8px;
+    color: rgb(66, 82, 110);
+}
+
+
+/*Fixed Columns*/
+.container {
+    height: 100% ;
+    overflow: scroll;
+    position: relative;
+}
+
+.container-card {
+    height: 402px ;
+    /* overflow: scroll; */
+    position: relative;
+}
+
+.table-fixed {
+    table-layout: fixed;
+    border-collapse: separate;
+    border-spacing: 0;
+    position: absolute;
+    width: 100%;
+}
+
+th{
+    background-color: #fff;
+}
+
+.cross {
+    position: relative;
+    z-index: 1;
+}
+
+.fixed-column-header, .fixed-column-header md-card, main{
+    height: 100%;
+}
+/*End Fixed Columns*/
+
+/*In progress*/
+.status-2 {
+    background-color: rgba(255, 140, 2, 0.3);
+    font-weight: bold
+}
+/*Completed*/
+.status-3 {
+    background-color: rgb(227, 252, 239);
+    font-weight: bold
+}
+/*Blocked*/
+.status-4 {
+    background-color: rgba(220, 22, 63, 0.7);
+    color: #fff;
+    font-weight: bold;
+}
+
+.toolbar-filter  md-switch {
+    margin: 0px 0;
+}
+/*
+[class*=bg-]:not(.bg-transparent):not(.bg-light):not(.bg-white):not(.btn-outline):not(body) {
+    color: #fff;
+}*/
+
+.taskdialogmargin {
+    margin-top: 7px;
+    margin-bottom: 7px;
 }

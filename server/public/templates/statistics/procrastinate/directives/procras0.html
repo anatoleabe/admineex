@@ -1,0 +1,136 @@
+
+<div layout-xs="column" layout="row" layout-wrap>
+    <div flex-xs="100" flex-gt-xs="100" flex-sm="20" flex-gt-sm="20" flex-md="20" flex-gt-md="20" >
+        <md-card class="widget">
+            <md-card-title>
+                <md-card-title-text layout="row" style="color: gray">
+                    <md-button class="md-icon-button md-raised md-primary" style="background-color: gray" >
+                        <md-icon>check_box_outline_blank</md-icon>
+                    </md-button>
+                    <span class="md-headline" style="margin-left: 20px">
+                        <span translate><b>Not started</b></span>
+                    </span>
+                    <span flex></span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <div class="loading" data-ng-if="loadingChart">
+                    <md-progress-circular md-mode="indeterminate" md-diameter="60" class="md-accent"></md-progress-circular>
+                </div>
+                <div style="margin-top: 5px; margin-bottom: 15px; font-size: 18pt" ng-class="{'opacity1': loadingChart}">
+                    <span><center>{{tasks.notstarted}}</center></span>
+                </div>
+                <small class="daterange">Completed tasks</small>
+            </md-card-content>
+        </md-card>
+    </div>
+    
+    <div flex-xs="100" flex-gt-xs="100" flex-sm="20" flex-gt-sm="20" flex-md="20" flex-gt-md="20" >
+        <md-card class="widget">
+            <md-card-title>
+                <md-card-title-text layout="row" style="color: green">
+                    <md-button class="md-icon-button md-raised md-primary" style="background-color: green" >
+                        <md-icon>done</md-icon>
+                    </md-button>
+                    <span class="md-headline" style="margin-left: 20px">
+                        <span translate><b>Completed</b></span>
+                    </span>
+                    <span flex></span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <div class="loading" data-ng-if="loadingChart">
+                    <md-progress-circular md-mode="indeterminate" md-diameter="60" class="md-accent"></md-progress-circular>
+                </div>
+                <div style="margin-top: 5px; margin-bottom: 15px; font-size: 18pt" ng-class="{'opacity1': loadingChart}">
+                    <span><center>{{tasks.completed}}</center></span>
+                </div>
+                <small class="daterange">Completed tasks</small>
+            </md-card-content>
+        </md-card>
+    </div>
+    
+    <div flex-xs="100" flex-gt-xs="100" flex-sm="20" flex-gt-sm="20" flex-md="20" flex-gt-md="20" >
+        <md-card class="widget">
+            <md-card-title>
+                <md-card-title-text layout="row" style="color: darkorange">
+                    <md-button class="md-icon-button md-raised md-primary" style="background-color: darkorange" >
+                        <md-icon>rotate_right</md-icon>
+                    </md-button>
+                    <span class="md-headline" style="margin-left: 20px">
+                        <span translate><b>In progress</b></span>
+                    </span>
+                    <span flex></span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <div class="loading" data-ng-if="loadingChart">
+                    <md-progress-circular md-mode="indeterminate" md-diameter="60" class="md-accent"></md-progress-circular>
+                </div>
+                <div style="margin-top: 5px; margin-bottom: 15px; font-size: 18pt" ng-class="{'opacity1': loadingChart}">
+                    <span><center>{{tasks.inprogress}}</center></span>
+                </div>
+                <small class="daterange">On going tasks</small>
+            </md-card-content>
+        </md-card>
+    </div>
+    
+    <div flex-xs="100" flex-gt-xs="100" flex-sm="20" flex-gt-sm="20" flex-md="20" flex-gt-md="20" >
+        <md-card class="widget">
+            <md-card-title>
+                <md-card-title-text layout="row" style="color: crimson">
+                    <md-button class="md-icon-button md-raised md-primary" style="background-color: crimson" >
+                        <md-icon>timer</md-icon>
+                    </md-button>
+                    <span class="md-headline" style="margin-left: 20px">
+                        <span translate><b>Over due</b></span>
+                    </span>
+                    <span flex></span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <div class="loading" data-ng-if="loadingChart">
+                    <md-progress-circular md-mode="indeterminate" md-diameter="60" class="md-accent"></md-progress-circular>
+                </div>
+                <div style="margin-top: 5px; margin-bottom: 15px; font-size: 18pt" ng-class="{'opacity1': loadingChart}">
+                    <span><center>{{tasks.overdue}}</center></span>
+                </div>
+                <small class="daterange">Over dues tasks</small>
+            </md-card-content>
+        </md-card>
+    </div>
+    
+    <div flex-xs="100" flex-gt-xs="100" flex-sm="20" flex-gt-sm="20" flex-md="20" flex-gt-md="20" >
+        <md-card class="widget">
+            <md-card-title>
+                <md-card-title-text layout="row" style="color: cornflowerblue">
+                    <md-button class="md-icon-button  md-raised md-primary" style="background-color: cornflowerblue">
+                        <md-icon >warning</md-icon>
+                    </md-button>
+                    <span class="md-headline" style="margin-left: 20px">
+                        <span translate><b>Blocked</b></span>
+                    </span>
+                    <span flex></span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <div class="loading" data-ng-if="loadingChart">
+                    <md-progress-circular md-mode="indeterminate" md-diameter="60" class="md-accent"></md-progress-circular>
+                </div>
+                <div style="margin-top: 5px; margin-bottom: 15px; font-size: 18pt" ng-class="{'opacity1': loadingChart}">
+                    <span><center>{{tasks.blocked}}</center></span>
+                </div>
+                <small class="daterange">Blocked tasks</small>
+            </md-card-content>
+        </md-card>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+

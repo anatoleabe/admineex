@@ -1,0 +1,119 @@
+
+<div data-oc-lazy-load="['js/directives/FilterbarDirective.js']" style="margin-bottom: 10px">
+    <div filterbar daterange="true" labs="account.showLabs" province="account.showProvinces" district="account.showDistricts" path="true" disable-themes="true" search="search"></div>
+</div>
+
+
+<div class="content">
+    <div class="panel panel-info">
+        <md-toolbar class="md-table-toolbar md-default">
+            <div class="md-toolbar-tools">
+                <md-icon>filter_list</md-icon>
+                <md-input-container flex >
+                    <label translate>Filter by priority</label>
+                    <md-select ng-model="filters.priority"  >
+                        <md-option  value="-1" translate>
+                            Show all
+                        </md-option>
+                        <md-option ng-repeat="priority in priorities" value="{{priority.id}}" >
+                            {{priority.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex >
+                    <label translate>Filter by status</label>
+                    <md-select ng-model="filters.status"  >
+                        <md-option  value="-1" translate>
+                            Show all
+                        </md-option>
+                        <md-option ng-repeat="stat in status" value="{{stat.id}}" >
+                            {{stat.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex >
+                    <label translate>Filter by category</label>
+                    <md-select ng-model="filters.category"  >
+                        <md-option  value="-1" translate>
+                            Show all
+                        </md-option>
+                        <md-option ng-repeat="c in categories" value="{{c._id}}" >
+                            {{c.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-button class="md-icon-button" ng-click="" aria-label="close">
+                    <md-icon class="material-icons">close</md-icon>
+                </md-button>
+                <md-icon>search</md-icon>
+                <form flex>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <input type="text" name="search" ng-model="filters.research" placeholder="{{ 'Search...' | translate }}">
+                    </md-input-container>
+                </form>
+                <md-button class="md-icon-button" ng-click="filters.research = '';" aria-label="close">
+                    <md-icon class="material-icons">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <md-table-container>
+            <table id="procrastinate" md-table md-progress="promise">
+                <thead md-head md-order="query.order" class="procrastinateTable">
+                    <tr md-row>
+                        <th md-column md-order-by="code" translate style="width: 10px">Code</th>
+                        <th md-column md-order-by="title" translate style="width: 40%">Title</th>
+                        <th md-column md-order-by="structure.name"  translate>Assigned to</th>
+                        <th md-column md-order-by="name" style="width: 160px" translate>Status</th>
+                        <th md-column md-order-by="vancancies" style="width: 80px" translate>Creation</th>
+                        <th md-column translate >Actions</th>
+                    </tr>
+                </thead>
+                <tbody md-body dnd-list="list" class="ng-scope" class="procrastinateTable">
+                    <tr md-row data-ng-repeat="task in tasks" ng-click="read(task._id)" dnd-draggable="item" dnd-moved="list.splice($index, 1)" dnd-effect-allowed="move" dnd-selected="models.selected = item" ng-class="{'selected': models.selected === item}" draggable="true">
+                        <td md-cell  style="width: 10px" >{{task.identifier}} </td>
+                        <td md-cell ng-click="details({id: task._id})" style="width: 50%">
+                            <span class="task-title">{{task.title}}</span>
+                            <br/> 
+                            <small class="chip-normal" ><span> {{task.category.name}}</span></small>
+                            <small ><span class="priority-{{task.priority}}" ><span translate>Priority: </span> <span   >{{task.prioritybeautified}}</span></span></small>
+                            <small class="chip-normal" ><span translate>Due : </span><span> {{task.deadline|dateHuman}}</span></small>
+                        </td>
+                        <td md-cell flex ng-click="details({id: task._id})" >
+                            <span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; " >{{task.user.firstname.substr(0, 1).toUpperCase()}}</span>
+                            {{task.user.firstname}} 
+                        </td>
+                        <td md-cell flex style="width: 160px" ng-click="details({id: task._id})">
+
+                            <small class="chip-normal status-{{task.status}}" >{{task.statusbeautified}} </small>
+                        </td>
+                        <td md-cell style="width: 80px" ng-click="details({id: task._id})">{{task.created|smartDatetime}} </td>
+                        <td md-cell  >
+                <md-button  aria-label="Show more" class="md-icon-button">
+                    <md-icon>more_vert</md-icon>
+                    <md-tooltip md-direction="top">
+                        <span translate>Show more</span>
+                    </md-tooltip>
+                </md-button>
+                </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 25, 50, 100]" md-page="query.page" md-total="{{tasks.length}}" 
+                              md-page-select="true" md-label="{{label}}" md-on-paginate="load">
+
+    </div>
+
+
+
+
+
+    <div style="margin-bottom: 100px"></div>
+    <md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="task: fixed; margin-bottom: 50px" aria-label="Add" ng-click="new ()" >
+        <md-icon>add</md-icon>
+        <md-tooltip md-direction="top">
+            <span translate>New</span>
+        </md-tooltip>
+    </md-button>
+</div>

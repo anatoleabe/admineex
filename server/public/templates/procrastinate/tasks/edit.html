@@ -1,0 +1,150 @@
+<div ui-view flow-prevent-drop>
+    <div flex="70" flex-offset="15" flex-md="50" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" style="height:100%;"> 
+        <form ng-submit="submit();">
+            <md-card>
+                <md-toolbar>
+                    <div class="md-toolbar-tools">
+                        <h2 class="md-display-1" translate>New task</h2>
+                    </div>
+                </md-toolbar>
+                <md-card-content>
+                    <md-tabs md-dynamic-height md-border-bottom>
+                        <md-tab label="General">
+                            <md-content class="md-padding">
+                                <div layout="row">
+                                    <md-input-container class="md-block" flex >
+                                        <label translate>Headline</label>
+                                        <input name="title" ng-model="task.title" placeholder="{{'Enter task headline'| translate}}" required>
+                                        <div ng-messages="title.$error">
+                                            <div ng-message="required">
+                                                This is required to proceed on next step.
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div layout="row">
+                                    <md-input-container class="md-block" flex >
+                                        <label translate>Details</label>
+                                        <div id="summernote"  placeholder="{{'Enter task details'| translate}}" >{{task.description}}</div>
+                                        <div ng-messages="description.$error">
+                                            <div ng-message="required">
+                                                This is required to proceed on next step.
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                
+                                <div layout="row">
+                                    <md-input-container class="md-block" flex >
+                                        <label translate>Task category</label>
+                                        <md-select name="category" ng-model="task.categoryID" required placeholder="{{'Select task category '| translate}}">
+                                            <md-option ng-repeat="catry in categories" value="{{catry._id}}">
+                                                {{catry.name}} <em>(code: {{catry.code}})</em>
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="category.$error">
+                                            <div ng-message="required">
+                                                This is required to proceed on next step.
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+
+
+
+                                <div layout="row">
+                                    <div flex>
+                                        <md-input-container class="md-block" flex >
+                                            <label translate>Priority</label>
+                                            <md-select name="priority" ng-model="task.priority" required placeholder="{{'Select task priority '| translate}}">
+                                                <md-option ng-repeat="priority in priorities" value="{{priority.id}}">
+                                                    {{priority.name}} 
+                                                </md-option>
+                                            </md-select>
+                                            <div ng-messages="priority.$error">
+                                                <div ng-message="required">
+                                                    This is required to proceed on next step.
+                                                </div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div flex>
+                                        <md-input-container style="width: 100%">
+                                            <label>Task deadline </label>
+                                            <md-datepicker size="50" required ng-model="task.deadline"></md-datepicker>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+
+                                <div layout="row">
+                                    <md-input-container class="md-block" flex >
+                                        <label translate>Task assignee 2</label>
+                                        <md-select name="user" ng-model="selectedUsers[0]" required placeholder="{{'Select assignee '| translate}}">
+                                            <md-option ng-repeat="user in users" value="{{user._id}}">
+                                                {{user.firstname}} {{user.lastname}}
+                                            </md-option>
+                                        </md-select>
+                                        <div ng-messages="user.$error">
+                                            <div ng-message="required">
+                                                This is required to proceed on next step.
+                                            </div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+
+                                <div layout="row">
+                                    <md-input-container class="md-input-has-value" ng-class="{ 'md-input-invalid' : form.progress.$invalid && form.$submitted }">
+                                        <label class="md-required" translate style="margin-bottom: 5px">Status</label>
+
+                                        <md-radio-group md-autofocus name="progress" ng-model="task.status" layout="row" required>
+                                            <md-radio-button ng-repeat="p in progress| filter:activeStatusOnly" value="{{p.id}}" class="md-primary">{{p.name}} </md-radio-button>
+                                        </md-radio-group>
+
+                                        <div ng-messages="form.progress.$error">
+                                            <div ng-message="required" translate>Please select the progress.</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+
+                                <div class="md-dialog-content" oc-lazy-load="'node_modules/ng-file-upload/dist/ng-file-upload.min.js'" layout="row">
+                                    <div >  
+                                        <div >
+                                            <md-input-container class="md-block" flex >
+                                                <md-button flex class="md-raised" style="min-width: 250px" onclick="document.getElementById('getFile').click()" translate><md-icon>attach_file</md-icon> Attach file(s)</md-button>
+                                            </md-input-container>
+
+                                            <input type="file" id="getFile" ng-model="uploader.file" ngf-select ngf-pattern="'.pdf,.doc,.docx,.jpg,.png'" title="titleText"
+                                                   ngf-accept="'.pdf,.doc,.docx,.jpg,.png'" ngf-max-size="25MB" aria-label="file" style="width: 100%;display:none" multiple />
+                                            <div ng-show="uploader.file">
+                                                Files:
+                                                <ul><li ng-repeat="file in uploader.file">{{file.name}}</li></ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span flex class="md-no-sticky">Attache files: the time required to perform this task depends on the file size. </span> 
+                                </div>
+
+
+                            </md-content>
+                        </md-tab>
+                        <md-tab label="Checklist">
+                            <md-content class="md-padding">
+                                <h2 class="md-display-1">Tab Two</h2>
+                                <p class="md-body-1">
+                                    Morbi viverra, ante vel aliquet tincidunt, leo dolor pharetra quam, at semper massa
+                                    orci nec magna. Donec posuere nec sapien sed laoreet. Etiam cursus nunc in
+                                    condimentum facilisis. Etiam in tempor tortor. Vivamus faucibus egestas enim,
+                                    at convallis diam pulvinar vel. Cras ac orci eget nisi maximus cursus.
+                                </p>
+                            </md-content>
+                        </md-tab>
+                    </md-tabs>
+                </md-card-content>
+            </md-card>
+            <md-card-actions layout="row" layout-align="end center">
+                <md-button ui-sref="home.tasks.main"><span translate>Cancel</span></md-button>
+                <md-button class="md-raised md-accent" type="submit"><span translate>Done</span></md-button>
+            </md-card-actions>
+        </form>
+    </div>
+</div>

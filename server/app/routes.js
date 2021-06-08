@@ -24,6 +24,8 @@ controllers.structures = require('./controllers/structures');
 controllers.positions = require('./controllers/positions');
 controllers.personnel = require('./controllers/personnel');
 controllers.organizations = require('./controllers/organizations');
+controllers.tasks = require('./controllers/tasks');
+controllers.taskCategories = require('./controllers/taskCategories');
 controllers.import_export = require('./controllers/import_export');
 controllers.ui = require('./controllers/ui');
 controllers.charts = require('./controllers/charts');
@@ -273,18 +275,18 @@ var routes = [
     // === THRESHOLDS ROUTES ==========================================================
     // Retrieve thresholds
     {
-        path: _.findWhere(aclRoutes, { id: 62 }).uri,
-        httpMethod: _.findWhere(aclRoutes, { id: 62 }).method,
+        path: _.findWhere(aclRoutes, { id: 76 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 76 }).method,
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.thresholds.api.list],
-        access: _.findWhere(aclRoutes, { id: 62 }).roles
+        access: _.findWhere(aclRoutes, { id: 76 }).roles
     },
 
     // Save thresholds
     {
-        path: _.findWhere(aclRoutes, { id: 63 }).uri,
-        httpMethod: _.findWhere(aclRoutes, { id: 63 }).method,
+        path: _.findWhere(aclRoutes, { id: 77 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 77 }).method,
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.thresholds.api.save],
-        access: _.findWhere(aclRoutes, { id: 63 }).roles
+        access: _.findWhere(aclRoutes, { id: 77 }).roles
     },
 
     // === STRUCTURES ROUTES ==========================================================
@@ -432,6 +434,14 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.export],
         access: _.findWhere(aclRoutes, {id: 59}).roles
     },
+    
+    // Download .xls file of a card
+    {
+        path: _.findWhere(aclRoutes, { id: 73 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 73 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.export.api.table],
+        access: _.findWhere(aclRoutes, { id: 73 }).roles
+    },
 
     // === EXPORT PDF ROUTES ==========================================================
 
@@ -486,6 +496,101 @@ var routes = [
         httpMethod: _.findWhere(aclRoutes, {id: 36}).method,
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.organizations.api.delete],
         access: _.findWhere(aclRoutes, {id: 36}).roles
+    },
+
+    // === TASKS ROUTES ==========================================================
+    // Create a task
+    {
+        path: _.findWhere(aclRoutes, {id: 62}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 62}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.upsert],
+        access: _.findWhere(aclRoutes, {id: 62}).roles
+    },
+    // Update an org
+    {
+        path: _.findWhere(aclRoutes, {id: 71}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 71}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.update],
+        access: _.findWhere(aclRoutes, {id: 71}).roles
+    },
+    // History of task
+    {
+        path: _.findWhere(aclRoutes, {id: 72}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 72}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.getHistory],
+        access: _.findWhere(aclRoutes, {id: 72}).roles
+    },
+    // Tasks comments
+    {
+        path: _.findWhere(aclRoutes, {id: 74}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 74}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.getComments],
+        access: _.findWhere(aclRoutes, {id: 74}).roles
+    },
+    // Tasks comments
+    {
+        path: _.findWhere(aclRoutes, {id: 75}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 75}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.deleteComment],
+        access: _.findWhere(aclRoutes, {id: 75}).roles
+    },
+    // Get orgs
+    {
+        path: _.findWhere(aclRoutes, {id: 63}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 63}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.list],
+        access: _.findWhere(aclRoutes, {id: 63}).roles
+    },
+    // Read task
+    {
+        path: _.findWhere(aclRoutes, {id: 64}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 64}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.read],
+        access: _.findWhere(aclRoutes, {id: 64}).roles
+    },
+    // Read for edit task
+    {
+        path: _.findWhere(aclRoutes, {id: 70}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 70}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.readForEdit],
+        access: _.findWhere(aclRoutes, {id: 70}).roles
+    },
+    // Delete task 
+    {
+        path: _.findWhere(aclRoutes, {id: 65}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 65}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.tasks.api.delete],
+        access: _.findWhere(aclRoutes, {id: 65}).roles
+    },
+
+    // === Categries ROUTES ==========================================================
+    // Create a cat
+    {
+        path: _.findWhere(aclRoutes, {id: 66}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 66}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.taskCategories.api.upsert],
+        access: _.findWhere(aclRoutes, {id: 66}).roles
+    },
+    // Get cats
+    {
+        path: _.findWhere(aclRoutes, {id: 67}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 67}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.taskCategories.api.list],
+        access: _.findWhere(aclRoutes, {id: 67}).roles
+    },
+    // Read an cat
+    {
+        path: _.findWhere(aclRoutes, {id: 68}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 68}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.taskCategories.api.read],
+        access: _.findWhere(aclRoutes, {id: 68}).roles
+    },
+    // Delete an cat 
+    {
+        path: _.findWhere(aclRoutes, {id: 69}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 69}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.taskCategories.api.delete],
+        access: _.findWhere(aclRoutes, {id: 69}).roles
     },
 
     // === IMPORT_EXPORT ROUTES ==========================================================

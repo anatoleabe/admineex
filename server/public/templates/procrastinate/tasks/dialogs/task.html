@@ -1,0 +1,145 @@
+<md-dialog aria-label="{{task.title}}" style="width: 55%" >
+    <!--    <md-toolbar class="md-accent">
+            <div class="md-toolbar-tools">
+                <h2>{{task.identifier}} </h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>-->
+    <md-dialog-content ng-cloak>
+        <div class="md-dialog-content" layout="row">
+            <div layout="column" flex="65" >
+                <div class="task-dialog-title-Header" layout="row">
+                    <div layout="column" >
+                        <div class="task-dialog-title-label" >
+                            <small translate>Title</small>
+
+                        </div>
+
+                        <div class="task-dialog-title">{{task.title}}</div>
+                        <div layout="row" >
+                            <md-button ng-click="startThisTask()" ng-disabled='theTask.status == "2" || theTask.status == "5"'  md-no-ink class="md-primary task-dialog-grey-button" >Start the task</md-button>
+
+                            <md-menu md-offset="20 60" >
+                                <md-button style="margin-left: 20px" ng-model="buttonAssigns" ng-disabled='theTask.status == "5"' ng-click="$mdMenu.open($event)" class="md-primary task-dialog-grey-button demo-menu-open-button"
+                                           ng-click="ctrl.showMenu($event)">
+                                    <span>Assigns to a collaborator</span>
+                                    <md-icon>keyboard_arrow_down</md-icon>
+                                </md-button>
+                                <md-menu-content >
+                                    <md-menu-item ng-repeat="user in users">
+                                        <md-button ng-click="assignUserTo(user)"> <span md-menu-align-target>{{user.firstname}} {{user.lastname}} </span> </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+
+                            <md-button  aria-label="Show more" class="md-icon-button" >
+                                <md-icon>more_horiz</md-icon>
+                                <md-tooltip md-direction="top">
+                                    <span translate>Show more</span>
+                                </md-tooltip>
+                            </md-button>
+                        </div>
+                        <md-divider></md-divider>
+                    </div>
+
+                </div>
+                <div  layout="row">
+                    <div layout="column" >
+                        <div class="task-dialog-title-label"><small translate>Description</small></div>
+                        <div id="summernote" class="task-dialog-description">{{task.description}}</div>
+                    </div>
+                </div>
+                <div  layout="row" style="margin-top: 20px">
+                    <div layout="column" flex>
+                        <div class="task-dialog-title-label" ><small translate>Activity</small></div>
+
+                        <md-nav-bar md-no-ink-bar="disableInkBar" md-selected-nav-item="currentNavItem" nav-bar-aria-label="navigation links" >
+                            <md-nav-item md-nav-click="goto('page1')" name="comments" >
+                                <span translate>Comments</span>
+                            </md-nav-item>
+                            <md-nav-item md-nav-click="goto('page2')" name="path" >
+                                <span translate>Path</span>
+                            </md-nav-item>
+                            <md-nav-item md-nav-click="goto('page2')" name="history" >
+                                <span translate>History</span>
+                            </md-nav-item>
+                        </md-nav-bar>
+                        <div  data-ng-include="'templates/procrastinate/tasks/navs/nav' + currentNavItem + '.html'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="task-dialog-rightside" layout="column" flex>
+                <div style="margin-top: -40px; margin-right: -30px; float: right" layout="row" >
+                    <span flex></span>
+                    <md-button class="md-icon-button" ng-click="cancel()">
+                        <md-icon>close</md-icon>
+                    </md-button>
+                </div>
+
+                <md-menu md-offset="20 60" style="width: 200px">
+                    <md-button style="width: 200px; margin-top: 25px; margin-left: 20px" ng-disabled='theTask.status == "5" && $parent.$parent.account.role != "1"' ng-model="buttonStatus" ng-click="$mdMenu.open($event)" class="md-primary md-raised demo-menu-open-button"
+                               ng-click="ctrl.showMenu($event)">
+                        {{task.statusbeautified}} 
+                        <md-icon>keyboard_arrow_down</md-icon>
+                    </md-button>
+                    <md-menu-content >
+                        <md-menu-item ng-repeat="item in status| filter:activeStatusOnly track by $index" >
+                            <md-button ng-click="setProgression(item)" >  <span md-menu-align-target>{{item.action}} </span> </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <div  layout="row" class="taskdialogmargin">
+                    <p class="md-body-2" flex="50" translate>Code: </p>
+                    <p class="md-body-1 md-secondary" flex translate >
+                        <b>{{task.identifier}} </b>
+                    </p>
+                </div>
+                <div  layout="row" class="taskdialogmargin">
+                    <p class="md-body-2" flex="50" translate>Assigned to</p>
+                    <p class="md-body-1 md-secondary" flex translate><span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px " >{{task.user.firstname.substr(0, 1).toUpperCase()}}</span>{{task.user.firstname}} {{task.user.lastname}} </p>
+                </div>
+                <div  layout="row" class="taskdialogmargin">
+                    <p class="md-body-2" flex="50" translate>Priority</p>
+                    <p class="md-body-1 md-secondary" flex translate>{{task.prioritybeautified}}</p>
+                </div>
+                <div  layout="row" class="taskdialogmargin">
+                    <p class="md-body-2" flex="50" translate>Due date</p>
+                    <p class="md-body-1 md-secondary" flex translate>{{task.deadline|date}}</p>
+                </div>
+                <div  layout="row" class="taskdialogmargin">
+                    <p class="md-body-2" flex="50" translate>Category</p>
+                    <p class="md-body-1 md-secondary" flex translate>{{task.category.name}}</p>
+                </div>
+                <div  layout="row" class="taskdialogmargin">
+                    <p class="md-body-2" flex="50" translate>Created By:</p>
+                    <p class="md-body-1 md-secondary" flex translate><span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; margin-right: 5px " >{{task.author.firstname.substr(0, 1).toUpperCase()}}</span>{{task.author.firstname}} {{task.author.lastname}}</p>
+                </div>
+                <div  layout="row" class="taskdialogmargin">
+                    <p class="md-body-2" flex="50" translate>Created on:</p>
+                    <p class="md-body-1 md-secondary" flex translate>{{task.created|smartDatetime}}</p>
+                </div>
+                <div  layout="row" class="taskdialogmargin">
+                    <p class="md-body-2" flex="50" translate>Last modification:</p>
+                    <p class="md-body-1 md-secondary" flex translate>{{task.created|smartDatetime}}</p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </md-dialog-content>
+    <md-divider></md-divider>
+    <md-dialog-actions style="border-top:solid 1px #ddd" layout="row">
+        <md-button ng-click="showConfirm(task)" ng-disabled='theTask.status == "5" && ($parent.account.role != "1" || task.authorID != $parent.account.id)' >
+            <span translate>Delete</span>
+        </md-button>
+        <span flex></span>
+        <md-button ng-click="edit({id: task._id})" class="md-primary" ng-hide="task.authorID != $parent.account.id" ng-disabled='theTask.status == "5" && $parent.account.role != "1"'>
+            <span translate>Edit</span>
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

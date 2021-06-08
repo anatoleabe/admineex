@@ -1,25 +1,61 @@
-<div class="loading-general" layout="row" layout-sm="column" layout-align="space-around" ng-if="loading">
-    <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
-</div>
-<div layout="column" layout-align="center center">
-    <md-card class="loginBox md-whiteframe-z1" style="margin-top: 50px;">
-        <md-card-content>
-            <div style="text-align: center;">
-                <img src="{{kernel.logo.apps}}" style="width:255px;margin-top: 10px;">
-            </div>
-            <h3 class="md-subhead" style="text-align:center"><span translate>Welcome to</span> {{kernel.title}}</h3>
-            <form ng-submit="signin();">
-                <div layout="column">
-                    <md-input-container style="margin-bottom: 0;" md-no-float>
-                        <input type="email" ng-model="email" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="{{'Email' | translate}}" required>
-                    </md-input-container>
-                    <md-input-container style="margin-bottom: 0;" md-no-float>
-                        <input type="password" ng-model="password" name="password" placeholder="{{'Password' | translate}}" required>
-                    </md-input-container>
-                    <md-button ui-sref="recovery.lost" md-no-ink="md-no-ink"><span translate>Need help?</span></md-button>
-                    <md-button class="md-raised md-accent" type="submit"><span translate>Sign in</span></md-button>
+<div class="bg-slate-800" style="height: 100%">
+    <div class="loading-general" layout="row" layout-sm="column" layout-align="space-around" ng-if="loading">
+        <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
+    </div>
+
+    <div layout="column"  layout-align="center center" style="margin-top: 0 auto">
+
+        <!-- Content area -->
+        <div class="loginBox md-whiteframe-z1 content d-flex justify-content-center align-items-center">
+
+            <!-- Login card -->
+            <form class="login-form" ng-submit="signin();">
+                <div class="card mb-0">
+                    <div class="card-body">
+                        <div class="text-center mb-3">
+                            <img src="{{kernel.logo.apps}}" style="width:255px;margin-top: 10px;" class="text-warning-400 border-warning-400 border-3 rounded-round p-3 mb-3 mt-1">
+                            <h5 class="mb-0 " style="color: rgba(0,0,0,0.87);">Welcome to {{kernel.title}}</h5>
+                            <span class="d-block text-muted" translate>Add your credentials to login to your account</span>
+                        </div>
+
+                        <div class="form-group form-group-feedback form-group-feedback-left">
+                            <input type="text" class="form-control" ng-model="email" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="{{'Email'| translate}}" required>
+                            <div class="form-control-feedback">
+                                <i class="icon-user text-muted"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-feedback form-group-feedback-left">
+                            <input type="password" class="form-control" ng-model="password" name="password" placeholder="{{'Password'| translate}}" required>
+                            <div class="form-control-feedback">
+                                <i class="icon-lock2 text-muted"></i>
+                            </div>
+                        </div>
+
+                        <div class="form-group d-flex align-items-center">
+                            <a ui-sref="recovery.lost" class="ml-auto" translate>Forgot password?</a>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block" translate>Sign in <i class="icon-circle-right2 ml-2"></i></button>
+                        </div>
+
+                        <div class="form-group text-center text-muted content-divider">
+                            <span class="px-2" translate>Don't have an account?</span>
+                        </div>
+
+                        <div class="form-group">
+                            <a href="#" class="btn btn-light btn-block" translate>Sign up</a>
+                        </div>
+
+                        <span class="form-text text-center text-muted" translate>By continuing, you're confirming that you've read our <a href="#" translate>Terms &amp; Conditions</a> and <a href="#" translate>Cookie Policy</a></span>
+                    </div>
                 </div>
             </form>
-        </md-card-content>
-    </md-card>
+            <!-- /login card -->
+
+        </div>
+        <!-- /content area -->
+    </div>
+
 </div>

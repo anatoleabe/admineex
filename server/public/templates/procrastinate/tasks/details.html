@@ -1,0 +1,249 @@
+<!-- Simple header with scrollable tabs. -->
+<div flex="70" flex-offset="15" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" ui-view style="height:100%;">
+    <md-content layout-padding layout="column" flex>
+        <md-card-actions layout="row" >
+            <md-button ng-click="back()" class="md-raised md-primary" aria-label="Back" >
+                <md-icon>arrow_back_ios</md-icon>
+                <span translate>Back</span>
+            </md-button>
+            <div layout="row" layout-align="center center" flex >
+                <md-button class="md-secondary"  aria-label="See" ng-click="eligibility(position)" ng-if="account.role == '1' || account.role == '3'">
+                    <md-icon aria-label="person_add">person_adsd</md-icon>
+                    <md-tooltip>
+                        <span translate>Show eligible persons to this position</span>
+                    </md-tooltip>
+                    <span translate>Show eligible persons to this position</span>
+                </md-button>
+            </div>
+            <md-button  class="md-raised md-primary" ng-click="edit({id: position._id})" aria-label="Edit" ng-if="account.role == '1' || account.role == '3' || account.role == '4'">
+                <md-icon>edit</md-icon>
+                <span translate>Edit</span>
+            </md-button>
+            <md-button  class="md-raised" aria-label="Print" >
+                <md-icon>print</md-icon>
+                <span translate>Print</span>
+            </md-button>
+        </md-card-actions>
+
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline" translate>Position details: {{position.name}}</span>
+                    <md-header class="md-no-sticky">{{position.structure.name}}</md-header>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <md-list>
+                    <md-list-item>
+                        <md-icon>perm_contact_calendar</md-icon>
+                        <p class="md-body-2" translate>Entitled</p>
+                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{position.name}}</p>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>group</md-icon>
+                        <p class="md-body-2" translate>Workstation code</p>
+                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{position.code}}</p>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>store</md-icon>
+                        <p class="md-body-2" translate>Sub-structure</p>
+                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{position.structure.name}}</p>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>vpn_key</md-icon>
+                        <p class="md-body-2" translate>Sub-structure code </p>
+                        <p class="md-body-1 md-secondary">{{position.structure.code}}</p>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>store</md-icon>
+                        <p class="md-body-2" translate>Structure</p>
+                        <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{position.structure.father.name}}</p>
+                    </md-list-item>
+                    <md-divider></md-divider>
+                    <md-list-item>
+                        <md-icon>vpn_key</md-icon>
+                        <p class="md-body-2" translate>Structure code </p>
+                        <p class="md-body-1 md-secondary">{{position.structure.father.code}}</p>
+                    </md-list-item>
+
+                </md-list>
+            </md-card-content>
+        </md-card>
+        <md-card>
+            <md-card-title>
+                <md-card-title-text>
+                    <span class="md-headline" translate>Occupant information</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <md-list ng-cloak>
+                    <span  translate ng-hide="affectedStaffs && affectedStaffs.length > 0"><center>No body is holding this position information</center></span>
+                    <div ng-repeat="staff in affectedStaffs">
+                        <md-list-item ui-sref="#" ng-click="showHelder({_id: staff._id})">
+                            <div class="avatar avatar-md md-avatar" >
+                                {{staff.name.substr(0, 1).toUpperCase()}}
+                            </div>
+                            <p class="md-body-2" >{{staff.name}} <sma>({{staff.matricule}})</sma></p>
+                            <md-button class="md-secondary " aria-label="Consult" ng-click="showHelder({_id: staff._id})">
+                                <md-icon aria-label="pageview">pageview</md-icon>
+                                <md-tooltip>
+                                    <span translate>Consult</span>
+                                </md-tooltip>
+                                <span translate>Consult</span>
+                            </md-button>
+<!--                            <md-button class="md-secondary " ng-class="{'red':true}" aria-label="Remove" ng-click="edit({id: user._id})">
+                                <md-icon style="color: white;" aria-label="remove_circle_outline">remove_circle_outline</md-icon>
+                                <md-tooltip>
+                                    <span translate>Remove</span>
+                                </md-tooltip>
+                                <span translate>Remove</span>
+                            </md-button>-->
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </div>
+                </md-list>
+                <div layout="row" layout-align="center center" ng-if="account.role == '1' || account.role == '3'" >
+                    <md-button class="md-secondary" ng-class="{'green':true}" aria-label="See" ng-click="affectTo(position)"
+                               >
+                        <md-icon aria-label="person_add">person_add</md-icon>
+                        <md-tooltip>
+                            <span translate>Affect new staff to this position</span>
+                        </md-tooltip>
+                        <span>Affect staff to this position</span>
+                    </md-button>
+                </div>
+            </md-card-content>
+        </md-card>
+        <!--Required Skills-->
+        <md-card>
+            <md-card-title class="card-container">
+                <md-card-title-text class="card-container-left">
+                    <span class="md-headline" translate>Required profiles</span>
+                </md-card-title-text>
+                <md-card-actions layout="row" ng-if="account.role == '1' || account.role == '3' || account.role == '4'">
+                    <span flex></span>
+                    <md-button ng-click="add(position, 'requiredProfiles', 'profiles')" aria-label="Edit" >
+                        <md-icon>edit</md-icon>
+                        <span translate>Add or edit required profiles</span>
+                    </md-button>
+                </md-card-actions>
+            </md-card-title>
+            <md-card-content>
+                <md-list ng-cloak>
+                    <div  ng-repeat="reqProfile in requiredProfiles">
+                        <md-list-item ui-sref="#">
+                            <p class="md-body-2" >{{reqProfile.name}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </div>
+                    <div layout="row" layout-align="center center" data-ng-if="requiredProfiles && requiredProfiles.length <= 0" style="opacity:0.2; margin-top: -40px">
+                        <h2 class="md-title">{{helper.title}}</h2>
+                    </div>
+                </md-list>
+            </md-card-content>
+        </md-card>
+        <!--required skills-->
+        <md-card>
+            <md-card-title class="card-container">
+                <md-card-title-text class="card-container-left">
+                    <span class="md-headline" translate>Required skill</span>
+                </md-card-title-text>
+                <md-card-actions layout="row" ng-if="account.role == '1' || account.role == '3' || account.role == '4'">
+                    <span flex></span>
+                    <md-button ng-click="add(position, 'requiredSkills', 'skills')" aria-label="Edit" >
+                        <md-icon>edit</md-icon>
+                        <span translate>Add or edit required skills</span>
+                    </md-button>
+                </md-card-actions>
+            </md-card-title>
+            <md-card-content>
+                <md-list ng-cloak>
+                    <div  ng-repeat="reqSkill in requiredSkills">
+                        <md-list-item ui-sref="#">
+                            <p class="md-body-2" >{{reqSkill.name}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </div>
+                    <div layout="row" layout-align="center center" data-ng-if="requiredSkills && requiredSkills.length <= 0" style="opacity:0.2; margin-top: -40px">
+                        <h2 class="md-title">{{helper.title}}</h2>
+                    </div>
+                </md-list>
+            </md-card-content>
+        </md-card>
+        <!--required Activities-->
+        <md-card>
+            <md-card-title class="card-container">
+                <md-card-title-text class="card-container-left">
+                    <span class="md-headline" translate>Activities</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <md-list ng-cloak>
+                    <div  ng-repeat="activity in activities">
+                        <md-list-item ui-sref="#">
+                            <p class="md-body-2" >{{activity}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </div>
+                    <div layout="row" layout-align="center center" data-ng-if="activities && activities.length <= 0" style="opacity:0.2; margin-top: -40px">
+                        <h2 class="md-title">{{helper.title}}</h2>
+                    </div>
+                </md-list>
+            </md-card-content>
+        </md-card>
+        <!--required Task-->
+        <md-card>
+            <md-card-title class="card-container">
+                <md-card-title-text class="card-container-left">
+                    <span class="md-headline" translate>Tasks</span>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content>
+                <md-list ng-cloak>
+                    <div  ng-repeat="task in tasks">
+                        <md-list-item ui-sref="#">
+                            <p class="md-body-2" >{{task}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </div>
+                    <div layout="row" layout-align="center center" data-ng-if="tasks && tasks.length <= 0" style="opacity:0.2; margin-top: -40px">
+                        <h2 class="md-title">{{helper.title}}</h2>
+                    </div>
+                </md-list>
+            </md-card-content>
+        </md-card>
+
+        <div layout="row" layout-align="center center"  >
+            <md-button class="md-secondary"  aria-label="See" ng-click="eligibility(position)" ng-if="account.role == '1' || account.role == '3'">
+                <md-icon aria-label="person_add">person_adsd</md-icon>
+                <md-tooltip>
+                    <span translate>Show eligible persons to this position</span>
+                </md-tooltip>
+                <span>Show eligible persons to this position</span>
+            </md-button>
+        </div>
+
+        <md-card-actions layout="row" >
+            <md-button ng-click="back()" class="md-raised md-primary" aria-label="Edit" >
+                <md-icon>arrow_back_ios</md-icon>
+                <span translate>Back</span>
+            </md-button>
+            <span flex></span>
+            <md-button  class="md-raised md-primary" ng-click="edit({id: position._id})" aria-label="Edit" ng-if="account.role == '1' || account.role == '3' || account.role == '4'">
+                <md-icon>edit</md-icon>
+                <span translate>Edit</span>
+            </md-button>
+            <md-button  class="md-raised" aria-label="Print" >
+                <md-icon>print</md-icon>
+                <span translate>Print</span>
+            </md-button>
+        </md-card-actions>
+
+    </md-content>
+
+
+</div>

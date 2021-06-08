@@ -1,0 +1,93 @@
+<div flex="90" flex-offset="5" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" style="height:100%;"> 
+    
+
+    <div class="container">
+        <div class="simpleDemo row">
+
+            <div class="col-md-8">
+                <div class="row">
+                    <div ng-repeat="(listName, list) in models.lists" class="col-md-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <div class="btn-group pull-right">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true" ng-click="addToList(list)">+</span>
+                                </div>
+                                <h3 class="panel-title">List {{listName}}</h3>
+
+                            </div>
+                            <div class="panel-body">
+
+                                <!-- The dnd-list directive allows to drop elements into it. The dropped data will be added to the referenced list -->
+                                <ul dnd-list="list" class="ng-scope">
+                                    <!-- The dnd-draggable directive makes an element draggable and will
+                                         transfer the object that was assigned to it. If an element was
+                                         dragged away, you have to remove it from the original list
+                                         yourself using the dnd-moved attribute -->
+                                    <li ng-repeat="item in list" dnd-draggable="item" dnd-moved="list.splice($index, 1)" dnd-effect-allowed="move" dnd-selected="models.selected = item" ng-class="{'selected': models.selected === item}" draggable="true">
+                                        {{item.label}}
+                                        <a class="close" ng-click="removeFromList(list, $index)">×</a>
+                                        <a class="close" ng-click="cloneItem(list, $index)">=</a>
+                                    <edit-in-place data-ng-include="'templates/procrastinate/directives/editInPlace.html'" value="item.label"></edit-in-place>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div  class="col-md-6">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <div class="btn-group pull-right">
+                                    <span class="glyphicon glyphicon-plus" aria-hidden="true" ng-click="addToTasks(taches)">+</span>
+                                </div>
+                                <h3 class="panel-title">List Taches</h3>
+
+                            </div>
+                            <div class="panel-body">
+
+                                <!-- The dnd-list directive allows to drop elements into it. The dropped data will be added to the referenced list -->
+                                <ul dnd-list="taches" class="ng-scope">
+                                    <!-- The dnd-draggable directive makes an element draggable and will
+                                         transfer the object that was assigned to it. If an element was
+                                         dragged away, you have to remove it from the original list
+                                         yourself using the dnd-moved attribute -->
+                                    <li ng-repeat="item in taches" dnd-draggable="item" dnd-moved="taches.splice($index, 1)" dnd-effect-allowed="move" dnd-selected="models.selected = item" ng-class="{'selected': models.selected === item}" draggable="true">
+                                        {{item.label}}
+                                        <a class="close" ng-click="removeFromList(list, $index)">×</a>
+                                        <a class="close" ng-click="cloneItem(list, $index)">=</a>
+                                    <edit-in-place data-ng-include="'templates/procrastinate/directives/editInPlace.html'" value="item.label"></edit-in-place>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Generated Model</h3>
+                    </div>
+                    <div class="panel-body">
+                        <pre class="code">{{modelAsJson}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div style="margin-bottom: 100px"></div>
+    <md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" ng-click="new ()" ng-if="account.role == '1' || account.role == '4'">
+        <md-icon>add</md-icon>
+        <md-tooltip md-direction="top">
+            <span translate>New</span>
+        </md-tooltip>
+    </md-button>
+</div>

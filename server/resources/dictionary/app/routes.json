@@ -30,7 +30,7 @@
         "id": 5,
         "uri": "/api/account/password/change",
         "method": "POST",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 6,
@@ -51,7 +51,7 @@
         "id": 9,
         "uri": "/api/account/profile",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 10,
@@ -93,13 +93,13 @@
         "id": 16,
         "uri": "/api/ui/nav",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 17,
         "uri": "/api/ui/charts",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 18,
@@ -164,9 +164,9 @@
     },
     {
         "id": 29,
-        "uri": "/api/charts/:name/from/:from/to/:to/group/:group",
+        "uri": "/api/charts/:name/from/:from/to/:to/selecteduser/:selecteduser",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 30,
@@ -177,13 +177,13 @@
         "id": 31,
         "uri": "/api/notifications",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 32,
         "uri": "/api/notifications/:id",
         "method": "PUT",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 33,
@@ -231,37 +231,37 @@
         "id": 40,
         "uri": "/api/positions/:search/:filters/:limit/:skip",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 41,
         "uri": "/api/positions/read/:id",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 42,
         "uri": "/api/positions",
         "method": "PUT",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 43,
         "uri": "/api/personnel",
         "method": "PUT",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 44,
         "uri": "/api/personnel/read/:id/:beautify",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 45,
         "uri": "/api/personnel/:minify/:limit/:skip/:search/:filters",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 46,
@@ -291,7 +291,7 @@
         "id": 50,
         "uri": "/api/personnel/search/:text",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 51,
@@ -303,37 +303,37 @@
         "id": 52,
         "uri": "/api/pdf/pdf1/",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 53,
         "uri": "/api/personnel/checkExistance/:mat",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 54,
         "uri": "/api/personnel/retired/:from/:to",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 55,
         "uri": "/api/monitor/:year/:quarter/:structure",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 56,
         "uri": "/api/export/pdf/positions/:structure/:vacancies/:nomenclature",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 57,
         "uri": "/api/export/pdf/structures/",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 58,
@@ -345,13 +345,13 @@
         "id": 59,
         "uri": "/api/personnel/export/:search/:filters",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 60,
         "uri": "/api/positions/download/:search/:filters",
         "method": "GET",
-        "roles": [1,2,3,4]
+        "roles": [1,2,3,4,5]
     },
     {
         "id": 61,
@@ -361,12 +361,95 @@
     },
     {
         "id": 62,
+        "uri": "/api/tasks",
+        "method": "PUT",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 63,
+        "uri": "/api/tasks/:status/:priority/:category/:from/:to/:selecteduser/:search",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 64,
+        "uri": "/api/task/:id",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 65,
+        "uri": "/api/task/:id",
+        "method": "DELETE",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 66,
+        "uri": "/api/categories",
+        "method": "PUT",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 67,
+        "uri": "/api/categories",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 68,
+        "uri": "/api/categories/:id",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 69,
+        "uri": "/api/categories/:id",
+        "method": "DELETE",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 70,
+        "uri": "/api/editTask/:id",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 71,
+        "uri": "/api/task",
+        "method": "POST",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 72,
+        "uri": "/api/taskHistory/:id",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 73,
+        "uri": "/api/excelExport/card",
+        "method": "POST",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 74,
+        "uri": "/api/taskComments/:id",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 75,
+        "uri": "/api/taskCommentDelete/:id/:commentIndex",
+        "method": "DELETE",
+        "roles": [1,2,3,4,5]
+    },{
+        "id": 76,
         "uri": "/api/thresholds",
         "method": "GET",
         "roles": [1,2,3,4]
     },
     {
-        "id": 63,
+        "id": 77,
         "uri": "/api/thresholds",
         "method": "POST",
         "roles": [1]

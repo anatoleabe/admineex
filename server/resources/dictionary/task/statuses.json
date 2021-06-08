@@ -1,0 +1,37 @@
+[
+    {
+        "id": "1",
+        "en": "Not started",
+        "fr": "Pas commencé",
+        "fr-verb": "Pas commencé",
+        "en-verb": "Pas commencé"
+    },
+    {
+        "id": "2",
+        "en": "In progress",
+        "fr": "En cours",
+        "fr-verb": "En cours",
+        "en-verb": "In progress"
+    },
+    {
+        "id": "3",
+        "en": "Completed",
+        "fr": "Terminé",
+        "fr-verb": "Terminer",
+        "en-verb": "Complet"
+    },
+    {
+        "id": "4",
+        "en": "Blocked",
+        "fr": "Bloqué",
+        "fr-verb": "Blocker",
+        "en-verb": "Block"
+    },
+    {
+        "id": "5",
+        "en": "Archived",
+        "fr": "Archivée",
+        "fr-verb": "Archiver",
+        "en-verb": "Archive"
+    }
+]

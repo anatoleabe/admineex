@@ -1,0 +1,62 @@
+<div layout-align-xs="center center">
+    <md-toolbar class="toolbar-filter" style=" background-color: rgb(251, 251, 251) !important;">
+        <div layout="row" class="md-toolbar-tools md-default" layout-xs="column" layout-wrap>
+            <div flex=15 flex-xs=40>
+                <md-button ng-hide="daterange == undefined" style="margin: 0px; width: 88px;padding: 0;"
+                    ng-click="$parent.$parent.range.from.handleShowCalendar()"
+                    aria-label="from" ng-disabled="rootscope.kernel.isLoading == true" class="datepicker-button">
+                    
+                    {{from| date:"dd/MM/yyyy"}}
+                    
+                    <md-datepicker md-hide-icons="all" ng-model="$parent.$parent.range.from.value"
+                        style="margin-left: -7px;width: 88px; display: none;" ng-blur="$parent.$parent.range.from.handleBlur()"
+                        md-is-open="$parent.$parent.range.from.isOpen" md-min-date="$parent.$parent.range.min"
+                        md-max-date="$parent.$parent.range.max" ng-disabled="$parent.$parent.range.from.isDisabled"
+                        class="datepicker-input">
+                    </md-datepicker>
+                </md-button>
+
+                <span ng-hide="daterange == undefined" style="color:rgb(33,33,33);">-</span>
+
+                <md-button ng-hide="daterange == undefined" style="margin: 0px;width: 88px;padding: 0;"
+                    ng-click="$parent.$parent.range.to.handleShowCalendar()"
+                    aria-label="to" ng-disabled="rootscope.kernel.isLoading == true" class="datepicker-button">
+
+                    {{to| date:"dd/MM/yyyy"}}
+
+                    <md-datepicker md-hide-icons="all" ng-model="$parent.$parent.range.to.value"
+                        style="margin-left: -7px; display: none;" ng-blur="$parent.$parent.range.to.handleBlur()"
+                        md-is-open="$parent.$parent.range.to.isOpen" md-min-date="$parent.$parent.range.min"
+                        md-max-date="$parent.$parent.range.max" ng-disabled="$parent.$parent.range.to.isDisabled"
+                        class="datepicker-input">
+                    </md-datepicker>
+                </md-button>
+            </div>
+            <div  style="float: right">
+                <span style="display: inline-block;margin-top: 5px;">
+                    <md-switch ng-model="$root.globalView.activated" aria-label="Global view">
+                        Global view
+                    </md-switch>
+                </span>
+            </div>
+            <div  flex="30">
+                <div style="text-align: left;" ng-show="$root.globalView.activated == true" layout-margin>
+                    <md-input-container class="md-block" flex >
+                        <label translate>Select a user</label>
+                        <md-select ng-model="$root.globalView.selectedUser" aria-label="users"
+                                   ng-change="$root.select('user')" ng-disabled="rootscope.kernel.isLoading == true" class="geo-filter-select">
+                            <md-option ng-value="undefined" translate>
+                                All users
+                            </md-option>
+                            <md-option ng-value="user._id" ng-repeat="user in users">
+                                {{user.firstname}} {{user.lastname}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+            </div>
+        </div>
+
+    </md-toolbar>
+</div>

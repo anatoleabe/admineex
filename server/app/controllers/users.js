@@ -190,6 +190,26 @@ exports.contacts = function(callback) {
     });
 }
 
+exports.list = function(query, pipe,callback) {
+    User.find(query, pipe).lean().exec(function (err, users) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            function myLoopA(i) {
+                if (i < users.length) {
+                    users[i].name = users[i].firstname + " " + users[i].lastname;
+                    users[i]._lowername = users[i].name.toLowerCase();
+                    myLoopA(i+1);
+                } else {
+                    callback(null, users);
+                }
+            }
+            myLoopA(0);
+        }
+    });
+}
+
 exports.all = function(callback) {
     User.find({}).lean().exec(function (err, users) {
         if (err) {

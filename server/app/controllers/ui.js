@@ -72,7 +72,7 @@ function buildNav(user, callback) {
     // Const.
     var nav = {
         left: [{
-                header: '',
+                header: 'Main',
                 items: []
             }, {
                 header: 'Server',
@@ -84,13 +84,17 @@ function buildNav(user, callback) {
     }
     var dashboard = {
         href: 'home.dashboard.main',
+        sref: 'home.dashboard.main',
         icon: 'dashboard',
+        icomoon: 'icon-home4',
         label: gt.gettext('Dashboard'),
         name: gt.gettext('Dashboard')
     };
     var staffManagement = {
         href: 'home.staffs.main',
+        sref: '.staffs',
         icon: 'class',
+        icomoon: 'icon-users4',
         label: 'Staff management',
         name: 'Staff management',
         items: []
@@ -99,28 +103,50 @@ function buildNav(user, callback) {
     // Staff Management tabs
     var staffManagementTab1 = {
         href: 'home.staffs.personnalrecords',
+        sref: '.staffs',
         label: 'Personnal records',
         name: 'Personnal records'
     };
     var staffManagementTab2 = {
         href: 'home.staffs.main',
+        sref: '.staffs',
         label: 'Staff management',
         name: 'Staff management'
     };
-//    var staffManagementTab3 = {
-//        href: 'home.staffs.status.main',
-//        label: 'Status',
-//        name: 'Status'
-//    };
-//    var staffManagementTab4 = {
-//        href: 'home.staffs.discipline.main',
-//        label: 'Discipline',
-//        name: 'Discipline'
-//    };
+
+    var task = {
+        href: 'home.tasks.main',
+        sref: '.tasks',
+        icon: 'list',
+        icomoon: 'icon-task',
+        label: 'Procrastinate',
+        name: 'Procrastinate',
+        items: []
+    };
+    var taskTab1 = {
+        href: 'home.tasks.main',
+        sref: '.tasks',
+        label: 'Tasks management',
+        name: 'Tasks management'
+    };
+    var taskTab3 = {
+        href: 'home.tasks.synthesis',
+        sref: '.tasks',
+        label: 'Synthesis',
+        name: 'Synthèse'
+    };
+    var taskCategoryTab4 = {
+        href: 'home.tasks.categories',
+        sref: '.tasks',
+        label: 'Categories',
+        name: 'Categories'
+    };
 
     var administration = {
         href: 'home.administration.positions',
+        sref: '.administration',
         icon: 'folder',
+        icomoon: 'icon-folder4',
         label: 'Administration',
         name: 'Administration',
         items: []
@@ -129,11 +155,13 @@ function buildNav(user, callback) {
     // Administration tabs
     var administrationTab1 = {
         href: 'home.administration.positions',
+        sref: '.administration',
         label: "Positions",
         name: 'Positions'
     };
     var administrationTab2 = {
         href: 'home.administration.structures',
+        sref: '.administration',
         label: 'Structures',
         name: 'Structures'
     };
@@ -150,7 +178,9 @@ function buildNav(user, callback) {
 
     var monitoring = {
         href: 'home.monitor.main',
+        sref: '.monitor',
         icon: 'verified_user',
+        icomoon: 'icon-hat',
         label: 'Monitoring & Evaluation',
         name: 'Monitoring & Evaluation',
         items: []
@@ -158,6 +188,7 @@ function buildNav(user, callback) {
 
     var monitoringTab1 = {
         href: 'home.monitor.monitor',
+        sref: '.monitor',
         label: 'Monitoring & Evaluation',
         name: 'Monitoring & Evaluation'
     };
@@ -176,13 +207,17 @@ function buildNav(user, callback) {
     };
     var thresholds = {
         href: 'home.thresholds',
+        sref: '.thresholds',
         icon: 'lightbulb_outline',
+        icomoon: 'icon-traffic-lights',
         label: 'Thresholds',
         name: 'Thresholds'
     };
     var users = {
         href: 'home.users.main',
+        sref: 'home.users.main',
         icon: 'supervisor_account',
+        icomoon: 'icon-users2',
         label: gt.gettext('Users'),
         name: gt.gettext('Users')
     };
@@ -190,35 +225,35 @@ function buildNav(user, callback) {
     // Preferences
     var configuration = {
         href: 'home.configuration',
+        sref: 'home.configuration',
         icon: 'settings',
+        icomoon: 'icon-equalizer',
         label: 'Configuration',
         name: 'Configuration'
     };
     var audit = {
         href: 'home.audit',
+        sref: 'home.audit',
         icon: 'history',
+        icomoon: 'icon-history',
         label: 'Audit',
         name: 'Audit'
     };
-    // Account
-    var profile = {
-        href: 'home.profile.main',
-        icon: 'account_circle',
-        label: gt.gettext('Profile'),
-        name: gt.gettext('Profile')
-    };
-    var settings = {
-        href: 'home.settings.main',
-        icon: 'tune',
-        label: gt.gettext('Settings'),
-        name: gt.gettext('Settings')
-    };
-    var signout = {
-        href: '#',
-        icon: 'exit_to_app',
-        label: 'Sign out',
-        name: 'Sign out'
-    };
+//    // Account
+//    var profile = {
+//        href: 'home.profile.main',
+//        sref: 'home.profile.main',
+//        icon: 'account_circle',
+//        label: gt.gettext('Profile'),
+//        name: gt.gettext('Profile')
+//    };
+//    var settings = {
+//        href: 'home.settings.main',
+//        sref: 'settings.main',
+//        icon: 'tune',
+//        label: gt.gettext('Settings'),
+//        name: gt.gettext('Settings')
+//    };
 
     //END DIAMA MENU
     // Build the nav
@@ -235,7 +270,10 @@ function buildNav(user, callback) {
             // LEFT MENU MONITOR
             nav.left[0].items.push(monitoring);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
-            // LEFT MENU STATISTICS
+            // LEFT MENU TASK
+            nav.left[0].items.push(task);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskCategoryTab4);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
             // LEFT MENU TABS FOR ADMINISTRATION
@@ -289,11 +327,19 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
             break;
+        case '5'://Task user
+            // LEFT MENU TASK
+            nav.left[0].items.push(task);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab3);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(taskCategoryTab4);
+
+            break;
     }
-    // LEFT MENU
-    nav.left[2].items.push(profile);
-    nav.left[2].items.push(settings);
-    nav.left[2].items.push(signout);
+//    // LEFT MENU
+//    nav.left[2].items.push(profile);
+//    nav.left[2].items.push(settings);
+//    nav.left[2].items.push(signout);
 
     // Nav Built
     callback(nav);

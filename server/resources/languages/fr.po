@@ -9,20 +9,20 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.3\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: public/templates/dialogs/sedentary.html:30
 msgid "#"
 msgstr "#"
 
-#: public/templates/staffs/personnal_records.html:363
-#: public/templates/staffs/personnal_records.html:66
+#: public/templates/staffs/personnal_records.html:341
+#: public/templates/staffs/personnal_records.html:68
 msgid "% of required profile"
 msgstr "% du profile requis"
 
-#: public/templates/staffs/personnal_records.html:405
-#: public/templates/staffs/personnal_records.html:75
+#: public/templates/staffs/personnal_records.html:383
+#: public/templates/staffs/personnal_records.html:77
 msgid "% of required skills"
 msgstr "%  des compétences requises"
 
@@ -35,6 +35,8 @@ msgstr "- Generique -"
 #: public/js/controllers/AdministrationCtrl.js:32
 #: public/js/controllers/MonitorCtrl.js:43
 #: public/js/controllers/MonitorCtrl.js:44
+#: public/js/controllers/procrastinate/ProcrastinateCtrl.js:44
+#: public/js/controllers/procrastinate/ProcrastinateCtrl.js:45
 #: public/js/controllers/staffs/StaffManagementCtrl.js:34
 #: public/js/controllers/staffs/StaffManagementCtrl.js:35
 #: public/templates/import_export.html:29
@@ -48,21 +50,49 @@ msgid ":"
 msgstr ":"
 
 #: public/templates/administration/positions/details.html:84
+#: public/templates/procrastinate/tasks/details.html:84
 msgid "<center>No body is holding this position information</center>"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:81
+#: public/templates/procrastinate/tasks/edit.html:112
+msgid "<md-icon>attach_file</md-icon> Attach file(s)"
+msgstr ""
+
+#: public/templates/procrastinate/tasks/dialogs/task.html:134
+msgid ""
+"<span class=\"avatar\" style=\"width: 30px; height: 30px; font-size: 20px; "
+"line-height: 30px; margin-right: 5px \">{{task.author.firstname.substr(0, 1)."
+"toUpperCase()}}</span>{{task.author.firstname}} {{task.author.lastname}}"
+msgstr ""
+
+#: public/templates/procrastinate/tasks/dialogs/task.html:118
+msgid ""
+"<span class=\"avatar\" style=\"width: 30px; height: 30px; font-size: 20px; "
+"line-height: 30px; margin-right: 5px \">{{task.user.firstname.substr(0, 1)."
+"toUpperCase()}}</span>{{task.user.firstname}} {{task.user.lastname}}"
+msgstr ""
+
+#: public/templates/staffs/staff/main.html:171
 msgid "<span translate>Actions</span>"
+msgstr ""
+
+#: public/templates/dialogs/retireds.html:14
+msgid ""
+"<span translate>People of retirement age</span> <span translate>or</span>  "
+"<span translate>retired people</span>"
 msgstr ""
 
 #: public/js/controllers/ConfigurationCtrl.js:35
 #: public/js/controllers/administration/OrganizationsCtrl.js:49
-#: public/js/controllers/administration/structures/StructuresCtrl.js:80
+#: public/js/controllers/administration/structures/StructuresCtrl.js:163
 #: public/js/controllers/organizations/OrganizationsCtrl.js:49
+#: public/js/controllers/procrastinate/categories/CategoriesCtrl.js:54
+#: public/js/controllers/procrastinate/tasks/TasksCtrl.js:195
+#: public/js/controllers/procrastinate/tasks/TasksCtrl_1.js:49
 #: public/js/controllers/projects/ProjectsCtrl.js:49
 #: public/js/controllers/staffs/discipline/DisciplinesCtrl.js:49
 #: public/js/controllers/staffs/movement/MovementsCtrl.js:49
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:195
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:327
 #: public/js/controllers/staffs/status/StatussCtrl.js:49
 #: public/js/controllers/users/UsersCtrl.js:104
 msgid "?"
@@ -76,7 +106,7 @@ msgstr "Un nouveau compte a été créé."
 msgid "About"
 msgstr "A propos de"
 
-#: public/js/appFilters.js:222 public/js/controllers/projects/ProjectCtrl.js:8
+#: public/js/appFilters.js:225 public/js/controllers/projects/ProjectCtrl.js:8
 msgid "Accepted"
 msgstr "Accepté"
 
@@ -96,10 +126,11 @@ msgstr "Le compte n’est pas activé"
 msgid "Act"
 msgstr "Acte"
 
-#: public/templates/administration/positions/main.html:100
-#: public/templates/administration/structures/main.html:46
+#: public/templates/administration/positions/main.html:125
+#: public/templates/administration/structures/main.html:84
 #: public/templates/dialogs/retireds.html:37
-#: public/templates/staffs/staff/main.html:81
+#: public/templates/procrastinate/tasks/main.html:73
+#: public/templates/staffs/staff/main.html:171
 msgid "Actions"
 msgstr "Actions"
 
@@ -112,6 +143,7 @@ msgid "Active accounts"
 msgstr "Comptes actifs"
 
 #: public/templates/administration/positions/details.html:181
+#: public/templates/procrastinate/tasks/details.html:181
 msgid "Activities"
 msgstr "Activités"
 
@@ -120,21 +152,44 @@ msgid "Activities (Add activity then press enter)"
 msgstr "Activités (Ajouter une activité puis appuyez sur entrer)"
 
 #: public/templates/administration/positions/edit.html:116
+#: public/templates/procrastinate/tasks/dialogs/task.html:40
 msgid "Activity"
 msgstr "Activité"
 
-#: public/templates/staffs/personnal_records.html:322
+#: public/templates/staffs/personnal_records.html:300
 #: public/templates/staffs/staff/edit.html:257
 msgid "Actual situation"
 msgstr "Situation actuelle"
 
 #: public/templates/administration/positions/details.html:131
+#: public/templates/procrastinate/tasks/details.html:131
 msgid "Add or edit required profiles"
 msgstr "Ajoutez ou modifier les profiles requis"
 
 #: public/templates/administration/positions/details.html:159
+#: public/templates/procrastinate/tasks/details.html:159
 msgid "Add or edit required skills"
 msgstr "Ajoutez ou modifier les compétences requises"
+
+#: app/controllers/personnel.js:1004
+msgid "Admineex: Liste des personnes éligibles au poste de:"
+msgstr ""
+
+#: app/controllers/positions.js:531
+msgid "Admineex: Liste des postes de travail"
+msgstr ""
+
+#: app/controllers/personnel.js:821
+#, fuzzy
+#| msgid "Select a personnel"
+msgid "Admineex: Liste du personnel"
+msgstr "Sélectionner un personnel"
+
+#: public/js/controllers/administration/positions/EligibilityCtrl.js:76
+#: public/js/controllers/administration/positions/PositionsCtrl.js:268
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:377
+msgid "Adminex_Staff_Export"
+msgstr ""
 
 #: resources/languages/extraDictionary.html:6
 msgid "Administration"
@@ -147,24 +202,31 @@ msgstr "Administration"
 msgid "Administrative act"
 msgstr "Acte administratif"
 
+#: public/js/appFilters.js:143 public/js/controllers/users/UserCtrl.js:14
+#, fuzzy
+#| msgid "Administration"
+msgid "Administrator"
+msgstr "Administration"
+
 #: public/templates/installation/second.html:13
 msgid "Administrator Account"
 msgstr "Compte administrateur"
 
 #: public/templates/administration/positions/details.html:114
+#: public/templates/procrastinate/tasks/details.html:114
 msgid "Affect new staff to this position"
 msgstr "Affecter un nouveau personnel à ce poste"
 
-#: public/templates/staffs/staff/main.html:97
+#: public/templates/staffs/staff/main.html:188
 msgid "Affect to new position"
 msgstr "Affecter à un nouveau poste"
 
 #: public/templates/dialogs/retireds.html:35
-#: public/templates/staffs/personnal_records.html:104
+#: public/templates/staffs/personnal_records.html:107
 msgid "Age"
 msgstr "Âge"
 
-#: public/js/appFilters.js:328 public/js/controllers/projects/ProjectCtrl.js:31
+#: public/js/appFilters.js:331 public/js/controllers/projects/ProjectCtrl.js:31
 msgid "Alics"
 msgstr ""
 
@@ -172,17 +234,30 @@ msgstr ""
 msgid "Alics notification"
 msgstr "Notification Alics"
 
+#: public/templates/administration/positions/main.html:80
+#: public/templates/administration/positions/main.html:94
+#: public/templates/staffs/staff/main.html:102
+#: public/templates/staffs/staff/main.html:113
+#: public/templates/staffs/staff/main.html:124
+#: public/templates/staffs/staff/main.html:135
+#: public/templates/staffs/staff/main.html:88
+msgid "All"
+msgstr ""
+
 #: public/templates/monitor/main.html:26
 msgid "All quarters"
 msgstr "Tous les quartiers"
 
-#: public/templates/administration/positions/main.html:12
+#: public/templates/administration/positions/main.html:55
+#: public/templates/administration/structures/main.html:11
 #: public/templates/monitor/main.html:38
 #: public/templates/staffs/staff/main.html:10
 msgid "All structures"
 msgstr "Toutes les structures"
 
-#: public/templates/administration/positions/main.html:31
+#: public/templates/administration/positions/main.html:68
+#: public/templates/administration/structures/main.html:30
+#: public/templates/staffs/staff/main.html:27
 msgid "All sub structures"
 msgstr "Toutes les sous-structures"
 
@@ -198,41 +273,48 @@ msgstr ""
 #: public/js/controllers/administration/OrganizationCtrl.js:40
 #: public/js/controllers/administration/OrganizationCtrl.js:63
 #: public/js/controllers/administration/OrganizationCtrl.js:85
-#: public/js/controllers/administration/positions/AffectationCtrl.js:187
+#: public/js/controllers/administration/positions/AffectationCtrl.js:254
 #: public/js/controllers/administration/positions/PositionCtrl.js:176
 #: public/js/controllers/administration/positions/PositionCtrl.js:226
 #: public/js/controllers/administration/positions/PositionCtrl.js:263
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:205
-#: public/js/controllers/administration/structures/StructureCtrl.js:150
-#: public/js/controllers/administration/structures/StructureCtrl.js:91
-#: public/js/controllers/monitor/EvaluationCtrl.js:141
+#: public/js/controllers/administration/structures/StructureCtrl.js:100
+#: public/js/controllers/administration/structures/StructureCtrl.js:161
+#: public/js/controllers/monitor/EvaluationCtrl.js:149
 #: public/js/controllers/organizations/OrganizationCtrl.js:110
 #: public/js/controllers/organizations/OrganizationCtrl.js:40
 #: public/js/controllers/organizations/OrganizationCtrl.js:63
 #: public/js/controllers/organizations/OrganizationCtrl.js:85
+#: public/js/controllers/procrastinate/categories/CategoryCtrl.js:32
+#: public/js/controllers/procrastinate/categories/CategoryCtrl.js:55
+#: public/js/controllers/procrastinate/categories/CategoryCtrl.js:83
+#: public/js/controllers/procrastinate/tasks/TaskCtrl.js:114
+#: public/js/controllers/procrastinate/tasks/TaskCtrl.js:142
+#: public/js/controllers/procrastinate/tasks/TaskCtrl.js:178
 #: public/js/controllers/projects/ProjectCtrl.js:102
 #: public/js/controllers/projects/ProjectCtrl.js:130
 #: public/js/controllers/projects/ProjectCtrl.js:155
 #: public/js/controllers/projects/ProjectCtrl.js:79
 #: public/js/controllers/recovery/LostCtrl.js:26
 #: public/js/controllers/recovery/ResetCtrl.js:42
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:125
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:272
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:131
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:271
 #: public/js/controllers/staffs/staff/MoreCtrl.js:124
 #: public/js/controllers/staffs/staff/SanctionCtrl.js:39
-#: public/js/controllers/staffs/staff/SituationCtrl.js:39
+#: public/js/controllers/staffs/staff/SituationCtrl.js:30
+#: public/js/controllers/staffs/staff/SituationCtrl.js:58
 #: public/js/controllers/staffs/staff/StaffCtrl.js:288
 #: public/js/controllers/staffs/staff/StaffCtrl.js:306
 #: public/js/controllers/staffs/staff/StaffCtrl.js:343
 #: public/js/controllers/staffs/staff/StaffCtrl.js:352
-#: public/js/controllers/users/UserCtrl.js:117
-#: public/js/controllers/users/UserCtrl.js:47
-#: public/js/controllers/users/UserCtrl.js:76
+#: public/js/controllers/users/UserCtrl.js:140
+#: public/js/controllers/users/UserCtrl.js:70
+#: public/js/controllers/users/UserCtrl.js:99
 #: public/js/controllers/users/UsersCtrl.js:94
 msgid "An error occurred, please try again later"
 msgstr "Une erreur est survenue, merci de réessayer plus tard"
 
-#: public/templates/dialogs/evaluation.html:76
+#: public/templates/dialogs/evaluation.html:75
 #: public/templates/monitor/main.html:81
 msgid "Appreciation"
 msgstr "Appréciation"
@@ -241,7 +323,7 @@ msgstr "Appréciation"
 msgid "April"
 msgstr "Avril"
 
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:195
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:327
 msgid "Are you sure you want to delete the Agent"
 msgstr "Etes-vous sûr de vouloir supprimer ce personnel"
 
@@ -250,8 +332,9 @@ msgid "Are you sure you want to delete the account of"
 msgstr "Êtes-vous sûr de vouloir supprimer le compte de"
 
 #: public/js/controllers/administration/OrganizationsCtrl.js:49
-#: public/js/controllers/administration/structures/StructuresCtrl.js:80
+#: public/js/controllers/administration/structures/StructuresCtrl.js:163
 #: public/js/controllers/organizations/OrganizationsCtrl.js:49
+#: public/js/controllers/procrastinate/categories/CategoriesCtrl.js:54
 msgid "Are you sure you want to delete the organization"
 msgstr "Etes-vous sûr de vouloir supprimer l'organisation"
 
@@ -261,6 +344,18 @@ msgstr "Etes-vous sûr de vouloir supprimer l'organisation"
 #: public/js/controllers/staffs/status/StatussCtrl.js:49
 msgid "Are you sure you want to delete the project"
 msgstr "Etes-vous sûr de vouloir supprimer le projet"
+
+#: public/js/controllers/procrastinate/tasks/TasksCtrl.js:195
+#: public/js/controllers/procrastinate/tasks/TasksCtrl_1.js:49
+#, fuzzy
+#| msgid "Are you sure you want to delete the Agent"
+msgid "Are you sure you want to delete the task"
+msgstr "Etes-vous sûr de vouloir supprimer ce personnel"
+
+#: public/templates/procrastinate/tasks/dialogs/task.html:117
+#: public/templates/procrastinate/tasks/main.html:70
+msgid "Assigned to"
+msgstr ""
 
 #: public/templates/staffs/mouvement/edit.html:8
 msgid "Assignment and promotion of staff members"
@@ -294,22 +389,24 @@ msgstr "Avatar"
 #: public/templates/installation/second.html:44
 #: public/templates/organizations/profile.html:2
 #: public/templates/organizations/profile.html:46
+#: public/templates/procrastinate/tasks/details.html:233
+#: public/templates/procrastinate/tasks/details.html:7
 #: public/templates/projects/profile.html:106
 #: public/templates/projects/profile.html:2
 #: public/templates/recovery/lost.html:16
 #: public/templates/recovery/reset.html:25
 #: public/templates/staffs/personnal_records.html:33
-#: public/templates/staffs/personnal_records.html:452
+#: public/templates/staffs/personnal_records.html:455
 #: public/templates/users/profile.html:2 public/templates/users/profile.html:70
 msgid "Back"
 msgstr "Retour"
 
-#: public/templates/staffs/personnal_records.html:110
+#: public/templates/staffs/personnal_records.html:113
 #: public/templates/staffs/staff/edit.html:79
 msgid "Birth date"
 msgstr "Date de naissance"
 
-#: public/templates/staffs/personnal_records.html:116
+#: public/templates/staffs/personnal_records.html:119
 #: public/templates/staffs/staff/edit.html:88
 msgid "Birth place"
 msgstr "Lieu de naissance"
@@ -330,26 +427,31 @@ msgstr "CNI Délivrée à"
 msgid "CNI N°"
 msgstr "N° CNI"
 
-#: public/js/controllers/monitor/EvaluationCtrl.js:150
+#: public/js/controllers/monitor/EvaluationCtrl.js:158
 msgid "Can not save, one or more field is empty"
 msgstr "Impossible d'enregistrer, un ou plusieurs champs sont vides"
 
 #: public/js/controllers/administration/OrganizationsCtrl.js:51
-#: public/js/controllers/administration/structures/StructuresCtrl.js:82
+#: public/js/controllers/administration/structures/StructuresCtrl.js:165
 #: public/js/controllers/organizations/OrganizationsCtrl.js:51
+#: public/js/controllers/procrastinate/categories/CategoriesCtrl.js:56
+#: public/js/controllers/procrastinate/tasks/TasksCtrl.js:197
+#: public/js/controllers/procrastinate/tasks/TasksCtrl_1.js:51
 #: public/js/controllers/projects/ProjectsCtrl.js:51
 #: public/js/controllers/staffs/discipline/DisciplinesCtrl.js:51
 #: public/js/controllers/staffs/movement/MovementsCtrl.js:51
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:197
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:329
 #: public/js/controllers/staffs/status/StatussCtrl.js:51
 #: public/js/controllers/users/UsersCtrl.js:106
 #: public/templates/administration/positions/edit.html:139
 #: public/templates/administration/structures/edit.html:106
-#: public/templates/dialogs/affectation.html:173
-#: public/templates/dialogs/evaluation.html:95
+#: public/templates/dialogs/affectation.html:201
+#: public/templates/dialogs/evaluation.html:94
 #: public/templates/dialogs/sanction.html:92
 #: public/templates/dialogs/situation.html:92
 #: public/templates/organizations/edit.html:19
+#: public/templates/procrastinate/categories/edit.html:20
+#: public/templates/procrastinate/tasks/edit.html:144
 #: public/templates/profile/email.html:10 public/templates/profile/name.html:26
 #: public/templates/profile/phone.html:10
 #: public/templates/projects/edit.html:91
@@ -361,17 +463,43 @@ msgstr "Impossible d'enregistrer, un ou plusieurs champs sont vides"
 #: public/templates/staffs/mouvement/edit.html:148
 #: public/templates/staffs/staff/edit.html:421
 #: public/templates/staffs/status/edit.html:94
-#: public/templates/users/edit.html:54
+#: public/templates/users/edit.html:62
 msgid "Cancel"
 msgstr "Annuler"
 
-#: public/js/appFilters.js:231 public/js/controllers/projects/ProjectCtrl.js:11
+#: public/js/appFilters.js:234 public/js/controllers/projects/ProjectCtrl.js:11
 msgid "Canceled"
 msgstr "Annulé"
 
-#: public/templates/staffs/personnal_records.html:298
+#: public/templates/procrastinate/categories/main.html:4
+#, fuzzy
+#| msgid "Category"
+msgid "Categories"
+msgstr "Categorie"
+
+#: public/templates/procrastinate/tasks/dialogs/task.html:129
+#: public/templates/staffs/personnal_records.html:276
 #: public/templates/staffs/staff/edit.html:295
+#: public/templates/staffs/staff/main.html:121
 msgid "Category"
+msgstr "Categorie"
+
+#: public/templates/procrastinate/categories/edit.html:16
+#, fuzzy
+#| msgid "Category"
+msgid "Category color"
+msgstr "Categorie"
+
+#: public/templates/procrastinate/categories/edit.html:12
+#, fuzzy
+#| msgid "Category"
+msgid "Category name"
+msgstr "Categorie"
+
+#: public/templates/procrastinate/tasks/main.html:81
+#, fuzzy
+#| msgid "Category"
+msgid "Category:"
 msgstr "Categorie"
 
 #: public/templates/settings/avatar.html:3
@@ -379,22 +507,23 @@ msgid "Choose a color for your avatar"
 msgstr "Choisissez une couleur pour votre avatar"
 
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:129
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:189
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:188
 #: public/js/controllers/staffs/staff/MoreCtrl.js:48
 msgid "Choose a skill"
 msgstr "Choisir une compétence"
 
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:126
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:186
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:185
 #: public/js/controllers/staffs/staff/MoreCtrl.js:45
 msgid "Choose profile"
 msgstr "Choisir un profile"
 
-#: app/controllers/export.js:172 app/controllers/export.js:98
-#: public/templates/administration/positions/main.html:96
+#: app/controllers/export.js:100 app/controllers/export.js:175
+#: public/templates/administration/positions/main.html:121
 #: public/templates/administration/structures/edit.html:57
-#: public/templates/administration/structures/main.html:40
+#: public/templates/administration/structures/main.html:78
 #: resources/pdf/positions_nomenclature.html:189
+#: resources/pdf/positions_nomenclature_1.html:189
 msgid "Code"
 msgstr "Code"
 
@@ -407,11 +536,11 @@ msgstr "Commentaire"
 msgid "Commis of  Trésor"
 msgstr "Commis du Trésor"
 
-#: public/js/appFilters.js:241
+#: public/js/appFilters.js:244
 msgid "Community"
 msgstr "Communauté"
 
-#: public/js/appFilters.js:228 public/js/controllers/projects/ProjectCtrl.js:10
+#: public/js/appFilters.js:231 public/js/controllers/projects/ProjectCtrl.js:10
 msgid "Completed"
 msgstr "Terminé"
 
@@ -434,12 +563,14 @@ msgstr ""
 "d'administrateur"
 
 #: public/templates/installation/second.html:38
-#: public/templates/recovery/reset.html:21 public/templates/users/edit.html:49
+#: public/templates/recovery/reset.html:21 public/templates/users/edit.html:57
 msgid "Confirmation"
 msgstr "Confirmation"
 
 #: public/templates/administration/positions/details.html:94
 #: public/templates/administration/positions/details.html:96
+#: public/templates/procrastinate/tasks/details.html:94
+#: public/templates/procrastinate/tasks/details.html:96
 msgid "Consult"
 msgstr "Consulte"
 
@@ -459,7 +590,7 @@ msgstr ""
 msgid "Core: Export projects"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:286
+#: public/templates/staffs/personnal_records.html:264
 #: public/templates/staffs/staff/edit.html:279
 msgid "Corps"
 msgstr "Corps"
@@ -480,10 +611,28 @@ msgstr "Pays :"
 
 #: public/templates/organizations/profile.html:33
 #: public/templates/projects/profile.html:93
-#: public/templates/staffs/personnal_records.html:233
+#: public/templates/staffs/personnal_records.html:409
 #: public/templates/users/profile.html:57
 msgid "Created"
 msgstr "Créé"
+
+#: public/templates/procrastinate/tasks/dialogs/task.html:133
+#, fuzzy
+#| msgid "Created"
+msgid "Created By:"
+msgstr "Créé"
+
+#: public/templates/procrastinate/tasks/dialogs/task.html:137
+#, fuzzy
+#| msgid "Created"
+msgid "Created on:"
+msgstr "Créé"
+
+#: public/templates/procrastinate/tasks/main.html:72
+#, fuzzy
+#| msgid "Appreciation"
+msgid "Creation"
+msgstr "Appréciation"
 
 #: public/templates/administration/structures/edit.html:8
 msgid "Creation of new structure"
@@ -493,7 +642,7 @@ msgstr "Création d'une nouvelle structure"
 msgid "Current"
 msgstr "Actuel"
 
-#: app/controllers/export.js:74
+#: app/controllers/export.js:76
 msgid "DGTCFM POSITIONS'S NOMENCLATURE"
 msgstr "NOMENCLATURE DES POSTES DE LA DGTCFM"
 
@@ -519,7 +668,7 @@ msgstr "Données du"
 msgid "Data of :"
 msgstr "Données du:"
 
-#: public/js/appFilters.js:319 public/js/controllers/projects/ProjectCtrl.js:28
+#: public/js/appFilters.js:322 public/js/controllers/projects/ProjectCtrl.js:28
 msgid "DataToCare"
 msgstr ""
 
@@ -543,14 +692,17 @@ msgstr "Date de début"
 msgid "December"
 msgstr "Décembre"
 
+#: public/js/controllers/procrastinate/tasks/TasksCtrl.js:196
 #: public/js/controllers/users/UsersCtrl.js:105
 #: public/templates/organizations/main.html:39
+#: public/templates/procrastinate/categories/main.html:34
+#: public/templates/procrastinate/tasks/dialogs/task.html:153
 #: public/templates/projects/main.html:39 public/templates/users/main.html:31
 #: public/templates/users/main.html:61
 msgid "Delete"
 msgstr "Supprimer"
 
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:194
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:326
 msgid "Delete this Agent"
 msgstr "Supprimer ce Agent"
 
@@ -559,8 +711,9 @@ msgid "Delete this account"
 msgstr "Supprimer ce compte"
 
 #: public/js/controllers/administration/OrganizationsCtrl.js:48
-#: public/js/controllers/administration/structures/StructuresCtrl.js:79
+#: public/js/controllers/administration/structures/StructuresCtrl.js:162
 #: public/js/controllers/organizations/OrganizationsCtrl.js:48
+#: public/js/controllers/procrastinate/categories/CategoriesCtrl.js:53
 msgid "Delete this organization"
 msgstr "Supprimer cette organisation"
 
@@ -571,18 +724,36 @@ msgstr "Supprimer cette organisation"
 msgid "Delete this project"
 msgstr "Supprimer ce projet"
 
+#: public/js/controllers/procrastinate/tasks/TasksCtrl.js:194
+#: public/js/controllers/procrastinate/tasks/TasksCtrl_1.js:48
+#, fuzzy
+#| msgid "Delete this Agent"
+msgid "Delete this task"
+msgstr "Supprimer ce Agent"
+
+#: public/templates/procrastinate/tasks/dialogs/task.html:34
 #: public/templates/staffs/discipline/edit.html:87
 #: public/templates/staffs/status/edit.html:87
 msgid "Description"
 msgstr "Description"
 
-#: public/js/appFilters.js:244
+#: public/templates/procrastinate/tasks/edit.html:27
+msgid "Details"
+msgstr ""
+
+#: public/js/appFilters.js:247
 msgid "Developed Country NGO"
 msgstr "ONG pays développé"
 
-#: public/js/appFilters.js:247
+#: public/js/appFilters.js:250
 msgid "Developing Country NGO"
 msgstr "ONG pays en voie de développement"
+
+#: public/templates/users/edit.html:37
+#, fuzzy
+#| msgid "Directions"
+msgid "Direction"
+msgstr "Directions"
 
 #: public/templates/staffs/mouvement/edit.html:41
 msgid "Directions"
@@ -614,6 +785,8 @@ msgstr "Domaine"
 #: public/templates/administration/positions/edit.html:140
 #: public/templates/monitor/main.html:80
 #: public/templates/organizations/edit.html:20
+#: public/templates/procrastinate/categories/edit.html:21
+#: public/templates/procrastinate/tasks/edit.html:145
 #: public/templates/profile/email.html:11 public/templates/profile/name.html:27
 #: public/templates/profile/phone.html:11
 #: public/templates/projects/edit.html:92
@@ -621,45 +794,66 @@ msgstr "Domaine"
 #: public/templates/settings/language.html:15
 #: public/templates/settings/notifications.html:20
 #: public/templates/settings/password.html:21
-#: public/templates/users/edit.html:55
+#: public/templates/users/edit.html:63
 msgid "Done"
 msgstr "OK"
 
-#: public/js/appFilters.js:250
+#: public/js/appFilters.js:253
 msgid "Donors"
 msgstr "Donateurs"
+
+#: public/templates/procrastinate/tasks/main.html:83
+msgid "Due :"
+msgstr ""
+
+#: public/templates/procrastinate/tasks/dialogs/task.html:125
+#, fuzzy
+#| msgid "Signature date"
+msgid "Due date"
+msgstr "Date de signature"
 
 #: public/templates/organizations/main.html:27
 #: public/templates/projects/main.html:27
 msgid "Duplicate"
 msgstr "Dupliquer"
 
-#: public/js/appFilters.js:306 public/js/controllers/projects/ProjectCtrl.js:23
+#: public/js/appFilters.js:309 public/js/controllers/projects/ProjectCtrl.js:23
 msgid "Ebola"
 msgstr "Ebola"
 
 #: public/templates/administration/positions/details.html:20
 #: public/templates/administration/positions/details.html:238
-#: public/templates/administration/positions/main.html:113
-#: public/templates/administration/positions/main.html:115
-#: public/templates/administration/structures/main.html:61
-#: public/templates/administration/structures/main.html:63
+#: public/templates/administration/positions/main.html:138
+#: public/templates/administration/positions/main.html:140
+#: public/templates/administration/structures/main.html:101
+#: public/templates/administration/structures/main.html:99
 #: public/templates/organizations/main.html:33
+#: public/templates/procrastinate/categories/main.html:28
+#: public/templates/procrastinate/tasks/details.html:20
+#: public/templates/procrastinate/tasks/details.html:238
+#: public/templates/procrastinate/tasks/dialogs/task.html:157
+#: public/templates/procrastinate/tasks/main.html:95
 #: public/templates/projects/main.html:33
 #: public/templates/staffs/personnal_records.html:38
-#: public/templates/staffs/personnal_records.html:457
-#: public/templates/staffs/staff/main.html:103
+#: public/templates/staffs/personnal_records.html:460
+#: public/templates/staffs/staff/main.html:194
 #: public/templates/users/main.html:25 public/templates/users/main.html:55
 msgid "Edit"
 msgstr "Editer"
 
-#: public/templates/staffs/personnal_records.html:345
+#: public/templates/staffs/personnal_records.html:323
 msgid "Edit profiles"
 msgstr "Modifier le profile"
 
-#: public/templates/staffs/personnal_records.html:387
+#: public/templates/staffs/personnal_records.html:365
 msgid "Edit skills"
 msgstr "Modifier la compétence"
+
+#: public/js/appFilters.js:152 public/js/controllers/users/UserCtrl.js:17
+#, fuzzy
+#| msgid "Edit"
+msgid "Editor"
+msgstr "Editer"
 
 #: public/templates/staffs/staff/edit.html:313
 msgid "Educational status"
@@ -672,13 +866,14 @@ msgstr "Eligibilité"
 #: public/templates/installation/second.html:28
 #: public/templates/profile/email.html:5 public/templates/profile/main.html:12
 #: public/templates/recovery/lost.html:12 public/templates/sign/signin.html:14
-#: public/templates/staffs/personnal_records.html:159
+#: public/templates/staffs/personnal_records.html:162
 #: public/templates/staffs/staff/edit.html:184
 #: public/templates/users/edit.html:25 public/templates/users/profile.html:29
 msgid "Email"
 msgstr "Email"
 
 #: public/js/controllers/DashboardCtrl.js:5
+#: public/js/controllers/procrastinate/DashboardCtrl.js:5
 msgid "Empty dashboard"
 msgstr "Tableau de bord vide"
 
@@ -686,12 +881,12 @@ msgstr "Tableau de bord vide"
 msgid "EnablerID:"
 msgstr ""
 
-#: public/templates/dialogs/affectation.html:155
+#: public/templates/dialogs/affectation.html:183
 #: public/templates/staffs/staff/edit.html:383
 msgid "End"
 msgstr "Terminer"
 
-#: public/js/appFilters.js:170
+#: public/js/appFilters.js:173
 msgid "English"
 msgstr "Anglais"
 
@@ -715,7 +910,18 @@ msgstr "Entrez le profile requis"
 msgid "Enter required skill"
 msgstr "Entrez la compétence requise"
 
+#: public/templates/procrastinate/tasks/edit.html:28
+#, fuzzy
+#| msgid "Enter a task..."
+msgid "Enter task details"
+msgstr "Entrez une tâche..."
+
+#: public/templates/procrastinate/tasks/edit.html:17
+msgid "Enter task headline"
+msgstr ""
+
 #: public/templates/administration/positions/details.html:39
+#: public/templates/procrastinate/tasks/details.html:39
 #: public/templates/staffs/staff/edit.html:325
 #: public/templates/staffs/staff/edit.html:348
 msgid "Entitled"
@@ -736,6 +942,7 @@ msgstr "Erreur: ce matricule existe déjà."
 #: public/templates/dashboard/directives/chart2.html:20
 #: public/templates/dashboard/directives/chart3.html:20
 #: public/templates/dashboard/directives/chart4.html:20
+#: public/templates/dialogs/eligibility.html:60
 #: public/templates/import_export.html:58
 #: public/templates/import_export.html:79
 #: public/templates/statistics/directives/card3.html:20
@@ -744,11 +951,15 @@ msgstr "Erreur: ce matricule existe déjà."
 msgid "Export"
 msgstr "Expoter"
 
+#: public/templates/administration/positions/main.html:19
+msgid "Export the list (Excel)"
+msgstr ""
+
 #: public/templates/dialogs/retireds.html:52
 msgid "Extend"
 msgstr "Etendre"
 
-#: public/templates/staffs/personnal_records.html:129
+#: public/templates/staffs/personnal_records.html:132
 #: public/templates/staffs/staff/edit.html:52
 msgid "Family situation"
 msgstr "Situation matrimoniale"
@@ -761,7 +972,8 @@ msgstr "Nom du père"
 msgid "February"
 msgstr "Février"
 
-#: public/js/appFilters.js:357 public/templates/staffs/staff/edit.html:42
+#: public/js/appFilters.js:360 public/templates/staffs/staff/edit.html:42
+#: public/templates/staffs/staff/main.html:94
 msgid "Female"
 msgstr "Feminin"
 
@@ -770,27 +982,68 @@ msgstr "Feminin"
 msgid "Fill out the form correctly"
 msgstr "Remplir le formulaire correctement"
 
+#: public/templates/administration/positions/main.html:83
+msgid "Filled"
+msgstr ""
+
 #: public/templates/staffs/mouvement/edit.html:51
 msgid "Filter by Sub-directions"
 msgstr "Filtrer par Sous-directions"
 
-#: public/templates/administration/positions/main.html:8
+#: public/templates/procrastinate/tasks/main.html:40
+#, fuzzy
+#| msgid "Filter by structure"
+msgid "Filter by category"
+msgstr "Filtrer par structure"
+
+#: public/templates/procrastinate/tasks/main.html:18
+#, fuzzy
+#| msgid "Filter by structure"
+msgid "Filter by priority"
+msgstr "Filtrer par structure"
+
+#: public/templates/administration/positions/main.html:77
+#: public/templates/procrastinate/tasks/main.html:29
+#, fuzzy
+#| msgid "Filter by structure"
+msgid "Filter by status"
+msgstr "Filtrer par structure"
+
+#: public/templates/administration/positions/main.html:51
+#: public/templates/administration/structures/main.html:7
 #: public/templates/monitor/main.html:34
 #: public/templates/staffs/staff/main.html:6
 msgid "Filter by structure"
 msgstr "Filtrer par structure"
 
-#: public/templates/administration/positions/main.html:27
+#: public/templates/administration/positions/main.html:64
+#: public/templates/administration/structures/main.html:26
+#: public/templates/staffs/staff/main.html:23
 msgid "Filter by sub structure"
 msgstr "Filtrer par sous-structure"
 
-#: public/templates/administration/positions/main.html:10
+#: public/templates/administration/positions/main.html:91
+#, fuzzy
+#| msgid "Filter by structure"
+msgid "Filter by type of service"
+msgstr "Filtrer par structure"
+
+#: public/templates/staffs/staff/main.html:56
+#, fuzzy
+#| msgid "Filter by structure"
+msgid "Filter more"
+msgstr "Filtrer par structure"
+
+#: public/templates/administration/positions/main.html:53
+#: public/templates/administration/structures/main.html:9
 #: public/templates/monitor/main.html:36
 #: public/templates/staffs/staff/main.html:8
 msgid "Filtre by structure"
 msgstr "Filtrer par structure"
 
-#: public/templates/administration/positions/main.html:29
+#: public/templates/administration/positions/main.html:66
+#: public/templates/administration/structures/main.html:28
+#: public/templates/staffs/staff/main.html:25
 msgid "Filtre by sub structure"
 msgstr "Filtrer par sous-structure"
 
@@ -817,11 +1070,11 @@ msgstr ""
 msgid "First name"
 msgstr "Prénom"
 
-#: public/js/appFilters.js:253
+#: public/js/appFilters.js:256
 msgid "Foundation"
 msgstr "Fondation"
 
-#: public/js/appFilters.js:167
+#: public/js/appFilters.js:170
 msgid "French"
 msgstr "Français"
 
@@ -838,14 +1091,14 @@ msgstr "De"
 #: public/templates/dialogs/retireds.html:32
 #: public/templates/dialogs/sedentary.html:31
 #: public/templates/monitor/main.html:76 public/templates/profile/main.html:6
-#: public/templates/staffs/personnal_records.html:98
-#: public/templates/staffs/staff/main.html:74
+#: public/templates/staffs/personnal_records.html:101
+#: public/templates/staffs/staff/main.html:163
 #: public/templates/users/profile.html:23
 msgid "Full name"
 msgstr "Nom complet"
 
-#: public/templates/staffs/personnal_records.html:268
-#: public/templates/staffs/staff/main.html:77
+#: public/templates/staffs/personnal_records.html:246
+#: public/templates/staffs/staff/main.html:167
 msgid "Function"
 msgstr "Fonction"
 
@@ -854,7 +1107,7 @@ msgstr "Fonction"
 msgid "Fund Provider"
 msgstr "Fournisseur de fonds"
 
-#: public/js/appFilters.js:265 public/templates/projects/edit.html:42
+#: public/js/appFilters.js:268 public/templates/projects/edit.html:42
 #: public/templates/projects/profile.html:51
 msgid "Funder"
 msgstr "Bailleur de fonds"
@@ -863,11 +1116,12 @@ msgstr "Bailleur de fonds"
 msgid "FunderID:"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:123
+#: public/templates/staffs/personnal_records.html:126
+#: public/templates/staffs/staff/main.html:85
 msgid "Gender"
 msgstr "Genre"
 
-#: public/js/appFilters.js:297
+#: public/js/appFilters.js:300
 msgid "Generic"
 msgstr "Générique"
 
@@ -884,20 +1138,26 @@ msgstr ""
 msgid "Global statistics"
 msgstr "Statistiques globales"
 
+#: public/js/appFilters.js:149 public/js/controllers/users/UserCtrl.js:15
+msgid "Global supervisor"
+msgstr ""
+
 #: public/js/controllers/MenuCtrl.js:100
 #: public/js/controllers/sign/SigninCtrl.js:18
 #: public/js/controllers/sign/SigninCtrl.js:35
 msgid "Got it!"
 msgstr "Compris !"
 
-#: public/js/appFilters.js:262
+#: public/js/appFilters.js:265
 msgid "Government"
 msgstr "Gouvernement"
 
 #: public/templates/dialogs/eligibility.html:34
 #: public/templates/dialogs/retireds.html:34
-#: public/templates/staffs/personnal_records.html:292
+#: public/templates/staffs/personnal_records.html:270
 #: public/templates/staffs/staff/edit.html:287
+#: public/templates/staffs/staff/main.html:110
+#: public/templates/staffs/staff/main.html:166
 #: public/templates/statistics/directives/card4.html:23
 msgid "Grade"
 msgstr "Grade"
@@ -906,13 +1166,17 @@ msgstr "Grade"
 msgid "HCV"
 msgstr "Hépatite"
 
-#: public/js/appFilters.js:303 public/js/controllers/projects/ProjectCtrl.js:22
+#: public/js/appFilters.js:306 public/js/controllers/projects/ProjectCtrl.js:22
 msgid "HIV"
 msgstr "VIH"
 
 #: public/templates/recovery/lost.html:7
 msgid "Having trouble signing in?"
 msgstr "Des problèmes de connexion ?"
+
+#: public/templates/procrastinate/tasks/edit.html:16
+msgid "Headline"
+msgstr ""
 
 #: public/templates/import_export.html:63
 msgid "Here you can download a list of projects as an Excel <i>(.xls)</i> file"
@@ -922,8 +1186,8 @@ msgstr ""
 msgid "Here you can upload a <i>.csv</i> file"
 msgstr ""
 
-#: app/controllers/export.js:174
-#: public/templates/administration/structures/main.html:42
+#: app/controllers/export.js:177
+#: public/templates/administration/structures/main.html:80
 msgid "Hierarchical rank"
 msgstr "Rang hiérarchique"
 
@@ -935,7 +1199,7 @@ msgstr "Niveau le plus élevé"
 msgid "Highest level of education"
 msgstr "Niveau d'éducation plus élevé"
 
-#: public/templates/staffs/personnal_records.html:423
+#: public/templates/staffs/personnal_records.html:426
 msgid "History"
 msgstr "Historique"
 
@@ -951,7 +1215,7 @@ msgstr "Identification"
 msgid "Import"
 msgstr "Importer"
 
-#: public/js/appFilters.js:216 public/js/controllers/projects/ProjectCtrl.js:6
+#: public/js/appFilters.js:219 public/js/controllers/projects/ProjectCtrl.js:6
 msgid "In talks"
 msgstr "En discussion"
 
@@ -975,20 +1239,20 @@ msgstr "Juillet"
 msgid "June"
 msgstr "Juin"
 
-#: app/controllers/export.js:151
+#: app/controllers/export.js:154
 msgid "LIST OF DGTCFM'S STRUCTURES"
 msgstr "LISTE DES STRUCTURES DE LA DGTCFM"
 
-#: app/controllers/export.js:71
+#: app/controllers/export.js:73
 msgid "LIST OF VACANCIES"
 msgstr "LISTE DES POSTES VACANTS"
 
-#: app/controllers/export.js:58
+#: app/controllers/export.js:60
 msgid "LIST OF WORKSTATIONS BY STRUCTURE"
 msgstr "LISTE DES POSTES DE TRAVAIL PAR STRUTUTRE"
 
 #: public/templates/settings/language.html:5
-#: public/templates/settings/main.html:26 public/templates/users/edit.html:37
+#: public/templates/settings/main.html:26 public/templates/users/edit.html:45
 #: public/templates/users/profile.html:51
 msgid "Language"
 msgstr "Langue"
@@ -998,7 +1262,13 @@ msgstr "Langue"
 msgid "Last Modified"
 msgstr "Dernière modification"
 
-#: public/templates/staffs/personnal_records.html:239
+#: public/templates/procrastinate/tasks/dialogs/task.html:141
+#, fuzzy
+#| msgid "Last modified"
+msgid "Last modification:"
+msgstr "Dernière modification"
+
+#: public/templates/staffs/personnal_records.html:415
 msgid "Last modified"
 msgstr "Dernière modification"
 
@@ -1013,7 +1283,7 @@ msgstr "Nom"
 msgid "Last position"
 msgstr "Ancien poste"
 
-#: public/templates/staffs/personnal_records.html:309
+#: public/templates/staffs/personnal_records.html:287
 msgid "Last sanction"
 msgstr "Dernière sanction"
 
@@ -1029,11 +1299,6 @@ msgstr "Liste des personnes éligibles à ce poste {{position.code}}"
 msgid "List of product codes:"
 msgstr ""
 
-#: public/templates/dialogs/retireds.html:14
-#: public/templates/dialogs/retireds.html:5
-msgid "List of retired"
-msgstr "Liste des retraités"
-
 #: public/templates/import_export.html:32
 msgid "List of revenue type codes:"
 msgstr ""
@@ -1046,11 +1311,12 @@ msgstr ""
 msgid "List of status codes:"
 msgstr ""
 
-#: public/js/appFilters.js:309 public/js/controllers/projects/ProjectCtrl.js:24
+#: public/js/appFilters.js:312 public/js/controllers/projects/ProjectCtrl.js:24
 msgid "Malaria"
 msgstr "Paludisme"
 
-#: public/js/appFilters.js:360 public/templates/staffs/staff/edit.html:41
+#: public/js/appFilters.js:363 public/templates/staffs/staff/edit.html:41
+#: public/templates/staffs/staff/main.html:91
 msgid "Male"
 msgstr "Masculin"
 
@@ -1061,6 +1327,10 @@ msgstr "Ration homme/femme"
 #: public/templates/statistics/directives/card4.html:24
 msgid "Man"
 msgstr "Homme"
+
+#: public/js/appFilters.js:146 public/js/controllers/users/UserCtrl.js:16
+msgid "Manager"
+msgstr ""
 
 #: public/templates/import_export.html:25
 #: public/templates/import_export.html:44
@@ -1079,11 +1349,11 @@ msgstr "Marié(e)"
 msgid "May"
 msgstr "Mai"
 
-#: public/js/appFilters.js:322 public/js/controllers/projects/ProjectCtrl.js:29
+#: public/js/appFilters.js:325 public/js/controllers/projects/ProjectCtrl.js:29
 msgid "MediScout"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:226
+#: public/templates/staffs/personnal_records.html:402
 msgid "Meta"
 msgstr "Meta données"
 
@@ -1091,8 +1361,8 @@ msgstr "Meta données"
 msgid "Monday"
 msgstr "Lundi"
 
-#: public/templates/staffs/staff/main.html:110
-#: public/templates/staffs/staff/main.html:42
+#: public/templates/staffs/staff/main.html:201
+#: public/templates/staffs/staff/main.html:64
 msgid "More actions"
 msgstr "Plus d'actions"
 
@@ -1100,12 +1370,12 @@ msgstr "Plus d'actions"
 msgid "Mother's name"
 msgstr "Nom de la mère"
 
-#: app/controllers/export.js:173
-#: public/templates/administration/structures/main.html:41
+#: app/controllers/export.js:176
+#: public/templates/administration/structures/main.html:79
 msgid "Name"
 msgstr "Nom"
 
-#: public/templates/dialogs/affectation.html:106
+#: public/templates/dialogs/affectation.html:134
 #: public/templates/dialogs/sanction.html:47
 #: public/templates/dialogs/situation.html:47
 #: public/templates/staffs/discipline/edit.html:53
@@ -1121,29 +1391,35 @@ msgstr "Besoin d'aide ?"
 
 #: public/js/controllers/administration/OrganizationCtrl.js:71
 #: public/js/controllers/administration/positions/PositionCtrl.js:233
-#: public/js/controllers/administration/structures/StructureCtrl.js:98
+#: public/js/controllers/administration/structures/StructureCtrl.js:107
 #: public/js/controllers/organizations/OrganizationCtrl.js:71
+#: public/js/controllers/procrastinate/categories/CategoryCtrl.js:63
+#: public/js/controllers/procrastinate/tasks/TaskCtrl.js:150
 #: public/js/controllers/projects/ProjectCtrl.js:110
 #: public/js/controllers/staffs/staff/StaffCtrl.js:313
-#: public/js/controllers/users/UserCtrl.js:84
-#: public/templates/administration/positions/main.html:130
-#: public/templates/administration/structures/main.html:79
+#: public/js/controllers/users/UserCtrl.js:107
+#: public/templates/administration/positions/main.html:155
+#: public/templates/administration/structures/main.html:117
 #: public/templates/organizations/main.html:54
+#: public/templates/procrastinate/categories/main.html:49
+#: public/templates/procrastinate/tasks/essay/main.html:59
+#: public/templates/procrastinate/tasks/main.html:127
+#: public/templates/procrastinate/tasks/working_main_2.html:90
 #: public/templates/projects/main.html:54
 #: public/templates/settings/password.html:10
 #: public/templates/staffs/discipline/main.html:60
 #: public/templates/staffs/mouvement/main.html:64
-#: public/templates/staffs/staff/main.html:149
+#: public/templates/staffs/staff/main.html:240
 #: public/templates/staffs/status/main.html:60
 #: public/templates/users/main.html:76
 msgid "New"
 msgstr "Nouveau"
 
-#: public/js/controllers/users/UserCtrl.js:34
+#: public/js/controllers/users/UserCtrl.js:47
 msgid "New Password"
 msgstr "Nouveau mot de passe"
 
-#: public/templates/staffs/staff/main.html:124
+#: public/templates/staffs/staff/main.html:215
 msgid "New disciplinary sanction"
 msgstr "Nouvelle sanction disciplinaire"
 
@@ -1151,16 +1427,12 @@ msgstr "Nouvelle sanction disciplinaire"
 msgid "New evaluation"
 msgstr "Nouvelle évaluation"
 
-#: public/templates/dialogs/affectation.html:77
+#: public/templates/dialogs/affectation.html:105
 #: public/templates/staffs/mouvement/edit.html:69
 msgid "New position"
 msgstr "Nouveau poste"
 
-#: public/templates/staffs/staff/main.html:131
-msgid "New quarter evaluation"
-msgstr "Nouvelle évaluation trimestrielle"
-
-#: public/templates/staffs/staff/main.html:117
+#: public/templates/staffs/staff/main.html:208
 msgid "New staff situation"
 msgstr "Nouvelle situation du personnel"
 
@@ -1175,6 +1447,12 @@ msgstr "Aucun compte n’est lié à cette adresse email"
 #: public/js/controllers/users/UsersCtrl.js:13
 msgid "No active account"
 msgstr "Aucun compte actif"
+
+#: public/js/controllers/procrastinate/categories/CategoriesCtrl.js:5
+#, fuzzy
+#| msgid "Category"
+msgid "No category"
+msgstr "Categorie"
 
 #: public/js/controllers/administration/positions/EligibilityCtrl.js:13
 msgid "No correspondance found for this position"
@@ -1204,7 +1482,7 @@ msgstr "Aucune organisation"
 msgid "No pending account"
 msgstr "Aucun compte en attente"
 
-#: public/js/controllers/administration/positions/PositionsCtrl.js:7
+#: public/js/controllers/administration/positions/PositionsCtrl.js:11
 msgid "No position"
 msgstr "Aucun poste"
 
@@ -1212,7 +1490,7 @@ msgstr "Aucun poste"
 #: public/js/controllers/projects/ProjectsCtrl.js:5
 #: public/js/controllers/staffs/discipline/DisciplinesCtrl.js:5
 #: public/js/controllers/staffs/movement/MovementsCtrl.js:5
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:7
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:12
 #: public/js/controllers/staffs/status/StatussCtrl.js:5
 msgid "No project"
 msgstr "Aucun projet"
@@ -1221,17 +1499,32 @@ msgstr "Aucun projet"
 msgid "No structure"
 msgstr "Aucune structure"
 
+#: public/js/controllers/procrastinate/ProcrastinateCtrl.js:7
+#: public/js/controllers/procrastinate/tasks/TasksCtrl_1.js:5
+msgid "No task"
+msgstr ""
+
 #: public/js/controllers/users/UsersCtrl.js:5
 msgid "No user"
 msgstr "Aucun utilisateur"
 
-#: public/templates/administration/positions/main.html:59
-msgid "Nomenclature of positions"
+#: public/templates/staffs/staff/main.html:147
+msgid "Nombre de resultats: {{personnels.count}}"
+msgstr ""
+
+#: public/templates/administration/positions/main.html:25
+#, fuzzy
+#| msgid "Nomenclature of positions"
+msgid "Nomenclature of positions (PDF)"
 msgstr "Nomenclature des postes"
 
 #: public/templates/statistics/directives/card1.html:44
 msgid "Non-staff personnel"
 msgstr "Personnel non fonctionnaire"
+
+#: public/templates/administration/positions/main.html:86
+msgid "Not filled"
+msgstr ""
 
 #: public/js/controllers/MenuCtrl.js:9
 msgid "Nothing to report!"
@@ -1264,7 +1557,7 @@ msgstr "Novembre"
 msgid "Number"
 msgstr "Nombre"
 
-#: public/templates/staffs/personnal_records.html:141
+#: public/templates/staffs/personnal_records.html:144
 #: public/templates/staffs/staff/edit.html:72
 msgid "Number of child"
 msgstr "Nombre d'enfant"
@@ -1273,7 +1566,13 @@ msgstr "Nombre d'enfant"
 msgid "Number of positions"
 msgstr "Nombre de postes"
 
-#: public/templates/dialogs/evaluation.html:67
+#: public/templates/administration/positions/main.html:5
+#, fuzzy
+#| msgid "Number of positions"
+msgid "Number of positions: {{positions.count}}"
+msgstr "Nombre de postes"
+
+#: public/templates/dialogs/evaluation.html:66
 msgid "Number of records processed"
 msgstr ""
 
@@ -1293,12 +1592,14 @@ msgstr "OFF"
 
 #: public/js/controllers/InstallationCtrl.js:74
 #: public/js/controllers/administration/OrganizationsCtrl.js:50
-#: public/js/controllers/administration/structures/StructuresCtrl.js:81
+#: public/js/controllers/administration/structures/StructuresCtrl.js:164
 #: public/js/controllers/organizations/OrganizationsCtrl.js:50
+#: public/js/controllers/procrastinate/categories/CategoriesCtrl.js:55
+#: public/js/controllers/procrastinate/tasks/TasksCtrl_1.js:50
 #: public/js/controllers/projects/ProjectsCtrl.js:50
 #: public/js/controllers/staffs/discipline/DisciplinesCtrl.js:50
 #: public/js/controllers/staffs/movement/MovementsCtrl.js:50
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:196
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:328
 #: public/js/controllers/staffs/status/StatussCtrl.js:50
 msgid "OK"
 msgstr "OK"
@@ -1309,10 +1610,11 @@ msgid "ON"
 msgstr "ON"
 
 #: public/templates/administration/positions/details.html:79
+#: public/templates/procrastinate/tasks/details.html:79
 msgid "Occupant information"
 msgstr "Information de l'occupant"
 
-#: app/controllers/export.js:100
+#: app/controllers/export.js:102
 msgid "Occupied by"
 msgstr "Occupé par"
 
@@ -1320,7 +1622,7 @@ msgstr "Occupé par"
 msgid "October"
 msgstr "Octobre"
 
-#: public/js/appFilters.js:278
+#: public/js/appFilters.js:281
 msgid "One Shot Sales"
 msgstr ""
 
@@ -1352,7 +1654,7 @@ msgstr "Type d'organisation"
 msgid "Organizations"
 msgstr "Organisations"
 
-#: public/templates/staffs/personnal_records.html:147
+#: public/templates/staffs/personnal_records.html:150
 msgid "Origin of"
 msgstr "Origine de"
 
@@ -1366,13 +1668,14 @@ msgstr "Autres fonctionnaires"
 
 #: public/js/controllers/AdministrationCtrl.js:31
 #: public/js/controllers/MonitorCtrl.js:43
+#: public/js/controllers/procrastinate/ProcrastinateCtrl.js:44
 #: public/js/controllers/staffs/StaffManagementCtrl.js:34
 msgid "Page"
 msgstr "Page"
 
 #: public/js/controllers/sign/SigninCtrl.js:17
 #: public/js/controllers/sign/SigninCtrl.js:34
-#: public/js/controllers/users/UserCtrl.js:85
+#: public/js/controllers/users/UserCtrl.js:108
 #: public/templates/installation/second.html:33
 #: public/templates/recovery/reset.html:12
 #: public/templates/settings/main.html:20 public/templates/sign/signin.html:17
@@ -1400,7 +1703,8 @@ msgstr "Date de Paiement"
 msgid "Pending accounts"
 msgstr "Comptes en attente de validation"
 
-#: public/templates/staffs/staff/main.html:21
+#: public/templates/dialogs/retireds.html:14
+#: public/templates/dialogs/retireds.html:5
 msgid "People of retirement age"
 msgstr "Personnel en âge de la retraite"
 
@@ -1416,7 +1720,7 @@ msgstr "Numéro de la Personne à contacter"
 msgid "Personal under the Labor Code"
 msgstr "Personnel relevant du code du travail"
 
-#: public/templates/staffs/personnal_records.html:88
+#: public/templates/staffs/personnal_records.html:90
 msgid "Personnal data"
 msgstr "Données du Personnel"
 
@@ -1440,18 +1744,18 @@ msgstr ""
 msgid "Persons who have not been affected for 5 years"
 msgstr "Les personnes n'ayant pas été affecté depuis plus de 5 ans"
 
-#: public/templates/staffs/staff/main.html:80
+#: public/templates/staffs/staff/main.html:170
 msgid "Phone"
 msgstr "Téléphone"
 
 #: public/templates/profile/main.html:18 public/templates/profile/phone.html:5
-#: public/templates/staffs/personnal_records.html:153
+#: public/templates/staffs/personnal_records.html:156
 #: public/templates/staffs/staff/edit.html:175
 #: public/templates/users/profile.html:63
 msgid "Phone number"
 msgstr "Numéro de téléphone"
 
-#: public/js/controllers/users/UserCtrl.js:143
+#: public/js/controllers/users/UserCtrl.js:166
 msgid "Please fill all required fields"
 msgstr "Merci de remplir tous les champs obligatoires"
 
@@ -1461,7 +1765,11 @@ msgstr ""
 "Merci de vous rendre sur la page « <i>Utilisateurs</i> » afin de vérifier sa "
 "demande."
 
-#: public/js/appFilters.js:179
+#: public/templates/procrastinate/tasks/edit.html:103
+msgid "Please select the progress."
+msgstr ""
+
+#: public/js/appFilters.js:182
 msgid "Portuguese"
 msgstr "Portugais"
 
@@ -1475,6 +1783,7 @@ msgid "Position code"
 msgstr "Code du poste"
 
 #: public/templates/administration/positions/details.html:31
+#: public/templates/procrastinate/tasks/details.html:31
 msgid "Position details: {{position.name}}"
 msgstr "Détails du poste : {{position.name}}"
 
@@ -1482,9 +1791,8 @@ msgstr "Détails du poste : {{position.name}}"
 msgid "Position informations"
 msgstr "Information du poste"
 
-#: app/controllers/export.js:99
-#: public/templates/administration/positions/main.html:97
-#: resources/pdf/positions_nomenclature.html:190
+#: app/controllers/export.js:101
+#: public/templates/administration/positions/main.html:122
 msgid "Position name"
 msgstr "Nom du poste"
 
@@ -1496,27 +1804,44 @@ msgstr "Structure du poste"
 msgid "Position:"
 msgstr "Poste :"
 
-#: public/templates/administration/positions/main.html:66
-msgid "Positions and occupant"
+#: public/templates/administration/positions/main.html:32
+#, fuzzy
+#| msgid "Positions and occupant"
+msgid "Positions and occupant (PDF)"
 msgstr "Postes et occupant"
+
+#: resources/pdf/positions_nomenclature.html:190
+#: resources/pdf/positions_nomenclature_1.html:190
+msgid "Poste"
+msgstr ""
 
 #: public/templates/administration/positions/details.html:24
 #: public/templates/administration/positions/details.html:242
-#: public/templates/administration/structures/main.html:10
-#: public/templates/dialogs/eligibility.html:60
+#: public/templates/administration/structures/main.html:46
 #: public/templates/dialogs/retireds.html:72
 #: public/templates/dialogs/sedentary.html:61
+#: public/templates/procrastinate/tasks/details.html:24
+#: public/templates/procrastinate/tasks/details.html:242
 #: public/templates/staffs/personnal_records.html:42
-#: public/templates/staffs/personnal_records.html:461
-#: public/templates/staffs/staff/main.html:28
+#: public/templates/staffs/personnal_records.html:464
+#: public/templates/staffs/staff/main.html:44
 msgid "Print"
 msgstr "Imprimer"
 
-#: public/templates/administration/positions/main.html:52
+#: public/templates/administration/positions/main.html:12
 msgid "Print options"
 msgstr "Options d'impression"
 
-#: public/js/appFilters.js:256
+#: public/templates/procrastinate/tasks/dialogs/task.html:121
+#: public/templates/procrastinate/tasks/edit.html:57
+msgid "Priority"
+msgstr ""
+
+#: public/templates/procrastinate/tasks/main.html:82
+msgid "Priority:"
+msgstr ""
+
+#: public/js/appFilters.js:259
 msgid "Private Sector"
 msgstr "Secteur privé"
 
@@ -1534,27 +1859,23 @@ msgstr "Produit"
 msgid "Professional information"
 msgstr "Information professionnelle"
 
-#: public/templates/staffs/personnal_records.html:255
+#: public/templates/staffs/personnal_records.html:233
 msgid "Professional informations"
 msgstr "Informations professionnelles"
 
-#: app/controllers/ui.js:201 app/controllers/ui.js:202
+#: app/controllers/ui.js:219 app/controllers/ui.js:220
 #: resources/languages/extraDictionary.html:4
 msgid "Profile"
 msgstr "Profil"
 
-#: public/templates/staffs/personnal_records.html:363
-#: public/templates/staffs/personnal_records.html:66
+#: public/templates/staffs/personnal_records.html:341
+#: public/templates/staffs/personnal_records.html:68
 msgid "Profile:"
 msgstr "Profil :"
 
-#: public/templates/staffs/personnal_records.html:339
+#: public/templates/staffs/personnal_records.html:317
 msgid "Profiles"
 msgstr "Profils"
-
-#: public/js/appFilters.js:146 public/js/controllers/users/UserCtrl.js:17
-msgid "Progress"
-msgstr "Progression"
 
 #: public/templates/projects/profile.html:9
 msgid "Project ID"
@@ -1591,7 +1912,7 @@ msgstr "Promus comme"
 msgid "Proposal Sent"
 msgstr "Proposition envoyée"
 
-#: public/js/appFilters.js:219
+#: public/js/appFilters.js:222
 msgid "Proposal sent"
 msgstr "Proposition envoyée"
 
@@ -1640,16 +1961,16 @@ msgid ""
 "Recruitment diploma <small>(<span translate>in public service</span>)</small>"
 msgstr ""
 
-#: public/js/appFilters.js:281
+#: public/js/appFilters.js:284
 msgid "Recurring Sales"
 msgstr ""
 
-#: public/templates/dialogs/affectation.html:121
+#: public/templates/dialogs/affectation.html:149
 #: public/templates/staffs/mouvement/edit.html:127
 msgid "Reference or Number"
 msgstr "N° ou Référence"
 
-#: public/templates/staffs/staff/main.html:75
+#: public/templates/staffs/staff/main.html:164
 #: public/templates/staffs/status/main.html:36
 msgid "Reg. number"
 msgstr "Matricule"
@@ -1664,7 +1985,7 @@ msgstr "Région"
 #: public/templates/dialogs/sedentary.html:32
 #: public/templates/staffs/discipline/main.html:36
 #: public/templates/staffs/mouvement/main.html:33
-#: public/templates/staffs/personnal_records.html:274
+#: public/templates/staffs/personnal_records.html:252
 msgid "Registration number"
 msgstr "Matricule"
 
@@ -1673,6 +1994,7 @@ msgid "Registration number (Matricul)"
 msgstr "Matricule"
 
 #: public/templates/administration/positions/details.html:125
+#: public/templates/procrastinate/tasks/details.html:125
 msgid "Required profiles"
 msgstr "Profiles réquis"
 
@@ -1681,6 +2003,7 @@ msgid "Required profiles (max 05 profiles)"
 msgstr "Profiles réquis (max 05 profils)"
 
 #: public/templates/administration/positions/details.html:153
+#: public/templates/procrastinate/tasks/details.html:153
 msgid "Required skill"
 msgstr "Compétence réquise"
 
@@ -1688,7 +2011,7 @@ msgstr "Compétence réquise"
 msgid "Required skills (max 05 skills)"
 msgstr "Compétences requises (max 05 compétences)"
 
-#: public/js/appFilters.js:268
+#: public/js/appFilters.js:271
 msgid "Research Consortium"
 msgstr ""
 
@@ -1712,17 +2035,14 @@ msgstr "Rôle"
 
 #: public/js/controllers/AdministrationCtrl.js:32
 #: public/js/controllers/MonitorCtrl.js:44
+#: public/js/controllers/procrastinate/ProcrastinateCtrl.js:45
 #: public/js/controllers/staffs/StaffManagementCtrl.js:35
 msgid "Rows per page"
 msgstr "LIgnes par page"
 
-#: public/js/appFilters.js:173
+#: public/js/appFilters.js:176
 msgid "Russian"
 msgstr "Russe"
-
-#: public/js/appFilters.js:149 public/js/controllers/users/UserCtrl.js:18
-msgid "Sales"
-msgstr "Ventes"
 
 #: public/js/appFilters.js:52
 msgid "Saturday"
@@ -1730,12 +2050,13 @@ msgstr "Samedi"
 
 #: public/templates/administration/structures/edit.html:107
 #: public/templates/configuration.html:20
-#: public/templates/dialogs/affectation.html:174
+#: public/templates/dialogs/affectation.html:202
 #: public/templates/dialogs/detail.html:40
-#: public/templates/dialogs/evaluation.html:96
+#: public/templates/dialogs/evaluation.html:95
 #: public/templates/dialogs/sanction.html:93
 #: public/templates/dialogs/situation.html:93
 #: public/templates/installation/second.html:46
+#: public/templates/procrastinate/tasks/dialogs/task.html:66
 #: public/templates/staffs/discipline/edit.html:95
 #: public/templates/staffs/mouvement/edit.html:149
 #: public/templates/staffs/staff/edit.html:422
@@ -1747,19 +2068,21 @@ msgstr "Enregistrer"
 msgid "School &amp; Academy information"
 msgstr "Information scolaire &amp; Académique"
 
-#: public/templates/staffs/personnal_records.html:203
+#: public/templates/staffs/personnal_records.html:206
 msgid "School and training"
 msgstr "Ecole et Formation"
 
-#: public/templates/administration/positions/main.html:74
-#: public/templates/administration/structures/main.html:16
+#: public/templates/administration/positions/main.html:40
+#: public/templates/administration/structures/main.html:52
 #: public/templates/monitor/main.html:54
 #: public/templates/organizations/main.html:13
 #: public/templates/organizations/main.html:9
+#: public/templates/procrastinate/categories/main.html:10
+#: public/templates/procrastinate/categories/main.html:14
 #: public/templates/projects/main.html:13 public/templates/projects/main.html:9
 #: public/templates/staffs/discipline/main.html:10
 #: public/templates/staffs/mouvement/main.html:10
-#: public/templates/staffs/staff/main.html:34
+#: public/templates/staffs/staff/main.html:50
 #: public/templates/staffs/status/main.html:10
 msgid "Search"
 msgstr "Recherche"
@@ -1768,17 +2091,18 @@ msgstr "Recherche"
 msgid "Search a staff (Name, matricule or CNI)"
 msgstr "Rechercher un personnel (Nom, matricule ou CNI)"
 
-#: public/templates/administration/structures/main.html:27
+#: public/templates/administration/structures/main.html:64
 msgid "Search among structure..."
 msgstr "Recherche parmis les structures..."
 
-#: public/templates/staffs/staff/main.html:63
+#: public/templates/staffs/staff/main.html:150
 msgid "Search amongs staff..."
 msgstr "Recherche parmis les postes..."
 
 #: public/templates/dialogs/eligibility.html:20
 #: public/templates/dialogs/retireds.html:20
 #: public/templates/dialogs/sedentary.html:19
+#: public/templates/procrastinate/tasks/main.html:56
 #: public/templates/staffs/discipline/main.html:21
 #: public/templates/staffs/mouvement/main.html:21
 #: public/templates/staffs/status/main.html:21
@@ -1797,7 +2121,7 @@ msgstr "Sélectionner une situation"
 msgid "Select a personnel"
 msgstr "Sélectionner un personnel"
 
-#: public/templates/dialogs/evaluation.html:50
+#: public/templates/dialogs/evaluation.html:49
 msgid "Select a quarter"
 msgstr "Sélectionner un trimestre"
 
@@ -1805,22 +2129,40 @@ msgstr "Sélectionner un trimestre"
 msgid "Select an agent"
 msgstr "Sélectionner un personnel"
 
+#: public/templates/procrastinate/tasks/edit.html:81
+#, fuzzy
+#| msgid "Select a  sanction"
+msgid "Select assignee"
+msgstr "Sélectionner une sanction"
+
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:125
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:185
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:184
 #: public/js/controllers/staffs/staff/MoreCtrl.js:44
 msgid "Select profiles (You can add up to 05 profiles):"
 msgstr ""
 "Sélectionner un ou plusieurs profils (vous pouvez ajouter jusqu'à 5 profils)"
 
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:128
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:188
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:187
 #: public/js/controllers/staffs/staff/MoreCtrl.js:47
 msgid "Select skills (You can add up to 05 skills):"
 msgstr ""
 "Sélectionner une ou plusieurs compétences (vous pouvez ajouter jusqu'à 5 "
 "compétences)"
 
-#: public/js/appFilters.js:325 public/js/controllers/projects/ProjectCtrl.js:30
+#: public/templates/procrastinate/tasks/edit.html:39
+#, fuzzy
+#| msgid "Select a quarter"
+msgid "Select task category"
+msgstr "Sélectionner un trimestre"
+
+#: public/templates/procrastinate/tasks/edit.html:58
+#, fuzzy
+#| msgid "Select a personnel"
+msgid "Select task priority"
+msgstr "Sélectionner un personnel"
+
+#: public/js/appFilters.js:328 public/js/controllers/projects/ProjectCtrl.js:30
 msgid "Selfics"
 msgstr ""
 
@@ -1832,32 +2174,38 @@ msgstr "Septembre"
 msgid "Server URL"
 msgstr "URL serveur"
 
-#: public/js/appFilters.js:287 public/templates/staffs/mouvement/edit.html:59
+#: public/js/appFilters.js:290 public/templates/staffs/mouvement/edit.html:59
 msgid "Service"
 msgstr "Service"
 
-#: public/templates/staffs/staff/main.html:79
-msgid "Service began"
-msgstr "Date de début au poste"
-
-#: app/controllers/ui.js:207 app/controllers/ui.js:208
+#: app/controllers/ui.js:225 app/controllers/ui.js:226
 #: resources/languages/extraDictionary.html:2
 msgid "Settings"
 msgstr "Paramètres"
 
-#: public/templates/staffs/staff/main.html:76
+#: public/templates/staffs/staff/main.html:165
 msgid "Sex"
 msgstr "Sexe"
+
+#: public/templates/procrastinate/tasks/main.html:20
+#: public/templates/procrastinate/tasks/main.html:31
+#: public/templates/procrastinate/tasks/main.html:42
+msgid "Show all"
+msgstr "Afficher tout"
 
 #: public/templates/administration/positions/details.html:13
 #: public/templates/administration/positions/details.html:15
 #: public/templates/administration/positions/details.html:224
+#: public/templates/procrastinate/tasks/details.html:13
+#: public/templates/procrastinate/tasks/details.html:15
+#: public/templates/procrastinate/tasks/details.html:224
 msgid "Show eligible persons to this position"
 msgstr "Afficher les personnes éligibles à ce poste"
 
-#: public/templates/administration/positions/main.html:44
-msgid "Show only vacancies"
-msgstr "Uniquement les postes vacants"
+#: public/templates/procrastinate/tasks/dialogs/task.html:24
+#: public/templates/procrastinate/tasks/main.html:101
+msgid "Show more"
+msgstr ""
 
 #: public/templates/projects/edit.html:75
 #: public/templates/projects/profile.html:75
@@ -1872,12 +2220,12 @@ msgstr "Se connecter"
 msgid "Sign out"
 msgstr "Se déconnecter"
 
-#: public/templates/dialogs/affectation.html:137
+#: public/templates/dialogs/affectation.html:165
 #: public/templates/staffs/staff/edit.html:238
 msgid "Signature date"
 msgstr "Date de signature"
 
-#: public/js/appFilters.js:225 public/js/controllers/projects/ProjectCtrl.js:9
+#: public/js/appFilters.js:228 public/js/controllers/projects/ProjectCtrl.js:9
 msgid "Signed"
 msgstr "Signé"
 
@@ -1889,16 +2237,17 @@ msgstr "Depuis"
 msgid "Single"
 msgstr "Célibataire"
 
+#: public/templates/staffs/staff/main.html:132
 #: public/templates/staffs/status/edit.html:8
 msgid "Situation"
 msgstr "Situation"
 
-#: public/templates/staffs/personnal_records.html:381
+#: public/templates/staffs/personnal_records.html:359
 msgid "Skills"
 msgstr "Compétences"
 
-#: public/templates/staffs/personnal_records.html:405
-#: public/templates/staffs/personnal_records.html:75
+#: public/templates/staffs/personnal_records.html:383
+#: public/templates/staffs/personnal_records.html:77
 msgid "Skills:"
 msgstr "Compétences :"
 
@@ -1910,11 +2259,11 @@ msgstr "Nous sommes désolés, ce contenu n’est pas disponible actuellement"
 msgid "Sorry, this page isn't available"
 msgstr "Nous sommes désolés, cette page n'est pas disponible"
 
-#: public/js/appFilters.js:176
+#: public/js/appFilters.js:179
 msgid "Spanish"
 msgstr "Espagnol"
 
-#: public/templates/staffs/personnal_records.html:135
+#: public/templates/staffs/personnal_records.html:138
 #: public/templates/staffs/staff/edit.html:68
 msgid "Spouse's name"
 msgstr "Nom du conjoint"
@@ -1923,7 +2272,7 @@ msgstr "Nom du conjoint"
 msgid "Stages"
 msgstr "Stages"
 
-#: public/templates/dialogs/affectation.html:146
+#: public/templates/dialogs/affectation.html:174
 #: public/templates/installation/first.html:16
 #: public/templates/staffs/staff/edit.html:379
 msgid "Start"
@@ -1933,28 +2282,33 @@ msgstr "Début"
 msgid "Start date"
 msgstr "Date de début"
 
+#: public/templates/procrastinate/tasks/edit.html:96
+#: public/templates/procrastinate/tasks/main.html:71
 #: public/templates/projects/profile.html:45
-#: public/templates/staffs/personnal_records.html:280
+#: public/templates/staffs/personnal_records.html:258
 #: public/templates/staffs/staff/edit.html:260
+#: public/templates/staffs/staff/main.html:99
 msgid "Status"
 msgstr "Statut"
 
 #: public/templates/administration/positions/details.html:63
-#: public/templates/administration/positions/main.html:98
+#: public/templates/administration/positions/main.html:123
 #: public/templates/administration/structures/edit.html:42
-#: public/templates/dialogs/affectation.html:62
+#: public/templates/dialogs/affectation.html:75
 #: public/templates/dialogs/evaluation.html:19
+#: public/templates/procrastinate/tasks/details.html:63
 #: public/templates/staffs/mouvement/main.html:36
-#: public/templates/staffs/personnal_records.html:262
+#: public/templates/staffs/personnal_records.html:240
 #: public/templates/statistics/main.html:7
 msgid "Structure"
 msgstr "Structure"
 
-#: public/templates/staffs/staff/main.html:78
+#: public/templates/staffs/staff/main.html:168
 msgid "Structure aff."
 msgstr "Structure aff."
 
 #: public/templates/administration/positions/details.html:69
+#: public/templates/procrastinate/tasks/details.html:69
 msgid "Structure code"
 msgstr "Code structure"
 
@@ -1971,6 +2325,7 @@ msgid "Structure type"
 msgstr "Type de structure"
 
 #: public/templates/administration/positions/edit.html:27
+#: public/templates/dialogs/affectation.html:90
 msgid "Sub structure"
 msgstr "Sous-structure"
 
@@ -1979,10 +2334,12 @@ msgid "Sub-Directions"
 msgstr "Sous-Directions"
 
 #: public/templates/administration/positions/details.html:51
+#: public/templates/procrastinate/tasks/details.html:51
 msgid "Sub-structure"
 msgstr "Sous-structure"
 
 #: public/templates/administration/positions/details.html:57
+#: public/templates/procrastinate/tasks/details.html:57
 msgid "Sub-structure code"
 msgstr "Sous-structure code"
 
@@ -1991,7 +2348,7 @@ msgstr "Sous-structure code"
 msgid "Submit"
 msgstr "Envoyer"
 
-#: public/js/appFilters.js:284
+#: public/js/appFilters.js:287
 msgid "Subsidy"
 msgstr "Subvention"
 
@@ -2007,11 +2364,7 @@ msgstr "Dimanche"
 msgid "Sygepe Unreachable."
 msgstr "Sygepe inaccessible."
 
-#: public/js/appFilters.js:143
-msgid "System Administrator"
-msgstr "Administrateur système"
-
-#: public/js/appFilters.js:300 public/js/controllers/projects/ProjectCtrl.js:21
+#: public/js/appFilters.js:303 public/js/controllers/projects/ProjectCtrl.js:21
 msgid "TB"
 msgstr "TB"
 
@@ -2019,7 +2372,19 @@ msgstr "TB"
 msgid "Task"
 msgstr "Tâche"
 
+#: public/templates/procrastinate/tasks/edit.html:80
+msgid "Task assignee 2"
+msgstr ""
+
+#: public/templates/procrastinate/tasks/edit.html:38
+#, fuzzy
+#| msgid "Category"
+msgid "Task category"
+msgstr "Categorie"
+
 #: public/templates/administration/positions/details.html:202
+#: public/templates/procrastinate/tasks/details.html:202
+#: public/templates/procrastinate/tasks/main.html:12
 msgid "Tasks"
 msgstr "Tâches"
 
@@ -2027,11 +2392,11 @@ msgstr "Tâches"
 msgid "Tasks (Add task then press enter)"
 msgstr "Tâches (ajouter une tâche et appuyer sur entrer)"
 
-#: public/js/appFilters.js:259
+#: public/js/appFilters.js:262
 msgid "Technical Agency"
 msgstr "Agence technique"
 
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:175
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:307
 msgid "The Agent has been deleted"
 msgstr "L'utilisateur a été supprimé"
 
@@ -2047,6 +2412,24 @@ msgstr ""
 #: public/templates/staffs/staff/edit.html:152
 msgid "The CNI delivered date is required to proceed on next step."
 msgstr "La date de CNI est nécéssaire pour passer à l'étape suivante."
+
+#: public/js/controllers/administration/positions/EligibilityCtrl.js:83
+#: public/js/controllers/administration/positions/PositionsCtrl.js:276
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:385
+msgid "The Export is too big. Please reduce the date range"
+msgstr ""
+
+#: public/js/controllers/procrastinate/categories/CategoryCtrl.js:75
+#, fuzzy
+#| msgid "The user has been created"
+msgid "The category has been created"
+msgstr "L'utilisateur a été créé"
+
+#: public/js/controllers/procrastinate/categories/CategoryCtrl.js:47
+#, fuzzy
+#| msgid "The user has been updated"
+msgid "The category has been updated"
+msgstr "L'utilisateur a été mis à jour"
 
 #: public/templates/dashboard/directives/chart4.html:11
 msgid "The corp of treasure officials (Category)"
@@ -2086,7 +2469,7 @@ msgstr ""
 "Le lien que vous avez suivi n’est plus valide ou la page n’est accessible "
 "que par une certaine audience dont vous ne faites pas partie."
 
-#: public/js/controllers/administration/positions/AffectationCtrl.js:179
+#: public/js/controllers/administration/positions/AffectationCtrl.js:246
 msgid "The operation has been saved"
 msgstr "L'opération a été enrégistrée"
 
@@ -2096,8 +2479,9 @@ msgid "The organization has been created"
 msgstr "L’organisation a été créée"
 
 #: public/js/controllers/administration/OrganizationsCtrl.js:38
-#: public/js/controllers/administration/structures/StructuresCtrl.js:45
+#: public/js/controllers/administration/structures/StructuresCtrl.js:53
 #: public/js/controllers/organizations/OrganizationsCtrl.js:38
+#: public/js/controllers/procrastinate/categories/CategoriesCtrl.js:43
 msgid "The organization has been deleted"
 msgstr "L'organisation a été supprimée"
 
@@ -2110,9 +2494,9 @@ msgstr "L'organisation a été mise à jour"
 msgid "The personnel has been saved"
 msgstr "Le personnel a été enrégistré"
 
-#: public/js/controllers/monitor/EvaluationCtrl.js:134
+#: public/js/controllers/monitor/EvaluationCtrl.js:142
 #: public/js/controllers/staffs/staff/SanctionCtrl.js:32
-#: public/js/controllers/staffs/staff/SituationCtrl.js:32
+#: public/js/controllers/staffs/staff/SituationCtrl.js:51
 msgid "The personnel has been updated"
 msgstr "Le projet a été mis à jour"
 
@@ -2144,13 +2528,31 @@ msgstr "Le projet a été supprimé"
 msgid "The project has been updated"
 msgstr "Le projet a été mis à jour"
 
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:265
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:264
 msgid "The staff has been updated"
 msgstr "Le personnel a été mis à jour"
 
-#: public/js/controllers/administration/structures/StructureCtrl.js:143
+#: public/js/controllers/administration/structures/StructureCtrl.js:154
 msgid "The structure has been saved"
 msgstr "La structure a été"
+
+#: public/js/controllers/procrastinate/tasks/TaskCtrl.js:170
+#, fuzzy
+#| msgid "The user has been created"
+msgid "The task has been created"
+msgstr "L'utilisateur a été créé"
+
+#: public/js/controllers/procrastinate/tasks/TasksCtrl_1.js:38
+#, fuzzy
+#| msgid "The user has been deleted"
+msgid "The task has been deleted"
+msgstr "L'utilisateur a été supprimé"
+
+#: public/js/controllers/procrastinate/tasks/TaskCtrl.js:134
+#, fuzzy
+#| msgid "The staff has been updated"
+msgid "The task has been updated"
+msgstr "Le personnel a été mis à jour"
 
 #: public/templates/import_export.html:64 public/templates/import_export.html:9
 msgid "The time required to perform this task depends on the file size."
@@ -2161,7 +2563,7 @@ msgstr ""
 msgid "The user has been activated"
 msgstr "L’utilisateur a été activé"
 
-#: public/js/controllers/users/UserCtrl.js:103
+#: public/js/controllers/users/UserCtrl.js:126
 msgid "The user has been created"
 msgstr "L'utilisateur a été créé"
 
@@ -2169,21 +2571,21 @@ msgstr "L'utilisateur a été créé"
 msgid "The user has been deleted"
 msgstr "L'utilisateur a été supprimé"
 
-#: public/js/controllers/users/UserCtrl.js:68
+#: public/js/controllers/users/UserCtrl.js:91
 msgid "The user has been updated"
 msgstr "L'utilisateur a été mis à jour"
 
-#: app/controllers/positions.js:659
+#: app/controllers/positions.js:889
 msgid "There are people who have spent more than 5 years at a position."
 msgstr "Il y'a des personnes qui ont passé plus de 5 ans à un même poste. "
 
 #: public/js/controllers/SettingsCtrl.js:87
-#: public/js/controllers/users/UserCtrl.js:136
-#: public/js/controllers/users/UserCtrl.js:57
+#: public/js/controllers/users/UserCtrl.js:159
+#: public/js/controllers/users/UserCtrl.js:80
 msgid "These passwords don't match"
 msgstr "Ces mots de passe ne correspondent pas entre eux"
 
-#: public/js/controllers/users/UserCtrl.js:111
+#: public/js/controllers/users/UserCtrl.js:134
 msgid "This email is already used"
 msgstr "Cet email est déjà utilisé"
 
@@ -2195,6 +2597,8 @@ msgstr "Cet Assistant vous aidera à configurer Core."
 msgid "Thursday"
 msgstr "Jeudi"
 
+#: public/templates/procrastinate/tasks/dialogs/task.html:16
+#: public/templates/procrastinate/tasks/main.html:69
 #: public/templates/staffs/staff/edit.html:371
 msgid "Title"
 msgstr "Titre"
@@ -2253,8 +2657,8 @@ msgstr "Total des structures"
 msgid "Tuesday"
 msgstr "Mardi"
 
-#: app/controllers/export.js:175
-#: public/templates/administration/structures/main.html:43
+#: app/controllers/export.js:178
+#: public/templates/administration/structures/main.html:81
 #: public/templates/staffs/mouvement/main.html:32
 msgid "Type"
 msgstr "Type"
@@ -2263,7 +2667,7 @@ msgstr "Type"
 msgid "Type of discipline"
 msgstr "Type de la discipline"
 
-#: public/templates/dialogs/affectation.html:93
+#: public/templates/dialogs/affectation.html:121
 #: public/templates/staffs/mouvement/edit.html:99
 msgid "Type of movement"
 msgstr "Type du mouvement"
@@ -2272,13 +2676,27 @@ msgstr "Type du mouvement"
 msgid "Type of situation"
 msgstr "Type de situation"
 
+#: public/templates/dialogs/affectation.html:61
+#, fuzzy
+#| msgid "No structure"
+msgid "Type of structure"
+msgstr "Aucune structure"
+
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:317
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:324
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:334
+#, fuzzy
+#| msgid "unknown"
+msgid "Unknown"
+msgstr "non-connue"
+
 #: public/templates/recovery/reset.html:16
 #: public/templates/settings/password.html:4
 msgid "Use at least 6 characters"
 msgstr "Utilisez au moins 6 caractères"
 
 #: public/js/controllers/SettingsCtrl.js:119
-#: public/js/controllers/users/UserCtrl.js:127
+#: public/js/controllers/users/UserCtrl.js:150
 msgid "Use at least 6 characters for your password"
 msgstr "Utiliser au moins 6 caractères pour votre mot de passe"
 
@@ -2290,15 +2708,15 @@ msgstr "Utiliser l'entrée pour rechercher un enregistrement personnel"
 msgid "User ID"
 msgstr "ID Utilisateur"
 
-#: app/controllers/ui.js:180 app/controllers/ui.js:181
+#: app/controllers/ui.js:198 app/controllers/ui.js:199
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: public/templates/administration/structures/main.html:45
+#: public/templates/administration/structures/main.html:83
 msgid "Vacancies"
 msgstr "Postes vacants"
 
-#: public/templates/administration/positions/main.html:99
+#: public/templates/administration/positions/main.html:124
 msgid "Vancancy"
 msgstr "Poste vacant"
 
@@ -2326,10 +2744,11 @@ msgid "Women"
 msgstr "Femme"
 
 #: public/templates/administration/positions/details.html:45
+#: public/templates/procrastinate/tasks/details.html:45
 msgid "Workstation code"
 msgstr "Code du poste de travail"
 
-#: public/templates/administration/structures/main.html:44
+#: public/templates/administration/structures/main.html:82
 msgid "Workstations"
 msgstr "Poste de travail"
 
@@ -2341,7 +2760,7 @@ msgstr "Souhaitez-vous enregistrer la nouvelle configuration"
 msgid "Year"
 msgstr "Année"
 
-#: public/templates/staffs/personnal_records.html:105
+#: public/templates/staffs/personnal_records.html:108
 msgid "Years"
 msgstr "Années"
 
@@ -2357,7 +2776,7 @@ msgstr "Oui"
 msgid "Yesterday"
 msgstr "Hier"
 
-#: public/js/controllers/monitor/EvaluationCtrl.js:161
+#: public/js/controllers/monitor/EvaluationCtrl.js:169
 msgid "You can not evaluate this agent. Position is needed"
 msgstr "Vous ne pouvez pas évaluer cet agent. Le poste est requis"
 
@@ -2371,7 +2790,7 @@ msgstr ""
 "Votre mot de passe a été modifié avec succès. Vous pouvez maintenant vous "
 "connecter."
 
-#: app/controllers/positions.js:660
+#: app/controllers/positions.js:890
 msgid "[1] people have spent more than 5 years at the same position."
 msgstr "[1] personne(s) ont passé plus de 5 ans à un même poste."
 
@@ -2409,19 +2828,32 @@ msgstr "dans le service public"
 
 #: public/js/controllers/AdministrationCtrl.js:33
 #: public/js/controllers/MonitorCtrl.js:45
+#: public/js/controllers/procrastinate/ProcrastinateCtrl.js:46
 #: public/js/controllers/staffs/StaffManagementCtrl.js:36
 msgid "of"
 msgstr "de"
 
-#: public/templates/administration/structures/main.html:55
+#: public/templates/dialogs/retireds.html:14
+#: public/templates/dialogs/retireds.html:5
+msgid "or"
+msgstr ""
+
+#: public/templates/administration/structures/main.html:93
 msgid "positions"
 msgstr "postes"
+
+#: public/templates/dialogs/retireds.html:14
+#: public/templates/dialogs/retireds.html:5
+#, fuzzy
+#| msgid "Required profiles"
+msgid "retired people"
+msgstr "Profiles réquis"
 
 #: public/templates/monitor/main.html:65
 msgid "search among evaluations..."
 msgstr "rechercher parmi les évaluations ..."
 
-#: public/templates/administration/positions/main.html:85
+#: public/templates/administration/positions/main.html:109
 msgid "search among workstations..."
 msgstr "recherche parmi les postes de travail ..."
 
@@ -2435,12 +2867,12 @@ msgid "to be found in Organizations > Organization profile"
 msgstr "se trouve dans Organisation"
 
 #: public/js/appFilters.js:134 public/js/appFilters.js:140
-#: public/js/appFilters.js:158 public/js/appFilters.js:182
-#: public/js/appFilters.js:189 public/js/appFilters.js:213
-#: public/js/appFilters.js:238 public/js/appFilters.js:25
-#: public/js/appFilters.js:275 public/js/appFilters.js:294
-#: public/js/appFilters.js:316 public/js/appFilters.js:363
-#: public/js/appFilters.js:370
+#: public/js/appFilters.js:161 public/js/appFilters.js:185
+#: public/js/appFilters.js:192 public/js/appFilters.js:216
+#: public/js/appFilters.js:241 public/js/appFilters.js:25
+#: public/js/appFilters.js:278 public/js/appFilters.js:297
+#: public/js/appFilters.js:319 public/js/appFilters.js:366
+#: public/js/appFilters.js:373
 msgid "unknown"
 msgstr "non-connue"
 
@@ -2467,6 +2899,44 @@ msgstr ""
 #: resources/pdf/structures.html:191
 msgid "{{header.type}}"
 msgstr ""
+
+#: public/templates/procrastinate/tasks/dialogs/task.html:130
+msgid "{{task.category.name}}"
+msgstr ""
+
+#: public/templates/procrastinate/tasks/dialogs/task.html:138
+#: public/templates/procrastinate/tasks/dialogs/task.html:142
+msgid "{{task.created|smartDatetime}}"
+msgstr ""
+
+#: public/templates/procrastinate/tasks/dialogs/task.html:126
+msgid "{{task.deadline|date}}"
+msgstr ""
+
+#: public/templates/procrastinate/tasks/dialogs/task.html:122
+msgid "{{task.priority}}"
+msgstr ""
+
+#~ msgid "List of retired"
+#~ msgstr "Liste des retraités"
+
+#~ msgid "New quarter evaluation"
+#~ msgstr "Nouvelle évaluation trimestrielle"
+
+#~ msgid "Progress"
+#~ msgstr "Progression"
+
+#~ msgid "Sales"
+#~ msgstr "Ventes"
+
+#~ msgid "Service began"
+#~ msgstr "Date de début au poste"
+
+#~ msgid "Show only vacancies"
+#~ msgstr "Uniquement les postes vacants"
+
+#~ msgid "System Administrator"
+#~ msgstr "Administrateur système"
 
 #~ msgid "Monitoring & Evaluation"
 #~ msgstr "Suivi & Evaluation"
