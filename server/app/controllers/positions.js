@@ -24,7 +24,8 @@ var controllers = {
     configuration: require('./configuration'),
     structures: require('./structures'),
     personnel: require('./personnel'),
-    users: require('./users')
+    users: require('./users'),
+    thresholds: require('./thresholds')
 };
 
 exports.upsert = function (fields, callback) {
@@ -853,82 +854,96 @@ exports.findPositionHelder = function (id, callback) {
  * @returns json
  */
 exports.patrol0 = function (callback) {
-    var query = {$and: []};
-    var d = new Date();
-    var pastYear = d.getFullYear() - 5;
-    d.setFullYear(pastYear);
 
-    query.$and.push({
-        'date': {
-            $lte: moment(d).startOf('day')
-        }
-    });
-
-    Affectation.find(query).lean().exec(function (err, affectations) {
+    controllers.thresholds.read('0', function (err, threshold) {
         if (err) {
             log.error(err);
             callback(err);
         } else {
-            if (affectations && affectations.length > 0) {
-                controllers.users.all(function (err, users) {
-                    if (err) {
-                        callback(err);
-                        log.error(err);
-                    } else {
+            var nbYearsSpent = 5;
+            
+            if (threshold){
+                nbYearsSpent = parseInt(threshold.values[0]);
+            }
+            var query = {$and: []};
+            var d = new Date();
+            var pastYear = d.getFullYear() - nbYearsSpent;
+            d.setFullYear(pastYear);
 
-                        function LoopA(m) {
-                            if (m < users.length) {
-                                var language = users[m].language.toLowerCase();
-                                var gt = dictionary.translator(language);
-                                var notification = {
-                                    type: 'admin',
-                                    author: 'App',
+            query.$and.push({
+                'date': {
+                    $lte: moment(d).startOf('day')
+                }
+            });
 
-                                };
-                                notification.userID = users[m]._id;
-                                notification.abstract = gt.gettext("There are people who have spent more than 5 years at a position.");
-                                notification.content = gt.gettext("[1] people have spent more than 5 years at the same position.") + "<br><br>' <table>";
-
-                                notification.details = [];
-                                for (i = 0; i < affectations.length; i++) {
-                                    notification.content = notification.content + "<tr>" +
-                                            "<td>" + i + 1 + "</td>" +
-                                            "<td>" + "XXXXXX" + "</td>" +
-                                            "<td> " + affectations[i].positionCode +
-                                            "<td> since: " + affectations[i].date + "</td>" + "</tr></table>";
-                                    notification.details.push(affectations[i]);
-                                }
-
-                                notification.content = notification.content.replace("[1]", affectations.length);
-
-                                var filter = {
-                                    type: 'admin',
-                                    author: 'App',
-                                    userID: users[m]._id,
-                                    content: notification.content
-                                };
-
-                                Notification.findOneAndUpdate(filter, notification, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
-                                    if (err) {
-                                        log.error(err);
-                                        audit.logEvent('[mongodb]', 'Position', 'patrol0', "", "", 'failed', "Mongodb attempted to alert after 05 years spent at one position");
-                                        callback(err);
-                                    } else {
-                                        LoopA(m + 1);
-                                    }
-                                });
+            Affectation.find(query).lean().exec(function (err, affectations) {
+                if (err) {
+                    log.error(err);
+                    callback(err);
+                } else {
+                    if (affectations && affectations.length > 0) {
+                        controllers.users.all(function (err, users) {
+                            if (err) {
+                                callback(err);
+                                log.error(err);
                             } else {
 
+                                function LoopA(m) {
+                                    if (m < users.length) {
+                                        var language = users[m].language.toLowerCase();
+                                        var gt = dictionary.translator(language);
+                                        var notification = {
+                                            type: 'admin',
+                                            author: 'App',
+
+                                        };
+                                        notification.userID = users[m]._id;
+                                        notification.abstract = gt.gettext("There are people who have spent more than 5 years at a position.");
+                                        notification.content = gt.gettext("[1] people have spent more than 5 years at the same position.") + "<br><br>' <table>";
+
+                                        notification.details = [];
+                                        for (i = 0; i < affectations.length; i++) {
+                                            notification.content = notification.content + "<tr>" +
+                                                    "<td>" + i + 1 + "</td>" +
+                                                    "<td>" + "XXXXXX" + "</td>" +
+                                                    "<td> " + affectations[i].positionCode +
+                                                    "<td> since: " + affectations[i].date + "</td>" + "</tr></table>";
+                                            notification.details.push(affectations[i]);
+                                        }
+
+                                        notification.content = notification.content.replace("[1]", affectations.length);
+
+                                        var filter = {
+                                            type: 'admin',
+                                            author: 'App',
+                                            userID: users[m]._id,
+                                            content: notification.content
+                                        };
+
+                                        Notification.findOneAndUpdate(filter, notification, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+                                            if (err) {
+                                                log.error(err);
+                                                audit.logEvent('[mongodb]', 'Position', 'patrol0', "", "", 'failed', "Mongodb attempted to alert after 05 years spent at one position");
+                                                callback(err);
+                                            } else {
+                                                LoopA(m + 1);
+                                            }
+                                        });
+                                    } else {
+
+                                    }
+                                }
+                                LoopA(0);
                             }
-                        }
-                        LoopA(0);
+                        });
+                    } else {
+                        callback(null);
                     }
-                });
-            } else {
-                callback(null);
-            }
+                }
+            });
         }
-    });
+    })
+
 };
 
 /***
@@ -1419,7 +1434,7 @@ function buildXLSX(options, callback) {
             /// 6.4 fill data
             for (c = 0; c < options.data[i].children.length; c++) {
                 //6.4.1 Row 3 set the style
-                ws.getCell('A' + nextRow).value = options.data[i].children[c].code +" : "+options.data[i].children[c].fr ;
+                ws.getCell('A' + nextRow).value = options.data[i].children[c].code + " : " + options.data[i].children[c].fr;
                 ws.getCell('A' + nextRow).border = {
                     top: {style: 'thick', color: {argb: 'cccccc'}},
                     left: {style: 'thick', color: {argb: 'cccccc'}},

@@ -383,11 +383,11 @@ exports.checkRetirement = function (callback) {
                             var age = _calculateAge(new Date(personnels[a].birthDate));
                             //Decree N°2020/802 of 30 December 2020 of the President of the Republic harmonising the retirement age of civil servants.
                             if (personnels[a].status == "1") {//Civil servant
-                                if (age >= threshold.values[1]) {//Civil servant
+                                if (age >= parseInt(threshold.values[0])) {//Civil servant
                                     candidates.push(personnels[a]._id);
                                 }
                             } else {// Contractual
-                                if (age >= threshold.values[1]) {//Contractual staff
+                                if (age >= parseInt(threshold.values[1])) {//Contractual staff
                                     candidates.push(personnels[a]._id);//other
                                 }
                             }
