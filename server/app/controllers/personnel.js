@@ -20,7 +20,8 @@ var controllers = {
     configuration: require('./configuration'),
     users: require('./users'),
     positions: require('./positions'),
-    structures: require('./structures')
+    structures: require('./structures'),
+    thresholds: require('./thresholds')
 };
 
 exports.upsert = function (fields, callback) {
@@ -364,89 +365,76 @@ exports.checkRetirement = function (callback) {
             }
         ]
     };
-
-    var q = Personnel.find(query);
-    q.exec(function (err, personnels) {
+    controllers.thresholds.read('1', function (err, threshold) {
         if (err) {
             log.error(err);
-            audit.logEvent('[mongodb]', 'Personnel', 'checkRetirement', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
             callback(err);
         } else {
-            var candidates = [];
-            function LoopA(a) {
-                if (a < personnels.length && personnels[a]) {
-                    var age = _calculateAge(new Date(personnels[a].birthDate));
-                    if (personnels[a].grade && personnels[a].grade != "" && personnels[a].grade != null) {
-                        if (personnels[a].status == "1") {//Civil servant
-                            if (personnels[a].corps == "1") {//Case corps Enseignant 55 or 60 years
-                                if ((personnels[a].grade == "1" || personnels[a].grade == "2") && age >= 60) {//PLEG or PCEG with age >= 60 -> retirement
-                                    candidates.push(personnels[a][a]._id);
-                                } else if (personnels[a].grade == "26" && age >= 55) { //If Instituteur and age >= 55 
-                                    candidates.push(personnels[a]._id);
-                                }
-                            } else {
-                                //Autre fonctionnaire de Categorie Ax  Bx, C, D dont l'age >=55ans 
-                                if (age >= 55) {
-                                    candidates.push(personnels[a]._id);
-                                }
-                            }
-
-                        } else {// Contractual
-                            if (personnels[a].category && personnels[a].category != null && personnels[a].category != "") {
-                                var perCategory = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + personnels[a].status + '/categories.json', personnels[a].category, "en");
-                                if (parseInt(personnels[a].category, 10) >= 7 && parseInt(personnels[a].category, 10) <= 13 && age >= 50) { //Personnel non fonctionnaire CAT 1 à CAT 7
-                                    candidates.push(personnels[a]._id);
-                                } else if (age >= 55) {
-                                    candidates.push(personnels[a]._id); //Personnel non fonctionnaire CAT 8 à CAT 12
-                                }
-                            } else if (age >= 55) {
-                                candidates.push(personnels[a]._id);//other
-                            }
-                        }
-                    } else if (age >= 55) {
-                        candidates.push(personnels[a]._id);//other
-                    }
-                    LoopA(a + 1);
+            var q = Personnel.find(query);
+            q.exec(function (err, personnels) {
+                if (err) {
+                    log.error(err);
+                    audit.logEvent('[mongodb]', 'Personnel', 'checkRetirement', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
+                    callback(err);
                 } else {
-                    function LoopB(b) {
-                        if (b < candidates.length) {
-                            var situations = candidates[b].situations;
-                            var newSituation = {
-                                situation: "12",
-                                numAct: "#", //Auto genereted by the bot
-                                nature: "#"//Auto genereted by the bot
-                            }
-                            if (situations) {
-                                situations.push(newSituation)
-                            } else {
-                                situations = [];
-                                situations.push(newSituation)
+                    var candidates = [];
+                    function LoopA(a) {
+                        if (a < personnels.length && personnels[a]) {
+                            var age = _calculateAge(new Date(personnels[a].birthDate));
+                            //Decree N°2020/802 of 30 December 2020 of the President of the Republic harmonising the retirement age of civil servants.
+                            if (personnels[a].status == "1") {//Civil servant
+                                if (age >= threshold.values[1]) {//Civil servant
+                                    candidates.push(personnels[a]._id);
+                                }
+                            } else {// Contractual
+                                if (age >= threshold.values[1]) {//Contractual staff
+                                    candidates.push(personnels[a]._id);//other
+                                }
                             }
 
-                            var fields = {
-                                "_id": candidates[b],
-                                "retirement.retirement": true,
-                                "situations": situations
-                            }
-                            exports.upsert(fields, function (err) {
-                                if (err) {
-                                    log.error(err);
-                                    callback(err);
-                                } else {
-                                    LoopB(b + 1);
-                                }
-                            });
+                            LoopA(a + 1);
                         } else {
-                            if (candidates.length > 0) {
-                                audit.logEvent('[mongodb]', 'Personnel', 'checkRetirement', '', '', 'failed', "Admineex found " + candidates.length + ' new people of retirement age.');
+                            function LoopB(b) {
+                                if (b < candidates.length) {
+                                    var situations = candidates[b].situations;
+                                    var newSituation = {
+                                        situation: "12",
+                                        numAct: "#", //Auto genereted by the bot
+                                        nature: "#"//Auto genereted by the bot
+                                    }
+                                    if (situations) {
+                                        situations.push(newSituation)
+                                    } else {
+                                        situations = [];
+                                        situations.push(newSituation)
+                                    }
+
+                                    var fields = {
+                                        "_id": candidates[b],
+                                        "retirement.retirement": true,
+                                        "situations": situations
+                                    }
+                                    exports.upsert(fields, function (err) {
+                                        if (err) {
+                                            log.error(err);
+                                            callback(err);
+                                        } else {
+                                            LoopB(b + 1);
+                                        }
+                                    });
+                                } else {
+                                    if (candidates.length > 0) {
+                                        audit.logEvent('[mongodb]', 'Personnel', 'checkRetirement', '', '', 'failed', "Admineex found " + candidates.length + ' new people of retirement age.');
+                                    }
+                                    callback(null, candidates.length);
+                                }
                             }
-                            callback(null, candidates.length);
+                            LoopB(0);
                         }
                     }
-                    LoopB(0);
+                    LoopA(0);
                 }
-            }
-            LoopA(0);
+            });
         }
     });
 }

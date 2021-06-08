@@ -72,6 +72,23 @@ exports.api.save = function (req, res) {
     }
 };
 
+//Get all retired staff
+exports.read = function (id, callback) {
+    if (id) {
+       Threshold.findOne({identifier: id},{identifier:1, values:1}, function (err, threshold) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[mongodb]', 'Thresholds', 'Read', '', '', 'failed', 'Mongodb attempted to retrieve one threshold');
+                callback(err);
+            } else {
+                callback(null, threshold);
+            }
+        }); 
+    } else {
+        callback(null, null);
+    }
+}
+
 
 function sum(numbers) {
     return _.reduce(numbers, function (result, qty) {
