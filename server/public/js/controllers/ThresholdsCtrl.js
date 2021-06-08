@@ -3,72 +3,16 @@ angular.module('ThresholdsCtrl', []).controller('ThresholdsController', ['$scope
         var Threshold = $injector.get('Threshold');
         var thresholds = [{
             identifier: '0',
-            values: ['0'],
+            values: ['5'],
             state:'1',
             title: gettextCatalog.getString('Lower than'),
             placeholder: ''
         },{
             identifier: '1',
-            values: ['1'],
+            values: ['60', '55'],
             state:'1',
-        },{
-            identifier: '2',
-            values: ['10'],
-            state:'1',
-            title: gettextCatalog.getString('Above'),
-            placeholder: '%'
-        },{
-            identifier: '3',
-            values: ['10'],
-            state:'1',
-            title: gettextCatalog.getString('Above'),
-            placeholder: '%'
-        },{
-            identifier: '4',
-            values: ['15'],
-            state:'1',
-            title: gettextCatalog.getString('Above'),
-            placeholder: '%'
-        },{
-            identifier: '5',
-            values: ['2','0.8'],
-            state:'1',
-            title: gettextCatalog.getString('Above X or Below Y'),
-            placeholder: ''
-        },{
-            identifier: '6',
-            title: gettextCatalog.getString('Above'),
-            values: ['2'],
-            state:'1'
-        },{
-            identifier: '7',
-            values: ['15','5'],
-            state:'1',
-            title: gettextCatalog.getString('Above X or Below Y'),
-            placeholder: '%'
-        },{
-            identifier: '8',
-            values: ['1.5','3.0'],
-            state:'1',
-            title: gettextCatalog.getString('Range [X-Y]'),
-            placeholder: ''
-        },{
-            identifier: '9',
-            values: ['1'],
-            state:'1'
-        },{
-            identifier: '10',
-            values: ['1'],
-            state:'1'
-        },{
-            identifier: '11',
-            values: ['1','50'],
-            title: gettextCatalog.getString('Settings'),
-            state:'1'
-        },{
-            identifier: '12',
-            values: ['1'],
-            state:'1'
+            title: gettextCatalog.getString('Retirement age'),
+            placeholder: gettextCatalog.getString('years'),
         }];
         $scope.thresholds = JSON.parse(JSON.stringify(thresholds));
         var saved = [];
@@ -145,18 +89,22 @@ angular.module('ThresholdsCtrl', []).controller('ThresholdsController', ['$scope
             });
         }
 
-        $scope.showPrompt = function(index) {
+        $scope.showPrompt = function(index, index1) {
             var confirm = $mdDialog.prompt()
             .title($scope.thresholds[index].title + gettextCatalog.getString('?'))
             .placeholder($scope.thresholds[index].placeholder)
             .ariaLabel($scope.thresholds[index].placeholder)
-            .initialValue($scope.thresholds[index].values[0])
+            .initialValue($scope.thresholds[index].values[(index1)?1:0])
             .ok(gettextCatalog.getString("OK"))
             .cancel(gettextCatalog.getString("Cancel"));
 
             $mdDialog.show(confirm).then(function(result) {
                 if(result !== "" && !isNaN(result) && result > -1){
-                    $scope.thresholds[index].values[0] = result;
+                    if (index1){
+                        $scope.thresholds[index].values[1] = result;
+                    }else{
+                        $scope.thresholds[index].values[0] = result;
+                    }
                 }
             }, function() {
 

@@ -2,14 +2,14 @@
     <md-card-content>
         <h3 class="md-headline" style="margin: 0;"><span translate>Warn me when</span><span translate>:</span></h3>
         <md-list>
-            <md-subheader class="md-no-sticky" style="background:inherit;"><span translate>Logistics</span></md-subheader>
+            <md-subheader class="md-no-sticky" style="background:inherit;"><span translate>Staff management</span></md-subheader>
             
                 <md-list-item >
                     <md-switch ng-model="thresholds[0].state" ng-true-value="'1'" ng-false-value="'0'" ng-disabled="!admin"> </md-switch>
-                                <p translate>The remaining cash level of a SIM card (to send SMS) is</p>
+                                <p translate>When a staff member has spent more than {{thresholds[0].values[0]}} years in the same post</p>
                     <div flex="33">
                         <md-button class="md-raised md-secondary lowercase" ng-click="showPrompt(0);" ng-disabled="!admin">
-                            &#62; {{thresholds[0].values[0]}} {{thresholds[0].placeholder}}
+                            &#62;&equals; {{thresholds[0].values[0]}} {{thresholds[0].placeholder}}
                             <md-tooltip>
                                 <span translate>Modify</span>
                             </md-tooltip>
@@ -17,56 +17,27 @@
                     </div>
                 </md-list-item> 
             
-
-            <div layout="row" layout-margin flex>
-                <md-switch ng-model="thresholds[1].state" ng-true-value="'1'" ng-false-value="'0'" ng-disabled="!admin"></md-switch>
-                <p translate>A laboratory didn’t send any data since</p>
-                <md-list-item>
-                    <md-input-container style="margin:0;" class="md-secondary">
-                        <md-select ng-model="thresholds[1].values[0]" placeholder="Since" ng-disabled="!admin">
-                            <md-option ng-value="1">1 <span translate>week</span></md-option>
-                            <md-option ng-value="2">2 <span translate>weeks</span></md-option>
-                            <md-option ng-value="4">1 <span translate>month</span></md-option>
-                            <md-option ng-value="12">3 <span translate>months</span></md-option>
-                        </md-select>
-                    </md-input-container>
-                </md-list-item>
-            </div>
-
-
+                <md-list-item >
+                    <md-switch ng-model="thresholds[0].state" ng-true-value="'1'" ng-false-value="'0'" ng-disabled="!admin"> </md-switch>
+                                <p translate>When a staff member has reached retirement age</p>
+                    <div flex="33">
+                        <md-button class="md-raised md-secondary lowercase" ng-click="showPrompt(1);" ng-disabled="!admin">
+                            <span translate>Civil servant:</span> {{thresholds[1].values[0]}} {{thresholds[1].placeholder}}
+                            <md-tooltip>
+                                <span translate>Modify</span>
+                            </md-tooltip>
+                        </md-button>
+                        <md-button class="md-raised md-secondary lowercase" ng-click="showPrompt(1,1);" ng-disabled="!admin">
+                            <span translate>Contractual:</span> {{thresholds[1].values[1]}} {{thresholds[1].placeholder}}
+                            <md-tooltip>
+                                <span translate>Modify</span>
+                            </md-tooltip>
+                        </md-button>
+                    </div>
+                </md-list-item> 
+            
             <md-divider></md-divider>
-            <md-subheader class="md-no-sticky" style="background:inherit;"><span translate>Invalid results</span> <small translate>(Automatic Xpert test results upload only)</small></md-subheader>
-            <md-list-item>
-                <md-switch ng-model="thresholds[2].state" ng-true-value="'1'" ng-false-value="'0'" ng-disabled="!admin"></md-switch>
-                <p translate>A module in a lab gets an invalid results percentage (outliers)</p>
-                <md-button class="md-raised md-secondary lowercase" ng-click="showPrompt(2);" ng-disabled="!admin">
-                    &#62; {{thresholds[2].values[0]}}{{thresholds[2].placeholder}}
-                    <md-tooltip>
-                        <span translate>Modify</span>
-                    </md-tooltip>
-                </md-button>
-            </md-list-item>
-            <md-list-item>
-                <md-switch ng-model="thresholds[3].state" ng-true-value="'1'" ng-false-value="'0'" ng-disabled="!admin"></md-switch>
-                <p translate>A module in a lab gets an invalid results rate increase (trends)</p>
-                <md-button class="md-raised md-secondary lowercase" ng-click="showPrompt(3);" ng-disabled="!admin">
-                    &#62; {{thresholds[3].values[0]}}{{thresholds[3].placeholder}}
-                    <md-tooltip>
-                        <span translate>Modify</span>
-                    </md-tooltip>
-                </md-button>
-            </md-list-item>
-            <md-list-item>
-                <md-switch ng-model="thresholds[4].state" ng-true-value="'1'" ng-false-value="'0'" ng-disabled="!admin"></md-switch>
-                <p translate>The lot (reagent) failure rate is</p>
-                <md-button class="md-raised md-secondary lowercase" ng-click="showPrompt(4);" ng-disabled="!admin">
-                    &#62; {{thresholds[4].values[0]}}{{thresholds[4].placeholder}}
-                    <md-tooltip>
-                        <span translate>Modify</span>
-                    </md-tooltip>
-                </md-button>
-            </md-list-item>
-            <md-divider></md-divider>
+            
             
 
 
