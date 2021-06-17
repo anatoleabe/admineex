@@ -27,16 +27,46 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a href="#" class="navbar-nav-link">
-                        Text link
+                        <!--                        Text link-->
                     </a>
                 </li>
 
                 <li class="nav-item dropdown">
-                    <a href="#" class="navbar-nav-link">
+                    <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
                         <i class="icon-bell2"></i>
                         <span class="d-md-none ml-2">Notifications</span>
                         <span class="badge badge-mark border-white ml-auto ml-md-0"></span>
-                    </a>					
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350">
+                        <div class="dropdown-content-header">
+                            <span class="font-weight-semibold">Messages</span>
+                            <a href="#" class="text-default"><i class="icon-compose"></i></a>
+                        </div>
+
+                        <div class="dropdown-content-body dropdown-scrollable">
+                            <md-list class="md-dense" style="padding: 0;">
+                                <div ng-repeat="notification in notifications">
+                                    <md-list-item class="md-3-line md-long-text"  style="padding: 0;margin: 0;" ng-click="read(notification);" ng-class="{'read': notification.read}">
+                                        <!--<img ng-src="../img/notifications/{{notification.type}}.png" class="md-avatar" alt="{{notification.type}}">-->
+                                        <md-icon aria-label="" class="material-icons">notifications</md-icon>
+                                        <div class="md-list-item-text" style="padding: 0;">
+                                            <h3>
+                                                {{ notification.author}} <span class="md-caption" style="color:#CF6935;right: 16px;position: absolute;">{{ notification.created | smartDatetime}}</span>
+                                            </h3>
+                                            <p>{{ notification.abstract}}</p>
+                                        </div>
+                                    </md-list-item>
+                                    <md-divider ng-if="!$last"></md-divider>
+                                </div>
+                            </md-list>
+                        </div>
+
+                        <div class="dropdown-content-footer justify-content-center p-0">
+                            <a href="#" class="bg-light text-grey w-100 py-2" data-popup="tooltip" title="Load more"><i class="icon-menu7 d-block top-0"></i></a>
+                        </div>
+                    </div>
+
                 </li>
 
                 <li class="nav-item dropdown dropdown-user">

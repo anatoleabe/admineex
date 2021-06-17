@@ -113,6 +113,12 @@ function buildNav(user, callback) {
         label: 'Staff management',
         name: 'Staff management'
     };
+    var staffManagementTab3 = {
+        href: 'home.staffs.retired',
+        sref: '.staffs',
+        label: 'Staff in retirement age',
+        name: 'Staff in retirement age'
+    };
 
     var task = {
         href: 'home.tasks.main',
@@ -267,6 +273,7 @@ function buildNav(user, callback) {
             // LEFT MENU TABS FOR STAFF MANAGEMENT
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU MONITOR
             nav.left[0].items.push(monitoring);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
@@ -292,6 +299,7 @@ function buildNav(user, callback) {
             // LEFT MENU TABS FOR STAFF MANAGEMENT
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU MONITOR
             nav.left[0].items.push(monitoring);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
@@ -308,6 +316,7 @@ function buildNav(user, callback) {
             // LEFT MENU TABS FOR STAFF MANAGEMENT
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
             // LEFT MENU TABS FOR ADMINISTRATION
@@ -321,6 +330,7 @@ function buildNav(user, callback) {
             // LEFT MENU TABS FOR STAFF MANAGEMENT
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
             // LEFT MENU TABS FOR ADMINISTRATION

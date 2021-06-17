@@ -237,6 +237,18 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Staff management", "Personnal records"]
+        }).state('home.staffs.retired', {
+            url: '/retired',
+            params: {id: undefined, opath: undefined},
+            templateUrl: 'templates/staffs/staff/retireds.html',
+            controller: 'RetiredController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/staffs/staff/RetiredCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Staff management", "Staff in retirement age"]
         }).state('home.staffs.movement', {
             abstract: true,
             url: '/movement',
@@ -744,8 +756,8 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         $rootScope.account = {};
 
         $rootScope.kernel.isMain = true;
-        $rootScope.kernel.version = "Version 2.0.3";
-        $rootScope.kernel.released = "07/05/2020";
+        $rootScope.kernel.version = "Version 2.2.0";
+        $rootScope.kernel.released = "17/06/2021";
 
         $rootScope.kernel.background = 'world';
         $rootScope.kernel.title = 'Admineex - DGTCFM';

@@ -31,7 +31,7 @@ angular.module('RetiredCtrl', []).controller('RetiredController', function ($sco
 
         Staffs.retired({}).then(function (response) {
             $scope.personnels = response.data;
-            console.log(response)
+            $rootScope.kernel.loading = 100;
             deferred.resolve($scope.personnels);
         }).catch(function (response) {
             console.log(response);

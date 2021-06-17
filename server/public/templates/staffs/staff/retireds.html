@@ -1,0 +1,117 @@
+
+<md-toolbar class="toolbar-filter" >
+    <div class="md-toolbar-tools md-default" >
+        <div flex >
+
+        </div>
+        <div flex ng-show="filters.structure">
+
+
+        </div>
+        <span flex></span>
+
+        <md-button ng-disabled="personnels.length <= 0" ng-click="print()" class="md-primary">
+            <span translate>Print</span>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
+            <md-icon class="material-icons" >search</md-icon>
+            <md-tooltip>
+                <span translate>Search</span>
+            </md-tooltip>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
+            <md-icon class="material-icons" >filter_list</md-icon>
+            <md-tooltip>
+                <span translate>Filter more</span>
+            </md-tooltip>
+        </md-button>
+
+        <md-menu>
+            <md-button class="md-icon-button"  ng-click="openMoreMenu($mdOpenMenu)" >
+                <md-icon class="material-icons" >more_vert</md-icon>
+                <md-tooltip>
+                    <span translate>More actions</span>
+                </md-tooltip>
+            </md-button>
+            <md-menu-content width="4">
+                <md-menu-item>
+                    <md-button ng-click="showRetired()">
+                        <md-icon class="material-icons" >people</md-icon>
+                        Show retired people
+                    </md-button>
+                </md-menu-item>
+
+            </md-menu-content>
+        </md-menu>
+    </div>
+</md-toolbar>
+<div class="md-dialog-content">
+    <md-card>
+        <md-toolbar class="md-table-toolbar md-default" >
+            <div class="md-toolbar-tools">
+                <md-icon>search</md-icon>
+                <form flex>
+                    <input type="text" name="search" ng-model="personnelFilter" placeholder="{{ 'Search...' | translate }}">
+                </form>
+                <md-button class="md-icon-button" ng-click="personnelFilter = ''" aria-label="close">
+                    <md-icon class="material-icons">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-table-container>
+            <table md-table md-progress="promise" md-row-select="false" >
+                <thead md-head md-order="query.order">
+                    <tr md-row>
+                        <th md-column md-order-by="#"><span translate>Order</span></th>
+                        <th md-column md-order-by="name"><span translate>Full name</span></th>
+                        <th md-column md-order-by="identifier"><span translate>Registration number</span></th>
+                        <th md-column md-order-by="grade"><span translate>Grade</span></th>
+                        <th md-column md-order-by="age"><span translate>Age</span></th>
+                        <th md-column md-order-by="retirement.notified"><span translate>Notified on</span></th>
+                        <th md-column ><span translate>Actions</span></th>
+                    </tr>
+                </thead>
+                <tbody md-body>
+                    <tr md-row  data-ng-repeat="personnel in personnels| filter:personnelFilter | orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                        <td md-cell>{{$index + 1}} </td>
+                        <td md-cell>{{personnel.fname}}</td>
+                        <td md-cell>{{personnel.identifier| uppercase | unknown}}</td>
+                        <td md-cell>{{personnel.grade| uppercase | unknown}}</td>
+                        <td md-cell>{{personnel.age| unknown}}</td>
+                        <td md-cell>{{personnel.retirement.notified| unknown}}</td>
+                        <td md-cell>
+                <md-menu>
+                    <md-button class="md-icon-button"  ng-click="$mdOpenMenu();" >
+                        <md-icon class="material-icons" >more_vert</md-icon>
+                        <md-tooltip>
+                            <span translate>More actions</span>
+                        </md-tooltip>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="notifier(personnel)">
+                                <md-icon class="material-icons" >flag</md-icon>
+                                <span translate>Notifier</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-divider ></md-divider>
+                        <md-menu-item>
+                            <md-button ng-click="extend(personnel)">
+                                <md-icon class="material-icons" >class</md-icon>
+                                <span translate>Extend</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-divider ></md-divider>
+                    </md-menu-content>
+                </md-menu>
+                </td>
+                </tr>
+                </tbody>
+            </table>
+        </md-table-container>
+        <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 50, 100]" md-page="query.page" md-total="{{personnels.length}}" 
+                              md-page-select="true"  >
+
+    </md-card>
+</div>
+

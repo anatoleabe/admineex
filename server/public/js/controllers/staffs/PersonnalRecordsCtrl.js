@@ -27,11 +27,12 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
         title: gettextCatalog.getString("Use input to search for a personnal record")
     };
 
-    $scope.back = function () {
-        $state.go("home.staffs.main");
-    };
+//    $scope.back = function () {
+//        $state.go("home.staffs.main");
+//    };
 
     $scope.edit = function (params) {
+        console.log(document.referrer)
         $state.go("home.staffs.edit", params);
     };
 

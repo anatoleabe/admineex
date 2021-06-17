@@ -501,9 +501,6 @@ exports.list = function (options, callback) {
                             };
                             aggregate.push(projection);
                         }
-
-                        console.log()
-
                         //Filter by key word
                         if (options.search) {
                             aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})

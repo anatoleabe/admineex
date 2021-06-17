@@ -1,5 +1,5 @@
-<md-toolbar class="toolbar-filter">
-    <div class="md-toolbar-tools md-default">
+<md-toolbar class="toolbar-filter" style="margin-bottom: 30px">
+    <div class="md-toolbar-tools md-default" >
         <div flex >
             <span style="display: inline-block;margin-top: 18px;" >
                 <md-input-container flex>
@@ -82,13 +82,12 @@
         <div class="md-toolbar-tools">
             <md-icon>filter_list</md-icon>
             <md-input-container >
-                <label translate>Gender</label>
                 <md-select ng-model="filters.gender"  style="min-width: 130px;">
                     <md-option ng-selected value="-" >
-                        {{'All'| translate}}
+                        {{'All genders'| translate}}
                     </md-option>
                     <md-option value="M" >
-                        {{'Male'| translate}}
+                        {{'Male '| translate}}
                     </md-option>
                     <md-option value="F" >
                         {{'Female'| translate}}
@@ -96,10 +95,9 @@
                 </md-select>
             </md-input-container>
             <md-input-container flex>
-                <label translate>Status</label>
                 <md-select ng-model="filters.status"  style="min-width: 150px;">
                     <md-option ng-selected value="-">
-                        {{'All'| translate}}
+                        {{'All status'| translate}}
                     </md-option>
                     <md-option ng-repeat="sta in status" value="{{sta.id}}">
                         {{sta.name}}
@@ -107,10 +105,9 @@
                 </md-select>
             </md-input-container>
             <md-input-container flex>
-                <label translate>Grade</label>
                 <md-select ng-model="filters.grade"  style="min-width: 150px;">
                     <md-option ng-selected value="-">
-                        {{'All'| translate}}
+                        {{'All grades'| translate}}
                     </md-option>
                     <md-option ng-repeat="grade in grades" value="{{grade.id}}">
                         {{grade.name}}
@@ -118,21 +115,19 @@
                 </md-select>
             </md-input-container>
             <md-input-container flex>
-                <label translate>Category</label>
                 <md-select ng-model="filters.category"  style="min-width: 150px;">
                     <md-option ng-selected value="-">
-                        {{'All'| translate}}
+                        {{'All categories'| translate}}
                     </md-option>
                     <md-option ng-repeat="category in categories" value="{{category.id}}">
-                        {{category.code | uppercase}}
+                        {{category.code| uppercase}}
                     </md-option>
                 </md-select>
             </md-input-container>
             <md-input-container flex>
-                <label translate>Situation</label>
                 <md-select ng-model="filters.situation"  style="min-width: 150px;">
                     <md-option value="-">
-                        {{'All'| translate}}
+                        {{'All situations'| translate}}
                     </md-option>
                     <md-option ng-repeat="situation in situations" value="{{situation.id}}">
                         {{situation.name}}
@@ -161,7 +156,7 @@
             <thead md-head md-order="query.order">
                 <tr md-row>
                     <th md-column md-order-by="name"><span translate>Full name</span></th>
-                    <th md-column md-order-by="matricule" style="max-width: 60px"><span translate>Reg. number</span></th>
+                    <th md-column md-order-by="matricule" style="max-width: 100px"><span translate>Reg. number</span></th>
                     <th md-column md-order-by="sexe" style="max-width: 10px"><span translate>Sex</span></th>
                     <th md-column md-order-by="grade" ><span translate>Grade</span></th>
                     <th md-column md-order-by="posteActuel[0].nom"><span translate>Function</span></th>
@@ -174,7 +169,7 @@
             <tbody md-body>
                 <tr md-row data-ng-repeat="personnel in personnels.data| filter:retiredOnly | orderBy: query.order "  ng-class="{'retired': personnel.retirement.retirement == 'true' || personnel.retirement.retirement == true || personnel.retirement.retirement === 'true'}" >
                     <td md-cell ng-click="read(personnel)">{{personnel.fname?personnel.fname:personnel.name.family[0] + " "+ personnel.name.given[0]}}</td>
-                    <td md-cell style="max-width: 60px" ng-click="read(personnel)">{{personnel.identifier| uppercase | unknown}}</td>
+                    <td md-cell style="max-width: 100px" ng-click="read(personnel)">{{personnel.identifier| uppercase | unknown}}</td>
                     <td md-cell style="max-width: 10px" ng-click="read(personnel)">{{personnel.gender| uppercase | unknown}}</td>
                     <td md-cell  ng-click="read(personnel)">{{personnel.grade| unknown}}</td>
                     <td md-cell ng-click="read(personnel)">{{personnel.affectedTo.position.name| unknown}}</td>

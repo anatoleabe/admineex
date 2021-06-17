@@ -28,12 +28,12 @@
         </form>
 
         <md-card-actions layout="row" ng-if="personnelSelected">
-            <md-button ng-click="back()" class="md-raised md-primary" aria-label="Back" >
+            <md-button  class="md-raised md-primary" aria-label="Back" onclick="history.back()">
                 <md-icon>arrow_back_ios</md-icon>
                 <span translate>Back</span>
             </md-button>
             <span flex></span>
-            <md-button  class="md-raised md-primary" aria-label="Edit" >
+            <md-button  class="md-raised md-primary" aria-label="Edit" ng-click="edit({id: personnelSelected._id})" >
                 <md-icon>edit</md-icon>
                 <span translate>Edit</span>
             </md-button>
