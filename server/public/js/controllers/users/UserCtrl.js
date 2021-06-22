@@ -12,9 +12,9 @@ angular.module('UserCtrl', []).controller('UserController', function ($scope, $w
     ];
     $scope.rolesList = [
         {name: gettextCatalog.getString('Administrator'), value: '1'},
-//        {name: gettextCatalog.getString('Global supervisor'), value: '3'},
-//        {name: gettextCatalog.getString('Manager'), value: '2'},
-//        {name: gettextCatalog.getString('Editor'), value: '4'}
+        {name: gettextCatalog.getString('Global supervisor'), value: '3'},
+        {name: gettextCatalog.getString('Manager'), value: '2'},
+        {name: gettextCatalog.getString('Editor'), value: '4'},
         {name: gettextCatalog.getString('Simple user'), value: '5'}
     ];
     $scope.loading = false;

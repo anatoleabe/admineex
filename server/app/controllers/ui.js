@@ -95,8 +95,8 @@ function buildNav(user, callback) {
         sref: '.staffs',
         icon: 'class',
         icomoon: 'icon-users4',
-        label: 'Staff management',
-        name: 'Staff management',
+        label: gt.gettext('Staff management'),
+        name: gt.gettext('Staff management'),
         items: []
     };
 
@@ -104,20 +104,20 @@ function buildNav(user, callback) {
     var staffManagementTab1 = {
         href: 'home.staffs.personnalrecords',
         sref: '.staffs',
-        label: 'Personnal records',
-        name: 'Personnal records'
+        label: gt.gettext('Personnal records'),
+        name: gt.gettext('Personnal records')
     };
     var staffManagementTab2 = {
         href: 'home.staffs.main',
         sref: '.staffs',
-        label: 'Staff management',
-        name: 'Staff management'
+        label: gt.gettext('Staff management'),
+        name: gt.gettext('Staff management')
     };
     var staffManagementTab3 = {
         href: 'home.staffs.retired',
         sref: '.staffs',
-        label: 'Staff in retirement age',
-        name: 'Staff in retirement age'
+        label: gt.gettext('Staff in retirement age'),
+        name: gt.gettext('Staff in retirement age')
     };
 
     var task = {
@@ -132,20 +132,20 @@ function buildNav(user, callback) {
     var taskTab1 = {
         href: 'home.tasks.main',
         sref: '.tasks',
-        label: 'Tasks management',
-        name: 'Tasks management'
+        label: gt.gettext('Tasks management'),
+        name: gt.gettext('Tasks management')
     };
     var taskTab3 = {
         href: 'home.tasks.synthesis',
         sref: '.tasks',
-        label: 'Synthesis',
-        name: 'Synthèse'
+        label: gt.gettext('Synthesis'),
+        name: gt.gettext('Synthesis')
     };
     var taskCategoryTab4 = {
         href: 'home.tasks.categories',
         sref: '.tasks',
-        label: 'Categories',
-        name: 'Categories'
+        label: gt.gettext('Categories'),
+        name: gt.gettext('Categories')
     };
 
     var administration = {
@@ -162,14 +162,14 @@ function buildNav(user, callback) {
     var administrationTab1 = {
         href: 'home.administration.positions',
         sref: '.administration',
-        label: "Positions",
-        name: 'Positions'
+        label: gt.gettext("Positions"),
+        name: gt.gettext('Positions')
     };
     var administrationTab2 = {
         href: 'home.administration.structures',
         sref: '.administration',
-        label: 'Structures',
-        name: 'Structures'
+        label: gt.gettext('Structures'),
+        name: gt.gettext('Structures')
     };
 //    var administrationTab3 = {
 //        href: 'home.administration.export',
@@ -187,16 +187,16 @@ function buildNav(user, callback) {
         sref: '.monitor',
         icon: 'verified_user',
         icomoon: 'icon-hat',
-        label: 'Monitoring & Evaluation',
-        name: 'Monitoring & Evaluation',
+        label: gt.gettext('Monitoring & Evaluation'),
+        name: gt.gettext('Monitoring & Evaluation'),
         items: []
     };
 
     var monitoringTab1 = {
         href: 'home.monitor.monitor',
         sref: '.monitor',
-        label: 'Monitoring & Evaluation',
-        name: 'Monitoring & Evaluation'
+        label: gt.gettext('Monitoring & Evaluation'),
+        name: gt.gettext('Monitoring & Evaluation')
     };
 //    
 //    var statistics = {
@@ -208,16 +208,16 @@ function buildNav(user, callback) {
     var reports = {
         href: 'home.reports.main',
         icon: 'save_alt',
-        label: 'Reports',
-        name: 'Reports'
+        label: gt.gettext('Reports'),
+        name: gt.gettext('Reports')
     };
     var thresholds = {
         href: 'home.thresholds',
         sref: '.thresholds',
         icon: 'lightbulb_outline',
         icomoon: 'icon-traffic-lights',
-        label: 'Thresholds',
-        name: 'Thresholds'
+        label: gt.gettext('Thresholds'),
+        name: gt.gettext('Thresholds')
     };
     var users = {
         href: 'home.users.main',
