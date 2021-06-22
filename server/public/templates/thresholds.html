@@ -1,4 +1,4 @@
-<md-card flex="50" flex-offset="25" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0">
+<md-card flex="90" flex-offset="5" >
     <md-card-content>
         <h3 class="md-headline" style="margin: 0;"><span translate>Warn me when</span><span translate>:</span></h3>
         <md-list>
@@ -19,16 +19,35 @@
             
                 <md-list-item >
                     <md-switch ng-model="thresholds[0].state" ng-true-value="'1'" ng-false-value="'0'" ng-disabled="!admin"> </md-switch>
-                                <p translate>When a staff member has reached retirement age</p>
+                                <p translate>When a Civil Servant has reached retirement age</p>
                     <div flex="33">
                         <md-button class="md-raised md-secondary lowercase" ng-click="showPrompt(1);" ng-disabled="!admin">
-                            <span translate>Civil servant:</span> {{thresholds[1].values[0]}} {{thresholds[1].placeholder}}
+                            <span translate>Category 'A' and 'B': </span> {{thresholds[1].values[0]}} {{thresholds[1].placeholder}}
                             <md-tooltip>
                                 <span translate>Modify</span>
                             </md-tooltip>
                         </md-button>
                         <md-button class="md-raised md-secondary lowercase" ng-click="showPrompt(1,1);" ng-disabled="!admin">
-                            <span translate>Contractual:</span> {{thresholds[1].values[1]}} {{thresholds[1].placeholder}}
+                            <span translate>Category 'C' and 'D': </span> {{thresholds[1].values[1]}} {{thresholds[1].placeholder}}
+                            <md-tooltip>
+                                <span translate>Modify</span>
+                            </md-tooltip>
+                        </md-button>
+                    </div>
+                </md-list-item> 
+            
+                <md-list-item >
+                    <md-switch ng-model="thresholds[0].state" ng-true-value="'1'" ng-false-value="'0'" ng-disabled="!admin"> </md-switch>
+                                <p translate>When a non-official staff member has reached retirement age</p>
+                    <div flex="33">
+                        <md-button class="md-raised md-secondary lowercase" ng-click="showPrompt(2);" ng-disabled="!admin">
+                            <span translate>Contractual from CAT 1 to CAT 7:</span> {{thresholds[2].values[0]}} {{thresholds[2].placeholder}}
+                            <md-tooltip>
+                                <span translate>Modify</span>
+                            </md-tooltip>
+                        </md-button>
+                        <md-button class="md-raised md-secondary lowercase" ng-click="showPrompt(2,1);" ng-disabled="!admin">
+                            <span translate>Contractual from CAT 8 to CAT 12:</span> {{thresholds[2].values[1]}} {{thresholds[2].placeholder}}
                             <md-tooltip>
                                 <span translate>Modify</span>
                             </md-tooltip>

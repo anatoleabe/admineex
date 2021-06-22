@@ -105,11 +105,11 @@ msgid ">>?"
 msgstr ""
 
 #: public/js/controllers/ConfigurationCtrl.js:35
-#: public/js/controllers/ThresholdsCtrl.js:127
-#: public/js/controllers/ThresholdsCtrl.js:178
-#: public/js/controllers/ThresholdsCtrl.js:228
-#: public/js/controllers/ThresholdsCtrl.js:81
-#: public/js/controllers/ThresholdsCtrl.js:95
+#: public/js/controllers/ThresholdsCtrl.js:101
+#: public/js/controllers/ThresholdsCtrl.js:133
+#: public/js/controllers/ThresholdsCtrl.js:184
+#: public/js/controllers/ThresholdsCtrl.js:234
+#: public/js/controllers/ThresholdsCtrl.js:87
 #: public/js/controllers/administration/OrganizationsCtrl.js:49
 #: public/js/controllers/administration/structures/StructuresCtrl.js:163
 #: public/js/controllers/organizations/OrganizationsCtrl.js:49
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Add your credentials to login to your account"
 msgstr ""
 
-#: app/controllers/personnel.js:989
+#: app/controllers/personnel.js:1001
 msgid "Admineex: Liste des personnes éligibles au poste de:"
 msgstr ""
 
@@ -215,7 +215,7 @@ msgstr ""
 msgid "Admineex: Liste des postes de travail"
 msgstr ""
 
-#: app/controllers/personnel.js:806
+#: app/controllers/personnel.js:818
 msgid "Admineex: Liste du personnel"
 msgstr ""
 
@@ -414,7 +414,7 @@ msgstr ""
 msgid "Are you sure you want to delete the task"
 msgstr ""
 
-#: public/js/controllers/ThresholdsCtrl.js:81
+#: public/js/controllers/ThresholdsCtrl.js:87
 msgid "Are you sure you want to reset to default values"
 msgstr ""
 
@@ -517,11 +517,11 @@ msgstr ""
 msgid "Can not save, one or more field is empty"
 msgstr ""
 
-#: public/js/controllers/ThresholdsCtrl.js:100
-#: public/js/controllers/ThresholdsCtrl.js:140
-#: public/js/controllers/ThresholdsCtrl.js:198
-#: public/js/controllers/ThresholdsCtrl.js:230
-#: public/js/controllers/ThresholdsCtrl.js:83
+#: public/js/controllers/ThresholdsCtrl.js:106
+#: public/js/controllers/ThresholdsCtrl.js:146
+#: public/js/controllers/ThresholdsCtrl.js:204
+#: public/js/controllers/ThresholdsCtrl.js:236
+#: public/js/controllers/ThresholdsCtrl.js:89
 #: public/js/controllers/administration/OrganizationsCtrl.js:51
 #: public/js/controllers/administration/structures/StructuresCtrl.js:165
 #: public/js/controllers/organizations/OrganizationsCtrl.js:51
@@ -579,6 +579,14 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
+#: public/templates/thresholds.html:25
+msgid "Category 'A' and 'B':"
+msgstr ""
+
+#: public/templates/thresholds.html:31
+msgid "Category 'C' and 'D':"
+msgstr ""
+
 #: public/templates/procrastinate/categories/edit.html:16
 msgid "Category color"
 msgstr ""
@@ -605,10 +613,6 @@ msgstr ""
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:186
 #: public/js/controllers/staffs/staff/MoreCtrl.js:45
 msgid "Choose profile"
-msgstr ""
-
-#: public/templates/thresholds.html:25
-msgid "Civil servant:"
 msgstr ""
 
 #: app/controllers/export.js:102
@@ -679,8 +683,12 @@ msgstr ""
 msgid "Consult"
 msgstr ""
 
-#: public/templates/thresholds.html:31
-msgid "Contractual:"
+#: public/templates/thresholds.html:44
+msgid "Contractual from CAT 1 to CAT 7:"
+msgstr ""
+
+#: public/templates/thresholds.html:50
+msgid "Contractual from CAT 8 to CAT 12:"
 msgstr ""
 
 #: public/templates/statistics/directives/card2.html:47
@@ -1494,6 +1502,8 @@ msgstr ""
 #: public/templates/thresholds.html:14
 #: public/templates/thresholds.html:27
 #: public/templates/thresholds.html:33
+#: public/templates/thresholds.html:46
+#: public/templates/thresholds.html:52
 msgid "Modify"
 msgstr ""
 
@@ -1750,9 +1760,9 @@ msgid "OFF"
 msgstr ""
 
 #: public/js/controllers/InstallationCtrl.js:74
-#: public/js/controllers/ThresholdsCtrl.js:143
-#: public/js/controllers/ThresholdsCtrl.js:201
-#: public/js/controllers/ThresholdsCtrl.js:99
+#: public/js/controllers/ThresholdsCtrl.js:105
+#: public/js/controllers/ThresholdsCtrl.js:149
+#: public/js/controllers/ThresholdsCtrl.js:207
 #: public/js/controllers/administration/OrganizationsCtrl.js:50
 #: public/js/controllers/administration/structures/StructuresCtrl.js:164
 #: public/js/controllers/organizations/OrganizationsCtrl.js:50
@@ -2204,8 +2214,8 @@ msgstr ""
 msgid "Research Consortium"
 msgstr ""
 
-#: public/js/controllers/ThresholdsCtrl.js:82
-#: public/templates/thresholds.html:46
+#: public/js/controllers/ThresholdsCtrl.js:88
+#: public/templates/thresholds.html:65
 msgid "Reset"
 msgstr ""
 
@@ -2214,7 +2224,7 @@ msgstr ""
 msgid "Reset password"
 msgstr ""
 
-#: public/js/controllers/ThresholdsCtrl.js:80
+#: public/js/controllers/ThresholdsCtrl.js:86
 msgid "Reset to default"
 msgstr ""
 
@@ -2223,6 +2233,7 @@ msgid "Reset your password"
 msgstr ""
 
 #: public/js/controllers/ThresholdsCtrl.js:14
+#: public/js/controllers/ThresholdsCtrl.js:20
 msgid "Retirement age"
 msgstr ""
 
@@ -2252,7 +2263,7 @@ msgstr ""
 msgid "Saturday"
 msgstr ""
 
-#: public/js/controllers/ThresholdsCtrl.js:229
+#: public/js/controllers/ThresholdsCtrl.js:235
 #: public/templates/administration/structures/edit.html:107
 #: public/templates/configuration.html:20
 #: public/templates/dialogs/affectation.html:202
@@ -2265,7 +2276,7 @@ msgstr ""
 #: public/templates/staffs/mouvement/edit.html:149
 #: public/templates/staffs/staff/edit.html:422
 #: public/templates/staffs/status/edit.html:95
-#: public/templates/thresholds.html:47
+#: public/templates/thresholds.html:66
 msgid "Save"
 msgstr ""
 
@@ -2829,7 +2840,7 @@ msgstr ""
 msgid "Thresholds"
 msgstr ""
 
-#: public/js/controllers/ThresholdsCtrl.js:70
+#: public/js/controllers/ThresholdsCtrl.js:76
 msgid "Thresholds parameters has been saved"
 msgstr ""
 
@@ -2970,7 +2981,7 @@ msgid "Warn me when"
 msgstr ""
 
 #: public/js/controllers/ConfigurationCtrl.js:34
-#: public/js/controllers/ThresholdsCtrl.js:227
+#: public/js/controllers/ThresholdsCtrl.js:233
 msgid "Warning"
 msgstr ""
 
@@ -2979,7 +2990,11 @@ msgid "Wednesday"
 msgstr ""
 
 #: public/templates/thresholds.html:22
-msgid "When a staff member has reached retirement age"
+msgid "When a Civil Servant has reached retirement age"
+msgstr ""
+
+#: public/templates/thresholds.html:41
+msgid "When a non-official staff member has reached retirement age"
 msgstr ""
 
 #: public/templates/thresholds.html:9
@@ -3000,7 +3015,7 @@ msgid "Workstations"
 msgstr ""
 
 #: public/js/controllers/ConfigurationCtrl.js:35
-#: public/js/controllers/ThresholdsCtrl.js:228
+#: public/js/controllers/ThresholdsCtrl.js:234
 msgid "Would you like to save the new configuration"
 msgstr ""
 
@@ -3148,6 +3163,7 @@ msgid "unknown"
 msgstr ""
 
 #: public/js/controllers/ThresholdsCtrl.js:15
+#: public/js/controllers/ThresholdsCtrl.js:21
 #: public/templates/dialogs/sedentary.html:45
 msgid "years"
 msgstr ""

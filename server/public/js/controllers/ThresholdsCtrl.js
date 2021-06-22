@@ -9,7 +9,13 @@ angular.module('ThresholdsCtrl', []).controller('ThresholdsController', ['$scope
                     placeholder: ''
                 }, {
                     identifier: '1',
-                    values: ['60', '55'], //civil cervant and contractual
+                    values: ['60', '55'], //Civil cervant
+                    state: '1',
+                    title: gettextCatalog.getString('Retirement age'),
+                    placeholder: gettextCatalog.getString('years'),
+                }, {
+                    identifier: '2',
+                    values: ['60', '55'], //Contractual
                     state: '1',
                     title: gettextCatalog.getString('Retirement age'),
                     placeholder: gettextCatalog.getString('years'),

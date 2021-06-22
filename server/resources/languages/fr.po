@@ -120,11 +120,11 @@ msgid ">>?"
 msgstr ""
 
 #: public/js/controllers/ConfigurationCtrl.js:35
-#: public/js/controllers/ThresholdsCtrl.js:127
-#: public/js/controllers/ThresholdsCtrl.js:178
-#: public/js/controllers/ThresholdsCtrl.js:228
-#: public/js/controllers/ThresholdsCtrl.js:81
-#: public/js/controllers/ThresholdsCtrl.js:95
+#: public/js/controllers/ThresholdsCtrl.js:101
+#: public/js/controllers/ThresholdsCtrl.js:133
+#: public/js/controllers/ThresholdsCtrl.js:184
+#: public/js/controllers/ThresholdsCtrl.js:234
+#: public/js/controllers/ThresholdsCtrl.js:87
 #: public/js/controllers/administration/OrganizationsCtrl.js:49
 #: public/js/controllers/administration/structures/StructuresCtrl.js:163
 #: public/js/controllers/organizations/OrganizationsCtrl.js:49
@@ -221,7 +221,7 @@ msgstr "Ajouter un commentaire"
 msgid "Add your credentials to login to your account"
 msgstr ""
 
-#: app/controllers/personnel.js:989
+#: app/controllers/personnel.js:1001
 msgid "Admineex: Liste des personnes éligibles au poste de:"
 msgstr ""
 
@@ -229,7 +229,7 @@ msgstr ""
 msgid "Admineex: Liste des postes de travail"
 msgstr ""
 
-#: app/controllers/personnel.js:806
+#: app/controllers/personnel.js:818
 msgid "Admineex: Liste du personnel"
 msgstr "Admineex: Liste du personnel"
 
@@ -431,7 +431,7 @@ msgstr "Etes-vous sûr de vouloir supprimer le projet"
 msgid "Are you sure you want to delete the task"
 msgstr "Etes-vous sûr de vouloir supprimer cette tâches"
 
-#: public/js/controllers/ThresholdsCtrl.js:81
+#: public/js/controllers/ThresholdsCtrl.js:87
 msgid "Are you sure you want to reset to default values"
 msgstr "Voulez-vous vraiment rétablir les valeurs par défaut"
 
@@ -533,11 +533,11 @@ msgstr "N° CNI"
 msgid "Can not save, one or more field is empty"
 msgstr "Impossible d'enregistrer, un ou plusieurs champs sont vides"
 
-#: public/js/controllers/ThresholdsCtrl.js:100
-#: public/js/controllers/ThresholdsCtrl.js:140
-#: public/js/controllers/ThresholdsCtrl.js:198
-#: public/js/controllers/ThresholdsCtrl.js:230
-#: public/js/controllers/ThresholdsCtrl.js:83
+#: public/js/controllers/ThresholdsCtrl.js:106
+#: public/js/controllers/ThresholdsCtrl.js:146
+#: public/js/controllers/ThresholdsCtrl.js:204
+#: public/js/controllers/ThresholdsCtrl.js:236
+#: public/js/controllers/ThresholdsCtrl.js:89
 #: public/js/controllers/administration/OrganizationsCtrl.js:51
 #: public/js/controllers/administration/structures/StructuresCtrl.js:165
 #: public/js/controllers/organizations/OrganizationsCtrl.js:51
@@ -592,6 +592,18 @@ msgstr "Categories"
 msgid "Category"
 msgstr "Categorie"
 
+#: public/templates/thresholds.html:25
+#, fuzzy
+#| msgid "Category:"
+msgid "Category 'A' and 'B':"
+msgstr "Categorie:"
+
+#: public/templates/thresholds.html:31
+#, fuzzy
+#| msgid "Category:"
+msgid "Category 'C' and 'D':"
+msgstr "Categorie:"
+
 #: public/templates/procrastinate/categories/edit.html:16
 msgid "Category color"
 msgstr "Couleur de categorie"
@@ -619,10 +631,6 @@ msgstr "Choisir une compétence"
 #: public/js/controllers/staffs/staff/MoreCtrl.js:45
 msgid "Choose profile"
 msgstr "Choisir un profile"
-
-#: public/templates/thresholds.html:25
-msgid "Civil servant:"
-msgstr "Fonctionnaires"
 
 #: app/controllers/export.js:102 app/controllers/export.js:177
 #: public/templates/administration/positions/main.html:121
@@ -691,9 +699,13 @@ msgstr "Confirmation"
 msgid "Consult"
 msgstr "Consulte"
 
-#: public/templates/thresholds.html:31
-msgid "Contractual:"
-msgstr "Contractuel:"
+#: public/templates/thresholds.html:44
+msgid "Contractual from CAT 1 to CAT 7:"
+msgstr ""
+
+#: public/templates/thresholds.html:50
+msgid "Contractual from CAT 8 to CAT 12:"
+msgstr ""
 
 #: public/templates/statistics/directives/card2.html:47
 msgid "Contrôleurs Adjoints du Trésor"
@@ -1508,7 +1520,8 @@ msgid "Meta"
 msgstr "Meta données"
 
 #: public/templates/thresholds.html:14 public/templates/thresholds.html:27
-#: public/templates/thresholds.html:33
+#: public/templates/thresholds.html:33 public/templates/thresholds.html:46
+#: public/templates/thresholds.html:52
 msgid "Modify"
 msgstr ""
 
@@ -1770,9 +1783,9 @@ msgid "OFF"
 msgstr "OFF"
 
 #: public/js/controllers/InstallationCtrl.js:74
-#: public/js/controllers/ThresholdsCtrl.js:143
-#: public/js/controllers/ThresholdsCtrl.js:201
-#: public/js/controllers/ThresholdsCtrl.js:99
+#: public/js/controllers/ThresholdsCtrl.js:105
+#: public/js/controllers/ThresholdsCtrl.js:149
+#: public/js/controllers/ThresholdsCtrl.js:207
 #: public/js/controllers/administration/OrganizationsCtrl.js:50
 #: public/js/controllers/administration/structures/StructuresCtrl.js:164
 #: public/js/controllers/organizations/OrganizationsCtrl.js:50
@@ -2202,10 +2215,8 @@ msgid "Registration number (Matricul)"
 msgstr "Matricule"
 
 #: app/controllers/ui.js:211 app/controllers/ui.js:212
-#, fuzzy
-#| msgid "Export"
 msgid "Reports"
-msgstr "Expoter"
+msgstr "Rapports"
 
 #: public/templates/administration/positions/details.html:125
 #: public/templates/procrastinate/tasks/details.html:125
@@ -2229,8 +2240,8 @@ msgstr "Compétences requises (max 05 compétences)"
 msgid "Research Consortium"
 msgstr ""
 
-#: public/js/controllers/ThresholdsCtrl.js:82
-#: public/templates/thresholds.html:46
+#: public/js/controllers/ThresholdsCtrl.js:88
+#: public/templates/thresholds.html:65
 msgid "Reset"
 msgstr ""
 
@@ -2239,7 +2250,7 @@ msgstr ""
 msgid "Reset password"
 msgstr "Réinitialiser le mot de passe"
 
-#: public/js/controllers/ThresholdsCtrl.js:80
+#: public/js/controllers/ThresholdsCtrl.js:86
 msgid "Reset to default"
 msgstr ""
 
@@ -2248,10 +2259,9 @@ msgid "Reset your password"
 msgstr "Réinitialiser votre mot de passe"
 
 #: public/js/controllers/ThresholdsCtrl.js:14
-#, fuzzy
-#| msgid "People of retirement age"
+#: public/js/controllers/ThresholdsCtrl.js:20
 msgid "Retirement age"
-msgstr "Personnel en âge de la retraite"
+msgstr "Âge de la retraite"
 
 #: public/templates/projects/edit.html:58
 #: public/templates/projects/profile.html:63
@@ -2278,7 +2288,7 @@ msgstr "Russe"
 msgid "Saturday"
 msgstr "Samedi"
 
-#: public/js/controllers/ThresholdsCtrl.js:229
+#: public/js/controllers/ThresholdsCtrl.js:235
 #: public/templates/administration/structures/edit.html:107
 #: public/templates/configuration.html:20
 #: public/templates/dialogs/affectation.html:202
@@ -2291,7 +2301,7 @@ msgstr "Samedi"
 #: public/templates/staffs/mouvement/edit.html:149
 #: public/templates/staffs/staff/edit.html:422
 #: public/templates/staffs/status/edit.html:95
-#: public/templates/thresholds.html:47
+#: public/templates/thresholds.html:66
 msgid "Save"
 msgstr "Enregistrer"
 
@@ -2359,20 +2369,16 @@ msgid "Select a quarter"
 msgstr "Sélectionner un trimestre"
 
 #: public/templates/filterbar.html:45
-#, fuzzy
-#| msgid "Select a quarter"
 msgid "Select a user"
-msgstr "Sélectionner un trimestre"
+msgstr "Choisir un utilisateur"
 
 #: public/templates/dialogs/evaluation.html:34
 msgid "Select an agent"
 msgstr "Sélectionner un personnel"
 
 #: public/templates/procrastinate/tasks/edit.html:82
-#, fuzzy
-#| msgid "Select a  sanction"
 msgid "Select assignee"
-msgstr "Sélectionner une sanction"
+msgstr "Sélectionner le destinataire"
 
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:125
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:185
@@ -2390,16 +2396,12 @@ msgstr ""
 "compétences)"
 
 #: public/templates/procrastinate/tasks/edit.html:40
-#, fuzzy
-#| msgid "Select a quarter"
 msgid "Select task category"
-msgstr "Sélectionner un trimestre"
+msgstr "Sélectionnez la catégorie de tâche"
 
 #: public/templates/procrastinate/tasks/edit.html:59
-#, fuzzy
-#| msgid "Select a personnel"
 msgid "Select task priority"
-msgstr "Sélectionner un personnel"
+msgstr "Sélectionner la priorité de la tâche"
 
 #: public/js/appFilters.js:347 public/js/controllers/projects/ProjectCtrl.js:30
 msgid "Selfics"
@@ -2443,7 +2445,7 @@ msgstr "Afficher les personnes éligibles à ce poste"
 #: public/templates/procrastinate/tasks/dialogs/task.html:41
 #: public/templates/procrastinate/tasks/main.html:95
 msgid "Show more"
-msgstr ""
+msgstr "Afficher tout"
 
 #: public/templates/projects/edit.html:75
 #: public/templates/projects/profile.html:75
@@ -2512,7 +2514,7 @@ msgstr "Espagnol"
 
 #: public/templates/statistics/procrastinate/directives/chart5.html:7
 msgid "Specified laboratories"
-msgstr ""
+msgstr "Laboratoires spécifiés"
 
 #: public/templates/staffs/personnal_records.html:138
 #: public/templates/staffs/staff/edit.html:68
@@ -2520,8 +2522,6 @@ msgid "Spouse's name"
 msgstr "Nom du conjoint"
 
 #: app/controllers/ui.js:119 app/controllers/ui.js:120
-#, fuzzy
-#| msgid "People of retirement age"
 msgid "Staff in retirement age"
 msgstr "Personnel en âge de la retraite"
 
@@ -2631,7 +2631,7 @@ msgstr "Sygepe inaccessible."
 #: app/controllers/ui.js:141 app/controllers/ui.js:142
 #: public/templates/statistics/procrastinate/directives/procras8_synthesis.html:10
 msgid "Synthesis"
-msgstr ""
+msgstr "Synthèse"
 
 #: public/js/appFilters.js:303 public/js/controllers/projects/ProjectCtrl.js:21
 msgid "TB"
@@ -2643,13 +2643,11 @@ msgstr "Tâche"
 
 #: public/templates/procrastinate/tasks/edit.html:81
 msgid "Task assignee 2"
-msgstr ""
+msgstr "Tâches affectée à"
 
 #: public/templates/procrastinate/tasks/edit.html:39
-#, fuzzy
-#| msgid "Category"
 msgid "Task category"
-msgstr "Categorie"
+msgstr "Catégorie de la tâche"
 
 #: public/templates/administration/positions/details.html:202
 #: public/templates/procrastinate/tasks/details.html:202
@@ -2661,10 +2659,8 @@ msgid "Tasks (Add task then press enter)"
 msgstr "Tâches (ajouter une tâche et appuyer sur entrer)"
 
 #: app/controllers/ui.js:135 app/controllers/ui.js:136
-#, fuzzy
-#| msgid "Staff management"
 msgid "Tasks management"
-msgstr "Gestion du personnel"
+msgstr "Gestion des tâches"
 
 #: public/js/appFilters.js:262
 msgid "Technical Agency"
@@ -2698,16 +2694,12 @@ msgid "The Export is too big. Please reduce the date range"
 msgstr ""
 
 #: public/js/controllers/procrastinate/categories/CategoryCtrl.js:75
-#, fuzzy
-#| msgid "The user has been created"
 msgid "The category has been created"
-msgstr "L'utilisateur a été créé"
+msgstr "La catégorie a été créé"
 
 #: public/js/controllers/procrastinate/categories/CategoryCtrl.js:47
-#, fuzzy
-#| msgid "The user has been updated"
 msgid "The category has been updated"
-msgstr "L'utilisateur a été mis à jour"
+msgstr "La catégorie a été mis à jour"
 
 #: public/templates/dashboard/directives/chart4.html:11
 msgid "The corp of treasure officials (Category)"
@@ -2815,23 +2807,17 @@ msgid "The structure has been saved"
 msgstr "La structure a été"
 
 #: public/js/controllers/procrastinate/tasks/TaskCtrl.js:197
-#, fuzzy
-#| msgid "The user has been created"
 msgid "The task has been created"
-msgstr "L'utilisateur a été créé"
+msgstr "La tâche a été créé"
 
 #: public/js/controllers/procrastinate/tasks/TasksCtrl.js:79
-#, fuzzy
-#| msgid "The user has been deleted"
 msgid "The task has been deleted"
-msgstr "L'utilisateur a été supprimé"
+msgstr "La tâche a été supprimé"
 
 #: public/js/controllers/procrastinate/tasks/TaskCtrl.js:151
 #: public/js/controllers/procrastinate/tasks/TasksCtrl.js:331
-#, fuzzy
-#| msgid "The staff has been updated"
 msgid "The task has been updated"
-msgstr "Le personnel a été mis à jour"
+msgstr "La tâche a été mis à jour"
 
 #: public/templates/import_export.html:64 public/templates/import_export.html:9
 msgid "The time required to perform this task depends on the file size."
@@ -2876,11 +2862,9 @@ msgstr "Cet Assistant vous aidera à configurer Core."
 msgid "Thresholds"
 msgstr "Seuils"
 
-#: public/js/controllers/ThresholdsCtrl.js:70
-#, fuzzy
-#| msgid "The operation has been saved"
+#: public/js/controllers/ThresholdsCtrl.js:76
 msgid "Thresholds parameters has been saved"
-msgstr "L'opération a été enrégistrée"
+msgstr "Les paramètres de seuil ont été sauvés"
 
 #: public/js/appFilters.js:50
 msgid "Thursday"
@@ -2968,18 +2952,14 @@ msgid "Type of situation"
 msgstr "Type de situation"
 
 #: public/templates/dialogs/affectation.html:61
-#, fuzzy
-#| msgid "No structure"
 msgid "Type of structure"
-msgstr "Aucune structure"
+msgstr "Type de structure"
 
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:318
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:325
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:335
-#, fuzzy
-#| msgid "unknown"
 msgid "Unknown"
-msgstr "non-connue"
+msgstr "Non-connue"
 
 #: public/templates/recovery/reset.html:16
 #: public/templates/settings/password.html:4
@@ -3000,10 +2980,8 @@ msgid "User ID"
 msgstr "ID Utilisateur"
 
 #: public/templates/statistics/procrastinate/directives/procras8_synthesis.html:28
-#, fuzzy
-#| msgid "Last name"
 msgid "User name"
-msgstr "Nom"
+msgstr "Nom d'utilisateur"
 
 #: app/controllers/ui.js:227 app/controllers/ui.js:228
 msgid "Users"
@@ -3026,10 +3004,10 @@ msgstr ""
 
 #: public/templates/thresholds.html:3
 msgid "Warn me when"
-msgstr ""
+msgstr "M’alerter lorsque"
 
 #: public/js/controllers/ConfigurationCtrl.js:34
-#: public/js/controllers/ThresholdsCtrl.js:227
+#: public/js/controllers/ThresholdsCtrl.js:233
 msgid "Warning"
 msgstr "Attention"
 
@@ -3038,14 +3016,20 @@ msgid "Wednesday"
 msgstr "Mercredi"
 
 #: public/templates/thresholds.html:22
-msgid "When a staff member has reached retirement age"
-msgstr ""
+msgid "When a Civil Servant has reached retirement age"
+msgstr "Lorsqu’un fonctionnaire a atteint l’âge de la retraite"
+
+#: public/templates/thresholds.html:41
+msgid "When a non-official staff member has reached retirement age"
+msgstr "Lorsqu’un contractuel a atteint l’âge de la retraite"
 
 #: public/templates/thresholds.html:9
 msgid ""
 "When a staff member has spent more than {{thresholds[0].values[0]}} years in "
 "the same post"
 msgstr ""
+"Lorsqu’un personnel a passé plus de {{thresholds[0].values[0]}} ans au même "
+"poste"
 
 #: public/templates/statistics/directives/card4.html:25
 msgid "Women"
@@ -3061,7 +3045,7 @@ msgid "Workstations"
 msgstr "Poste de travail"
 
 #: public/js/controllers/ConfigurationCtrl.js:35
-#: public/js/controllers/ThresholdsCtrl.js:228
+#: public/js/controllers/ThresholdsCtrl.js:234
 msgid "Would you like to save the new configuration"
 msgstr "Souhaitez-vous enregistrer la nouvelle configuration"
 
@@ -3206,6 +3190,7 @@ msgid "unknown"
 msgstr "non-connue"
 
 #: public/js/controllers/ThresholdsCtrl.js:15
+#: public/js/controllers/ThresholdsCtrl.js:21
 #: public/templates/dialogs/sedentary.html:45
 msgid "years"
 msgstr "années"
@@ -3246,6 +3231,12 @@ msgstr ""
 #: public/templates/procrastinate/tasks/dialogs/task.html:107
 msgid "{{task.prioritybeautified}}"
 msgstr ""
+
+#~ msgid "Civil servant:"
+#~ msgstr "Fonctionnaires"
+
+#~ msgid "Contractual:"
+#~ msgstr "Contractuel:"
 
 #~ msgid "Having trouble signing in?"
 #~ msgstr "Des problèmes de connexion ?"
