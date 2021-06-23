@@ -28,18 +28,10 @@
         </form>
 
         <md-card-actions layout="row" ng-if="personnelSelected">
-            <md-button  class="md-raised md-primary" aria-label="Back" onclick="history.back()">
-                <md-icon>arrow_back_ios</md-icon>
-                <span translate>Back</span>
-            </md-button>
+            
             <span flex></span>
-            <md-button  class="md-raised md-primary" aria-label="Edit" ng-click="edit({id: personnelSelected._id})" >
-                <md-icon>edit</md-icon>
-                <span translate>Edit</span>
-            </md-button>
-            <md-button  class="md-raised" aria-label="Print" ng-click="openPdf()">
+            <md-button  class="md-icon-button" aria-label="Print" ng-click="openPdf()">
                 <md-icon>print</md-icon>
-                <span translate>Print</span>
             </md-button>
         </md-card-actions>
         <div layout="column" layout-align="center center" ng-if="!personnelSelected"  style="opacity:0.2;">
@@ -455,11 +447,11 @@
                 <span translate>Back</span>
             </md-button>
             <span flex></span>
-            <md-button  class="md-raised md-primary" aria-label="Edit" >
+            <md-button  class="md-raised md-primary" aria-label="Edit" ng-click="edit({id: personnelSelected._id})" >
                 <md-icon>edit</md-icon>
                 <span translate>Edit</span>
             </md-button>
-            <md-button  class="md-raised" aria-label="Print" >
+            <md-button  class="md-raised" aria-label="Print" ng-click="openPdf()">
                 <md-icon>print</md-icon>
                 <span translate>Print</span>
             </md-button>
