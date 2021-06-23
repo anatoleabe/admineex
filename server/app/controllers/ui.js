@@ -305,10 +305,11 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
-            nav.left[0].items.push(thresholds);
             // LEFT MENU TABS FOR ADMINISTRATION
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
+            
+            nav.left[0].items.push(thresholds);
             break;
         case '3'://Supervisor
             // LEFT MENU STAFF MANAGEMENT
