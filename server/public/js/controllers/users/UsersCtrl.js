@@ -51,6 +51,7 @@ angular.module('UsersCtrl', []).controller('UsersController', ['$scope', '$state
                     }
 
                 }
+                console.log(data)
                 $rootScope.kernel.loading = 100;
                 $scope.users = data;
             }).catch(function(response) {

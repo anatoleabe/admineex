@@ -138,7 +138,7 @@ exports.api.create = function(req, res) {
 exports.api.list = function(req, res) {
     if(req.actor){
         User.find({
-            role: {$ne:1}
+            role: {$ne:0}
         }, {password: 0}, function (err, users) {
             if (err) {
                 log.error(err);
