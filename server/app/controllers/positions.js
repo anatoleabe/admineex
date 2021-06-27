@@ -428,7 +428,11 @@ exports.list = function (options, callback) {
                 aggregate.push({"$limit": options.skip + options.limit})
                 aggregate.push({"$skip": options.skip})
             }
-
+            var projection = {
+                $project: {_id: 1, affectation: 1, structureId: 1, en: 1, fr: 1, metainfo: 1, code: 1, order: 1, comesAfter: 1}
+            };
+            aggregate.push(projection);
+            
             q = Position.aggregate(aggregate);
             q.exec(function (err, result) {
                 if (err) {
@@ -861,8 +865,8 @@ exports.patrol0 = function (callback) {
             callback(err);
         } else {
             var nbYearsSpent = 5;
-            
-            if (threshold){
+
+            if (threshold) {
                 nbYearsSpent = parseInt(threshold.values[0]);
             }
             var query = {$and: []};
