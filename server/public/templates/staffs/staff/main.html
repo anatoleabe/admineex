@@ -82,7 +82,7 @@
         <div class="md-toolbar-tools">
             <md-icon>filter_list</md-icon>
             <md-input-container >
-                <md-select ng-model="filters.gender"  style="min-width: 130px;">
+                <md-select ng-model="filters.gender" aria-label='Genders'  style="min-width: 130px;">
                     <md-option ng-selected value="-" >
                         {{'All genders'| translate}}
                     </md-option>
@@ -95,7 +95,7 @@
                 </md-select>
             </md-input-container>
             <md-input-container flex>
-                <md-select ng-model="filters.status"  style="min-width: 150px;">
+                <md-select ng-model="filters.status" aria-label='Status' style="min-width: 150px;">
                     <md-option ng-selected value="-">
                         {{'All status'| translate}}
                     </md-option>
@@ -105,7 +105,7 @@
                 </md-select>
             </md-input-container>
             <md-input-container flex>
-                <md-select ng-model="filters.grade"  style="min-width: 150px;">
+                <md-select ng-model="filters.grade" aria-label='Grade'  style="min-width: 150px;">
                     <md-option ng-selected value="-">
                         {{'All grades'| translate}}
                     </md-option>
@@ -115,7 +115,7 @@
                 </md-select>
             </md-input-container>
             <md-input-container flex>
-                <md-select ng-model="filters.category"  style="min-width: 150px;">
+                <md-select ng-model="filters.category" aria-label='Category' style="min-width: 150px;">
                     <md-option ng-selected value="-">
                         {{'All categories'| translate}}
                     </md-option>
@@ -125,7 +125,7 @@
                 </md-select>
             </md-input-container>
             <md-input-container flex>
-                <md-select ng-model="filters.situation"  style="min-width: 150px;">
+                <md-select ng-model="filters.situation" aria-label='Situation' style="min-width: 150px;">
                     <md-option value="-">
                         {{'All situations'| translate}}
                     </md-option>

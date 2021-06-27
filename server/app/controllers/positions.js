@@ -332,7 +332,8 @@ exports.api.list = function (req, res) {
         }
 
         var filtersParam = {}
-        if (req.params.filters && req.params.filters != "-" && req.params.filters != "") {
+        console.log(req.params.filters)
+        if (req.params.filters && req.params.filters != "-" && req.params.filters != "" && req.params.filters != "undefined") {
             filtersParam = JSON.parse(req.params.filters);
         }
 
@@ -355,7 +356,7 @@ exports.api.list = function (req, res) {
         });
 
     } else {
-        audit.logEvent('[anonymous]', 'Projects', 'List', '', '', 'failed', 'The actor was not authenticated');
+        audit.logEvent('[anonymous]', 'Positions', 'List', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);
     }
 }
@@ -603,7 +604,7 @@ exports.api.read = function (req, res) {
             });
         }
     } else {
-        audit.logEvent('[anonymous]', 'Projects', 'Read', '', '', 'failed', 'The actor was not authenticated');
+        audit.logEvent('[anonymous]', 'Positions', 'Read', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);
     }
 }
@@ -1181,7 +1182,7 @@ exports.api.delete = function (req, res) {
     if (req.actor) {
 
     } else {
-        audit.logEvent('[anonymous]', 'Projects', 'Delete', '', '', 'failed', 'The actor was not authenticated');
+        audit.logEvent('[anonymous]', 'Positions', 'Delete', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);
     }
 }

@@ -88,7 +88,7 @@
                     <div layout="row" >
                         <md-input-container flex>
                             <label translate>Sub structure</label>
-                            <md-select name="substructure" ng-disabled="positionFromParams" required ng-model="substructure" ng-change="consoleme()"  style="min-width: 150px;">
+                            <md-select name="substructure" ng-disabled="positionFromParams" required ng-model="substructure"  style="min-width: 150px;">
                                 <md-option ng-repeat="substruc in substructures | filter:onlySubDirection" value="{{substruc.code}}" >
                                     {{substruc.name}} ({{substruc.code}})
                                 </md-option>
