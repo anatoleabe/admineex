@@ -500,52 +500,53 @@ exports.list = function (options, callback) {
                         }
 
                         var aggregate = [];
-                        aggregate.push({"$unwind": "$name"});
-                        aggregate.push({"$unwind": {path: "$name.family", preserveNullAndEmptyArrays: true}});
-                        aggregate.push({"$unwind": {path: "$name.given", preserveNullAndEmptyArrays: true}});
-                        aggregate.push({"$unwind": {path: "$retirement", preserveNullAndEmptyArrays: true}});
+                        if (!options.statistics) {
+                            aggregate.push({"$unwind": "$name"});
+                            aggregate.push({"$unwind": {path: "$name.family", preserveNullAndEmptyArrays: true}});
+                            aggregate.push({"$unwind": {path: "$name.given", preserveNullAndEmptyArrays: true}});
+                            aggregate.push({"$unwind": {path: "$retirement", preserveNullAndEmptyArrays: true}});
 
-                        aggregate.push({"$addFields": {"fname": {$concat: concat}}});
-                        aggregate.push({"$addFields": {"matricule": "$identifier"}});
-                        aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
-                        aggregate.push(
-                                {
-                                    $lookup: {
-                                        from: 'affectations',
-                                        localField: '_id',
-                                        foreignField: 'personnelId',
-                                        as: 'affectation',
+                            aggregate.push({"$addFields": {"fname": {$concat: concat}}});
+                            aggregate.push({"$addFields": {"matricule": "$identifier"}});
+                            aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
+                            aggregate.push(
+                                    {
+                                        $lookup: {
+                                            from: 'affectations',
+                                            localField: '_id',
+                                            foreignField: 'personnelId',
+                                            as: 'affectation',
+                                        }
                                     }
-                                }
-                        );
-                        aggregate.push(
-                                {
-                                    "$unwind": {
-                                        path: "$affectation",
-                                        preserveNullAndEmptyArrays: true
+                            );
+                            aggregate.push(
+                                    {
+                                        "$unwind": {
+                                            path: "$affectation",
+                                            preserveNullAndEmptyArrays: true
+                                        }
                                     }
-                                }
-                        );
-                        aggregate.push(
-                                {
-                                    $lookup: {
-                                        from: 'positions',
-                                        localField: 'affectation.positionCode',
-                                        foreignField: 'code',
-                                        as: 'affectation.position',
+                            );
+                            aggregate.push(
+                                    {
+                                        $lookup: {
+                                            from: 'positions',
+                                            localField: 'affectation.positionCode',
+                                            foreignField: 'code',
+                                            as: 'affectation.position',
+                                        }
                                     }
-                                }
-                        );
-                        aggregate.push(
-                                {
-                                    "$unwind": {
-                                        path: "$affectation.position",
-                                        preserveNullAndEmptyArrays: true
+                            );
+                            aggregate.push(
+                                    {
+                                        "$unwind": {
+                                            path: "$affectation.position",
+                                            preserveNullAndEmptyArrays: true
+                                        }
                                     }
-                                }
-                        );
+                            );
 
-
+                        }
                         if (options.projection) {
                             projection = {
                                 $project: options.projection
@@ -648,7 +649,7 @@ exports.list = function (options, callback) {
                                                     personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, language);
                                                 }
                                                 personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
-                                                
+
                                                 if (personnels[a].affectation && personnels[a].affectation.position) {
                                                     personnels[a].affectation.position.name = ((language && language !== "" && personnels[a].affectation.position[language] != undefined && personnels[a].affectation.position[language] != "") ? personnels[a].affectation.position[language] : personnels[a].affectation.position['en']);
                                                     controllers.structures.findStructureByCode(personnels[a].affectation.position.code.substring(0, personnels[a].affectation.position.code.indexOf('P')), language, function (err, structure) {

@@ -157,9 +157,11 @@ var chart1 = function (config, callback) {
         totalMen: 0
     };
     var options = {
+        statistics: true,
         req: {
             actor: config.actor
-        }
+        },
+        projection: {_id: 1, gender: 1}
     }
     controllers.personnel.list(options, function (err, personnels) {
         if (err) {
@@ -168,19 +170,9 @@ var chart1 = function (config, callback) {
             callback(err);
         } else {
             data.totalStaff = personnels.length;
-            function LoopA(a) {
-                if (a < personnels.length && personnels[a]) {
-                    if (personnels[a].gender == "F") {
-                        data.totalWomen += 1;
-                    } else {
-                        data.totalMen += 1;
-                    }
-                    LoopA(a + 1);
-                } else {
-                    callback(null, data);
-                }
-            }
-            LoopA(0);
+            data.totalWomen = personnels.filter((p) => p.gender && p.gender === "F").length;
+            data.totalMen = personnels.filter((p) => p.gender && p.gender === "M").length;
+            callback(null, data);
         }
     });
 };
@@ -202,9 +194,11 @@ var card2 = function (config, callback) {
         totalCorpsTresor: 0
     };
     var options = {
+        statistics: true,
         req: {
             actor: config.actor
-        }
+        },
+        projection: {_id: 1, grade: 1, category: 1, status: 1, corps: 1}
     }
     controllers.personnel.list(options, function (err, personnels) {
         if (err) {
@@ -270,9 +264,11 @@ var chart2 = function (config, callback) {
         totalCorpsTresor: 0,
     };
     var options = {
+        statistics: true,
         req: {
             actor: config.actor
-        }
+        },
+        projection: {_id: 1, grade: 1, gender: 1, category: 1, status: 1, corps: 1}
     }
     controllers.personnel.list(options, function (err, personnels) {
         if (err) {
@@ -322,13 +318,15 @@ var card4 = function (config, callback) {
     var data = [];
     var data1 = [];
     var options = {
+        statistics: true,
         query: {
             status: "2"
         },
         req: {
             actor: config.actor
         },
-        aggregation: {"$match": {"status": "2"}}
+        aggregation: {"$match": {"status": "2"}},
+        projection: {_id: 1, grade: 1, gender: 1, category: 1, status: 1, corps: 1}
     }
 
     controllers.personnel.list(options, function (err, personnels) {
@@ -389,9 +387,11 @@ var card6 = function (config, callback) {
         totalMen: 0,
     };
     var options = {
+        statistics: true,
         req: {
             actor: config.actor
-        }
+        },
+        projection: {_id: 1, grade: 1, gender: 1, category: 1, status: 1, corps: 1}
     }
     controllers.personnel.list(options, function (err, personnels) {
         if (err) {
@@ -612,7 +612,7 @@ var procras8_synthesis = function (config, callback) {
             "_id": new ObjectID(config.selecteduser)
         });
     }
-    
+
     var data = {
         counter: {},
         synthesis: []
@@ -640,12 +640,12 @@ var procras8_synthesis = function (config, callback) {
 
                     for (i = 0; i < users.length; i++) {
                         var tmp = {
-                            userName : users[i].name,
-                            _id : users[i]._id,
-                            notstarted : (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "1").length : 0,
-                            inprogress : (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "2").length : 0,
-                            completed : (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "3").length : 0,
-                            blocked : (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "4").length : 0,
+                            userName: users[i].name,
+                            _id: users[i]._id,
+                            notstarted: (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "1").length : 0,
+                            inprogress: (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "2").length : 0,
+                            completed: (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "3").length : 0,
+                            blocked: (usersGroups[users[i]._id]) ? usersGroups[users[i]._id].filter(t => t.status == "4").length : 0,
                             overdue: 0,
                         };
                         totalOfnotstarted += tmp.notstarted;
@@ -654,7 +654,7 @@ var procras8_synthesis = function (config, callback) {
                         totalOfoverdue += tmp.overdue;
                         totalOfblocked += tmp.blocked;
                         data.synthesis.push(tmp);
-                        
+
                     }
                     data.counter.totalOfnotstarted = totalOfnotstarted;
                     data.counter.totalOfcompleted = totalOfcompleted;
@@ -682,9 +682,11 @@ var global = function (config, callback) {
     };
 
     var options = {
+        statistics: true,
         req: {
             actor: config.actor
-        }
+        },
+        projection: {_id: 1, grade: 1, gender: 1, category: 1, status: 1, corps: 1}
     }
     controllers.personnel.list(options, function (err, personnels) {
         if (err) {
