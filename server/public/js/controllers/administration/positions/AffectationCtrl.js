@@ -128,7 +128,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                 $scope.structures = undefined;
                                                 $scope.structures = undefined;
                                                 $scope.affectation.positionId = undefined
-                                                var option = {type: "t=" + type};
+                                                var option = {type: "t=" + type + "=r=" + 2};
                                                 if (type == 2) {
                                                     option = {type: "t=" + type + "=r=" + 2};
                                                 }
@@ -178,7 +178,6 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                             watch.substructure = $scope.$watch('substructure', function (newval, oldval) {
                                                 $scope.affectation.positionId = undefined;
                                                 if (newval) {
-                                                    console.log(newval);
                                                     getPositions(newval);
                                                 }
                                             });
@@ -188,7 +187,6 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                             });
 
                                             function getPositions(idStructure) {
-                                                console.log(idStructure);
                                                 $scope.helper = [];
                                                 $rootScope.kernel.loading = 0;
                                                 var deferred = $q.defer();
@@ -199,9 +197,6 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                 
                                                 Position.list({filters: JSON.stringify(filterParams)}).then(function (response) {
                                                     var data = response.data.data;
-                                                    console.log("data")
-                                                    console.log(data)
-
                                                     $rootScope.kernel.loading = 100;
                                                     $scope.positions = data;
                                                     deferred.resolve();

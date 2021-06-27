@@ -332,7 +332,6 @@ exports.api.list = function (req, res) {
         }
 
         var filtersParam = {}
-        console.log(req.params.filters)
         if (req.params.filters && req.params.filters != "-" && req.params.filters != "" && req.params.filters != "undefined") {
             filtersParam = JSON.parse(req.params.filters);
         }
