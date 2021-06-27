@@ -251,7 +251,13 @@ exports.api.list = function (req, res) {
                         }
 
                         if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4") {
-                            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1, };
+                            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1,
+                                identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1,
+                                "affectation.position.fr": 1,
+                                "affectation.position.en": 1,
+                                "affectation.position.code": 1,
+                                "affectation.position.structureId": 1,
+                            };
                             options.projection = projection;
                             exports.list(options, function (err, personnels) {
                                 if (err) {
@@ -512,6 +518,32 @@ exports.list = function (options, callback) {
                                     }
                                 }
                         );
+                        aggregate.push(
+                                {
+                                    "$unwind": {
+                                        path: "$affectation",
+                                        preserveNullAndEmptyArrays: true
+                                    }
+                                }
+                        );
+                        aggregate.push(
+                                {
+                                    $lookup: {
+                                        from: 'positions',
+                                        localField: 'affectation.positionCode',
+                                        foreignField: 'code',
+                                        as: 'affectation.position',
+                                    }
+                                }
+                        );
+                        aggregate.push(
+                                {
+                                    "$unwind": {
+                                        path: "$affectation.position",
+                                        preserveNullAndEmptyArrays: true
+                                    }
+                                }
+                        );
 
 
                         if (options.projection) {
@@ -573,7 +605,7 @@ exports.list = function (options, callback) {
                             aggregate.push({"$limit": options.skip + options.limit})
                             aggregate.push({"$skip": options.skip})
                         }
-
+                        //aggregate.push({$sort: {"fname": -1}});
                         q = Personnel.aggregate(aggregate);
 
                         q.exec(function (err, personnels) {
@@ -582,11 +614,12 @@ exports.list = function (options, callback) {
                                 audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
                                 callback(err);
                             } else {
-
+                                //console.log(personnels);
                                 if (options.minify == true || options.retiredOnly) {
                                     personnels = JSON.parse(JSON.stringify(personnels));
                                     function LoopA(a) {
                                         if (a < personnels.length && personnels[a]) {
+
                                             if (options.minify === true) {
                                                 var options2 = {
                                                     req: options.req
@@ -599,31 +632,37 @@ exports.list = function (options, callback) {
                                                 if (options.toExport == true) {
                                                     options2.toExport = true;
                                                 }
-                                                controllers.positions.findPositionHolder(options2, personnels[a].affectation[0], function (err, affectation) {
-                                                    if (err) {
-                                                        log.error(err);
-                                                        callback(err);
-                                                    } else {
-                                                        personnels[a].affectedTo = affectation;
 
-                                                        var status = (personnels[a].status) ? personnels[a].status : "";
-                                                        var grade = (personnels[a].grade) ? personnels[a].grade : "";
-                                                        var actif = (personnels[a].retirement.retirement == false) ? "Actif" : "En age de retraite";
-                                                        var language = options.language || "";
-                                                        language = language.toLowerCase();
-                                                        var status = (personnels[a].status) ? personnels[a].status : "";
-                                                        var grade = (personnels[a].grade) ? personnels[a].grade : "";
-                                                        var category = (personnels[a].category) ? personnels[a].category : "";
-                                                        personnels[a].active = actif;
-                                                        personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
-                                                        if (status != "") {
-                                                            personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
-                                                            personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, language);
+                                                var status = (personnels[a].status) ? personnels[a].status : "";
+                                                var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                                                var actif = (personnels[a].retirement.retirement == false) ? "Actif" : "En age de retraite";
+                                                var language = options.language || "";
+                                                language = language.toLowerCase();
+                                                var status = (personnels[a].status) ? personnels[a].status : "";
+                                                var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                                                var category = (personnels[a].category) ? personnels[a].category : "";
+                                                personnels[a].active = actif;
+                                                personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
+                                                if (status != "") {
+                                                    personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
+                                                    personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, language);
+                                                }
+                                                personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
+                                                
+                                                if (personnels[a].affectation && personnels[a].affectation.position) {
+                                                    personnels[a].affectation.position.name = ((language && language !== "" && personnels[a].affectation.position[language] != undefined && personnels[a].affectation.position[language] != "") ? personnels[a].affectation.position[language] : personnels[a].affectation.position['en']);
+                                                    controllers.structures.findStructureByCode(personnels[a].affectation.position.code.substring(0, personnels[a].affectation.position.code.indexOf('P')), language, function (err, structure) {
+                                                        if (err) {
+                                                            log.error(err);
+                                                            callback(err);
+                                                        } else {
+                                                            personnels[a].affectation.structure = structure;
+                                                            LoopA(a + 1);
                                                         }
-                                                        personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
-                                                        LoopA(a + 1);
-                                                    }
-                                                });
+                                                    });
+                                                } else {
+                                                    LoopA(a + 1);
+                                                }
                                             } else {
                                                 var status = (personnels[a].status) ? personnels[a].status : "";
                                                 var grade = (personnels[a].grade) ? personnels[a].grade : "";

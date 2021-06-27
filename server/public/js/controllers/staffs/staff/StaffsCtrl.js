@@ -194,7 +194,6 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                         } else {
                             return false;
                         }
-
                     };
 
                     var watch = {};
