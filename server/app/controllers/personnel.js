@@ -357,6 +357,13 @@ exports.api.retired = function (req, res) {
 
 //This function is called each day at 6am and check and set the new retired people
 exports.checkRetirement = function (callback) {
+    Personnel.connection.db.createCollection('view_test', {
+        viewOn: 'personnels',
+        pipeline: [{"$match": {"retirement.retirement": true}}]
+    });
+
+    console.log("aananan");
+
     var dateLimit = new Date(new Date().setFullYear(new Date().getFullYear() - 49));
 
     var query = {
@@ -405,7 +412,6 @@ exports.checkRetirement = function (callback) {
                                         }
                                     } else {// Contractual
                                         if (personnels[a].category && personnels[a].category != null && personnels[a].category != "") {
-                                            var perCategory = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + personnels[a].status + '/categories.json', personnels[a].category, "en");
                                             if (parseInt(personnels[a].category, 10) >= 7 && parseInt(personnels[a].category, 10) <= 13 && age >= parseInt(threshold2.values[1])) { //Personnel non fonctionnaire CAT 1 à CAT 7 at 55 ans
                                                 candidates.push(personnels[a]._id);
                                             } else if (age >= parseInt(threshold2.values[0])) {//Personnel non fonctionnaire CAT 8 à CAT 12 à 60 ans
