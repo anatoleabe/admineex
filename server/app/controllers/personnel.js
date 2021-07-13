@@ -357,10 +357,10 @@ exports.api.retired = function (req, res) {
 
 //This function is called each day at 6am and check and set the new retired people
 exports.checkRetirement = function (callback) {
-    Personnel.connection.db.createCollection('view_test', {
-        viewOn: 'personnels',
-        pipeline: [{"$match": {"retirement.retirement": true}}]
-    });
+//    Personnel.connection.db.createCollection('view_test', {
+//        viewOn: 'personnels',
+//        pipeline: [{"$match": {"retirement.retirement": true}}]
+//    });
 
     console.log("aananan");
 
