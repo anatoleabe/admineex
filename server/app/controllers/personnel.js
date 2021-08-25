@@ -642,7 +642,7 @@ exports.list = function (options, callback) {
 
                                                 var status = (personnels[a].status) ? personnels[a].status : "";
                                                 var grade = (personnels[a].grade) ? personnels[a].grade : "";
-                                                var actif = (personnels[a].retirement.retirement == false) ? "Actif" : "En age de retraite";
+                                                var actif = ( personnels[a].retirement && personnels[a].retirement.retirement == false) ? "Actif" : "En age de retraite";
                                                 var language = options.language || "";
                                                 language = language.toLowerCase();
                                                 var status = (personnels[a].status) ? personnels[a].status : "";
