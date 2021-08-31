@@ -121,7 +121,7 @@ exports.api.affectToPosition = function (req, res) {
                             lastModified: new Date()
                         };
                         var filter = {
-                            personnelId: fields.occupiedBy
+                            positionId: fields.positionId
                         };
                         Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
                             if (err) {

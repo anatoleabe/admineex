@@ -38,9 +38,10 @@ angular.module('PositionDetailsCtrl', []).controller('PositionDetailsController'
 
                     Position.read({id: id}).then(function (response) {
                         var data = response.data;
-                        console.log(data)
                         $scope.position = data;
+                        
                         if ($scope.position && $scope.position.occupiedBy) {
+                            console.log( $scope.position.occupiedBy)
                             var positionHelder = {
                                 _id: $scope.position.occupiedBy.personnel._id,
                                 name: $scope.position.occupiedBy.personnel.name.family + " " + $scope.position.occupiedBy.personnel.name.given,

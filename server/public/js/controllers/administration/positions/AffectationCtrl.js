@@ -112,140 +112,177 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                     var Staff = $injector.get('Staff');
                                     $ocLazyLoad.load('js/services/PositionService.js').then(function () {
                                         var Position = $injector.get('Position');
+                                        $ocLazyLoad.load('js/services/StaffService.js').then(function () {
+                                            var StaffAgent = $injector.get('Staff');
 
-                                        if ($scope.params.personnel) {
-                                            $scope.personnelFromParams = true;
-                                            $scope.selectedPersonnel = $scope.params.personnel._id;
-                                            $scope.personnels = [$scope.params.personnel];
-                                            $rootScope.kernel.loading = 100;
-                                        }
-
-
-                                        $scope.loadStructures = function (type) {
-                                            $scope.loading = true;
-                                            $rootScope.kernel.loading = 0;
-                                            $scope.structures = undefined;
-                                            $scope.structures = undefined;
-                                            $scope.affectation.positionId = undefined
-                                            var option = {type: "t=" + type + "=r=" + 2};
-                                            if (type == 2) {
-                                                option = {type: "t=" + type + "=r=" + 2};
-                                            }
-
-                                            Structure.minimalList(option).then(function (response) {
-                                                var data = response.data;
-                                                $scope.structures = data;
-                                                $scope.loading = false;
+                                            if ($scope.params.personnel) {
+                                                $scope.personnelFromParams = true;
+                                                $scope.selectedPersonnel = $scope.params.personnel._id;
+                                                $scope.personnels = [$scope.params.personnel];
                                                 $rootScope.kernel.loading = 100;
-                                            }).catch(function (response) {
-                                                console.error(response);
-                                            });
-                                        }
-
-                                        $scope.loadSubStructures = function (type, structureCode) {
-                                            $scope.loading = true;
-                                            $rootScope.kernel.loading = 0;
-                                            $scope.substructures = undefined;
-                                            $scope.affectation.positionId = undefined
-                                            var option = {type: "t=" + type};
-                                            if (type == 2) {
-                                                option = {type: "t=" + type + "=r=" + 3};
-                                            }
-
-                                            Structure.minimalList(option).then(function (response) {
-                                                var data = response.data;
-                                                $scope.substructures = data;
-                                                $scope.loading = false;
-                                                $rootScope.kernel.loading = 100
-                                            }).catch(function (response) {
-                                                console.error(response);
-                                            });
-                                        }
-
-
-                                        $scope.onlySubDirection = function (item) {
-                                            if ($scope.structure) {
-                                                var code = $scope.structure;
-                                                return item.rank == "3" && item.code.indexOf(code + "-") == 0;
                                             } else {
-                                                return false;
-                                            }
-                                        };
-
-                                        var watch = {};
-
-                                        watch.substructure = $scope.$watch('substructure', function (newval, oldval) {
-                                            $scope.affectation.positionId = undefined;
-                                            if (newval) {
-                                                getPositions(newval);
-                                            }
-                                        });
-
-                                        $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
-                                            watch.substructure();
-                                        });
-
-                                        function getPositions(idStructure) {
-                                            $scope.helper = [];
-                                            $rootScope.kernel.loading = 0;
-                                            var deferred = $q.defer();
-                                            $scope.promise = deferred.promise;
-                                            var filterParams = {
-                                                structure: idStructure
-                                            };
-
-                                            Position.list({filters: JSON.stringify(filterParams)}).then(function (response) {
-                                                var data = response.data.data;
-                                                $rootScope.kernel.loading = 100;
-                                                $scope.positions = data;
-                                                deferred.resolve();
-                                            }).catch(function (response) {
-                                                console.error(response);
-                                            });
-                                        }
-                                        $scope.affectation.isCurrent = true;
-
-                                        // Modify or Add ?
-                                        if ($scope.params) {
-                                            if ($scope.params.positionTo) {
-                                                $scope.positionFromParams = true;
-                                                $scope.structure = $scope.params.positionTo.structure.code;
-                                                $scope.affectation.positionId = $scope.params.positionTo._id;
-                                                $scope.affectation.positionCode = $scope.params.positionTo.code;
+                                                $rootScope.kernel.loading = 0;
+                                                StaffAgent.list({minify: true, limit: 0, skip: 0, search: $scope.staffsFilter, filters: JSON.stringify()}).then(function (response) {
+                                                    $rootScope.kernel.loading = 100;
+                                                    $scope.personnels = response.data.data;
+                                                }).catch(function (response) {
+                                                    console.log(response);
+                                                });
                                             }
 
 
-                                        }
 
-                                        // save
-                                        $scope.save = function () {
-                                            $rootScope.kernel.loading = 0;
-                                            $scope.affectation.occupiedBy = $scope.selectedPersonnel;
-
-                                            Position.affect($scope.affectation).then(function (response) {
-                                                $rootScope.kernel.loading = 100;
-                                                if ($scope.params.positionTo) {
-                                                    $state.go('home.administration.positions');
-                                                } else if ($scope.params.personnel) {
-                                                    $state.go('home.staffs.main');
+                                            $scope.loadStructures = function (type) {
+                                                $scope.loading = true;
+                                                $rootScope.kernel.loading = 0;
+                                                $scope.structures = undefined;
+                                                $scope.structures = undefined;
+                                                $scope.affectation.positionId = undefined
+                                                var option = {type: "t=" + type + "=r=" + 2};
+                                                if (type == 2) {
+                                                    option = {type: "t=" + type + "=r=" + 2};
                                                 }
 
-                                                $rootScope.kernel.alerts.push({
-                                                    type: 3,
-                                                    msg: gettextCatalog.getString('The operation has been saved'),
-                                                    priority: 4
+                                                Structure.minimalList(option).then(function (response) {
+                                                    var data = response.data;
+                                                    $scope.structures = data;
+                                                    console.log(data)
+                                                    $scope.loading = false;
+                                                    $rootScope.kernel.loading = 100;
+                                                    if ($scope.params && $scope.params.positionTo) {
+                                                        $scope.structure = $scope.params.positionTo.structure.father.code;
+                                                    }
+
+                                                }).catch(function (response) {
+                                                    console.error(response);
                                                 });
-                                                $scope.close();
-                                            }).catch(function (response) {
-                                                $rootScope.kernel.loading = 100;
-                                                $rootScope.kernel.alerts.push({
-                                                    type: 1,
-                                                    msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                                    priority: 2
+                                            }
+
+                                            $scope.loadSubStructures = function (type, structureCode) {
+                                                $scope.loading = true;
+                                                $rootScope.kernel.loading = 0;
+                                                $scope.substructures = undefined;
+                                                $scope.affectation.positionId = undefined
+                                                var option = {type: "t=" + type};
+                                                if (type == 2) {
+                                                    option = {type: "t=" + type + "=r=" + 3};
+                                                }
+
+                                                Structure.minimalList(option).then(function (response) {
+                                                    var data = response.data;
+                                                    $scope.substructures = data;
+                                                    $scope.loading = false;
+                                                    $rootScope.kernel.loading = 100
+
+                                                    if ($scope.params && $scope.params.positionTo) {
+                                                        $scope.substructure = $scope.params.positionTo.structure.code;
+                                                    }
+
+                                                }).catch(function (response) {
+                                                    console.error(response);
                                                 });
-                                                console.error(response);
+                                            }
+
+
+                                            $scope.onlySubDirection = function (item) {
+                                                if ($scope.structure) {
+                                                    var code = $scope.structure;
+                                                    return item.rank == "3" && item.code.indexOf(code + "-") == 0;
+                                                } else {
+                                                    return false;
+                                                }
+                                            };
+
+                                            var watch = {};
+
+                                            watch.structure = $scope.$watch('structure', function (newval, oldval) {
+                                                $scope.loadSubStructures($scope.typeStructre)
                                             });
-                                        }
+
+                                            watch.substructure = $scope.$watch('substructure', function (newval, oldval) {
+                                                $scope.affectation.positionId = undefined;
+                                                if (newval) {
+                                                    getPositions(newval);
+                                                }
+                                            });
+
+                                            $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
+                                                watch.structure();
+                                                watch.substructure();
+                                            });
+
+                                            function getPositions(idStructure) {
+                                                $scope.helper = [];
+                                                $rootScope.kernel.loading = 0;
+                                                var deferred = $q.defer();
+                                                $scope.promise = deferred.promise;
+                                                var filterParams = {
+                                                    structure: idStructure
+                                                };
+
+                                                Position.list({filters: JSON.stringify(filterParams)}).then(function (response) {
+                                                    var data = response.data.data;
+                                                    $rootScope.kernel.loading = 100;
+                                                    $scope.positions = data;
+                                                    deferred.resolve();
+
+                                                    if ($scope.params && $scope.params.positionTo) {
+                                                        $scope.affectation.positionId = $scope.params.positionTo._id;
+                                                        $scope.affectation.positionCode = $scope.params.positionTo.code;
+                                                    }
+
+                                                }).catch(function (response) {
+                                                    console.error(response);
+                                                });
+                                            }
+
+                                            $scope.affectation.isCurrent = true;
+
+                                            // Modify or Add ?
+                                            if ($scope.params) {
+                                                if ($scope.params.positionTo) {
+                                                    $scope.positionFromParams = true;
+                                                    console.log($scope.params.positionTo);
+                                                    $scope.typeStructre = $scope.params.positionTo.structure.type;
+                                                    $scope.loadStructures($scope.typeStructre);
+
+                                                    $scope.affectation.positionId = $scope.params.positionTo._id;
+                                                    $scope.affectation.positionCode = $scope.params.positionTo.code;
+
+
+                                                }
+                                            }
+
+                                            // save
+                                            $scope.save = function () {
+                                                $rootScope.kernel.loading = 0;
+                                                $scope.affectation.occupiedBy = $scope.selectedPersonnel;
+
+                                                Position.affect($scope.affectation).then(function (response) {
+                                                    $rootScope.kernel.loading = 100;
+                                                    if ($scope.params.positionTo) {
+                                                        $state.go('home.administration.positions');
+                                                    } else if ($scope.params.personnel) {
+                                                        $state.go('home.staffs.main');
+                                                    }
+
+                                                    $rootScope.kernel.alerts.push({
+                                                        type: 3,
+                                                        msg: gettextCatalog.getString('The operation has been saved'),
+                                                        priority: 4
+                                                    });
+                                                    $scope.close();
+                                                }).catch(function (response) {
+                                                    $rootScope.kernel.loading = 100;
+                                                    $rootScope.kernel.alerts.push({
+                                                        type: 1,
+                                                        msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                        priority: 2
+                                                    });
+                                                    console.error(response);
+                                                });
+                                            }
+                                        });
                                     });
                                 });
                             });

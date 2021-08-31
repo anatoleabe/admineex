@@ -259,6 +259,13 @@ exports.api.list = function (req, res) {
                                 "affectation.position.structureId": 1,
                             };
                             options.projection = projection;
+
+                            if (options.minify == true) {
+                                projection = {_id: 1, name: 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1,
+                                    identifier: 1, corps: 1, telecom: 1, fname: 1
+                                };
+                            }
+
                             exports.list(options, function (err, personnels) {
                                 if (err) {
                                     log.error(err);
@@ -515,42 +522,44 @@ exports.list = function (options, callback) {
                             aggregate.push({"$addFields": {"fname": {$concat: concat}}});
                             aggregate.push({"$addFields": {"matricule": "$identifier"}});
                             aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
-                            aggregate.push(
-                                    {
-                                        $lookup: {
-                                            from: 'affectations',
-                                            localField: '_id',
-                                            foreignField: 'personnelId',
-                                            as: 'affectation',
+                            if (options.minify == false) {
+                                aggregate.push(
+                                        {
+                                            $lookup: {
+                                                from: 'affectations',
+                                                localField: '_id',
+                                                foreignField: 'personnelId',
+                                                as: 'affectation',
+                                            }
                                         }
-                                    }
-                            );
-                            aggregate.push(
-                                    {
-                                        "$unwind": {
-                                            path: "$affectation",
-                                            preserveNullAndEmptyArrays: true
+                                );
+                                aggregate.push(
+                                        {
+                                            "$unwind": {
+                                                path: "$affectation",
+                                                preserveNullAndEmptyArrays: false
+                                            }
                                         }
-                                    }
-                            );
-                            aggregate.push(
-                                    {
-                                        $lookup: {
-                                            from: 'positions',
-                                            localField: 'affectation.positionCode',
-                                            foreignField: 'code',
-                                            as: 'affectation.position',
+                                );
+                                aggregate.push(
+                                        {
+                                            $lookup: {
+                                                from: 'positions',
+                                                localField: 'affectation.positionCode',
+                                                foreignField: 'code',
+                                                as: 'affectation.position',
+                                            }
                                         }
-                                    }
-                            );
-                            aggregate.push(
-                                    {
-                                        "$unwind": {
-                                            path: "$affectation.position",
-                                            preserveNullAndEmptyArrays: true
+                                );
+                                aggregate.push(
+                                        {
+                                            "$unwind": {
+                                                path: "$affectation.position",
+                                                preserveNullAndEmptyArrays: false
+                                            }
                                         }
-                                    }
-                            );
+                                );
+                            }
 
                         }
                         if (options.projection) {
@@ -642,7 +651,7 @@ exports.list = function (options, callback) {
 
                                                 var status = (personnels[a].status) ? personnels[a].status : "";
                                                 var grade = (personnels[a].grade) ? personnels[a].grade : "";
-                                                var actif = ( personnels[a].retirement && personnels[a].retirement.retirement == false) ? "Actif" : "En age de retraite";
+                                                var actif = (personnels[a].retirement && personnels[a].retirement.retirement == false) ? "Actif" : "En age de retraite";
                                                 var language = options.language || "";
                                                 language = language.toLowerCase();
                                                 var status = (personnels[a].status) ? personnels[a].status : "";
