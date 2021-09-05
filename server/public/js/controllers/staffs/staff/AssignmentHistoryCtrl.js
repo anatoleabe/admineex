@@ -87,6 +87,32 @@ angular.module('AssignmentHistoryCtrl', []).controller('AssignmentHistoryControl
             });
         };
 
+        $scope.showConfirm = function (affectation) {
+            var confirm = $mdDialog.confirm()
+                    .title(gettextCatalog.getString("Cancel this affectation"))
+                    .textContent(gettextCatalog.getString("Are you sure you want to cancel the affectation of") + " " + affectation.fame + gettextCatalog.getString("?"))
+                    .ok(gettextCatalog.getString("Delete"))
+                    .cancel(gettextCatalog.getString("Cancel"));
+
+            $mdDialog.show(confirm).then(function () {
+                // Delete
+                Affectation.delete({
+                    id: affectation._id
+                }).then(function (response) {
+                    $scope.getAffectations();
+                    $rootScope.kernel.alerts.push({
+                        type: 3,
+                        msg: gettextCatalog.getString('The affectation has been canceled successfully'),
+                        priority: 4
+                    });
+                }).catch(function (response) {
+                    console.log(response);
+                });
+            }, function () {
+                // Cancel
+            });
+        }
+
 
 
     });

@@ -139,11 +139,11 @@ exports.api.affectToPosition = function (req, res) {
                                 audit.logEvent('[mongodb]', 'Position', 'affectToPosition', "", "", 'failed', "Mongodb attempted to find old affectation.");
                                 return res.status(500).send(err);
                             } else {
-                                if (lastAffectation){
+                                if (lastAffectation) {
                                     filter.oldPositionId = lastAffectation.positionId;
                                     affectationFields.oldPositionId = lastAffectation.positionId;
                                 }
-                                
+
                                 Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, sort: {'lastModified': -1}, new : true}, function (err, result) {
                                     if (err) {
                                         log.error(err);
@@ -157,39 +157,41 @@ exports.api.affectToPosition = function (req, res) {
                                             } else {
                                                 if (perso) {
 
-                                                    var history = {
-                                                        numAct: fields.numAct,
-                                                        positionId: new ObjectID(fields.positionId),
-                                                        isCurrent: fields.isCurrent,
-                                                        signatureDate: fields.signatureDate,
-                                                        startDate: fields.startDate,
-                                                        endDate: (fields.isCurrent && fields.isCurrent == "true") ? null : fields.endDate,
-                                                        mouvement: fields.mouvement,
-                                                        nature: fields.nature
-                                                    };
-                                                    if (!perso.history) {
-                                                        perso.history = {positions: []};
-                                                    } else if (perso.history && !perso.history.positions) {
-                                                        perso.history.positions = [];
-                                                    } else if (perso.history && util.isArray(perso.history.positions) && perso.history.positions.length > 0) {
-                                                        for (var i in perso.history.positions) {
-                                                            perso.history.positions[i].isCurrent = false;
-                                                        }
-                                                    } else {
-                                                        perso.history.positions = [];
-                                                    }
-                                                    perso.history.positions.push(history);
-
-                                                    controllers.personnel.upsert(perso, function (err, structure) {
-                                                        if (err) {
-                                                            log.error(err);
-                                                        } else {
-                                                            res.sendStatus(200);
-                                                        }
-                                                    });
+//                                                    var history = {
+//                                                        numAct: fields.numAct,
+//                                                        positionId: new ObjectID(fields.positionId),
+//                                                        isCurrent: fields.isCurrent,
+//                                                        signatureDate: fields.signatureDate,
+//                                                        startDate: fields.startDate,
+//                                                        endDate: (fields.isCurrent && fields.isCurrent == "true") ? null : fields.endDate,
+//                                                        mouvement: fields.mouvement,
+//                                                        nature: fields.nature
+//                                                    };
+//                                                    if (!perso.history) {
+//                                                        perso.history = {positions: []};
+//                                                    } else if (perso.history && !perso.history.positions) {
+//                                                        perso.history.positions = [];
+//                                                    } else if (perso.history && util.isArray(perso.history.positions) && perso.history.positions.length > 0) {
+//                                                        for (var i in perso.history.positions) {
+//                                                            perso.history.positions[i].isCurrent = false;
+//                                                        }
+//                                                    } else {
+//                                                        perso.history.positions = [];
+//                                                    }
+//                                                    perso.history.positions.push(history);
+//
+//                                                    controllers.personnel.upsert(perso, function (err, structure) {
+//                                                        if (err) {
+//                                                            log.error(err);
+//                                                        } else {
+//                                                            res.sendStatus(200);
+//                                                            audit.logEvent(req.actor.id, 'Poste', 'Changement de poste', 'Nouveau code poste', affectationFields.positionCode, 'succeed', 'Affectation de '+perso.name.family[0]+' '+perso.name.given[0]+ ' au poste de code: '+affectationFields.positionCode);
+//                                                        }
+//                                                    });
+                                                    res.sendStatus(200);
+                                                    audit.logEvent(req.actor.id, 'Poste', 'Changement de poste', 'Nouveau code poste', affectationFields.positionCode, 'succeed', 'Affectation de ' + perso.name.family[0] + ' ' + perso.name.given[0] + ' au poste de code: ' + affectationFields.positionCode);
                                                 } else {
                                                     res.sendStatus(200);
-
                                                 }
                                             }
                                         });

@@ -10,9 +10,9 @@
         </div>
         <span flex></span>
 
-<!--        <md-button ng-disabled="personnels.length <= 0" ng-click="print()" class="md-primary">
-            <span translate>Print</span>
-        </md-button>-->
+        <!--        <md-button ng-disabled="personnels.length <= 0" ng-click="print()" class="md-primary">
+                    <span translate>Print</span>
+                </md-button>-->
         <md-button class="md-icon-button" aria-label="search" ng-click="search = '';$parent.setFocus('search');" ng-hide="search == undefined" >
             <md-icon class="material-icons" >search</md-icon>
             <md-tooltip>
@@ -96,20 +96,31 @@
                             {{affectation.actor.firstname}} 
                         </td>
                         <td md-cell  >
-                <md-button  aria-label="Show more" class="md-icon-button">
-                    <md-icon>more_vert</md-icon>
-                    <md-tooltip md-direction="top">
-                        <span translate>Show more</span>
-                    </md-tooltip>
-                </md-button>
+                <md-menu>
+                    <md-button class="md-icon-button"  ng-click="$mdOpenMenu()" >
+                        <md-icon class="material-icons" >more_vert</md-icon>
+                        <md-tooltip>
+                            <span translate>More actions</span>
+                        </md-tooltip>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="showConfirm(affectation)" ng-if="account.role == '1' || account.role == '3'">
+                                <md-icon class="material-icons" >delete</md-icon>
+                                <span translate>Cancel this affectation</span>
+                            </md-button>
+                        </md-menu-item>
+                        
+                    </md-menu-content>
+                </md-menu>
                 </td>
                 </tr>
                 </tbody>
             </table>
-            
+
         </md-table-container>
-            <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 25, 50, 100]" md-page="query.page" md-total="{{affectations.count}}" 
-                          md-page-select="true" md-label="{{label}}" md-on-paginate="getAffectations">
+        <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 25, 50, 100]" md-page="query.page" md-total="{{affectations.count}}" 
+                              md-page-select="true" md-label="{{label}}" md-on-paginate="getAffectations">
 
     </md-card>
 </div>

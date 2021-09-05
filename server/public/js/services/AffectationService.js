@@ -6,6 +6,9 @@ angular.module('AffectationService', []).factory('Affectation', function($http) 
             var search = info.search?info.search:"-";
             var filters = info.filters?info.filters:"-";
             return $http.get('/api/affectations/' + limit + '/' + skip+ '/'+search + '/'+filters);
+        },
+        delete: function(info) {
+            return $http.delete('/api/affectations/' + info.id);
         }
     }
 });

@@ -363,6 +363,13 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.affectations.api.list],
         access: _.findWhere(aclRoutes, {id: 78}).roles
     },
+    // Caancel affectation
+    {
+        path: _.findWhere(aclRoutes, {id: 79}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 79}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.affectations.api.remove],
+        access: _.findWhere(aclRoutes, {id: 79}).roles
+    },
     // Download
     {
         path: _.findWhere(aclRoutes, {id: 60}).uri,

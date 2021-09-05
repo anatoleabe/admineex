@@ -274,3 +274,28 @@ exports.api.list = function (req, res) {
         return res.send(401);
     }
 }
+
+
+exports.api.remove = function (req, res) {
+    if (req.actor) {
+        if(req.params.id == undefined){
+            audit.logEvent(req.actor.id, 'Affectation', 'Delete', '', '', 'failed', 'The actor could not delete an affectation because one or more params of the request was not defined');
+            return res.sendStatus(400);
+        } else {
+            Affectation.remove({_id : req.params.id}, function(err){
+                if (err) {
+                    log.error(err);
+                    return res.status(500).send(err);
+                } else {
+                    audit.logEvent(req.actor.id, 'Affectation', 'Delete an affectation', "AffectationID", req.params.id, 'succeed',
+                                   'The actor has successfully deleted the affectation.');
+                    return res.sendStatus(200);
+                }
+            });
+        }
+    } else {
+        audit.logEvent('[anonymous]', 'Affectation', 'Delete an affectation', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+}
+

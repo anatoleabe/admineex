@@ -459,5 +459,11 @@
         "uri": "/api/affectations/:limit/:skip/:search/:filters",
         "method": "GET",
         "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 79,
+        "uri": "/api/affectations/:id",
+        "method": "DELETE",
+        "roles": [1,3]
     }
 ]
