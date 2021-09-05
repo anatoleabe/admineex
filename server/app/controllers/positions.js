@@ -115,61 +115,84 @@ exports.api.affectToPosition = function (req, res) {
                         // Parse received fields
                         var affectationFields = {
                             positionId: fields.positionId,
+                            oldPositionId: null,
                             positionCode: result.code,
                             personnelId: fields.occupiedBy,
                             date: fields.startDate,
-                            lastModified: new Date()
+                            lastModified: new Date(),
+                            creation: new Date(),
+                            actor: req.actor.id,
+                            numAct: fields.numAct,
+                            signatureDate: fields.signatureDate,
+                            startDate: fields.startDate,
+                            mouvement: fields.mouvement,
+                            nature: fields.nature,
+                            endDate: (fields.isCurrent && fields.isCurrent == "true") ? null : fields.endDate,
                         };
                         var filter = {
-                            positionId: fields.positionId
+                            personnelId: fields.occupiedBy,
+                            positionId: fields.positionId,
                         };
-                        Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+                        Affectation.findOne({personnelId: fields.occupiedBy}).sort({lastModified: -1}).lean().exec(function (err, lastAffectation) {
                             if (err) {
                                 log.error(err);
-                                audit.logEvent('[mongodb]', 'Position', 'affectToPosition', "", "", 'failed', "Mongodb attempted to affect to  a Position");
+                                audit.logEvent('[mongodb]', 'Position', 'affectToPosition', "", "", 'failed', "Mongodb attempted to find old affectation.");
                                 return res.status(500).send(err);
                             } else {
-                                controllers.personnel.read({_id: affectationFields.personnelId}, function (err, perso) {
+                                if (lastAffectation){
+                                    filter.oldPositionId = lastAffectation.positionId;
+                                    affectationFields.oldPositionId = lastAffectation.positionId;
+                                }
+                                
+                                Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, sort: {'lastModified': -1}, new : true}, function (err, result) {
                                     if (err) {
                                         log.error(err);
+                                        audit.logEvent('[mongodb]', 'Position', 'affectToPosition', "", "", 'failed', "Mongodb attempted to affect to  a Position");
                                         return res.status(500).send(err);
                                     } else {
-                                        if (perso) {
-
-                                            var history = {
-                                                numAct: fields.numAct,
-                                                positionId: new ObjectID(fields.positionId),
-                                                isCurrent: fields.isCurrent,
-                                                signatureDate: fields.signatureDate,
-                                                startDate: fields.startDate,
-                                                endDate: (fields.isCurrent && fields.isCurrent == "true") ? null : fields.endDate,
-                                                mouvement: fields.mouvement,
-                                                nature: fields.nature
-                                            };
-                                            if (!perso.history) {
-                                                perso.history = {positions: []};
-                                            } else if (perso.history && !perso.history.positions) {
-                                                perso.history.positions = [];
-                                            } else if (perso.history && util.isArray(perso.history.positions) && perso.history.positions.length > 0) {
-                                                for (var i in perso.history.positions) {
-                                                    perso.history.positions[i].isCurrent = false;
-                                                }
+                                        controllers.personnel.read({_id: affectationFields.personnelId}, function (err, perso) {
+                                            if (err) {
+                                                log.error(err);
+                                                return res.status(500).send(err);
                                             } else {
-                                                perso.history.positions = [];
-                                            }
-                                            perso.history.positions.push(history);
+                                                if (perso) {
 
-                                            controllers.personnel.upsert(perso, function (err, structure) {
-                                                if (err) {
-                                                    log.error(err);
+                                                    var history = {
+                                                        numAct: fields.numAct,
+                                                        positionId: new ObjectID(fields.positionId),
+                                                        isCurrent: fields.isCurrent,
+                                                        signatureDate: fields.signatureDate,
+                                                        startDate: fields.startDate,
+                                                        endDate: (fields.isCurrent && fields.isCurrent == "true") ? null : fields.endDate,
+                                                        mouvement: fields.mouvement,
+                                                        nature: fields.nature
+                                                    };
+                                                    if (!perso.history) {
+                                                        perso.history = {positions: []};
+                                                    } else if (perso.history && !perso.history.positions) {
+                                                        perso.history.positions = [];
+                                                    } else if (perso.history && util.isArray(perso.history.positions) && perso.history.positions.length > 0) {
+                                                        for (var i in perso.history.positions) {
+                                                            perso.history.positions[i].isCurrent = false;
+                                                        }
+                                                    } else {
+                                                        perso.history.positions = [];
+                                                    }
+                                                    perso.history.positions.push(history);
+
+                                                    controllers.personnel.upsert(perso, function (err, structure) {
+                                                        if (err) {
+                                                            log.error(err);
+                                                        } else {
+                                                            res.sendStatus(200);
+                                                        }
+                                                    });
                                                 } else {
                                                     res.sendStatus(200);
-                                                }
-                                            });
-                                        } else {
-                                            res.sendStatus(200);
 
-                                        }
+                                                }
+                                            }
+                                        });
                                     }
                                 });
                             }
@@ -432,7 +455,7 @@ exports.list = function (options, callback) {
                 $project: {_id: 1, affectation: 1, structureId: 1, en: 1, fr: 1, metainfo: 1, code: 1, order: 1, comesAfter: 1}
             };
             aggregate.push(projection);
-            
+
             q = Position.aggregate(aggregate);
             q.exec(function (err, result) {
                 if (err) {
@@ -880,7 +903,7 @@ exports.patrol0 = function (callback) {
                 }
             });
 
-            Affectation.find(query).lean().exec(function (err, affectations) {
+            Affectation.find(query).sort({lastModified: -1}).lean().exec(function (err, affectations) {
                 if (err) {
                     log.error(err);
                     callback(err);
@@ -993,7 +1016,7 @@ exports.findPositionHolder = function (options, affectation, callback) {
 exports.findPositionHelderBystaffId = function (options, staffId, callback) {
     Affectation.findOne({
         personnelId: staffId
-    }).lean().exec(function (err, affectation) {
+    }).sort({lastModified: -1}).lean().exec(function (err, affectation) {
         if (err) {
             log.error(err);
             callback(err);
@@ -1025,7 +1048,7 @@ exports.findPositionHelderBystaffId = function (options, staffId, callback) {
 exports.findHelderPositionsByStructureCode = function (code, callback) {
     Affectation.find({
         positionCode: code
-    }).lean().exec(function (err, positions) {
+    }).sort({lastModified: -1}).lean().exec(function (err, positions) {
         if (err) {
             log.error(err);
             callback(err);

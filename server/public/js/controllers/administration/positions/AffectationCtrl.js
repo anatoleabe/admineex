@@ -79,7 +79,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
             $scope.mouvement.idPersonnel = undefined;
         }
     }
-
+    
     $scope.getPositionCode = function (code) {
         if (code) {
             $scope.affectation.positionCode = code;
@@ -146,7 +146,6 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                 Structure.minimalList(option).then(function (response) {
                                                     var data = response.data;
                                                     $scope.structures = data;
-                                                    console.log(data)
                                                     $scope.loading = false;
                                                     $rootScope.kernel.loading = 100;
                                                     if ($scope.params && $scope.params.positionTo) {
@@ -242,7 +241,6 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                             if ($scope.params) {
                                                 if ($scope.params.positionTo) {
                                                     $scope.positionFromParams = true;
-                                                    console.log($scope.params.positionTo);
                                                     $scope.typeStructre = $scope.params.positionTo.structure.type;
                                                     $scope.loadStructures($scope.typeStructre);
 

@@ -249,6 +249,18 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Staff management", "Staff in retirement age"]
+        }).state('home.staffs.assignmenthistory', {
+            url: '/assignmenthistory',
+            params: {id: undefined, opath: undefined},
+            templateUrl: 'templates/staffs/staff/assignmenthistory.html',
+            controller: 'AssignmentHistoryController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/staffs/staff/AssignmentHistoryCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Staff management", "Staff in retirement age"]
         }).state('home.staffs.movement', {
             abstract: true,
             url: '/movement',

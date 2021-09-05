@@ -1,0 +1,11 @@
+angular.module('AffectationService', []).factory('Affectation', function($http) {
+    return {
+        list: function(info) {
+            var limit = info.limit?info.limit:0;
+            var skip = info.skip?info.skip:0;
+            var search = info.search?info.search:"-";
+            var filters = info.filters?info.filters:"-";
+            return $http.get('/api/affectations/' + limit + '/' + skip+ '/'+search + '/'+filters);
+        }
+    }
+});

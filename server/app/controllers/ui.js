@@ -119,6 +119,13 @@ function buildNav(user, callback) {
         label: gt.gettext('Staff in retirement age'),
         name: gt.gettext('Staff in retirement age')
     };
+    
+    var staffManagementTab4 = {
+        href: 'home.staffs.assignmenthistory',
+        sref: '.staffs',
+        label: gt.gettext('Assignment History'),
+        name: gt.gettext('Assignment History')
+    };
 
     var task = {
         href: 'home.tasks.main',
@@ -273,6 +280,7 @@ function buildNav(user, callback) {
             // LEFT MENU TABS FOR STAFF MANAGEMENT
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab4);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU MONITOR
             nav.left[0].items.push(monitoring);
@@ -299,6 +307,7 @@ function buildNav(user, callback) {
             // LEFT MENU TABS FOR STAFF MANAGEMENT
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab4);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU MONITOR
             nav.left[0].items.push(monitoring);
@@ -317,6 +326,7 @@ function buildNav(user, callback) {
             // LEFT MENU TABS FOR STAFF MANAGEMENT
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab4);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
@@ -331,6 +341,7 @@ function buildNav(user, callback) {
             // LEFT MENU TABS FOR STAFF MANAGEMENT
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab4);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
@@ -347,10 +358,6 @@ function buildNav(user, callback) {
 
             break;
     }
-//    // LEFT MENU
-//    nav.left[2].items.push(profile);
-//    nav.left[2].items.push(settings);
-//    nav.left[2].items.push(signout);
 
     // Nav Built
     callback(nav);

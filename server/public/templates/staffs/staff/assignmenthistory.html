@@ -1,0 +1,123 @@
+
+<md-toolbar class="toolbar-filter" >
+    <div class="md-toolbar-tools md-default" >
+        <div flex >
+
+        </div>
+        <div flex ng-show="filters.structure">
+
+
+        </div>
+        <span flex></span>
+
+<!--        <md-button ng-disabled="personnels.length <= 0" ng-click="print()" class="md-primary">
+            <span translate>Print</span>
+        </md-button>-->
+        <md-button class="md-icon-button" aria-label="search" ng-click="search = '';$parent.setFocus('search');" ng-hide="search == undefined" >
+            <md-icon class="material-icons" >search</md-icon>
+            <md-tooltip>
+                <span translate>Search</span>
+            </md-tooltip>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="search" ng-click="search = '';$parent.setFocus('search');" ng-hide="search == undefined" >
+            <md-icon class="material-icons" >filter_list</md-icon>
+            <md-tooltip>
+                <span translate>Filter more</span>
+            </md-tooltip>
+        </md-button>
+
+        <md-menu>
+            <md-button class="md-icon-button"  ng-click="openMoreMenu($mdOpenMenu)" >
+                <md-icon class="material-icons" >more_vert</md-icon>
+                <md-tooltip>
+                    <span translate>More actions</span>
+                </md-tooltip>
+            </md-button>
+            <md-menu-content width="4">
+                <md-menu-item>
+                    <md-button ng-click="showRetired()">
+                        <md-icon class="material-icons" >people</md-icon>
+                        Show retired people
+                    </md-button>
+                </md-menu-item>
+
+            </md-menu-content>
+        </md-menu>
+    </div>
+</md-toolbar>
+<div class="md-dialog-content">
+    <md-card>
+        <md-toolbar class="md-table-toolbar md-default" >
+            <div class="md-toolbar-tools">
+                <md-icon>search</md-icon>
+                <form flex>
+                    <input type="text" name="search" ng-model="search" placeholder="{{ 'Search...' | translate }}">
+                </form>
+                <md-button class="md-icon-button" ng-click="search = ''; getAffectations()" aria-label="close">
+                    <md-icon class="material-icons">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-table-container>
+            <table id="procrastinate" md-table md-progress="promise">
+                <thead md-head md-order="query.order" class="procrastinateTable">
+                    <tr md-row>
+                        <th md-column md-order-by="matricule" translate style="width: 10px">Identifier</th>
+                        <th md-column md-order-by="fname" translate >Personnel</th>
+                        <th md-column md-order-by="newposition.fr" style="width: 40%" translate>Affectation / nomination</th>
+                        <th md-column md-order-by="mouvement"  translate>Mouvement</th>
+                        <th md-column md-order-by="date" style="width: 160px" translate>Date</th>
+                        <th md-column md-order-by="name" style="width: 160px" translate>Actor</th>
+                        <th md-column translate >Actions</th>
+                    </tr>
+                </thead>
+                <tbody md-body dnd-list="list" class="ng-scope" class="procrastinateTable">
+                    <tr md-row  data-ng-repeat="affectation in affectations.data| orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                        <td md-cell  style="width: 10px" >{{affectation.matricule}} </td>
+                        <td md-cell >
+                            <span >{{affectation.fname}}</span>
+                        </td>
+                        <td md-cell style="width: 40%">
+                            <span ><b><span style="color: cadetblue"> &#8593; </span> {{affectation.newPosition.fr| uppercase | unknown}}</b>
+                            </span>
+                            <br/> 
+                            <span ><small ><b>{{affectation.structureAffectation.fr}} &#8594; {{affectation.structureAffectationFather.fr}}</b></small> </span>
+                            <br/> 
+                            <small ><span style="color: chocolate"> &#8595; </span>  <span translate> Précédement: </span><span> {{affectation.oldPosition.fr| uppercase | unknown}}</span></small>
+                            <br ng-if="affectation.oldStructureAffectation"/> 
+                            <span ng-if="affectation.oldStructureAffectation"><small >{{affectation.oldStructureAffectation.fr}} &#8594; {{affectation.oldStructureAffectationFather.fr}}</small> </span>
+                        </td>
+                        <td md-cell flex  >
+                            <small ><span>{{affectation.mouvementBeautified}}</span> <span ng-if="affectation.mouvementBeautified" translate>by </span> <span>{{affectation.natureBeautified}} </span> <span ng-if="affectation.mouvementBeautified" > N°: </span> <span> {{affectation.numAct}}</span></small>
+                        </td>
+                        <td md-cell style="width: 160px" >{{affectation.date|smartDatetime}} </td>
+                        <td md-cell flex  >
+                            <span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 30px; " >{{affectation.actor.firstname.substr(0, 1).toUpperCase()}}</span>
+                            {{affectation.actor.firstname}} 
+                        </td>
+                        <td md-cell  >
+                <md-button  aria-label="Show more" class="md-icon-button">
+                    <md-icon>more_vert</md-icon>
+                    <md-tooltip md-direction="top">
+                        <span translate>Show more</span>
+                    </md-tooltip>
+                </md-button>
+                </td>
+                </tr>
+                </tbody>
+            </table>
+            
+        </md-table-container>
+            <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 25, 50, 100]" md-page="query.page" md-total="{{affectations.count}}" 
+                          md-page-select="true" md-label="{{label}}" md-on-paginate="getAffectations">
+
+    </md-card>
+</div>
+<div style="margin-bottom: 100px"></div>
+<md-button  class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ng-click="affect()" ng-if="account.role == '1' || account.role == '3'">
+    <md-icon>transfer_within_a_station</md-icon>
+    <md-tooltip md-direction="top">
+        <span translate>New affectation</span>
+    </md-tooltip>
+</md-button>
+

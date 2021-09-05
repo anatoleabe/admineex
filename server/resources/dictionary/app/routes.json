@@ -453,5 +453,11 @@
         "uri": "/api/thresholds",
         "method": "POST",
         "roles": [1]
+    },
+    {
+        "id": 78,
+        "uri": "/api/affectations/:limit/:skip/:search/:filters",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
     }
 ]

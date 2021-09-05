@@ -22,6 +22,7 @@ controllers.users = require('./controllers/users');
 controllers.projects = require('./controllers/projects');
 controllers.structures = require('./controllers/structures');
 controllers.positions = require('./controllers/positions');
+controllers.affectations = require('./controllers/affectations');
 controllers.personnel = require('./controllers/personnel');
 controllers.organizations = require('./controllers/organizations');
 controllers.tasks = require('./controllers/tasks');
@@ -354,6 +355,13 @@ var routes = [
         httpMethod: _.findWhere(aclRoutes, {id: 49}).method,
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.positions.api.affectToPosition],
         access: _.findWhere(aclRoutes, {id: 49}).roles
+    },
+    // list affectation
+    {
+        path: _.findWhere(aclRoutes, {id: 78}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 78}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.affectations.api.list],
+        access: _.findWhere(aclRoutes, {id: 78}).roles
     },
     // Download
     {
