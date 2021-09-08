@@ -1,4 +1,6 @@
-angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsController', function ($scope, $window, gettextCatalog, $q, $stateParams, $state, $ocLazyLoad, $injector, $rootScope, $location, $mdDialog, $http, $filter, params) {
+angular.module('PersonnalRecordsCtrl', [[
+        'node_modules/angular-timeline/dist/angular-timeline.css'
+    ]]).controller('PersonnalRecordsController', function ($scope, $window, gettextCatalog, $q, $stateParams, $state, $ocLazyLoad, $injector, $rootScope, $location, $mdDialog, $http, $filter, params) {
     var id = params && params.id ? params.id : $stateParams.id;
     var oldPath = params && params.opath ? params.name : $stateParams.opath;
 
@@ -49,301 +51,281 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
 
         $ocLazyLoad.load('js/services/StaffService.js').then(function () {
             var Staffs = $injector.get('Staff');
-            $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
-                var Dictionary = $injector.get('Dictionary');
-                Dictionary.jsonList({dictionary: "personnel", levels: ['profile']}).then(function (response) {
-                    dictionary.profiles = response.data.jsonList;
-                    Dictionary.jsonList({dictionary: "personnel", levels: ['skills']}).then(function (response) {
-                        dictionary.skills = response.data.jsonList;
-                        Dictionary.jsonList({dictionary: "acts", levels: ['natures']}).then(function (response) {
-                            dictionary.natures = response.data.jsonList;
+            $ocLazyLoad.load('js/services/AffectationService.js').then(function () {
+                var Affectation = $injector.get('Affectation');
+                $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
+                    var Dictionary = $injector.get('Dictionary');
+                    Dictionary.jsonList({dictionary: "personnel", levels: ['profile']}).then(function (response) {
+                        dictionary.profiles = response.data.jsonList;
+                        Dictionary.jsonList({dictionary: "personnel", levels: ['skills']}).then(function (response) {
+                            dictionary.skills = response.data.jsonList;
+                            Dictionary.jsonList({dictionary: "acts", levels: ['natures']}).then(function (response) {
+                                dictionary.natures = response.data.jsonList;
 
-                            $scope.pdf1 = function () {
-                                $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
-                                    var FileSaver = $injector.get('FileSaver');
-                                    $rootScope.kernel.loading = 0;
+                                $scope.pdf1 = function () {
+                                    $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
+                                        var FileSaver = $injector.get('FileSaver');
+                                        $rootScope.kernel.loading = 0;
+                                        var deferred = $q.defer();
+                                        $scope.promise = deferred.promise;
+                                        $http({
+                                            method: 'GET',
+                                            url: '/api/pdf/pdf1/',
+                                            headers: {'Content-Type': "application/pdf"},
+                                            responseType: "arraybuffer"
+                                        }).then(function (response) {
+                                            var d = new Blob([response.data], {type: "application/pdf"});
+                                            FileSaver.saveAs(d, 'CV_xxx.pdf');
+                                            $rootScope.kernel.loading = 100;
+                                            deferred.resolve(response.data);
+                                        }).catch(function (response) {
+                                            console.error(response);
+                                        });
+                                    });
+
+                                };
+
+
+                                function createFilterFor(query) {
+                                    var lowercaseQuery = query.toLowerCase();
+                                    return function filterFn(item) {
+                                        return (item.value.indexOf(lowercaseQuery) === 0);
+                                    };
+                                }
+
+                                function getDictionaryItemByValue(dictionaryList, itemValue) {
+                                    var items = $.grep(dictionaryList, function (c, i) {
+                                        return c.value === itemValue;
+                                    });
+                                    if (items && items.length > 0) {
+                                        return items[0];
+                                    } else {
+                                        return undefined;
+                                    }
+                                }
+
+                                //Patient Query search
+                                $scope.personnelQuerySearch = function (text) {
+                                    $scope.personnelSelected = undefined;
                                     var deferred = $q.defer();
-                                    $scope.promise = deferred.promise;
-                                    $http({
-                                        method: 'GET',
-                                        url: '/api/pdf/pdf1/',
-                                        headers: {'Content-Type': "application/pdf"},
-                                        responseType: "arraybuffer"
-                                    }).then(function (response) {
-                                        var d = new Blob([response.data], {type: "application/pdf"});
-                                        FileSaver.saveAs(d, 'CV_xxx.pdf');
-                                        $rootScope.kernel.loading = 100;
-                                        deferred.resolve(response.data);
+                                    var results = text ? createFilterFor(text) : deferred;
+                                    Staffs.search({text: text}).then(function (response) {
+                                        var result = response.data;
+                                        if (!result || result === 'null' | result === null) {
+                                            result = [];
+                                        }
+                                        deferred.resolve(result);
                                     }).catch(function (response) {
+                                        console.log(response);
+                                    });
+                                    return deferred.promise;
+                                };
+
+                                if (id) {
+                                    Staffs.read({
+                                        id: id,
+                                        beautify: true
+                                    }).then(function (response) {
+                                        $scope.selectedPersonnelChange(response.data);
+                                        $scope.back = function () {
+                                            $state.go(oldPath);
+                                        };
+                                    }).catch(function (response) {
+                                        $rootScope.kernel.alerts.push({
+                                            type: 1,
+                                            msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                            priority: 2
+                                        });
                                         console.error(response);
                                     });
-                                });
-
-                            };
-
-
-                            function createFilterFor(query) {
-                                var lowercaseQuery = query.toLowerCase();
-                                return function filterFn(item) {
-                                    return (item.value.indexOf(lowercaseQuery) === 0);
-                                };
-                            }
-
-                            function getDictionaryItemByValue(dictionaryList, itemValue) {
-                                var items = $.grep(dictionaryList, function (c, i) {
-                                    return c.value === itemValue;
-                                });
-                                if (items && items.length > 0) {
-                                    return items[0];
-                                } else {
-                                    return undefined;
                                 }
-                            }
 
-                            //Patient Query search
-                            $scope.personnelQuerySearch = function (text) {
-                                $scope.personnelSelected = undefined;
-                                var deferred = $q.defer();
-                                var results = text ? createFilterFor(text) : deferred;
-                                Staffs.search({text: text}).then(function (response) {
-                                    var result = response.data;
-                                    if (!result || result === 'null' | result === null) {
-                                        result = [];
-                                    }
-                                    deferred.resolve(result);
-                                }).catch(function (response) {
-                                    console.log(response);
-                                });
-                                return deferred.promise;
-                            };
-
-                            if (id) {
-                                Staffs.read({
-                                    id: id,
-                                    beautify: true
-                                }).then(function (response) {
-                                    $scope.selectedPersonnelChange(response.data);
-                                    $scope.back = function () {
-                                        $state.go(oldPath);
-                                    };
-                                }).catch(function (response) {
-                                    $rootScope.kernel.alerts.push({
-                                        type: 1,
-                                        msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                        priority: 2
-                                    });
-                                    console.error(response);
-                                });
-                            }
-
-                            $scope.selectedPersonnelChange = function (personnel) {
-                                if (personnel) {
-                                    $scope.personnelSelected = personnel;
-                                    loadsHistory();
+                                $scope.selectedPersonnelChange = function (personnel) {
+                                    if (personnel) {
+                                        $scope.personnelSelected = personnel;
+                                        loadsHistory();
 
 
 
-                                    $scope.userImage = "templates/staffs/img/" + personnel.mysqlId + ".jpeg";
-                                    if (personnel.mysqlId != "351" && personnel.mysqlId != "372" && personnel.mysqlId != "97") {
-                                        $scope.userImage = "templates/staffs/img/unknow.png";
-                                    }
-
-                                    function prepareRequiredItemsToAngular() {
-                                        var profiles = [];
-                                        var skills = [];
-                                        if ($scope.personnelSelected) {
-                                            if ($scope.personnelSelected.profiles) {
-                                                for (i = 0; i < $scope.personnelSelected.profiles.length; i++) {
-                                                    if ($scope.personnelSelected.profiles [i]) {
-                                                        profiles.push(getDictionaryItemByValue(dictionary.profiles, $scope.personnelSelected.profiles[i]));
-                                                    }
-                                                }
-                                            }
-                                            if ($scope.personnelSelected.skills) {
-                                                for (i = 0; i < $scope.personnelSelected.skills.length; i++) {
-                                                    if ($scope.personnelSelected.skills [i]) {
-                                                        skills.push(getDictionaryItemByValue(dictionary.skills, $scope.personnelSelected.skills[i]));
-                                                    }
-                                                }
-                                            }
+                                        $scope.userImage = "templates/staffs/img/" + personnel.mysqlId + ".jpeg";
+                                        if (personnel.mysqlId != "351" && personnel.mysqlId != "372" && personnel.mysqlId != "97") {
+                                            $scope.userImage = "templates/staffs/img/unknow.png";
                                         }
-                                        $scope.profiles = profiles;
-                                        $scope.skills = skills;
-                                    }
 
-                                    prepareRequiredItemsToAngular();
-
-                                    $scope.add = function (personnel, moreField, resourcesDistionary) {
-                                        var personnel = personnel;
-
-                                        $mdDialog.show({
-                                            controller: ['$scope', '$mdDialog', 'personnel', '$q', 'dictionary', 'moreField', 'resourcesDistionary', function ($scope, $mdDialog, personnel, $q, dictionary, moreField, resourcesDistionary) {
-                                                    $scope.personnel = personnel;
-                                                    $scope.detailDescription = {};
-                                                    $scope.detailDescription.name = resourcesDistionary;
-                                                    if (resourcesDistionary == "profiles") {
-                                                        $scope.detailDescription.title = gettextCatalog.getString("Select profiles (You can add up to 05 profiles):");
-                                                        $scope.detailDescription.placeholder = gettextCatalog.getString("Choose profile");
-                                                    } else if (resourcesDistionary == "skills") {
-                                                        $scope.detailDescription.title = gettextCatalog.getString("Select skills (You can add up to 05 skills):");
-                                                        $scope.detailDescription.placeholder = gettextCatalog.getString("Choose a skill");
-                                                    }
-
-
-                                                    function prepareDetailsForServer() {
-                                                        if ($scope.personnel) {
-                                                            $scope.personnel[moreField] = [];
-                                                            for (i = 0; i < $scope.selectedDetails.length; i++) {
-                                                                if ($scope.selectedDetails[i]) {
-                                                                    $scope.personnel[moreField].push($scope.selectedDetails[i].id);
-                                                                }
-                                                            }
+                                        function prepareRequiredItemsToAngular() {
+                                            var profiles = [];
+                                            var skills = [];
+                                            if ($scope.personnelSelected) {
+                                                if ($scope.personnelSelected.profiles) {
+                                                    for (i = 0; i < $scope.personnelSelected.profiles.length; i++) {
+                                                        if ($scope.personnelSelected.profiles [i]) {
+                                                            profiles.push(getDictionaryItemByValue(dictionary.profiles, $scope.personnelSelected.profiles[i]));
                                                         }
                                                     }
+                                                }
+                                                if ($scope.personnelSelected.skills) {
+                                                    for (i = 0; i < $scope.personnelSelected.skills.length; i++) {
+                                                        if ($scope.personnelSelected.skills [i]) {
+                                                            skills.push(getDictionaryItemByValue(dictionary.skills, $scope.personnelSelected.skills[i]));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            $scope.profiles = profiles;
+                                            $scope.skills = skills;
+                                        }
 
-                                                    function prepareDetailsForAngular() {
-                                                        var requiredDetails = [];
-                                                        if ($scope.personnel) {
-                                                            if ($scope.personnel[moreField]) {
-                                                                for (i = 0; i < $scope.personnel[moreField].length; i++) {
-                                                                    if ($scope.personnel[moreField] [i]) {
-                                                                        requiredDetails.push(getDictionaryItemByValue(dictionary[resourcesDistionary], $scope.personnel[moreField][i]));
+                                        prepareRequiredItemsToAngular();
+
+                                        $scope.add = function (personnel, moreField, resourcesDistionary) {
+                                            var personnel = personnel;
+
+                                            $mdDialog.show({
+                                                controller: ['$scope', '$mdDialog', 'personnel', '$q', 'dictionary', 'moreField', 'resourcesDistionary', function ($scope, $mdDialog, personnel, $q, dictionary, moreField, resourcesDistionary) {
+                                                        $scope.personnel = personnel;
+                                                        $scope.detailDescription = {};
+                                                        $scope.detailDescription.name = resourcesDistionary;
+                                                        if (resourcesDistionary == "profiles") {
+                                                            $scope.detailDescription.title = gettextCatalog.getString("Select profiles (You can add up to 05 profiles):");
+                                                            $scope.detailDescription.placeholder = gettextCatalog.getString("Choose profile");
+                                                        } else if (resourcesDistionary == "skills") {
+                                                            $scope.detailDescription.title = gettextCatalog.getString("Select skills (You can add up to 05 skills):");
+                                                            $scope.detailDescription.placeholder = gettextCatalog.getString("Choose a skill");
+                                                        }
+
+
+                                                        function prepareDetailsForServer() {
+                                                            if ($scope.personnel) {
+                                                                $scope.personnel[moreField] = [];
+                                                                for (i = 0; i < $scope.selectedDetails.length; i++) {
+                                                                    if ($scope.selectedDetails[i]) {
+                                                                        $scope.personnel[moreField].push($scope.selectedDetails[i].id);
                                                                     }
                                                                 }
                                                             }
                                                         }
-                                                        $scope.selectedDetails = requiredDetails;
-                                                    }
 
-                                                    prepareDetailsForAngular();
-
-                                                    $scope.querySearchInProfiles = function (text) {
-                                                        var deferred = $q.defer();
-                                                        if (text) {
-                                                            var profile = $.grep(dictionary[resourcesDistionary], function (c, i) {
-                                                                return c.name.toLowerCase().includes(text.toLowerCase());
-                                                            });
-                                                            deferred.resolve(profile);
-                                                        } else {
-                                                            deferred.resolve(dictionary[resourcesDistionary]);
+                                                        function prepareDetailsForAngular() {
+                                                            var requiredDetails = [];
+                                                            if ($scope.personnel) {
+                                                                if ($scope.personnel[moreField]) {
+                                                                    for (i = 0; i < $scope.personnel[moreField].length; i++) {
+                                                                        if ($scope.personnel[moreField] [i]) {
+                                                                            requiredDetails.push(getDictionaryItemByValue(dictionary[resourcesDistionary], $scope.personnel[moreField][i]));
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            $scope.selectedDetails = requiredDetails;
                                                         }
-                                                        return deferred.promise;
-                                                    }
 
-                                                    $scope.transformChip = function (chip) {
-                                                        // If it is an object, it's already a known chip
-                                                        if (angular.isObject(chip)) {
-                                                            return chip;
+                                                        prepareDetailsForAngular();
+
+                                                        $scope.querySearchInProfiles = function (text) {
+                                                            var deferred = $q.defer();
+                                                            if (text) {
+                                                                var profile = $.grep(dictionary[resourcesDistionary], function (c, i) {
+                                                                    return c.name.toLowerCase().includes(text.toLowerCase());
+                                                                });
+                                                                deferred.resolve(profile);
+                                                            } else {
+                                                                deferred.resolve(dictionary[resourcesDistionary]);
+                                                            }
+                                                            return deferred.promise;
                                                         }
-                                                        // Otherwise, return null;
-                                                        return null;
-                                                    }
 
-                                                    ;
-                                                    $scope.close = function () {
-                                                        $mdDialog.hide();
-                                                    }
-                                                    $scope.cancel = function () {
-                                                        $mdDialog.cancel();
-                                                    };
-                                                    $scope.save = function (params) {
-                                                        $scope.personnel[moreField] = $scope.selectedDetails;
+                                                        $scope.transformChip = function (chip) {
+                                                            // If it is an object, it's already a known chip
+                                                            if (angular.isObject(chip)) {
+                                                                return chip;
+                                                            }
+                                                            // Otherwise, return null;
+                                                            return null;
+                                                        }
 
-                                                        prepareDetailsForServer();
-
-                                                        var positionToUpdate = {
-                                                            _id: $scope.personnel._id,
-                                                            identifier: $scope.personnel.identifier
-                                                        };
-                                                        positionToUpdate[moreField] = $scope.personnel[moreField];
-
-                                                        Staffs.upsert(positionToUpdate).then(function (response) {
+                                                        ;
+                                                        $scope.close = function () {
                                                             $mdDialog.hide();
-                                                            prepareRequiredItemsToAngular();
-                                                            $rootScope.kernel.alerts.push({
-                                                                type: 3,
-                                                                msg: gettextCatalog.getString('The staff has been updated'),
-                                                                priority: 4
+                                                        }
+                                                        $scope.cancel = function () {
+                                                            $mdDialog.cancel();
+                                                        };
+                                                        $scope.save = function (params) {
+                                                            $scope.personnel[moreField] = $scope.selectedDetails;
+
+                                                            prepareDetailsForServer();
+
+                                                            var positionToUpdate = {
+                                                                _id: $scope.personnel._id,
+                                                                identifier: $scope.personnel.identifier
+                                                            };
+                                                            positionToUpdate[moreField] = $scope.personnel[moreField];
+
+                                                            Staffs.upsert(positionToUpdate).then(function (response) {
+                                                                $mdDialog.hide();
+                                                                prepareRequiredItemsToAngular();
+                                                                $rootScope.kernel.alerts.push({
+                                                                    type: 3,
+                                                                    msg: gettextCatalog.getString('The staff has been updated'),
+                                                                    priority: 4
+                                                                });
+                                                            }).catch(function (response) {
+                                                                $rootScope.kernel.loading = 100;
+                                                                $rootScope.kernel.alerts.push({
+                                                                    type: 1,
+                                                                    msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                                    priority: 2
+                                                                });
                                                             });
-                                                        }).catch(function (response) {
-                                                            $rootScope.kernel.loading = 100;
-                                                            $rootScope.kernel.alerts.push({
-                                                                type: 1,
-                                                                msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                                                priority: 2
-                                                            });
-                                                        });
-                                                    };
+                                                        };
 
-                                                }],
-                                            templateUrl: '../templates/dialogs/detail.html',
-                                            parent: angular.element(document.body),
-                                            clickOutsideToClose: true,
-                                            locals: {
-                                                personnel: personnel,
-                                                dictionary: dictionary,
-                                                moreField: moreField,
-                                                resourcesDistionary: resourcesDistionary
-                                            }
-                                        }).then(function (answer) {
+                                                    }],
+                                                templateUrl: '../templates/dialogs/detail.html',
+                                                parent: angular.element(document.body),
+                                                clickOutsideToClose: true,
+                                                locals: {
+                                                    personnel: personnel,
+                                                    dictionary: dictionary,
+                                                    moreField: moreField,
+                                                    resourcesDistionary: resourcesDistionary
+                                                }
+                                            }).then(function (answer) {
 
-                                        }, function () {
+                                            }, function () {
 
-                                        });
-                                    }
-
-                                } else {
-                                    $scope.personnelSelected = undefined;
-                                    $scope.events = [];
-                                }
-                            }
-
-
-
-                            loadsHistory = function () {
-                                var p = $scope.personnelSelected;
-                                var history = p.history;
-                                var events = [];
-                                var affectations = [];
-                                var nominations = [];
-                                if (history && history.positions) {
-                                    for (var i = 0; i < history.positions.length; i++) {
-                                        var h = history.positions[i];
-
-                                        var event = {
-                                            action: getDictionaryItemByValue(dictionary.natures, h.nature).fr,
-                                            title: "POSITION",
-                                            content: "STRUCTURE",
-                                            acte: getDictionaryItemByValue(dictionary.natures, h.nature).fr + " N° " + (h.numAct ? h.numAct : gettextCatalog.getString("Unknown")),
-                                            dateOf: $filter('dateHuman')(h.signatureDate)
-                                        };
-                                        events.push(event);
-
-                                        if (h.mouvement == "1") {
-                                            var nomination = {
-                                                numAct: getDictionaryItemByValue(dictionary.natures, h.nature).fr + " N° " + (h.numAct ? h.numAct : gettextCatalog.getString("Unknown")),
-                                                position: "POS",
-                                                nature: getDictionaryItemByValue(dictionary.natures, h.nature).fr,
-                                                dateOf: $filter('dateHuman')(h.signatureDate)
-                                            };
-                                            nominations.push(nomination);
+                                            });
                                         }
 
-                                        if (h.mouvement == "2") {
-                                            var affectation = {
-                                                numAct: getDictionaryItemByValue(dictionary.natures, h.nature).fr + " N° " + (h.numAct ? h.numAct : gettextCatalog.getString("Unknown")),
-                                                position: "POS",
-                                                nature: getDictionaryItemByValue(dictionary.natures, h.nature).fr,
-                                                dateOf: $filter('dateHuman')(h.signatureDate)
-                                            };
-                                            affectations.push(affectation);
-                                        }
+                                    } else {
+                                        $scope.personnelSelected = undefined;
+                                        $scope.events = [];
                                     }
-                                    $scope.events = events;
-                                    $scope.nominations = nominations;
-                                    $scope.affectations = affectations;
                                 }
-                            }
+
+
+
+                                loadsHistory = function () {
+                                    var deferred = $q.defer();
+                                    $rootScope.kernel.loading = 0;
+                                    $scope.helper = [];
+                                    var limit = 0;
+                                    var skip = 0;
+                                    var filterParams = {}
+                                    $scope.search = $scope.personnelSelected.identifier;
+                                    Affectation.list({limit: limit, skip: skip, search: $scope.search, filters: JSON.stringify(filterParams)}).then(function (response) {
+                                        var data = response.data;
+                                        $rootScope.kernel.loading = 100;
+
+                                        $scope.allAffectations = data;
+                                        
+                                        console.log(data)
+
+                                        return deferred.promise;
+                                    }).catch(function (response) {
+                                        console.log(response);
+                                    });
+                                }
+                            });
                         });
                     });
                 });
@@ -362,7 +344,7 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
         var poste = ($scope.personnelSelected.affectedTo && $scope.personnelSelected.affectedTo.position) ? $scope.personnelSelected.affectedTo.position : undefined;
 
         var stages = ($scope.personnelSelected.qualifications) ? $scope.personnelSelected.qualifications.schools : [];
-        
+
         var dd = {
             content: [
 
@@ -519,7 +501,7 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
                         widths: ['auto', 'auto', 'auto', 'auto', '*'],
                         body: [
                             [{text: 'C1', style: 'tableHeader'}, {text: 'TITRES SCOLAIRES OU UNIVERSITAIRE', style: 'tableHeader', colSpan: 4}, {}, {}, {}],
-                            [{}, {text: 'C11', style: 'tableHeader'}, {text: 'Niveau instruction : ' + (p.qualifications?p.qualifications.highestLevelEducation:""), style: 'tablecells', colSpan: 3}, {}, {}],
+                            [{}, {text: 'C11', style: 'tableHeader'}, {text: 'Niveau instruction : ' + (p.qualifications ? p.qualifications.highestLevelEducation : ""), style: 'tablecells', colSpan: 3}, {}, {}],
 
                             [{}, {text: 'C12', style: 'tableHeader'}, {text: 'Diplôme de recrutement', style: 'tableHeader', colSpan: 3}, {}, {}],
                             [{}, {}, {text: 'C1201', style: 'tableHeader'}, {text: 'Libellé du diplôme : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[1] ? p.qualifications.schools[1].diploma : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
@@ -639,8 +621,8 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
                         body: [
                             [{text: 'F1', style: 'tableHeader'}, {text: 'Fonctions antérieures', style: 'tableHeader', colSpan: 4}, {}, {}, {}],
                             [{}, {}, {text: 'N° acte de nomination', style: 'tableHeader'}, {text: 'Poste', style: 'tableHeader'}, {text: 'Date', style: 'tableHeader'}],
-                            [{}, {text: 'F11', style: 'tableHeader'}, {text: ($scope.nominations && $scope.nominations[0]?$scope.nominations[0].numAct:""), style: 'tablecells', border: [true, true, true, true], alignment: 'right'}, {text: ($scope.nominations && $scope.nominations[0]?$scope.nominations[0].position:""), style: 'tablecells', border: [true, true, true, true], alignment: 'right'}, {text: ($scope.nominations && $scope.nominations[0]?$scope.nominations[0].dateOf:""), style: 'tablecells', border: [true, true, true, true], alignment: 'right'}],
-                            [{}, {text: 'F12', style: 'tableHeader'}, {text: ($scope.nominations && $scope.nominations[1]?$scope.nominations[1].numAct:""), style: 'tablecells', border: [true, true, true, true], alignment: 'right'}, {text: ($scope.nominations && $scope.nominations[1]?$scope.nominations[1].position:""), style: 'tablecells', border: [true, true, true, true], alignment: 'right'}, {text: ($scope.nominations && $scope.nominations[1]?$scope.nominations[1].dateOf:""), style: 'tablecells', border: [true, true, true, true], alignment: 'right'}],
+                            [{}, {text: 'F11', style: 'tableHeader'}, {text: ($scope.nominations && $scope.nominations[0] ? $scope.nominations[0].numAct : ""), style: 'tablecells', border: [true, true, true, true], alignment: 'right'}, {text: ($scope.nominations && $scope.nominations[0] ? $scope.nominations[0].position : ""), style: 'tablecells', border: [true, true, true, true], alignment: 'right'}, {text: ($scope.nominations && $scope.nominations[0] ? $scope.nominations[0].dateOf : ""), style: 'tablecells', border: [true, true, true, true], alignment: 'right'}],
+                            [{}, {text: 'F12', style: 'tableHeader'}, {text: ($scope.nominations && $scope.nominations[1] ? $scope.nominations[1].numAct : ""), style: 'tablecells', border: [true, true, true, true], alignment: 'right'}, {text: ($scope.nominations && $scope.nominations[1] ? $scope.nominations[1].position : ""), style: 'tablecells', border: [true, true, true, true], alignment: 'right'}, {text: ($scope.nominations && $scope.nominations[1] ? $scope.nominations[1].dateOf : ""), style: 'tablecells', border: [true, true, true, true], alignment: 'right'}],
                             [{text: 'F2', style: 'tableHeader'}, {text: 'Affectations antérieures', style: 'tableHeader', colSpan: 4}, {}, {}, {}],
                             [{}, {}, {text: 'N° acte d\'affectation', style: 'tableHeader'}, {text: 'Poste', style: 'tableHeader'}, {text: 'Date', style: 'tableHeader'}],
                             [{}, {text: 'F21', style: 'tableHeader'}, {text: '', style: 'tablecells', border: [true, true, true, true], alignment: 'right'}, {text: '', style: 'tablecells', border: [true, true, true, true], alignment: 'right'}, {text: '', style: 'tablecells', border: [true, true, true, true], alignment: 'right'}],
@@ -719,7 +701,7 @@ angular.module('PersonnalRecordsCtrl', []).controller('PersonnalRecordsControlle
             }
 
         }
-        
+
         var stages = [];
         var stagesToPDF = [{}, {text: 'C21', style: 'tableHeader'}, {text: 'Stage 1 : ', style: 'tablecells', colSpan: 3}, {}, {}];
         if ($scope.personnelSelected.qualifications && $scope.personnelSelected.qualifications.stages) {

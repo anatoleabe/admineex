@@ -20,7 +20,6 @@ var controllers = {
 
 exports.api.list = function (req, res) {
     if (req.actor) {
-        console.log("aaaaa")
         var language = req.actor.language.toLowerCase()
         var limit = 0;
         var skip = 0;

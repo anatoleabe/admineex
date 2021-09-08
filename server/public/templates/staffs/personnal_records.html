@@ -28,7 +28,7 @@
         </form>
 
         <md-card-actions layout="row" ng-if="personnelSelected">
-            
+
             <span flex></span>
             <md-button  class="md-icon-button" aria-label="Print" ng-click="openPdf()">
                 <md-icon>print</md-icon>
@@ -214,7 +214,7 @@
                                     </md-content>
                                 </md-card-content>
                             </md-card>
-                            
+
 
                         </md-card>
 
@@ -388,28 +388,28 @@
                             </md-card>
                         </md-card>
                         <!--Meta--> 
-                            <md-card>
-                                <md-card-title>
-                                    <md-card-title-text>
-                                        <span class="md-headline" translate>Meta</span>
-                                    </md-card-title-text>
-                                </md-card-title>
-                                <md-card-content>
-                                    <md-list>
-                                        <md-list-item>
-                                            <md-icon>event</md-icon>
-                                            <p class="md-body-2" translate>Created</p>
-                                            <p class="md-body-1 md-secondary">{{personnelSelected.created| dateHuman}}</p>
-                                        </md-list-item>
-                                        <md-divider></md-divider>
-                                        <md-list-item>
-                                            <md-icon>event</md-icon>
-                                            <p class="md-body-2" translate>Last modified</p>
-                                            <p class="md-body-1 md-secondary">{{personnelSelected.lastModified| dateHuman}}</p>
-                                        </md-list-item>
-                                    </md-list>
-                                </md-card-content>
-                            </md-card>
+                        <md-card>
+                            <md-card-title>
+                                <md-card-title-text>
+                                    <span class="md-headline" translate>Meta</span>
+                                </md-card-title-text>
+                            </md-card-title>
+                            <md-card-content>
+                                <md-list>
+                                    <md-list-item>
+                                        <md-icon>event</md-icon>
+                                        <p class="md-body-2" translate>Created</p>
+                                        <p class="md-body-1 md-secondary">{{personnelSelected.created| dateHuman}}</p>
+                                    </md-list-item>
+                                    <md-divider></md-divider>
+                                    <md-list-item>
+                                        <md-icon>event</md-icon>
+                                        <p class="md-body-2" translate>Last modified</p>
+                                        <p class="md-body-1 md-secondary">{{personnelSelected.lastModified| dateHuman}}</p>
+                                    </md-list-item>
+                                </md-list>
+                            </md-card-content>
+                        </md-card>
                     </div>
                     <div flex="15">
                     </div> 
@@ -417,24 +417,29 @@
             </md-tab>
             <md-tab label='{{"History"| translate }}'>
                 <md-content >
-                    <!--                    <div oc-lazy-load="'bower_components/angular-timeline/dist/angular-timeline.js'">
-                                            <timeline>
-                                                <timeline-event ng-repeat="event in events| orderBy:'dateOf':true">
-                                                    <timeline-badge ng-click="read($index);">
-                                                        <small>{{event.dateOf| dateOnlyYear}}</small>
-                                                    </timeline-badge>
-                                                    <timeline-panel ng-click="read($index);">
-                                                        <timeline-heading>
-                                                            <h6 style="margin:0;"><md-icon>work</md-icon> <small>{{event.action}}</small> : <b>{{event.title}}</b></h6>
-                                                        </timeline-heading>
-                                                        <p style="margin:0;">
-                                                            <span >  <md-icon>account_balance</md-icon> {{event.content}}</span></br>
-                                                            <span > <md-icon>vpn_key</md-icon><small> {{event.acte}}</small> <small translate> of </small> <small> {{event.dateOf| dateHuman}}</small></span>
-                                                        </p>
-                                                    </timeline-panel>
-                                                </timeline-event>
-                                            </timeline>
-                                        </div>-->
+                    <div oc-lazy-load="'node_modules/angular-timeline/dist/angular-timeline.js'">
+                        <timeline>
+                            <timeline-event ng-repeat="affectation in allAffectations">
+                                <timeline-badge ng-click="read($index);">
+                                    <md-icon style="color:#fff;" >start</md-icon>
+                                </timeline-badge>
+                                <timeline-panel ng-click="read($index);">
+                                    <span class="md-caption" translate> Start date: </span> <span style="color:#444" class="md-caption">{{affectation.startDate | dateHuman | unknown}}</span> |
+                                    <span class="md-caption" translate> End date: </span> <span style="color:#444" class="md-caption">{{affectation.endDate | dateHuman | unknown}}</span>
+                                    <timeline-heading>
+                                        <h4 style="margin:0;"><span style="color: cadetblue"> &#8593; </span> {{affectation.newPosition.fr| uppercase | unknown}}</h4>
+                                    </timeline-heading>
+                                    <span ><small ><b>{{affectation.structureAffectation.fr}} &#8594; {{affectation.structureAffectationFather.fr}}</b></small> </span>
+                                    <br/> 
+                                    <small ><span style="color: chocolate"> &#8595; </span>  <span translate> Précédement: </span><span> {{affectation.oldPosition.fr| uppercase | unknown}}</span></small>
+                                    <br ng-if="affectation.oldStructureAffectation"/> 
+                                    <span ng-if="affectation.oldStructureAffectation"><small >{{affectation.oldStructureAffectation.fr}} &#8594; {{affectation.oldStructureAffectationFather.fr}}</small> </span>
+                                    <br/><small ><span>{{affectation.mouvementBeautified}}</span> <span ng-if="affectation.mouvementBeautified" translate>by </span> <span>{{affectation.natureBeautified}} </span> <span ng-if="affectation.mouvementBeautified" > N°: </span> <span> {{affectation.numAct}}</span></small>
+                                    
+                                </timeline-panel>
+                            </timeline-event>
+                        </timeline>
+                    </div>
                 </md-content>
             </md-tab>
 
