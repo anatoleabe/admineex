@@ -705,7 +705,8 @@ exports.INITPOSITIONDATAFROMJSON = function (path, callback) {
     }
 
     if (initialize.positions) {
-        var positions = dictionary.getJSONList("../../resources/dictionary/tmpData/" + path + "/fulldata.json", "en");
+//        var positions = dictionary.getJSONList("../../resources/dictionary/tmpData/" + path + "/fulldata.json", "en");
+        var positions = dictionary.getJSONList("../../resources/dictionary/tmpData/" + path + "/positions.json", "en");
         var avoidedPositionsCode = [];
         function loopA(a) {
             if (a < positions.length) {

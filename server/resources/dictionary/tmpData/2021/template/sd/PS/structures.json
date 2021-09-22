@@ -1,0 +1,79 @@
+[
+    {
+        "code": "XXXXX-1",
+        "fr": "CABINET DU PAYEUR SPECIALISE",
+        "en": "CABINET DU PAYEUR SPECIALISE",
+        "type": "2",
+        "rank": "3",
+        "father": "XXXXX",
+        "country": "CMR",
+        "region": "2",
+        "department": "21"
+    },
+    {
+        "code": "XXXXX-2",
+        "fr": "BUREAU DES AFFAIRES GENERALES",
+        "en": "BUREAU DES AFFAIRES GENERALES",
+        "type": "2",
+        "rank": "3",
+        "father": "XXXXX",
+        "country": "CMR",
+        "region": "2",
+        "department": "21"
+    },
+    {
+        "code": "XXXXX-3",
+        "fr": "FONDE DE POUVOIRS",
+        "en": "FONDE DE POUVOIRS",
+        "type": "2",
+        "rank": "3",
+        "father": "XXXXX",
+        "country": "CMR",
+        "region": "2",
+        "department": "21"
+    },
+    {
+        "code": "XXXXX-4",
+        "fr": "SERVICE DE LA COMPTABILITE ET DE LA CAISSE",
+        "en": "SERVICE DE LA COMPTABILITE ET DE LA CAISSE",
+        "type": "2",
+        "rank": "3",
+        "father": "XXXXX",
+        "country": "CMR",
+        "region": "2",
+        "department": "21"
+    },
+    {
+        "code": "XXXXX-5",
+        "fr": "SERVICE DE VALIDATION TRESOR",
+        "en": "SERVICE DE VALIDATION TRESOR",
+        "type": "2",
+        "rank": "3",
+        "father": "XXXXX",
+        "country": "CMR",
+        "region": "2",
+        "department": "21"
+    },
+    {
+        "code": "XXXXX-6",
+        "fr": "SERVICE DES  DEPENSES DE MATERIEL",
+        "en": "SERVICE DES  DEPENSES DE MATERIEL",
+        "type": "2",
+        "rank": "3",
+        "father": "XXXXX",
+        "country": "CMR",
+        "region": "2",
+        "department": "21"
+    },
+    {
+        "code": "XXXXX-7",
+        "fr": "SERVICE DU COMPTE DE GESTION",
+        "en": "SERVICE DU COMPTE DE GESTION",
+        "type": "2",
+        "rank": "3",
+        "father": "XXXXX",
+        "country": "CMR",
+        "region": "2",
+        "department": "21"
+    }
+]

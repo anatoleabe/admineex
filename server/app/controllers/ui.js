@@ -169,25 +169,28 @@ function buildNav(user, callback) {
     var administrationTab1 = {
         href: 'home.administration.positions',
         sref: '.administration',
-        label: gt.gettext("Positions"),
-        name: gt.gettext('Positions')
+        label: gt.gettext("Positions management"),
+        name: gt.gettext('Positions management')
     };
+    var administrationTab1_menu1 = {
+        href: 'home.administration.new',
+        sref: '.administration',
+        label: gt.gettext("Add new position"),
+        name: gt.gettext('Add new position')
+    };
+    
     var administrationTab2 = {
         href: 'home.administration.structures',
         sref: '.administration',
-        label: gt.gettext('Structures'),
-        name: gt.gettext('Structures')
+        label: gt.gettext('Structures management'),
+        name: gt.gettext('Structures management')
     };
-//    var administrationTab3 = {
-//        href: 'home.administration.export',
-//        label: 'Export',
-//        name: 'Export'
-//    };
-//    var administrationTab4 = {
-//        href: 'home.administration.duplicates',
-//        label: 'Duplicates',
-//        name: 'Duplicates'
-//    };
+    var administrationTab2_menu1 = {
+        href: 'home.administration.structures.new',
+        sref: '.administration.structures',
+        label: gt.gettext('Add new structure'),
+        name: gt.gettext('Add new structure')
+    };
 
     var monitoring = {
         href: 'home.monitor.main',
@@ -205,13 +208,7 @@ function buildNav(user, callback) {
         label: gt.gettext('Monitoring & Evaluation'),
         name: gt.gettext('Monitoring & Evaluation')
     };
-//    
-//    var statistics = {
-//        href: 'home.statistics.main',
-//        icon: 'equalizer',
-//        label: 'Statistics',
-//        name: 'Statistics'
-//    };
+
     var reports = {
         href: 'home.reports.main',
         icon: 'save_alt',
@@ -292,7 +289,9 @@ function buildNav(user, callback) {
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
             // LEFT MENU TABS FOR ADMINISTRATION
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1_menu1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2_menu1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
             nav.left[0].items.push(thresholds);
 //            //LEFT MENU REPORTS
@@ -346,7 +345,9 @@ function buildNav(user, callback) {
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
             // LEFT MENU TABS FOR ADMINISTRATION
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1_menu1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2_menu1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
             break;
         case '5'://Task user

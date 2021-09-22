@@ -1,0 +1,380 @@
+[
+    {
+        "codept": "XXXXX-1PPS",
+        "pt": "PAYEUR SPECIALISE",
+        "prequired": "1",
+        "crequired": "25;7;1;6",
+        "activity": "36;32;42;27;40",
+        "task": "54;52;170;171",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-2PSEC1",
+        "pt": "SECRÉTAIRE",
+        "prequired": "33;34",
+        "crequired": "32;28",
+        "activity": "",
+        "task": "89;192;1;32;94;5;58;92",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-3PFP1",
+        "pt": "FONDÉ DE POUVOIRS",
+        "prequired": "1;3",
+        "crequired": "25;7;71",
+        "activity": "53",
+        "task": "122;100;112;156",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-4PCS1",
+        "pt": "CHEF DE SERVICE",
+        "prequired": "3",
+        "crequired": "7;25;47",
+        "activity": "5",
+        "task": "146;143;108;83;142;133;136;162;107;137;135",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-4PCB1",
+        "pt": "CHEF DE BUREAU DE LA COMPTABILITÉ DE LA CAISSE",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "3",
+        "task": "43;18;19",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-4PCB2",
+        "pt": "CHEF DE BUREAU DES OPÉRATIONS DIVERSES",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "3",
+        "task": "26;28;17;221",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-4PCP",
+        "pt": "CAISSIER PI",
+        "prequired": "6;10",
+        "crequired": "7;25",
+        "activity": "",
+        "task": "6;10",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-4PAB1",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "6;85;181",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-4PAB2",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;11;213;10",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-4PAB3",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;11;213;10",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-4PCA1",
+        "pt": "CADRE",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "",
+        "task": "43;18;19",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-4PCA2",
+        "pt": "CADRE",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "",
+        "task": "43;18;19",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-4PCA3",
+        "pt": "CADRE",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "",
+        "task": "43;18;19",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-5PCS2",
+        "pt": "CHEF DE SERVICE",
+        "prequired": "6;10",
+        "crequired": "7;25;4",
+        "activity": "67",
+        "task": "106;104;151;115;132;127;111;128",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-5PCB3",
+        "pt": "CHEF DE BUREAU DES VISA",
+        "prequired": "41;31;32",
+        "crequired": "7;25",
+        "activity": "",
+        "task": "34",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-5PCB4",
+        "pt": "CHEF DE BUREAU DU CONTRÔLE",
+        "prequired": "41;32",
+        "crequired": "7;25",
+        "activity": "",
+        "task": "96",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-5PAB4",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;11",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-5PAB5",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-5PAB6",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;11",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-5PAB7",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;11",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-5PAB8",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;11",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-5PAB9",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;11",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-5PAB10",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;11",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-5PIFO1",
+        "pt": "INFORMATICIEN",
+        "prequired": "",
+        "crequired": "",
+        "activity": "",
+        "task": "",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-6PCS3",
+        "pt": "CHEF SERVICE",
+        "prequired": "3",
+        "crequired": "7;25;47",
+        "activity": "67",
+        "task": "106;104;102;120;149;163;128",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-6PCB5",
+        "pt": "CHEF DE BUREAU DES CAISSES D'AVANCE",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "3",
+        "task": "93",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-6PCB6",
+        "pt": "CHEF DE BUREAU DU CONTRÔLE",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "3",
+        "task": "74;227;230",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-6PCA4",
+        "pt": "CADRE",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "23",
+        "task": "228",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-6PAB11",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "3",
+        "task": "13",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-6PAB12",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-6PAB13",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-6PAB14",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-6PCA5",
+        "pt": "CADRE",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "",
+        "task": "",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-7PCS4",
+        "pt": "CHEF DE SERVICE",
+        "prequired": "3",
+        "crequired": "7;25;47;29;19",
+        "activity": "3;27;47;49;45;46",
+        "task": "138;139;185;101;148;99",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-7PCB7",
+        "pt": "CHEF DE BUREAU  DU COMPTE ADMINISTRATIF",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "3",
+        "task": "13",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-7PCB8",
+        "pt": "CHEF DE BUREAU DU COMPTE DE GESTION",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "3",
+        "task": "77;201;76;225;32;75",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-7PCA6",
+        "pt": "CADRE",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "3",
+        "task": "204;189;224",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-7PCA7",
+        "pt": "CADRE",
+        "prequired": "10;33;34",
+        "crequired": "7;25;1",
+        "activity": "76",
+        "task": "184;185;191",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-7PCA8",
+        "pt": "CADRE",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "73;72",
+        "task": "43;18;19",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-7PAB15",
+        "pt": "AGENT DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-7PAB16",
+        "pt": "AGENT  DE BUREAU",
+        "prequired": "41;31",
+        "crequired": "73",
+        "activity": "",
+        "task": "190;225;32;75;",
+        "off": ""
+    },
+    {
+        "codept": "XXXXX-7PCA9",
+        "pt": "CADRE",
+        "prequired": "10;33;34",
+        "crequired": "7;25",
+        "activity": "",
+        "task": "43;18;19",
+        "off": ""
+    }
+]

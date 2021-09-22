@@ -40,8 +40,8 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
 
                                     $scope.getStructure = function (id) {
                                         $scope.structure = {};
-                                        for (var i in $scope.structures){
-                                            if ($scope.structures[i]._id == id){
+                                        for (var i in $scope.structures) {
+                                            if ($scope.structures[i]._id == id) {
                                                 $scope.structure = $scope.structures[i];
                                             }
                                         }
@@ -49,8 +49,8 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
 
                                     $scope.getNextPositionCode = function (subId) {
                                         $scope.substructure = {};
-                                        for (var i in $scope.structures){
-                                            if ($scope.structures[i]._id == subId){
+                                        for (var i in $scope.structures) {
+                                            if ($scope.structures[i]._id == subId) {
                                                 $scope.substructure = $scope.structures[i];
                                             }
                                         }
@@ -65,7 +65,7 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
 
                                     $scope.substructureFilter = function (item) {
                                         if ($scope.structure) {
-                                            return item.code.indexOf($scope.structure.code+"-") == 0 && parseInt(item.rank, 10) == 3;
+                                            return item.code.indexOf($scope.structure.code + "-") == 0 && parseInt(item.rank, 10) == 3;
                                         } else {
                                             return false
                                         }
@@ -165,10 +165,10 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                                             .ariaLabel('Alert Dialog code')
                                                             .ok('Got it!')
                                                             );
-                                                    return false;
+                                                    return fundPosition;
 
                                                 } else {
-                                                    return true;
+                                                    return undefined;
                                                 }
                                             }).catch(function (response) {
                                                 $rootScope.kernel.alerts.push({
@@ -189,12 +189,8 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                                     .ariaLabel('Alert Dialog code')
                                                     .ok('Got it!')
                                                     );
-                                            return false;
+                                            return {code: "badcodeerr"};
                                         }
-
-
-
-
                                     }
 
                                     var watch = {position: {}};
@@ -241,7 +237,9 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
 
                                     // Add or edit new structure
                                     $scope.submit = function () {
-                                        if ($scope.validateCode) {
+                                        var existingPosition = $scope.validateCode();
+                                        console.log(existingPosition)
+                                        if (existingPosition && existingPosition == true ) {
                                             prepareDetailsForServer();
 
                                             $rootScope.kernel.loading = 0;
@@ -265,6 +263,17 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                                 });
                                                 console.error(response);
                                             });
+                                        } else {
+                                            $mdDialog.show(
+                                                    $mdDialog.alert()
+                                                    .parent(angular.element(document.querySelector('#popupContainer')))
+                                                    .clickOutsideToClose(true)
+                                                    .title('This code: "' + $scope.position.code + '"  is already used')
+                                                    .textContent('Position: ' + existingPosition.f.$$state.value.name + " \nStructure: " + existingPosition.f.$$state.value.structure.name +
+                                                            ' \nPlease choose another position code before continue')
+                                                    .ariaLabel('Alert Dialog code')
+                                                    .ok('Got it!')
+                                                    );
                                         }
                                     }
                                 });

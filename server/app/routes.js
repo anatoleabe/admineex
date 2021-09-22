@@ -763,7 +763,7 @@ function ensureAuthorized(req, res, next) {
 
 function startBot() {
 //    //1
-//var path = "2020/PS/";
+//var path = "2021/template/sd/PS/";
 //    controllers.structures.initialize(path, function (err, avoided) {
 //        if (err) {
 //            log.error(err);
@@ -781,32 +781,18 @@ function startBot() {
 //                    console.log(err);
 //                } else {
 //                    console.log(avoided)
-//
-//                    controllers.positions.affectToPositionFromJson(path, function (err, avoided) {
-//                        if (err) {
-//                            log.error(err);
-//                            console.log(err);
-//                        } else {
-//                            console.log(avoided)
-//                        }
-//                    });
+//                    console.log("End of structure creation")
+////                    controllers.positions.affectToPositionFromJson(path, function (err, avoided) {
+////                        if (err) {
+////                            log.error(err);
+////                            console.log(err);
+////                        } else {
+////                            console.log(avoided)
+////                        }
+////                    });
 //                }
 //            });
 //            //2
-//        }
-//    });
-//
-//    controllers.positions.initialize(function (err, avoided) {
-//        if (err) {
-//            log.error(err);
-//            console.log(err);
-//        } else {
-//            var avoidedmsg = "";
-//            if (avoided && avoided.length > 0) {
-//                avoidedmsg = "Skipped positions: " + avoided;
-//                log.warn(avoidedmsg);
-//            }
-//            audit.logEvent('[anonymous]', 'Routes', 'startBot', "", "", 'Success', "Initialization of position succesfully done. " + avoidedmsg);
 //        }
 //    });
 
