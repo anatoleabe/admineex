@@ -513,6 +513,28 @@ exports.findStructureByCode = function (code, language, callback) {
     });
 }
 
+exports.findStructureByCode2 = function (code, language) {
+    Structure.findOne({
+        code: code
+    }).lean().exec(function (err, result) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            var structure = JSON.parse(JSON.stringify(result));
+
+            if (structure != null) {
+                structure.name = ((language && language !== "" && structure[language] != undefined && structure[language] != "") ? structure[language] : structure['en']);
+                beautify({language: language, beautify: true}, [structure], function (err, objects) {
+                    return objects[0];
+                });
+            } else {
+                return null;
+            }
+        }
+    });
+}
+
 exports.findStructureByCodeNoBeautify = function (code, language, callback) {
     Structure.findOne({
         code: code

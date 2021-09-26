@@ -344,9 +344,8 @@ var card4 = function (config, callback) {
                 };
                 data1[categories[c].id] = line;
             }
-
-            function LoopA(a) {
-                if (a < personnels.length && personnels[a]) {
+            if (personnels && personnels.length) {
+                for (var a in personnels) {
                     var grade = (personnels[a].grade) ? personnels[a].grade : "";
                     var category = (personnels[a].category) ? personnels[a].category : "";
 
@@ -357,20 +356,19 @@ var card4 = function (config, callback) {
                             data1[category].totalMen += 1;
                         }
                     }
-                    LoopA(a + 1);
-                } else {
-                    for (var c in categories) {
-                        var line = {
-                            category: categories[c].code,
-                            totalMen: 0,
-                            totalWoman: 0
-                        };
-                        data.push(data1[categories[c].id]);
-                    }
-                    callback(null, data);
                 }
+                
+                for (var c in categories) {
+                    var line = {
+                        category: categories[c].code,
+                        totalMen: 0,
+                        totalWoman: 0
+                    };
+                    data.push(data1[categories[c].id]);
+                }
+                callback(null, data);
             }
-            LoopA(0);
+
         }
     });
 };

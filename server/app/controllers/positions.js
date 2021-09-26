@@ -421,7 +421,7 @@ exports.list = function (options, callback) {
     if (options.filtersParam.structure && options.filtersParam.structure != "-1" && options.filtersParam.structure != "-") {
         aggregate.push({$match: {$or: [{"code": new RegExp("^" + options.filtersParam.structure)}]}})
     }
-    console.log(restriction)
+    
     if (restriction !== "-") {
         aggregate.push(
                 {
