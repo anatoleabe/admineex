@@ -75,24 +75,24 @@
             <table md-table md-progress="promise">
                 <thead md-head md-order="query.order">
                     <tr md-row>
-                        <th md-column md-order-by="code" translate style="min-width: 60px">Code</th>
+                        <th md-column md-order-by="code" translate style="min-width: 130px">Code</th>
                         <th md-column md-order-by="name" translate style="min-width: 200px">Name</th>
                         <th md-column md-order-by="rankValue" translate>Hierarchical rank</th>
                         <th md-column md-order-by="typeValue" translate style="min-width: 200px">Type</th>
                         <th md-column md-order-by="workstations" translate >Workstations </th>
-                        <th md-column md-order-by="vacancies" translate >Vacancies</th>
+                        <th md-column md-order-by="vacancies" translate style="width: 50px">Vacancies</th>
                         <th md-column translate ng-if="account.role == '1' || account.role == '3' || account.role == '4'">Actions</th>
                     </tr>
                 </thead>
                 <tbody md-body>
                     <tr md-row data-ng-repeat="structure in structures.data| filter:structureFilter | orderBy: query.order" ng-click="edit({id: structure._id})">
-                        <td md-cell>{{structure.code| uppercase | unknown}}</td>
+                        <td md-cell style="width: 130px">{{structure.code| uppercase | unknown}}</td>
                         <td md-cell style="min-width: 200px">{{structure.name}} </td>
                         <td md-cell>{{structure.rankValue| unknown}}</td>
                         <td md-cell>{{structure.typeValue| unknown}}</td>
                         <td md-cell><span class="diy-chip" ng-class="{'green': true}">{{structure.workstationsNb}} <small translate>positions</small></span></td>
                         <td md-cell><small class="diy-chip" ng-class="{'red': structure.vacancies > 0}">{{structure.vacancies}}</small></td>
-                        <td md-cell ng-if="account.role == '1' || account.role == '3' || account.role == '4'">
+                        <td md-cell ng-if="account.role == '1' || account.role == '3' || account.role == '4'" style="width: 50px">
                 <md-button ng-click="edit(position)" aria-label="Edit"  >
                     <md-icon>edit</md-icon>
                     <md-tooltip md-direction="top">

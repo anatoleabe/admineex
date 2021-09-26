@@ -118,19 +118,19 @@
             <table md-table md-progress="promise">
                 <thead md-head md-order="query.order">
                     <tr md-row>
-                        <th md-column md-order-by="code" translate style="min-width: 80px;">Code</th>
+                        <th md-column md-order-by="code" translate style="min-width: 150px;">Code</th>
                         <th md-column md-order-by="name" translate>Position name</th>
                         <th md-column md-order-by="structure.name" translate>Structure</th>
-                        <th md-column md-order-by="vancancies" style="min-width: 100px" translate>Vancancy</th>
+                        <th md-column md-order-by="vancancies" style="width: 50px" translate>Vancancy</th>
                         <th md-column translate>Actions</th>
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row data-ng-repeat="position in positions.data| filter:positionFilter | filter:vacanciesOnly | orderBy: query.order" style="min-width: 80px;">
+                    <tr md-row data-ng-repeat="position in positions.data| filter:positionFilter | filter:vacanciesOnly | orderBy: query.order" style="min-width: 150px;">
                         <td md-cell ng-click="details({id: position._id})">{{position.code| uppercase | unknown}}</td>
                         <td md-cell ng-click="details({id: position._id})">{{position.name}} </td>
                         <td md-cell ng-click="details({id: position._id})">{{position.structure.father.name| unknown}} <br/><span><md-icon class="material-icons">subdirectory_arrow_right</md-icon><small><i>{{position.structure.name}}</i></small></span> </td>
-                        <td md-cell ng-click="details({id: position._id})"><md-icon style="color:{{position.vacancies > 0 ?'red':'green'}}">fiber_manual_record  </md-icon> </td>
+                        <td md-cell ng-click="details({id: position._id})" style="width: 50px"><md-icon style="color:{{position.vacancies > 0 ?'red':'green'}}">fiber_manual_record  </md-icon> </td>
                 <td md-cell >
                 <md-button ng-click="edit({id: position._id})" aria-label="Edit" >
                     <md-icon>edit</md-icon>
