@@ -413,16 +413,7 @@ exports.list = function (options, callback) {
     var concatMeta = ["$fr", "$en", "$code"];
     var aggregate = [];
     aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
-    aggregate.push(
-            {
-                $lookup: {
-                    from: 'affectations',
-                    localField: '_id',
-                    foreignField: 'positionId',
-                    as: 'affectation'
-                }
-            }
-    );
+
 
     if (options.search && options.search != "-1" && options.search != "" && options.search != "undefined") {
         aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
@@ -430,11 +421,24 @@ exports.list = function (options, callback) {
     if (options.filtersParam.structure && options.filtersParam.structure != "-1" && options.filtersParam.structure != "-") {
         aggregate.push({$match: {$or: [{"code": new RegExp("^" + options.filtersParam.structure)}]}})
     }
-    if (restriction == "1") {
-        aggregate.push({$match: {"affectation": {$ne: []}}});
-    }
-    if (restriction == "0") {
-        aggregate.push({$match: {"affectation": {$eq: []}}});
+    console.log(restriction)
+    if (restriction !== "-") {
+        aggregate.push(
+                {
+                    $lookup: {
+                        from: 'affectations',
+                        localField: '_id',
+                        foreignField: 'positionId',
+                        as: 'affectation'
+                    }
+                }
+        );
+        if (restriction == "1") {
+            aggregate.push({$match: {"affectation": {$ne: []}}});
+        }
+        if (restriction == "0") {
+            aggregate.push({$match: {"affectation": {$eq: []}}});
+        }
     }
 
     aggregate.push({$count: "total"});
@@ -448,7 +452,16 @@ exports.list = function (options, callback) {
             if (count && count[0]) {
                 count = count[0].total;
             }
-
+            aggregate.push(
+                    {
+                        $lookup: {
+                            from: 'affectations',
+                            localField: '_id',
+                            foreignField: 'positionId',
+                            as: 'affectation'
+                        }
+                    }
+            );
             if ((options.skip + options.limit) > 0) {
                 aggregate.push({"$limit": options.skip + options.limit})
                 aggregate.push({"$skip": options.skip})

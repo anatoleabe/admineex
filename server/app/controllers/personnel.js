@@ -249,6 +249,7 @@ exports.api.list = function (req, res) {
                             search: req.params.search,
                             filters: filtersParam
                         }
+                        console.log("options.minify", options.minify)
 
                         if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4") {
                             var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1,
@@ -265,7 +266,7 @@ exports.api.list = function (req, res) {
                                     identifier: 1, corps: 1, telecom: 1, fname: 1
                                 };
                             }
-
+                            console.log("projection", projection)
                             exports.list(options, function (err, personnels) {
                                 if (err) {
                                     log.error(err);
@@ -631,12 +632,12 @@ exports.list = function (options, callback) {
                                 callback(err);
                             } else {
                                 //console.log(personnels);
-                                if (options.minify == true || options.retiredOnly) {
+//                                if (options.minify) {
                                     personnels = JSON.parse(JSON.stringify(personnels));
                                     function LoopA(a) {
                                         if (a < personnels.length && personnels[a]) {
 
-                                            if (options.minify === true) {
+                                            if ((options.minify == true || personnels[a].affectation) && !options.retiredOnly) {
                                                 var options2 = {
                                                     req: options.req
                                                 };
@@ -644,7 +645,7 @@ exports.list = function (options, callback) {
                                                 if (options.beautifyPosition == false) {
                                                     options2.beautifyPosition = false;
                                                 }
-                                                //console.log("Perso", options.toExport)
+                                                
                                                 if (options.toExport == true) {
                                                     options2.toExport = true;
                                                 }
@@ -654,7 +655,7 @@ exports.list = function (options, callback) {
                                                 var actif = (personnels[a].retirement && personnels[a].retirement.retirement == false) ? "Actif" : "En age de retraite";
                                                 var language = options.language || "";
                                                 language = language.toLowerCase();
-                                                var status = (personnels[a].status) ? personnels[a].status : "";
+                                                var statuse = (personnels[a].status) ? personnels[a].status : "";
                                                 var grade = (personnels[a].grade) ? personnels[a].grade : "";
                                                 var category = (personnels[a].category) ? personnels[a].category : "";
                                                 personnels[a].active = actif;
@@ -664,7 +665,6 @@ exports.list = function (options, callback) {
                                                     personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, language);
                                                 }
                                                 personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
-
                                                 if (personnels[a].affectation && personnels[a].affectation.position) {
                                                     personnels[a].affectation.position.name = ((language && language !== "" && personnels[a].affectation.position[language] != undefined && personnels[a].affectation.position[language] != "") ? personnels[a].affectation.position[language] : personnels[a].affectation.position['en']);
                                                     controllers.structures.findStructureByCode(personnels[a].affectation.position.code.substring(0, personnels[a].affectation.position.code.indexOf('P')), language, function (err, structure) {
@@ -679,7 +679,7 @@ exports.list = function (options, callback) {
                                                 } else {
                                                     LoopA(a + 1);
                                                 }
-                                            } else {
+                                            } else if (options.retiredOnly){
                                                 var status = (personnels[a].status) ? personnels[a].status : "";
                                                 var grade = (personnels[a].grade) ? personnels[a].grade : "";
                                                 var language = options.language || "";
@@ -687,16 +687,17 @@ exports.list = function (options, callback) {
                                                 personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
                                                 personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
                                                 LoopA(a + 1);
+                                            }else{
+                                                LoopA(a + 1);
                                             }
-
                                         } else {
                                             callback(null, personnels);
                                         }
                                     }
                                     LoopA(0);
-                                } else {
-                                    callback(null, personnels);
-                                }
+//                                } else {
+//                                    callback(null, personnels);
+//                                }
                             }
                         });
                     } else {//This view is restricted for structure manager (Role = 2)

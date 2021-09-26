@@ -170,7 +170,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                             category: $scope.filters.category,
                             situation: $scope.filters.situation
                         }
-                        StaffAgent.list({minify: true, limit: limit, skip: skip, search: $scope.staffsFilter, filters: JSON.stringify(filterParams)}).then(function (response) {
+                        StaffAgent.list({minify: false, limit: limit, skip: skip, search: $scope.staffsFilter, filters: JSON.stringify(filterParams)}).then(function (response) {
                             var data = response.data.data;
                             if (data.length == 0 && $scope.helper.length == 0) {
                                 $scope.helper = helper;
