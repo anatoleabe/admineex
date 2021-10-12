@@ -368,7 +368,8 @@ exports.api.list = function (req, res) {
             skip: skip,
             actor: req.actor,
             language: req.actor.language,
-            beautify: true
+            beautify: true,
+            req: req
         }
 
         exports.list(options, function (err, data) {
@@ -386,126 +387,158 @@ exports.api.list = function (req, res) {
 }
 
 exports.list = function (options, callback) {
-    var filter = {};
-    if (options.search && options.search != "-1" && options.search != "" && options.search != "undefined") {
-        filter = {$and: []};
-        filter.$and.push({
-            "code": new RegExp("^" + options.search)
-        });
-        filter.$and.push({
-            "fr": new RegExp("^" + options.search)
-        });
-        filter.$and.push({
-            "en": new RegExp("^" + options.search)
-        });
-    }
-    if (options.filtersParam.structure && options.filtersParam.structure != "-1" && options.filtersParam.structure != "-") {
-        if (!filter.$and) {
-            filter = {$and: []};
-        }
-        filter.$and.push({
-            "code": new RegExp("^" + options.filtersParam.structure.toUpperCase())
-        });
-    }
 
-    restriction = options.filtersParam.status;
-
-    var concatMeta = ["$fr", "$en", "$code"];
-    var aggregate = [];
-    aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
-
-
-    if (options.search && options.search != "-1" && options.search != "" && options.search != "undefined") {
-        aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
-    }
-    if (options.filtersParam.structure && options.filtersParam.structure != "-1" && options.filtersParam.structure != "-") {
-        aggregate.push({$match: {$or: [{"code": new RegExp("^" + options.filtersParam.structure)}]}})
-    }
-    
-    if (restriction !== "-") {
-        aggregate.push(
-                {
-                    $lookup: {
-                        from: 'affectations',
-                        localField: '_id',
-                        foreignField: 'positionId',
-                        as: 'affectation'
-                    }
-                }
-        );
-        if (restriction == "1") {
-            aggregate.push({$match: {"affectation": {$ne: []}}});
-        }
-        if (restriction == "0") {
-            aggregate.push({$match: {"affectation": {$eq: []}}});
-        }
-    }
-
-    aggregate.push({$count: "total"});
-    q = Position.aggregate(aggregate);
-    q.exec(function (err, count) {
+    controllers.users.findUser(options.req.actor.id, function (err, user) {
         if (err) {
             log.error(err);
             callback(err);
         } else {
-            aggregate.pop();//Remove the count(Last element added)
-            if (count && count[0]) {
-                count = count[0].total;
-            }
-            aggregate.push(
-                    {
-                        $lookup: {
-                            from: 'affectations',
-                            localField: '_id',
-                            foreignField: 'positionId',
-                            as: 'affectation'
+            var userStructure = [];
+            var userStructureCodes = [];
+            function LoopS(s) {
+                if (user.structures && s < user.structures.length && user.structures[s]) {
+                    controllers.structures.find(user.structures[s], "en", function (err, structure) {
+                        if (err) {
+                            log.error(err);
+                            callback(err);
+                        } else {
+                            userStructure.push({id: structure._id, code: structure.code});
+                            userStructureCodes.push(new RegExp("^" + structure.code));
+                            LoopS(s + 1);
+                        }
+                    });
+                } else {
+                    var filter = {};
+                    if (options.search && options.search != "-1" && options.search != "" && options.search != "undefined") {
+                        filter = {$and: []};
+                        filter.$and.push({
+                            "code": new RegExp("^" + options.search)
+                        });
+                        filter.$and.push({
+                            "fr": new RegExp("^" + options.search)
+                        });
+                        filter.$and.push({
+                            "en": new RegExp("^" + options.search)
+                        });
+                    }
+                    if (options.filtersParam.structure && options.filtersParam.structure != "-1" && options.filtersParam.structure != "-") {
+                        if (!filter.$and) {
+                            filter = {$and: []};
+                        }
+                        filter.$and.push({
+                            "code": new RegExp("^" + options.filtersParam.structure.toUpperCase())
+                        });
+                    }
+
+                    restriction = options.filtersParam.status;
+
+                    var concatMeta = ["$fr", "$en", "$code"];
+                    var aggregate = [];
+                    aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
+
+
+                    if (options.search && options.search != "-1" && options.search != "" && options.search != "undefined") {
+                        aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
+                    }
+                    if (options.filtersParam.structure && options.filtersParam.structure != "-1" && options.filtersParam.structure != "-") {
+                        aggregate.push({$match: {$or: [{"code": new RegExp("^" + options.filtersParam.structure)}]}})
+                    }
+
+                    if (options.req.actor.role == "2") {
+                        aggregate.push(
+                            {"$match": {"code": {$in: userStructureCodes}}},
+                        );
+                    }
+
+                    if (restriction !== "-") {
+                        aggregate.push(
+                                {
+                                    $lookup: {
+                                        from: 'affectations',
+                                        localField: '_id',
+                                        foreignField: 'positionId',
+                                        as: 'affectation'
+                                    }
+                                }
+                        );
+                        if (restriction == "1") {
+                            aggregate.push({$match: {"affectation": {$ne: []}}});
+                        }
+                        if (restriction == "0") {
+                            aggregate.push({$match: {"affectation": {$eq: []}}});
                         }
                     }
-            );
-            if ((options.skip + options.limit) > 0) {
-                aggregate.push({"$limit": options.skip + options.limit})
-                aggregate.push({"$skip": options.skip})
-            }
-            var projection = {
-                $project: {_id: 1, affectation: 1, structureId: 1, en: 1, fr: 1, metainfo: 1, code: 1, order: 1, comesAfter: 1}
-            };
-            aggregate.push(projection);
 
-            q = Position.aggregate(aggregate);
-            q.exec(function (err, result) {
-                if (err) {
-                    log.error(err);
-                    audit.logEvent('[mongodb]', 'Positions', 'List', '', '', 'failed', 'Mongodb attempted to retrieve positions list');
-                    callback(err);
-                } else {
-                    var positions = JSON.parse(JSON.stringify(result));
-
-                    function LoopA(o) {
-                        if (o < positions.length) {
-                            positions[o]
-                            if (positions[o].affectation && positions[o].affectation.length > 0) {
-                                positions[o].actualEffective = 1;//We can also put the real effective in case we are using effective for position
-                                positions[o].status = "Pourvue";
-                            } else {
-                                positions[o].actualEffective = 0;
-                                positions[o].status = "Non pourvue";
-                            }
-                            positions[o].vacancies = 1 - positions[o].actualEffective;
-                            LoopA(o + 1);
+                    aggregate.push({$count: "total"});
+                    q = Position.aggregate(aggregate);
+                    q.exec(function (err, count) {
+                        if (err) {
+                            log.error(err);
+                            callback(err);
                         } else {
+                            aggregate.pop();//Remove the count(Last element added)
+                            if (count && count[0]) {
+                                count = count[0].total;
+                            }
+                            aggregate.push(
+                                    {
+                                        $lookup: {
+                                            from: 'affectations',
+                                            localField: '_id',
+                                            foreignField: 'positionId',
+                                            as: 'affectation'
+                                        }
+                                    }
+                            );
+                            if ((options.skip + options.limit) > 0) {
+                                aggregate.push({"$limit": options.skip + options.limit})
+                                aggregate.push({"$skip": options.skip})
+                            }
+                            var projection = {
+                                $project: {_id: 1, affectation: 1, structureId: 1, en: 1, fr: 1, metainfo: 1, code: 1, order: 1, comesAfter: 1}
+                            };
+                            aggregate.push(projection);
 
-                            beautify({actor: options.actor, language: options.language, beautify: options.beautify, deepBeautify: options.deepBeautify}, positions, function (err, objects) {
+                            q = Position.aggregate(aggregate);
+                            q.exec(function (err, result) {
                                 if (err) {
+                                    log.error(err);
+                                    audit.logEvent('[mongodb]', 'Positions', 'List', '', '', 'failed', 'Mongodb attempted to retrieve positions list');
                                     callback(err);
                                 } else {
-                                    return callback(null, {data: objects, count: count});
+                                    var positions = JSON.parse(JSON.stringify(result));
+
+                                    function LoopA(o) {
+                                        if (o < positions.length) {
+                                            positions[o]
+                                            if (positions[o].affectation && positions[o].affectation.length > 0) {
+                                                positions[o].actualEffective = 1;//We can also put the real effective in case we are using effective for position
+                                                positions[o].status = "Pourvue";
+                                            } else {
+                                                positions[o].actualEffective = 0;
+                                                positions[o].status = "Non pourvue";
+                                            }
+                                            positions[o].vacancies = 1 - positions[o].actualEffective;
+                                            LoopA(o + 1);
+                                        } else {
+
+                                            beautify({actor: options.actor, language: options.language, beautify: options.beautify, deepBeautify: options.deepBeautify}, positions, function (err, objects) {
+                                                if (err) {
+                                                    callback(err);
+                                                } else {
+                                                    return callback(null, {data: objects, count: count});
+                                                }
+                                            });
+                                        }
+                                    }
+                                    LoopA(0);
                                 }
                             });
                         }
-                    }
-                    LoopA(0);
+                    });
                 }
-            });
+            }
+            LoopS(0);
         }
     });
 }

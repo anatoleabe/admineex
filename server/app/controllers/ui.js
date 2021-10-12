@@ -280,8 +280,8 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab4);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU MONITOR
-            nav.left[0].items.push(monitoring);
-            nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
+//            nav.left[0].items.push(monitoring);
+//            nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
             // LEFT MENU TASK
             nav.left[0].items.push(task);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab1);
@@ -309,8 +309,8 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab4);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU MONITOR
-            nav.left[0].items.push(monitoring);
-            nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
+//            nav.left[0].items.push(monitoring);
+//            nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
             // LEFT MENU TABS FOR ADMINISTRATION

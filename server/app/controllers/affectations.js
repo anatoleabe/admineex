@@ -14,6 +14,7 @@ exports.api = {};
 var controllers = {
     configuration: require('./configuration'),
     users: require('./users'),
+    structures: require('./structures'),
     organizations: require('./organizations')
 };
 
@@ -38,235 +39,264 @@ exports.api.list = function (req, res) {
             search: req.params.search,
             filters: filtersParam
         }
-
-
-        var concat = ["$personnel.name.family", " ", "$personnel.name.given"];
-        var concatMeta = ["$personnel.name.family", "$personnel.name.given", "$personnel.identifier"];
-        var q;
-        if (options.search && (options.search == "-" || options.search == "")) {
-            options.search = "";
-        }
-
-        var aggregate = [];
-        aggregate.push({$sort: {lastModified: -1}})
-
-        aggregate.push(
-                {
-                    $lookup: {
-                        from: 'personnels',
-                        localField: 'personnelId',
-                        foreignField: '_id',
-                        as: 'personnel',
-                    }
-                }
-        );
-        aggregate.push(
-                {
-                    "$unwind": {
-                        path: "$personnel",
-                        preserveNullAndEmptyArrays: false
-                    }
-                }
-        );
-        aggregate.push(
-                {
-                    $lookup: {
-                        from: 'positions',
-                        localField: 'positionId',
-                        foreignField: '_id',
-                        as: 'newPosition',
-                    }
-                }
-        );
-        aggregate.push(
-                {
-                    "$unwind": {
-                        path: "$newPosition",
-                        preserveNullAndEmptyArrays: false
-                    }
-                }
-        );
-        aggregate.push(
-                {
-                    $lookup: {
-                        from: 'positions',
-                        localField: 'oldPositionId',
-                        foreignField: '_id',
-                        as: 'oldPosition',
-                    }
-                }
-        );
-        aggregate.push(
-                {
-                    "$unwind": {
-                        path: "$oldPosition",
-                        preserveNullAndEmptyArrays: true
-                    }
-                }
-        );
-
-        aggregate.push({"$addFields": {"matricule": "$personnel.identifier"}});
-        aggregate.push({"$addFields": {"structureId": "$newPosition.structureId"}});
-        aggregate.push({"$addFields": {"oldStructureId": "$oldPosition.structureId"}});
-        aggregate.push({"$unwind": "$personnel.name"});
-        aggregate.push({"$unwind": {path: "$personnel.name.family", preserveNullAndEmptyArrays: true}});
-        aggregate.push({"$unwind": {path: "$personnel.name.given", preserveNullAndEmptyArrays: true}});
-        aggregate.push({"$addFields": {"fname": {$concat: concat}}});
-        aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
-//  
-        aggregate.push(
-                {
-                    $lookup: {
-                        from: 'structures',
-                        localField: 'structureId',
-                        foreignField: '_id',
-                        as: 'structureAffectation',
-                    }
-                }
-        );
-        aggregate.push(
-                {
-                    "$unwind": {
-                        path: "$structureAffectation",
-                        preserveNullAndEmptyArrays: true
-                    }
-                }
-        );
-
-        aggregate.push(
-                {
-                    $lookup: {
-                        from: 'structures',
-                        localField: 'structureAffectation.fatherId',
-                        foreignField: '_id',
-                        as: 'structureAffectationFather',
-                    }
-                }
-        );
-        aggregate.push(
-                {
-                    "$unwind": {
-                        path: "$structureAffectationFather",
-                        preserveNullAndEmptyArrays: true
-                    }
-                }
-        );
-
-        //------------------Old structure
-        aggregate.push(
-                {
-                    $lookup: {
-                        from: 'structures',
-                        localField: 'oldStructureId',
-                        foreignField: '_id',
-                        as: 'oldStructureAffectation',
-                    }
-                }
-        );
-        aggregate.push(
-                {
-                    "$unwind": {
-                        path: "$oldStructureAffectation",
-                        preserveNullAndEmptyArrays: true
-                    }
-                }
-        );
-
-        aggregate.push(
-                {
-                    $lookup: {
-                        from: 'structures',
-                        localField: 'oldStructureAffectation.fatherId',
-                        foreignField: '_id',
-                        as: 'oldStructureAffectationFather',
-                    }
-                }
-        );
-        aggregate.push(
-                {
-                    "$unwind": {
-                        path: "$oldStructureAffectationFather",
-                        preserveNullAndEmptyArrays: true
-                    }
-                }
-        );
-        //------------------Actor
-        aggregate.push(
-                {
-                    $lookup: {
-                        from: 'users',
-                        localField: 'actor',
-                        foreignField: '_id',
-                        as: 'actor',
-                    }
-                }
-        );
-        aggregate.push(
-                {
-                    "$unwind": {
-                        path: "$actor",
-                        preserveNullAndEmptyArrays: true
-                    }
-                }
-        );
-
-        projection = {
-            $project: {_id: 1, "personnel.name": 1, matricule: 1, metainfo: 1, mouvement: 1, positionId: 1, oldPositionId: 1, personnelId: 1, interim: 1,
-                lastModified: 1, date: 1, startDate: 1, "personnel.identifier": 1, nature: 1, fname: 1, "situations": 1, numAct: 1,
-                "oldPosition._id": 1, "oldPosition.fr": 1, "newPosition._id": 1, "newPosition.fr": 1,
-                "structureAffectation._id": 1, "structureAffectation.fr": 1, "structureAffectationFather._id": 1, "structureAffectationFather.fr": 1,
-                "oldStructureAffectation._id": 1, "oldStructureAffectation.fr": 1, "oldStructureAffectationFather._id": 1, "oldStructureAffectationFather.fr": 1,
-                "actor._id":1, "actor.firstname":1, "actor.lastname":1, 
-            }
-        };
-        aggregate.push(projection);
-
-        //Filter by key word
-        if (options.search) {
-            aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
-        }
-        //Set the filters
-        if (options.filters) {
-            if (options.filters.structure && options.filters.structure != "-" && options.filters.structure != "") {
-                aggregate.push({$match: {$or: [{"affectation.0.positionCode": new RegExp("^" + options.filters.structure)}]}})
-            }
-
-            if (options.filters.mouvement && options.filters.mouvement != "-" && options.filters.mouvement != "") {
-                aggregate.push({$match: {mouvement: options.filters.mouvement}});
-            }
-
-            if (options.filters.nature && options.filters.nature != "-" && options.filters.nature != "") {
-                aggregate.push({$match: {nature: options.filters.nature}});
-            }
-        }
-
-
-        if ((options.skip + options.limit) > 0) {
-            aggregate.push({"$limit": options.skip + options.limit})
-            aggregate.push({"$skip": options.skip})
-        }
-
-
-
-        q = Affectation.aggregate(aggregate);
-
-        q.exec(function (err, affectations) {
+        
+        controllers.users.findUser(req.actor.id, function (err, user) {
             if (err) {
                 log.error(err);
-                audit.logEvent('[mongodb]', 'Affectations', 'List', '', '', 'failed', 'Mongodb attempted to retrieve list of affectation');
-                return res.status(500).send(err);
+                callback(err);
             } else {
-                for (var a in affectations) {
-                    if (affectations[a].mouvement) {
-                        affectations[a].mouvementBeautified = dictionary.getValueFromJSON('../../resources/dictionary/personnel/mouvements.json', affectations[a].mouvement, language);
-                        affectations[a].natureBeautified = dictionary.getValueFromJSON('../../resources/dictionary/acts/natures.json', affectations[a].nature, language);
+                var userStructure = [];
+                var userStructureCodes = [];
+                function LoopS(s) {
+                    if (user.structures && s < user.structures.length && user.structures[s]) {
+                        controllers.structures.find(user.structures[s], "en", function (err, structure) {
+                            if (err) {
+                                log.error(err);
+                                callback(err);
+                            } else {
+                                userStructure.push({id: structure._id, code: structure.code});
+                                userStructureCodes.push(new RegExp("^" + structure.code + "-"));
+                                LoopS(s + 1);
+                            }
+                        });
+                    } else {
+                        var concat = ["$personnel.name.family", " ", "$personnel.name.given"];
+                        var concatMeta = ["$personnel.name.family", "$personnel.name.given", "$personnel.identifier"];
+                        var q;
+                        if (options.search && (options.search == "-" || options.search == "")) {
+                            options.search = "";
+                        }
+
+                        var aggregate = [];
+                        aggregate.push({$sort: {lastModified: -1}})
+
+                        aggregate.push(
+                                {
+                                    $lookup: {
+                                        from: 'personnels',
+                                        localField: 'personnelId',
+                                        foreignField: '_id',
+                                        as: 'personnel',
+                                    }
+                                }
+                        );
+                        aggregate.push(
+                                {
+                                    "$unwind": {
+                                        path: "$personnel",
+                                        preserveNullAndEmptyArrays: false
+                                    }
+                                }
+                        );
+                        aggregate.push(
+                                {
+                                    $lookup: {
+                                        from: 'positions',
+                                        localField: 'positionId',
+                                        foreignField: '_id',
+                                        as: 'newPosition',
+                                    }
+                                }
+                        );
+                        aggregate.push(
+                                {
+                                    "$unwind": {
+                                        path: "$newPosition",
+                                        preserveNullAndEmptyArrays: false
+                                    }
+                                }
+                        );
+                        aggregate.push(
+                                {
+                                    $lookup: {
+                                        from: 'positions',
+                                        localField: 'oldPositionId',
+                                        foreignField: '_id',
+                                        as: 'oldPosition',
+                                    }
+                                }
+                        );
+                        aggregate.push(
+                                {
+                                    "$unwind": {
+                                        path: "$oldPosition",
+                                        preserveNullAndEmptyArrays: true
+                                    }
+                                }
+                        );
+
+                        aggregate.push({"$addFields": {"matricule": "$personnel.identifier"}});
+                        aggregate.push({"$addFields": {"structureId": "$newPosition.structureId"}});
+                        aggregate.push({"$addFields": {"oldStructureId": "$oldPosition.structureId"}});
+                        aggregate.push({"$unwind": "$personnel.name"});
+                        aggregate.push({"$unwind": {path: "$personnel.name.family", preserveNullAndEmptyArrays: true}});
+                        aggregate.push({"$unwind": {path: "$personnel.name.given", preserveNullAndEmptyArrays: true}});
+                        aggregate.push({"$addFields": {"fname": {$concat: concat}}});
+                        aggregate.push({"$addFields": {"metainfo": {$concat: concatMeta}}});
+//  
+                        aggregate.push(
+                                {
+                                    $lookup: {
+                                        from: 'structures',
+                                        localField: 'structureId',
+                                        foreignField: '_id',
+                                        as: 'structureAffectation',
+                                    }
+                                }
+                        );
+                        aggregate.push(
+                                {
+                                    "$unwind": {
+                                        path: "$structureAffectation",
+                                        preserveNullAndEmptyArrays: true
+                                    }
+                                }
+                        );
+
+                        aggregate.push(
+                                {
+                                    $lookup: {
+                                        from: 'structures',
+                                        localField: 'structureAffectation.fatherId',
+                                        foreignField: '_id',
+                                        as: 'structureAffectationFather',
+                                    }
+                                }
+                        );
+                        aggregate.push(
+                                {
+                                    "$unwind": {
+                                        path: "$structureAffectationFather",
+                                        preserveNullAndEmptyArrays: true
+                                    }
+                                }
+                        );
+                        
+                        if (req.actor.role == "2") {
+                            aggregate.push(
+                                            {"$match": {"newPosition.code": {$in: userStructureCodes}}},
+                                            );
+                        }
+
+                        //------------------Old structure
+                        aggregate.push(
+                                {
+                                    $lookup: {
+                                        from: 'structures',
+                                        localField: 'oldStructureId',
+                                        foreignField: '_id',
+                                        as: 'oldStructureAffectation',
+                                    }
+                                }
+                        );
+                        aggregate.push(
+                                {
+                                    "$unwind": {
+                                        path: "$oldStructureAffectation",
+                                        preserveNullAndEmptyArrays: true
+                                    }
+                                }
+                        );
+
+                        aggregate.push(
+                                {
+                                    $lookup: {
+                                        from: 'structures',
+                                        localField: 'oldStructureAffectation.fatherId',
+                                        foreignField: '_id',
+                                        as: 'oldStructureAffectationFather',
+                                    }
+                                }
+                        );
+                        aggregate.push(
+                                {
+                                    "$unwind": {
+                                        path: "$oldStructureAffectationFather",
+                                        preserveNullAndEmptyArrays: true
+                                    }
+                                }
+                        );
+                        //------------------Actor
+                        aggregate.push(
+                                {
+                                    $lookup: {
+                                        from: 'users',
+                                        localField: 'actor',
+                                        foreignField: '_id',
+                                        as: 'actor',
+                                    }
+                                }
+                        );
+                        aggregate.push(
+                                {
+                                    "$unwind": {
+                                        path: "$actor",
+                                        preserveNullAndEmptyArrays: true
+                                    }
+                                }
+                        );
+
+                        projection = {
+                            $project: {_id: 1, "personnel.name": 1, matricule: 1, metainfo: 1, mouvement: 1, positionId: 1, oldPositionId: 1, personnelId: 1, interim: 1,
+                                lastModified: 1, date: 1, startDate: 1, "personnel.identifier": 1, nature: 1, fname: 1, "situations": 1, numAct: 1,
+                                "oldPosition._id": 1, "oldPosition.fr": 1, "newPosition._id": 1, "newPosition.fr": 1,"newPosition.code": 1,
+                                "structureAffectation._id": 1, "structureAffectation.fr": 1, "structureAffectationFather._id": 1, "structureAffectationFather.fr": 1, "structureAffectationFather.code": 1,
+                                "oldStructureAffectation._id": 1, "oldStructureAffectation.fr": 1, "oldStructureAffectationFather._id": 1, "oldStructureAffectationFather.fr": 1,
+                                "actor._id": 1, "actor.firstname": 1, "actor.lastname": 1,
+                            }
+                        };
+                        aggregate.push(projection);
+
+                        //Filter by key word
+                        if (options.search) {
+                            aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
+                        }
+                        //Set the filters
+                        if (options.filters) {
+                            if (options.filters.structure && options.filters.structure != "-" && options.filters.structure != "") {
+                                aggregate.push({$match: {$or: [{"affectation.0.positionCode": new RegExp("^" + options.filters.structure)}]}})
+                            }
+
+                            if (options.filters.mouvement && options.filters.mouvement != "-" && options.filters.mouvement != "") {
+                                aggregate.push({$match: {mouvement: options.filters.mouvement}});
+                            }
+
+                            if (options.filters.nature && options.filters.nature != "-" && options.filters.nature != "") {
+                                aggregate.push({$match: {nature: options.filters.nature}});
+                            }
+                        }
+
+
+                        if ((options.skip + options.limit) > 0) {
+                            aggregate.push({"$limit": options.skip + options.limit})
+                            aggregate.push({"$skip": options.skip})
+                        }
+
+
+
+                        q = Affectation.aggregate(aggregate);
+
+                        q.exec(function (err, affectations) {
+                            if (err) {
+                                log.error(err);
+                                audit.logEvent('[mongodb]', 'Affectations', 'List', '', '', 'failed', 'Mongodb attempted to retrieve list of affectation');
+                                return res.status(500).send(err);
+                            } else {
+                                for (var a in affectations) {
+                                    if (affectations[a].mouvement) {
+                                        affectations[a].mouvementBeautified = dictionary.getValueFromJSON('../../resources/dictionary/personnel/mouvements.json', affectations[a].mouvement, language);
+                                        affectations[a].natureBeautified = dictionary.getValueFromJSON('../../resources/dictionary/acts/natures.json', affectations[a].nature, language);
+                                    }
+                                }
+                                return res.json(affectations);
+                            }
+                        });
+
                     }
                 }
-                return res.json(affectations);
+                LoopS(0);
             }
         });
-
-
 
     } else {
         audit.logEvent('[anonymous]', 'Affectations', 'List', '', '', 'failed', 'The actor was not authenticated');
@@ -277,17 +307,17 @@ exports.api.list = function (req, res) {
 
 exports.api.remove = function (req, res) {
     if (req.actor) {
-        if(req.params.id == undefined){
+        if (req.params.id == undefined) {
             audit.logEvent(req.actor.id, 'Affectation', 'Delete', '', '', 'failed', 'The actor could not delete an affectation because one or more params of the request was not defined');
             return res.sendStatus(400);
         } else {
-            Affectation.remove({_id : req.params.id}, function(err){
+            Affectation.remove({_id: req.params.id}, function (err) {
                 if (err) {
                     log.error(err);
                     return res.status(500).send(err);
                 } else {
                     audit.logEvent(req.actor.id, 'Affectation', 'Delete an affectation', "AffectationID", req.params.id, 'succeed',
-                                   'The actor has successfully deleted the affectation.');
+                            'The actor has successfully deleted the affectation.');
                     return res.sendStatus(200);
                 }
             });
