@@ -1,6 +1,6 @@
 [
     {
-        "codept": "XXXXX-1PPS",
+        "codept": "28584-1PPS",
         "pt": "PAYEUR SPECIALISE",
         "prequired": "1",
         "crequired": "25;7;1;6",
@@ -9,7 +9,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-2PSEC1",
+        "codept": "28584-2PSEC1",
         "pt": "SECRÉTAIRE",
         "prequired": "33;34",
         "crequired": "32;28",
@@ -18,7 +18,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-3PFP1",
+        "codept": "28584-3PFP1",
         "pt": "FONDÉ DE POUVOIRS",
         "prequired": "1;3",
         "crequired": "25;7;71",
@@ -27,7 +27,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-4PCS1",
+        "codept": "28584-4PCS1",
         "pt": "CHEF DE SERVICE",
         "prequired": "3",
         "crequired": "7;25;47",
@@ -36,7 +36,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-4PCB1",
+        "codept": "28584-4PCB1",
         "pt": "CHEF DE BUREAU DE LA COMPTABILITÉ DE LA CAISSE",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -45,7 +45,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-4PCB2",
+        "codept": "28584-4PCB2",
         "pt": "CHEF DE BUREAU DES OPÉRATIONS DIVERSES",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -54,7 +54,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-4PCP",
+        "codept": "28584-4PCP",
         "pt": "CAISSIER PI",
         "prequired": "6;10",
         "crequired": "7;25",
@@ -63,7 +63,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-4PAB1",
+        "codept": "28584-4PAB1",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -72,7 +72,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-4PAB2",
+        "codept": "28584-4PAB2",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -81,7 +81,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-4PAB3",
+        "codept": "28584-4PAB3",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -90,7 +90,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-4PCA1",
+        "codept": "28584-4PCA1",
         "pt": "CADRE",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -99,7 +99,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-4PCA2",
+        "codept": "28584-4PCA2",
         "pt": "CADRE",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -108,7 +108,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-4PCA3",
+        "codept": "28584-4PCA3",
         "pt": "CADRE",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -117,7 +117,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-5PCS2",
+        "codept": "28584-5PCS2",
         "pt": "CHEF DE SERVICE",
         "prequired": "6;10",
         "crequired": "7;25;4",
@@ -126,7 +126,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-5PCB3",
+        "codept": "28584-5PCB3",
         "pt": "CHEF DE BUREAU DES VISA",
         "prequired": "41;31;32",
         "crequired": "7;25",
@@ -135,7 +135,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-5PCB4",
+        "codept": "28584-5PCB4",
         "pt": "CHEF DE BUREAU DU CONTRÔLE",
         "prequired": "41;32",
         "crequired": "7;25",
@@ -144,7 +144,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-5PAB4",
+        "codept": "28584-5PAB4",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -153,7 +153,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-5PAB5",
+        "codept": "28584-5PAB5",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -162,7 +162,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-5PAB6",
+        "codept": "28584-5PAB6",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -171,7 +171,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-5PAB7",
+        "codept": "28584-5PAB7",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -180,7 +180,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-5PAB8",
+        "codept": "28584-5PAB8",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -189,7 +189,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-5PAB9",
+        "codept": "28584-5PAB9",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -198,7 +198,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-5PAB10",
+        "codept": "28584-5PAB10",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -207,7 +207,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-5PIFO1",
+        "codept": "28584-5PIFO1",
         "pt": "INFORMATICIEN",
         "prequired": "",
         "crequired": "",
@@ -216,7 +216,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-6PCS3",
+        "codept": "28584-6PCS3",
         "pt": "CHEF SERVICE",
         "prequired": "3",
         "crequired": "7;25;47",
@@ -225,7 +225,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-6PCB5",
+        "codept": "28584-6PCB5",
         "pt": "CHEF DE BUREAU DES CAISSES D'AVANCE",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -234,7 +234,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-6PCB6",
+        "codept": "28584-6PCB6",
         "pt": "CHEF DE BUREAU DU CONTRÔLE",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -243,7 +243,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-6PCA4",
+        "codept": "28584-6PCA4",
         "pt": "CADRE",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -252,7 +252,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-6PAB11",
+        "codept": "28584-6PAB11",
         "pt": "AGENT DE BUREAU",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -261,7 +261,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-6PAB12",
+        "codept": "28584-6PAB12",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -270,7 +270,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-6PAB13",
+        "codept": "28584-6PAB13",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -279,7 +279,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-6PAB14",
+        "codept": "28584-6PAB14",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -288,7 +288,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-6PCA5",
+        "codept": "28584-6PCA5",
         "pt": "CADRE",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -297,7 +297,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-7PCS4",
+        "codept": "28584-7PCS4",
         "pt": "CHEF DE SERVICE",
         "prequired": "3",
         "crequired": "7;25;47;29;19",
@@ -306,7 +306,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-7PCB7",
+        "codept": "28584-7PCB7",
         "pt": "CHEF DE BUREAU  DU COMPTE ADMINISTRATIF",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -315,7 +315,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-7PCB8",
+        "codept": "28584-7PCB8",
         "pt": "CHEF DE BUREAU DU COMPTE DE GESTION",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -324,7 +324,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-7PCA6",
+        "codept": "28584-7PCA6",
         "pt": "CADRE",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -333,7 +333,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-7PCA7",
+        "codept": "28584-7PCA7",
         "pt": "CADRE",
         "prequired": "10;33;34",
         "crequired": "7;25;1",
@@ -342,7 +342,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-7PCA8",
+        "codept": "28584-7PCA8",
         "pt": "CADRE",
         "prequired": "10;33;34",
         "crequired": "7;25",
@@ -351,7 +351,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-7PAB15",
+        "codept": "28584-7PAB15",
         "pt": "AGENT DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -360,7 +360,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-7PAB16",
+        "codept": "28584-7PAB16",
         "pt": "AGENT  DE BUREAU",
         "prequired": "41;31",
         "crequired": "73",
@@ -369,7 +369,7 @@
         "off": ""
     },
     {
-        "codept": "XXXXX-7PCA9",
+        "codept": "28584-7PCA9",
         "pt": "CADRE",
         "prequired": "10;33;34",
         "crequired": "7;25",
