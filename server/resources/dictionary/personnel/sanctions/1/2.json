@@ -1,0 +1,57 @@
+[
+    {
+        "id": "1",
+        "en": "Requests for explanation",
+        "fr": "Demandes d’explication"
+    },
+    {
+        "id": "2",
+        "en": "Irregular absences",
+        "fr": "Absences irrégulières"
+    },
+    {
+        "id": "3",
+        "en": "Unjustified delays",
+        "fr": "Les retards injustifiés"
+    },
+    {
+        "id": "4",
+        "en": "Non-production of periodic situations and accounts within the regulatory deadlines",
+        "fr": "Lon production des situations périodiques et des comptabilités dans les  délais règlementaires"
+    },
+    {
+        "id": "5",
+        "en": "Non transmission of management accounts by the principal accountants to the Court of Accounts within the regulatory time limits",
+        "fr": "Non transmission des comptes de gestion par les comptables principaux à la juridiction des comptes dans les délais règlementaires"
+    },
+    {
+        "id": "6",
+        "en": "Unjustified delays in the processing of files",
+        "fr": "Retards injustifiés dans le traitement des dossiers"
+    },
+    {
+        "id": "7",
+        "en": "Unjustified delays in processing filesCases of proven indelicacy",
+        "fr": "Cas d'indélicatesses avérées"
+    },
+    {
+        "id": "8",
+        "en": "Cases of loss of files",
+        "fr": "Cas de pertes des dossiers"
+    },
+    {
+        "id": "9",
+        "en": "Risks in public services ",
+        "fr": "Risques dans les services publics "
+    },
+    {
+        "id": "10",
+        "en": "Deficiencies noted",
+        "fr": "Déficits constatés"
+    },
+    {
+        "id": "11",
+        "en": "Other cases of indiscipline noted by the respondent's superior",
+        "fr": "Autres cas d'indiscipline relevés par les supérieur hiérarchique du mis en cause"
+    }
+]

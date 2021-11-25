@@ -1,28 +1,17 @@
-
 [
     {
         "id": "1",
-        "en": "Lateness",
-        "fr": "Retard"
+        "en": "Disciplinary sanctions",
+        "fr": "Sanctions disciplinaires"
     },
     {
         "id": "2",
-        "en": "Disrespectful",
-        "fr": "Non respect de la hierarchie"
+        "en": "Financial sanctions",
+        "fr": "Sanctions pécuniaires"
     },
     {
         "id": "3",
-        "en": "Abscence",
-        "fr": "Abscence irreguliere"
-    },
-    {
-        "id": "4",
-        "en": "Deficit",
-        "fr": "Déficit"
-    },
-    {
-        "id": "5",
-        "en": "assiduous",
-        "fr": "Assidu au travail"
+        "en": "Awards",
+        "fr": "Récompenses"
     }
 ]

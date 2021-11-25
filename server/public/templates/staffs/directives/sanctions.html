@@ -1,0 +1,76 @@
+<div >
+    <div class="row">
+        <div class="col-12 col-lg-12">
+
+            <div id="coreapps-fr4283" class="info-section openmrs-contrib-dashboardwidgets ng-scope">
+                <div class="info-header">
+                    <md-icon class="icon">gavel</md-icon>
+                    <h3 translate>Sanctions history</h3>
+
+                </div>
+                <div class="info-body">
+                    <div class="ng-isolate-scope" >
+                        <ul>
+                            <!-- ngRepeat: obs in $ctrl.obs -->
+                            <li ng-if="sanctions.length > 0" class="ng-scope" ng-repeat="sanction in sanctions">
+                                <div style="display: block; overflow: hidden; padding-right: 5px; padding-bottom: 2px">
+                                    <span style="float: left" class="ng-binding">
+                                        {{sanction.sanctionBeautified}}, &nbsp;
+                                    </span>
+                                    <span  style="float: left">
+                                        <strong class="ng-binding">{{sanction.natureBeautified}} N° : {{sanction.referenceNumber}}</strong>
+                                    </span>
+                                    <span style="float: right; font-size: small; color: #939393" class="ng-binding">
+                                        {{sanction.dateofSignature| smartDatetime}}
+                                    </span>
+                                </div>
+                            </li>
+
+                        </ul>
+                        <p  ng-if="sanctions.length <= 0" translate>
+                            No sanction available.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-lg-12">
+            <div id="coreapps-fr4283" class="info-section openmrs-contrib-dashboardwidgets ng-scope">
+                <div class="info-header">
+                    <i class="icon-trophy3"></i>
+                    <h3 translate>Award history</h3>
+
+                </div>
+                <div class="info-body">
+                    <div class="ng-isolate-scope" >
+                        <ul>
+                            <!-- ngRepeat: obs in $ctrl.obs -->
+                            <li ng-if="awards.length > 0" class="ng-scope" ng-repeat="award in awards">
+                                <div style="display: block; overflow: hidden; padding-right: 5px; padding-bottom: 2px">
+                                    <span style="float: left" class="ng-binding">
+                                        {{award.sanctionBeautified}}, &nbsp;
+                                    </span>
+                                    <span  style="float: left">
+                                        <strong class="ng-binding">{{award.natureBeautified}} N° : {{award.referenceNumber}}</strong>
+                                    </span>
+                                    <span style="float: right; font-size: small; color: #939393" class="ng-binding">
+                                        {{award.dateofSignature| smartDatetime}}
+                                    </span>
+                                </div>
+                            </li>
+
+                        </ul>
+                        <p ng-if="awards.length <= 0" translate>
+                            No award available.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>

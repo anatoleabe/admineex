@@ -24,6 +24,7 @@ controllers.structures = require('./controllers/structures');
 controllers.positions = require('./controllers/positions');
 controllers.affectations = require('./controllers/affectations');
 controllers.personnel = require('./controllers/personnel');
+controllers.sanctions = require('./controllers/sanctions');
 controllers.organizations = require('./controllers/organizations');
 controllers.tasks = require('./controllers/tasks');
 controllers.taskCategories = require('./controllers/taskCategories');
@@ -456,6 +457,34 @@ var routes = [
         httpMethod: _.findWhere(aclRoutes, { id: 73 }).method,
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.export.api.table],
         access: _.findWhere(aclRoutes, { id: 73 }).roles
+    },
+    
+    {
+        path: _.findWhere(aclRoutes, { id: 80 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 80 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.personnel.api.delete],
+        access: _.findWhere(aclRoutes, { id: 80 }).roles
+    },
+    
+    {
+        path: _.findWhere(aclRoutes, { id: 81 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 81 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.sanctions.api.upsert],
+        access: _.findWhere(aclRoutes, { id: 81 }).roles
+    },
+    
+    {
+        path: _.findWhere(aclRoutes, { id: 82 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 82 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.sanctions.api.list],
+        access: _.findWhere(aclRoutes, { id: 82 }).roles
+    },
+    // remove sanction
+    {
+        path: _.findWhere(aclRoutes, {id: 83}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 83}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.sanctions.api.remove],
+        access: _.findWhere(aclRoutes, {id: 83}).roles
     },
 
     // === EXPORT PDF ROUTES ==========================================================

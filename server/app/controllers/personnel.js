@@ -284,7 +284,6 @@ exports.api.list = function (req, res) {
                             });
 
                         } else {
-                            console.log("> Manager")
                             var aggregat = [
                                 {"$match": {
                                         "positionCode": {$in: userStructureCodes},
@@ -532,10 +531,17 @@ exports.list = function (options, callback) {
                                         }
                                 );
                                 aggregate.push(
+                                        {"$addFields": {
+                                                "affectation": {"$slice": ["$affectation", -1]}
+                                            }
+                                        }
+                                );
+
+                                aggregate.push(
                                         {
                                             "$unwind": {
                                                 path: "$affectation",
-                                                preserveNullAndEmptyArrays: false
+                                                preserveNullAndEmptyArrays: true
                                             }
                                         }
                                 );
@@ -560,7 +566,7 @@ exports.list = function (options, callback) {
                                         {
                                             "$unwind": {
                                                 path: "$affectation.position",
-                                                preserveNullAndEmptyArrays: false
+                                                preserveNullAndEmptyArrays: true
                                             }
                                         }
                                 );
@@ -1269,9 +1275,30 @@ exports.findByMatricule = function (options, callback) {
 
 exports.api.delete = function (req, res) {
     if (req.actor) {
-
+        if (req.params.id == undefined) {
+            audit.logEvent(req.actor.id, 'Personnel', 'Remove', '', '', 'failed', 'The actor could not remove a personnel because one or more params of the request was not defined');
+            return res.sendStatus(400);
+        } else {
+            Personnel.remove({_id: req.params.id}, function (err) {
+                if (err) {
+                    log.error(err);
+                    return res.status(500).send(err);
+                } else {
+                    Affectation.remove({personnelId: req.params.id}, function (err) {
+                        if (err) {
+                            log.error(err);
+                            return res.status(500).send(err);
+                        } else {
+                            audit.logEvent(req.actor.id, 'Personnel', 'Staff member deletion', "PersonnelID", req.params.id, 'succeed',
+                                    'The actor has successfully deleted the staff member.');
+                            return res.sendStatus(200);
+                        }
+                    });
+                }
+            });
+        }
     } else {
-        audit.logEvent('[anonymous]', 'Projects', 'Delete', '', '', 'failed', 'The actor was not authenticated');
+        audit.logEvent('[anonymous]', 'Personnel', 'Staff member deletion', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);
     }
 }

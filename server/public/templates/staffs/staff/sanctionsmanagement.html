@@ -1,0 +1,204 @@
+
+<div class="md-dialog-content">
+    <md-toolbar class="toolbar-filter">
+        <div class="md-toolbar-tools md-default">
+            <span translate>Number of positions: {{positions.count}}</span>
+            <span flex></span>
+
+            <md-menu>
+                <md-button class="md-icon-button"  ng-click="openMoreMenu($mdOpenMenu)" >
+                    <md-icon class="material-icons" >print</md-icon>
+                    <md-tooltip>
+                        <span translate>Print options</span>
+                    </md-tooltip>
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item>
+                        <md-button ng-click="download()">
+                            <md-icon class="material-icons" >print</md-icon>
+                            <span translate>Export the list (Excel) </span>
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="exportPDF('nomenclature')">
+                            <md-icon class="material-icons" >print</md-icon>
+                            <span translate>Nomenclature of positions (PDF)</span>
+                        </md-button>
+                    </md-menu-item>
+                    <md-divider ></md-divider>
+                    <md-menu-item>
+                        <md-button ng-click="exportPDF('occupants')">
+                            <md-icon class="material-icons" >print</md-icon>
+                            <span translate>Positions and occupant (PDF)</span>
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+            <md-button class="md-icon-button" aria-label="search" ng-click="search = ! search;$parent.setFocus('search');" ng-hide="search == undefined" >
+                <md-icon class="material-icons" >search</md-icon>
+                <md-tooltip>
+                    <span translate>Search</span>
+                </md-tooltip>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+
+    <md-card>
+        <md-toolbar class="md-table-toolbar md-default" >
+
+            <div class="md-toolbar-tools">
+                <md-icon>filter_list</md-icon>
+                <md-input-container flex >
+                    <label translate>Filter by structure</label>
+                    <md-select ng-model="filters.structure"  >
+                        <md-optgroup label="{{'Filtre by structure'| translate}}">
+                            <md-option value="-1" >
+                                {{'All structures'| translate}}
+                            </md-option>
+                            <md-option ng-repeat="struc in structures| filter:onlyDirection " value="{{struc}}" >
+                                {{struc.name}}
+                            </md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex ng-if="filters.structure ">
+                    <label translate>Filter by sub structure</label>
+                    <md-select ng-model="filters.subStructure"  >
+                        <md-optgroup label="{{'Filtre by sub structure'| translate}}">
+                            <md-option value="-1" >
+                                {{'All sub structures'| translate}}
+                            </md-option>
+                            <md-option ng-repeat="struc in structures| filter:onlySubDirection" value="{{struc}}" >
+                                {{struc.name}}
+                            </md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex >
+                    <label translate>Filter by staff status</label>
+                    <md-select ng-model="filters.status"  >
+                        <md-option ng-selected value="-1" >
+                            {{'All'| translate}}
+                        </md-option>
+                        <md-option ng-repeat="s in staffStatusList" value="{{s.id}}" >
+                            {{s.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex >
+                    <label translate>Filter by sanction type</label>
+                    <md-select ng-model="filters.sanctiontype"  >
+                        <md-option ng-selected value="-1" >
+                            {{'All'| translate}}
+                        </md-option>
+                        <md-option ng-repeat="t in sanctionTypes" value="{{t.id}}" >
+                            {{t.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                
+                <md-input-container flex  ng-if="filters.sanctiontype && filters.sanctiontype!= '-1' && filters.status && filters.status != '-'">
+                    <label translate>Filter by sanction</label>
+                    <md-select ng-model="filters.sanction"  >
+                        <md-option ng-selected value="-1" >
+                            {{'All'| translate}}
+                        </md-option>
+                        <md-option ng-repeat="s in sanctions" value="{{s.id}}" >
+                            {{s.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-button class="md-icon-button" ng-click="" aria-label="close">
+                    <md-icon class="material-icons">close</md-icon>
+                </md-button>
+            </div>
+            <div class="md-toolbar-tools" >
+                <md-icon>search</md-icon>
+                <form flex>
+                    <md-input-container class="md-block" flex-gt-xs>
+                        <input type="text" name="search" ng-model="sanctionFilter" placeholder="{{ 'Rearch...' | translate }}">
+                    </md-input-container>
+                </form>
+                <md-button class="md-icon-button" ng-click="sanctionFilter = '';filters.subStructure = undefined; resetForm()" aria-label="close">
+                    <md-icon class="material-icons">close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-table-container>
+            <table id="procrastinate" md-table md-progress="promise">
+                <thead md-head md-order="query.order" class="procrastinateTable">
+                    <tr md-row>
+                        <th md-column md-order-by="matricule" translate style="width: 10px">Identifier</th>
+                        <th md-column md-order-by="fname" translate >Personnel</th>
+                        <th md-column md-order-by="newposition.fr"  translate>Type</th>
+                        <th md-column md-order-by="newposition.fr"  translate>Sanction</th>
+                        <th md-column md-order-by="mouvement"  translate>Administrative act</th>
+                        <th md-column md-order-by="date" style="width: 160px" translate>Date of signature</th>
+                        <th md-column md-order-by="name" style="width: 160px" translate>Actor</th>
+                        <th md-column translate >Actions</th>
+                    </tr>
+                </thead>
+                <tbody md-body dnd-list="list" class="ng-scope procrastinateTable" >
+                    <tr md-row  data-ng-repeat="sanction in sanctionsList.data| orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                        <td md-cell  style="width: 10px" >{{sanction.matricule}} </td>
+                        <td md-cell >
+                            <span >{{sanction.fname}}</span>
+                        </td>
+                        <td md-cell >
+                            <span >{{sanction.typeBeautified| unknown}}</span>
+                        </td>
+                        <td md-cell >
+                            <span ><b>{{sanction.sanctionBeautified| unknown}}</b>
+                            </span>
+                            <br/>
+                            <small ><span translate> Position held: </span><span> {{sanction.newPosition.fr| uppercase | unknown}}</span></small>
+                            <br/> 
+                            <small >{{sanction.structureAffectation.fr}} &#8594; {{sanction.structureAffectationFather.fr}}</small>
+
+                        </td>
+                        <td md-cell flex  >
+                            <small ><span>{{sanction.natureBeautified}}</span> <span ng-if="sanction.natureBeautified" translate> N°: </span> <span> {{sanction.referenceNumber}}</span></small>
+                        </td>
+                        <td md-cell style="width: 160px" >{{sanction.dateofSignature|smartDatetime}} </td>
+                        <td md-cell flex  >
+                            <span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 20px; " >{{sanction.actor.firstname.substr(0, 1).toUpperCase()}}</span>
+                            {{sanction.actor.firstname}} 
+                        </td>
+                        <td md-cell  >
+                <md-menu>
+                    <md-button class="md-icon-button"  ng-click="$mdOpenMenu()" >
+                        <md-icon class="material-icons" >more_vert</md-icon>
+                        <md-tooltip>
+                            <span translate>More actions</span>
+                        </md-tooltip>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="showConfirm(sanction)" ng-if="account.role == '1' || account.role == '3'">
+                                <md-icon class="material-icons" >delete</md-icon>
+                                <span translate>Cancel this sanction</span>
+                            </md-button>
+                        </md-menu-item>
+
+                    </md-menu-content>
+                </md-menu>
+                </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </md-table-container>
+        <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 25, 50, 100]" md-page="query.page" md-total="{{sanctions.count}}" 
+                              md-page-select="true" md-label="{{label}}" md-on-paginate="getAffectations">
+
+    </md-card>
+</div>
+<div style="margin-bottom: 100px"></div>
+<md-button  class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ng-click="affect()" ng-if="account.role == '1' || account.role == '3'">
+    <md-icon>transfer_within_a_station</md-icon>
+    <md-tooltip md-direction="top">
+        <span translate>New sanction</span>
+    </md-tooltip>
+</md-button>
+

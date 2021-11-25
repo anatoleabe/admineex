@@ -139,7 +139,7 @@
             </md-button>
         </div>
         <div class="md-toolbar-tools">
-            <label flex translate>Nombre de resultats: {{personnels.count}}</label>
+            <!--<label flex translate>Nombre de resultats: {{personnels.count}}</label>-->
             <md-icon>search</md-icon>
             <md-input-container flex>
                 <input type="text" name="search" ng-model="staffsFilter" placeholder="{{ 'Search amongs staff...' | translate }}">
@@ -211,6 +211,17 @@
                         </md-button>
                     </md-menu-item>
                     <md-divider ></md-divider>
+                    <md-menu-item ng-if="account.role == '1'">
+                        <md-button class="md-secondary " aria-label="Delete" ng-click="showConfirm(personnel)">
+                            <md-icon aria-label="Delete">delete</md-icon>
+                            <md-tooltip>
+                                <span translate>Delete</span>
+                            </md-tooltip>
+                            <span translate>Delete</span>
+                        </md-button>
+                    </md-menu-item>
+                    <md-divider ></md-divider>
+
                     <!--                    <md-menu-item >
                                             <md-button ng-click="evaluate(personnel)" ng-disabled="!personnel.affectedTo || personnel.affectedTo === null || personnel.affectedTo === 'null' ">
                                                 <md-icon class="material-icons" >verified_user</md-icon>

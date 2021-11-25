@@ -1,0 +1,61 @@
+
+[
+    {
+        "id": "1",
+        "en": "Warning",
+        "fr": "Avertissement",
+        "level":"1"
+    },
+    {
+        "id": "2",
+        "en": "Blame",
+        "fr": "Blâme",
+        "level":"1"
+    },
+    {
+        "id": "3",
+        "en": "Delay in advancement",
+        "fr": "Retard à l’ avancement",
+        "duration": true,
+        "max": 1,
+        "min": 1,
+        "period": "3",
+        "level":"2"
+    },
+    {
+        "id": "4",
+        "en": "Step down",
+        "fr": "Abaissement d'échellon",
+        "quantity": true,
+        "max": 2,
+        "min": 1,
+        "level":"2"
+    },
+    {
+        "id": "5",
+        "en": "Downgrading of class",
+        "fr": "Abaissement de classe",
+        "level":"3"
+    },
+    {
+        "id": "6",
+        "en": "Downgrading of grade",
+        "fr": "Abaissement de grade",
+         "level":"3"
+    },
+    {
+        "id": "7",
+        "en": "Temporary exclusion",
+        "fr": "Exclusion temporaire",
+        "duration": true,
+        "max": 6,
+        "min": 1,
+        "level":"3"
+    },
+    {
+        "id": "8",
+        "en": "Revocation",
+        "fr": "Révocation",
+        "level":"4"
+    }
+]

@@ -249,8 +249,8 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Staff management", "Staff in retirement age"]
-        }).state('home.staffs.assignmenthistory', {
-            url: '/assignmenthistory',
+        }).state('home.staffs.assignments', {
+            url: '/assignments',
             params: {id: undefined, opath: undefined},
             templateUrl: 'templates/staffs/staff/assignmenthistory.html',
             controller: 'AssignmentHistoryController',
@@ -260,7 +260,19 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                         return $ocLazyLoad.load('js/controllers/staffs/staff/AssignmentHistoryCtrl.js');
                     }]
             },
-            breadcrumbs: ["Staff management", "Staff in retirement age"]
+            breadcrumbs: ["Staff management", "Assignment management"]
+        }).state('home.staffs.sanctions', {
+            url: '/sanctions',
+            params: {id: undefined, opath: undefined},
+            templateUrl: 'templates/staffs/staff/sanctionsmanagement.html',
+            controller: 'SanctionsManagementController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/staffs/staff/SanctionsManagementCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Staff management", "Sanctions management"]
         }).state('home.staffs.movement', {
             abstract: true,
             url: '/movement',
@@ -768,8 +780,8 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         $rootScope.account = {};
 
         $rootScope.kernel.isMain = true;
-        $rootScope.kernel.version = "Version 2.2.2";
-        $rootScope.kernel.released = "06/09/2021";
+        $rootScope.kernel.version = "Version 2.2.3";
+        $rootScope.kernel.released = "26/10/2021";
 
         $rootScope.kernel.background = 'world';
         $rootScope.kernel.title = 'Admineex - DGTCFM';

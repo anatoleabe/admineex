@@ -29,12 +29,7 @@ angular.module('PersonnalRecordsCtrl', [[
         title: gettextCatalog.getString("Use input to search for a personnal record")
     };
 
-//    $scope.back = function () {
-//        $state.go("home.staffs.main");
-//    };
-
     $scope.edit = function (params) {
-        console.log(document.referrer)
         $state.go("home.staffs.edit", params);
     };
 
@@ -46,8 +41,6 @@ angular.module('PersonnalRecordsCtrl', [[
 
 
     $ocLazyLoad.load('../node_modules/angular-base64/angular-base64.js').then(function () {
-//        var $base64 = $injector.get('$base64');
-//        console.log($base64.encode('./templates/staffs/img/97.jpeg'))
 
         $ocLazyLoad.load('js/services/StaffService.js').then(function () {
             var Staffs = $injector.get('Staff');
@@ -121,7 +114,7 @@ angular.module('PersonnalRecordsCtrl', [[
                                     return deferred.promise;
                                 };
 
-                                if (id) {
+                                function readStaff(query) {
                                     Staffs.read({
                                         id: id,
                                         beautify: true
@@ -139,10 +132,58 @@ angular.module('PersonnalRecordsCtrl', [[
                                         console.error(response);
                                     });
                                 }
+                                
+                                if (id) {
+                                    readStaff(id);
+                                }
+                                
+                                
+                                $scope.newSanction = function (personnel, type) {
+                                    $ocLazyLoad.load('js/controllers/staffs/staff/SanctionCtrl.js').then(function () {
+                                        $mdDialog.show({
+                                            controller: 'SanctionController',
+                                            templateUrl: '../templates/dialogs/sanction.html',
+                                            parent: angular.element(document.body),
+                                            clickOutsideToClose: true,
+                                            locals: {
+                                                params: {
+                                                    personnel: personnel,
+                                                    type: type
+                                                }
+                                            }
+                                        }).then(function (answer) {
+                                            readStaff(id);
+                                            //Update the user sanctions after the update
+                                            $scope.$broadcast('sanctionupdated', []);
+                                        }, function () {
+                                            readStaff(id);
+                                        });
+                                    });
+                                }
+
+
+                                $scope.newAffectation = function (personnel) {
+                                    $ocLazyLoad.load('js/controllers/administration/positions/AffectationCtrl.js').then(function () {
+                                        $mdDialog.show({
+                                            controller: 'AffectationController',
+                                            templateUrl: '../templates/dialogs/affectation.html',
+                                            parent: angular.element(document.body),
+                                            clickOutsideToClose: true,
+                                            locals: {
+                                                params: {
+                                                    personnel: personnel
+                                                }
+                                            }
+                                        }).then(function (answer) {
+                                        }, function () {
+                                        });
+                                    });
+                                };
 
                                 $scope.selectedPersonnelChange = function (personnel) {
                                     if (personnel) {
                                         $scope.personnelSelected = personnel;
+                                        $rootScope.selectedPersonnelId = personnel._id;
                                         loadsHistory();
 
 
@@ -315,11 +356,7 @@ angular.module('PersonnalRecordsCtrl', [[
                                     Affectation.list({limit: limit, skip: skip, search: $scope.search, filters: JSON.stringify(filterParams)}).then(function (response) {
                                         var data = response.data;
                                         $rootScope.kernel.loading = 100;
-
                                         $scope.allAffectations = data;
-                                        
-                                        console.log(data)
-
                                         return deferred.promise;
                                     }).catch(function (response) {
                                         console.log(response);

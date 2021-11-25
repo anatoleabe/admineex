@@ -1,0 +1,29 @@
+
+[
+    {
+        "id": "1",
+        "en": "Warning",
+        "fr": "Avertissement"
+    },
+    {
+        "id": "2",
+        "en": "Blame",
+        "fr": "Blâme"
+    },
+    {
+        "id": "3",
+        "en": "Layoff",
+        "fr": "Mise à pied"
+    },
+    {
+        "id": "4",
+        "en": "Delayed advancement",
+        "fr": "Retard à l’ avancement",
+        "duration": true
+    },
+    {
+        "id": "5",
+        "en": "Termination of employment",
+        "fr": "Licenciement"
+    }
+]

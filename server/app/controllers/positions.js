@@ -900,7 +900,7 @@ exports.SETPOSITIONORDERFROMJSON = function (callback) {
 exports.findPositionHelder = function (id, callback) {
     Affectation.findOne({
         positionId: id
-    }).lean().exec(function (err, affectation) {
+    }).sort({lastModified: -1}).lean().exec(function (err, affectation) {
         if (err) {
             log.error(err);
             callback(err);

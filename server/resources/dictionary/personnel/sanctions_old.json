@@ -1,0 +1,28 @@
+
+[
+    {
+        "id": "1",
+        "en": "Lateness",
+        "fr": "Retard"
+    },
+    {
+        "id": "2",
+        "en": "Disrespectful",
+        "fr": "Non respect de la hierarchie"
+    },
+    {
+        "id": "3",
+        "en": "Abscence",
+        "fr": "Abscence irreguliere"
+    },
+    {
+        "id": "4",
+        "en": "Deficit",
+        "fr": "Déficit"
+    },
+    {
+        "id": "5",
+        "en": "assiduous",
+        "fr": "Assidu au travail"
+    }
+]

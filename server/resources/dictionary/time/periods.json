@@ -1,0 +1,17 @@
+[
+    {
+        "id": "1",
+        "en": "Day(s)",
+        "fr": "Jour(s)"
+    },
+    {
+        "id": "2",
+        "en": "Month(s)",
+        "fr": "Moi(s)"
+    },
+    {
+        "id": "3",
+        "en": "Year(s)",
+        "fr": "Année(s)"
+    }
+]

@@ -321,9 +321,12 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                     });
 
                     $scope.showConfirm = function (agent) {
+                        
+                        var deleteText = gettextCatalog.getString("This will result in the deletion of all data related to this staff.")
+                        
                         var confirm = $mdDialog.confirm()
                                 .title(gettextCatalog.getString("Delete this Agent"))
-                                .textContent(gettextCatalog.getString("Are you sure you want to delete the Agent") + " " + agent.name.use + gettextCatalog.getString("?"))
+                                .textContent(gettextCatalog.getString("Are you sure you want to delete the Agent") + " " + agent.name.fname + gettextCatalog.getString("?") + " \n"+deleteText)
                                 .ok(gettextCatalog.getString("OK"))
                                 .cancel(gettextCatalog.getString("Cancel"));
 

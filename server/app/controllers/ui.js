@@ -121,10 +121,17 @@ function buildNav(user, callback) {
     };
     
     var staffManagementTab4 = {
-        href: 'home.staffs.assignmenthistory',
+        href: 'home.staffs.assignments',
         sref: '.staffs',
-        label: gt.gettext('Assignment History'),
-        name: gt.gettext('Assignment History')
+        label: gt.gettext('Assignments management'),
+        name: gt.gettext('Assignments management')
+    };
+    
+    var staffManagementTab5 = {
+        href: 'home.staffs.sanctions',
+        sref: '.staffs',
+        label: gt.gettext('Sanctions management'),
+        name: gt.gettext('Sanctions management')
     };
 
     var task = {
@@ -278,6 +285,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab4);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab5);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU MONITOR
 //            nav.left[0].items.push(monitoring);
@@ -307,6 +315,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab4);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab5);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU MONITOR
 //            nav.left[0].items.push(monitoring);
@@ -326,6 +335,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab4);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab5);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
@@ -341,6 +351,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab2);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab4);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab5);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
