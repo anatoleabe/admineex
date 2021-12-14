@@ -584,6 +584,7 @@ exports.list = function (options, callback) {
                             aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
                         }
                         //Set the filters
+                        console.log("options.filters", options.filters);
                         if (options.filters) {
                             if (options.filters.structure && options.filters.structure != "-" && options.filters.structure != "") {
                                 aggregate.push({$match: {$or: [{"affectation.positionCode": new RegExp("^" + options.filters.structure)}]}})
@@ -632,6 +633,10 @@ exports.list = function (options, callback) {
                             aggregate.push({"$limit": options.skip + options.limit})
                             aggregate.push({"$skip": options.skip})
                         }
+                        
+//                        console.log("------");
+//                        console.log("------");
+                        console.log(options.minify);
 
                         q = Personnel.aggregate(aggregate);
 
@@ -820,14 +825,23 @@ exports.api.export = function (req, res) {
                 } else {
                     //console.log(structures)
                     var options = {
-                        minify: true,
+                        minify: false,
                         req: req,
                         filters: filtersParam,
                         language: req.actor.language,
                         beautifyPosition: false,
                         toExport: true
                     }
-                    var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "affectation.date": 1, "situations": 1, };
+                    //var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "affectation.date": 1, "situations": 1, };
+
+                    var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1,
+                        identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1,
+                        "affectation.position.fr": 1,
+                        "affectation.position.en": 1,
+                        "affectation.position.code": 1,
+                        "affectation.position.structureId": 1
+                    };
+
                     options.projection = projection;
 
                     exports.list(options, function (err, personnels) {

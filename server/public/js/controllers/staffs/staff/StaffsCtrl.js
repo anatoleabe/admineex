@@ -357,7 +357,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                             }
 
                             var filterParams = {
-                                structure: $scope.codeStructureExport,
+                                structure: $scope.codeStructure,
                                 gender: $scope.filters.gender,
                                 status: $scope.filters.status,
                                 grade: $scope.filters.grade,

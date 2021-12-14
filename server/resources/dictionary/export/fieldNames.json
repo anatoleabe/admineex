@@ -20,11 +20,11 @@
         "en": "Status",
         "fr": "Statut"
     },{
-        "id": "phone",
+        "id": "telecom.0.value",
         "en": "Phone",
         "fr": "Téléphone"
     },{
-        "id": "affectedTo.position.name",
+        "id": "affectation.position.name",
         "en": "Function",
         "fr": "Fonction"
     },{
