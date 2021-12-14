@@ -584,7 +584,6 @@ exports.list = function (options, callback) {
                             aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
                         }
                         //Set the filters
-                        console.log("options.filters", options.filters);
                         if (options.filters) {
                             if (options.filters.structure && options.filters.structure != "-" && options.filters.structure != "") {
                                 aggregate.push({$match: {$or: [{"affectation.positionCode": new RegExp("^" + options.filters.structure)}]}})
@@ -634,10 +633,6 @@ exports.list = function (options, callback) {
                             aggregate.push({"$skip": options.skip})
                         }
                         
-//                        console.log("------");
-//                        console.log("------");
-                        console.log(options.minify);
-
                         q = Personnel.aggregate(aggregate);
 
                         q.exec(function (err, personnels) {
@@ -814,6 +809,9 @@ exports.api.export = function (req, res) {
             var filter = {rank: "2"};
             if (filtersParam.structure != "-1" && filtersParam.structure != "undefined" && filtersParam.structure) {
                 filter.code = filtersParam.structure;
+                if (filter.code.endsWith("-")){
+                    filter.code = filtersParam.structure.slice(0,-1);
+                }
             }
             var option = {
                 actor: req.actor, language: req.actor.language, beautify: true, filter: filter
@@ -832,7 +830,6 @@ exports.api.export = function (req, res) {
                         beautifyPosition: false,
                         toExport: true
                     }
-                    //var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1, identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "affectation.date": 1, "situations": 1, };
 
                     var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1,
                         identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1,
@@ -861,15 +858,15 @@ exports.api.export = function (req, res) {
                             })
 
                             var groupedPersonnelByStructureChildren = _.groupBy(personnels, function (item) {
-                                if (item.affectedTo && item.affectedTo.position && item.affectedTo.position.structureId) {
-                                    return item.affectedTo.position.structureId;
+                                //console.log(item.affectation && item.affectation.structure && item.affectation.structure._id)
+                                if (item.affectation && item.affectation.structure && item.affectation.structure._id) {
+                                    
+                                    return item.affectation.structure._id;
                                 } else {
                                     return "undefined";
                                 }
 
                             });
-                            //console.log(groupedPersonnelByStructureChildren["undefined"])
-                            //console.log(z)
 
                             for (var s in structures) {
                                 if (structures[s].children) {
