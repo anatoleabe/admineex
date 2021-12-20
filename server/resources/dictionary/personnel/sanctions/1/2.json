@@ -2,56 +2,67 @@
     {
         "id": "1",
         "en": "Requests for explanation",
-        "fr": "Demandes d’explication"
+        "fr": "Demandes d’explication",
+        "sanction":""
     },
     {
         "id": "2",
         "en": "Irregular absences",
-        "fr": "Absences irrégulières"
+        "fr": "Absences irrégulières",
+        "sanction":"Abattement de 10% des primes trimestrielles à partir de 3 jours d'abscence"
     },
     {
         "id": "3",
         "en": "Unjustified delays",
-        "fr": "Les retards injustifiés"
+        "fr": "Retards injustifiés",
+        "sanction":"Abattement de 10% des primes trimestrielles par tranche de 5 retards"
     },
     {
         "id": "4",
         "en": "Non-production of periodic situations and accounts within the regulatory deadlines",
-        "fr": "Lon production des situations périodiques et des comptabilités dans les  délais règlementaires"
+        "fr": "Lon production des situations périodiques et des comptabilités dans les  délais règlementaires",
+        "sanction":"Abattement de 20% des primes trimestrielles par situation périodique ou par comptabilité non produite"
     },
     {
         "id": "5",
         "en": "Non transmission of management accounts by the principal accountants to the Court of Accounts within the regulatory time limits",
-        "fr": "Non transmission des comptes de gestion par les comptables principaux à la juridiction des comptes dans les délais règlementaires"
+        "fr": "Non transmission des comptes de gestion par les comptables principaux à la juridiction des comptes dans les délais règlementaires",
+        "sanction":"Abattement de 25% des primes trimestrielles par tranche de (2) deux mois de retard"
     },
     {
         "id": "6",
         "en": "Unjustified delays in the processing of files",
-        "fr": "Retards injustifiés dans le traitement des dossiers"
+        "fr": "Retards injustifiés dans le traitement des dossiers",
+        "sanction":"Abattement de 10 à 20% des primes trimestrielles suivant l'importance du retard constaté"
     },
     {
         "id": "7",
         "en": "Unjustified delays in processing filesCases of proven indelicacy",
-        "fr": "Cas d'indélicatesses avérées"
+        "fr": "Cas d'indélicatesses avérées",
+        "sanction":"Abattement de 50 à 90% des primes trimestrielles suivant l'importance du cas considéré"
     },
     {
         "id": "8",
         "en": "Cases of loss of files",
-        "fr": "Cas de pertes des dossiers"
+        "fr": "Cas de pertes des dossiers",
+        "sanction":"Abattement de 90% des primes trimestrielles"
     },
     {
         "id": "9",
-        "en": "Risks in public services ",
-        "fr": "Risques dans les services publics "
+        "en": "Rixes in public services ",
+        "fr": "Rixes dans les services publics ",
+        "sanction":"Abattement de 95% des primes trimestrielles"
     },
     {
         "id": "10",
         "en": "Deficiencies noted",
-        "fr": "Déficits constatés"
+        "fr": "Déficits constatés",
+        "sanction":"Retenue de 100% jusqu'au recouvrement complet du déficit sans possibilité de nommination à un autre poste"
     },
     {
         "id": "11",
         "en": "Other cases of indiscipline noted by the respondent's superior",
-        "fr": "Autres cas d'indiscipline relevés par les supérieur hiérarchique du mis en cause"
+        "fr": "Autres cas d'indiscipline relevés par les supérieur hiérarchique du mis en cause",
+        "sanction":"Abattement de 50 à 90% des primes trimestrielles suivant la gravité du cas considéré"
     }
 ]

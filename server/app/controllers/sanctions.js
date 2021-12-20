@@ -40,6 +40,12 @@ exports.upsert = function (fields, callback) {
             "personnelId": personnelId
         });
         filter.$and.push({
+            "type": fields.type
+        });
+        filter.$and.push({
+            "sanction": fields.sanction
+        });
+        filter.$and.push({
             "dateofSignature": dateofSignature
         });
     }
@@ -49,6 +55,8 @@ exports.upsert = function (fields, callback) {
         personnelId: fields.personnelId,
         positionCode: fields.positionCode,
         dateofSignature: fields.dateofSignature,
+        startDate: fields.startDate,
+        endDate: fields.endDate,
         referenceNumber: fields.referenceNumber,
         actor: fields.actor.id,
         nature: fields.nature,
@@ -89,7 +97,6 @@ exports.api.upsert = function (req, res) {
                 audit.logEvent('[formidable]', 'Sanction', 'Upsert', "", "", 'failed', "Formidable attempted to parse sanction fields");
                 return res.status(500).send(err);
             } else {
-                console.log(fields);
                 fields.actor = req.actor;
                 exports.upsert(fields, function (err) {
                     if (err) {
@@ -122,7 +129,6 @@ exports.api.list = function (req, res) {
         if (req.params.filters && req.params.filters != "-" && req.params.filters != "") {
             filtersParam = JSON.parse(req.params.filters);
         }
-        console.log(filtersParam)
         var options = {
             limit: limit,
             skip: skip,
@@ -320,9 +326,11 @@ exports.api.list = function (req, res) {
                                 for (var a in sanctions) {
                                     if (sanctions[a].type && sanctions[a].personnel.status) {
                                         sanctions[a].typeBeautified = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions.json', sanctions[a].type, language);
-                                        sanctions[a].sanctionBeautified = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions/'+sanctions[a].personnel.status+'/'+sanctions[a].type+'.json', sanctions[a].sanction, language);
+                                        sanctions[a].indisciplineBeautified = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions/'+sanctions[a].personnel.status+'/'+sanctions[a].type+'.json', sanctions[a].sanction, language);
                                         sanctions[a].periodBeautified = dictionary.getValueFromJSON('../../resources/dictionary/time/periods.json', sanctions[a].period, language);
                                         sanctions[a].natureBeautified = dictionary.getValueFromJSON('../../resources/dictionary/acts/natures.json', sanctions[a].nature, language);
+                                        sanctions[a].sanctionBeautified = dictionary.getJSONById('../../resources/dictionary/personnel/sanctions/'+sanctions[a].personnel.status+'/'+sanctions[a].type+'.json', sanctions[a].sanction).sanction;
+                                        
                                     }
                                 }
                                 return res.json(sanctions);

@@ -15,10 +15,11 @@
                             <li ng-if="sanctions.length > 0" class="ng-scope" ng-repeat="sanction in sanctions">
                                 <div style="display: block; overflow: hidden; padding-right: 5px; padding-bottom: 2px">
                                     <span style="float: left" class="ng-binding">
-                                        {{sanction.sanctionBeautified}}, &nbsp;
+                                        {{sanction.indisciplineBeautified}}: <strong class="ng-binding"> {{sanction.sanctionBeautified}}</strong>;
                                     </span>
+                                    <br/>
                                     <span  style="float: left">
-                                        <strong class="ng-binding">{{sanction.natureBeautified}} N° : {{sanction.referenceNumber}}</strong>
+                                        <strong class="ng-binding">Ref: {{sanction.natureBeautified}} N°:  {{sanction.referenceNumber}}</strong>
                                     </span>
                                     <span style="float: right; font-size: small; color: #939393" class="ng-binding">
                                         {{sanction.dateofSignature| smartDatetime}}
@@ -51,10 +52,11 @@
                             <li ng-if="awards.length > 0" class="ng-scope" ng-repeat="award in awards">
                                 <div style="display: block; overflow: hidden; padding-right: 5px; padding-bottom: 2px">
                                     <span style="float: left" class="ng-binding">
-                                        {{award.sanctionBeautified}}, &nbsp;
+                                        {{award.indisciplineBeautified}} 
                                     </span>
+                                    <br/>
                                     <span  style="float: left">
-                                        <strong class="ng-binding">{{award.natureBeautified}} N° : {{award.referenceNumber}}</strong>
+                                        <strong class="ng-binding">Ref: {{award.natureBeautified}} N° : {{award.referenceNumber}}</strong>
                                     </span>
                                     <span style="float: right; font-size: small; color: #939393" class="ng-binding">
                                         {{award.dateofSignature| smartDatetime}}

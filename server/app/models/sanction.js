@@ -10,6 +10,8 @@ var SanctionSchema = new Schema({
     personnelId: {type: Schema.ObjectId, ref: 'Personnel', required: true}, //Personnel id
     actor: {type: Schema.ObjectId, ref: 'User', required: true}, //User ID
     referenceNumber: String,
+    startDate: {type: Date},
+    endDate: {type: Date},
     dateofSignature: {type: Date, required: true},
     nature: String, //Id from json resources json natures
     type: String, //Id from json resources json sanctions types

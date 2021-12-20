@@ -27,7 +27,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="sanction.$error">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="sanction.$error">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                             <label translate>Select duration</label>
                             <input name="duration" type="number" ng-model="sanction.duration" required>
                             <div ng-messages="duration.$error">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="period.$error">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -74,20 +74,20 @@
                     </div>
                     <div layout="row" >
                         <md-input-container class="datepicker-xl" flex style="width: 200px;">
-                            <label translate>Start date</label>
-                            <md-datepicker name="startDate" class="md-block"  ng-model="sanction.startDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
+                            <label translate>Start date of sanction</label>
+                            <md-datepicker name="startDate" class="md-block"  ng-model="sanction.startDate" md-max-date="max"  style="width: 200px;"></md-datepicker>
                             <div ng-messages="startDate">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
                         </md-input-container>
 
                         <md-input-container class="datepicker-xl" flex style="width: 200px;">
-                            <label translate>End date</label>
-                            <md-datepicker name="endDate" class="md-block"  ng-model="sanction.endDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
+                            <label translate>End date of sanction</label>
+                            <md-datepicker name="endDate" class="md-block"  ng-model="sanction.endDate" md-max-date="max"  style="width: 200px;"></md-datepicker>
                             <div ng-messages="endDate">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="nature.$error">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -120,7 +120,7 @@
                             <label translate>Number of reference</label>
                             <input name="numAct" ng-model="sanction.referenceNumber" required>
                             <div ng-messages="numAct.$error">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -131,7 +131,7 @@
                             <label translate>Date of signature</label>
                             <md-datepicker name="dateofSignature" class="md-block"  ng-model="sanction.dateofSignature" md-max-date="max" required style="width: 200px;"></md-datepicker>
                             <div ng-messages="dateofSignature">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
