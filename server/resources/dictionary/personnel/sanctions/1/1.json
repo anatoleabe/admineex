@@ -1,19 +1,19 @@
 
 [
     {
-        "id": "1",
+        "id": "18",
         "en": "Warning",
         "fr": "Avertissement",
         "level":"1"
     },
     {
-        "id": "2",
+        "id": "19",
         "en": "Blame",
         "fr": "Blâme",
         "level":"1"
     },
     {
-        "id": "3",
+        "id": "21",
         "en": "Delay in advancement",
         "fr": "Retard à l’ avancement",
         "duration": true,
@@ -23,7 +23,7 @@
         "level":"2"
     },
     {
-        "id": "4",
+        "id": "23",
         "en": "Step down",
         "fr": "Abaissement d'échellon",
         "quantity": true,
@@ -32,19 +32,19 @@
         "level":"2"
     },
     {
-        "id": "5",
+        "id": "24",
         "en": "Downgrading of class",
         "fr": "Abaissement de classe",
         "level":"3"
     },
     {
-        "id": "6",
+        "id": "25",
         "en": "Downgrading of grade",
         "fr": "Abaissement de grade",
          "level":"3"
     },
     {
-        "id": "7",
+        "id": "26",
         "en": "Temporary exclusion",
         "fr": "Exclusion temporaire",
         "duration": true,
@@ -53,7 +53,7 @@
         "level":"3"
     },
     {
-        "id": "8",
+        "id": "27",
         "en": "Revocation",
         "fr": "Révocation",
         "level":"4"

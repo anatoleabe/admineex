@@ -1,0 +1,55 @@
+[
+    {
+        "id": "matricule",
+        "en": "Matricule",
+        "fr": "Matricule"
+    },{
+        "id": "fname",
+        "en": "Name",
+        "fr": "Nom"
+    },{
+        "id": "typeBeautified",
+        "en": "Type",
+        "fr": "Type"
+    },{
+        "id": "indisciplineBeautified",
+        "en": "Faute ou récompense",
+        "fr": "Faute ou récompense"
+    },{
+        "id": "sanctionBeautified",
+        "en": "Sanction",
+        "fr": "Sanction"
+    },{
+        "id": "natureBeautified",
+        "en": "Nature of act",
+        "fr": "Nature de l'acte"
+    },{
+        "id": "referenceNumber",
+        "en": "Ref",
+        "fr": "Référence de l'acte"
+    },{
+        "id": "newPosition.fr",
+        "en": "Poste occupé",
+        "fr": "Poste occupé"
+    },{
+        "id": "structureAffectation.fr",
+        "en": "Service",
+        "fr": "Service"
+    },{
+        "id": "structureAffectationFather.fr",
+        "en": "Structure",
+        "fr": "Structure"
+    },{
+        "id": "dateofSignature",
+        "en": "Date of signature",
+        "fr": "Date de signature"
+    },{
+        "id": "endDate",
+        "en": "End Date",
+        "fr": "Date de fin"
+    },{
+        "id": "lastModified",
+        "en": "Creation",
+        "fr": "Date d'enregistrement"
+    }
+]

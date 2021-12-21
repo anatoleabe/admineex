@@ -29,7 +29,29 @@ angular.module('SanctionsStatisticsCtrl', []).controller('SanctionsStatisticsCon
 
 
                         $scope.getSanctions = function () {
-                            $scope.loadingChart = false;
+                            
+                            var deferred = $q.defer();
+
+                            $rootScope.kernel.loading = 0;
+                            $scope.helper = [];
+                            var filterParams = {
+                                structure: $scope.codeStructure,
+                                status: $scope.filters.status,
+                                sanctiontype: $scope.filters.sanctiontype,
+                                sanction: $scope.filters.sanction,
+                                from: $rootScope.range.from.value,
+                                to: $rootScope.range.to.value
+                            }
+                            Sanction.statistics({filters: JSON.stringify(filterParams)}).then(function (response) {
+                                var data = response.data;
+                                $rootScope.kernel.loading = 100;
+                                $scope.sanctionsStats = data.data;
+                                $scope.totalSanctions  = data.totalCount;
+                                console.log(data);
+                                return deferred.promise;
+                            }).catch(function (response) {
+                                console.log(response);
+                            });
                         }
                         $scope.getSanctions();
                         

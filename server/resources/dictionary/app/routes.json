@@ -489,5 +489,17 @@
         "uri": "/api/sanctions/:id",
         "method": "DELETE",
         "roles": [1,3]
+    },
+    {
+        "id": 84,
+        "uri": "/api/sanctionsExport/:filters",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 85,
+        "uri": "/api/sanctionsStatistics/:filters",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
     }
 ]

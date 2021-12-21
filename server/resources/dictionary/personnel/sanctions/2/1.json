@@ -1,28 +1,28 @@
 
 [
     {
-        "id": "1",
+        "id": "18",
         "en": "Warning",
         "fr": "Avertissement"
     },
     {
-        "id": "2",
+        "id": "19",
         "en": "Blame",
         "fr": "Blâme"
     },
     {
-        "id": "3",
+        "id": "20",
         "en": "Layoff",
         "fr": "Mise à pied"
     },
     {
-        "id": "4",
+        "id": "21",
         "en": "Delayed advancement",
         "fr": "Retard à l’ avancement",
         "duration": true
     },
     {
-        "id": "5",
+        "id": "22",
         "en": "Termination of employment",
         "fr": "Licenciement"
     }

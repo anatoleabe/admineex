@@ -12,6 +12,14 @@ angular.module('SanctionService', []).factory('Sanction', function($http) {
         },
         delete: function(info) {
             return $http.delete('/api/sanctions/' + info.id);
+        },
+        export: function(info) {
+            var filters = info.filters?info.filters:"-";
+            return $http.get('/api/sanctionsExport/'+filters);
+        },
+        statistics: function(info) {
+            var filters = info.filters?info.filters:"-";
+            return $http.get('/api/sanctionsStatistics/'+filters);
         }
     }
 });

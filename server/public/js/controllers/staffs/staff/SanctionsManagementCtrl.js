@@ -21,7 +21,7 @@ angular.module('SanctionsManagementCtrl', []).controller('SanctionsManagementCon
     $scope.helper = {
         title: gettextCatalog.getString("No sanction found"),
     };
-    
+
     $rootScope.showGlobalView = false;
 
 
@@ -74,7 +74,7 @@ angular.module('SanctionsManagementCtrl', []).controller('SanctionsManagementCon
                             });
                         }
                         $scope.getSanctions();
-                        
+
 
                         $scope.onlyDirection = function (item) {
                             return item.rank == "2";
@@ -165,8 +165,8 @@ angular.module('SanctionsManagementCtrl', []).controller('SanctionsManagementCon
                                 $scope.getSanctions();
                             }
                         });
-                        
-                        
+
+
                         watch.range = $rootScope.$watch('range', function (newValue, oldValue) {
                             if (newValue.from.value.getTime() !== oldValue.from.value.getTime() || newValue.to.value.getTime() !== oldValue.to.value.getTime()) {
                                 $scope.loadingChart = true;
@@ -210,7 +210,7 @@ angular.module('SanctionsManagementCtrl', []).controller('SanctionsManagementCon
                                         }
                                     }
                                 }).then(function (answer) {
-                                    
+
                                 }, function () {
                                 });
                             });
@@ -240,6 +240,62 @@ angular.module('SanctionsManagementCtrl', []).controller('SanctionsManagementCon
                                 });
                             }, function () {
                                 // Cancel
+                            });
+                        }
+
+                        $scope.download = function () {
+                            $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
+                                var FileSaver = $injector.get('FileSaver');
+                                $rootScope.kernel.loading = 0;
+                                var deferred = $q.defer();
+                                $scope.promise = deferred.promise;
+                                function jsonBufferToObject(data, headersGetter, status) {
+                                    var type = headersGetter("Content-Type");
+                                    if (!type.startsWith("application/json")) {
+                                        return data;
+                                    }
+                                    ;
+                                    var decoder = new TextDecoder("utf-8");
+                                    var domString = decoder.decode(data);
+                                    var json = JSON.parse(domString);
+                                    return json;
+                                }
+
+                                var filterParams = {
+                                    structure: $scope.codeStructure,
+                                    status: $scope.filters.status,
+                                    sanctiontype: $scope.filters.sanctiontype,
+                                    sanction: $scope.filters.sanction,
+                                    from: $rootScope.range.from.value,
+                                    to: $rootScope.range.to.value
+                                }
+                                
+                                $ocLazyLoad.load('js/services/DownloadService.js').then(function () {
+                                    var Download = $injector.get('Download');
+                                    Download.start({
+                                        method: 'GET',
+                                        url: '/api/sanctionsExport/' + JSON.stringify(filterParams),
+                                        headers: {'Content-Type': "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},
+                                        transformResponse: jsonBufferToObject
+                                    }).then(function (response) {
+                                        console.log(response)
+                                        var d = new Blob([response.data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+                                        var filename = 'Admineex';
+                                        FileSaver.saveAs(d, filename + gettextCatalog.getString('Adminex_Staff_Export') + '_' + '.xlsx');
+                                        $rootScope.kernel.loading = 100;
+                                        deferred.resolve(response.data);
+                                    }).catch(function (response) {
+                                        console.error(response);
+                                        if (response.data && response.data.error === '9500') {
+                                            $rootScope.kernel.alerts.push({
+                                                type: 1,
+                                                msg: gettextCatalog.getString('The Export is too big. Please reduce the date range'),
+                                                priority: 1
+                                            });
+                                            $rootScope.kernel.loading = 100;
+                                        }
+                                    });
+                                });
                             });
                         }
 

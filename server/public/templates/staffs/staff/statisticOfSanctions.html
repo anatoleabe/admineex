@@ -84,80 +84,59 @@
                     <md-icon class="material-icons">close</md-icon>
                 </md-button>
             </div>
-            
+
         </md-toolbar>
-        <!-- Basic datatable -->
-        <div class="card">
-            <div class="card-header header-elements-inline">
-                <h5 class="card-title">Statistics of Sanctions</h5>
-                <div class="header-elements">
-                    <div class="list-icons">
-                        <a class="list-icons-item" data-action="collapse"></a>
-                        <a class="list-icons-item" data-action="reload"></a>
-                        <a class="list-icons-item" data-action="remove"></a>
+        <div class="content">
+            <!-- Basic datatable -->
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Statistics of Sanctions</h5>
+                    <div class="header-elements">
+                        <div class="list-icons">
+                            <a class="list-icons-item" data-action="collapse"></a>
+                            <a class="list-icons-item" data-action="reload"></a>
+                            <a class="list-icons-item" data-action="remove"></a>
+                        </div>
                     </div>
                 </div>
+
+                <table class="table datatable-basic">
+                    <thead>
+                        <tr>
+                            <th>Type of sanction</th>
+                            <th>Faults committed & sanction</th>
+                            <th>Staff numbers</th>
+                            <th>Percentage</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr  data-ng-repeat="sanction in sanctionsStats" >
+                            <td>{{sanction.typeBeautified}}</td>
+                            <td>{{sanction.indisciplineBeautified}} : {{sanction.sanctionBeautified}}</td>
+                            <td>{{sanction.count}}</td>
+                            <td>{{(sanction.count / totalSanctions * 100).toFixed(2)}}%</td>
+                            <td class="text-center">
+                                <div class="list-icons">
+                                    <div class="dropdown">
+                                        <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                            <i class="icon-menu9"></i>
+                                        </a>
+
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a href="#" class="dropdown-item"><i class="icon-file-pdf"></i> Export to .pdf</a>
+                                            <a href="#" class="dropdown-item"><i class="icon-file-excel"></i> Export to .csv</a>
+                                            <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
             </div>
-
-            <table class="table datatable-basic">
-                <thead>
-                    <tr>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Job Title</th>
-                        <th>DOB</th>
-                        <th>Status</th>
-                        <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Marth</td>
-                        <td><a href="#">Enright</a></td>
-                        <td>Traffic Court Referee</td>
-                        <td>22 Jun 1972</td>
-                        <td><span class="badge badge-success">Active</span></td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-menu9"></i>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a href="#" class="dropdown-item"><i class="icon-file-pdf"></i> Export to .pdf</a>
-                                        <a href="#" class="dropdown-item"><i class="icon-file-excel"></i> Export to .csv</a>
-                                        <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Jackelyn</td>
-                        <td>Weible</td>
-                        <td><a href="#">Airline Transport Pilot</a></td>
-                        <td>3 Oct 1981</td>
-                        <td><span class="badge badge-secondary">Inactive</span></td>
-                        <td class="text-center">
-                            <div class="list-icons">
-                                <div class="dropdown">
-                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                        <i class="icon-menu9"></i>
-                                    </a>
-
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a href="#" class="dropdown-item"><i class="icon-file-pdf"></i> Export to .pdf</a>
-                                        <a href="#" class="dropdown-item"><i class="icon-file-excel"></i> Export to .csv</a>
-                                        <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                    
-                </tbody>
-            </table>
         </div>
         <!-- /basic datatable -->
 

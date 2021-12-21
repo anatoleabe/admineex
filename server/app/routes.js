@@ -486,6 +486,20 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.sanctions.api.remove],
         access: _.findWhere(aclRoutes, {id: 83}).roles
     },
+    // export sanctions
+    {
+        path: _.findWhere(aclRoutes, {id: 84}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 84}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.sanctions.api.export],
+        access: _.findWhere(aclRoutes, {id: 84}).roles
+    },
+    // Statistics sanctions
+    {
+        path: _.findWhere(aclRoutes, {id: 85}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 85}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.sanctions.api.statistics],
+        access: _.findWhere(aclRoutes, {id: 85}).roles
+    },
 
     // === EXPORT PDF ROUTES ==========================================================
 

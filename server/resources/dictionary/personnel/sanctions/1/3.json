@@ -1,32 +1,32 @@
 
 [
     {
-        "id": "1",
+        "id": "12",
         "en": "Letter of encouragement",
         "fr": "Lettre d’encouragement"
     },
     {
-        "id": "2",
+        "id": "13",
         "en": "Congratulation letter",
         "fr": "Lettre de félicitation"
     },
     {
-        "id": "3",
+        "id": "14",
         "en": "Official testimonial of satisfaction",
         "fr": "Témoignage officiel de satisfaction"
     },
     {
-        "id": "4",
+        "id": "15",
         "en": "Honorable Mention",
         "fr": "Mention honorable"
     },
     {
-        "id": "5",
+        "id": "16",
         "en": "Diploma of Excellence",
         "fr": "Diplôme d’excellence"
     },
     {
-        "id": "6",
+        "id": "17",
         "en": "Honorary",
         "fr": "Honorariat"
     }
