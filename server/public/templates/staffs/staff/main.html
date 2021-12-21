@@ -38,12 +38,12 @@
         </div>
         <span flex></span>
 
-        <md-button class="md-icon-button" aria-label="Print" ng-click="download()">
-            <md-icon>print</md-icon>
-            <md-tooltip md-direction="top">
-                <span translate>Print</span>
+        <button type="button" class="btn btn-outline alpha-success text-success-800 border-success-600" ng-click="download()"><i class="icon-file-excel mr-2"></i> <span translate>Export to Excel</span>
+            <md-tooltip>
+                <span translate>Export to Excel</span>
             </md-tooltip>
-        </md-button>
+        </button>
+
         <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
             <md-icon class="material-icons" >search</md-icon>
             <md-tooltip>

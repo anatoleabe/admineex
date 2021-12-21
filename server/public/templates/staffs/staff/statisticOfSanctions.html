@@ -1,0 +1,173 @@
+<div class="md-dialog-content">
+    <md-toolbar class="toolbar-filter">
+        <div class="md-toolbar-tools md-default">
+
+            <div data-oc-lazy-load="['js/directives/FilterbarDirective.js']" style="margin-bottom: 10px" >
+                <div filterbar daterange="true"  ></div>
+            </div>
+            <span flex></span>
+            <button type="button" class="btn btn-outline alpha-success text-success-800 border-success-600" ng-click="download()"><i class="icon-file-excel mr-2"></i> <span translate>Export to Excel</span>
+                <md-tooltip>
+                    <span translate>Export to Excel</span>
+                </md-tooltip>
+            </button>
+        </div>
+    </md-toolbar>
+
+
+    <md-card>
+        <md-toolbar class="md-table-toolbar md-default" >
+
+            <div class="md-toolbar-tools">
+                <md-icon>filter_list</md-icon>
+                <md-input-container flex >
+                    <label translate>Filter by structure</label>
+                    <md-select ng-model="filters.structure"  >
+                        <md-optgroup label="{{'Filtre by structure'| translate}}">
+                            <md-option value="-1" >
+                                {{'All structures'| translate}}
+                            </md-option>
+                            <md-option ng-repeat="struc in structures| filter:onlyDirection " value="{{struc}}" >
+                                {{struc.name}}
+                            </md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex ng-if="filters.structure">
+                    <label translate>Filter by sub structure</label>
+                    <md-select ng-model="filters.subStructure"  >
+                        <md-optgroup label="{{'Filtre by sub structure'| translate}}">
+                            <md-option value="-1" >
+                                {{'All sub structures'| translate}}
+                            </md-option>
+                            <md-option ng-repeat="struc in structures| filter:onlySubDirection" value="{{struc}}" >
+                                {{struc.name}}
+                            </md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex >
+                    <label translate>Filter by staff status</label>
+                    <md-select ng-model="filters.status"  >
+                        <md-option ng-selected value="-1" >
+                            {{'All'| translate}}
+                        </md-option>
+                        <md-option ng-repeat="s in staffStatusList" value="{{s.id}}" >
+                            {{s.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex >
+                    <label translate>Filter by sanction type</label>
+                    <md-select ng-model="filters.sanctiontype"  >
+                        <md-option ng-selected value="-1" >
+                            {{'All'| translate}}
+                        </md-option>
+                        <md-option ng-repeat="t in sanctionTypes" value="{{t.id}}" >
+                            {{t.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container flex  ng-if="filters.sanctiontype && filters.sanctiontype != '-1' && filters.status && filters.status != '-'">
+                    <label translate>Filter by sanction</label>
+                    <md-select ng-model="filters.sanction"  >
+                        <md-option ng-selected value="-1" >
+                            {{'All'| translate}}
+                        </md-option>
+                        <md-option ng-repeat="s in sanctions" value="{{s.id}}" >
+                            {{s.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-button class="md-icon-button" ng-click="" aria-label="close">
+                    <md-icon class="material-icons">close</md-icon>
+                </md-button>
+            </div>
+            
+        </md-toolbar>
+        <!-- Basic datatable -->
+        <div class="card">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">Statistics of Sanctions</h5>
+                <div class="header-elements">
+                    <div class="list-icons">
+                        <a class="list-icons-item" data-action="collapse"></a>
+                        <a class="list-icons-item" data-action="reload"></a>
+                        <a class="list-icons-item" data-action="remove"></a>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table datatable-basic">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Job Title</th>
+                        <th>DOB</th>
+                        <th>Status</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Marth</td>
+                        <td><a href="#">Enright</a></td>
+                        <td>Traffic Court Referee</td>
+                        <td>22 Jun 1972</td>
+                        <td><span class="badge badge-success">Active</span></td>
+                        <td class="text-center">
+                            <div class="list-icons">
+                                <div class="dropdown">
+                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                        <i class="icon-menu9"></i>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="#" class="dropdown-item"><i class="icon-file-pdf"></i> Export to .pdf</a>
+                                        <a href="#" class="dropdown-item"><i class="icon-file-excel"></i> Export to .csv</a>
+                                        <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Jackelyn</td>
+                        <td>Weible</td>
+                        <td><a href="#">Airline Transport Pilot</a></td>
+                        <td>3 Oct 1981</td>
+                        <td><span class="badge badge-secondary">Inactive</span></td>
+                        <td class="text-center">
+                            <div class="list-icons">
+                                <div class="dropdown">
+                                    <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                        <i class="icon-menu9"></i>
+                                    </a>
+
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a href="#" class="dropdown-item"><i class="icon-file-pdf"></i> Export to .pdf</a>
+                                        <a href="#" class="dropdown-item"><i class="icon-file-excel"></i> Export to .csv</a>
+                                        <a href="#" class="dropdown-item"><i class="icon-file-word"></i> Export to .doc</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        <!-- /basic datatable -->
+
+    </md-card>
+</div>
+<div style="margin-bottom: 100px"></div>
+<md-button  class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ng-click="affect()" ng-if="account.role == '1' || account.role == '3'">
+    <md-icon>transfer_within_a_station</md-icon>
+    <md-tooltip md-direction="top">
+        <span translate>New sanction</span>
+    </md-tooltip>
+</md-button>
+

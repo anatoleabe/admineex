@@ -30,8 +30,8 @@
         <md-card-actions layout="row" ng-if="personnelSelected">
 
             <span flex></span>
-            <md-button  class="md-icon-button" aria-label="Print" ng-click="openPdf()">
-                <md-icon>print</md-icon>
+            <md-button  class="button task activelist" ng-click="openPdf()">
+                <i class="icon-file-pdf"></i> Download
             </md-button>
         </md-card-actions>
         <div layout="column" layout-align="center center" ng-if="!personnelSelected"  style="opacity:0.2;">
@@ -302,7 +302,7 @@
                                         </md-list-item>
                                         <md-divider></md-divider>
                                         <div  data-ng-include="'templates/staffs/more/sanctions.html'">
-                                           
+
                                         </div>
 
                                     </md-list>

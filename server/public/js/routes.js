@@ -273,6 +273,18 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Staff management", "Sanctions management"]
+        }).state('home.staffs.statofsanctions', {
+            url: '/statofsanctions',
+            params: {id: undefined, opath: undefined},
+            templateUrl: 'templates/staffs/staff/statisticOfSanctions.html',
+            controller: 'SanctionsStatisticsController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/staffs/staff/SanctionsStatisticsCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Staff management", "Sanctions management", "Statistics of sanctions"]
         }).state('home.staffs.movement', {
             abstract: true,
             url: '/movement',
@@ -821,7 +833,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                 from: {
                     isOpen: false,
                     isDisabled: true,
-                    value: new Date(new Date(new Date(new Date().setDate(new Date().getDate() - 30))).setHours(0, 0, 0, 0)),
+                    value: new Date(new Date(new Date(new Date().setFullYear(new Date().getFullYear() - 1))).setHours(0, 0, 0, 0)),
                     handleShowCalendar: function ($event) {
                         this.isOpen = true;
                         this.isDisabled = false;
@@ -850,7 +862,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         // Export a PNG version of the chart/map
         $rootScope.exportPNG = function (content, title) {
             $rootScope.kernel.loading = 0;
-            var filename = 'DataToCare-server_' + title.replace(/ /g, '-');
+            var filename = 'Admineex-server_' + title.replace(/ /g, '-');
             filename += '_' + $filter('ddMMyyyy')($rootScope.range.from.value) + '-' + $filter('ddMMyyyy')($rootScope.range.to.value);
 
             //Hidding unwanted items

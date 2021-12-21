@@ -12,6 +12,7 @@ angular.module('ProcrastinateCtrl', [[
         page: 1,
         order: "name"
     };
+    $rootScope.showGlobalView = true;
     $scope.search = false;
     $scope.year = (new Date()).getFullYear();
     $scope.filters = {quarter: "-1", year: $scope.year, structure: "-1"};

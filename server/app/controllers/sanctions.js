@@ -5,6 +5,7 @@ var log = require('../utils/log');
 var mail = require('../utils/mail');
 var _ = require('lodash');
 var crypto = require('crypto');
+var moment = require('moment');
 var dictionary = require('../utils/dictionary');
 var formidable = require("formidable");
 var ObjectID = require('mongoose').mongo.ObjectID;
@@ -129,6 +130,8 @@ exports.api.list = function (req, res) {
         if (req.params.filters && req.params.filters != "-" && req.params.filters != "") {
             filtersParam = JSON.parse(req.params.filters);
         }
+
+        console.log(filtersParam)
         var options = {
             limit: limit,
             skip: skip,
@@ -277,10 +280,10 @@ exports.api.list = function (req, res) {
 
                         projection = {
                             $project: {_id: 1, "personnel.name": 1, "personnel.status": 1, matricule: 1, metainfo: 1, comment: 1, positionId: 1, personnelId: 1, referenceNumber: 1,
-                                lastModified: 1, dateofSignature: 1, "personnel.identifier": 1, duration: 1, fname: 1, "period": 1, quantity: 1,type: 1, sanction: 1,nature: 1,
-                                "newPosition._id": 1, "newPosition.fr": 1, "newPosition.code": 1,positionCode: 1,
+                                lastModified: 1, dateofSignature: 1, "personnel.identifier": 1, duration: 1, fname: 1, "period": 1, quantity: 1, type: 1, sanction: 1, nature: 1,
+                                "newPosition._id": 1, "newPosition.fr": 1, "newPosition.code": 1, positionCode: 1,
                                 "structureAffectation._id": 1, "structureAffectation.fr": 1, "structureAffectationFather._id": 1, "structureAffectationFather.fr": 1, "structureAffectationFather.code": 1,
-                                "actor._id": 1, "actor.firstname": 1, "actor.lastname": 1
+                                "actor._id": 1, "actor.firstname": 1, "actor.lastname": 1, startDate: 1, endDate: 1
                             }
                         };
                         aggregate.push(projection);
@@ -306,6 +309,20 @@ exports.api.list = function (req, res) {
                             if (options.filters.personnelId && options.filters.personnelId != "-" && options.filters.personnelId != "" && options.filters.personnelId != "-1") {
                                 aggregate.push({$match: {$or: [{"personnelId": new ObjectID(options.filters.personnelId)}]}})
                             }
+                            if (options.filters.from && options.filters.to) {
+                                aggregate.push(
+                                        {$match: {
+                                                "dateofSignature": {
+                                                    $gte: moment(options.filters.from).startOf('day').toDate()
+                                                }
+                                            }
+                                        });
+                                aggregate.push({$match: {
+                                        "dateofSignature": {
+                                            $lte: moment(options.filters.to).endOf('day').toDate()
+                                        }
+                                    }});
+                            }
                         }
 
                         if ((options.skip + options.limit) > 0) {
@@ -326,11 +343,11 @@ exports.api.list = function (req, res) {
                                 for (var a in sanctions) {
                                     if (sanctions[a].type && sanctions[a].personnel.status) {
                                         sanctions[a].typeBeautified = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions.json', sanctions[a].type, language);
-                                        sanctions[a].indisciplineBeautified = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions/'+sanctions[a].personnel.status+'/'+sanctions[a].type+'.json', sanctions[a].sanction, language);
+                                        sanctions[a].indisciplineBeautified = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions/' + sanctions[a].personnel.status + '/' + sanctions[a].type + '.json', sanctions[a].sanction, language);
                                         sanctions[a].periodBeautified = dictionary.getValueFromJSON('../../resources/dictionary/time/periods.json', sanctions[a].period, language);
                                         sanctions[a].natureBeautified = dictionary.getValueFromJSON('../../resources/dictionary/acts/natures.json', sanctions[a].nature, language);
-                                        sanctions[a].sanctionBeautified = dictionary.getJSONById('../../resources/dictionary/personnel/sanctions/'+sanctions[a].personnel.status+'/'+sanctions[a].type+'.json', sanctions[a].sanction).sanction;
-                                        
+                                        sanctions[a].sanctionBeautified = dictionary.getJSONById('../../resources/dictionary/personnel/sanctions/' + sanctions[a].personnel.status + '/' + sanctions[a].type + '.json', sanctions[a].sanction).sanction;
+
                                     }
                                 }
                                 return res.json(sanctions);

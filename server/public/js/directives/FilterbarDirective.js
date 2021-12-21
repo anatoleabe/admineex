@@ -9,7 +9,8 @@ angular.module('FilterbarDirective', []).directive('filterbar', ['gettextCatalog
                 district: '=',
                 labs: '=',
                 path: '=',
-                disableThemes: '='
+                disableThemes: '=',
+                showGlobalView: '='
             },
             templateUrl: 'templates/filterbar.html',
             link: function ($scope, $element, $attrs) {
@@ -36,8 +37,7 @@ angular.module('FilterbarDirective', []).directive('filterbar', ['gettextCatalog
 
                             $scope.from = $rootScope.range.from.value;
                             $scope.to = $rootScope.range.to.value;
-
-
+                            
                             var watch = {};
                             watch.activation = $rootScope.$watch('globalView.activated', function (newValue, oldValue) {
                                 if (newValue == false) {

@@ -1,45 +1,19 @@
 
+
+
 <div class="md-dialog-content">
     <md-toolbar class="toolbar-filter">
         <div class="md-toolbar-tools md-default">
-            <span translate>Number of positions: {{positions.count}}</span>
+            
+            <div data-oc-lazy-load="['js/directives/FilterbarDirective.js']" style="margin-bottom: 10px" >
+                <div filterbar daterange="true"  ></div>
+            </div>
             <span flex></span>
-
-            <md-menu>
-                <md-button class="md-icon-button"  ng-click="openMoreMenu($mdOpenMenu)" >
-                    <md-icon class="material-icons" >print</md-icon>
-                    <md-tooltip>
-                        <span translate>Print options</span>
-                    </md-tooltip>
-                </md-button>
-                <md-menu-content width="4">
-                    <md-menu-item>
-                        <md-button ng-click="download()">
-                            <md-icon class="material-icons" >print</md-icon>
-                            <span translate>Export the list (Excel) </span>
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button ng-click="exportPDF('nomenclature')">
-                            <md-icon class="material-icons" >print</md-icon>
-                            <span translate>Nomenclature of positions (PDF)</span>
-                        </md-button>
-                    </md-menu-item>
-                    <md-divider ></md-divider>
-                    <md-menu-item>
-                        <md-button ng-click="exportPDF('occupants')">
-                            <md-icon class="material-icons" >print</md-icon>
-                            <span translate>Positions and occupant (PDF)</span>
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
-            <md-button class="md-icon-button" aria-label="search" ng-click="search = ! search;$parent.setFocus('search');" ng-hide="search == undefined" >
-                <md-icon class="material-icons" >search</md-icon>
+            <button type="button" class="btn btn-outline alpha-success text-success-800 border-success-600" ng-click="download()"><i class="icon-file-excel mr-2"></i> <span translate>Export to Excel</span>
                 <md-tooltip>
-                    <span translate>Search</span>
+                    <span translate>Export to Excel</span>
                 </md-tooltip>
-            </md-button>
+            </button>
         </div>
     </md-toolbar>
 
@@ -62,7 +36,7 @@
                         </md-optgroup>
                     </md-select>
                 </md-input-container>
-                <md-input-container flex ng-if="filters.structure ">
+                <md-input-container flex ng-if="filters.structure">
                     <label translate>Filter by sub structure</label>
                     <md-select ng-model="filters.subStructure"  >
                         <md-optgroup label="{{'Filtre by sub structure'| translate}}">
@@ -97,8 +71,8 @@
                         </md-option>
                     </md-select>
                 </md-input-container>
-                
-                <md-input-container flex  ng-if="filters.sanctiontype && filters.sanctiontype!= '-1' && filters.status && filters.status != '-'">
+
+                <md-input-container flex  ng-if="filters.sanctiontype && filters.sanctiontype != '-1' && filters.status && filters.status != '-'">
                     <label translate>Filter by sanction</label>
                     <md-select ng-model="filters.sanction"  >
                         <md-option ng-selected value="-1" >
@@ -135,6 +109,7 @@
                         <th md-column md-order-by="newposition.fr"  translate>Sanction</th>
                         <th md-column md-order-by="mouvement"  translate>Administrative act</th>
                         <th md-column md-order-by="date" style="width: 160px" translate>Date of signature</th>
+                        <th md-column md-order-by="endDate" style="width: 160px" translate>End date</th>
                         <th md-column md-order-by="name" style="width: 160px" translate>Actor</th>
                         <th md-column translate >Actions</th>
                     </tr>
@@ -160,7 +135,8 @@
                         <td md-cell flex  >
                             <small ><span>{{sanction.natureBeautified}}</span> <span ng-if="sanction.natureBeautified" translate> N°: </span> <span> {{sanction.referenceNumber}}</span></small>
                         </td>
-                        <td md-cell style="width: 160px" >{{sanction.dateofSignature|smartDatetime}} </td>
+                        <td md-cell style="width: 160px" >{{sanction.dateofSignature|dateHuman}} </td>
+                        <td md-cell style="width: 160px" >{{sanction.endDate|dateHuman}} </td>
                         <td md-cell flex  >
                             <span class="avatar" style="width: 30px; height: 30px; font-size: 20px; line-height: 20px; " >{{sanction.actor.firstname.substr(0, 1).toUpperCase()}}</span>
                             {{sanction.actor.firstname}} 

@@ -1,7 +1,7 @@
 <div layout-align-xs="center center">
     <md-toolbar class="toolbar-filter" style=" background-color: rgb(251, 251, 251) !important;">
         <div layout="row" class="md-toolbar-tools md-default" layout-xs="column" layout-wrap>
-            <div flex=15 flex-xs=40>
+            <div >
                 <md-button ng-hide="daterange == undefined" style="margin: 0px; width: 88px;padding: 0;"
                     ng-click="$parent.$parent.range.from.handleShowCalendar()"
                     aria-label="from" ng-disabled="rootscope.kernel.isLoading == true" class="datepicker-button">
@@ -32,7 +32,7 @@
                     </md-datepicker>
                 </md-button>
             </div>
-            <div  style="float: right">
+            <div  style="float: right" ng-hide="rootscope.showGlobalView  == false">
                 <span style="display: inline-block;margin-top: 5px;">
                     <md-switch ng-model="$root.globalView.activated" aria-label="Global view">
                         Global view
