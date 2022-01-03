@@ -44,18 +44,6 @@
             </md-tooltip>
         </button>
 
-        <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
-            <md-icon class="material-icons" >search</md-icon>
-            <md-tooltip>
-                <span translate>Search</span>
-            </md-tooltip>
-        </md-button>
-        <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
-            <md-icon class="material-icons" >filter_list</md-icon>
-            <md-tooltip>
-                <span translate>Filter more</span>
-            </md-tooltip>
-        </md-button>
 
         <md-menu>
             <md-button class="md-icon-button"  ng-click="openMoreMenu($mdOpenMenu)" >
@@ -163,7 +151,7 @@
                     <th md-column md-order-by="posteActuel[0].structure[0].nom"><span translate>Structure aff.</span></th>
                     <!--<th md-column md-order-by="miseajour" ><span translate>Service began</span></th>-->
                     <th md-column md-order-by="telephone"><span translate>Phone</span></th>
-                    <th md-column translate style="width: 200px"><span translate>Actions</span></th>
+                    <th md-column style="width: 200px"><span translate>Actions</span></th>
                 </tr>
             </thead>
             <tbody md-body>

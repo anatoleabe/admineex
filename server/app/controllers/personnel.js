@@ -335,13 +335,44 @@ exports.api.list = function (req, res) {
 //Get all retired staff
 exports.api.retired = function (req, res) {
     if (req.actor) {
+        var limit = 0;
+        var skip = 0;
+        if (req.params.limit && req.params.skip) {
+            limit = parseInt(req.params.limit, 10);
+            skip = parseInt(req.params.skip, 10);
+        }
+        var filtersParam = {}
+        if (req.params.filters && req.params.filters != "-" && req.params.filters != "") {
+            filtersParam = JSON.parse(req.params.filters);
+        }
+        console.log(filtersParam)
+        
+        var from = filtersParam.from;
+        var to = filtersParam.to;
+        
         var query1 = {$and: []};
-        query1.$and.push({"retirement.retirement": true});//Les personnes en age de retraite
-        query1.$and.push({"retirement.notified": {$exists: true}});//..et notifiés
-        query1.$and.push({$or: []});//..et non pas été prolongés
-        query1.$and[2].$or.push({"retirement.extended": {$exists: false}});//non pas été prolongés
-        query1.$and[2].$or.push({"retirement.extended": false});//non pas été prolongés
-
+        if (filtersParam.retirementState === 4) {//Les personnes qui irrons probablement en retraite dans une date future
+            query1.$and.push({$or: []});
+            query1.$and[0].$or.push({"retirement.retirement": {$exists: false}});//pas en age de retraite
+            query1.$and[0].$or.push({"retirement.retirement": false});//pas en age de retraite
+        }else if (filtersParam.retirementState === 1) {//Retired and not notified staff (personne en age de retraite, mais pas notifiée)
+            query1.$and.push({"retirement.retirement": true});//Les personnes en age de retraite
+            query1.$and.push({"retirement.notified": {$exists: false}});//..et notifiés
+            query1.$and.push({$or: []});//..et non pas été prolongés
+            query1.$and[2].$or.push({"retirement.extended": {$exists: false}});//non pas été prolongés
+            query1.$and[2].$or.push({"retirement.extended": false});//non pas été prolongés
+        }else if (filtersParam.retirementState === 2) {//Retired and notified staff (personne retraitées, notifiées et pas prolongé)
+            query1.$and.push({"retirement.retirement": true});//Les personnes en age de retraite
+            query1.$and.push({"retirement.notified": {$exists: true}});//..et notifiés
+            query1.$and.push({$or: []});//..et non pas été prolongés
+            query1.$and[2].$or.push({"retirement.extended": {$exists: false}});//non pas été prolongés
+            query1.$and[2].$or.push({"retirement.extended": false});//non pas été prolongés
+        }else if (filtersParam.retirementState === 3) {//retired, but extended (prolongé)
+            var query1 = {$and: []};
+            query1.$and.push({"retirement.retirement": true});//Les personnes en age de retraite
+            query1.$and.push({"retirement.extended": true});//retired, but extended
+        }
+        
         var options = {
             query: query1,
             req: req,
@@ -368,7 +399,7 @@ exports.checkRetirement = function (callback) {
 //        pipeline: [{"$match": {"retirement.retirement": true}}]
 //    });
 
-    var dateLimit = new Date(new Date().setFullYear(new Date().getFullYear() - 49));
+    var dateLimit = new Date(new Date().setFullYear(new Date().getFullYear() - 40));
 
     var query = {
         $and: [
@@ -406,17 +437,19 @@ exports.checkRetirement = function (callback) {
                                     //Decree N°2020/802 of 30 December 2020 of the President of the Republic harmonising the retirement age of civil servants.
                                     if (personnels[a].status == "1") {//Civil servant
                                         if (personnels[a].category && personnels[a].category != null && personnels[a].category != "") {
-                                            if (personnels[a].category == "5" || personnels[a].category == "6" && age >= parseInt(threshold1.values[1])) { //for category 'C' and 'D' staff, retirement at 55
+                                            if ((personnels[a].category == "5" || personnels[a].category == "6") && age >= parseInt(threshold1.values[1])) { //for category 'C' and 'D' staff, retirement at 55
                                                 candidates.push(personnels[a]._id);
                                             } else if (age >= parseInt(threshold1.values[0])) {//Harmonised at sixty (60) years for category 'A' and 'B' staff
+
                                                 candidates.push(personnels[a]._id);
                                             }
                                         } else if (age >= parseInt(threshold1.values[0])) {//Harmonised at sixty (60) years in case of other categories
+
                                             candidates.push(personnels[a]._id);
                                         }
                                     } else {// Contractual
                                         if (personnels[a].category && personnels[a].category != null && personnels[a].category != "") {
-                                            if (parseInt(personnels[a].category, 10) >= 7 && parseInt(personnels[a].category, 10) <= 13 && age >= parseInt(threshold2.values[1])) { //Personnel non fonctionnaire CAT 1 à CAT 7 at 55 ans
+                                            if (parseInt(personnels[a].category, 10) >= 1 && parseInt(personnels[a].category, 10) <= 7 && age >= parseInt(threshold2.values[1])) { //Personnel non fonctionnaire CAT 1 à CAT 7 at 55 ans
                                                 candidates.push(personnels[a]._id);
                                             } else if (age >= parseInt(threshold2.values[0])) {//Personnel non fonctionnaire CAT 8 à CAT 12 à 60 ans
                                                 candidates.push(personnels[a]._id);
@@ -431,7 +464,7 @@ exports.checkRetirement = function (callback) {
                                         if (b < candidates.length) {
                                             var situations = candidates[b].situations;
                                             var newSituation = {
-                                                situation: "12",
+                                                situation: "12", //Retirement
                                                 numAct: "#", //Auto genereted by the bot
                                                 nature: "#"//Auto genereted by the bot
                                             }
@@ -445,6 +478,7 @@ exports.checkRetirement = function (callback) {
                                             var fields = {
                                                 "_id": candidates[b],
                                                 "retirement.retirement": true,
+                                                "retirement.retirementDate": new Date(),
                                                 "situations": situations
                                             }
                                             exports.upsert(fields, function (err) {
@@ -621,9 +655,7 @@ exports.list = function (options, callback) {
 
                         //If retiredOnly
                         if (options.retiredOnly) {
-                            aggregate.push({"$match": {"retirement.retirement": true}});
-                            aggregate.push({"$match": {"retirement.notified": {$exists: false}}});
-                            aggregate.push({"$match": {$or: [{"retirement.extended": {$exists: false}}, {"retirement.extended": false}]}});
+                            aggregate.push({"$match": options.query});
                         } else {
                             aggregate.push({"$match": {"retirement.notified": {$exists: false}}});
                         }
@@ -632,7 +664,7 @@ exports.list = function (options, callback) {
                             aggregate.push({"$limit": options.skip + options.limit})
                             aggregate.push({"$skip": options.skip})
                         }
-                        
+
                         q = Personnel.aggregate(aggregate);
 
                         q.exec(function (err, personnels) {
@@ -809,8 +841,8 @@ exports.api.export = function (req, res) {
             var filter = {rank: "2"};
             if (filtersParam.structure != "-1" && filtersParam.structure != "undefined" && filtersParam.structure) {
                 filter.code = filtersParam.structure;
-                if (filter.code.endsWith("-")){
-                    filter.code = filtersParam.structure.slice(0,-1);
+                if (filter.code.endsWith("-")) {
+                    filter.code = filtersParam.structure.slice(0, -1);
                 }
             }
             var option = {
@@ -860,7 +892,7 @@ exports.api.export = function (req, res) {
                             var groupedPersonnelByStructureChildren = _.groupBy(personnels, function (item) {
                                 //console.log(item.affectation && item.affectation.structure && item.affectation.structure._id)
                                 if (item.affectation && item.affectation.structure && item.affectation.structure._id) {
-                                    
+
                                     return item.affectation.structure._id;
                                 } else {
                                     return "undefined";

@@ -81,7 +81,7 @@
             </md-card-title>
             <md-card-content>
                 <md-list ng-cloak>
-                    <span  translate ng-hide="affectedStaffs && affectedStaffs.length > 0"><center>No body is holding this position information</center></span>
+                    <span   ng-hide="affectedStaffs && affectedStaffs.length > 0"><center translate>No body is holding this position information</center></span>
                     <div ng-repeat="staff in affectedStaffs">
                         <md-list-item ui-sref="#" ng-click="showHelder({_id: staff._id})">
                             <div class="avatar avatar-md md-avatar" >

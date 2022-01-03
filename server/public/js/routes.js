@@ -248,7 +248,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                         return $ocLazyLoad.load('js/controllers/staffs/staff/RetiredCtrl.js');
                     }]
             },
-            breadcrumbs: ["Staff management", "Staff in retirement age"]
+            breadcrumbs: ["Staff management", "Retirement"]
         }).state('home.staffs.assignments', {
             url: '/assignments',
             params: {id: undefined, opath: undefined},

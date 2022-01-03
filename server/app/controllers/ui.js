@@ -116,8 +116,8 @@ function buildNav(user, callback) {
     var staffManagementTab3 = {
         href: 'home.staffs.retired',
         sref: '.staffs',
-        label: gt.gettext('Staff in retirement age'),
-        name: gt.gettext('Staff in retirement age')
+        label: gt.gettext('Retirement'),
+        name: gt.gettext('Retirement')
     };
     
     var staffManagementTab4 = {

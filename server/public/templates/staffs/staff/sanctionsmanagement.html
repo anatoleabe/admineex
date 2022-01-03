@@ -4,16 +4,20 @@
 <div class="md-dialog-content">
     <md-toolbar class="toolbar-filter">
         <div class="md-toolbar-tools md-default">
-            
+
             <div data-oc-lazy-load="['js/directives/FilterbarDirective.js']" style="margin-bottom: 10px" >
                 <div filterbar daterange="true"  ></div>
             </div>
             <span flex></span>
+            <div class="d-flex justify-content-center">
+                <a ui-sref="home.staffs.statofsanctions" class="btn btn-link btn-float text-default"><i class="icon-bars-alt text-primary"></i><span>Statistics</span></a>
+            </div>
             <button type="button" class="btn btn-outline alpha-success text-success-800 border-success-600" ng-click="download()"><i class="icon-file-excel mr-2"></i> <span translate>Export to Excel</span>
                 <md-tooltip>
                     <span translate>Export to Excel</span>
                 </md-tooltip>
             </button>
+
         </div>
     </md-toolbar>
 
@@ -103,23 +107,19 @@
             <table id="procrastinate" md-table md-progress="promise">
                 <thead md-head md-order="query.order" class="procrastinateTable">
                     <tr md-row>
+                        <th md-column md-order-by="typeBeautified"  translate>Type</th>
+                        <th md-column md-order-by="indisciplineBeautified"  translate>Sanction</th>
+                        <th md-column md-order-by="natureBeautified"  translate>Administrative act</th>
                         <th md-column md-order-by="matricule" translate style="width: 10px">Identifier</th>
                         <th md-column md-order-by="fname" translate >Personnel</th>
-                        <th md-column md-order-by="newposition.fr"  translate>Type</th>
-                        <th md-column md-order-by="newposition.fr"  translate>Sanction</th>
-                        <th md-column md-order-by="mouvement"  translate>Administrative act</th>
-                        <th md-column md-order-by="date" style="width: 160px" translate>Date of signature</th>
+                        <th md-column md-order-by="dateofSignature" style="width: 160px" translate>Date of signature</th>
                         <th md-column md-order-by="endDate" style="width: 160px" translate>End date</th>
-                        <th md-column md-order-by="name" style="width: 160px" translate>Actor</th>
+                        <th md-column md-order-by="actor.firstname" style="width: 160px" translate>Actor</th>
                         <th md-column translate >Actions</th>
                     </tr>
                 </thead>
                 <tbody md-body dnd-list="list" class="ng-scope procrastinateTable" >
                     <tr md-row  data-ng-repeat="sanction in sanctionsList.data| orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
-                        <td md-cell  style="width: 10px" >{{sanction.matricule}} </td>
-                        <td md-cell >
-                            <span >{{sanction.fname}}</span>
-                        </td>
                         <td md-cell >
                             <span >{{sanction.typeBeautified| unknown}}</span>
                         </td>
@@ -134,6 +134,10 @@
                         </td>
                         <td md-cell flex  >
                             <small ><span>{{sanction.natureBeautified}}</span> <span ng-if="sanction.natureBeautified" translate> N°: </span> <span> {{sanction.referenceNumber}}</span></small>
+                        </td>
+                        <td md-cell  style="width: 10px" >{{sanction.matricule}} </td>
+                        <td md-cell >
+                            <span >{{sanction.fname}}</span>
                         </td>
                         <td md-cell style="width: 160px" >{{sanction.dateofSignature|dateHuman}} </td>
                         <td md-cell style="width: 160px" >{{sanction.endDate|dateHuman}} </td>

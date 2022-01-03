@@ -354,7 +354,7 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
     }
 }).filter('uppercase', function () {
     return function (str) {
-        if (str)
+        if (str && str.toUpperCase)
             return str.toUpperCase();
         return str;
     }

@@ -31,7 +31,7 @@
 
             <span flex></span>
             <md-button  class="button task activelist" ng-click="openPdf()">
-                <i class="icon-file-pdf"></i> Download
+                <i class="icon-file-pdf"></i> <span translate>Download</span>
             </md-button>
         </md-card-actions>
         <div layout="column" layout-align="center center" ng-if="!personnelSelected"  style="opacity:0.2;">
@@ -88,13 +88,13 @@
                             <div id="visit-details">
                                 <div class="visit-actions active-visit">
                                     <md-button  class="button task activelist" ng-click="newAffectation(personnelSelected)" >
-                                        <i ><md-icon style="color:#fff">transfer_within_a_station</md-icon></i> New affectation
+                                        <i ><md-icon style="color:#fff">transfer_within_a_station</md-icon></i> <span translate> New affectation</span>
                                     </md-button>
                                     <md-button  class="button task activelist" ng-click="newSanction(personnelSelected, '1')">
-                                        <md-icon style="color:#fff">gavel</md-icon> New sanction
+                                        <md-icon style="color:#fff">gavel</md-icon> <span translate>New sanction</span>
                                     </md-button>
                                     <md-button  class="button task activelist" ng-click="newSanction(personnelSelected, '3')">
-                                        <i class="icon-trophy3"></i> New award
+                                        <i class="icon-trophy3"></i> <span translate> New award</span>
                                     </md-button>
                                 </div>
                             </div>

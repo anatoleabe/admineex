@@ -1,0 +1,19 @@
+[
+   {
+        "id": "typeBeautified",
+        "en": "Type",
+        "fr": "Type"
+    },{
+        "id": "indisciplineBeautified",
+        "en": "Faute ou récompense",
+        "fr": "Faute ou récompense"
+    },{
+        "id": "sanctionBeautified",
+        "en": "Sanction",
+        "fr": "Sanction"
+    },{
+        "id": "count",
+        "en": "Effectif",
+        "fr": "Effectif"
+    }
+]

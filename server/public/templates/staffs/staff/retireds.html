@@ -1,5 +1,23 @@
 
 <md-toolbar class="toolbar-filter" >
+        <md-toolbar class="toolbar-filter">
+        <div class="md-toolbar-tools md-default">
+
+            <div data-oc-lazy-load="['js/directives/FilterbarDirective.js']" style="margin-bottom: 10px" >
+                <div filterbar daterange="true"  ></div>
+            </div>
+            <span flex></span>
+            <div class="d-flex justify-content-center">
+                <a ui-sref="home.staffs.statofsanctions" class="btn btn-link btn-float text-default"><i class="icon-bars-alt text-primary"></i><span>Statistics</span></a>
+            </div>
+            <button type="button" class="btn btn-outline alpha-success text-success-800 border-success-600" ng-click="download()"><i class="icon-file-excel mr-2"></i> <span translate>Export to Excel</span>
+                <md-tooltip>
+                    <span translate>Export to Excel</span>
+                </md-tooltip>
+            </button>
+
+        </div>
+    </md-toolbar>
     <div class="md-toolbar-tools md-default" >
         <div flex >
 
@@ -62,11 +80,12 @@
             <table md-table md-progress="promise" md-row-select="false" >
                 <thead md-head md-order="query.order">
                     <tr md-row>
-                        <th md-column md-order-by="#"><span translate>Order</span></th>
+                        <th md-column md-order-by="#"><span translate>#</span></th>
                         <th md-column md-order-by="name"><span translate>Full name</span></th>
                         <th md-column md-order-by="identifier"><span translate>Registration number</span></th>
                         <th md-column md-order-by="grade"><span translate>Grade</span></th>
                         <th md-column md-order-by="age"><span translate>Age</span></th>
+                        <th md-column md-order-by="retirementDate"><span translate>departure date</span></th>
                         <th md-column md-order-by="retirement.notified"><span translate>Notified on</span></th>
                         <th md-column ><span translate>Actions</span></th>
                     </tr>
@@ -78,6 +97,7 @@
                         <td md-cell>{{personnel.identifier| uppercase | unknown}}</td>
                         <td md-cell>{{personnel.grade| uppercase | unknown}}</td>
                         <td md-cell>{{personnel.age| unknown}}</td>
+                        <td md-cell>{{personnel.retirement.retirementDate| dateHuman}}</td>
                         <td md-cell>{{personnel.retirement.notified| unknown}}</td>
                         <td md-cell>
                 <md-menu>

@@ -11,7 +11,8 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
     $scope.structure = {};
     $scope.substructure = {};
     $scope.requiredProfiles = [];
-    $scope.requiredSKills = [];
+    $scope.requiredSkills = [];
+    $scope.oldDCode = undefined;
     var dictionary = {};
 
 
@@ -72,8 +73,10 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                     };
 
                                     $scope.querySearchInResourcesDic = function (text, resourceList) {
+                                        console.log(text)
                                         var deferred = $q.defer();
                                         if (text) {
+                                            console.log(dictionary[resourceList])
                                             var profile = $.grep(dictionary[resourceList], function (c, i) {
                                                 return c.name.toLowerCase().includes(text.toLowerCase());
                                             });
@@ -85,6 +88,7 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                     }
 
                                     $scope.transformChip = function (chip) {
+                                        console.log(chip)
                                         if (angular.isObject(chip)) {
                                             return chip;
                                         }
@@ -150,35 +154,40 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
 
                                     $scope.validateCode = function () {
                                         if ($scope.substructure && $scope.position.code && $scope.position.code.startsWith($scope.substructure.code + "P")) {
-                                            Position.find({
-                                                code: $scope.position.code
-                                            }).then(function (response) {
-                                                var fundPosition = response.data;
-                                                if (fundPosition && fundPosition.code) {
-                                                    $mdDialog.show(
-                                                            $mdDialog.alert()
-                                                            .parent(angular.element(document.querySelector('#popupContainer')))
-                                                            .clickOutsideToClose(true)
-                                                            .title('This code: "' + $scope.position.code + '"  is already used')
-                                                            .textContent('Position: ' + fundPosition.name + " \nStructure: " + fundPosition.structure.name +
-                                                                    ' \nPlease choose another position code before continue')
-                                                            .ariaLabel('Alert Dialog code')
-                                                            .ok('Got it!')
-                                                            );
-                                                    return fundPosition;
+                                            if ($stateParams.id === undefined) {
+                                                Position.find({
+                                                    code: $scope.position.code
+                                                }).then(function (response) {
+                                                    var fundPosition = response.data;
+                                                    console.log(fundPosition)
+                                                    if (fundPosition && fundPosition.code) {
+                                                        $mdDialog.show(
+                                                                $mdDialog.alert()
+                                                                .parent(angular.element(document.querySelector('#popupContainer')))
+                                                                .clickOutsideToClose(true)
+                                                                .title('This code: "' + $scope.position.code + '"  is already used')
+                                                                .textContent('Position: ' + fundPosition.name + " \nStructure: " + fundPosition.structure.name +
+                                                                        ' \nPlease choose another position code before continue')
+                                                                .ariaLabel('Alert Dialog code')
+                                                                .ok('Got it!')
+                                                                );
+                                                        return fundPosition;
 
-                                                } else {
-                                                    return undefined;
-                                                }
-                                            }).catch(function (response) {
-                                                $rootScope.kernel.alerts.push({
-                                                    type: 1,
-                                                    msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                                    priority: 2
+                                                    } else {
+                                                        return undefined;
+                                                    }
+                                                }).catch(function (response) {
+                                                    $rootScope.kernel.alerts.push({
+                                                        type: 1,
+                                                        msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                        priority: 2
+                                                    });
+                                                    console.error(response);
+                                                    return false;
                                                 });
-                                                console.error(response);
-                                                return false;
-                                            });
+                                            } else {
+                                                return undefined;
+                                            }
                                         } else {
                                             $mdDialog.show(
                                                     $mdDialog.alert()
@@ -212,6 +221,7 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                             id: $stateParams.id
                                         }).then(function (response) {
                                             $scope.position = response.data;
+                                            $scope.oldDCode = $scope.position.code;
                                             $scope.structure = JSON.parse(JSON.stringify(response.data.structure)).father;
                                             $scope.substructure = JSON.parse(JSON.stringify(response.data.structure));
                                             console.log($scope.structure);
@@ -235,47 +245,87 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
 
                                     }
 
+                                    save = function () {
+                                        prepareDetailsForServer();
+
+                                        $rootScope.kernel.loading = 0;
+                                        $scope.position.structureId = $scope.substructure._id;
+                                        $scope.position.requiredEffective = "1";//Default effective
+                                        $scope.position.en = $scope.position.fr;
+                                        Position.upsert($scope.position).then(function (response) {
+                                            $rootScope.kernel.loading = 100;
+                                            $state.go('home.administration.positions');
+                                            $rootScope.kernel.alerts.push({
+                                                type: 3,
+                                                msg: gettextCatalog.getString('The position has been saved'),
+                                                priority: 4
+                                            });
+                                        }).catch(function (response) {
+                                            $rootScope.kernel.loading = 100;
+                                            $rootScope.kernel.alerts.push({
+                                                type: 1,
+                                                msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                priority: 2
+                                            });
+                                            console.error(response);
+                                        });
+                                    }
+
                                     // Add or edit new structure
                                     $scope.submit = function () {
-                                        var existingPosition = $scope.validateCode();
-                                        console.log(existingPosition)
-                                        if (existingPosition && existingPosition == true ) {
-                                            prepareDetailsForServer();
-
-                                            $rootScope.kernel.loading = 0;
-                                            $scope.position.structureId = $scope.substructure._id;
-                                            $scope.position.requiredEffective = "1";//Default effective
-                                            $scope.position.en = $scope.position.fr;
-                                            Position.upsert($scope.position).then(function (response) {
-                                                $rootScope.kernel.loading = 100;
-                                                $state.go('home.administration.positions');
-                                                $rootScope.kernel.alerts.push({
-                                                    type: 3,
-                                                    msg: gettextCatalog.getString('The position has been saved'),
-                                                    priority: 4
+                                        if ($scope.substructure && $scope.position.code && $scope.position.code.startsWith($scope.substructure.code + "P")) {
+                                            if ($stateParams.id === undefined) {
+                                                Position.find({
+                                                    code: $scope.position.code
+                                                }).then(function (response) {
+                                                    var fundPosition = response.data;
+                                                    console.log(fundPosition)
+                                                    if (fundPosition && fundPosition.code) {
+                                                        $mdDialog.show(
+                                                                $mdDialog.alert()
+                                                                .parent(angular.element(document.querySelector('#popupContainer')))
+                                                                .clickOutsideToClose(true)
+                                                                .title('This code: "' + $scope.position.code + '"  is already used')
+                                                                .textContent('Position: ' + fundPosition.name + " \nStructure: " + fundPosition.structure.name +
+                                                                        ' \nPlease choose another position code before continue')
+                                                                .ariaLabel('Alert Dialog code')
+                                                                .ok('Got it!')
+                                                                );
+                                                    } else {
+                                                        save();
+                                                    }
+                                                }).catch(function (response) {
+                                                    $rootScope.kernel.alerts.push({
+                                                        type: 1,
+                                                        msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                        priority: 2
+                                                    });
+                                                    console.error(response);
                                                 });
-                                            }).catch(function (response) {
-                                                $rootScope.kernel.loading = 100;
-                                                $rootScope.kernel.alerts.push({
-                                                    type: 1,
-                                                    msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                                    priority: 2
-                                                });
-                                                console.error(response);
-                                            });
+                                            } else {
+                                                save();
+                                            }
                                         } else {
                                             $mdDialog.show(
                                                     $mdDialog.alert()
                                                     .parent(angular.element(document.querySelector('#popupContainer')))
                                                     .clickOutsideToClose(true)
-                                                    .title('This code: "' + $scope.position.code + '"  is already used')
-                                                    .textContent('Position: ' + existingPosition.f.$$state.value.name + " \nStructure: " + existingPosition.f.$$state.value.structure.name +
-                                                            ' \nPlease choose another position code before continue')
+                                                    .title('The position code entered is not valid')
+                                                    .textContent('Please enter a correct code. Ex: 191-P1')
                                                     .ariaLabel('Alert Dialog code')
                                                     .ok('Got it!')
                                                     );
                                         }
+
+
+
+
+
+
+
                                     }
+
+
                                 });
                             }).catch(function (response) {
                                 console.error(response);

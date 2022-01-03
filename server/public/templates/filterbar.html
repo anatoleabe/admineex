@@ -39,8 +39,8 @@
                     </md-switch>
                 </span>
             </div>
-            <div  flex="30">
-                <div style="text-align: left;" ng-show="$root.globalView.activated == true" layout-margin>
+            <div  flex="30" ng-show="$root.globalView.activated == true" >
+                <div style="text-align: left;" layout-margin>
                     <md-input-container class="md-block" flex >
                         <label translate>Select a user</label>
                         <md-select ng-model="$root.globalView.selectedUser" aria-label="users"
@@ -51,6 +51,28 @@
                             <md-option ng-value="user._id" ng-repeat="user in users">
                                 {{user.firstname}} {{user.lastname}}
                             </md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+            </div>
+            <div  flex="30" ng-hide="!$root.retirement == true && $root.retirement.filter !== true">
+                <div style="text-align: left;"  layout-margin>
+                    <md-input-container class="md-block" flex  style="width: 250px">
+                        <md-select ng-model="$root.retirement.selectedFilter" class="geo-filter-select">
+                            <md-option ng-value="4" >
+                                Future retiree
+                            </md-option>
+                            <md-option ng-value="1" >
+                                In retirement age
+                            </md-option>
+                            <md-option ng-value="2" >
+                                Retired
+                            </md-option>
+                            <md-option ng-value="3" >
+                                Extended
+                            </md-option>
+                            
                         </md-select>
                     </md-input-container>
                 </div>

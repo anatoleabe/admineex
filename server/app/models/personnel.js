@@ -22,6 +22,7 @@ var PersonnelSchema = new Schema({
     category: {type: String, required: false},
     gender: {type: String, required: true},
     birthDate: Date,
+    retirementDate: Date,
     birthPlace: {type: String, required: false},
     children: {type: String, required: false},
     maritalStatus: {type: String, required: false},
@@ -123,6 +124,7 @@ var PersonnelSchema = new Schema({
     },
     retirement: {
         retirement: {type: Boolean, default: false},
+        retirementDate: {type: Date},
         notified: {type: Date},
         extended: {type: Boolean, default: false}
     },

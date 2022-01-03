@@ -393,7 +393,7 @@ exports.api.statistics = function (req, res) {
         if (req.params.filters && req.params.filters != "-" && req.params.filters != "") {
             filtersParam = JSON.parse(req.params.filters);
         }
-
+        var download = filtersParam.download;
         var options = {
             limit: limit,
             skip: skip,
@@ -476,7 +476,7 @@ exports.api.statistics = function (req, res) {
                             }
                         }
 
-                        aggregate.push({"$group" : {_id:{sanction:"$sanction",type:"$type"}, count:{$sum:1}}})
+                        aggregate.push({"$group": {_id: {sanction: "$sanction", type: "$type"}, count: {$sum: 1}}})
                         aggregate.push({$sort: {count: -1}})
                         q = Sanction.aggregate(aggregate);
 
@@ -489,14 +489,38 @@ exports.api.statistics = function (req, res) {
                                 var status = 1;
                                 var total = 0;
                                 for (var a in sanctions) {
-                                    if (sanctions[a]._id ) {
+                                    if (sanctions[a]._id) {
                                         total = total + sanctions[a].count;
                                         sanctions[a].typeBeautified = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions.json', sanctions[a]._id.type, language);
                                         sanctions[a].indisciplineBeautified = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions/' + status + '/' + sanctions[a]._id.type + '.json', sanctions[a]._id.sanction, language);
                                         sanctions[a].sanctionBeautified = dictionary.getJSONById('../../resources/dictionary/personnel/sanctions/' + status + '/' + sanctions[a]._id.type + '.json', sanctions[a]._id.sanction).sanction;
                                     }
                                 }
-                                return res.json({data: sanctions, totalCount: total });
+                                if (download == true) {
+                                    var gt = dictionary.translator(req.actor.language);
+                                    //Build XLSX
+                                    var options = buildFields(req.actor.language, "statsSanctionFieldNames.json");
+                                    options.data = sanctions;
+                                    options.title = gt.gettext("Admineex: Statistiques des sanction et récompenses (" + moment(filtersParam.from).format("DD/MM/YYYY") + " - " + moment(filtersParam.to).format("DD/MM/YYYY") + ")");
+                                    buildXLSX2(options, function (err, filePath) {
+                                        if (err) {
+                                            log.error(err);
+                                        } else {
+                                            var fileName = 'report.xlsx';
+                                            res.set('Content-disposition', 'attachment; filename=' + fileName);
+                                            res.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+                                            var fileStream = fs.createReadStream(filePath);
+                                            var pipeStream = fileStream.pipe(res);
+                                            pipeStream.on('finish', function () {
+                                                fs.unlinkSync(filePath);
+                                            });
+                                        }
+                                    });
+
+
+                                } else {
+                                    return res.json({data: sanctions, totalCount: total});
+                                }
                             }
                         });
 
@@ -727,11 +751,13 @@ function buildXLSX2(options, callback) {
     ws.columns[1].width = 52;
     ws.columns[2].width = 20;
     ws.columns[3].width = 60;
-    ws.columns[4].width = 60;
-    ws.columns[5].width = 20;
-    ws.columns[6].width = 30;
-    ws.columns[8].width = 50;
-    ws.columns[9].width = 50;
+    if (ws.columns[4]) {
+        ws.columns[4].width = 60;
+        ws.columns[5].width = 20;
+        ws.columns[6].width = 30;
+        ws.columns[8].width = 50;
+        ws.columns[9].width = 50;
+    }
 
     // save workbook to disk
     var tmpFile = "./tmp/" + keyGenerator.generateKey() + ".xlsx";

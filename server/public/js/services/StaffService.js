@@ -29,7 +29,8 @@ angular.module('StaffService', []).factory('Staff', function($http) {
             return $http.get('/api/personnel/checkExistance/'+ info.mat);
         },
         retired: function(info) {
-            return $http.get('/api/personnel/retired/'+info.from+'/'+info.to);
+            var filters = info.filters?info.filters:"-";
+            return $http.get('/api/personnelRetired/'+filters);
         },
         export: function(info) {
             var search = info.search?info.search:"-";

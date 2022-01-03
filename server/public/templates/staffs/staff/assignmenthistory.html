@@ -62,10 +62,11 @@
             <table id="procrastinate" md-table md-progress="promise">
                 <thead md-head md-order="query.order" class="procrastinateTable">
                     <tr md-row>
+                        
+                        <th md-column md-order-by="newPosition.fr" style="width: 40%" translate>Affectation / nomination</th>
                         <th md-column md-order-by="matricule" translate style="width: 10px">Identifier</th>
                         <th md-column md-order-by="fname" translate >Personnel</th>
-                        <th md-column md-order-by="newposition.fr" style="width: 40%" translate>Affectation / nomination</th>
-                        <th md-column md-order-by="mouvement"  translate>Mouvement</th>
+                        <th md-column md-order-by="mouvement"  translate>Movement</th>
                         <th md-column md-order-by="date" style="width: 160px" translate>Date</th>
                         <th md-column md-order-by="name" style="width: 160px" translate>Actor</th>
                         <th md-column translate >Actions</th>
@@ -73,10 +74,6 @@
                 </thead>
                 <tbody md-body dnd-list="list" class="ng-scope" class="procrastinateTable">
                     <tr md-row  data-ng-repeat="affectation in affectations.data| orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
-                        <td md-cell  style="width: 10px" >{{affectation.matricule}} </td>
-                        <td md-cell >
-                            <span >{{affectation.fname}}</span>
-                        </td>
                         <td md-cell style="width: 40%">
                             <span ><b><span style="color: cadetblue"> &#8593; </span> {{affectation.newPosition.fr| uppercase | unknown}}</b>
                             </span>
@@ -86,6 +83,10 @@
                             <small ><span style="color: chocolate"> &#8595; </span>  <span translate> Précédement: </span><span> {{affectation.oldPosition.fr| uppercase | unknown}}</span></small>
                             <br ng-if="affectation.oldStructureAffectation"/> 
                             <span ng-if="affectation.oldStructureAffectation"><small >{{affectation.oldStructureAffectation.fr}} &#8594; {{affectation.oldStructureAffectationFather.fr}}</small> </span>
+                        </td>
+                        <td md-cell  style="width: 10px" >{{affectation.matricule}} </td>
+                        <td md-cell >
+                            <span >{{affectation.fname}}</span>
                         </td>
                         <td md-cell flex  >
                             <small ><span>{{affectation.mouvementBeautified}}</span> <span ng-if="affectation.mouvementBeautified" translate>by </span> <span>{{affectation.natureBeautified}} </span> <span ng-if="affectation.mouvementBeautified" > N°: </span> <span> {{affectation.numAct}}</span></small>

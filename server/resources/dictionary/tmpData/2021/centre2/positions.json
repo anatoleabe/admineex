@@ -1,0 +1,4338 @@
+[
+ {
+   "codept": "02-100-1PTPG",
+   "pt": "Trésorier Payeur Général  de Yaoundé 2",
+   "prequired": "1",
+   "crequired": "25;7;1;66",
+   "activity": "36;32;42;27;40",
+   "task": "54;52;170;171"
+ },
+ {
+   "codept": "02-100-1PHT1",
+   "pt": "Huissier du Trésor 1",
+   "prequired": "39;40;34",
+   "crequired": "2;25",
+   "activity": "25",
+   "task": "140;116;168;8"
+ },
+ {
+   "codept": "02-100-1PHT2",
+   "pt": "Huissier du Trésor 2",
+   "prequired": "39;40;34",
+   "crequired": "2;25",
+   "activity": "25",
+   "task": "140;116;168;8"
+ },
+ {
+   "codept": "02-100-1PCM",
+   "pt": "Comptable-matière Pi",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "43;18;19"
+ },
+ {
+   "codept": "02-100-1PIFO1",
+   "pt": "Informaticienne",
+   "prequired": "54",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-1PIFO2",
+   "pt": "Informaticien",
+   "prequired": "54",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-1PSEC1",
+   "pt": "Secrétaire",
+   "prequired": "34;33",
+   "crequired": "32;28",
+   "activity": "55.26",
+   "task": "69;22;91;1;192;32;178"
+ },
+ {
+   "codept": "02-100-1PSEC2",
+   "pt": "Secrétaire",
+   "prequired": "34;33",
+   "crequired": "32;28",
+   "activity": "55.26",
+   "task": "69;22;91;1;192;32;178"
+ },
+ {
+   "codept": "02-100-1PCB1",
+   "pt": "Chef de Bureau des Affaires Générales",
+   "prequired": "39;40;34",
+   "crequired": "2;15;13;14",
+   "activity": "3",
+   "task": "180;179;1;70;190;29"
+ },
+ {
+   "codept": "02-100-1PACL1",
+   "pt": "Agent de courrier et de liaison TPG",
+   "prequired": "25;26;27;28;29;30",
+   "crequired": "1;10;4",
+   "activity": "",
+   "task": "57;29;53;78"
+ },
+ {
+   "codept": "02-100-1PCH1",
+   "pt": "CHAUFEUR TPG",
+   "prequired": "25;26;27;28;29",
+   "crequired": "11;20;24",
+   "activity": "",
+   "task": "51;84;222"
+ },
+ {
+   "codept": "02-100-1PAE1",
+   "pt": "Agent de d'entretien",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-1PAB1",
+   "pt": "AGENT D’APPUI",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-2PFP1",
+   "pt": "Fondé de Pouvirs n°1",
+   "prequired": "1;3",
+   "crequired": "1;7;25;70",
+   "activity": "57;61;65;59;60;62;58",
+   "task": "64;3;197;203;65;55"
+ },
+ {
+   "codept": "02-100-2PSEC3",
+   "pt": "Secrétaire ",
+   "prequired": "33;34",
+   "crequired": "32;28",
+   "activity": "",
+   "task": "89;192;1;32;94;5;58;92"
+ },
+ {
+   "codept": "02-100-3PFP2",
+   "pt": "Fondé de Pouvirs n°2",
+   "prequired": "1;3",
+   "crequired": "1;7;25;58",
+   "activity": "63;61;65;78",
+   "task": "2;90;231;65;196;56"
+ },
+ {
+   "codept": "02-100-3PAB2",
+   "pt": "",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-3PSEC4",
+   "pt": "Secrétaire",
+   "prequired": "34;33",
+   "crequired": "32;28",
+   "activity": "55.26",
+   "task": "69;22;91;1;192;32;178"
+ },
+ {
+   "codept": "02-100-3PSEC5",
+   "pt": "Secrétaire",
+   "prequired": "34;34",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-4PCBV",
+   "pt": "Chef de Brigade",
+   "prequired": "1;3",
+   "crequired": "25;7;71",
+   "activity": "53",
+   "task": "122;100;112;156"
+ },
+ {
+   "codept": "02-100-4PIV1",
+   "pt": "Inspecteur Vérificateur 1",
+   "prequired": "1;3",
+   "crequired": "25;7;47",
+   "activity": "24",
+   "task": "86;54"
+ },
+ {
+   "codept": "02-100-4PIV2",
+   "pt": "Inspecteur Vérificateur 2",
+   "prequired": "1;3",
+   "crequired": "25;7;47",
+   "activity": "24",
+   "task": "86;54"
+ },
+ {
+   "codept": "02-100-4PIV3",
+   "pt": "Inspecteur Vérificateur 3",
+   "prequired": "1;3",
+   "crequired": "25;7;47",
+   "activity": "24",
+   "task": "86;54"
+ },
+ {
+   "codept": "02-100-4PIV4",
+   "pt": "Inspecteur Vérificateur 4",
+   "prequired": "1;3",
+   "crequired": "25;7;47",
+   "activity": "24",
+   "task": "86;54"
+ },
+ {
+   "codept": "02-100-4PIV5",
+   "pt": "Inspecteur Vérificateur 5",
+   "prequired": "1;3",
+   "crequired": "25;7;47",
+   "activity": "24",
+   "task": "86;54"
+ },
+ {
+   "codept": "02-100-4PIV6",
+   "pt": "Inspecteur Vérificateur 6",
+   "prequired": "1;3",
+   "crequired": "25;7;47",
+   "activity": "24",
+   "task": "86;54"
+ },
+ {
+   "codept": "02-100-4PIV7",
+   "pt": "Inspecteur Vérificateur 7",
+   "prequired": "1;3",
+   "crequired": "25;7;47",
+   "activity": "24",
+   "task": "86;54"
+ },
+ {
+   "codept": "02-100-4PIV8",
+   "pt": "Inspecteur Vérificateur 8",
+   "prequired": "1;3",
+   "crequired": "25;7;47",
+   "activity": "24",
+   "task": "86;54"
+ },
+ {
+   "codept": "02-100-4PIV9",
+   "pt": "Inspecteur Vérificateur 9",
+   "prequired": "1;3",
+   "crequired": "25;7;47",
+   "activity": "24",
+   "task": "86;54"
+ },
+ {
+   "codept": "02-100-4PIV10",
+   "pt": "Inspecteur Vérificateur 10",
+   "prequired": "1;3",
+   "crequired": "25;7;47",
+   "activity": "24",
+   "task": "86;54"
+ },
+ {
+   "codept": "02-100-4PCA1",
+   "pt": "Cadre 1",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "24",
+   "task": "43;18;19"
+ },
+ {
+   "codept": "02-100-4PCA2",
+   "pt": "Cadre 2",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "24",
+   "task": "43;18;19"
+ },
+ {
+   "codept": "02-100-4PCA3",
+   "pt": "Cadre 3",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "24",
+   "task": "43;18;19"
+ },
+ {
+   "codept": "02-100-4PCA4",
+   "pt": "Cadre 4",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "24",
+   "task": "43;18;19"
+ },
+ {
+   "codept": "02-100-4PCA5",
+   "pt": "Cadre 5",
+   "prequired": "34",
+   "crequired": "32;28",
+   "activity": "24",
+   "task": ""
+ },
+ {
+   "codept": "02-100-4PCA6",
+   "pt": "Cadre 6",
+   "prequired": "33;34",
+   "crequired": "32;28",
+   "activity": "",
+   "task": "89;23;1;22;94;5;58;92"
+ },
+ {
+   "codept": "02-100-4PCA7",
+   "pt": "Cadre 7",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-4PCA8",
+   "pt": "Cadre 8",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-4PCA9",
+   "pt": "Cadre 9",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-4PCA10",
+   "pt": "Cadre 10",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-4PCA11",
+   "pt": "Cadre 11",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-4PSEC6",
+   "pt": "Secretaire",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-5PCS1",
+   "pt": "Chef de Service",
+   "prequired": "3",
+   "crequired": "7;25;47",
+   "activity": "5",
+   "task": "146;143;108;83;142;133;136;162;107;137;135"
+ },
+ {
+   "codept": "02-100-5PCB2",
+   "pt": "Chef de Bureau de la Comptabilité",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "43;18;19"
+ },
+ {
+   "codept": "02-100-5PCB3",
+   "pt": "Chef de Bureau de contrôle formel et de Mise en forme des comptabilités",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "42;71;15"
+ },
+ {
+   "codept": "02-100-5PCB4",
+   "pt": "Chef de Bureau des Opérations  Diverses",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "26;28;17;221"
+ },
+ {
+   "codept": "02-100-5PCB5",
+   "pt": "Chef de Bureau de la Saisie et de la production des situations périodiques",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "18;188;186"
+ },
+ {
+   "codept": "02-100-5PCP",
+   "pt": "Caissier Principal",
+   "prequired": "6;10",
+   "crequired": "7;25",
+   "activity": "",
+   "task": "6;10"
+ },
+ {
+   "codept": "02-100-5PSC1",
+   "pt": "Sous Caissière 1",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-100-5PSC2",
+   "pt": "Sous Caissière 2",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-100-5PSC3",
+   "pt": "Sous Caissière 3",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-100-5PSC4",
+   "pt": "Sous Caissière 4",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-100-5PSC5",
+   "pt": "Sous Caissière 5",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-100-5PSC6",
+   "pt": "Sous Caissière 6",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-100-5PSC7",
+   "pt": "Sous Caissière 7",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-100-5PSC8",
+   "pt": "Sous Caissière 8",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-100-5PSC9",
+   "pt": "Sous Caisse 3",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-100-5PAB3",
+   "pt": "Agent de Bureau 1",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;213;10"
+ },
+ {
+   "codept": "02-100-5PAB4",
+   "pt": "Agent de Bureau 2",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;213;10"
+ },
+ {
+   "codept": "02-100-5PAB5",
+   "pt": "Agent de Bureau 3",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-5PAB6",
+   "pt": "Agent de Bureau 4",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-5PAB7",
+   "pt": "Agent de Bureau 5",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-5PCA12",
+   "pt": "Cadre 1",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-5PCA13",
+   "pt": "Cadre 2",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "",
+   "task": "43;18;19"
+ },
+ {
+   "codept": "02-100-6PCS2",
+   "pt": "Chef de Service",
+   "prequired": "6;10",
+   "crequired": "7;25;4",
+   "activity": "67",
+   "task": "106;104;151;115;132;127;111;128"
+ },
+ {
+   "codept": "02-100-6PCB6",
+   "pt": "Chef de Bureau des Dépenses de Personnel",
+   "prequired": "41;32",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": ""
+ },
+ {
+   "codept": "02-100-6PCB7",
+   "pt": "Chef de Bureau des Dépenses Oppositions",
+   "prequired": "41;31;32",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "34"
+ },
+ {
+   "codept": "02-100-6PCB8",
+   "pt": "Chef de Bureau des Dépenses de Matériel",
+   "prequired": "41;32",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "96"
+ },
+ {
+   "codept": "02-100-6PAB8",
+   "pt": "Agent de Bureau 1",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "3",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-100-6PAB9",
+   "pt": "Agent de Bureau 2",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-6PAB10",
+   "pt": "Agent de Bureau 3",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-100-6PAB11",
+   "pt": "Agent de Bureau 4",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-100-6PAB12",
+   "pt": "Agent de Bureau 5",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-100-6PAB13",
+   "pt": "Agent de Bureau 6",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-100-6PAB14",
+   "pt": "Agent de Bureau 7",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-100-6PAB15",
+   "pt": "Agent de Bureau 8",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-6PAB16",
+   "pt": "Agent de Bureau 9",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-7PCS3",
+   "pt": "Chef Service ",
+   "prequired": "3",
+   "crequired": "7;25;47",
+   "activity": "67",
+   "task": "106;104;102;120;149;163;128"
+ },
+ {
+   "codept": "02-100-7PCB9",
+   "pt": "Chef de Bureau de comptes de gestion des CTD",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "93"
+ },
+ {
+   "codept": "02-100-7PCB10",
+   "pt": "Chef de Bureau de comptes de gestion de l'ETAT",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "74;227;230"
+ },
+ {
+   "codept": "02-100-7PCB11",
+   "pt": "Chef de Bureau de comptes de gestion des EPA",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "23",
+   "task": "228"
+ },
+ {
+   "codept": "02-100-7PCB12",
+   "pt": "Chef de Bureau des Archives",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "13"
+ },
+ {
+   "codept": "02-100-7PAB17",
+   "pt": "Agents de Bureau",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;"
+ },
+ {
+   "codept": "02-100-7PAB18",
+   "pt": "Agents de Bureau",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;"
+ },
+ {
+   "codept": "02-100-7PAB19",
+   "pt": "Agents de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-7PAB20",
+   "pt": "Agents de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-7PAB21",
+   "pt": "Agents de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-7PAB22",
+   "pt": "Agents de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-7PAB23",
+   "pt": "Agents de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-7PAB24",
+   "pt": "Agents de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-7PAB25",
+   "pt": "Agents de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-7PAB26",
+   "pt": "Agents de Bureau",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;"
+ },
+ {
+   "codept": "02-100-8PCS4",
+   "pt": "Chef de Service",
+   "prequired": "3",
+   "crequired": "7;25;47",
+   "activity": "43;33;27",
+   "task": "166;119"
+ },
+ {
+   "codept": "02-100-8PCB13",
+   "pt": "Chef de Bureau des dépôts et consignations",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "",
+   "task": "227"
+ },
+ {
+   "codept": "02-100-8PCB14",
+   "pt": "Chef de Bureau des Remboursements",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "",
+   "task": "220;16;223"
+ },
+ {
+   "codept": "02-100-8PAB27",
+   "pt": "Agent de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-8PAB28",
+   "pt": "Agent de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-8PAB29",
+   "pt": "Agent de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-8PAB30",
+   "pt": "Agent de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-8PAB31",
+   "pt": "Agent de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-8PAB32",
+   "pt": "Agent de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-9PCS5",
+   "pt": "Chef de Service",
+   "prequired": "3",
+   "crequired": "7;25;47;29;19",
+   "activity": "3;27;47;49;45;46",
+   "task": "138;139;185;101;148;99"
+ },
+ {
+   "codept": "02-100-9PCB15",
+   "pt": "Chef de Bureau  des Archives",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "13"
+ },
+ {
+   "codept": "02-100-9PCB16",
+   "pt": "Chef de Bureau de contrôle  et de l'apurement des comptabilités",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "77;201;76;225;32;75"
+ },
+ {
+   "codept": "02-100-9PCB17",
+   "pt": "Chef de Bureau du suivi des Rejets Comptables et des situations périodiques",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "204;189;224"
+ },
+ {
+   "codept": "02-100-9PCB18",
+   "pt": "Chef de Bureau de réception des comptabilités et de la relance",
+   "prequired": "10;33;34",
+   "crequired": "7;25;1",
+   "activity": "76",
+   "task": "184;185;191"
+ },
+ {
+   "codept": "02-100-9PCB19",
+   "pt": "Chef de Bureau de traitement informatique des comptabilités",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "73.72",
+   "task": "43;18;19"
+ },
+ {
+   "codept": "02-100-9PAB33",
+   "pt": "Agents de Bureau 1",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;"
+ },
+ {
+   "codept": "02-100-9PAB34",
+   "pt": "Agents de Bureau 2",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;"
+ },
+ {
+   "codept": "02-100-9PAB35",
+   "pt": "Agents de Bureau 3",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;"
+ },
+ {
+   "codept": "02-100-9PAB36",
+   "pt": "Agents de Bureau 4",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;"
+ },
+ {
+   "codept": "02-100-9PAB37",
+   "pt": "Agents de Bureau 5",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;"
+ },
+ {
+   "codept": "02-100-9PAB38",
+   "pt": "Agents de Bureau 6",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;"
+ },
+ {
+   "codept": "02-100-10PCS6",
+   "pt": "Chef de Service",
+   "prequired": "3",
+   "crequired": "7;25;47",
+   "activity": "33;27",
+   "task": "118;126;125;161;172"
+ },
+ {
+   "codept": "02-100-10PCB20",
+   "pt": "Chef de Bureau des Timbres et Vignettes",
+   "prequired": "41;31;32;33",
+   "crequired": "73",
+   "activity": "7",
+   "task": ""
+ },
+ {
+   "codept": "02-100-10PCB21",
+   "pt": "Chef de Bureau des Autres Valeurs inactives",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "6",
+   "task": "93"
+ },
+ {
+   "codept": "02-100-10PAB39",
+   "pt": "Agents de Bureau 6",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-100-11PCS7",
+   "pt": "Chef de Service ",
+   "prequired": "3",
+   "crequired": "7;25;47",
+   "activity": "33;27;48",
+   "task": "169"
+ },
+ {
+   "codept": "02-100-11PCB22",
+   "pt": "Chef de Bureau du suivi des opérations de transfert des compétences",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "45"
+ },
+ {
+   "codept": "02-100-11PCB23",
+   "pt": "Chef de Bureau d'analyse des états de synthèse des CTD",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "68",
+   "task": "93"
+ },
+ {
+   "codept": "02-100-11PCB24",
+   "pt": "Chef de Bureau d'appui à l'exploitation et à la maintenance informatique",
+   "prequired": "10;33;34",
+   "crequired": "7;25",
+   "activity": "8",
+   "task": "4"
+ },
+ {
+   "codept": "02-100-11PAB40",
+   "pt": "Agent de Bureau",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-100-11PAB41",
+   "pt": "Agent de Bureau",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;"
+ },
+ {
+   "codept": "02-156-1PRF",
+   "pt": "Receveur des Finances",
+   "prequired": "1;3",
+   "crequired": "7;25;70;47",
+   "activity": "66",
+   "task": "105;103;129;102;114;67;88;68;174;117;141"
+ },
+ {
+   "codept": "02-156-1PSEC1",
+   "pt": "Secrétaire",
+   "prequired": "31;32",
+   "crequired": "32;28",
+   "activity": "",
+   "task": "192;1;190;94;5"
+ },
+ {
+   "codept": "02-156-1PFP1",
+   "pt": "Fondé de Pouvoirs",
+   "prequired": "3",
+   "crequired": "7;25;47",
+   "activity": "57",
+   "task": "64;3;197;203;65;55"
+ },
+ {
+   "codept": "02-156-1PCB1",
+   "pt": "Chef de Bureau des Affaires Générales ",
+   "prequired": "39;40",
+   "crequired": "2;13;14;15",
+   "activity": "3",
+   "task": "179;1;70;190;29;32"
+ },
+ {
+   "codept": "02-156-1PIV1",
+   "pt": "Inspecteur Vérificateur 1",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-156-1PIV2",
+   "pt": "Inspecteur Vérificateur 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-156-1PIV3",
+   "pt": "Inspecteur Vérificateur 3",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-156-1PAR1",
+   "pt": "Agent de Recouvrement 1",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-156-1PAR2",
+   "pt": "Agent de Recouvrement 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-156-2PCS1",
+   "pt": "Chef de Service",
+   "prequired": "6;10",
+   "crequired": "7;25;47",
+   "activity": "50",
+   "task": "133;136"
+ },
+ {
+   "codept": "02-156-2PCB2",
+   "pt": "Chef de Bureau de la Comptabilité",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "10",
+   "task": "24;214"
+ },
+ {
+   "codept": "02-156-2PCB3",
+   "pt": "Chef de Bureau des Opérations  Diverses",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "28",
+   "task": "24;214"
+ },
+ {
+   "codept": "02-156-2PCB4",
+   "pt": "Chef de Bureau de la Saisie et de la production des situations périodiques",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "9;70",
+   "task": ""
+ },
+ {
+   "codept": "02-156-2PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;33;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "73;200;40;216;206"
+ },
+ {
+   "codept": "02-156-2PSC1",
+   "pt": "Sous Caissière 1",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "85;181"
+ },
+ {
+   "codept": "02-156-2PAB1",
+   "pt": "Agent de Bureau",
+   "prequired": "41;31;30;29",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-156-3PCS2",
+   "pt": "Chef de Service",
+   "prequired": "6;10",
+   "crequired": "7;25;47",
+   "activity": "50",
+   "task": "133;136"
+ },
+ {
+   "codept": "02-156-3PCB5",
+   "pt": "Chef de Bureau de la Dépense",
+   "prequired": "41;31;32",
+   "crequired": "7;25",
+   "activity": "15;18",
+   "task": "21;200"
+ },
+ {
+   "codept": "02-156-3PCB6",
+   "pt": "Chef de Bureau de Titres et Règlements",
+   "prequired": "41;32",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "13"
+ },
+ {
+   "codept": "02-156-3PAB2",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75;"
+ },
+ {
+   "codept": "02-156-3PAB3",
+   "pt": "",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-156-3PAB4",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-317-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-317-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-317-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-317-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-317-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-317-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-317-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-317-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-317-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-155-1P1P1",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-155-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-155-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-155-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-155-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-155-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-155-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-155-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-155-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-316-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-316-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-316-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-316-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-316-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-316-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-316-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-316-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-316-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-099-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-099-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-099-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-099-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-099-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-099-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-099-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-099-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-099-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-157-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-157-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-157-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-157-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-157-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-157-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-157-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-157-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-157-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-315-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-315-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-315-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-315-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-315-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-315-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-315-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-315-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-315-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-140-1PRF",
+   "pt": "Receveur des Finances",
+   "prequired": "1;3",
+   "crequired": "7;25;70;47",
+   "activity": "66",
+   "task": "105;103;129;102;114;67;88;68;174;117;141"
+ },
+ {
+   "codept": "02-140-1PSEC1",
+   "pt": "Secrétaire",
+   "prequired": "31;32",
+   "crequired": "32;28",
+   "activity": "",
+   "task": "192;1;190;94;5"
+ },
+ {
+   "codept": "02-140-1PFP1",
+   "pt": "Fondé de Pouvoirs ",
+   "prequired": "3",
+   "crequired": "7;25;47",
+   "activity": "57",
+   "task": "64;3;197;203;65;55"
+ },
+ {
+   "codept": "02-140-1PCB1",
+   "pt": "Chef de Bureau des Affaires Générales",
+   "prequired": "39;40",
+   "crequired": "2;13;14;15",
+   "activity": "3",
+   "task": "179;1;70;190;29;32"
+ },
+ {
+   "codept": "02-140-1PIV1",
+   "pt": "Inspecteur Vérificateur 1",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-140-1PIV2",
+   "pt": "Inspecteur Vérificateur 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-140-1PIV3",
+   "pt": "Inspecteur Vérificateur 3",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-140-1PAR1",
+   "pt": "Agent de Recouvrement 1",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-140-1PAR2",
+   "pt": "Agent de Recouvrement 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-140-2PCS1",
+   "pt": "Chef de Service",
+   "prequired": "6;10",
+   "crequired": "7;25;47",
+   "activity": "50",
+   "task": "133;136"
+ },
+ {
+   "codept": "02-140-2PCB2",
+   "pt": "Chef de Bureau de la Comptabilité",
+   "prequired": "32;33;41",
+   "crequired": "7;25",
+   "activity": "10",
+   "task": "24;214"
+ },
+ {
+   "codept": "02-140-2PCB3",
+   "pt": "Chef de Bureau des Opérations  Diverses",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "28",
+   "task": "24;214"
+ },
+ {
+   "codept": "02-140-2PCB4",
+   "pt": "Chef de Bureau de la Saisie et de la production des situations périodiques",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "9;70",
+   "task": ""
+ },
+ {
+   "codept": "02-140-2PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;33;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "73;200;40;216;206"
+ },
+ {
+   "codept": "02-140-2PSC1",
+   "pt": "Sous Caissière 1",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "85;181"
+ },
+ {
+   "codept": "02-140-2PAB1",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-140-3PCS2",
+   "pt": "Chef de Service",
+   "prequired": "6;10",
+   "crequired": "7;25;47",
+   "activity": "50",
+   "task": "133;136"
+ },
+ {
+   "codept": "02-140-3PCB5",
+   "pt": "Chef de Bureau de la Dépense",
+   "prequired": "41;31;32",
+   "crequired": "7;25",
+   "activity": "18",
+   "task": "21;2"
+ },
+ {
+   "codept": "02-140-3PCB6",
+   "pt": "Chef de Bureau des Titres et Règlements",
+   "prequired": "41;32",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "13"
+ },
+ {
+   "codept": "02-140-3PAB2",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75;"
+ },
+ {
+   "codept": "02-140-3PAB3",
+   "pt": "Agent de Bureau",
+   "prequired": "",
+   "crequired": "",
+   "activity": "",
+   "task": ""
+ },
+ {
+   "codept": "02-141-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-141-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-141-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-141-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-141-1PCB2",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-141-1PCB3",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-141-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-141-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-141-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-141-1PAB4",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-142-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-142-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-142-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-142-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-142-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-142-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-142-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-142-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-142-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-142-1PAB4",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-143-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-143-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-143-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-143-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-143-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-143-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-143-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-143-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-143-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-143-1PAB4",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-318-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-318-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-318-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-318-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-318-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-318-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-318-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-318-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-318-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-318-1PAB4",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-314-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-314-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-314-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-314-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-314-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-314-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-314-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-314-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-314-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-314-1PAB4",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-312-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-312-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-312-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-312-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-312-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-312-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-312-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-312-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-312-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-312-1PAB4",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-148-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-148-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-148-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-148-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-148-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-148-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-148-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-148-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-148-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-148-1PAB4",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-319-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-319-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-319-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-319-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-319-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-319-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-319-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-319-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-319-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-319-1PAB4",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-163-1PRF",
+   "pt": "Receveur des Finances ",
+   "prequired": "1;3",
+   "crequired": "7;25;70;47",
+   "activity": "66",
+   "task": "105;103;129;102;114;67;88;68;174;117;141"
+ },
+ {
+   "codept": "02-163-1PSEC1",
+   "pt": "Secrétaire",
+   "prequired": "31;32",
+   "crequired": "32;28",
+   "activity": "",
+   "task": "192;1;190;94;5"
+ },
+ {
+   "codept": "02-163-1PFP1",
+   "pt": "Fondé de Pouvoirs",
+   "prequired": "3",
+   "crequired": "7;25;47",
+   "activity": "57",
+   "task": "64;3;197;203;65;55"
+ },
+ {
+   "codept": "02-163-1PCB1",
+   "pt": "Chef de Bureau des Affaires Générales ",
+   "prequired": "39;40",
+   "crequired": "2;13;14;15",
+   "activity": "3",
+   "task": "179;1;70;190;29;32"
+ },
+ {
+   "codept": "02-163-1PIV1",
+   "pt": "Inspecteur Vérificateur 1",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-163-1PIV2",
+   "pt": "Inspecteur Vérificateur 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-163-1PIV3",
+   "pt": "Inspecteur Vérificateur 3",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-163-1PIV4",
+   "pt": "Inspecteur Vérificateur 4",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-163-1PIV5",
+   "pt": "Inspecteur Vérificateur 5",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-163-1PIV6",
+   "pt": "Inspecteur Vérificateur 6",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-163-1PAR1",
+   "pt": "Agent de Recouvrement 1",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-163-1PAR2",
+   "pt": "Agent de Recouvrement 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-163-2PCS1",
+   "pt": "Chef de Service",
+   "prequired": "6;10",
+   "crequired": "7;25;47",
+   "activity": "50",
+   "task": "133;136"
+ },
+ {
+   "codept": "02-163-2PCB2",
+   "pt": "Chef de Bureau de la Comptabilité",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "10",
+   "task": "24;214"
+ },
+ {
+   "codept": "02-163-2PCB3",
+   "pt": "Chef de Bureau des Opérations  Diverses",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "28",
+   "task": "24;214"
+ },
+ {
+   "codept": "02-163-2PCB4",
+   "pt": "Chef de Bureau de la Saisie et de la production des situations périodiques",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "9;70",
+   "task": ""
+ },
+ {
+   "codept": "02-163-2PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;33;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "73;200;40;216;206"
+ },
+ {
+   "codept": "02-163-2PSC1",
+   "pt": "Sous Caissière 1",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "85;181"
+ },
+ {
+   "codept": "02-163-2PAB1",
+   "pt": "Agent de Bureau",
+   "prequired": "41;31;30;29",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-163-2PAB2",
+   "pt": "Agent de Bureau",
+   "prequired": "41;31;30;29",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-163-2PAB3",
+   "pt": "Agent de Bureau",
+   "prequired": "41;31;30;29",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-163-3PCS2",
+   "pt": "Chef de Service",
+   "prequired": "6;10",
+   "crequired": "7;25;47",
+   "activity": "50",
+   "task": "133;136"
+ },
+ {
+   "codept": "02-163-3PCB5",
+   "pt": "Chef de Bureau de la Dépense",
+   "prequired": "41;31;32",
+   "crequired": "7;25",
+   "activity": "15;18",
+   "task": "21;200"
+ },
+ {
+   "codept": "02-163-3PCB6",
+   "pt": "Chef de Bureau des Titres et règlements",
+   "prequired": "41;31;32",
+   "crequired": "7;25",
+   "activity": "15;18",
+   "task": "21;200"
+ },
+ {
+   "codept": "02-163-3PAB4",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-164-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-164-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-164-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-164-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-164-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-164-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-164-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-164-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-164-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-313-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-313-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-313-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-313-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-313-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-313-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-313-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-313-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-313-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-259-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-259-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-259-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-259-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-259-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-259-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-259-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-259-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-259-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-167-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-167-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-167-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-167-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-167-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-167-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-167-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-167-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-167-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-134-1PRF",
+   "pt": "Receveur des Finances ",
+   "prequired": "1;3",
+   "crequired": "7;25;70;47",
+   "activity": "66",
+   "task": "105;103;129;102;114;67;88;68;174;117;141"
+ },
+ {
+   "codept": "02-134-1PSEC1",
+   "pt": "Secrétaire",
+   "prequired": "31;32",
+   "crequired": "32;28",
+   "activity": "",
+   "task": "192;1;190;94;5"
+ },
+ {
+   "codept": "02-134-1PFP1",
+   "pt": "Fondé de Pouvoirs",
+   "prequired": "3",
+   "crequired": "7;25;47",
+   "activity": "57",
+   "task": "64;3;197;203;65;55"
+ },
+ {
+   "codept": "02-134-1PCB1",
+   "pt": "Chef de Bureau des Affaires Générales ",
+   "prequired": "39;40",
+   "crequired": "2;13;14;15",
+   "activity": "3",
+   "task": "179;1;70;190;29;32"
+ },
+ {
+   "codept": "02-134-1PIV1",
+   "pt": "Inspecteur Vérificateur 1",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-134-1PIV2",
+   "pt": "Inspecteur Vérificateur 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-134-1PIV3",
+   "pt": "Inspecteur Vérificateur 3",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-134-1PIV4",
+   "pt": "Inspecteur Vérificateur 4",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-134-1PIV5",
+   "pt": "Inspecteur Vérificateur 5",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-134-1PIV6",
+   "pt": "Inspecteur Vérificateur 6",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-134-1PAR1",
+   "pt": "Agent de Recouvrement 1",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-134-1PAR2",
+   "pt": "Agent de Recouvrement 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-134-2PCS1",
+   "pt": "Chef de Service",
+   "prequired": "6;10",
+   "crequired": "7;25;47",
+   "activity": "50",
+   "task": "133;136"
+ },
+ {
+   "codept": "02-134-2PCB2",
+   "pt": "Chef de Bureau de la Comptabilité",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "10",
+   "task": "24;214"
+ },
+ {
+   "codept": "02-134-2PCB3",
+   "pt": "Chef de Bureau des Opérations  Diverses",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "28",
+   "task": "24;214"
+ },
+ {
+   "codept": "02-134-2PCB4",
+   "pt": "Chef de Bureau de la Saisie et de la production des situations périodiques",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "9;70",
+   "task": ""
+ },
+ {
+   "codept": "02-134-2PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;33;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "73;200;40;216;206"
+ },
+ {
+   "codept": "02-134-2PSC1",
+   "pt": "Sous Caissière 1",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "85;181"
+ },
+ {
+   "codept": "02-134-2PAB1",
+   "pt": "Agent de Bureau",
+   "prequired": "41;31;30;29",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-134-2PAB2",
+   "pt": "Agent de Bureau",
+   "prequired": "41;31;30;29",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-134-2PAB3",
+   "pt": "Agent de Bureau",
+   "prequired": "41;31;30;29",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-134-3PCS2",
+   "pt": "Chef de Service",
+   "prequired": "6;10",
+   "crequired": "7;25;47",
+   "activity": "50",
+   "task": "133;136"
+ },
+ {
+   "codept": "02-134-3PCB5",
+   "pt": "Chef de Bureau de la Dépense",
+   "prequired": "41;31;32",
+   "crequired": "7;25",
+   "activity": "15;18",
+   "task": "21;200"
+ },
+ {
+   "codept": "02-134-3PCB6",
+   "pt": "Chef de Bureau des Titres et règlements",
+   "prequired": "41;31;32",
+   "crequired": "7;25",
+   "activity": "15;18",
+   "task": "21;200"
+ },
+ {
+   "codept": "02-134-3PAB4",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-133-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-133-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-133-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-133-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-133-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-133-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-133-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-133-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-133-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-158-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-158-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-158-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-158-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-158-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-158-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-158-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-158-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-158-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-411-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-411-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-411-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-411-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-411-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-411-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-411-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-411-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-411-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-401-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-401-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-401-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-401-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-401-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-401-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-401-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-401-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-401-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-135-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-135-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-135-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-135-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-135-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-135-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-135-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-135-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-135-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-478-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-478-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-478-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-478-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-478-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-478-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-478-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-478-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-478-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-402-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-402-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-402-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-402-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-402-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-402-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-402-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-402-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-402-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-322-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-322-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-322-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-322-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-322-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-322-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-322-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-322-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-322-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-160-1PRF",
+   "pt": "Receveur des Finances ",
+   "prequired": "1;3",
+   "crequired": "7;25;70;47",
+   "activity": "66",
+   "task": "105;103;129;102;114;67;88;68;174;117;141"
+ },
+ {
+   "codept": "02-160-1PSEC1",
+   "pt": "Secrétaire",
+   "prequired": "31;32",
+   "crequired": "32;28",
+   "activity": "",
+   "task": "192;1;190;94;5"
+ },
+ {
+   "codept": "02-160-1PFP1",
+   "pt": "Fondé de Pouvoirs",
+   "prequired": "3",
+   "crequired": "7;25;47",
+   "activity": "57",
+   "task": "64;3;197;203;65;55"
+ },
+ {
+   "codept": "02-160-1PCB1",
+   "pt": "Chef de Bureau des Affaires Générales ",
+   "prequired": "39;40",
+   "crequired": "2;13;14;15",
+   "activity": "3",
+   "task": "179;1;70;190;29;32"
+ },
+ {
+   "codept": "02-160-1PIV1",
+   "pt": "Inspecteur Vérificateur 1",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-160-1PIV2",
+   "pt": "Inspecteur Vérificateur 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-160-1PIV3",
+   "pt": "Inspecteur Vérificateur 3",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-160-1PIV4",
+   "pt": "Inspecteur Vérificateur 4",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-160-1PIV5",
+   "pt": "Inspecteur Vérificateur 5",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-160-1PIV6",
+   "pt": "Inspecteur Vérificateur 6",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-160-1PAR1",
+   "pt": "Agent de Recouvrement 1",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-160-1PAR2",
+   "pt": "Agent de Recouvrement 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-160-2PCS1",
+   "pt": "Chef de Service",
+   "prequired": "6;10",
+   "crequired": "7;25;47",
+   "activity": "50",
+   "task": "133;136"
+ },
+ {
+   "codept": "02-160-2PCB2",
+   "pt": "Chef de Bureau de la Comptabilité",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "10",
+   "task": "24;214"
+ },
+ {
+   "codept": "02-160-2PCB3",
+   "pt": "Chef de Bureau des Opérations  Diverses",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "28",
+   "task": "24;214"
+ },
+ {
+   "codept": "02-160-2PCB4",
+   "pt": "Chef de Bureau de la Saisie et de la production des situations périodiques",
+   "prequired": "33;32;41",
+   "crequired": "7;25",
+   "activity": "9;70",
+   "task": ""
+ },
+ {
+   "codept": "02-160-2PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;33;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "73;200;40;216;206"
+ },
+ {
+   "codept": "02-160-2PSC1",
+   "pt": "Sous Caissière 1",
+   "prequired": "41;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "85;181"
+ },
+ {
+   "codept": "02-160-2PAB1",
+   "pt": "Agent de Bureau",
+   "prequired": "41;31;30;29",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-160-2PAB2",
+   "pt": "Agent de Bureau",
+   "prequired": "41;31;30;29",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-160-2PAB3",
+   "pt": "Agent de Bureau",
+   "prequired": "41;31;30;29",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-160-3PCS2",
+   "pt": "Chef de Service",
+   "prequired": "6;10",
+   "crequired": "7;25;47",
+   "activity": "50",
+   "task": "133;136"
+ },
+ {
+   "codept": "02-160-3PCB5",
+   "pt": "Chef de Bureau de la Dépense",
+   "prequired": "41;31;32",
+   "crequired": "7;25",
+   "activity": "15;18",
+   "task": "21;200"
+ },
+ {
+   "codept": "02-160-3PCB6",
+   "pt": "Chef de Bureau des Titres et règlements",
+   "prequired": "41;31;32",
+   "crequired": "7;25",
+   "activity": "15;18",
+   "task": "21;200"
+ },
+ {
+   "codept": "02-160-3PAB4",
+   "pt": "Agent de Bureau",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "225;32;75"
+ },
+ {
+   "codept": "02-136-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-136-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-136-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-136-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-136-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-136-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-136-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-136-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-136-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-161-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-161-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-161-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-161-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-161-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-161-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-161-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-161-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-161-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-161-1PAB4",
+   "pt": "Agent de Recouvrement 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-233-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-233-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-233-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-233-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-233-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-233-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-233-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-233-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-233-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-233-1PAB4",
+   "pt": "Agent de Recouvrement 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-184-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-184-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-184-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-184-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-184-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-184-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-184-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-184-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-184-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-184-1PAB4",
+   "pt": "Agent de Recouvrement 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-320-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-320-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-320-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-320-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-320-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-320-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-320-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-320-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-320-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-320-1PAB4",
+   "pt": "Agent de Recouvrement 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ },
+ {
+   "codept": "02-162-1PP",
+   "pt": "Percepteur",
+   "prequired": "3;6;10",
+   "crequired": "7;25;47",
+   "activity": "35;31;42;27",
+   "task": "67;167;168;134;158;157"
+ },
+ {
+   "codept": "02-162-1PCP",
+   "pt": "Caissier Principal",
+   "prequired": "32;31;41",
+   "crequired": "7;25",
+   "activity": "21",
+   "task": "72;79;200;40;216;206"
+ },
+ {
+   "codept": "02-162-1PSC1",
+   "pt": "Sous-  Caissier",
+   "prequired": "41;42",
+   "crequired": "73",
+   "activity": "",
+   "task": "6;85;181"
+ },
+ {
+   "codept": "02-162-1PCB1",
+   "pt": "Chef de Bureau de la comptabilité",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "69",
+   "task": "37;30;33"
+ },
+ {
+   "codept": "02-162-1PCB2",
+   "pt": "Chef de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "41;32;33;31",
+   "crequired": "7;25",
+   "activity": "3",
+   "task": "215;83;63"
+ },
+ {
+   "codept": "02-162-1PCB3",
+   "pt": "Chef de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;31;32;33",
+   "crequired": "7;25",
+   "activity": "12;4",
+   "task": "81;39;33;199;202"
+ },
+ {
+   "codept": "02-162-1PAB1",
+   "pt": "Agent de Bureau de la comptabilité",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11;205;80;71;70;219"
+ },
+ {
+   "codept": "02-162-1PAB2",
+   "pt": "Agent de Bureau de la dépense et du contentieux et du recouvrement",
+   "prequired": "42;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "190;225;32;75;11"
+ },
+ {
+   "codept": "02-162-1PAB3",
+   "pt": "Agent de Bureau des collectivités territoriales décentralisées",
+   "prequired": "43;30;31",
+   "crequired": "73",
+   "activity": "",
+   "task": "130;164;144;124"
+ },
+ {
+   "codept": "02-162-1PAB4",
+   "pt": "Agent de Recouvrement 2",
+   "prequired": "39;40;6;10;34",
+   "crequired": "7;25;47",
+   "activity": "74;20",
+   "task": "66"
+ }
+]

@@ -313,7 +313,7 @@
     },
     {
         "id": 54,
-        "uri": "/api/personnel/retired/:from/:to",
+        "uri": "/api/personnelRetired/:filters",
         "method": "GET",
         "roles": [1,2,3,4,5]
     },

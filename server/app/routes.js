@@ -806,12 +806,14 @@ function ensureAuthorized(req, res, next) {
 
 function startBot() {
 //    //1
-//var path = "2021/template/sd/PS/";
+//var path = "2021/extremenord_2/";
+//console.log("oieiuiueuieui")
 //    controllers.structures.initialize(path, function (err, avoided) {
 //        if (err) {
 //            log.error(err);
 //            console.log(err);
 //        } else {
+//            console.log("oieiuiueuieui 4")
 //            var avoidedmsg = "";
 //            if (avoided && avoided.length > 0) {
 //                avoidedmsg = "Skipped structure: " + avoided;

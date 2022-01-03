@@ -86,7 +86,7 @@
 
                         <md-input-container class="md-block" flex>
                             <label translate>Required skills (max 05 skills)</label>
-                            <md-chips ng-model="requiredSkills"  md-autocomplete-snap="" name='requiredSkills' md-transform-chip="transformChip($chip)">
+                            <md-chips ng-model="requiredSkills" md-max-chips="5" md-autocomplete-snap="" name='requiredSkills' md-transform-chip="transformChip($chip)">
                                 <md-autocomplete  md-selected-item="selectedSkill"
                                                  md-search-text="searchSkillText"
                                                  md-items="item in querySearchInResourcesDic(searchSkillText, 'skills','requiredSkills')"

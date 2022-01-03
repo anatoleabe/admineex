@@ -780,10 +780,12 @@ exports.INITPOSITIONDATAFROMJSON = function (path, callback) {
                 }
 
                 for (var s in activities) {
-                    if (activities[s] && activities[s] != "") {
+                    if (activities[s] && activities[s] != "" && activities[s].trim()) {
                         var activity = dictionary.getJSONById("../../resources/dictionary/tmpData/" + path + "/activities.json", activities[s].trim());
                         console.log(activities[s].trim())
-                        activitiesValues.push(activity.activity.capitalize());
+                        if (activity){
+                            activitiesValues.push(activity.activity.capitalize());
+                        }
                     }
                 }
 
