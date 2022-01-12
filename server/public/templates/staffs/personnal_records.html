@@ -290,6 +290,12 @@
                                         <md-divider></md-divider>
                                         <md-list-item>
                                             <md-icon>local_hospital</md-icon>
+                                            <p class="md-body-2" translate>Retirement date</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.retirementDate| dateHuman | unknown}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>local_hospital</md-icon>
                                             <p class="md-body-2" translate>Actual situation</p>
                                             <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.situations[0].value| unknown}}
                                                 <span ng-if="personnelSelected.situations[0]">

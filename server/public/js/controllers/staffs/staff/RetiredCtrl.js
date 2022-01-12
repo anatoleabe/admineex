@@ -67,6 +67,12 @@ angular.module('RetiredCtrl', []).controller('RetiredController', function ($sco
 
         watch.retirementState = $scope.$watch('retirement.selectedFilter', function (newval, oldval) {
             if (newval) {
+                if (newval === 4 ){
+                    $rootScope.range.max = undefined; 
+                }else{
+                     $rootScope.range.max = new Date(); 
+                }
+                
                 $scope.getRetired();
             }
         });

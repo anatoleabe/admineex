@@ -345,38 +345,41 @@ exports.api.retired = function (req, res) {
         if (req.params.filters && req.params.filters != "-" && req.params.filters != "") {
             filtersParam = JSON.parse(req.params.filters);
         }
-        console.log(filtersParam)
-        
+        //console.log(filtersParam)
+
         var from = filtersParam.from;
         var to = filtersParam.to;
-        
+
         var query1 = {$and: []};
         if (filtersParam.retirementState === 4) {//Les personnes qui irrons probablement en retraite dans une date future
             query1.$and.push({$or: []});
             query1.$and[0].$or.push({"retirement.retirement": {$exists: false}});//pas en age de retraite
             query1.$and[0].$or.push({"retirement.retirement": false});//pas en age de retraite
-        }else if (filtersParam.retirementState === 1) {//Retired and not notified staff (personne en age de retraite, mais pas notifiée)
+        } else if (filtersParam.retirementState === 1) {//Retired and not notified staff (personne en age de retraite, mais pas notifiée)
             query1.$and.push({"retirement.retirement": true});//Les personnes en age de retraite
             query1.$and.push({"retirement.notified": {$exists: false}});//..et notifiés
             query1.$and.push({$or: []});//..et non pas été prolongés
             query1.$and[2].$or.push({"retirement.extended": {$exists: false}});//non pas été prolongés
             query1.$and[2].$or.push({"retirement.extended": false});//non pas été prolongés
-        }else if (filtersParam.retirementState === 2) {//Retired and notified staff (personne retraitées, notifiées et pas prolongé)
+        } else if (filtersParam.retirementState === 2) {//Retired and notified staff (personne retraitées, notifiées et pas prolongé)
             query1.$and.push({"retirement.retirement": true});//Les personnes en age de retraite
             query1.$and.push({"retirement.notified": {$exists: true}});//..et notifiés
             query1.$and.push({$or: []});//..et non pas été prolongés
             query1.$and[2].$or.push({"retirement.extended": {$exists: false}});//non pas été prolongés
             query1.$and[2].$or.push({"retirement.extended": false});//non pas été prolongés
-        }else if (filtersParam.retirementState === 3) {//retired, but extended (prolongé)
+        } else if (filtersParam.retirementState === 3) {//retired, but extended (prolongé)
             var query1 = {$and: []};
             query1.$and.push({"retirement.retirement": true});//Les personnes en age de retraite
             query1.$and.push({"retirement.extended": true});//retired, but extended
         }
-        
+
         var options = {
             query: query1,
             req: req,
-            retiredOnly: true
+            retiredOnly: true,
+            retirementState: filtersParam.retirementState,
+            from: from,
+            to: to
         }
         exports.list(options, function (err, personnels) {
             if (err) {
@@ -674,8 +677,34 @@ exports.list = function (options, callback) {
                                 callback(err);
                             } else {
                                 personnels = JSON.parse(JSON.stringify(personnels));
+                                var retirementLimit;
                                 function LoopA(a) {
                                     if (a < personnels.length && personnels[a]) {
+                                        personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
+
+                                        //Decree N°2020/802 of 30 December 2020 of the President of the Republic harmonising the retirement age of civil servants.
+                                        if (personnels[a].status == "1") {//Civil servant
+                                            if (personnels[a].category && personnels[a].category != null && personnels[a].category != "") {
+                                                if ((personnels[a].category == "5" || personnels[a].category == "6")) { //for category 'C' and 'D' staff, retirement at 55
+                                                    retirementLimit = 55;
+                                                } else {//Harmonised at sixty (60) years for category 'A' and 'B' staff
+                                                    retirementLimit = 60;
+                                                }
+                                            } else {//Harmonised at sixty (60) years in case of other categories
+                                                retirementLimit = 60;
+                                            }
+                                        } else {// Contractual
+                                            if (personnels[a].category && personnels[a].category != null && personnels[a].category != "") {
+                                                if (parseInt(personnels[a].category, 10) >= 1 && parseInt(personnels[a].category, 10) <= 7) { //Personnel non fonctionnaire CAT 1 à CAT 7 at 55 ans
+                                                    retirementLimit = 55;
+                                                } else {//Personnel non fonctionnaire CAT 8 à CAT 12 à 60 ans
+                                                    retirementLimit = 60;
+                                                }
+                                            } else {//other in case
+                                                retirementLimit = 60;
+                                            }
+                                        }
+                                        personnels[a].retirementDate = new Date(new Date(personnels[a].birthDate).setFullYear(new Date(personnels[a].birthDate).getFullYear() + retirementLimit));
 
                                         if ((options.minify == true || personnels[a].affectation) && !options.retiredOnly) {
                                             var options2 = {
@@ -704,7 +733,7 @@ exports.list = function (options, callback) {
                                                 personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
                                                 personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, language);
                                             }
-                                            personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
+
                                             if (personnels[a].affectation && personnels[a].affectation.position) {
                                                 personnels[a].affectation.position.name = ((language && language !== "" && personnels[a].affectation.position[language] != undefined && personnels[a].affectation.position[language] != "") ? personnels[a].affectation.position[language] : personnels[a].affectation.position['en']);
                                                 controllers.structures.findStructureByCode(personnels[a].affectation.position.code.substring(0, personnels[a].affectation.position.code.indexOf('P')), language, function (err, structure) {
@@ -1376,6 +1405,33 @@ function beautify(options, personnels, callback) {
                         var corps = personnels[a].corps;
 
                         personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
+
+                        var retirementLimit = 60;
+                        //Decree N°2020/802 of 30 December 2020 of the President of the Republic harmonising the retirement age of civil servants.
+                        if (personnels[a].status == "1") {//Civil servant
+                            if (personnels[a].category && personnels[a].category != null && personnels[a].category != "") {
+                                if ((personnels[a].category == "5" || personnels[a].category == "6")) { //for category 'C' and 'D' staff, retirement at 55
+                                    retirementLimit = 55;
+                                } else {//Harmonised at sixty (60) years for category 'A' and 'B' staff
+                                    retirementLimit = 60;
+                                }
+                            } else {//Harmonised at sixty (60) years in case of other categories
+                                retirementLimit = 60;
+                            }
+                        } else {// Contractual
+                            if (personnels[a].category && personnels[a].category != null && personnels[a].category != "") {
+                                if (parseInt(personnels[a].category, 10) >= 1 && parseInt(personnels[a].category, 10) <= 7) { //Personnel non fonctionnaire CAT 1 à CAT 7 at 55 ans
+                                    retirementLimit = 55;
+                                } else {//Personnel non fonctionnaire CAT 8 à CAT 12 à 60 ans
+                                    retirementLimit = 60;
+                                }
+                            } else {//other in case
+                                retirementLimit = 60;
+                            }
+                        }
+                        personnels[a].retirementDate = new Date(personnels[a].birthDate).setFullYear(new Date(personnels[a].birthDate).getFullYear() + retirementLimit);
+
+
 
                         personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
 

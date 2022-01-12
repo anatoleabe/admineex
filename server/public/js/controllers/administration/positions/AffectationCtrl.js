@@ -120,11 +120,13 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                 $scope.selectedPersonnel = $scope.params.personnel._id;
                                                 $scope.personnels = [$scope.params.personnel];
                                                 $rootScope.kernel.loading = 100;
+                                                console.log($scope.personnels);
                                             } else {
                                                 $rootScope.kernel.loading = 0;
                                                 StaffAgent.list({minify: true, limit: 0, skip: 0, search: $scope.staffsFilter, filters: JSON.stringify()}).then(function (response) {
                                                     $rootScope.kernel.loading = 100;
                                                     $scope.personnels = response.data.data;
+                                                    console.log($scope.personnels);
                                                 }).catch(function (response) {
                                                     console.log(response);
                                                 });

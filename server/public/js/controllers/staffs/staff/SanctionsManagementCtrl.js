@@ -197,7 +197,7 @@ angular.module('SanctionsManagementCtrl', []).controller('SanctionsManagementCon
                             console.error(response);
                         });
 
-                        $scope.newSanction = function (personnel) {
+                        $scope.newSanction = function () {
                             $ocLazyLoad.load('js/controllers/staffs/staff/SanctionCtrl.js').then(function () {
                                 $mdDialog.show({
                                     controller: 'SanctionController',
@@ -206,7 +206,7 @@ angular.module('SanctionsManagementCtrl', []).controller('SanctionsManagementCon
                                     clickOutsideToClose: true,
                                     locals: {
                                         params: {
-                                            personnel: personnel
+                                            
                                         }
                                     }
                                 }).then(function (answer) {
