@@ -57,5 +57,12 @@
         "en": "Revocation",
         "fr": "Révocation",
         "level":"4"
+    },
+    {
+        "id": "28",
+        "en": "Abandonment of position",
+        "fr": "Abandon de poste",
+        "level":"4",
+        "sanction":"Suspension de la solde mensuelle"
     }
 ]

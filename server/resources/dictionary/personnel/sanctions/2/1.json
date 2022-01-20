@@ -25,5 +25,12 @@
         "id": "22",
         "en": "Termination of employment",
         "fr": "Licenciement"
+    },
+    {
+        "id": "28",
+        "en": "Abandonment of position",
+        "fr": "Abandon de poste",
+        "level":"4",
+        "sanction":"Suspension de la solde mensuelle"
     }
 ]

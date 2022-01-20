@@ -368,7 +368,7 @@ exports.list = function (options, callback) {
             function LoopA(a) {
                 if (a < structures.length) {
                     filter = {fatherId: structures[a]._id};
-                    if (options.subFilter && options.subFilter.code){
+                    if (options.subFilter && options.subFilter.code) {
                         filter = options.subFilter;
                     }
                     Structure.find(filter).sort({"fr": 'asc'}).lean().exec(function (err, subStructures) {

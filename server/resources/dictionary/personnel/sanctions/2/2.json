@@ -64,5 +64,11 @@
         "en": "Other cases of indiscipline noted by the respondent's superior",
         "fr": "Autres cas d'indiscipline relevés par les supérieur hiérarchique du mis en cause",
         "sanction":"Abattement de 50 à 90% des primes trimestrielles suivant la gravité du cas considéré"
+    },
+    {
+        "id": "28",
+        "en": "Abandonment of position",
+        "fr": "Abandon de poste",
+        "sanction":"Abattement de 100% des primes trimestrielles"
     }
 ]
