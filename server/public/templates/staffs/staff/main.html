@@ -37,6 +37,9 @@
 
         </div>
         <span flex></span>
+        <md-switch flex ng-model="filters.staffOnly" aria-label="Validated">
+            <span translate>Avec en tête de  structure</span>
+        </md-switch>
 
         <button type="button" class="btn btn-outline alpha-success text-success-800 border-success-600" ng-click="download()"><i class="icon-file-excel mr-2"></i> <span translate>Export to Excel</span>
             <md-tooltip>

@@ -28,6 +28,18 @@
         "en": "Function",
         "fr": "Fonction"
     },{
+        "id": "affectation.structure.father.name",
+        "en": "Structure",
+        "fr": "Structure"
+    },{
+        "id": "affectation.structure.name",
+        "en": "Sous structure",
+        "fr": "Sous Structure"
+    },{
+        "id": "affectation.structure.father.typeValue",
+        "en": "Type",
+        "fr": "Type"
+    },{
         "id": "active",
         "en": "Situation",
         "fr": "Situation"

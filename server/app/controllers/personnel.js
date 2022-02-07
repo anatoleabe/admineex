@@ -917,26 +917,33 @@ exports.api.export = function (req, res) {
                                 } else
                                     return 0;
                             })
+                            var groupedPersonnelByStructureChildren = [];
+                            console.log(filtersParam.staffOnly)
+                            if (filtersParam.staffOnly === false || filtersParam.staffOnly === "false") {
+                                console.log("heheheheheh 22")
+                                groupedPersonnelByStructureChildren["undefined"] = personnels;
+                            } else {
+                                console.log("heheheheheh")
+                                groupedPersonnelByStructureChildren = _.groupBy(personnels, function (item) {
+                                    //console.log(item.affectation && item.affectation.structure && item.affectation.structure._id)
+                                    if (item.affectation && item.affectation.structure && item.affectation.structure._id) {
 
-                            var groupedPersonnelByStructureChildren = _.groupBy(personnels, function (item) {
-                                //console.log(item.affectation && item.affectation.structure && item.affectation.structure._id)
-                                if (item.affectation && item.affectation.structure && item.affectation.structure._id) {
+                                        return item.affectation.structure._id;
+                                    } else {
+                                        return "undefined";
+                                    }
 
-                                    return item.affectation.structure._id;
-                                } else {
-                                    return "undefined";
-                                }
+                                });
 
-                            });
-
-                            for (var s in structures) {
-                                if (structures[s].children) {
-                                    for (var c in structures[s].children) {
-                                        structures[s].children[c].personnels = groupedPersonnelByStructureChildren[structures[s].children[c]._id]
-
+                                for (var s in structures) {
+                                    if (structures[s].children) {
+                                        for (var c in structures[s].children) {
+                                            structures[s].children[c].personnels = groupedPersonnelByStructureChildren[structures[s].children[c]._id]
+                                        }
                                     }
                                 }
                             }
+
                             if (groupedPersonnelByStructureChildren["undefined"]) {
                                 var undefinedStructure = {
                                     code: "000",
@@ -954,6 +961,7 @@ exports.api.export = function (req, res) {
                             var gt = dictionary.translator(req.actor.language);
                             //Build XLSX
                             var options = buildFields(req.actor.language, "fieldNames.json");
+                            options.staffOnly = filtersParam.staffOnly;
                             options.data = structures;
                             options.title = gt.gettext("Admineex: Liste du personnel");
                             buildXLSX(options, function (err, filePath) {
@@ -1646,84 +1654,95 @@ function buildXLSX(options, callback) {
     //6. Fill data rows    
     var nextRow = 3;
     for (i = 0; i < options.data.length; i++) {
-
-        //6.1 Row 3 set the style
-        ws.getCell('A' + nextRow).value = options.data[i].name + " - " + options.data[i].code;
-        ws.getCell('A' + nextRow).border = {
-            top: {style: 'thick', color: {argb: 'FF964714'}},
-            left: {style: 'thick', color: {argb: 'FF964714'}},
-            bottom: {style: 'thick', color: {argb: 'FF964714'}}
-        };
-        ws.getCell('A' + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
-        ws.getCell('A' + nextRow).font = {
-            color: {argb: 'FFFFFF'},
-            size: 16,
-            bold: true
-        };
-        ws.getCell('A' + nextRow).alignment = {vertical: 'middle', horizontal: 'center'};
-        //6.2 Row 3 set the length
-        for (r = 1; r < options.fieldNames.length; r++) {
-            // For the last column, add right border
-            if (r == options.fieldNames.length - 1) {
-                ws.getCell(columns[r] + nextRow).border = {
-                    top: {style: 'thick', color: {argb: 'FF964714'}},
-                    right: {style: 'medium', color: {argb: 'FF964714'}},
-                    bottom: {style: 'thick', color: {argb: 'FF964714'}}
-                };
-            } else {//Set this border for the middle cells
-                ws.getCell(columns[r] + nextRow).border = {
-                    top: {style: 'thick', color: {argb: 'FF964714'}},
-                    bottom: {style: 'thick', color: {argb: 'FF964714'}}
-                };
+        if ((options.staffOnly != false && options.staffOnly != "false")) {
+            //6.1 Row 3 set the style
+            ws.getCell('A' + nextRow).value = options.data[i].name + " - " + options.data[i].code;
+            ws.getCell('A' + nextRow).border = {
+                top: {style: 'thick', color: {argb: 'FF964714'}},
+                left: {style: 'thick', color: {argb: 'FF964714'}},
+                bottom: {style: 'thick', color: {argb: 'FF964714'}}
+            };
+            ws.getCell('A' + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+            ws.getCell('A' + nextRow).font = {
+                color: {argb: 'FFFFFF'},
+                size: 16,
+                bold: true
+            };
+            ws.getCell('A' + nextRow).alignment = {vertical: 'middle', horizontal: 'center'};
+            //6.2 Row 3 set the length
+            for (r = 1; r < options.fieldNames.length; r++) {
+                // For the last column, add right border
+                if (r == options.fieldNames.length - 1) {
+                    ws.getCell(columns[r] + nextRow).border = {
+                        top: {style: 'thick', color: {argb: 'FF964714'}},
+                        right: {style: 'medium', color: {argb: 'FF964714'}},
+                        bottom: {style: 'thick', color: {argb: 'FF964714'}}
+                    };
+                } else {//Set this border for the middle cells
+                    ws.getCell(columns[r] + nextRow).border = {
+                        top: {style: 'thick', color: {argb: 'FF964714'}},
+                        bottom: {style: 'thick', color: {argb: 'FF964714'}}
+                    };
+                }
+                ws.getCell(columns[r] + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
+                ws.getCell(columns[r] + nextRow).alignment = {vertical: 'middle', horizontal: 'center', "wrapText": true};
             }
-            ws.getCell(columns[r] + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
-            ws.getCell(columns[r] + nextRow).alignment = {vertical: 'middle', horizontal: 'center', "wrapText": true};
+            /// 6.3 Merges Structure name cells
+            ws.mergeCells('A' + nextRow + ":" + columns[options.fieldNames.length - 1] + nextRow);
+        }else{
+            nextRow = 4;
+            nextRow = nextRow - 1;
         }
-        /// 6.3 Merges Structure name cells
-        ws.mergeCells('A' + nextRow + ":" + columns[options.fieldNames.length - 1] + nextRow);
-
 
         if (options.data[i].children) {
-            nextRow = nextRow + 1;
+            if ((options.staffOnly != false && options.staffOnly != "false")) {
+                nextRow = nextRow + 1;
+            }
+            
             /// 6.4 fill data
             for (c = 0; c < options.data[i].children.length; c++) {
-                //6.4.1 Row 3 set the style
-                ws.getCell('A' + nextRow).value = options.data[i].children[c].fr + " - " + options.data[i].children[c].code;
-                ws.getCell('A' + nextRow).border = {
-                    top: {style: 'thick', color: {argb: '96969696'}},
-                    left: {style: 'thick', color: {argb: '96969696'}},
-                    bottom: {style: 'thick', color: {argb: '96969696'}}
-                };
-                ws.getCell('A' + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'A1a8a1a1'}};
-                ws.getCell('A' + nextRow).font = {
-                    color: {argb: 'FFFFFF'},
-                    size: 16,
-                    bold: true
-                };
-                ws.getCell('A' + nextRow).alignment = {vertical: 'middle', horizontal: 'center'};
-                //6.4.2 Row 3 set the length
-                for (r = 1; r < options.fieldNames.length; r++) {
-                    // For the last column, add right border
-                    if (r == options.fieldNames.length - 1) {
-                        ws.getCell(columns[r] + nextRow).border = {
-                            top: {style: 'thick', color: {argb: '96969696'}},
-                            right: {style: 'medium', color: {argb: '96969696'}},
-                            bottom: {style: 'thick', color: {argb: '96969696'}}
-                        };
-                    } else {//Set this border for the middle cells
-                        ws.getCell(columns[r] + nextRow).border = {
-                            top: {style: 'thick', color: {argb: '96969696'}},
-                            bottom: {style: 'thick', color: {argb: '96969696'}}
-                        };
+               
+                if ((options.staffOnly !== false && options.staffOnly !== "false")) {
+                    //6.4.1 Row 3 set the style
+                    ws.getCell('A' + nextRow).value = options.data[i].children[c].fr + " - " + options.data[i].children[c].code;
+                    ws.getCell('A' + nextRow).border = {
+                        top: {style: 'thick', color: {argb: '96969696'}},
+                        left: {style: 'thick', color: {argb: '96969696'}},
+                        bottom: {style: 'thick', color: {argb: '96969696'}}
+                    };
+                    ws.getCell('A' + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'A1a8a1a1'}};
+                    ws.getCell('A' + nextRow).font = {
+                        color: {argb: 'FFFFFF'},
+                        size: 16,
+                        bold: true
+                    };
+                    ws.getCell('A' + nextRow).alignment = {vertical: 'middle', horizontal: 'center'};
+                    //6.4.2 Row 3 set the length
+                    for (r = 1; r < options.fieldNames.length; r++) {
+                        // For the last column, add right border
+                        if (r == options.fieldNames.length - 1) {
+                            ws.getCell(columns[r] + nextRow).border = {
+                                top: {style: 'thick', color: {argb: '96969696'}},
+                                right: {style: 'medium', color: {argb: '96969696'}},
+                                bottom: {style: 'thick', color: {argb: '96969696'}}
+                            };
+                        } else {//Set this border for the middle cells
+                            ws.getCell(columns[r] + nextRow).border = {
+                                top: {style: 'thick', color: {argb: '96969696'}},
+                                bottom: {style: 'thick', color: {argb: '96969696'}}
+                            };
+                        }
+                        ws.getCell(columns[r] + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'A1a8a1a1'}};
+                        ws.getCell(columns[r] + nextRow).alignment = {vertical: 'middle', horizontal: 'left', "wrapText": true};
                     }
-                    ws.getCell(columns[r] + nextRow).fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'A1a8a1a1'}};
-                    ws.getCell(columns[r] + nextRow).alignment = {vertical: 'middle', horizontal: 'left', "wrapText": true};
+                    /// 6.4.3 Merges Structure name cells
+                    ws.mergeCells('A' + nextRow + ":" + columns[options.fieldNames.length - 1] + nextRow);
+                }else{
+                    nextRow = nextRow - 1;
                 }
-                /// 6.4.3 Merges Structure name cells
-                ws.mergeCells('A' + nextRow + ":" + columns[options.fieldNames.length - 1] + nextRow);
-
 
                 if (options.data[i].children[c].personnels) {
+                    
 
                     for (k = 0; k < options.data[i].children[c].personnels.length; k++) {
 
@@ -1744,6 +1763,13 @@ function buildXLSX(options, callback) {
                             } else if (query.length == 3) {
                                 if (options.data[i].children[c].personnels[k][query[0]] && options.data[i].children[c].personnels[k][query[0]][query[1]]) {
                                     value = options.data[i].children[c].personnels[k][query[0]][query[1]][query[2]] || "";
+                                } else {
+                                    value = "";
+                                }
+                                field = query[2];
+                            } else if (query.length == 4) {
+                                if (options.data[i].children[c].personnels[k][query[0]] && options.data[i].children[c].personnels[k][query[0]][query[1]] && options.data[i].children[c].personnels[k][query[0]][query[1]][query[2]]) {
+                                    value = options.data[i].children[c].personnels[k][query[0]][query[1]][query[2]][query[3]] || "";
                                 } else {
                                     value = "";
                                 }

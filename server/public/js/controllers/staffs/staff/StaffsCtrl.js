@@ -22,6 +22,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                         situation: "0",
                         gender: "-",
                         status: "-",
+                        staffOnly: true,
                     };
                     $scope.codeStructure = undefined;
                     $scope.total = 0;
@@ -362,8 +363,9 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                                 status: $scope.filters.status,
                                 grade: $scope.filters.grade,
                                 category: $scope.filters.category,
-                                situation: $scope.filters.situation
-                            }
+                                situation: $scope.filters.situation,
+                                staffOnly: $scope.filters.staffOnly
+                            };
 
                             $ocLazyLoad.load('js/services/DownloadService.js').then(function () {
                                 var Download = $injector.get('Download');

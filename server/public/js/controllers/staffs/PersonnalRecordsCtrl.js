@@ -767,7 +767,7 @@ angular.module('PersonnalRecordsCtrl', [[
 
 
                 //Sanction et récompense
-                dd.content.push({text: 'G: SANCTIONS ET RECOMPENSES', style: 'subheader'})
+                dd.content.push({text: 'G: DOSSIER DISCIPLINAIRE', style: 'subheader'})
                 var sanctionData = {
                     style: 'tablePadding',
                     table: {
