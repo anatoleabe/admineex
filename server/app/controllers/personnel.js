@@ -171,7 +171,6 @@ exports.DONOTUSETHISMETHODE = function (callback) {//Insert a user from mysql da
                                             if (err) {
                                                 log.error(err);
                                             } else {
-                                                //console.log(personne.nom + "Inserted")
                                                 loopA(a + 1);
                                             }
                                         });
@@ -184,7 +183,6 @@ exports.DONOTUSETHISMETHODE = function (callback) {//Insert a user from mysql da
                                         if (err) {
                                             log.error(err);
                                         } else {
-                                            //console.log(personne.nom + "Inserted")
                                             loopA(a + 1);
                                         }
                                     });
@@ -197,7 +195,6 @@ exports.DONOTUSETHISMETHODE = function (callback) {//Insert a user from mysql da
                     }
                 }
                 loopA(0);
-                //console.log(result);
             }
         });
     })
@@ -345,7 +342,6 @@ exports.api.retired = function (req, res) {
         if (req.params.filters && req.params.filters != "-" && req.params.filters != "") {
             filtersParam = JSON.parse(req.params.filters);
         }
-        //console.log(filtersParam)
 
         var from = filtersParam.from;
         var to = filtersParam.to;
@@ -538,8 +534,18 @@ exports.list = function (options, callback) {
                         if (options.query) {
                             query = options.query;
                         }
-                        var concat = ["$name.family", " ", "$name.given"];
-                        var concatMeta = ["$name.family", "$name.given", "$identifier"];
+                        var concat = [
+                            {"$ifNull": ["$name.family", ""]},
+                            " ",
+                            {"$ifNull": ["$name.given", ""]}
+                        ];
+                        var concatMeta = [
+                            {"$ifNull": ["$name.family", ""]},
+                            {"$ifNull": ["$name.given", ""]},
+                            {"$ifNull": ["$identifier", ""]}
+                        ];
+
+
                         var sort = {"metainfo": 'asc'};
                         var q;
                         if (options.search && (options.search == "-" || options.search == "")) {
@@ -769,8 +775,13 @@ exports.list = function (options, callback) {
                     } else {//This view is restricted for structure manager (Role = 2)
                         var q;
                         var query = {positionCode: {$in: userStructureCodes}};
-                        var concat = ["$AffectedPersonnal.name.family", " ", "$AffectedPersonnal.name.given"];
-                        var concatMeta = ["$AffectedPersonnal.name.family", "$AffectedPersonnal.name.given", "$AffectedPersonnal.identifier", "$positionCode"];
+                        var concat = [{"$ifNull": ["$AffectedPersonnal.name.family", ""]}, " ", {"$ifNull": ["$AffectedPersonnal.name.given", ""]}];
+                        var concatMeta = [
+                            {"$ifNull": ["$AffectedPersonnal.name.family", ""]},
+                            {"$ifNull": ["$AffectedPersonnal.name.given", ""]},
+                            {"$ifNull": ["$AffectedPersonnal.identifier", ""]},
+                            {"$ifNull": ["$positionCode", ""]}
+                        ];
                         var sort = {"name.family": 'asc'};
                         var aggregat = [
                             {"$match": {"positionCode": {$in: userStructureCodes}}},
@@ -784,8 +795,8 @@ exports.list = function (options, callback) {
                             },
                             {"$unwind": "$AffectedPersonnal"},
                             {"$unwind": "$AffectedPersonnal.name"},
-                            {"$unwind": "$AffectedPersonnal.name.family"},
-                            {"$unwind": "$AffectedPersonnal.name.given"},
+                            {"$unwind": {path: "$AffectedPersonnal.name.family", preserveNullAndEmptyArrays: true}},
+                            {"$unwind": {path: "$AffectedPersonnal.name.given", preserveNullAndEmptyArrays: true}},
                             {"$addFields": {"fname": {$concat: concat}}},
                             {"$addFields": {"matricule": "$identifier"}},
                             {"$addFields": {"metainfo": {$concat: concatMeta}}}
@@ -882,7 +893,6 @@ exports.api.export = function (req, res) {
                     log.error(err);
                     res.status(500).send(err);
                 } else {
-                    //console.log(structures)
                     var options = {
                         minify: false,
                         req: req,
@@ -907,7 +917,6 @@ exports.api.export = function (req, res) {
                             log.error(err);
                             res.status(500).send(err);
                         } else {
-                            //console.log(personnels[6].affectedTo.position.structure);
                             personnels.sort(function (a, b) {
                                 if (a.fname < b.fname) {
                                     return -1;
@@ -918,14 +927,10 @@ exports.api.export = function (req, res) {
                                     return 0;
                             })
                             var groupedPersonnelByStructureChildren = [];
-                            console.log(filtersParam.staffOnly)
                             if (filtersParam.staffOnly === false || filtersParam.staffOnly === "false") {
-                                console.log("heheheheheh 22")
                                 groupedPersonnelByStructureChildren["undefined"] = personnels;
                             } else {
-                                console.log("heheheheheh")
                                 groupedPersonnelByStructureChildren = _.groupBy(personnels, function (item) {
-                                    //console.log(item.affectation && item.affectation.structure && item.affectation.structure._id)
                                     if (item.affectation && item.affectation.structure && item.affectation.structure._id) {
 
                                         return item.affectation.structure._id;
@@ -957,7 +962,6 @@ exports.api.export = function (req, res) {
                                 structures.push(undefinedStructure);
                             }
 
-                            //console.log(z);
                             var gt = dictionary.translator(req.actor.language);
                             //Build XLSX
                             var options = buildFields(req.actor.language, "fieldNames.json");
@@ -1029,14 +1033,22 @@ exports.api.search = function (req, res) {
                             var name = req.params.text || '';
                             var concat;
 
-                            concat = ["$name.family", " ", "$name.given"];
-                            var concatMeta = ["$name.family", "$name.given", "$identifier"];
+                            var concat = [
+                                {"$ifNull": ["$name.family", ""]},
+                                " ",
+                                {"$ifNull": ["$name.given", ""]}
+                            ];
+                            var concatMeta = [
+                                {"$ifNull": ["$name.family", ""]},
+                                {"$ifNull": ["$name.given", ""]},
+                                {"$ifNull": ["$identifier", ""]}
+                            ];
 
                             if (name !== '') {
                                 var aggregate = [
                                     {"$unwind": "$name"},
-                                    {"$unwind": "$name.family"},
-                                    {"$unwind": "$name.given"},
+                                    {"$unwind": {path: "$name.family", preserveNullAndEmptyArrays: true}},
+                                    {"$unwind": {path: "$name.given", preserveNullAndEmptyArrays: true}},
                                     {"$addFields": {"fname": {$concat: concat}}},
                                     {"$addFields": {"matricule": "$identifier"}},
                                     {"$addFields": {"metainfo": {$concat: concatMeta}}},
@@ -1195,7 +1207,6 @@ exports.api.downloadEligibleTo = function (req, res) {
                     log.error(err);
                     return res.sendStatus(400);
                 } else {
-                    //console.log(z);
                     var gt = dictionary.translator(req.actor.language);
                     //Build XLSX
                     var options = buildFields(req.actor.language, "fieldNamesEligible.json");
@@ -1231,7 +1242,6 @@ exports.eligibleTo = function (options, callback) {
             log.error(err);
             callback(err);
         } else {
-            console.log(position)
             var requiredProfiles = position.requiredProfiles;
             var requiredSkills = position.requiredSkills;
 
@@ -1261,7 +1271,6 @@ exports.eligibleTo = function (options, callback) {
                         audit.logEvent('[mongodb]', 'Personnel', 'EligibleTo', '', '', 'failed', 'Mongodb attempted to retrieve a personnel');
                         callback(err);
                     } else {
-                        console.log(personnels)
                         personnels = JSON.parse(JSON.stringify(personnels));
                         beautify({req: options.req, language: options.req.actor.language, beautify: true, eligibleTo: position._id, position: position, eligible: true}, personnels, function (err, objects) {
                             if (err) {
@@ -1689,7 +1698,7 @@ function buildXLSX(options, callback) {
             }
             /// 6.3 Merges Structure name cells
             ws.mergeCells('A' + nextRow + ":" + columns[options.fieldNames.length - 1] + nextRow);
-        }else{
+        } else {
             nextRow = 4;
             nextRow = nextRow - 1;
         }
@@ -1698,10 +1707,10 @@ function buildXLSX(options, callback) {
             if ((options.staffOnly != false && options.staffOnly != "false")) {
                 nextRow = nextRow + 1;
             }
-            
+
             /// 6.4 fill data
             for (c = 0; c < options.data[i].children.length; c++) {
-               
+
                 if ((options.staffOnly !== false && options.staffOnly !== "false")) {
                     //6.4.1 Row 3 set the style
                     ws.getCell('A' + nextRow).value = options.data[i].children[c].fr + " - " + options.data[i].children[c].code;
@@ -1737,12 +1746,12 @@ function buildXLSX(options, callback) {
                     }
                     /// 6.4.3 Merges Structure name cells
                     ws.mergeCells('A' + nextRow + ":" + columns[options.fieldNames.length - 1] + nextRow);
-                }else{
+                } else {
                     nextRow = nextRow - 1;
                 }
 
                 if (options.data[i].children[c].personnels) {
-                    
+
 
                     for (k = 0; k < options.data[i].children[c].personnels.length; k++) {
 

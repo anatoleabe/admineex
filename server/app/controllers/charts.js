@@ -206,8 +206,8 @@ var card2 = function (config, callback) {
             audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
             callback(err);
         } else {
-            function LoopA(a) {
-                if (a < personnels.length && personnels[a]) {
+            for (var a = 0; a < personnels.length; a++) {
+                if (personnels[a]) {
                     var grade = (personnels[a].grade) ? personnels[a].grade : "";
                     var status = (personnels[a].status) ? personnels[a].status : "";
 
@@ -240,13 +240,9 @@ var card2 = function (config, callback) {
                                 break;
                         }
                     }
-
-                    LoopA(a + 1);
-                } else {
-                    callback(null, data);
                 }
             }
-            LoopA(0);
+            callback(null, data);
         }
     });
 };
@@ -276,8 +272,8 @@ var chart2 = function (config, callback) {
             audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
             callback(err);
         } else {
-            function LoopA(a) {
-                if (a < personnels.length && personnels[a]) {
+            for (var a = 0; a < personnels.length; a++) {
+                if (personnels[a]) {
                     var grade = (personnels[a].grade) ? personnels[a].grade : "";
                     var status = (personnels[a].status) ? personnels[a].status : "";
 
@@ -297,13 +293,9 @@ var chart2 = function (config, callback) {
                             }
                         }
                     }
-
-                    LoopA(a + 1);
-                } else {
-                    callback(null, data);
                 }
             }
-            LoopA(0);
+            callback(null, data);
         }
     });
 };
@@ -357,7 +349,7 @@ var card4 = function (config, callback) {
                         }
                     }
                 }
-                
+
                 for (var c in categories) {
                     var line = {
                         category: categories[c].code,
@@ -397,7 +389,7 @@ var card6 = function (config, callback) {
             audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
             callback(err);
         } else {
-            function LoopA(a) {
+            for (var a = 0; a < personnels.length; a++) {
                 if (a < personnels.length && personnels[a]) {
                     var grade = (personnels[a].grade) ? personnels[a].grade : "";
                     var status = (personnels[a].status) ? personnels[a].status : "";
@@ -409,13 +401,9 @@ var card6 = function (config, callback) {
                             data.totalMen += 1;
                         }
                     }
-
-                    LoopA(a + 1);
-                } else {
-                    callback(null, data);
                 }
             }
-            LoopA(0);
+            callback(null, data);
         }
     });
 };
@@ -693,8 +681,8 @@ var global = function (config, callback) {
             callback(err);
         } else {
             data.totalStaff = personnels.length;
-            function LoopA(a) {
-                if (a < personnels.length && personnels[a]) {
+            for (var a = 0; a < personnels.length; a++) {
+                if (personnels[a]) {
                     var grade = (personnels[a].grade) ? personnels[a].grade : "";
                     var status = (personnels[a].status) ? personnels[a].status : "";
                     if (status == "2") {
@@ -718,28 +706,27 @@ var global = function (config, callback) {
                     } else {
                         data.totalMen += 1;
                     }
-                    LoopA(a + 1);
+                }
+            }
+            
+            controllers.structures.count({}, function (err, count) {
+                if (err) {
+                    log.error(err);
+                    callback(err);
                 } else {
-                    controllers.structures.count({}, function (err, count) {
+                    data.structures = count;
+                    controllers.positions.count({}, function (err, count) {
                         if (err) {
                             log.error(err);
                             callback(err);
                         } else {
-                            data.structures = count;
-                            controllers.positions.count({}, function (err, count) {
-                                if (err) {
-                                    log.error(err);
-                                    callback(err);
-                                } else {
-                                    data.positions = count;
-                                    callback(null, data);
-                                }
-                            });
+                            data.positions = count;
+                            callback(null, data);
                         }
                     });
                 }
-            }
-            LoopA(0);
+            });
+
         }
     });
 }
