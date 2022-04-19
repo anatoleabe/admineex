@@ -107,7 +107,7 @@ msgstr ""
 #: public/js/controllers/staffs/movement/MovementsCtrl.js:49
 #: public/js/controllers/staffs/staff/AssignmentHistoryCtrl.js:93
 #: public/js/controllers/staffs/staff/SanctionsManagementCtrl.js:223
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:330
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:348
 #: public/js/controllers/staffs/status/StatussCtrl.js:49
 #: public/js/controllers/users/UsersCtrl.js:105
 msgid "?"
@@ -147,7 +147,7 @@ msgstr ""
 #: public/templates/dialogs/retireds.html:37
 #: public/templates/procrastinate/tasks/main.html:69
 #: public/templates/staffs/staff/assignmenthistory.html:72
-#: public/templates/staffs/staff/main.html:157
+#: public/templates/staffs/staff/main.html:172
 #: public/templates/staffs/staff/retireds.html:90
 #: public/templates/staffs/staff/sanctionsmanagement.html:118
 msgid "Actions"
@@ -214,7 +214,7 @@ msgstr ""
 msgid "Add your credentials to login to your account"
 msgstr ""
 
-#: app/controllers/personnel.js:1203
+#: app/controllers/personnel.js:1217
 msgid "Admineex: Liste des personnes éligibles au poste de:"
 msgstr ""
 
@@ -222,7 +222,7 @@ msgstr ""
 msgid "Admineex: Liste des postes de travail"
 msgstr ""
 
-#: app/controllers/personnel.js:966
+#: app/controllers/personnel.js:973
 msgid "Admineex: Liste du personnel"
 msgstr ""
 
@@ -238,7 +238,7 @@ msgstr ""
 #: public/js/controllers/administration/positions/PositionsCtrl.js:268
 #: public/js/controllers/staffs/staff/SanctionsManagementCtrl.js:284
 #: public/js/controllers/staffs/staff/SanctionsStatisticsCtrl.js:206
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:381
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:399
 msgid "Adminex_Staff_Export"
 msgstr ""
 
@@ -246,7 +246,8 @@ msgstr ""
 msgid "Administration"
 msgstr ""
 
-#: public/templates/dialogs/sanction.html:101
+#: public/templates/dialogs/award.html:101
+#: public/templates/dialogs/sanction.html:102
 #: public/templates/dialogs/situation.html:41
 #: public/templates/staffs/discipline/edit.html:47
 #: public/templates/staffs/staff/sanctionsmanagement.html:112
@@ -273,7 +274,7 @@ msgstr ""
 msgid "Affect staff to this position"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:174
+#: public/templates/staffs/staff/main.html:189
 msgid "Affect to new position"
 msgstr ""
 
@@ -298,6 +299,7 @@ msgstr ""
 
 #: public/templates/administration/positions/main.html:80
 #: public/templates/administration/positions/main.html:94
+#: public/templates/staffs/staff/main.html:9
 #: public/templates/staffs/staff/sanctionsmanagement.html:60
 #: public/templates/staffs/staff/sanctionsmanagement.html:71
 #: public/templates/staffs/staff/sanctionsmanagement.html:83
@@ -311,15 +313,15 @@ msgstr ""
 msgid "All <i>invalid</i>, <i>error</i> and <i>no result</i> results are counted and priced at 10$ each."
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:111
+#: public/templates/staffs/staff/main.html:126
 msgid "All categories"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:78
+#: public/templates/staffs/staff/main.html:93
 msgid "All genders"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:101
+#: public/templates/staffs/staff/main.html:116
 msgid "All grades"
 msgstr ""
 
@@ -331,18 +333,18 @@ msgstr ""
 msgid "All quarters"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:121
+#: public/templates/staffs/staff/main.html:136
 msgid "All situations"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:91
+#: public/templates/staffs/staff/main.html:106
 msgid "All status"
 msgstr ""
 
 #: public/templates/administration/positions/main.html:55
 #: public/templates/administration/structures/main.html:11
 #: public/templates/monitor/main.html:38
-#: public/templates/staffs/staff/main.html:10
+#: public/templates/staffs/staff/main.html:25
 #: public/templates/staffs/staff/sanctionsmanagement.html:35
 #: public/templates/staffs/staff/statisticOfSanctions.html:31
 msgid "All structures"
@@ -350,7 +352,7 @@ msgstr ""
 
 #: public/templates/administration/positions/main.html:68
 #: public/templates/administration/structures/main.html:30
-#: public/templates/staffs/staff/main.html:27
+#: public/templates/staffs/staff/main.html:42
 #: public/templates/staffs/staff/sanctionsmanagement.html:48
 #: public/templates/staffs/staff/statisticOfSanctions.html:44
 msgid "All sub structures"
@@ -395,8 +397,8 @@ msgstr ""
 #: public/js/controllers/recovery/LostCtrl.js:26
 #: public/js/controllers/recovery/ResetCtrl.js:42
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:130
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:318
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:839
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:323
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:844
 #: public/js/controllers/staffs/staff/MoreCtrl.js:124
 #: public/js/controllers/staffs/staff/SanctionCtrl.js:64
 #: public/js/controllers/staffs/staff/SanctionCtrl.js:96
@@ -431,7 +433,7 @@ msgstr ""
 msgid "Are you sure you want to cancel the sanction of"
 msgstr ""
 
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:330
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:348
 msgid "Are you sure you want to delete the Agent"
 msgstr ""
 
@@ -501,7 +503,7 @@ msgstr ""
 msgid "Avatar"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:41
+#: public/templates/staffs/staff/main.html:56
 msgid "Avec en tête de  structure"
 msgstr ""
 
@@ -585,14 +587,15 @@ msgstr ""
 #: public/js/controllers/staffs/movement/MovementsCtrl.js:51
 #: public/js/controllers/staffs/staff/AssignmentHistoryCtrl.js:95
 #: public/js/controllers/staffs/staff/SanctionsManagementCtrl.js:225
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:332
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:350
 #: public/js/controllers/staffs/status/StatussCtrl.js:51
 #: public/js/controllers/users/UsersCtrl.js:107
 #: public/templates/administration/positions/edit.html:139
 #: public/templates/administration/structures/edit.html:106
 #: public/templates/dialogs/affectation.html:201
+#: public/templates/dialogs/award.html:157
 #: public/templates/dialogs/evaluation.html:94
-#: public/templates/dialogs/sanction.html:157
+#: public/templates/dialogs/sanction.html:158
 #: public/templates/dialogs/situation.html:92
 #: public/templates/organizations/edit.html:19
 #: public/templates/procrastinate/categories/edit.html:20
@@ -669,13 +672,13 @@ msgid "Choose a color for your avatar"
 msgstr ""
 
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:130
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:235
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:240
 #: public/js/controllers/staffs/staff/MoreCtrl.js:48
 msgid "Choose a skill"
 msgstr ""
 
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:127
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:232
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:237
 #: public/js/controllers/staffs/staff/MoreCtrl.js:45
 msgid "Choose profile"
 msgstr ""
@@ -873,7 +876,8 @@ msgstr ""
 msgid "Date of beginning"
 msgstr ""
 
-#: public/templates/dialogs/sanction.html:131
+#: public/templates/dialogs/award.html:131
+#: public/templates/dialogs/sanction.html:132
 #: public/templates/staffs/staff/sanctionsmanagement.html:115
 msgid "Date of signature"
 msgstr ""
@@ -891,14 +895,14 @@ msgstr ""
 #: public/templates/procrastinate/categories/main.html:34
 #: public/templates/procrastinate/tasks/dialogs/task.html:138
 #: public/templates/projects/main.html:39
-#: public/templates/staffs/staff/main.html:209
-#: public/templates/staffs/staff/main.html:211
+#: public/templates/staffs/staff/main.html:224
+#: public/templates/staffs/staff/main.html:226
 #: public/templates/users/main.html:31
 #: public/templates/users/main.html:61
 msgid "Delete"
 msgstr ""
 
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:329
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:347
 msgid "Delete this Agent"
 msgstr ""
 
@@ -1034,7 +1038,7 @@ msgstr ""
 #: public/templates/procrastinate/tasks/dialogs/task.html:142
 #: public/templates/projects/main.html:33
 #: public/templates/staffs/personnal_records.html:468
-#: public/templates/staffs/staff/main.html:180
+#: public/templates/staffs/staff/main.html:195
 #: public/templates/users/main.html:25
 #: public/templates/users/main.html:55
 msgid "Edit"
@@ -1094,7 +1098,11 @@ msgstr ""
 msgid "End date"
 msgstr ""
 
-#: public/templates/dialogs/sanction.html:87
+#: public/templates/dialogs/award.html:87
+msgid "End date of award"
+msgstr ""
+
+#: public/templates/dialogs/sanction.html:88
 msgid "End date of sanction"
 msgstr ""
 
@@ -1170,8 +1178,8 @@ msgstr ""
 msgid "Export the list (Excel)"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:44
-#: public/templates/staffs/staff/main.html:46
+#: public/templates/staffs/staff/main.html:59
+#: public/templates/staffs/staff/main.html:61
 #: public/templates/staffs/staff/retireds.html:13
 #: public/templates/staffs/staff/retireds.html:15
 #: public/templates/staffs/staff/sanctionsmanagement.html:15
@@ -1202,7 +1210,7 @@ msgstr ""
 
 #: public/js/appFilters.js:379
 #: public/templates/staffs/staff/edit.html:42
-#: public/templates/staffs/staff/main.html:84
+#: public/templates/staffs/staff/main.html:99
 msgid "Female"
 msgstr ""
 
@@ -1221,6 +1229,10 @@ msgstr ""
 
 #: public/templates/procrastinate/tasks/main.html:35
 msgid "Filter by category"
+msgstr ""
+
+#: public/templates/staffs/staff/main.html:6
+msgid "Filter by location"
 msgstr ""
 
 #: public/templates/procrastinate/tasks/main.html:13
@@ -1250,7 +1262,7 @@ msgstr ""
 #: public/templates/administration/positions/main.html:51
 #: public/templates/administration/structures/main.html:7
 #: public/templates/monitor/main.html:34
-#: public/templates/staffs/staff/main.html:6
+#: public/templates/staffs/staff/main.html:21
 #: public/templates/staffs/staff/sanctionsmanagement.html:31
 #: public/templates/staffs/staff/statisticOfSanctions.html:27
 msgid "Filter by structure"
@@ -1258,7 +1270,7 @@ msgstr ""
 
 #: public/templates/administration/positions/main.html:64
 #: public/templates/administration/structures/main.html:26
-#: public/templates/staffs/staff/main.html:23
+#: public/templates/staffs/staff/main.html:38
 #: public/templates/staffs/staff/sanctionsmanagement.html:44
 #: public/templates/staffs/staff/statisticOfSanctions.html:40
 msgid "Filter by sub structure"
@@ -1276,7 +1288,7 @@ msgstr ""
 #: public/templates/administration/positions/main.html:53
 #: public/templates/administration/structures/main.html:9
 #: public/templates/monitor/main.html:36
-#: public/templates/staffs/staff/main.html:8
+#: public/templates/staffs/staff/main.html:23
 #: public/templates/staffs/staff/sanctionsmanagement.html:33
 #: public/templates/staffs/staff/statisticOfSanctions.html:29
 msgid "Filtre by structure"
@@ -1284,7 +1296,7 @@ msgstr ""
 
 #: public/templates/administration/positions/main.html:66
 #: public/templates/administration/structures/main.html:28
-#: public/templates/staffs/staff/main.html:25
+#: public/templates/staffs/staff/main.html:40
 #: public/templates/staffs/staff/sanctionsmanagement.html:46
 #: public/templates/staffs/staff/statisticOfSanctions.html:42
 msgid "Filtre by sub structure"
@@ -1338,14 +1350,14 @@ msgstr ""
 #: public/templates/monitor/main.html:76
 #: public/templates/profile/main.html:6
 #: public/templates/staffs/personnal_records.html:112
-#: public/templates/staffs/staff/main.html:149
+#: public/templates/staffs/staff/main.html:164
 #: public/templates/staffs/staff/retireds.html:84
 #: public/templates/users/profile.html:23
 msgid "Full name"
 msgstr ""
 
 #: public/templates/staffs/personnal_records.html:257
-#: public/templates/staffs/staff/main.html:153
+#: public/templates/staffs/staff/main.html:168
 msgid "Function"
 msgstr ""
 
@@ -1400,7 +1412,7 @@ msgstr ""
 #: public/templates/dialogs/retireds.html:34
 #: public/templates/staffs/personnal_records.html:281
 #: public/templates/staffs/staff/edit.html:287
-#: public/templates/staffs/staff/main.html:152
+#: public/templates/staffs/staff/main.html:167
 #: public/templates/staffs/staff/retireds.html:86
 #: public/templates/statistics/directives/card4.html:23
 msgid "Grade"
@@ -1581,7 +1593,7 @@ msgstr ""
 
 #: public/js/appFilters.js:382
 #: public/templates/staffs/staff/edit.html:41
-#: public/templates/staffs/staff/main.html:81
+#: public/templates/staffs/staff/main.html:96
 msgid "Male"
 msgstr ""
 
@@ -1647,8 +1659,8 @@ msgstr ""
 
 #: public/templates/staffs/staff/assignmenthistory.html:104
 #: public/templates/staffs/staff/assignmenthistory.html:33
-#: public/templates/staffs/staff/main.html:187
-#: public/templates/staffs/staff/main.html:55
+#: public/templates/staffs/staff/main.html:202
+#: public/templates/staffs/staff/main.html:70
 #: public/templates/staffs/staff/retireds.html:107
 #: public/templates/staffs/staff/retireds.html:51
 #: public/templates/staffs/staff/sanctionsmanagement.html:153
@@ -1669,7 +1681,8 @@ msgid "Name"
 msgstr ""
 
 #: public/templates/dialogs/affectation.html:134
-#: public/templates/dialogs/sanction.html:107
+#: public/templates/dialogs/award.html:107
+#: public/templates/dialogs/sanction.html:108
 #: public/templates/dialogs/situation.html:47
 #: public/templates/staffs/discipline/edit.html:53
 #: public/templates/staffs/mouvement/edit.html:112
@@ -1698,7 +1711,7 @@ msgstr ""
 #: public/templates/settings/password.html:10
 #: public/templates/staffs/discipline/main.html:60
 #: public/templates/staffs/mouvement/main.html:64
-#: public/templates/staffs/staff/main.html:237
+#: public/templates/staffs/staff/main.html:252
 #: public/templates/staffs/status/main.html:60
 #: public/templates/users/main.html:76
 msgid "New"
@@ -1717,7 +1730,7 @@ msgstr ""
 msgid "New award"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:201
+#: public/templates/staffs/staff/main.html:216
 msgid "New disciplinary sanction"
 msgstr ""
 
@@ -1735,7 +1748,7 @@ msgstr ""
 msgid "New sanction"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:194
+#: public/templates/staffs/staff/main.html:209
 msgid "New staff situation"
 msgstr ""
 
@@ -1812,7 +1825,7 @@ msgstr ""
 #: public/js/controllers/projects/ProjectsCtrl.js:5
 #: public/js/controllers/staffs/discipline/DisciplinesCtrl.js:5
 #: public/js/controllers/staffs/movement/MovementsCtrl.js:5
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:12
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:14
 #: public/js/controllers/staffs/status/StatussCtrl.js:5
 msgid "No project"
 msgstr ""
@@ -1915,7 +1928,8 @@ msgstr ""
 msgid "Number of records processed"
 msgstr ""
 
-#: public/templates/dialogs/sanction.html:120
+#: public/templates/dialogs/award.html:120
+#: public/templates/dialogs/sanction.html:121
 #: public/templates/dialogs/situation.html:60
 msgid "Number of reference"
 msgstr ""
@@ -1944,7 +1958,7 @@ msgstr ""
 #: public/js/controllers/projects/ProjectsCtrl.js:50
 #: public/js/controllers/staffs/discipline/DisciplinesCtrl.js:50
 #: public/js/controllers/staffs/movement/MovementsCtrl.js:50
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:331
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:349
 #: public/js/controllers/staffs/status/StatussCtrl.js:50
 msgid "OK"
 msgstr ""
@@ -2107,7 +2121,7 @@ msgstr ""
 msgid "Persons who have not been affected for 5 years"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:156
+#: public/templates/staffs/staff/main.html:171
 msgid "Phone"
 msgstr ""
 
@@ -2329,7 +2343,8 @@ msgstr ""
 msgid "Rearch..."
 msgstr ""
 
-#: public/templates/dialogs/sanction.html:146
+#: public/templates/dialogs/award.html:146
+#: public/templates/dialogs/sanction.html:147
 msgid "Reason"
 msgstr ""
 
@@ -2350,7 +2365,7 @@ msgstr ""
 msgid "Reference or Number"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:150
+#: public/templates/staffs/staff/main.html:165
 #: public/templates/staffs/status/main.html:36
 msgid "Reg. number"
 msgstr ""
@@ -2476,9 +2491,10 @@ msgstr ""
 #: public/templates/administration/structures/edit.html:107
 #: public/templates/configuration.html:20
 #: public/templates/dialogs/affectation.html:202
+#: public/templates/dialogs/award.html:158
 #: public/templates/dialogs/detail.html:40
 #: public/templates/dialogs/evaluation.html:95
-#: public/templates/dialogs/sanction.html:158
+#: public/templates/dialogs/sanction.html:159
 #: public/templates/dialogs/situation.html:93
 #: public/templates/installation/second.html:46
 #: public/templates/staffs/discipline/edit.html:95
@@ -2522,7 +2538,7 @@ msgstr ""
 msgid "Search among structure..."
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:136
+#: public/templates/staffs/staff/main.html:151
 msgid "Search amongs staff..."
 msgstr ""
 
@@ -2536,6 +2552,10 @@ msgstr ""
 #: public/templates/staffs/staff/retireds.html:72
 #: public/templates/staffs/status/main.html:21
 msgid "Search..."
+msgstr ""
+
+#: public/templates/dialogs/award.html:23
+msgid "Select a  award type"
 msgstr ""
 
 #: public/templates/dialogs/sanction.html:23
@@ -2562,22 +2582,27 @@ msgstr ""
 msgid "Select an agent"
 msgstr ""
 
+#: public/templates/dialogs/award.html:38
+msgid "Select an award"
+msgstr ""
+
 #: public/templates/procrastinate/tasks/edit.html:82
 msgid "Select assignee"
 msgstr ""
 
-#: public/templates/dialogs/sanction.html:53
+#: public/templates/dialogs/award.html:53
+#: public/templates/dialogs/sanction.html:54
 msgid "Select duration"
 msgstr ""
 
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:126
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:231
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:236
 #: public/js/controllers/staffs/staff/MoreCtrl.js:44
 msgid "Select profiles (You can add up to 05 profiles):"
 msgstr ""
 
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:129
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:234
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:239
 #: public/js/controllers/staffs/staff/MoreCtrl.js:47
 msgid "Select skills (You can add up to 05 skills):"
 msgstr ""
@@ -2590,12 +2615,17 @@ msgstr ""
 msgid "Select task priority"
 msgstr ""
 
-#: public/templates/dialogs/sanction.html:62
+#: public/templates/dialogs/award.html:62
+#: public/templates/dialogs/sanction.html:63
 msgid "Select the  period"
 msgstr ""
 
 #: public/templates/dialogs/sanction.html:38
-msgid "Selectionner la faute"
+msgid "Select the fault"
+msgstr ""
+
+#: public/templates/dialogs/sanction.html:39
+msgid "Select the sanction"
 msgstr ""
 
 #: public/js/appFilters.js:347
@@ -2621,7 +2651,7 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:151
+#: public/templates/staffs/staff/main.html:166
 msgid "Sex"
 msgstr ""
 
@@ -2661,7 +2691,8 @@ msgstr ""
 msgid "Sign up"
 msgstr ""
 
-#: public/templates/dialogs/sanction.html:141
+#: public/templates/dialogs/award.html:141
+#: public/templates/dialogs/sanction.html:142
 msgid "Signatory"
 msgstr ""
 
@@ -2743,7 +2774,11 @@ msgstr ""
 msgid "Start date"
 msgstr ""
 
-#: public/templates/dialogs/sanction.html:77
+#: public/templates/dialogs/award.html:77
+msgid "Start date of award"
+msgstr ""
+
+#: public/templates/dialogs/sanction.html:78
 msgid "Start date of sanction"
 msgstr ""
 
@@ -2771,7 +2806,7 @@ msgstr ""
 msgid "Structure"
 msgstr ""
 
-#: public/templates/staffs/staff/main.html:154
+#: public/templates/staffs/staff/main.html:169
 msgid "Structure aff."
 msgstr ""
 
@@ -2881,7 +2916,7 @@ msgstr ""
 msgid "Terms &amp; Conditions"
 msgstr ""
 
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:307
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:325
 msgid "The Agent has been deleted"
 msgstr ""
 
@@ -2901,7 +2936,7 @@ msgstr ""
 #: public/js/controllers/administration/positions/PositionsCtrl.js:276
 #: public/js/controllers/staffs/staff/SanctionsManagementCtrl.js:292
 #: public/js/controllers/staffs/staff/SanctionsStatisticsCtrl.js:214
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:389
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:407
 #: public/js/routes.js:1006
 msgid "The Export is too big. Please reduce the date range"
 msgstr ""
@@ -3016,7 +3051,7 @@ msgstr ""
 msgid "The sanction has been canceled successfully"
 msgstr ""
 
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:311
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:316
 msgid "The staff has been updated"
 msgstr ""
 
@@ -3072,19 +3107,28 @@ msgstr ""
 msgid "This email is already used"
 msgstr ""
 
-#: public/templates/dialogs/sanction.html:114
-#: public/templates/dialogs/sanction.html:123
-#: public/templates/dialogs/sanction.html:134
+#: public/templates/dialogs/award.html:114
+#: public/templates/dialogs/award.html:123
+#: public/templates/dialogs/award.html:134
+#: public/templates/dialogs/award.html:30
+#: public/templates/dialogs/award.html:45
+#: public/templates/dialogs/award.html:56
+#: public/templates/dialogs/award.html:69
+#: public/templates/dialogs/award.html:80
+#: public/templates/dialogs/award.html:90
+#: public/templates/dialogs/sanction.html:115
+#: public/templates/dialogs/sanction.html:124
+#: public/templates/dialogs/sanction.html:135
 #: public/templates/dialogs/sanction.html:30
-#: public/templates/dialogs/sanction.html:45
-#: public/templates/dialogs/sanction.html:56
-#: public/templates/dialogs/sanction.html:69
-#: public/templates/dialogs/sanction.html:80
-#: public/templates/dialogs/sanction.html:90
+#: public/templates/dialogs/sanction.html:46
+#: public/templates/dialogs/sanction.html:57
+#: public/templates/dialogs/sanction.html:70
+#: public/templates/dialogs/sanction.html:81
+#: public/templates/dialogs/sanction.html:91
 msgid "This field is required to proceed on next step."
 msgstr ""
 
-#: public/js/controllers/staffs/staff/StaffsCtrl.js:326
+#: public/js/controllers/staffs/staff/StaffsCtrl.js:344
 msgid "This will result in the deletion of all data related to this staff."
 msgstr ""
 

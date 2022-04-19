@@ -140,10 +140,15 @@ angular.module('PersonnalRecordsCtrl', [[
 
 
                                 $scope.newSanction = function (personnel, type) {
+                                    console.log( type)
+                                    var form = "sanction.html";
+                                    if (type === '3'){
+                                        form = "award.html";
+                                    }
                                     $ocLazyLoad.load('js/controllers/staffs/staff/SanctionCtrl.js').then(function () {
                                         $mdDialog.show({
                                             controller: 'SanctionController',
-                                            templateUrl: '../templates/dialogs/sanction.html',
+                                            templateUrl: '../templates/dialogs/'+form,
                                             parent: angular.element(document.body),
                                             clickOutsideToClose: true,
                                             locals: {

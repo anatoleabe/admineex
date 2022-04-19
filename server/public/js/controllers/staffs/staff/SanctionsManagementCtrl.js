@@ -197,7 +197,7 @@ angular.module('SanctionsManagementCtrl', []).controller('SanctionsManagementCon
                             console.error(response);
                         });
 
-                        $scope.newSanction = function () {
+                        $scope.newSanction11 = function () {
                             $ocLazyLoad.load('js/controllers/staffs/staff/SanctionCtrl.js').then(function () {
                                 $mdDialog.show({
                                     controller: 'SanctionController',

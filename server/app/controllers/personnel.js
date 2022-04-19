@@ -624,7 +624,7 @@ exports.list = function (options, callback) {
                         }
                         //Filter by key word
                         if (options.search) {
-                            aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}})
+                            aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}});
                         }
                         //Set the filters
                         if (options.filters) {
@@ -682,6 +682,7 @@ exports.list = function (options, callback) {
                                 audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
                                 callback(err);
                             } else {
+                                
                                 personnels = JSON.parse(JSON.stringify(personnels));
                                 var retirementLimit;
                                 function LoopA(a) {
@@ -733,11 +734,12 @@ exports.list = function (options, callback) {
                                             var statuse = (personnels[a].status) ? personnels[a].status : "";
                                             var grade = (personnels[a].grade) ? personnels[a].grade : "";
                                             var category = (personnels[a].category) ? personnels[a].category : "";
+                                            
                                             personnels[a].active = actif;
                                             personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
                                             if (status != "") {
                                                 personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
-                                                personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, language);
+                                                personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, "code").toUpperCase();
                                             }
 
                                             if (personnels[a].affectation && personnels[a].affectation.position) {
@@ -766,6 +768,7 @@ exports.list = function (options, callback) {
                                             LoopA(a + 1);
                                         }
                                     } else {
+                                        //console.log(personnels)
                                         callback(null, personnels);
                                     }
                                 }

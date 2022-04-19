@@ -268,7 +268,7 @@ exports.api.minimalList = function (req, res) {
                                 "code": {$in: userStructureCodes}
                             }
                         }
-                        Structure.find(query).sort({"fr": 'asc'}).lean().exec(function (err, result) {
+                        Structure.find(query).sort({"code": 'asc'}).lean().exec(function (err, result) {
                             if (err) {
                                 log.error(err);
                                 audit.logEvent('[mongodb]', 'Structures', 'List', '', '', 'failed', 'Mongodb attempted to retrieve structures list');

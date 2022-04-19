@@ -2,7 +2,7 @@
     <form ng-submit="save()">
         <md-toolbar class="md-accent">
             <div class="md-toolbar-tools">
-                <h2>New disciplinary sanction</h2>
+                <h2 translation>New award</h2>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <md-icon>close</md-icon>
@@ -20,7 +20,7 @@
                 <md-card-content>
                     <div layout="row" >
                         <md-input-container class="md-block" flex>
-                            <label translate>Select a  sanction type</label>
+                            <label translate>Select a  award type</label>
                             <md-select name="sanction" ng-model="sanction.type" required >
                                 <md-option ng-repeat="st in sanctionTypes" value="{{st.id}}" >
                                     {{st.name}} 
@@ -35,8 +35,7 @@
                     </div>
                     <div layout="row" >
                         <md-input-container class="md-block" flex>
-                            <label translate ng-if="sanction.type !== '1' ">Select the fault</label>
-                            <label translate ng-if="sanction.type === '1' ">Select the sanction</label>
+                            <label translate >Select an award</label>
                             <md-select name="sanction" ng-model="sanction.sanction" required >
                                 <md-option ng-repeat="sanction in sanctions" value="{{sanction.id}}" >
                                     {{sanction.name}} 
@@ -75,7 +74,7 @@
                     </div>
                     <div layout="row" >
                         <md-input-container class="datepicker-xl" flex style="width: 200px;">
-                            <label translate>Start date of sanction</label>
+                            <label translate>Start date of award</label>
                             <md-datepicker name="startDate" class="md-block"  ng-model="sanction.startDate" md-max-date="max"  style="width: 200px;"></md-datepicker>
                             <div ng-messages="startDate">
                                 <div ng-message="required" translate>
@@ -85,7 +84,7 @@
                         </md-input-container>
 
                         <md-input-container class="datepicker-xl" flex style="width: 200px;">
-                            <label translate>End date of sanction</label>
+                            <label translate>End date of award</label>
                             <md-datepicker name="endDate" class="md-block"  ng-model="sanction.endDate" md-max-date="max"  style="width: 200px;"></md-datepicker>
                             <div ng-messages="endDate">
                                 <div ng-message="required" translate>

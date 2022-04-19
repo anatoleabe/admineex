@@ -1,6 +1,21 @@
-<md-toolbar class="toolbar-filter" style="margin-bottom: 30px">
+<md-toolbar class="toolbar-filter" style="margin-bottom: 30px; margin-top: 10px">
     <div class="md-toolbar-tools md-default" >
-        <div flex >
+        <div  >
+            <span style="display: inline-block;margin-top: 18px;" >
+                <md-input-container  >
+                    <label translate>Filter by location</label>
+                    <md-select ng-model="filters.type"  style="min-width: 150px;">
+                        <md-option ng-selected value="-1" >
+                            {{'All'| translate}}
+                        </md-option>
+                        <md-option ng-repeat="t in types" value="{{t.id}}" >
+                            {{t.name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+            </span>
+        </div>
+        <div flex ng-show="filters.type">
             <span style="display: inline-block;margin-top: 18px;" >
                 <md-input-container flex>
                     <label translate>Filter by structure</label>
@@ -9,7 +24,7 @@
                             <md-option value="-" >
                                 {{'All structures'| translate}}
                             </md-option>
-                            <md-option ng-repeat="struc in structures| filter:onlyDirection " value="{{struc}}" >
+                            <md-option ng-repeat="struc in structures| filter:onlyDirection  | filter:typeOfService " value="{{struc}}" >
                                 {{struc.name}}
                             </md-option>
                         </md-optgroup>
