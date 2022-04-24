@@ -79,7 +79,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
             $scope.mouvement.idPersonnel = undefined;
         }
     }
-    
+
     $scope.getPositionCode = function (code) {
         if (code) {
             $scope.affectation.positionCode = code;
@@ -167,10 +167,57 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                     option = {type: "t=" + type + "=r=" + 3};
                                                 }
 
+
+
                                                 Structure.minimalList(option).then(function (response) {
                                                     var data = response.data;
                                                     $scope.substructures = data;
-                                                    console.log(data)
+
+                                                    $scope.substructures.sort(function (a, b) {
+                                                        if (a.code < b.code) {
+                                                            return -1;
+                                                        }
+                                                        if (a.code > b.code) {
+                                                            return 1;
+                                                        }
+                                                        return 0;
+                                                    });
+
+                                                    var groupOfCodes = [];
+                                                    $scope.groupList = $scope.substructures.reduce(function (previous, current) {
+                                                        var father = {};
+                                                        if (current.rank == "3" && current.code.indexOf($scope.structure + "-") == 0) {
+                                                            if (current.code.indexOf('-1') !== current.code.lastIndexOf('-1') && current.code.lastIndexOf('-1') != -1 && groupOfCodes.indexOf(current.code.substring(0, current.code.lastIndexOf('-1'))) === -1) {
+
+                                                                father = {
+                                                                    name: current.name,
+                                                                    code: current.code.substring(0, current.code.lastIndexOf('-1'))
+                                                                }
+                                                                groupOfCodes.push(current.code.substring(0, current.code.lastIndexOf('-1')));
+                                                                previous.push(father);
+                                                            } else {
+                                                                if ($scope.structure+'-1' === current.code) {
+                                                                    father = {
+                                                                        name: current.name,
+                                                                        code: current.code.substring(0, current.code.lastIndexOf('-1'))
+                                                                    }
+                                                                    groupOfCodes.push(current.code.substring(0, current.code.lastIndexOf('-1')));
+                                                                    previous.push(father);
+                                                                }
+                                                            }
+                                                        }
+                                                        previous.sort(function (a, b) {
+                                                            if (a.name < b.name) {
+                                                                return -1;
+                                                            }
+                                                            if (a.name > b.name) {
+                                                                return 1;
+                                                            }
+                                                            return 0;
+                                                        })
+                                                        return previous;
+                                                    }, []);
+
                                                     $scope.loading = false;
                                                     $rootScope.kernel.loading = 100
 
@@ -192,6 +239,8 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                     return false;
                                                 }
                                             };
+
+
 
                                             var watch = {};
 

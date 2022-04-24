@@ -50,7 +50,7 @@
 
                     </md-button>
                     <span ng-if="personnelSelected.affectedTo.position.name" style="white-space: nowrap; margin-top: -6px;margin-bottom: 5px;">{{personnelSelected.affectedTo.position.name| uppercase | unknown}} </span>
-                    <span ng-if="personnelSelected.situations[0].situation">({{personnelSelected.situations[0].value}})</span>
+                    <span ng-if="personnelSelected.situations[0].situation" style="background: red; color: white">({{personnelSelected.situations[0].value}})</span>
                     <span ng-if="personnelSelected.affectedTo.position.name" style="white-space: nowrap; margin-top: 0px;margin-bottom: 0px; color: #999999">{{personnelSelected.affectedTo.position.structure.name| unknown}}</span>
                     <span ng-if="personnelSelected.affectedTo.position.structure" style="white-space: nowrap; margin-top: 0px;margin-bottom: 0px; color: #999999"><small><i> {{personnelSelected.affectedTo.position.structure.father.name}} </i></small></span>   
                 </div>
@@ -95,6 +95,9 @@
                                     </md-button>
                                     <md-button  class="button task activelist" ng-click="newSanction(personnelSelected, '3')">
                                         <i class="icon-trophy3"></i> <span translate> New award</span>
+                                    </md-button>
+                                    <md-button  class="button task activelist" ng-click="newStaffSituation(personnelSelected)">
+                                        <i class="icon-flag"></i> <span translate> New situation</span>
                                     </md-button>
                                 </div>
                             </div>

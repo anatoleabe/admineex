@@ -93,6 +93,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                                         }
                                     }
                                 }).then(function (answer) {
+                                    $scope.getAgents();
                                 }, function () {
                                 });
                             });
@@ -130,6 +131,7 @@ angular.module('StaffsCtrl', []).controller('StaffsController', function ($scope
                                         }
                                     }
                                 }).then(function (answer) {
+                                    $scope.getAgents();
 //                                    $scope.profile.work[0].organisationID = answer._id;
 //                                    $scope.organisationSearchText = answer.name;
 //                                    showAlert();

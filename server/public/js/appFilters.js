@@ -1,69 +1,69 @@
-angular.module('datetimeFilters', []).filter('dMMMM', function(gettextCatalog, $window) {
+angular.module('datetimeFilters', []).filter('dMMMM', function (gettextCatalog, $window) {
     var months = new Array(gettextCatalog.getString("January"),
-                           gettextCatalog.getString("February"),
-                           gettextCatalog.getString("March"), 
-                           gettextCatalog.getString("April"), 
-                           gettextCatalog.getString("May"), 
-                           gettextCatalog.getString("June"), 
-                           gettextCatalog.getString("July"), 
-                           gettextCatalog.getString("August"), 
-                           gettextCatalog.getString("September"), 
-                           gettextCatalog.getString("October"), 
-                           gettextCatalog.getString("November"), 
-                           gettextCatalog.getString("December"));
+            gettextCatalog.getString("February"),
+            gettextCatalog.getString("March"),
+            gettextCatalog.getString("April"),
+            gettextCatalog.getString("May"),
+            gettextCatalog.getString("June"),
+            gettextCatalog.getString("July"),
+            gettextCatalog.getString("August"),
+            gettextCatalog.getString("September"),
+            gettextCatalog.getString("October"),
+            gettextCatalog.getString("November"),
+            gettextCatalog.getString("December"));
     return function (str) {
         var toReturn = '';
-        if($window.localStorage.language == 'FR'){
-            toReturn =  stringToDate(str).getDate() + ' ' + months[stringToDate(str).getMonth()];
+        if ($window.localStorage.language == 'FR') {
+            toReturn = stringToDate(str).getDate() + ' ' + months[stringToDate(str).getMonth()];
         } else {
-            toReturn =  months[stringToDate(str).getMonth()] + ' ' + stringToDate(str).getDate();
+            toReturn = months[stringToDate(str).getMonth()] + ' ' + stringToDate(str).getDate();
         }
         return toReturn;
     }
-}).filter('ddMMyyyy', function(gettextCatalog, $filter) {
+}).filter('ddMMyyyy', function (gettextCatalog, $filter) {
     return function (str) {
         var toReturn = gettextCatalog.getString("unknown");
-        if(str && str != ""){
-            toReturn = $filter('date')(str, "dd/MM/yyyy"); 
+        if (str && str != "") {
+            toReturn = $filter('date')(str, "dd/MM/yyyy");
         }
         return toReturn;
     }
-}).filter('HHmm', function() {
+}).filter('HHmm', function () {
     return function (received) {
         return HHmm(received);
     }
-}).filter('smartDatetime', function(gettextCatalog, $window){
+}).filter('smartDatetime', function (gettextCatalog, $window) {
     return function (datetime) {
-        if(datetime && datetime != ""){
+        if (datetime && datetime != "") {
             var now = new Date;
             datetime = stringToDate(datetime);
 
-            if((datetime.getDate() == now.getDate()) && (datetime.getMonth() == now.getMonth()) && (datetime.getFullYear() == now.getFullYear())) {
+            if ((datetime.getDate() == now.getDate()) && (datetime.getMonth() == now.getMonth()) && (datetime.getFullYear() == now.getFullYear())) {
                 return HHmm(datetime);
-            } else if((datetime.getDate()+1 == now.getDate()) && (datetime.getMonth() == now.getMonth()) && (datetime.getFullYear() == now.getFullYear())) {
+            } else if ((datetime.getDate() + 1 == now.getDate()) && (datetime.getMonth() == now.getMonth()) && (datetime.getFullYear() == now.getFullYear())) {
                 return gettextCatalog.getString("Yesterday");
-            } else if((now.getDate()-7 < datetime.getDate()) && (datetime.getMonth() == now.getMonth()) && (datetime.getFullYear() == now.getFullYear())) {
-                var weekDays = new Array(gettextCatalog.getString("Sunday"), 
-                                         gettextCatalog.getString("Monday"), 
-                                         gettextCatalog.getString("Tuesday"), 
-                                         gettextCatalog.getString("Wednesday"), 
-                                         gettextCatalog.getString("Thursday"), 
-                                         gettextCatalog.getString("Friday"), 
-                                         gettextCatalog.getString("Saturday"));
+            } else if ((now.getDate() - 7 < datetime.getDate()) && (datetime.getMonth() == now.getMonth()) && (datetime.getFullYear() == now.getFullYear())) {
+                var weekDays = new Array(gettextCatalog.getString("Sunday"),
+                        gettextCatalog.getString("Monday"),
+                        gettextCatalog.getString("Tuesday"),
+                        gettextCatalog.getString("Wednesday"),
+                        gettextCatalog.getString("Thursday"),
+                        gettextCatalog.getString("Friday"),
+                        gettextCatalog.getString("Saturday"));
                 return weekDays[datetime.getDay()];
             } else {
                 var months = new Array(gettextCatalog.getString("January"),
-                                       gettextCatalog.getString("February"),
-                                       gettextCatalog.getString("March"), 
-                                       gettextCatalog.getString("April"), 
-                                       gettextCatalog.getString("May"), 
-                                       gettextCatalog.getString("June"), 
-                                       gettextCatalog.getString("July"), 
-                                       gettextCatalog.getString("August"), 
-                                       gettextCatalog.getString("September"), 
-                                       gettextCatalog.getString("October"), 
-                                       gettextCatalog.getString("November"), 
-                                       gettextCatalog.getString("December"));
+                        gettextCatalog.getString("February"),
+                        gettextCatalog.getString("March"),
+                        gettextCatalog.getString("April"),
+                        gettextCatalog.getString("May"),
+                        gettextCatalog.getString("June"),
+                        gettextCatalog.getString("July"),
+                        gettextCatalog.getString("August"),
+                        gettextCatalog.getString("September"),
+                        gettextCatalog.getString("October"),
+                        gettextCatalog.getString("November"),
+                        gettextCatalog.getString("December"));
 
                 var toReturn = '';
                 toReturn = datetime.getDate() + ' ' + months[datetime.getMonth()] + ' ' + datetime.getFullYear();
@@ -76,69 +76,81 @@ angular.module('datetimeFilters', []).filter('dMMMM', function(gettextCatalog, $
 });
 
 
-angular.module('limitFilters', []).filter('limitMessage', function() {
+angular.module('limitFilters', []).filter('limitMessage', function () {
     return function (str) {
-        if(str.length > 27){
+        if (str.length > 27) {
             str = str.substr(0, 24) + "...";
         }
         return str;
     }
-}).filter('limitSender', function() {
+}).filter('limitSender', function () {
     return function (str) {
         var counter = "";
-        if(str.length > 19){
-            counter = str.substring(str.indexOf("("), str.indexOf(")")+1);
+        if (str.length > 19) {
+            counter = str.substring(str.indexOf("("), str.indexOf(")") + 1);
             str = str.substr(0, 16) + "...";
         }
         str = str + counter;
         return str;
     }
-}).filter('limiNotification', function() {
+}).filter('limiNotification', function () {
     return function (str) {
-        if(str.length > 63){
+        if (str.length > 63) {
             str = str.substr(0, 60) + "...";
         }
         return str;
     }
-})
+}).filter('regex', function () {
+    return function (input, field, regex) {
+        var out = [];
+        if (input) {
+            var patt = new RegExp(regex);
+            for (var i = 0; i < input.length; i++) {
+                if (patt.test(input[i][field]))
+                    out.push(input[i]);
+            }
+        }
+        return out;
+    };
+});
 
 
-angular.module('mappingFilters', []).filter('address', function(gettextCatalog) {
+angular.module('mappingFilters', []).filter('address', function (gettextCatalog) {
     return function (address) {
         var toReturn = "";
-        if(address){
-            if(address.line && address.line.length > 0){
+        if (address) {
+            if (address.line && address.line.length > 0) {
                 toReturn = address.line[0] + " ";
             }
-            if(address.line && address.line.length > 1){
+            if (address.line && address.line.length > 1) {
                 toReturn += address.line[1] + " ";
             }
-            if(address.district && address.district != ""){
+            if (address.district && address.district != "") {
                 toReturn += "(" + address.district + ") ";
             }
-            if(address.city){
+            if (address.city) {
                 toReturn += address.city + " ";
             }
-            if(address.postalCode && address.postalCode != ""){
+            if (address.postalCode && address.postalCode != "") {
                 toReturn += address.postalCode + " ";
             }
-            if(address.state){
+            if (address.state) {
                 toReturn += "(" + address.state + ") ";
             }
-            if(address.country){
+            if (address.country) {
                 toReturn += address.country + " ";
             }
         }
 
-        if(toReturn == ""){
+        if (toReturn == "") {
             toReturn = gettextCatalog.getString("unknown");
         }
         return toReturn;
     }
-}).filter('role', function(gettextCatalog) {
+}).filter('role', function (gettextCatalog) {
     return function (role) {
         var toReturn = gettextCatalog.getString("unknown");
-        switch(role){
+        switch (role) {
             case '1':
                 toReturn = gettextCatalog.getString("Administrator");
                 break;
@@ -151,21 +163,21 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
             case '4':
                 toReturn = gettextCatalog.getString("Editor");
                 break;
-                   }
+        }
         return toReturn;
     }
-}).filter('unknown', function(gettextCatalog) {
+}).filter('unknown', function (gettextCatalog) {
     return function (str) {
         var toReturn = str;
-        if(toReturn === undefined || toReturn == " " || toReturn == ""){
+        if (toReturn === undefined || toReturn == " " || toReturn == "") {
             toReturn = gettextCatalog.getString("unknown");
         }
         return toReturn;
     }
-}).filter('language', function(gettextCatalog) {
+}).filter('language', function (gettextCatalog) {
     return function (language) {
         var toReturn = "";
-        switch(language){
+        switch (language) {
             case 'FR':
                 toReturn = gettextCatalog.getString("French");
                 break;
@@ -184,37 +196,37 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
             default:
                 toReturn = gettextCatalog.getString("unknown");
                 break;
-                       }
+        }
         return toReturn;
     }
-}).filter('phone', function(gettextCatalog) {
+}).filter('phone', function (gettextCatalog) {
     return function (telecom) {
         var toReturn = gettextCatalog.getString("unknown");
-        for(i=0;i<telecom.length;i++){
-            if(telecom[i].system == "phone" && telecom[i].value && telecom[i].value != ""){
+        for (i = 0; i < telecom.length; i++) {
+            if (telecom[i].system == "phone" && telecom[i].value && telecom[i].value != "") {
                 toReturn = telecom[i].value;
             }
         }
         return toReturn;
     }
-}).filter('email', function(gettextCatalog) {
+}).filter('email', function (gettextCatalog) {
     return function (telecom) {
         var toReturn = "unknown";
-        for(i=0;i<telecom.length;i++){
-            if(telecom[i].system == "email" && telecom[i].value != ""){
+        for (i = 0; i < telecom.length; i++) {
+            if (telecom[i].system == "email" && telecom[i].value != "") {
                 toReturn = telecom[i].value;
             }
         }
         return toReturn;
     }
-}).filter('html', function ($sce) { 
+}).filter('html', function ($sce) {
     return function (text) {
         return $sce.trustAsHtml(text);
     };
-}).filter('projectStatus', function(gettextCatalog) {
+}).filter('projectStatus', function (gettextCatalog) {
     return function (value) {
         var toReturn = gettextCatalog.getString("unknown");
-        switch(value){
+        switch (value) {
             case '1':
                 toReturn = gettextCatalog.getString("In talks");
                 break;
@@ -233,13 +245,13 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
             case '6':
                 toReturn = gettextCatalog.getString("Canceled");
                 break;
-                   }
+        }
         return toReturn;
     }
-}).filter('organizationType', function(gettextCatalog) {
+}).filter('organizationType', function (gettextCatalog) {
     return function (value) {
         var toReturn = gettextCatalog.getString("unknown");
-        switch(value){
+        switch (value) {
             case '1':
                 toReturn = gettextCatalog.getString("Community");
                 break;
@@ -270,13 +282,13 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
             case '10':
                 toReturn = gettextCatalog.getString("Research Consortium");
                 break;
-                   }
+        }
         return toReturn;
     }
-}).filter('revenueType', function(gettextCatalog) {    
+}).filter('revenueType', function (gettextCatalog) {
     return function (value) {
         var toReturn = gettextCatalog.getString("unknown");
-        switch(value){
+        switch (value) {
             case '1':
                 toReturn = gettextCatalog.getString("One Shot Sales");
                 break;
@@ -289,15 +301,15 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
             case '4':
                 toReturn = gettextCatalog.getString("Service");
                 break;
-                   }
+        }
         return toReturn;
     }
-}).filter('sickness', function(gettextCatalog) {
+}).filter('sickness', function (gettextCatalog) {
     return function (value) {
         var toReturn = gettextCatalog.getString("unknown");
-        switch(value){
+        switch (value) {
             case '0':
-                toReturn = gettextCatalog.getString("Generic"); 
+                toReturn = gettextCatalog.getString("Generic");
                 break;
             case '1':
                 toReturn = gettextCatalog.getString("TB");
@@ -311,15 +323,15 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
             case '4':
                 toReturn = gettextCatalog.getString("Malaria");
                 break;
-                   }
+        }
         return toReturn;
     }
-}).filter('status', function(gettextCatalog) {
+}).filter('status', function (gettextCatalog) {
     return function (value) {
         var toReturn = gettextCatalog.getString("unknown");
-        switch(value){
+        switch (value) {
             case '1':
-                toReturn = gettextCatalog.getString("Not started"); 
+                toReturn = gettextCatalog.getString("Not started");
                 break;
             case '2':
                 toReturn = gettextCatalog.getString("In progress");
@@ -330,13 +342,13 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
             case '4':
                 toReturn = gettextCatalog.getString("Blocked");
                 break;
-                   }
+        }
         return toReturn;
     }
-}).filter('product', function(gettextCatalog) {
+}).filter('product', function (gettextCatalog) {
     return function (value) {
         var toReturn = gettextCatalog.getString("unknown");
-        switch(value){
+        switch (value) {
             case '1':
                 toReturn = gettextCatalog.getString("DataToCare");
                 break;
@@ -349,7 +361,7 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
             case '4':
                 toReturn = gettextCatalog.getString("Alics");
                 break;
-                   }
+        }
         return toReturn;
     }
 }).filter('uppercase', function () {
@@ -371,10 +383,10 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
     return function (str) {
         return gettextCatalog.getString(str);
     }
-}).filter('gender', function(gettextCatalog) {
+}).filter('gender', function (gettextCatalog) {
     return function (gender) {
         var toReturn = "";
-        switch(gender){
+        switch (gender) {
             case 'F':
                 toReturn = gettextCatalog.getString("Female");
                 break;
@@ -387,28 +399,28 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
         }
         return toReturn;
     }
-}).filter('dateHuman', function(gettextCatalog, $filter) {
+}).filter('dateHuman', function (gettextCatalog, $filter) {
     return function (str) {
         var toReturn = gettextCatalog.getString("unknown");
-        if(str && str != ""){
+        if (str && str != "") {
             toReturn = $filter('date')(str, "dd/MM/yyyy");
         }
         return toReturn;
     }
-}).filter('dateOnlyYear', function(gettextCatalog, $filter) {
+}).filter('dateOnlyYear', function (gettextCatalog, $filter) {
     return function (str) {
         var toReturn = "";
-        if(str && str != ""){
+        if (str && str != "") {
             toReturn = $filter('date')(str, "yyyy");
         }
         return toReturn;
     }
-}).filter('truncateTexte', function(gettextCatalog, $filter) {
+}).filter('truncateTexte', function (gettextCatalog, $filter) {
     return function (str) {
         var toReturn = "";
-        if(str && str != "" && str.length > 60){
-            toReturn = str.substring(0,60) + "...";
-        }else{
+        if (str && str != "" && str.length > 60) {
+            toReturn = str.substring(0, 60) + "...";
+        } else {
             return str;
         }
         return toReturn;
@@ -416,8 +428,8 @@ angular.module('mappingFilters', []).filter('address', function(gettextCatalog) 
 });
 
 
-function HHmm(received){
-    if(typeof received == 'string'){
+function HHmm(received) {
+    if (typeof received == 'string') {
         received = stringToDate(received);
     }
     //UTC
@@ -427,14 +439,14 @@ function HHmm(received){
     return h + ":" + m;
 }
 
-function stringToDate(str){
+function stringToDate(str) {
     var a = str.split(/[^0-9]/);
-    return new Date (a[0],a[1]-1,a[2],a[3],a[4],a[5] );
+    return new Date(a[0], a[1] - 1, a[2], a[3], a[4], a[5]);
 }
 
-function addZero(str){
+function addZero(str) {
     str = str.toString();
-    if(str.length == 1){
+    if (str.length == 1) {
         str = "0" + str;
     }
     return str;

@@ -553,6 +553,44 @@ exports.list = function (options, callback) {
                         }
 
                         var aggregate = [];
+                        //Set the filters
+                        if (options.filters) {
+                            if (options.filters.structure && options.filters.structure != "-" && options.filters.structure != "") {
+                                aggregate.push({$match: {$or: [{"affectation.positionCode": new RegExp("^" + options.filters.structure)}]}})
+                            }
+
+                            if (options.filters.gender && options.filters.gender != "-" && options.filters.gender != "") {
+                                aggregate.push({$match: {gender: options.filters.gender}});
+                            }
+
+                            if (options.filters.status && options.filters.status != "-" && options.filters.status != "") {
+                                aggregate.push({$match: {status: options.filters.status}});
+                            }
+
+                            if (options.filters.grade && options.filters.grade != "-" && options.filters.grade != "") {
+                                aggregate.push({$match: {grade: options.filters.grade}});
+                            }
+
+                            if (options.filters.category && options.filters.category != "-" && options.filters.category != "") {
+                                aggregate.push({$match: {category: options.filters.category}});
+                            }
+
+                            if (options.filters.situation && options.filters.situation != "-" && options.filters.situation != "") {
+                                aggregate.push({$addFields: {lastSituation: {$arrayElemAt: ["$situations", -1]}}});
+
+                                if (options.filters.situation == "12") {
+                                    aggregate.push({"$match": {"retirement.retirement": true}});
+                                    aggregate.push({"$match": {"retirement.notified": {$exists: false}}});
+                                    aggregate.push({"$match": {$or: [{"retirement.extended": {$exists: false}}, {"retirement.extended": false}]}});
+                                } else if (options.filters.situation == "0") {//Active people
+                                    //Staff not (Deceased, Retired, Abandoned, Revoked)
+                                    aggregate.push({$match: {$and: [{"lastSituation.situation": {$ne: "3"}}, {"lastSituation.situation": {$ne: "5"}}, {"lastSituation.situation": {$ne: "8"}}, {"lastSituation.situation": {$ne: "10"}}]}});
+                                } else {
+                                    aggregate.push({$match: {"lastSituation.situation": options.filters.situation}});
+                                }
+                            }
+                        }
+
                         if (!options.statistics) {
                             aggregate.push({"$unwind": "$name"});
                             aggregate.push({"$unwind": {path: "$name.family", preserveNullAndEmptyArrays: true}});
@@ -617,6 +655,8 @@ exports.list = function (options, callback) {
 
                         }
                         if (options.projection) {
+                            
+                            options.projection.lastSituation=1;
                             projection = {
                                 $project: options.projection
                             };
@@ -626,41 +666,7 @@ exports.list = function (options, callback) {
                         if (options.search) {
                             aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}});
                         }
-                        //Set the filters
-                        if (options.filters) {
-                            if (options.filters.structure && options.filters.structure != "-" && options.filters.structure != "") {
-                                aggregate.push({$match: {$or: [{"affectation.positionCode": new RegExp("^" + options.filters.structure)}]}})
-                            }
 
-                            if (options.filters.gender && options.filters.gender != "-" && options.filters.gender != "") {
-                                aggregate.push({$match: {gender: options.filters.gender}});
-                            }
-
-                            if (options.filters.status && options.filters.status != "-" && options.filters.status != "") {
-                                aggregate.push({$match: {status: options.filters.status}});
-                            }
-
-                            if (options.filters.grade && options.filters.grade != "-" && options.filters.grade != "") {
-                                aggregate.push({$match: {grade: options.filters.grade}});
-                            }
-
-                            if (options.filters.category && options.filters.category != "-" && options.filters.category != "") {
-                                aggregate.push({$match: {category: options.filters.category}});
-                            }
-
-                            if (options.filters.situation && options.filters.situation != "-" && options.filters.situation != "") {
-                                if (options.filters.situation == "12") {
-                                    aggregate.push({"$match": {"retirement.retirement": true}});
-                                    aggregate.push({"$match": {"retirement.notified": {$exists: false}}});
-                                    aggregate.push({"$match": {$or: [{"retirement.extended": {$exists: false}}, {"retirement.extended": false}]}});
-                                } else if (options.filters.situation == "0") {//Active people
-                                    //Check if correspond
-                                } else {
-                                    aggregate.push({$sort: {"situations.lastModified": -1}});
-                                    aggregate.push({$match: {"situations.0.situation": options.filters.situation}});
-                                }
-                            }
-                        }
 
                         //If retiredOnly
                         if (options.retiredOnly) {
@@ -682,7 +688,7 @@ exports.list = function (options, callback) {
                                 audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
                                 callback(err);
                             } else {
-                                
+
                                 personnels = JSON.parse(JSON.stringify(personnels));
                                 var retirementLimit;
                                 function LoopA(a) {
@@ -729,13 +735,18 @@ exports.list = function (options, callback) {
                                             var status = (personnels[a].status) ? personnels[a].status : "";
                                             var grade = (personnels[a].grade) ? personnels[a].grade : "";
                                             var actif = (personnels[a].retirement && personnels[a].retirement.retirement == false) ? "Actif" : "En age de retraite";
+                                            var situation = undefined;
+                                            if (personnels[a].lastSituation && personnels[a].lastSituation.situation) {
+                                                situation = dictionary.getValueFromJSON('../../resources/dictionary/personnel/situations.json', personnels[a].lastSituation.situation, language);
+                                            }
+
                                             var language = options.language || "";
                                             language = language.toLowerCase();
                                             var statuse = (personnels[a].status) ? personnels[a].status : "";
                                             var grade = (personnels[a].grade) ? personnels[a].grade : "";
                                             var category = (personnels[a].category) ? personnels[a].category : "";
-                                            
-                                            personnels[a].active = actif;
+
+                                            personnels[a].active = (situation)?situation:actif;
                                             personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
                                             if (status != "") {
                                                 personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
@@ -768,7 +779,6 @@ exports.list = function (options, callback) {
                                             LoopA(a + 1);
                                         }
                                     } else {
-                                        //console.log(personnels)
                                         callback(null, personnels);
                                     }
                                 }
@@ -1055,6 +1065,7 @@ exports.api.search = function (req, res) {
                                     {"$addFields": {"fname": {$concat: concat}}},
                                     {"$addFields": {"matricule": "$identifier"}},
                                     {"$addFields": {"metainfo": {$concat: concatMeta}}},
+                                    {$addFields: {lastSituation: {$arrayElemAt: ["$situations", -1]}}},
                                     {$match: {$or: [{"metainfo": dictionary.makePattern(name)}]}}
                                 ];
 
@@ -1481,7 +1492,7 @@ function beautify(options, personnels, callback) {
                         var situations = personnels[a].situations;
                         if (situations && situations.length > 0) {
                             situations.sort(function (a, b) {
-                                return new Date(b.date) - new Date(a.date);
+                                return new Date(b.lastModified) - new Date(a.lastModified);
                             });
                             for (var i in situations) {
                                 situations[i].value = dictionary.getValueFromJSON('../../resources/dictionary/personnel/situations.json', situations[i].situation, language);

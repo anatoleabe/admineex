@@ -140,15 +140,15 @@ angular.module('PersonnalRecordsCtrl', [[
 
 
                                 $scope.newSanction = function (personnel, type) {
-                                    console.log( type)
+                                    console.log(type)
                                     var form = "sanction.html";
-                                    if (type === '3'){
+                                    if (type === '3') {
                                         form = "award.html";
                                     }
                                     $ocLazyLoad.load('js/controllers/staffs/staff/SanctionCtrl.js').then(function () {
                                         $mdDialog.show({
                                             controller: 'SanctionController',
-                                            templateUrl: '../templates/dialogs/'+form,
+                                            templateUrl: '../templates/dialogs/' + form,
                                             parent: angular.element(document.body),
                                             clickOutsideToClose: true,
                                             locals: {
@@ -185,6 +185,25 @@ angular.module('PersonnalRecordsCtrl', [[
                                         });
                                     });
                                 };
+
+                                $scope.newStaffSituation = function (personnel) {
+                                    $ocLazyLoad.load('js/controllers/staffs/staff/SituationCtrl.js').then(function () {
+                                        $mdDialog.show({
+                                            controller: 'SituationController',
+                                            templateUrl: '../templates/dialogs/situation.html',
+                                            parent: angular.element(document.body),
+                                            clickOutsideToClose: true,
+                                            locals: {
+                                                params: {
+                                                    personnel: personnel
+                                                }
+                                            }
+                                        }).then(function (answer) {
+                                        }, function () {
+                                        });
+                                    });
+                                }
+
 
                                 $scope.selectedPersonnelChange = function (personnel) {
                                     if (personnel) {
@@ -522,18 +541,18 @@ angular.module('PersonnalRecordsCtrl', [[
                                     [{text: 'B1', style: 'tableHeader'}, {text: 'TYPE DE SERVICE :', style: 'tableHeader', colSpan: 2}, {}, {}],
 
                                     [{text: 'B2', style: 'tableHeader'}, {text: 'STRUCTURE', style: 'tableHeader', colSpan: 3}, {}, {}],
-                                    [{}, {text: 'B21', style: 'tableHeader'}, {text: 'Type de structure : ', style: 'tablecells'}, {text: (structure) ? structure.typeValue  || "": "", style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
-                                    [{}, {text: 'B22', style: 'tableHeader'}, {text: 'Nom de la structure : ', style: 'tablecells'}, {text: ($scope.personnelSelected.affectedTo ? $scope.personnelSelected.affectedTo.position.structure.father.name || "": ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
-                                    [{}, {text: 'B23', style: 'tableHeader'}, {text: 'Sous structure : ', style: 'tablecells'}, {text: ($scope.personnelSelected.affectedTo ? $scope.personnelSelected.affectedTo.position.structure.name || "": ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {text: 'B21', style: 'tableHeader'}, {text: 'Type de structure : ', style: 'tablecells'}, {text: (structure) ? structure.typeValue || "" : "", style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {text: 'B22', style: 'tableHeader'}, {text: 'Nom de la structure : ', style: 'tablecells'}, {text: ($scope.personnelSelected.affectedTo ? $scope.personnelSelected.affectedTo.position.structure.father.name || "" : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {text: 'B23', style: 'tableHeader'}, {text: 'Sous structure : ', style: 'tablecells'}, {text: ($scope.personnelSelected.affectedTo ? $scope.personnelSelected.affectedTo.position.structure.name || "" : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
                                     [{}, {text: 'B24', style: 'tableHeader'}, {text: 'Service : ', style: 'tablecells'}, {text: '', style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
                                     [{}, {text: 'B25', style: 'tableHeader'}, {text: 'Bureau : ', style: 'tablecells'}, {text: '', style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
                                     [{text: 'B3', style: 'tableHeader'}, {text: 'UNITE ADMINISTRATIVE DE TRAVAIL', style: 'tableHeader', colSpan: 3}, {}, {}],
                                     [{}, {text: 'B31', style: 'tableHeader'}, {text: 'Région : ', style: 'tablecells'}, {text: ($scope.personnelSelected.affectedTo ? $scope.personnelSelected.affectedTo.position.structure.address[0].region || "" : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
-                                    [{}, {text: 'B32', style: 'tableHeader'}, {text: 'Département : ', style: 'tablecells'}, {text: ($scope.personnelSelected.affectedTo ? $scope.personnelSelected.affectedTo.position.structure.address[0].department || "": ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {text: 'B32', style: 'tableHeader'}, {text: 'Département : ', style: 'tablecells'}, {text: ($scope.personnelSelected.affectedTo ? $scope.personnelSelected.affectedTo.position.structure.address[0].department || "" : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
                                     [{}, {text: 'B33', style: 'tableHeader'}, {text: 'Arrondissement : ', style: 'tablecells'}, {text: '', style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
                                     [{text: 'B4', style: 'tableHeader'}, {text: 'ADRESSE DE L\'EMPLOYE', style: 'tableHeader', colSpan: 3}, {}, {}],
                                     [{}, {text: 'B41', style: 'tableHeader'}, {text: 'Télépphone portable : ', style: 'tablecells'}, {text: p.telecom && p.telecom[0] ? p.telecom[0].value || "" : "", style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
-                                    [{}, {text: 'B42', style: 'tableHeader'}, {text: 'Personne à prevenir : ', style: 'tablecells'}, {text: p.telecom && p.telecom[2] ? p.telecom[2].personToContact || "": "", style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {text: 'B42', style: 'tableHeader'}, {text: 'Personne à prevenir : ', style: 'tablecells'}, {text: p.telecom && p.telecom[2] ? p.telecom[2].personToContact || "" : "", style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
                                     [{}, {text: 'B43', style: 'tableHeader'}, {text: 'Télépphone personne à prevenir : ', style: 'tablecells'}, {text: p.telecom && p.telecom[2] ? p.telecom[2].value || "" : "", style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
                                     [{}, {text: 'B44', style: 'tableHeader'}, {text: 'Email : ', style: 'tablecells'}, {text: p.telecom && p.telecom[1] ? p.telecom[1].value || "" : "", style: 'tablecells', border: [false, true, true, true], alignment: 'right'}]
                                 ]
@@ -569,17 +588,17 @@ angular.module('PersonnalRecordsCtrl', [[
 
                                     [{}, {text: 'C12', style: 'tableHeader'}, {text: 'Diplôme de recrutement', style: 'tableHeader', colSpan: 3}, {}, {}],
                                     [{}, {}, {text: 'C1201', style: 'tableHeader'}, {text: 'Libellé du diplôme : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[1] && p.qualifications.schools[1].diploma ? p.qualifications.schools[1].diploma : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
-                                    [{}, {}, {text: 'C1202', style: 'tableHeader'}, {text: 'Date  : ', style: 'tablecells', border: [true, true, false, true]}, {text: $filter('dateHuman')(p.qualifications && p.qualifications.schools && p.qualifications.schools[1] && p.qualifications.schools[1].date? p.qualifications.schools[1].date : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
-                                    [{}, {}, {text: 'C1203', style: 'tableHeader'}, {text: 'Lieu d\'obtention  : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[1] && p.qualifications.schools[1].authority? p.qualifications.schools[1].authority : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
-                                    [{}, {}, {text: 'C1204', style: 'tableHeader'}, {text: 'Option : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[1] && p.qualifications.schools[1].option? p.qualifications.schools[1].option : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
-                                    [{}, {}, {text: 'C1205', style: 'tableHeader'}, {text: 'Domaine  : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[1] && p.qualifications.schools[1].domain? p.qualifications.schools[1].domain : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {}, {text: 'C1202', style: 'tableHeader'}, {text: 'Date  : ', style: 'tablecells', border: [true, true, false, true]}, {text: $filter('dateHuman')(p.qualifications && p.qualifications.schools && p.qualifications.schools[1] && p.qualifications.schools[1].date ? p.qualifications.schools[1].date : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {}, {text: 'C1203', style: 'tableHeader'}, {text: 'Lieu d\'obtention  : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[1] && p.qualifications.schools[1].authority ? p.qualifications.schools[1].authority : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {}, {text: 'C1204', style: 'tableHeader'}, {text: 'Option : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[1] && p.qualifications.schools[1].option ? p.qualifications.schools[1].option : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {}, {text: 'C1205', style: 'tableHeader'}, {text: 'Domaine  : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[1] && p.qualifications.schools[1].domain ? p.qualifications.schools[1].domain : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
 
                                     [{}, {text: 'C13', style: 'tableHeader'}, {text: 'Diplôme le plus élevé', style: 'tableHeader', colSpan: 3}, {}, {}],
-                                    [{}, {}, {text: 'C1301', style: 'tableHeader'}, {text: 'Libellé du diplôme : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[0] && p.qualifications.schools[0].diploma? p.qualifications.schools[0].diploma : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
-                                    [{}, {}, {text: 'C1302', style: 'tableHeader'}, {text: 'Date  : ', style: 'tablecells', border: [true, true, false, true]}, {text: $filter('dateHuman')(p.qualifications && p.qualifications.schools && p.qualifications.schools[0] && p.qualifications.schools[0].date? p.qualifications.schools[0].date : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
-                                    [{}, {}, {text: 'C1303', style: 'tableHeader'}, {text: 'Lieu d\'obtention  : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[0] && p.qualifications.schools[0].authority? p.qualifications.schools[0].authority : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
-                                    [{}, {}, {text: 'C1304', style: 'tableHeader'}, {text: 'Option : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[0] && p.qualifications.schools[0].option? p.qualifications.schools[0].option : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
-                                    [{}, {}, {text: 'C1305', style: 'tableHeader'}, {text: 'Domaine  : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[0] && p.qualifications.schools[0].domain? p.qualifications.schools[0].domain : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {}, {text: 'C1301', style: 'tableHeader'}, {text: 'Libellé du diplôme : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[0] && p.qualifications.schools[0].diploma ? p.qualifications.schools[0].diploma : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {}, {text: 'C1302', style: 'tableHeader'}, {text: 'Date  : ', style: 'tablecells', border: [true, true, false, true]}, {text: $filter('dateHuman')(p.qualifications && p.qualifications.schools && p.qualifications.schools[0] && p.qualifications.schools[0].date ? p.qualifications.schools[0].date : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {}, {text: 'C1303', style: 'tableHeader'}, {text: 'Lieu d\'obtention  : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[0] && p.qualifications.schools[0].authority ? p.qualifications.schools[0].authority : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {}, {text: 'C1304', style: 'tableHeader'}, {text: 'Option : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[0] && p.qualifications.schools[0].option ? p.qualifications.schools[0].option : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                    [{}, {}, {text: 'C1305', style: 'tableHeader'}, {text: 'Domaine  : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.qualifications && p.qualifications.schools && p.qualifications.schools[0] && p.qualifications.schools[0].domain ? p.qualifications.schools[0].domain : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
 
                                     [{text: 'C2', style: 'tableHeader'}, {text: 'STAGES :', style: 'tableHeader', colSpan: 4}, {}, {}, {}]
                                 ]
@@ -760,7 +779,7 @@ angular.module('PersonnalRecordsCtrl', [[
                 if ($scope.allAffectations.length > 0) {
                     for (var i = 0; i < $scope.allAffectations.length; i++) {
                         var s = [
-                            {}, {text: 'F1' + i+1, style: 'tableHeader'},
+                            {}, {text: 'F1' + i + 1, style: 'tableHeader'},
                             {text: $scope.allAffectations[i].newPosition.fr, style: 'tablecells', border: [true, true, true, true], alignment: 'left'},
                             {text: $scope.allAffectations[i].structureAffectation.fr + "\n - " + $scope.allAffectations[i].structureAffectationFather.fr, style: 'tablecells', border: [true, true, true, true], alignment: 'left'},
                             {text: $filter('dateHuman')($scope.allAffectations[i].startDate), style: 'tablecells', border: [true, true, true, true], alignment: 'left'}

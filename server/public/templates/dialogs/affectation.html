@@ -89,9 +89,11 @@
                         <md-input-container flex>
                             <label translate>Sub structure</label>
                             <md-select name="substructure" ng-disabled="positionFromParams" required ng-model="substructure"  style="min-width: 150px;">
-                                <md-option ng-repeat="substruc in substructures | filter:onlySubDirection" value="{{substruc.code}}" >
-                                    {{substruc.name}} ({{substruc.code}})
-                                </md-option>
+                                <md-optgroup label="{{group.name}} ({{group.code}}) " ng-repeat="group in groupList">
+                                    <md-option ng-repeat="substruc in substructures| filter:onlySubDirection | regex: 'code': '^'+group.code+'-'" value="{{substruc.code}}" >
+                                        {{substruc.name}} ({{substruc.code}})
+                                    </md-option>
+                                </md-optgroup>
                             </md-select>
                             <div ng-messages="substructure.$error">
                                 <div ng-message="required">
