@@ -16,5 +16,11 @@
         "code": "SE",
         "en": "Services exterieurs",
         "fr": "Services exterieurs"
+    },
+    {
+        "id": "4",
+        "code": "DE",
+        "en": "Detached services",
+        "fr": "Services détachés"
     }
 ]
