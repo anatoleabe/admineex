@@ -792,8 +792,8 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         $rootScope.account = {};
 
         $rootScope.kernel.isMain = true;
-        $rootScope.kernel.version = "Version 2.2.3";
-        $rootScope.kernel.released = "26/10/2021";
+        $rootScope.kernel.version = "Version 2.2.4";
+        $rootScope.kernel.released = "26/04/2022";
 
         $rootScope.kernel.background = 'world';
         $rootScope.kernel.title = 'Admineex - DGTCFM';
