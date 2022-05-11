@@ -555,10 +555,6 @@ exports.list = function (options, callback) {
                         var aggregate = [];
                         //Set the filters
                         if (options.filters) {
-                            if (options.filters.structure && options.filters.structure != "-" && options.filters.structure != "") {
-                                aggregate.push({$match: {$or: [{"affectation.positionCode": new RegExp("^" + options.filters.structure)}]}})
-                            }
-
                             if (options.filters.gender && options.filters.gender != "-" && options.filters.gender != "") {
                                 aggregate.push({$match: {gender: options.filters.gender}});
                             }
@@ -643,6 +639,13 @@ exports.list = function (options, callback) {
                                             }
                                         }
                                 );
+
+                                if (options.filters) {
+                                    if (options.filters.structure && options.filters.structure != "-" && options.filters.structure != "") {
+                                        aggregate.push({$match: {$or: [{"affectation.positionCode": new RegExp("^" + options.filters.structure)}]}})
+                                    }
+                                }
+
                                 aggregate.push(
                                         {
                                             "$unwind": {
@@ -655,8 +658,8 @@ exports.list = function (options, callback) {
 
                         }
                         if (options.projection) {
-                            
-                            options.projection.lastSituation=1;
+
+                            options.projection.lastSituation = 1;
                             projection = {
                                 $project: options.projection
                             };
@@ -746,7 +749,7 @@ exports.list = function (options, callback) {
                                             var grade = (personnels[a].grade) ? personnels[a].grade : "";
                                             var category = (personnels[a].category) ? personnels[a].category : "";
 
-                                            personnels[a].active = (situation)?situation:actif;
+                                            personnels[a].active = (situation) ? situation : actif;
                                             personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
                                             if (status != "") {
                                                 personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);

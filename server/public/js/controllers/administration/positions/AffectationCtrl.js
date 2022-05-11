@@ -187,16 +187,24 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                     $scope.groupList = $scope.substructures.reduce(function (previous, current) {
                                                         var father = {};
                                                         if (current.rank == "3" && current.code.indexOf($scope.structure + "-") == 0) {
-                                                            if (current.code.indexOf('-1') !== current.code.lastIndexOf('-1') && current.code.lastIndexOf('-1') != -1 && groupOfCodes.indexOf(current.code.substring(0, current.code.lastIndexOf('-1'))) === -1) {
 
-                                                                father = {
-                                                                    name: current.name,
-                                                                    code: current.code.substring(0, current.code.lastIndexOf('-1'))
+                                                            if ((current.code.indexOf('-1') !== current.code.lastIndexOf('-1') || (current.code.indexOf($scope.structure + '-') === 0 && current.code.indexOf('-1') === current.code.lastIndexOf('-1'))) && //Les codes qui ??
+                                                                    current.code.lastIndexOf('-1') != -1 && // '-1' existe dans le code ou la première occurence du préfixe d'un code
+                                                                    groupOfCodes.indexOf(current.code.substring(0, current.code.lastIndexOf('-1'))) === -1) { // Eviter les doublons de groupe
+
+                                                                var code = current.code.substring(0, current.code.lastIndexOf('-1'));
+
+                                                                if (code !== $scope.structure) {//Remove the main father to avoid duplication
+                                                                    father = {
+                                                                        name: current.name,
+                                                                        code: code
+                                                                    }
+                                                                    groupOfCodes.push(current.code.substring(0, current.code.lastIndexOf('-1')));
+                                                                    previous.push(father);
                                                                 }
-                                                                groupOfCodes.push(current.code.substring(0, current.code.lastIndexOf('-1')));
-                                                                previous.push(father);
+
                                                             } else {
-                                                                if ($scope.structure+'-1' === current.code) {
+                                                                if ($scope.structure + '-1' === current.code) {
                                                                     father = {
                                                                         name: current.name,
                                                                         code: current.code.substring(0, current.code.lastIndexOf('-1'))
