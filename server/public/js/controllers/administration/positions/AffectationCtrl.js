@@ -194,14 +194,14 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
 
                                                                 var code = current.code.substring(0, current.code.lastIndexOf('-1'));
 
-                                                                if (($scope.typeStructre !== "1" && code !== $scope.structure) || $scope.typeStructre === "1") {//Remove the main father to avoid duplication
+                                                                if (($scope.typeStructre !== "1" && code !== $scope.structure) || $scope.structure + '-1' === current.code || $scope.typeStructre === "1") {//Remove the main father to avoid duplication
                                                                     father = {
                                                                         name: current.name,
                                                                         code: code
                                                                     }
                                                                     groupOfCodes.push(current.code.substring(0, current.code.lastIndexOf('-1')));
                                                                     previous.push(father);
-                                                                }
+                                                                } 
 
                                                             } else {
                                                                 if ($scope.structure + '-1' === current.code) {
