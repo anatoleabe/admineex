@@ -730,9 +730,11 @@ exports.list = function (options, callback) {
                                             if (options.beautifyPosition == false) {
                                                 options2.beautifyPosition = false;
                                             }
-
+                                            
                                             if (options.toExport == true) {
                                                 options2.toExport = true;
+                                                //Address
+                                                personnels[a].address = controllers.configuration.beautifyAddress({language: language}, [{address: personnels[a].address}])[0].address;
                                             }
 
                                             var status = (personnels[a].status) ? personnels[a].status : "";
@@ -923,7 +925,13 @@ exports.api.export = function (req, res) {
                         "affectation.position.fr": 1,
                         "affectation.position.en": 1,
                         "affectation.position.code": 1,
-                        "affectation.position.structureId": 1
+                        "affectation.position.structureId": 1,
+                        "affectation.numAct": 1,
+                        address:1,
+                        birthPlace: 1,
+                        birthDate: 1,
+                        "history.recruitmentActNumber":1,
+                        "history.signatureDate":1
                     };
 
                     options.projection = projection;
@@ -1802,7 +1810,7 @@ function buildXLSX(options, callback) {
                                 field = query[2];
                             }
 
-                            if ((field == "testDate" || field == "requestDate" || field == "birthDate" || field == "positiveResultDate" || field == "startdate" || field == "cartridgeExpiryDate") && value != undefined && value != "" && value != null && value != "null") {
+                            if ((field == "testDate" || field == "requestDate" || field == "birthDate" || field == "signatureDate" || field == "positiveResultDate" || field == "startdate" || field == "cartridgeExpiryDate") && value != undefined && value != "" && value != null && value != "null") {
                                 value = moment(value).format("DD/MM/YYYY");
                             }
 
@@ -1833,8 +1841,15 @@ function buildXLSX(options, callback) {
     ws.columns[0].width = 50;
     ws.columns[1].width = 12;
     ws.columns[2].width = 12;
-    ws.columns[6].width = 50;
-    ws.columns[7].width = 15;
+    ws.columns[3].width = 12;
+    ws.columns[4].width = 30;
+    ws.columns[5].width = 30;
+    ws.columns[6].width = 30;
+    ws.columns[14].width = 50;
+    ws.columns[15].width = 30;
+    ws.columns[15].width = 30;
+    ws.columns[16].width = 50;
+    ws.columns[19].width = 15;
 
     ///7. Merges cells
     ws.mergeCells('A1:' + columns[options.fieldNames.length - 1] + "1");

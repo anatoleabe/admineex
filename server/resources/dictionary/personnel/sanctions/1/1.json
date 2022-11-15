@@ -64,5 +64,12 @@
         "fr": "Abandon de poste",
         "level":"4",
         "sanction":"Suspension de la solde mensuelle"
+    },
+    {
+        "id": "29",
+        "en": "Suspension",
+        "fr": "Suspension",
+        "level":"4",
+        "sanction":"Suspension"
     }
 ]

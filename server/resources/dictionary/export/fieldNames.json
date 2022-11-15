@@ -1,7 +1,7 @@
 [
     {
         "id": "fname",
-        "en": "Name",
+        "en": "Nom",
         "fr": "Nom"
     },{
         "id": "matricule",
@@ -9,28 +9,60 @@
         "fr": "Matricule"
     },{
         "id": "gender",
-        "en": "Gender",
-        "fr": "Sex"
+        "en": "Sexe",
+        "fr": "Sexe"
+    },{
+        "id": "birthDate",
+        "en": "Date de naissance",
+        "fr": "Date de naissance"
+    },{
+        "id": "birthPlace",
+        "en": "Lieu de naissance",
+        "fr": "Lieu de naissance"
+    },{
+        "id": "address.0.region",
+        "en": "Région",
+        "fr": "Région"
+    },{
+        "id": "address.0.department",
+        "en": "Département",
+        "fr": "Département"
+    },{
+        "id": "address.0.arrondissement",
+        "en": "Arrondissement",
+        "fr": "Arrondissement"
     },{
         "id": "grade",
         "en": "Grade",
         "fr": "Grade"
     },{
         "id": "status",
-        "en": "Status",
+        "en": "Statut",
         "fr": "Statut"
     },{
+        "id": "history.recruitmentActNumber",
+        "en": "Ref acte de recrutement",
+        "fr": "Ref acte de recrutement"
+    },{
+        "id": "history.signatureDate",
+        "en": "Date d’entrée à l’administration",
+        "fr": "Date d’entrée à l’administration"
+    },{
         "id": "category",
-        "en": "Category",
+        "en": "Categorie",
         "fr": "Categorie"
     },{
         "id": "telecom.0.value",
-        "en": "Phone",
+        "en": "Téléphone",
         "fr": "Téléphone"
     },{
         "id": "affectation.position.name",
         "en": "Function",
         "fr": "Fonction"
+    },{
+        "id": "affectation.numAct",
+        "en": "Ref acte affectation/nommination",
+        "fr": "Ref acte affectation/nommination"
     },{
         "id": "affectation.structure.father.name",
         "en": "Structure",

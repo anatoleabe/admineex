@@ -388,7 +388,7 @@ exports.api.list = function (req, res) {
 
 exports.list = function (options, callback) {
 
-    controllers.users.findUser(options.req.actor.id, function (err, user) {
+    controllers.users.findUser(options.actor.id, function (err, user) {
         if (err) {
             log.error(err);
             callback(err);
@@ -444,7 +444,7 @@ exports.list = function (options, callback) {
                         aggregate.push({$match: {$or: [{"code": new RegExp("^" + options.filtersParam.structure)}]}})
                     }
 
-                    if (options.req.actor.role == "2") {
+                    if (options.actor.role == "2") {
                         aggregate.push(
                             {"$match": {"code": {$in: userStructureCodes}}},
                         );
