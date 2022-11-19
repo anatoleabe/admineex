@@ -32,6 +32,13 @@
                             <span translate>Positions and occupant (PDF)</span>
                         </md-button>
                     </md-menu-item>
+                    <md-divider ></md-divider>
+                    <md-menu-item>
+                        <md-button ng-click="download('vacancy')">
+                            <md-icon class="material-icons" >print</md-icon>
+                            <span translate>Vacancies (Excel)</span>
+                        </md-button>
+                    </md-menu-item>
                 </md-menu-content>
             </md-menu>
             <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
@@ -80,7 +87,7 @@
                             {{'All'| translate}}
                         </md-option>
                         <md-option value="1" >
-                            {{'Filled'| translate}}
+                            {{'Occupied'| translate}}
                         </md-option>
                         <md-option value="0" >
                             {{'Not filled'| translate}}

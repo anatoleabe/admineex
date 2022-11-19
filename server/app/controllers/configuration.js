@@ -125,6 +125,16 @@ exports.beautifyAddress = function (options, objects) {
                                 address.department = found3.name;
                             }
                         }
+
+                        // City
+                        if (address.arrondissement && address.arrondissement != "") {
+                            var found3 = _.findWhere(require('../../resources/dictionary/location/countries/regions/' + region + '/'+department+'.json'), {
+                                id: address.arrondissement
+                            });
+                            if (found3) {
+                                address.arrondissement = found3.name;
+                            }
+                        }
                     }
                 }
             }

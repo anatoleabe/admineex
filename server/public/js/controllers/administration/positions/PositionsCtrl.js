@@ -229,7 +229,7 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
 
                     };
 
-                    $scope.download = function () {
+                    $scope.download = function (type) {
                         $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
                             var FileSaver = $injector.get('FileSaver');
                             $rootScope.kernel.loading = 0;
@@ -252,6 +252,10 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                                 subStructure: $scope.codeSubStructureExport,
                                 status: $scope.filters.status,
                                 type: $scope.filters.type
+                            }
+                            
+                            if (type === "vacancy"){
+                                filterParams.status = "0";
                             }
 
                             $ocLazyLoad.load('js/services/DownloadService.js').then(function () {
