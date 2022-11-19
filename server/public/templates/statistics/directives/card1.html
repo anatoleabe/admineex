@@ -9,6 +9,19 @@
             </md-button>
             <span class="md-headline" translate>Global statistics</span>
             <span flex></span>
+            <div cardselect selected="selected"></div>
+            <md-menu>
+                <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdMenu.open($event)" ng-disabled="$parent.$parent.$parent.kernel.isLoading == true">
+                    <md-icon>more_vert</md-icon>
+                </md-button>
+                <md-menu-content width="2">
+                    <md-menu-item>
+                        <md-button ng-click="$parent.$parent.exportXLSX(export());">
+                            <md-icon class="material-icons-outlined" md-menu-align-target>get_app</md-icon> <span translate>Export</span> <small>(xlsx)</small>
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
         </md-card-title-text>
     </md-card-title>
     <md-card-content>
@@ -30,7 +43,7 @@
                         <md-icon>perm_contact_calendar</md-icon>
                         <p class="md-body-2"><span translate>Corps of Treasury</span></p>
                         <span class="md-body-1 md-secondary" >{{data[1]}} &nbsp;&nbsp;&nbsp;&nbsp; ({{data[7]}}%)</span>
-                        
+
                     </md-list-item>
                     <md-divider></md-divider>
                     <md-list-item>

@@ -9,6 +9,19 @@
             </md-button>
             <span class="md-headline" translate>Corps of Treasury</span>
             <span flex></span>
+            <div cardselect selected="selected"></div>
+            <md-menu>
+                <md-button aria-label="Open menu" class="md-icon-button" ng-click="$mdMenu.open($event)" ng-disabled="$parent.$parent.$parent.kernel.isLoading == true">
+                    <md-icon>more_vert</md-icon>
+                </md-button>
+                <md-menu-content width="2">
+                    <md-menu-item>
+                        <md-button ng-click="$parent.$parent.exportXLSX(export());">
+                            <md-icon class="material-icons-outlined" md-menu-align-target>get_app</md-icon> <span translate>Export</span> <small>(xlsx)</small>
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
         </md-card-title-text>
     </md-card-title>
     <md-card-content>

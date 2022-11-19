@@ -897,6 +897,63 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                 });
             });
         }
+        
+        // Export an Excel version of the table/chart
+        $rootScope.exportXLSX2 = function (content) {
+          $ocLazyLoad
+            .load(
+              "node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js"
+            )
+            .then(function () {
+              var FileSaver = $injector.get("FileSaver");
+              $rootScope.kernel.loading = 0;
+              var filename =
+                "Admineex-server_" + content.title.replace(/ /g, "-");
+              filename += "_" + $filter("ddMMyyyy")($rootScope.range.from.value) + "-" + $filter("ddMMyyyy")($rootScope.range.to.value);
+              var deferred = $q.defer();
+              function jsonBufferToObject(data, headersGetter, status) {
+                var type = headersGetter("Content-Type");
+                if (!type.startsWith("application/json")) {
+                  return data;
+                }
+                var decoder = new TextDecoder("utf-8");
+                var domString = decoder.decode(data);
+                var json = JSON.parse(domString);
+                return json;
+              }
+
+              $ocLazyLoad.load("js/services/DownloadService.js").then(function () {
+                  var Download = $injector.get("Download");
+                  Download.start({
+                    method: "POST",
+                    url: "/api/export/table",
+                    data: content,
+                    transformResponse: jsonBufferToObject,
+                  })
+                    .then(function (response) {
+                      var d = new Blob([response.data], {
+                        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                      });
+                      FileSaver.saveAs(d, filename + ".xlsx");
+                      $rootScope.kernel.loading = 100;
+                      deferred.resolve(response.data);
+                    })
+                    .catch(function (response) {
+                      console.error(response);
+                      if (response.data.error === "9500") {
+                        $rootScope.kernel.alerts.push({
+                          type: 1,
+                          msg: gettextCatalog.getString(
+                            "The Export is too big. Please reduce the date range"
+                          ),
+                          priority: 1,
+                        });
+                        $rootScope.kernel.loading = 100;
+                      }
+                    });
+                });
+            });
+        };
 
         // Set a focus on the specified input
         $rootScope.setFocus = function (name) {
@@ -972,7 +1029,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
             $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function() {
                 var FileSaver = $injector.get('FileSaver');
                 $rootScope.kernel.loading = 0;
-                var filename = 'Admineex-server_' + content.title.replace(/ /g, '-');
+                var filename = 'Admineex_' + content.title.replace(/ /g, '-');
                 filename += '_' + $filter('ddMMyyyy')($rootScope.range.from.value) + '-' + $filter('ddMMyyyy')($rootScope.range.to.value);
                 var deferred = $q.defer();
                 function jsonBufferToObject (data, headersGetter, status) {

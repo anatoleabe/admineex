@@ -25,6 +25,21 @@ angular.module('Card4Directive', [[
                         });
                     });
                 }
+                
+                $scope.export = function () {
+                    var data = $scope.statistics;
+                    for(var i= 0;i<data.length;i++){
+                            data[i].total = data[i].totalMen + data[i].totalWoman;
+                        }
+                    
+                    return {
+                        title: gettextCatalog.getString("Corps of Treasury"),
+                        fields: ["category", "totalMen", "totalWoman", "total"],
+                        fieldNames: [gettextCatalog.getString("Grade"), gettextCatalog.getString("Man"), gettextCatalog.getString("Women"), gettextCatalog.getString("Total")],
+                        data: data
+                    };
+                }
+                
                 build();
             });
         }

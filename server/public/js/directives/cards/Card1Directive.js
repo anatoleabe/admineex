@@ -38,6 +38,23 @@ angular.module('Card1Directive', []).directive('card1', function (gettextCatalog
                         });
                     });
                 }
+                
+                $scope.export = function(){
+                    var data = [];
+                    data.push({category: gettextCatalog.getString("Total number"), value1: $scope.data[0], value2:""});
+                    data.push({category: gettextCatalog.getString("Corps of Treasury"), value1: $scope.data[1], value2:$scope.data[7]+"%"});
+                    data.push({category: gettextCatalog.getString("Other civil servant"), value1: $scope.data[2], value2:$scope.data[8]+"%"});
+                    data.push({category: gettextCatalog.getString("Non-staff personnel"), value1: $scope.data[3], value2:$scope.data[9]+"%"});
+                    data.push({category: gettextCatalog.getString("Male/Female ratio"), value1: $scope.data[5]+"/"+$scope.data[6], value2:"-"});
+                    data.push({category: gettextCatalog.getString("Number of structures"), value1: $scope.data[10], value2:"-"});
+                    data.push({category: gettextCatalog.getString("Number of positions"), value1: $scope.data[11], value2:"-"});
+                    return { 
+                        title: gettextCatalog.getString("Global statistics"),
+                        fields:["category","value1", "value2"],
+                        fieldNames:[gettextCatalog.getString("Category"), gettextCatalog.getString("Effective"), gettextCatalog.getString("%")],
+                        data: data
+                    };
+                }
                 $rootScope.$watch('selectedStructure', function (newval, oldval) {
                     if (newval) {
 
