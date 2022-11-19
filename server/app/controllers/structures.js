@@ -134,7 +134,7 @@ exports.api.list = function (req, res) {
                                 log.error(err);
                                 callback(err);
                             } else {
-                                Structure.find(query).sort({"fr": 'asc'}).limit(limit).skip(skip).lean().exec(function (err, result) {
+                                Structure.find(query).sort({"rank": 'asc'}).limit(limit).skip(skip).lean().exec(function (err, result) {
                                     if (err) {
                                         log.error(err);
                                         audit.logEvent('[mongodb]', 'Structures', 'List', '', '', 'failed', 'Mongodb attempted to retrieve structures list');
@@ -268,7 +268,7 @@ exports.api.minimalList = function (req, res) {
                                 "code": {$in: userStructureCodes}
                             }
                         }
-                        Structure.find(query).sort({"code": 'asc'}).lean().exec(function (err, result) {
+                        Structure.find(query).sort({"rank": 'asc'}).lean().exec(function (err, result) {
                             if (err) {
                                 log.error(err);
                                 audit.logEvent('[mongodb]', 'Structures', 'List', '', '', 'failed', 'Mongodb attempted to retrieve structures list');
@@ -359,7 +359,7 @@ exports.list = function (options, callback) {
     if (options.filter) {
         filter = options.filter;
     }
-    Structure.find(filter).sort({"fr": 'asc'}).lean().exec(function (err, result) {
+    Structure.find(filter).sort({"rank": 'asc'}).lean().exec(function (err, result) {
         if (err) {
             log.error(err);
             callback(err);
@@ -371,7 +371,7 @@ exports.list = function (options, callback) {
                     if (options.subFilter && options.subFilter.code) {
                         filter = options.subFilter;
                     }
-                    Structure.find(filter).sort({"fr": 'asc'}).lean().exec(function (err, subStructures) {
+                    Structure.find(filter).sort({"rank": 'asc'}).lean().exec(function (err, subStructures) {
                         if (err) {
                             log.error(err);
                             callback(err);

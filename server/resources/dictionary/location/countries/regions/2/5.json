@@ -1,0 +1,42 @@
+[
+    {
+        "id": "1",
+        "name": "Afanloum",
+        "city": "Afanloum"
+    },
+    {
+        "id": "2",
+        "name": "Olanguina",
+        "city": "Assamba"
+    },
+    {
+        "id": "3",
+        "name": "Awaé",
+        "city": "Awaé"
+    },
+    {
+        "id": "4",
+        "name": "Edzendouan",
+        "city": "Edzendouan"
+    },
+    {
+        "id": "5",
+        "name": "Esse",
+        "city": "Esse"
+    },
+    {
+        "id": "6",
+        "name": "Mfou",
+        "city": "Mfou"
+    },
+    {
+        "id": "7",
+        "name": "Nkolafamba",
+        "city": "Nkolafamba"
+    },
+    {
+        "id": "8",
+        "name": "Soa",
+        "city": "Soa"
+    }
+]

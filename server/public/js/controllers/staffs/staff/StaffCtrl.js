@@ -183,6 +183,31 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                         $scope.personnel.address[0].arrondissement = undefined;
                                     }
                                 });
+                                
+                                watch.region = $scope.$watch('personnel.address[0].department', function (newval, oldval) {
+                                    if (newval) {
+                                        Dictionary.jsonList({dictionary: 'location', levels: ['countries', "regions", $scope.personnel.address[0].region, newval]}).then(function (response) {
+                                            var data = response.data;
+                                            $rootScope.kernel.loading = 100;
+                                            $scope.arrondissements = data.jsonList;
+
+                                            if (oldval) {
+                                                if (newval !== oldval) {
+                                                    $scope.personnel.address[0].arrondissement = undefined;
+                                                }
+                                            } else {
+                                                if (!$scope.personnel.address[0].arrondissement) {
+                                                    $scope.personnel.address[0].arrondissement = undefined;
+                                                }
+                                            }
+
+                                        }).catch(function (response) {
+                                            console.error(response);
+                                        });
+                                    } else {
+                                        $scope.personnel.address[0].arrondissement = undefined;
+                                    }
+                                });
 
                                 watch.status = $scope.$watch('personnel.status', function (newval, oldval) {
                                     if (newval) {

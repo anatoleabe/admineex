@@ -1,0 +1,47 @@
+[
+ {
+   "id": "1",
+   "name": "Bafia",
+   "city": "Bafia"
+ },
+ {
+   "id": "2",
+   "name": "Bokito",
+   "city": "Bokito"
+ },
+ {
+   "id": "3",
+   "name": "Ndikiniméki",
+   "city": "Ndikiniméki"
+ },
+ {
+   "id": "4",
+   "name": "Ombessa",
+   "city": "Ombessa"
+ },
+ {
+   "id": "5",
+   "name": "Deuk",
+   "city": "Deuk"
+ },
+ {
+   "id": "6",
+   "name": "Makénéné",
+   "city": "Makénéné"
+ },
+ {
+   "id": "7",
+   "name": "Kiiki",
+   "city": "Kiiki"
+ },
+ {
+   "id": "8",
+   "name": "Kon-Yambetta",
+   "city": "Kon-Yambetta"
+ },
+ {
+   "id": "9",
+   "name": "Nitoukou",
+   "city": "Nitoukou"
+ }
+]

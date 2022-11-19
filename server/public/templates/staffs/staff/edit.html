@@ -133,6 +133,19 @@
                                                         </div>
                                                     </div>
                                                 </md-input-container>
+                                                <md-input-container class="md-block" flex>
+                                                    <label translate>Arrondissement</label>
+                                                    <md-select name="arrondissement" ng-model="personnel.address[0].arrondissement" required>
+                                                        <md-option ng-repeat="arrondissement in arrondissements" value="{{arrondissement.id}}">
+                                                            {{arrondissement.name}}
+                                                        </md-option>
+                                                    </md-select>
+                                                    <div ng-messages="step1.arrondissement.$error">
+                                                        <div ng-message="required">
+                                                            The arrondissement is required to proceed on next step.
+                                                        </div>
+                                                    </div>
+                                                </md-input-container>
                                             </div>
 
                                             <div layout="row" >
