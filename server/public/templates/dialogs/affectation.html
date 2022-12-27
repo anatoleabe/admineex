@@ -1,4 +1,4 @@
-<md-dialog flex="30">
+<md-dialog flex="40">
     <form ng-submit="save()">
         <md-toolbar class="md-accent">
             <div class="md-toolbar-tools">
@@ -65,7 +65,7 @@
                             </md-option>
                         </md-select>
                         <div ng-messages="nature.$error">
-                            <div ng-message="required">
+                            <div ng-message="required" translate>
                                 This field is required to proceed on next step.
                             </div>
                         </div>
@@ -79,7 +79,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="structure.$error">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -96,7 +96,7 @@
                                 </md-optgroup>
                             </md-select>
                             <div ng-messages="substructure.$error">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -111,7 +111,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="newPosition.$error">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -127,7 +127,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="mouvement.$error">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -140,7 +140,7 @@
                                 </md-option>
                             </md-select>
                             <div ng-messages="nature.$error">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -151,14 +151,14 @@
                             <label translate>Reference or Number</label>
                             <input name="number" ng-model="affectation.numAct" required>
                             <div ng-messages="number.$error">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
                         </md-input-container>
                     </div>
                     <div flex-gt-sm="50" ng-if="substructure">
-                        <md-checkbox ng-model="affectation.isCurrent" ng-checked="affectation.isCurrent" aria-label="Checkbox 1">
+                        <md-checkbox ng-model="affectation.isCurrent" ng-checked="affectation.isCurrent" aria-label="Checkbox 1" >
                             Currently holds this position 
                         </md-checkbox>
                     </div>
@@ -167,7 +167,7 @@
                             <label translate>Signature date</label>
                             <md-datepicker name="signatureDate" class="md-block"  ng-model="affectation.signatureDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
                             <div ng-messages="signatureDate">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -176,7 +176,7 @@
                             <label translate>Start</label>
                             <md-datepicker name="date" class="md-block"  ng-model="affectation.startDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
                             <div ng-messages="date">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>
@@ -185,7 +185,7 @@
                             <label translate>End</label>
                             <md-datepicker name="date" class="md-block"  ng-model="affectation.endDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
                             <div ng-messages="date">
-                                <div ng-message="required">
+                                <div ng-message="required" translate>
                                     This field is required to proceed on next step.
                                 </div>
                             </div>

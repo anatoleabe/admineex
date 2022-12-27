@@ -501,5 +501,11 @@
         "uri": "/api/sanctionsStatistics/:filters",
         "method": "GET",
         "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 86,
+        "uri": "/api/export/pdf/followUpSheet/:id",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
     }
 ]

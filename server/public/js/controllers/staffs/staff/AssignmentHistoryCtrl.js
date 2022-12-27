@@ -90,7 +90,7 @@ angular.module('AssignmentHistoryCtrl', []).controller('AssignmentHistoryControl
         $scope.showConfirm = function (affectation) {
             var confirm = $mdDialog.confirm()
                     .title(gettextCatalog.getString("Cancel this affectation"))
-                    .textContent(gettextCatalog.getString("Are you sure you want to cancel the affectation of") + " " + affectation.fame + gettextCatalog.getString("?"))
+                    .textContent(gettextCatalog.getString("Are you sure you want to cancel the affectation of") + " " + affectation.fname + gettextCatalog.getString("?"))
                     .ok(gettextCatalog.getString("Delete"))
                     .cancel(gettextCatalog.getString("Cancel"));
 

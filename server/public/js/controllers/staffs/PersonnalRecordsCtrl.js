@@ -398,6 +398,29 @@ angular.module('PersonnalRecordsCtrl', [[
 
     $ocLazyLoad.load('js/services/SanctionService.js').then(function () {
         var Sanction = $injector.get('Sanction');
+        
+        $scope.downloadFollowUpSheet = function () {
+            $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
+                var FileSaver = $injector.get('FileSaver');
+                $rootScope.kernel.loading = 0;
+                var deferred = $q.defer();
+                $scope.promise = deferred.promise;
+
+                $http({
+                    method: 'GET',
+                    url: '/api/export/pdf/followUpSheet/'+$scope.personnelSelected._id,
+                    headers: {'Content-Type': "application/pdf"},
+                    responseType: "arraybuffer"
+                }).then(function (response) {
+                    var d = new Blob([response.data], {type: "application/pdf"});
+                    FileSaver.saveAs(d, 'List_of_structures_dgtcfm.pdf');
+                    $rootScope.kernel.loading = 100;
+                    deferred.resolve(response.data);
+                }).catch(function (response) {
+                    console.error(response);
+                });
+            });
+        };
 
         $scope.openPdf = function () {
             var cni = $scope.personnelSelected.cni;
@@ -747,7 +770,7 @@ angular.module('PersonnalRecordsCtrl', [[
 
                 }
 
-                dd.content.push({text: 'F: FONCTIONS / AFFECTATTIONS ANTERIEURES', style: 'subheader'})
+                dd.content.push({text: 'F: PARCOURS PROFESSIONNEL', style: 'subheader'})
                 var affectationData = {
                     style: 'tablePadding',
                     table: {

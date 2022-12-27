@@ -1,4 +1,4 @@
-angular.module('StaffCtrl', []).controller('StaffController', function ($scope, $window, gettextCatalog, $stateParams, $state, $q, $ocLazyLoad, $injector, $rootScope, $location, $filter) {
+angular.module('StaffCtrl', []).controller('StaffController', function ($scope, $window, gettextCatalog, $stateParams, $state, $q, $ocLazyLoad, $injector, $rootScope, $location, $filter, $mdDialog, ) {
 
 
     $rootScope.kernel.loading = 0;
@@ -129,257 +129,331 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
         var Staff = $injector.get('Staff');
         $ocLazyLoad.load('js/services/DictionaryService.js').then(function () {
             var Dictionary = $injector.get('Dictionary');
+            $ocLazyLoad.load('js/services/AffectationService.js').then(function () {
+                var Affectation = $injector.get('Affectation');
 
-            Dictionary.jsonList({dictionary: 'structure', levels: ['types']}).then(function (response) {
-                $scope.types = response.data.jsonList;
-                Dictionary.jsonList({dictionary: 'structure', levels: ['ranks']}).then(function (response) {
-                    $scope.ranks = response.data.jsonList;
-                    Dictionary.jsonList({dictionary: 'personnel', levels: ['status']}).then(function (response) {
-                        $scope.status = response.data.jsonList;
-                        Dictionary.jsonList({dictionary: 'acts', levels: ['natures']}).then(function (response) {
-                            $scope.natures = response.data.jsonList;
-                            Dictionary.jsonList({dictionary: 'personnel', levels: ['educationLevels']}).then(function (response) {
-                                $scope.educationLevels = response.data.jsonList;
+                Dictionary.jsonList({dictionary: 'structure', levels: ['types']}).then(function (response) {
+                    $scope.types = response.data.jsonList;
+                    Dictionary.jsonList({dictionary: 'structure', levels: ['ranks']}).then(function (response) {
+                        $scope.ranks = response.data.jsonList;
+                        Dictionary.jsonList({dictionary: 'personnel', levels: ['status']}).then(function (response) {
+                            $scope.status = response.data.jsonList;
+                            Dictionary.jsonList({dictionary: 'acts', levels: ['natures']}).then(function (response) {
+                                $scope.natures = response.data.jsonList;
+                                Dictionary.jsonList({dictionary: 'personnel', levels: ['educationLevels']}).then(function (response) {
+                                    $scope.educationLevels = response.data.jsonList;
 
-                                Dictionary.jsonList({dictionary: 'location', levels: ['countries', 'CMR']}).then(function (response) {
-                                    var data = response.data;
-                                    $rootScope.kernel.loading = 100;
-                                    $scope.regions = data.jsonList;
-                                    if (!firstTime === true) {
-                                        $scope.departments = [];
-                                        $scope.personnel.address[0].country = "CMR";
-                                        $scope.personnel.address[0].department = undefined;
-                                        $scope.personnel.address[0].arrondissement = undefined;
-                                    } else {
-                                        firstTime = false;
-                                    }
+                                    Dictionary.jsonList({dictionary: 'location', levels: ['countries', 'CMR']}).then(function (response) {
+                                        var data = response.data;
+                                        $rootScope.kernel.loading = 100;
+                                        $scope.regions = data.jsonList;
+                                        if (!firstTime === true) {
+                                            $scope.departments = [];
+                                            $scope.personnel.address[0].country = "CMR";
+                                            $scope.personnel.address[0].department = undefined;
+                                            $scope.personnel.address[0].arrondissement = undefined;
+                                        } else {
+                                            firstTime = false;
+                                        }
 
-                                }).catch(function (response) {
-                                    console.error(response);
-                                });
+                                    }).catch(function (response) {
+                                        console.error(response);
+                                    });
 
-                                var watch = {};
-                                watch.region = $scope.$watch('personnel.address[0].region', function (newval, oldval) {
-                                    if (newval) {
-                                        Dictionary.jsonList({dictionary: 'location', levels: ['countries', "regions", newval]}).then(function (response) {
-                                            var data = response.data;
-                                            $rootScope.kernel.loading = 100;
-                                            $scope.departments = data.jsonList;
+                                    var watch = {};
+                                    watch.region = $scope.$watch('personnel.address[0].region', function (newval, oldval) {
+                                        if (newval) {
+                                            Dictionary.jsonList({dictionary: 'location', levels: ['countries', "regions", newval]}).then(function (response) {
+                                                var data = response.data;
+                                                $rootScope.kernel.loading = 100;
+                                                $scope.departments = data.jsonList;
 
-                                            if (oldval) {
-                                                if (newval !== oldval) {
-                                                    $scope.personnel.address[0].arrondissement = undefined;
+                                                if (oldval) {
+                                                    if (newval !== oldval) {
+                                                        $scope.personnel.address[0].arrondissement = undefined;
+                                                    }
+                                                } else {
+                                                    if (!$scope.personnel.address[0].arrondissement) {
+                                                        $scope.personnel.address[0].arrondissement = undefined;
+                                                    }
                                                 }
-                                            } else {
-                                                if (!$scope.personnel.address[0].arrondissement) {
-                                                    $scope.personnel.address[0].arrondissement = undefined;
+
+                                            }).catch(function (response) {
+                                                console.error(response);
+                                            });
+                                        } else {
+                                            $scope.personnel.address[0].arrondissement = undefined;
+                                        }
+                                    });
+
+                                    watch.region = $scope.$watch('personnel.address[0].department', function (newval, oldval) {
+                                        if (newval) {
+                                            Dictionary.jsonList({dictionary: 'location', levels: ['countries', "regions", $scope.personnel.address[0].region, newval]}).then(function (response) {
+                                                var data = response.data;
+                                                $rootScope.kernel.loading = 100;
+                                                $scope.arrondissements = data.jsonList;
+
+                                                if (oldval) {
+                                                    if (newval !== oldval) {
+                                                        $scope.personnel.address[0].arrondissement = undefined;
+                                                    }
+                                                } else {
+                                                    if (!$scope.personnel.address[0].arrondissement) {
+                                                        $scope.personnel.address[0].arrondissement = undefined;
+                                                    }
                                                 }
+
+                                            }).catch(function (response) {
+                                                console.error(response);
+                                            });
+                                        } else {
+                                            $scope.personnel.address[0].arrondissement = undefined;
+                                        }
+                                    });
+
+                                    watch.status = $scope.$watch('personnel.status', function (newval, oldval) {
+                                        if (newval) {
+                                            Dictionary.jsonList({dictionary: 'personnel', levels: ['status', newval, "corps"]}).then(function (response) {
+                                                $scope.corps = response.data.jsonList;
+                                            });
+                                            if ($stateParams.id === undefined) {
+                                                $scope.personnel.corps = undefined;
+                                                $scope.personnel.grade = undefined;
+                                                $scope.personnel.category = undefined;
                                             }
-
-                                        }).catch(function (response) {
-                                            console.error(response);
-                                        });
-                                    } else {
-                                        $scope.personnel.address[0].arrondissement = undefined;
-                                    }
-                                });
-                                
-                                watch.region = $scope.$watch('personnel.address[0].department', function (newval, oldval) {
-                                    if (newval) {
-                                        Dictionary.jsonList({dictionary: 'location', levels: ['countries', "regions", $scope.personnel.address[0].region, newval]}).then(function (response) {
-                                            var data = response.data;
-                                            $rootScope.kernel.loading = 100;
-                                            $scope.arrondissements = data.jsonList;
-
-                                            if (oldval) {
-                                                if (newval !== oldval) {
-                                                    $scope.personnel.address[0].arrondissement = undefined;
-                                                }
-                                            } else {
-                                                if (!$scope.personnel.address[0].arrondissement) {
-                                                    $scope.personnel.address[0].arrondissement = undefined;
-                                                }
-                                            }
-
-                                        }).catch(function (response) {
-                                            console.error(response);
-                                        });
-                                    } else {
-                                        $scope.personnel.address[0].arrondissement = undefined;
-                                    }
-                                });
-
-                                watch.status = $scope.$watch('personnel.status', function (newval, oldval) {
-                                    if (newval) {
-                                        Dictionary.jsonList({dictionary: 'personnel', levels: ['status', newval, "corps"]}).then(function (response) {
-                                            $scope.corps = response.data.jsonList;
-                                        });
-                                        if ($stateParams.id === undefined) {
+                                        } else {
+                                            $scope.corps = [];
+                                            $scope.grades = [];
+                                            $scope.categories = [];
                                             $scope.personnel.corps = undefined;
                                             $scope.personnel.grade = undefined;
                                             $scope.personnel.category = undefined;
                                         }
-                                    } else {
-                                        $scope.corps = [];
-                                        $scope.grades = [];
-                                        $scope.categories = [];
-                                        $scope.personnel.corps = undefined;
-                                        $scope.personnel.grade = undefined;
-                                        $scope.personnel.category = undefined;
-                                    }
-                                });
+                                    });
 
-                                watch.grades = $scope.$watch('personnel.corps', function (newval, oldval) {
-                                    if (newval) {
-                                        Dictionary.jsonList({dictionary: 'personnel', levels: ['status', $scope.personnel.status, "grades"]}).then(function (response) {
-                                            $scope.grades = response.data.jsonList;
-                                        });
-                                        if ($stateParams.id === undefined) {
+                                    watch.grades = $scope.$watch('personnel.corps', function (newval, oldval) {
+                                        if (newval) {
+                                            Dictionary.jsonList({dictionary: 'personnel', levels: ['status', $scope.personnel.status, "grades"]}).then(function (response) {
+                                                $scope.grades = response.data.jsonList;
+                                            });
+                                            if ($stateParams.id === undefined) {
+                                                $scope.personnel.grade = undefined;
+                                                $scope.personnel.category = undefined;
+                                            }
+                                        } else {
+                                            $scope.grades = [];
+                                            $scope.categories = [];
                                             $scope.personnel.grade = undefined;
                                             $scope.personnel.category = undefined;
                                         }
-                                    } else {
-                                        $scope.grades = [];
-                                        $scope.categories = [];
-                                        $scope.personnel.grade = undefined;
-                                        $scope.personnel.category = undefined;
-                                    }
-                                });
+                                    });
 
-                                watch.categories = $scope.$watch('personnel.grade', function (newval, oldval) {
-                                    if (newval) {
+                                    watch.categories = $scope.$watch('personnel.grade', function (newval, oldval) {
+                                        if (newval) {
 
-                                        Dictionary.jsonList({dictionary: 'personnel', levels: ['status', $scope.personnel.status, "categories"]}).then(function (response) {
-                                            $scope.categories = response.data.jsonList;
-                                        });
+                                            Dictionary.jsonList({dictionary: 'personnel', levels: ['status', $scope.personnel.status, "categories"]}).then(function (response) {
+                                                $scope.categories = response.data.jsonList;
+                                            });
 
-                                        if ($stateParams.id === undefined) {
+                                            if ($stateParams.id === undefined) {
+                                                $scope.personnel.category = undefined;
+                                            }
+                                        } else {
+                                            $scope.categories = [];
                                             $scope.personnel.category = undefined;
                                         }
-                                    } else {
-                                        $scope.categories = [];
-                                        $scope.personnel.category = undefined;
-                                    }
-                                });
+                                    });
 
-                                $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
-                                    watch.region();
-                                    watch.status();
-                                    watch.categories();
-                                    watch.grades();
-                                });
+                                    $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
+                                        watch.region();
+                                        watch.status();
+                                        watch.categories();
+                                        watch.grades();
+                                    });
 
-                                function prepareForAngular() {
-                                    if ($scope.personnel && $scope.personnel.qualifications) {
-                                        $scope.stages = $scope.personnel.qualifications.stages;
-                                        if (($scope.stages && $scope.stages.length == 0) || !$scope.stages) {
-                                            $scope.stages = [{title: '', from: undefined, to: undefined, authority: ''}];
+                                    function prepareForAngular() {
+                                        if ($scope.personnel && $scope.personnel.qualifications) {
+                                            $scope.stages = $scope.personnel.qualifications.stages;
+                                            if (($scope.stages && $scope.stages.length == 0) || !$scope.stages) {
+                                                $scope.stages = [{title: '', from: undefined, to: undefined, authority: ''}];
+                                            }
                                         }
-                                    }
-                                    if ($scope.personnel && $scope.personnel.qualifications) {
-                                        $scope.stages = $scope.personnel.qualifications.stages;
-                                        if (($scope.stages && $scope.stages.length == 0) || !$scope.stages) {
-                                            $scope.stages = [{title: '', from: undefined, to: undefined, authority: ''}];
-                                        }
-                                    }
-                                }
-
-                                function prepareForServer() {
-                                    if ($scope.personnel && $scope.personnel.qualifications) {
-                                        $scope.personnel.qualifications.stages = [];
-                                        for (var i = 0; i <= $scope.stages.length; i++) {
-                                            if ($scope.stages[i] && $scope.stages[i].title && $scope.stages[i].title != "") {
-                                                $scope.personnel.qualifications.stages.push($scope.stages[i])
+                                        if ($scope.personnel && $scope.personnel.qualifications) {
+                                            $scope.stages = $scope.personnel.qualifications.stages;
+                                            if (($scope.stages && $scope.stages.length == 0) || !$scope.stages) {
+                                                $scope.stages = [{title: '', from: undefined, to: undefined, authority: ''}];
                                             }
                                         }
                                     }
-                                }
 
-                                // Add or edit new Personnel
-                                $scope.checkIfMatriculeExist = function () {
-                                    Staff.checkExistance({
-                                        mat: $scope.personnel.identifier
-                                    }).then(function (response) {
-                                        if (response.data > 0 && !$scope.personnel._id) {
-                                            $rootScope.kernel.alerts.push({
-                                                type: 1,
-                                                msg: gettextCatalog.getString('Error:  this Register Number already exist.'),
-                                                priority: 2
-                                            });
+                                    function prepareForServer() {
+                                        if ($scope.personnel && $scope.personnel.qualifications) {
+                                            $scope.personnel.qualifications.stages = [];
+                                            for (var i = 0; i <= $scope.stages.length; i++) {
+                                                if ($scope.stages[i] && $scope.stages[i].title && $scope.stages[i].title != "") {
+                                                    $scope.personnel.qualifications.stages.push($scope.stages[i])
+                                                }
+                                            }
                                         }
-                                    }).catch(function (response) {
-                                        $rootScope.kernel.alerts.push({
-                                            type: 1,
-                                            msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                            priority: 2
-                                        });
-                                        console.error(response);
-                                    });
-                                }
+                                    }
 
-                                //Modify or Add ?
-                                if ($stateParams.id !== undefined) {
-                                    $scope.new = false;
-                                    Staff.read({
-                                        id: $stateParams.id
-                                    }).then(function (response) {
-                                        $scope.personnel = response.data;
-                                        prepareForAngular();
-                                    }).catch(function (response) {
-                                        $rootScope.kernel.alerts.push({
-                                            type: 1,
-                                            msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                            priority: 2
-                                        });
-                                        console.error(response);
-                                    });
-                                } else {
-                                    $scope.new = true;
-                                    $scope.title = gettextCatalog.getString('New');
-                                }
-
-                                // Add or edit new Personnel
-                                $scope.submit = function () {
-                                    Staff.checkExistance({
-                                        mat: $scope.personnel.identifier
-                                    }).then(function (response) {
-                                        if (response.data > 0 && !$scope.personnel._id) {
+                                    // Add or edit new Personnel
+                                    $scope.checkIfMatriculeExist = function () {
+                                        Staff.checkExistance({
+                                            mat: $scope.personnel.identifier
+                                        }).then(function (response) {
+                                            if (response.data > 0 && !$scope.personnel._id) {
+                                                $rootScope.kernel.alerts.push({
+                                                    type: 1,
+                                                    msg: gettextCatalog.getString('Error:  this Register Number already exist.'),
+                                                    priority: 2
+                                                });
+                                            }
+                                        }).catch(function (response) {
                                             $rootScope.kernel.alerts.push({
                                                 type: 1,
-                                                msg: gettextCatalog.getString('Error:  this Register Number already exist.'),
+                                                msg: gettextCatalog.getString('An error occurred, please try again later'),
                                                 priority: 2
                                             });
-                                        } else {
-                                            $rootScope.kernel.loading = 0;
-                                            prepareForServer();
-                                            console.log($scope.personnel);
-                                            Staff.upsert($scope.personnel).then(function (response) {
-                                                $rootScope.kernel.loading = 100;
-                                                $state.go('home.staffs.main');
+                                            console.error(response);
+                                        });
+                                    }
+                                    var loadsHistory;
+                                    $scope.newAffectation = function () {
+                                        $ocLazyLoad.load('js/controllers/administration/positions/AffectationCtrl.js').then(function () {
+                                            $mdDialog.show({
+                                                controller: 'AffectationController',
+                                                templateUrl: '../templates/dialogs/affectation.html',
+                                                parent: angular.element(document.body),
+                                                clickOutsideToClose: true,
+                                                locals: {
+                                                    params: {
+                                                        personnel: $scope.personnel,
+                                                        origin: "staffCtrl"
+                                                    }
+                                                }
+                                            }).then(function (answer) {
+                                                loadsHistory();
+                                            }, function () {
+                                            });
+                                        });
+                                    };
+
+                                    $scope.deleteAffectation = function (affectation) {
+                                        var confirm = $mdDialog.confirm()
+                                                .title(gettextCatalog.getString("Cancel this affectation"))
+                                                .textContent(gettextCatalog.getString("Are you sure you want to cancel the affectation of") + " " + affectation.fname + gettextCatalog.getString("?"))
+                                                .ok(gettextCatalog.getString("Delete"))
+                                                .cancel(gettextCatalog.getString("Cancel"));
+
+                                        $mdDialog.show(confirm).then(function () {
+                                            // Delete
+                                            Affectation.delete({
+                                                id: affectation._id
+                                            }).then(function (response) {
+                                                loadsHistory();
                                                 $rootScope.kernel.alerts.push({
                                                     type: 3,
-                                                    msg: gettextCatalog.getString('The personnel has been saved'),
+                                                    msg: gettextCatalog.getString('The affectation has been canceled successfully'),
                                                     priority: 4
                                                 });
                                             }).catch(function (response) {
-                                                $rootScope.kernel.loading = 100;
+                                                console.log(response);
+                                            });
+                                        }, function () {
+                                            // Cancel
+                                        });
+                                    }
+
+                                    //Modify or Add ?
+                                    if ($stateParams.id !== undefined) {
+                                        $scope.new = false;
+                                        Staff.read({
+                                            id: $stateParams.id
+                                        }).then(function (response) {
+                                            $scope.personnel = response.data;
+                                            prepareForAngular();
+                                            loadsHistory = function () {
+                                                var deferred = $q.defer();
+                                                $rootScope.kernel.loading = 0;
+                                                $scope.helper = [];
+                                                var limit = 0;
+                                                var skip = 0;
+                                                var filterParams = {}
+                                                $scope.search = $scope.personnel.identifier;
+                                                Affectation.list({limit: limit, skip: skip, search: $scope.search, filters: JSON.stringify(filterParams)}).then(function (response) {
+                                                    var data = response.data;
+                                                    $rootScope.kernel.loading = 100;
+                                                    $scope.allAffectations = data;
+                                                    if ($scope.allAffectations.length == 0) {
+                                                        $scope.allAffectations = [{
+                                                                newPosition: "-",
+                                                                numAct: "-",
+                                                                startDate: undefined,
+                                                                endDate: undefined
+                                                            }]
+                                                    }
+                                                    return deferred.promise;
+                                                }).catch(function (response) {
+                                                    console.log(response);
+                                                });
+                                            }
+                                            loadsHistory();
+                                        }).catch(function (response) {
+                                            $rootScope.kernel.alerts.push({
+                                                type: 1,
+                                                msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                priority: 2
+                                            });
+                                            console.error(response);
+                                        });
+                                    } else {
+                                        $scope.new = true;
+                                        $scope.title = gettextCatalog.getString('New');
+                                    }
+
+                                    // Add or edit new Personnel
+                                    $scope.submit = function () {
+                                        Staff.checkExistance({
+                                            mat: $scope.personnel.identifier
+                                        }).then(function (response) {
+                                            if (response.data > 0 && !$scope.personnel._id) {
                                                 $rootScope.kernel.alerts.push({
                                                     type: 1,
-                                                    msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                    msg: gettextCatalog.getString('Error:  this Register Number already exist.'),
                                                     priority: 2
                                                 });
-                                                console.error(response);
+                                            } else {
+                                                $rootScope.kernel.loading = 0;
+                                                prepareForServer();
+                                                Staff.upsert($scope.personnel).then(function (response) {
+                                                    $rootScope.kernel.loading = 100;
+                                                    $state.go('home.staffs.main');
+                                                    $rootScope.kernel.alerts.push({
+                                                        type: 3,
+                                                        msg: gettextCatalog.getString('The personnel has been saved'),
+                                                        priority: 4
+                                                    });
+                                                }).catch(function (response) {
+                                                    $rootScope.kernel.loading = 100;
+                                                    $rootScope.kernel.alerts.push({
+                                                        type: 1,
+                                                        msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                        priority: 2
+                                                    });
+                                                    console.error(response);
+                                                });
+                                            }
+                                        }).catch(function (response) {
+                                            $rootScope.kernel.alerts.push({
+                                                type: 1,
+                                                msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                priority: 2
                                             });
-                                        }
-                                    }).catch(function (response) {
-                                        $rootScope.kernel.alerts.push({
-                                            type: 1,
-                                            msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                            priority: 2
+                                            console.error(response);
                                         });
-                                        console.error(response);
-                                    });
-                                }
+                                    }
+                                });
                             });
                         });
                     });

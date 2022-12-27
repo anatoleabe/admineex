@@ -1,0 +1,23 @@
+[{
+        $sort: {lastModified: -1}
+    }, {
+        $lookup: {
+        from: 'personnels',
+        localField: 'personnelId',
+        foreignField: '_id',
+        as: 'personnel',
+        },
+        }, {
+            "$unwind": {
+                path: "$personnel",
+                preserveNullAndEmptyArrays: false
+            }
+            },
+            {
+                $group : { _id : "$personnelId", personnel: { $first : "$personnel" } } },
+                {
+                    $group : { _id : "$personnel.gender", number : { $sum : 1 } } },
+                    {
+                        $match: { _id : {"$in":["F", "M"] }}}
+
+                    ]

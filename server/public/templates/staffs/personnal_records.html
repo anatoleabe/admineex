@@ -33,6 +33,9 @@
             <md-button  class="button task activelist" ng-click="openPdf()">
                 <i class="icon-file-pdf"></i> <span translate>Download</span>
             </md-button>
+            <md-button  class="button task activelist" ng-click="downloadFollowUpSheet()">
+                <i class="icon-file-pdf"></i> <span translate>Fiche de suivi</span>
+            </md-button>
         </md-card-actions>
         <div layout="column" layout-align="center center" ng-if="!personnelSelected"  style="opacity:0.2;">
             <md-icon aria-label="{{helper.title}}" class="material-icons" style="font-size: 120px;height: 120px;width: 120px;">{{helper.icon}}</md-icon>

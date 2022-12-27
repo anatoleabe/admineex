@@ -11,12 +11,16 @@ var crypto = require('crypto');
 var dictionary = require('../utils/dictionary');
 var formidable = require("formidable");
 var mysql = require('mysql');
+var phantomjs = require('phantomjs');
+var pdf = require('dynamic-html-pdf');
 var moment = require('moment');
+var ObjectID = require('mongoose').mongo.ObjectID;
 
 // API
 exports.api = {};
 
 var controllers = {
+    affectations: require('./affectations'),
     configuration: require('./configuration'),
     users: require('./users'),
     positions: require('./positions'),
@@ -670,6 +674,10 @@ exports.list = function (options, callback) {
                             aggregate.push({$match: {$or: [{"metainfo": dictionary.makePattern(options.search)}]}});
                         }
 
+                        //Filter by key word
+                        if (options._id) {
+                            aggregate.push({$match: {_id: new ObjectID(options._id)}});
+                        }
 
                         //If retiredOnly
                         if (options.retiredOnly) {
@@ -730,7 +738,7 @@ exports.list = function (options, callback) {
                                             if (options.beautifyPosition == false) {
                                                 options2.beautifyPosition = false;
                                             }
-                                            
+
                                             if (options.toExport == true) {
                                                 options2.toExport = true;
                                                 //Address
@@ -927,11 +935,11 @@ exports.api.export = function (req, res) {
                         "affectation.position.code": 1,
                         "affectation.position.structureId": 1,
                         "affectation.numAct": 1,
-                        address:1,
+                        address: 1,
                         birthPlace: 1,
                         birthDate: 1,
-                        "history.recruitmentActNumber":1,
-                        "history.signatureDate":1
+                        "history.recruitmentActNumber": 1,
+                        "history.signatureDate": 1
                     };
 
                     options.projection = projection;
@@ -1342,6 +1350,135 @@ exports.api.read = function (req, res) {
                             return res.status(500).send(err);
                         } else {
                             return res.json(objects[0]);
+                        }
+                    });
+                }
+            });
+        }
+    } else {
+        audit.logEvent('[anonymous]', 'Projects', 'Read', '', '', 'failed', 'The actor was not authenticated');
+        return res.send(401);
+    }
+}
+
+exports.api.followUpSheet = function (req, res) {
+    if (req.actor) {
+        if (req.params.id === undefined) {
+            audit.logEvent(req.actor.id, 'Personnel', 'Read', '', '', 'failed',
+                    'The actor could not read the data information because one or more params of the request was not defined');
+            return res.sendStatus(400);
+        } else {
+            var filter = {
+                _id: req.params.id
+            };
+            var gt = dictionary.translator(req.actor.language);
+            var foot = 'Admineex<br/>Imprimé le ' + dictionary.dateformater(new Date(), "dd/MM/yyyy HH:mm:s");
+
+            var options = {
+                phantomPath: phantomjs.path,
+                format: "A4",
+                orientation: "portrait",
+                border: "5mm",
+                "border-bottom": "5mm",
+                pagination: true,
+                paginationOffset: 1, // Override the initial pagination number
+                "footer": {
+                    "height": "10mm",
+                    "contents": {
+                        default: '<div style="width:100%"><div style="float:left;width:80%;font-size: 8px">' + foot + '</div><div style="float:left;width:20%;text-align:right;font-size: 8px">{{page}}/{{pages}}</div></div>', // fallback value
+                    }
+                }
+            };
+
+            var meta = {
+                title: gt.gettext("Fiche de suivi du personnel")
+            };
+
+            var tmpFile = "./tmp/" + keyGenerator.generateKey() + ".pdf";
+            if (!fs.existsSync("./tmp")) {
+                fs.mkdirSync("./tmp");
+            }
+
+            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1,
+                identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1,
+                "affectation.position.fr": 1,
+                "affectation.position.en": 1,
+                "affectation.position.code": 1,
+                "affectation.position.structureId": 1,
+                "affectation.numAct": 1,
+                "affectation.endDate": 1,
+                address: 1,
+                birthPlace: 1,
+                birthDate: 1,
+                "history.recruitmentActNumber": 1,
+                "history.signatureDate": 1
+            };
+            filter.projection = projection;
+            var options1 = {
+                minify: false,
+                req: req,
+                _id: req.params.id,
+                language: req.actor.language,
+                beautify: true,
+            }
+
+            exports.list(options1, function (err, personnels) {
+                if (err) {
+                    return res.status(500).send(err);
+                } else {
+                    personnels = controllers.configuration.beautifyAddress({language: req.language}, personnels);
+                    personnels[0].address = personnels[0].address[0];
+                    personnels[0].phone = personnels[0].telecom[0];
+                    personnels[0].higherDiploma = personnels[0].qualifications.schools[0] ? personnels[0].qualifications.schools[0] : "";
+                    personnels[0].recrutementDiploma = personnels[0].qualifications.schools[1] ? personnels[0].qualifications.schools[1] : "";
+                    personnels[0].birthDate = personnels[0].birthDate ? moment(personnels[0].birthDate).format("MM/DD/YYYY") : "Non connue";
+                    personnels[0].higherDiploma.date = personnels[0].higherDiploma ? moment(personnels[0].higherDiploma.date).format("MM/DD/YYYY") : "Non connue";
+                    personnels[0].recrutementDiploma.date = personnels[0].recrutementDiploma ? moment(personnels[0].recrutementDiploma.date).format("MM/DD/YYYY") : "Non connue";
+                    if (personnels[0].history) {
+                        personnels[0].history.signatureDate = personnels[0].history ? moment(personnels[0].history.signatureDate).format("MM/DD/YYYY") : "Non connue";
+                        personnels[0].history.minfiEntryDate = personnels[0].history ? moment(personnels[0].history.minfiEntryDate).format("MM/DD/YYYY") : "Non connue";
+                    }
+                    var options2 = {
+                        req: req,
+                        search: personnels[0].matricule,
+                    }
+                    controllers.affectations.list(options2, function (err, affectations) {
+                        if (err) {
+                            return res.status(500).send(err);
+                        } else {
+                            var document = {
+                                type: 'file', // 'file' or 'buffer'
+                                template: fs.readFileSync('resources/pdf/fiche_de_suivi.html', 'utf8'),
+                                context: {
+                                    personnel: personnels[0],
+                                    meta: meta,
+                                    affectations: affectations
+                                },
+                                path: tmpFile    // it is not required if type is buffer
+                            };
+
+
+                            pdf.create(document, options, res).then(res1 => {
+
+                                var fileName = 'report.pdf';
+                                res.set('Content-disposition', 'attachment; filename=' + fileName);
+                                res.set('Content-Type', 'application/pdf');
+                                res.download(tmpFile, fileName, function (err) {
+                                    if (err) {
+                                        log.error(err);
+                                        return res.status(500).send(err);
+                                    } else {
+                                        fs.unlink(tmpFile, function (err) {
+                                            if (err) {
+                                                log.error(err);
+                                                audit.logEvent('[fs]', 'Reports', 'Download', "Spreadsheet", tmpFile, 'failed', 'FS attempted to delete this temp file');
+                                            }
+                                        });
+                                    }
+                                });
+                            }).catch(error => {
+                                console.error(error)
+                            });
                         }
                     });
                 }

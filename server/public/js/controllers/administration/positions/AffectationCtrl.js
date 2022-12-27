@@ -201,7 +201,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                                     }
                                                                     groupOfCodes.push(current.code.substring(0, current.code.lastIndexOf('-1')));
                                                                     previous.push(father);
-                                                                } 
+                                                                }
 
                                                             } else {
                                                                 if ($scope.structure + '-1' === current.code) {
@@ -294,6 +294,9 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                             }
 
                                             $scope.affectation.isCurrent = true;
+                                            if ($scope.params.origin == "staffCtrl") {
+                                                $scope.affectation.isCurrent = false;
+                                            }
 
                                             // Modify or Add ?
                                             if ($scope.params) {
@@ -313,30 +316,33 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                             $scope.save = function () {
                                                 $rootScope.kernel.loading = 0;
                                                 $scope.affectation.occupiedBy = $scope.selectedPersonnel;
+                                                if ($scope.affectation.numAct && $scope.affectation.signatureDate && $scope.affectation.startDate && $scope.affectation.positionId){
+                                                    Position.affect($scope.affectation).then(function (response) {
+                                                        $rootScope.kernel.loading = 100;
+                                                        if ($scope.params.positionTo) {
+                                                            $state.go('home.administration.positions');
+                                                        } else if ($scope.params.origin == "staffCtrl") {
 
-                                                Position.affect($scope.affectation).then(function (response) {
-                                                    $rootScope.kernel.loading = 100;
-                                                    if ($scope.params.positionTo) {
-                                                        $state.go('home.administration.positions');
-                                                    } else if ($scope.params.personnel) {
-                                                        $state.go('home.staffs.main');
-                                                    }
+                                                        } else if ($scope.params.personnel) {
+                                                            $state.go('home.staffs.main');
+                                                        }
 
-                                                    $rootScope.kernel.alerts.push({
-                                                        type: 3,
-                                                        msg: gettextCatalog.getString('The operation has been saved'),
-                                                        priority: 4
+                                                        $rootScope.kernel.alerts.push({
+                                                            type: 3,
+                                                            msg: gettextCatalog.getString('The operation has been saved'),
+                                                            priority: 4
+                                                        });
+                                                        $scope.close();
+                                                    }).catch(function (response) {
+                                                        $rootScope.kernel.loading = 100;
+                                                        $rootScope.kernel.alerts.push({
+                                                            type: 1,
+                                                            msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                            priority: 2
+                                                        });
+                                                        console.error(response);
                                                     });
-                                                    $scope.close();
-                                                }).catch(function (response) {
-                                                    $rootScope.kernel.loading = 100;
-                                                    $rootScope.kernel.alerts.push({
-                                                        type: 1,
-                                                        msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                                        priority: 2
-                                                    });
-                                                    console.error(response);
-                                                });
+                                                }
                                             }
                                         });
                                     });

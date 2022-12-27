@@ -517,6 +517,13 @@ var routes = [
         access: _.findWhere(aclRoutes, {id: 57}).roles
     },
 
+    {
+        path: _.findWhere(aclRoutes, {id: 86}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 86}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.followUpSheet],
+        access: _.findWhere(aclRoutes, {id: 86}).roles
+    },
+
     // === MONITOR ROUTES ==========================================================
 
     {

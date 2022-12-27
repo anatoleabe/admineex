@@ -230,6 +230,7 @@ exports.api.list = function (req, res) {
 }
 
 exports.api.minimalList = function (req, res) {
+    console.log("mmmmddmdm")
     if (req.actor) {
         var language = req.actor.language.toLowerCase();
         var types = undefined;

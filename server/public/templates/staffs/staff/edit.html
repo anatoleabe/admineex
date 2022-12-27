@@ -42,10 +42,10 @@
                                                             <md-radio-button value="F"><span translate>Female</span></md-radio-button>
                                                         </md-radio-group>
                                                         <div ng-messages="step1.gender.$error">
-                                                        <div ng-message="required">
-                                                            The gender is required to proceed on next step.
+                                                            <div ng-message="required">
+                                                                The gender is required to proceed on next step.
+                                                            </div>
                                                         </div>
-                                                    </div>
                                                     </md-input-container>
                                                 </div>
                                                 <md-input-container class="md-block"  flex>
@@ -284,7 +284,7 @@
                                                 </md-input-container>
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Registration number (Matricul)</label>
-                                                    <input ng-model="personnel.identifier" required ng-keydown="$event.keyCode != 32 ? $event:$event.preventDefault()" ng-blur="checkIfMatriculeExist()" >
+                                                    <input ng-model="personnel.identifier" required ng-keydown="$event.keyCode != 32 ? $event : $event.preventDefault()" ng-blur="checkIfMatriculeExist()" >
                                                 </md-input-container>
                                             </div>
                                             <div layout="row" >
@@ -401,33 +401,53 @@
                                             </div>
                                         </md-card-content>
                                     </md-card>
-<!--                                    <md-card>
+                                    <md-card>
                                         <md-card-title style="padding-bottom: 0;">
                                             <md-card-title-text>
-                                                <span class="md-headline" translate>Previous Functions and Assignments</span>
+                                                <span class="md-headline" translate>Parcours professionnel</span>
                                             </md-card-title-text>
                                         </md-card-title>
                                         <md-card-content>
-                                            <h3 class="md-subhead"><span translate>Previous Functions and Assignments</span></h3>
-                                            <div layout="row" ng-repeat="pre in previousFonctions" flex>
-                                                <md-input-container class="md-block" flex>
-                                                    <label translate>Act Number</label>
-                                                    <input ng-model="pre.numAct">
-                                                </md-input-container>
-                                                <md-input-container class="md-block"  flex>
-                                                    <label translate>Nature</label>
-                                                    <input ng-model="pre.nature">
-                                                </md-input-container>
-                                                <md-input-container flex>
-                                                    <label translate>Date</label>
-                                                    <md-datepicker class="md-block"  ng-model="stage.from" md-max-date="max" ></md-datepicker>
-                                                </md-input-container>
-                                                <md-icon ng-show="$index < (previousFonctions.length - 1)" ng-click="removePreviousFonctionsLine($index)" class="md-warn" style="margin-left: 10px; margin-top: 20px;">delete</md-icon>
-                                                <md-icon ng-show="(pre.length - 1) === $index" ng-click="addNewPreviousFonctionsLine()" class="md-success"  style="margin-left: 10px; margin-top: 20px;">add_circle_outline</md-icon>
-                                            </div>
+                                            <h3 class="md-subhead"><span translate>History of positions </span></h3>
+                                            <!--//<div layout="row" ng-repeat="affectation in allAffectations" flex>-->
+                                                <table class=MsoNormalTable border=1 cellspacing=0 cellpadding=0
+                                                       style='margin-left:5.65pt;border-collapse:collapse;border:none'>
+                                                    <tr >
+                                                        <td width="40%">
+                                                            <p class=TableParagraph style='margin-left:5.35pt;line-height:10.95pt'><span
+                                                                    lang=FR style='font-size:10.0pt'>Poste occupé / Lieu d'affectation</span></p>
+                                                        </td>
+                                                        <td flex>
+                                                            <span translate class=TableParagraph style='margin-left:5.35pt;line-height:10.95pt'> Reference</span>
+                                                        </td>
+                                                        <td width="20%">
+                                                            <span translate class=TableParagraph style='margin-left:5.35pt;line-height:10.95pt'> Period</span>
+                                                        </td>
+                                                        <td flex>
+                                                            <span translate class=TableParagraph style='margin-left:5.35pt;line-height:10.95pt'> Action</span>
+                                                        </td>
+                                                    </tr>
+                                                    
+                                                    <tr  ng-repeat="affectation in allAffectations">
+                                                        <td width="40%" style='font-size:10.0pt; margin-left:5.65pt;'>
+                                                            <p class='TableParagraph fsuivi' style='font-size:10.0pt; margin-left:5.65pt;' ><span lang=FR  >{{affectation.newPosition.fr}} - {{affectation.structureAffectation.fr}} - {{affectation.structureAffectationFather.fr}}</span></p>
+                                                        </td>
+                                                        <td flex style='font-size:10.0pt; margin-left:5.65pt;'>
+                                                            <p class='TableParagraph fsuivi' style='font-size:10.0pt; margin-left:5.65pt;' ><span lang=FR  >{{affectation.numAct}}</span></p>
+                                                        </td>
+                                                        <td width="20%" style='font-size:10.0pt; margin-left:5.65pt;'>
+                                                            <span translate style='margin-left:5.35pt;line-height:10.95pt'>From: </span> <span style='font-size:10.0pt'>{{affectation.startDate | dateHuman}}</span>
+                                                            <span translate>To: </span> <span style='font-size:10.0pt'>{{affectation.endDate | dateHuman}}</span>
+                                                        </td>
+                                                        <td width="100">
+                                                            <md-icon ng-show=" ($index < (allAffectations.length - 1) || (allAffectations.length - 1) === $index) " ng-click="deleteAffectation(affectation)" class="md-warn" style="margin-left: 10px; margin-top: 20px;">delete</md-icon>
+                                                            <md-icon ng-show="(allAffectations.length - 1) === $index" ng-click="newAffectation()" class="md-success"  style="margin-left: 10px; margin-top: 20px;">add_circle_outline</md-icon>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            <!--//</div>-->
                                         </md-card-content>
-                                    </md-card>-->
-
+                                    </md-card>
                                 </md-content>
                                 <md-step-actions layout="row">
                                     <div flex layout="row" layout-align="end top">
