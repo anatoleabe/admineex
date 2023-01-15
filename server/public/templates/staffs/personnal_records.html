@@ -82,7 +82,7 @@
         </md-card>
 
         <md-tabs md-dynamic-height md-border-bottom ng-if="personnelSelected" style="margin-top: -20px">
-            <md-tab label='{{"Personnal data"| translate }}'>
+            <md-tab label='{{"Personnal data"| translate }}' ng-click="selectTab(0)">
                 <md-content class="md-padding dashboard" style="margin: 0 auto" layout="colomn">
                     <div flex="15">
                     </div>    
@@ -432,7 +432,7 @@
                     </div> 
                 </md-content>
             </md-tab>
-            <md-tab label='{{"History"| translate }}'>
+            <md-tab label='{{"History"| translate }}' ng-click="selectTab(1)">
                 <md-content >
                     <div oc-lazy-load="'node_modules/angular-timeline/dist/angular-timeline.js'">
                         <timeline>
@@ -459,11 +459,93 @@
                     </div>
                 </md-content>
             </md-tab>
+            <md-tab label='{{"Physical records"| translate }}' ng-click="selectTab(2)">
+                <md-card-actions layout="row" ng-if="personnelSelected">
+
+                    <span flex></span>
+                    <md-button  class="button task activelist" ng-click="zipAll()">
+                        <i class="icon-file-zip"></i> <span translate>Download all</span>
+                    </md-button>
+                </md-card-actions>
+                <md-content >
+
+                    <md-table-container>
+                        <table id="procrastinate" md-table md-progress="promise">
+                            <thead md-head md-order="query.order" class="procrastinateTable">
+                                <tr md-row>
+                                    <th md-column md-order-by="type"  translate>Identifier</th>
+                                    <th md-column md-order-by="type"  translate>Category</th>
+                                    <th md-column md-order-by="fileName"  translate >File name</th>
+                                    <th md-column md-order-by="date" style="width: 180px" translate>Date</th>
+                                    <th md-column translate style="width: 10px">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody md-body dnd-list="list" class="ng-scope procrastinateTable" >
+                                <tr md-row   data-ng-repeat="doc in documents.data| orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                                    <td md-cell ng-click="details(doc)">
+                                        <span >{{doc.identifier}}</span>
+                                    </td>
+                                    <td md-cell ng-click="details(doc)">
+                                        <span >{{doc.categoryBeautified}}</span>
+                                    </td>
+                                    <td md-cell flex  ng-click="details(doc)">
+                                        {{doc.fileName}}
+                                    </td>
+                                    <td md-cell  style="width: 180px" ng-click="details(doc)">{{doc.created|smartDatetime}} </td>
+                                    <td md-cell style="width: 10px" >
+                            <md-menu>
+                                <md-button class="md-icon-button"  ng-click="$mdOpenMenu()" >
+                                    <md-icon class="material-icons" >more_vert</md-icon>
+                                    <md-tooltip>
+                                        <span translate>More actions</span>
+                                    </md-tooltip>
+                                </md-button>
+                                <md-menu-content width="4">
+                                    <md-menu-item>
+                                        <md-button ng-click="view(doc)" >
+                                            <i class="icon-eye mr-2"></i>
+                                            <span translate>View</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="details(doc)" >
+                                            <i class="icon-clipboard3 mr-2"></i>
+                                            <span translate>Details</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="edit(doc)" >
+                                            <i class="icon-pencil7 mr-2"></i>
+                                            <span translate>Edit</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="download(doc)" >
+                                            <i class="icon-cloud-download mr-2"></i> 
+                                            <span translate>Download </span>
+                                        </md-button>
+                                    </md-menu-item>
+                                    <md-menu-item>
+                                        <md-button ng-click="showConfirm(doc)" ng-if="account.role == '1' || account.role == '3'">
+                                            <md-icon class="material-icons" >delete</md-icon>
+                                            <span translate>Delete this doc</span>
+                                        </md-button>
+                                    </md-menu-item>
+                                </md-menu-content>
+                            </md-menu>
+                            </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </md-table-container>
+                </md-content>
+            </md-tab>
 
         </md-tabs>
 
 
-        <md-card-actions layout="row" ng-if="personnelSelected" style="margin-top: -30px">
+        <md-card-actions layout="row" ng-if="personnelSelected && currentTab === 0" style="margin-top: -30px">
             <!--            <md-button ng-click="back()" class="md-raised md-primary" aria-label="Back" >
                             <md-icon>arrow_back_ios</md-icon>
                             <span translate>Back</span>
@@ -480,3 +562,11 @@
         </md-card-actions>
     </md-content>
 </div>
+
+<div style="margin-bottom: 100px"></div>
+<md-button  class="md-fab md-accent md-fab-bottom-right" ng-if="personnelSelected && (currentTab === 0 || currentTab === 0)" aria-label="Add" ng-click="new (personnelSelected)" >
+    <md-icon>cloud_upload</md-icon>
+    <md-tooltip md-direction="top">
+        <span translate>Import file</span>
+    </md-tooltip>
+</md-button>

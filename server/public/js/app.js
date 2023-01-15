@@ -4,6 +4,8 @@ var app = angular.module('app', [
     'routes',
     'oc.lazyLoad',
     'angular-jwt',
+    'pdf',
+    'pdfjsViewer',
     'TokenInterceptorService',
     'datetimeFilters',
     'mappingFilters',

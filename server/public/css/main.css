@@ -1,6 +1,11 @@
 /* <GENERAL> */
 button, html, input, select, textarea {
     font-family: Savics,Roboto,Helvetica Neue,sans-serif!important;
+/*    font-size: .8125rem;
+    font-weight: 400;
+    line-height: 1.5385;
+    color: #333;
+    text-align: left;*/
 }
 
 .md-button.md-fab.md-fab-bottom-right, md-fab-speed-dial.md-fab-bottom-right {
@@ -1037,4 +1042,15 @@ div {
 }
 .dashboard .action-section li {
   font-size: 0.9em;
+}
+
+.hint2 {
+  position: absolute;
+  left: 5px;
+  right: auto;
+  bottom: 0px;
+  font-size: 14px;
+  line-height: 14px;
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  color: grey; 
 }

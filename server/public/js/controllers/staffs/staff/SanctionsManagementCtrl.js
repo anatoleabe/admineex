@@ -170,7 +170,6 @@ angular.module('SanctionsManagementCtrl', []).controller('SanctionsManagementCon
                         watch.range = $rootScope.$watch('range', function (newValue, oldValue) {
                             if (newValue.from.value.getTime() !== oldValue.from.value.getTime() || newValue.to.value.getTime() !== oldValue.to.value.getTime()) {
                                 $scope.loadingChart = true;
-                                console.log("rannnnn")
                                 $scope.getSanctions();
                             }
                         }, true);

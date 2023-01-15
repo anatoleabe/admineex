@@ -27,7 +27,7 @@ var controllers = {
 exports.api.upsert = function (req, res) {
     if (req.actor) {
         var form = new formidable.IncomingForm();
-        form.parse(req, function (err, fields, files) {
+        form.parse(req, function (err, fields, files, keyWords) {
             if (err) {
                 log.error(err);
                 audit.logEvent('[formidable]', 'Tasks', 'Upsert', "", "", 'failed', "Formidable attempted to parse task fields");
@@ -36,6 +36,14 @@ exports.api.upsert = function (req, res) {
 
                 var i = 0;
                 if (files) {
+                    //var keyWords = [];
+//                    if (Object.keys(fields.keyWords).length > 0) {
+//                        for (i = 0; i < Object.keys(fields.keyWords).length; i++) {
+//                            keyWords.push(fields.'keyWords[' + i + ']')
+//                        }
+//                    } 
+                    console.log(keyWords)
+                    
                     var uploadedFiles = [];
                     if (Object.keys(files).length > 0) {
                         for (i = 0; i < Object.keys(files).length; i++) {

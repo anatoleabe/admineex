@@ -1,0 +1,147 @@
+<div class="md-dialog-content">
+    <md-toolbar class="toolbar-filter">
+        <div class="md-toolbar-tools ">
+
+            <div data-oc-lazy-load="['js/directives/FilterbarDirective.js']" style="margin-bottom: 10px" >
+                <div filterbar daterange="true"  ></div>
+            </div>
+            <div flex="20" d-flex justify-content-center style="margin-bottom: 10px; font-size: 18px; "> | &nbsp; &nbsp; {{ documents.count }} <span translate>documents</span> </div>
+            <span flex></span>
+            
+
+        </div>
+    </md-toolbar>
+
+
+    <md-card>
+        <md-toolbar class="md-table-toolbar md-default"style="margin-top: 15px">
+
+            <div class="md-toolbar-tools">
+                <md-icon>filter_list</md-icon>
+                <md-input-container flex style="top:3px;">
+                    <input type="text" name="search" ng-model="search" placeholder="{{ 'Search amongs documents...' | translate }}">
+                </md-input-container>
+                <md-input-container flex  >
+                    <label translate>Filter by owner type</label>
+                    <md-select ng-model="filters.ownerType"  >
+                        <md-option ng-selected value="-1" >
+                            {{'All'| translate}}
+                        </md-option>
+                        <md-option value="dgtcfm" >
+                            DGTCFM
+                        </md-option>
+                        <md-option value="personal" >
+                            personal 
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+                <md-input-container flex >
+                    <label translate>Filter by category</label>
+                    <md-select ng-model="filters.category"  >
+                        <md-optgroup label="{{'Filtre by category'| translate}}">
+                            <md-option value="-1" >
+                                {{'All categories'| translate}}
+                            </md-option>
+                            <md-option ng-repeat="category in categories" value="{{category.id}}" >
+                                {{category.name}}
+                            </md-option>
+                        </md-optgroup>
+                    </md-select>
+                </md-input-container>
+
+
+                <md-button class="md-icon-button" ng-click="" aria-label="close">
+                    <md-icon class="material-icons">close</md-icon>
+                </md-button>
+            </div>
+
+        </md-toolbar>
+        <md-table-container>
+            <table id="procrastinate" md-table md-progress="promise">
+                <thead md-head md-order="query.order" class="procrastinateTable">
+                    <tr md-row>
+                        <th md-column md-order-by="type"  translate>Identifier</th>
+                        <th md-column md-order-by="type"  translate>Category</th>
+                        <th md-column md-order-by="proprietary"  translate>Proprietary</th>
+                        <th md-column md-order-by="fileName"  translate >File name</th>
+                        <th md-column md-order-by="date" style="width: 180px" translate>Date</th>
+                        <th md-column translate style="width: 10px">Actions</th>
+                    </tr>
+                </thead>
+                <tbody md-body dnd-list="list" class="ng-scope procrastinateTable" >
+                    <tr md-row   data-ng-repeat="doc in documents.data| orderBy: query.order | limitTo: query.limit: (query.page - 1) * query.limit" >
+                        <td md-cell ng-click="details(doc)" >
+                            <span >{{doc.identifier}}</span>
+                        </td>
+                        <td md-cell ng-click="details(doc)" >
+                            <span >{{doc.categoryBeautified}}</span>
+                        </td>
+                        <td md-cell ng-click="details(doc)" >
+                            <span >{{doc.fname}} ({{doc.personnel.identifier}})
+                            </span>
+                        </td>
+                        <td md-cell flex ng-click="details(doc)"  >
+                            {{doc.fileName}}
+                        </td>
+                        <td md-cell  style="width: 180px" ng-click="details(doc)" >{{doc.created|smartDatetime}} </td>
+                        <td md-cell style="width: 10px" >
+                <md-menu>
+                    <md-button class="md-icon-button"  ng-click="$mdOpenMenu()" >
+                        <md-icon class="material-icons" >more_vert</md-icon>
+                        <md-tooltip>
+                            <span translate>More actions</span>
+                        </md-tooltip>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="view(doc)" >
+                                <i class="icon-eye mr-2"></i>
+                                <span translate>View</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="details(doc)" >
+                                <i class="icon-clipboard3 mr-2"></i>
+                                <span translate>Details</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="edit(doc)" >
+                                <i class="icon-pencil7 mr-2"></i>
+                                <span translate>Edit</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="download(doc)" >
+                                <i class="icon-cloud-download mr-2"></i> 
+                                <span translate>Download </span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="showConfirm(doc)" ng-if="account.role == '1' || account.role == '3'">
+                                <md-icon class="material-icons" >delete</md-icon>
+                                <span translate>Delete this doc</span>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </md-table-container>
+        <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 25, 50, 100]" md-page="query.page" md-total="{{documents.count}}" 
+                              md-page-select="true" md-label="{{label}}" md-on-paginate="getDocuments">
+
+    </md-card>
+</div>
+<div style="margin-bottom: 100px"></div>
+<md-button  class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ng-click="new ()" >
+    <md-icon>cloud_upload</md-icon>
+    <md-tooltip md-direction="top">
+        <span translate>Import file</span>
+    </md-tooltip>
+</md-button>
+
+

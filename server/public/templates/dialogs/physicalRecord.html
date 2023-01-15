@@ -1,0 +1,126 @@
+<md-dialog flex="40">
+    <form ng-submit="submit()">
+        <md-toolbar class="md-accent">
+            <div class="md-toolbar-tools">
+                <h2 translate>Nouveau document</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+
+            <md-card>
+
+                <md-card-content>
+                    <div layout="row">
+                        <md-input-container flex-gt-sm>
+                            <md-radio-group name="ownerType" ng-model="document.ownerType" required layout="row">
+                                <md-radio-button value="dgtcfm" ng-disabled="selectedPersonal != undefined"><span translate>General Directorate of the Treasury, Financial and Monetary Cooperation </span></md-radio-button>
+                                <md-radio-button value="personal" selected><span translate>Personal</span></md-radio-button>
+                            </md-radio-group>
+                            <div ng-messages="ownerType.$error">
+                                <div ng-message="required" translate>
+                                    The gender is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" ng-if="document.ownerType == 'personal'">
+                        <md-input-container flex>
+                            <label translate>Select the owner</label>
+                            <md-select name="owner" required ng-model="document.owner"  style="min-width: 150px;" ng-disabled="selectedPersonal != undefined">
+                                <md-option ng-repeat="perso in personnels" value="{{perso._id}}" >
+                                    {{perso.fname?perso.fname: perso.name.family[0] }} {{perso.fname?"": perso.name.given[0]}} <small>{{"(Mle: " + (perso.identifier) + ")"}}</small>
+
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="owner.$error">
+                                <div ng-message="required" translate>
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+                    <div layout="row">
+                        <md-input-container flex>
+                            <label translate>Document category</label>
+                            <md-select name="category" required ng-model="document.category"  style="min-width: 150px;">
+                                <md-option ng-repeat="category in categories" value="{{category.id}}" >
+                                    {{category.name}}
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="category.$error">
+                                <div ng-message="required" translate>
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout="row" >
+                        <md-input-container class="md-block" flex>
+                            <label translate>Reference or Number</label>
+                            <input name="reference" ng-model="document.reference" required>
+                            <div ng-messages="reference.$error">
+                                <div ng-message="required" translate>
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                        <md-input-container class="datepicker-xl" flex>
+                            <label translate>Issue date</label>
+                            <md-datepicker name="issueDate" class="md-block"  ng-model="document.issueDate" md-max-date="max" required style="width: 200px;"></md-datepicker>
+                            <div ng-messages="issueDate">
+                                <div ng-message="required" translate>
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+                    <div layout="row" >
+                        <md-input-container flex>
+                            <label translate>Enter the keywords of the document</label>
+                            <md-chips name="keyWords" ng-model="document.keyWords"  md-enable-chip-edit="true" md-max-chips="5" required>
+                            </md-chips>
+                            <div ng-messages="keyWords.$error">
+                                <div ng-message="required" translate>
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+                    </div>
+
+
+                    <div layout="row" >
+                        <md-input-container class="md-block" flex >
+                            <md-button flex class="md-raised" style="width: 100%" onclick="document.getElementById('getFile').click()" >
+                                <md-icon>attach_file</md-icon> 
+                                <span translate>Attach file(s)</span>
+                                <span ng-if="document.fileName">: {{document.fileName}}</span>
+                            </md-button>
+                        </md-input-container>
+                    </div>
+
+                    <div oc-lazy-load="'node_modules/ng-file-upload/dist/ng-file-upload.min.js'" layout="row">
+                        <div >  
+                            <input type="file" id="getFile" ng-model="uploader.file" ngf-select ngf-pattern="'.pdf,.doc,.docx,.jpg,.png,.jpeg'" title="titleText llllll"
+                                   ngf-accept="'.pdf,.doc,.docx,.jpg,.png,.jpeg'" ngf-max-size="25MB" aria-label="file" style="width: 100%;display:none"  />
+                        </div>
+                        <span flex class="md-no-sticky" style="margin-top: 40px" translate>NB: the time required to perform this task depends on the file size. </span> 
+                    </div>
+                </md-card-content>
+            </md-card>
+
+
+        </md-dialog-content>
+
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="close();"><span translate>Cancel</span></md-button>
+            <md-button class="md-raised md-accent" type="submit"><span translate>Save</span></md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

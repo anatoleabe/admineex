@@ -31,6 +31,7 @@ controllers.taskCategories = require('./controllers/taskCategories');
 controllers.import_export = require('./controllers/import_export');
 controllers.ui = require('./controllers/ui');
 controllers.charts = require('./controllers/charts');
+controllers.documents = require('./controllers/documents');
 controllers.notifications = require('./controllers/notifications');
 controllers.configuration = require('./controllers/configuration');
 controllers.installation = require('./controllers/installation');
@@ -562,6 +563,45 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.organizations.api.delete],
         access: _.findWhere(aclRoutes, {id: 36}).roles
     },
+    // list affectation
+    {
+        path: _.findWhere(aclRoutes, {id: 88}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 88}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.documents.api.list],
+        access: _.findWhere(aclRoutes, {id: 88}).roles
+    },
+    
+    // Delete an org 
+    {
+        path: _.findWhere(aclRoutes, {id: 89}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 89}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.documents.api.delete],
+        access: _.findWhere(aclRoutes, {id: 89}).roles
+    },
+    
+    // Download
+    {
+        path: _.findWhere(aclRoutes, {id: 90}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 90}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.documents.api.download],
+        access: _.findWhere(aclRoutes, {id: 90}).roles
+    },
+    
+    // zip files
+    {
+        path: _.findWhere(aclRoutes, {id: 91}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 91}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.documents.api.zip],
+        access: _.findWhere(aclRoutes, {id: 91}).roles
+    },
+    
+    // Read document
+    {
+        path: _.findWhere(aclRoutes, {id: 92}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 92}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.documents.api.read],
+        access: _.findWhere(aclRoutes, {id: 92}).roles
+    },
 
     // === TASKS ROUTES ==========================================================
     // Create a task
@@ -695,7 +735,18 @@ var routes = [
         path: _.findWhere(aclRoutes, {id: 0}).uri,
         httpMethod: _.findWhere(aclRoutes, {id: 0}).method,
         middleware: [controllers.angular]
+    },
+
+    // DOCUMENTS ROUTES ========================================================
+    
+    // Create a document
+    {
+        path: _.findWhere(aclRoutes, {id: 87}).uri,
+        httpMethod: _.findWhere(aclRoutes, {id: 87}).method,
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.documents.api.upsert],
+        access: _.findWhere(aclRoutes, {id: 87}).roles
     }
+   
 ];
 
 

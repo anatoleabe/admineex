@@ -273,6 +273,18 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Staff management", "Sanctions management"]
+        }).state('home.staffs.physicalrecords', {
+            url: '/physicalrecords',
+            params: {id: undefined, opath: undefined},
+            templateUrl: 'templates/staffs/staff/physicalrecords.html',
+            controller: 'PhysicalRecordsController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/staffs/staff/PhysicalRecordsCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Staff management", "Physical records"]
         }).state('home.staffs.statofsanctions', {
             url: '/statofsanctions',
             params: {id: undefined, opath: undefined},

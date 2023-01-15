@@ -1,0 +1,136 @@
+<md-dialog aria-label="{{doc.fileName}}">
+    <md-toolbar class="md-accent">
+        <div class="md-toolbar-tools">
+            <h2>{{doc.fileName}}</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon>close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline" translate>Document</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <md-list>
+                        <md-list-item>
+                            <md-icon>vpn_key</md-icon>
+                            <p class="md-body-2" translate>System ID</p>
+                            <p class="md-body-1 md-secondary">{{doc.identifier}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                        <md-list-item>
+                            <md-icon>perm_contact_calendar</md-icon>
+                            <p class="md-body-2" translate>Proprietary</p>
+                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{doc.fname}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                        <md-list-item>
+                            <md-icon>crop_landscape</md-icon>
+                            <p class="md-body-2" translate>Category</p>
+                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{doc.categoryBeautified}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                        <md-list-item>
+                            <md-icon>find_in_page</md-icon>
+                            <p class="md-body-2" translate>Reference</p>
+                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{doc.reference| unknown}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                        <md-list-item>
+                            <md-icon>event</md-icon>
+                            <p class="md-body-2" translate>Issue date</p>
+                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{doc.issueDate| date:'dd/MM/yyyy'}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                        <md-list-item>
+                            <md-icon>translate</md-icon>
+                            <p class="md-body-2" translate>Keys words</p>
+                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{doc.keyWords}}</p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+
+                    </md-list>
+                </md-card-content>
+            </md-card>
+            <md-card>
+                <md-card-title>
+                    <md-card-title-text>
+                        <span class="md-headline" translate>Meta information</span>
+                    </md-card-title-text>
+                </md-card-title>
+                <md-card-content>
+                    <md-list>
+                        <md-list-item>
+                            <md-icon>attachment</md-icon>
+                            <p class="md-body-2" translate>File name</p>
+                            <p class="md-body-1 md-secondary">{{doc.fileName}} </p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                        <md-list-item>
+                            <md-icon>visibility</md-icon>
+                            <p class="md-body-2" translate>Viewed</p>
+                            <p class="md-body-1 md-secondary">{{doc.viewed }} </p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                        <md-list-item>
+                            <md-icon>file_download</md-icon>
+                            <p class="md-body-2" translate>Downloaded</p>
+                            <p class="md-body-1 md-secondary">{{doc.downloaded }} </p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                        <md-list-item>
+                            <md-icon>fullscreen_exit</md-icon>
+                            <p class="md-body-2" translate>File size</p>
+                            <p class="md-body-1 md-secondary">{{doc.size| size}} </p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                        <md-list-item>
+                            <md-icon>event</md-icon>
+                            <p class="md-body-2" translate>Created</p>
+                            <p class="md-body-1 md-secondary">{{doc.created| date:'dd/MM/yyyy'}} <small ng-if="doc.actor"><br/><span translate>by</span> {{doc.actor.firstname}} {{doc.actor.lastname}}</small></p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                        <md-list-item>
+                            <md-icon>event</md-icon>
+                            <p class="md-body-2" translate>Last modified</p>
+                            <p class="md-body-1 md-secondary">{{doc.lastModified| date:'dd/MM/yyyy'}} </p>
+                        </md-list-item>
+                        <md-divider></md-divider>
+                    </md-list>
+                </md-card-content>
+                
+                
+
+<!--                <pdf-viewer
+                    delegate-handle="my-pdf-container"
+                    data="documentToView"
+                    scale="1"
+                    show-toolbar="true"
+                    headers="{ 'x-you-know-whats-awesome': 'EVERYTHING' }"></pdf-viewer>-->
+            </md-card>
+        </div>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <md-button ng-click="showConfirm(doc)" ng-show="$parent.account.role === '1' || $parent.account.role === '3'">
+            <span translate>Delete</span>
+        </md-button>
+        <md-button ng-click="view(doc)" >
+            <span translate>View</span>
+        </md-button>
+        <span flex></span>
+        <md-button ng-click="edit(doc)" ng-show="$parent.account.role === '1' || $parent.account.role === '3'"class="md-primary">
+            <span translate>Edit</span>
+        </md-button>
+        <md-button ng-click="download(doc)" >
+            <span translate>download</span>
+        </md-button>
+
+
+    </md-dialog-actions>
+</md-dialog>
