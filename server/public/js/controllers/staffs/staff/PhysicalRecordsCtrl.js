@@ -63,7 +63,6 @@ angular.module('PhysicalRecordsCtrl', []).controller('PhysicalRecordsController'
                     Document1.list({limit: limit, skip: skip, search: $scope.search, filters: JSON.stringify(filterParams)}).then(function (response) {
                         var data = response.data;
                         $rootScope.kernel.loading = 100;
-
                         $scope.documents = {
                             data: data,
                             count: data.length
@@ -124,7 +123,7 @@ angular.module('PhysicalRecordsCtrl', []).controller('PhysicalRecordsController'
                                 }
                             }
                         }).then(function (answer) {
-                            //$scope.getAffectations();
+                            $scope.getDocuments();
                         }, function () {
                         });
                     });
@@ -146,7 +145,7 @@ angular.module('PhysicalRecordsCtrl', []).controller('PhysicalRecordsController'
                                 }
                             }
                         }).then(function (answer) {
-                            //$scope.getAffectations();
+                            $scope.getDocuments();
                         }, function () {
                         });
                     });

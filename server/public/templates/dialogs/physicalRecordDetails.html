@@ -27,7 +27,8 @@
                         <md-list-item>
                             <md-icon>perm_contact_calendar</md-icon>
                             <p class="md-body-2" translate>Proprietary</p>
-                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{doc.fname}}</p>
+                            <p class="md-body-1 md-secondary" style="white-space: nowrap;" ng-if="doc.owner">{{doc.fname}}</p>
+                            <p class="md-body-1 md-secondary" style="white-space: nowrap;"  ng-if="doc.owner === null">DGTCFM</p>
                         </md-list-item>
                         <md-divider></md-divider>
                         <md-list-item>

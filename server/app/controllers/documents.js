@@ -83,9 +83,13 @@ exports.upsert = function (options, fields, callback) {
         log.error("The actor could not create a new document because one or more parameters of the request was not correct");
         callback(400);
     } else {
-        var filter = fields._id ? {_id: fields._id} : {fileName: fields.fileName, owner: fields.proprietary, category: fields.category, reference: fields.reference};
+        if (fields.ownerType === "dgtcfm"){
+            fields.owner = undefined;
+        }
+        var filter = fields._id ? {_id: fields._id} : {fileName: fields.fileName, owner: fields.owner, category: fields.category, reference: fields.reference};
         fields.lastModified = new Date();
         fields.authorID = options.actor.id;
+        
 
         Document.findOneAndUpdate(filter, fields, {upsert: true, setDefaultsOnInsert: true}, function (err) {
             if (err) {
@@ -168,12 +172,12 @@ exports.api.list = function (req, res) {
                                 {
                                     "$unwind": {
                                         path: "$personnel",
-                                        preserveNullAndEmptyArrays: false
+                                        preserveNullAndEmptyArrays: true
                                     }
                                 }
                         );
 
-                        aggregate.push({"$unwind": "$personnel.name"});
+                        aggregate.push({"$unwind": {path: "$personnel.name", preserveNullAndEmptyArrays: true}});
                         aggregate.push({"$unwind": {path: "$personnel.name.family", preserveNullAndEmptyArrays: true}});
                         aggregate.push({"$unwind": {path: "$personnel.name.given", preserveNullAndEmptyArrays: true}});
                         aggregate.push({"$addFields": {"fname": {$concat: concat}}});

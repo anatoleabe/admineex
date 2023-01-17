@@ -77,7 +77,8 @@
                             <span >{{doc.categoryBeautified}}</span>
                         </td>
                         <td md-cell ng-click="details(doc)" >
-                            <span >{{doc.fname}} ({{doc.personnel.identifier}})
+                            <span ng-if="doc.owner">{{doc.fname}} ({{doc.personnel.identifier}})</span>
+                            <span ng-if="doc.owner === null">DGTCFM
                             </span>
                         </td>
                         <td md-cell flex ng-click="details(doc)"  >
@@ -120,7 +121,7 @@
                         <md-menu-item>
                             <md-button ng-click="showConfirm(doc)" ng-if="account.role == '1' || account.role == '3'">
                                 <md-icon class="material-icons" >delete</md-icon>
-                                <span translate>Delete this doc</span>
+                                <span translate>Delete this document</span>
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>

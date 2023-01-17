@@ -6,7 +6,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 // Document schema
 var DocumentSchema = new Schema({
     identifier: {type: String, required: true},
-    owner: { type: ObjectId, required: true },
+    owner: { type: ObjectId, required: false },
     ownerType: { type: String, required: true },
     authorID: { type: ObjectId, required: true },
     fileName: { type: String, required: true },

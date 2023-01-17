@@ -232,6 +232,10 @@ angular.module('PhysicalRecordCtrl', []).controller('PhysicalRecordController', 
                                             $scope.document.fileName = $scope.uploader.file.name;
                                         }
                                         $scope.document.keyWordsLength = $scope.document.keyWords.length
+                                        if ($scope.document.ownerType === "dgtcfm"){
+                                            $scope.document.owner = "dgtcfm"
+                                        }
+                                        
                                         if ($scope.document.category != undefined && $scope.document.owner != undefined && $scope.document.ownerType != undefined && $scope.document.reference != undefined && $scope.document.fileName != undefined) {
                                             Upload.upload({
                                                 url: '/api/documents',

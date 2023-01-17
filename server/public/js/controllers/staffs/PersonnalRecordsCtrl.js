@@ -466,7 +466,7 @@ angular.module('PersonnalRecordsCtrl', [[
 
                                             $mdDialog.show(confirm).then(function () {
                                                 // Delete
-                                                Document1.delete({
+                                                Document.delete({
                                                     id: document._id
                                                 }).then(function (response) {
                                                     $scope.getDocuments();
