@@ -1,38 +1,38 @@
 [
     {
         "id": "1",
-        "name": "Mundemba"
+        "name": "Akom II"
     },
     {
         "id": "2",
-        "name": "Ekondo-Titi"
+        "name": "Bipindi"
     },
     {
         "id": "3",
-        "name": "Bamusso"
+        "name": "Campo"
     },
     {
         "id": "4",
-        "name": "Isanguele"
+        "name": "Kribi Ier"
     },
     {
         "id": "5",
-        "name": "Idabato"
+        "name": "Kribi IIe"
     },
     {
         "id": "6",
-        "name": "Kombo-Itindi"
+        "name": "Lokoundjé"
     },
     {
         "id": "7",
-        "name": "Kombo-Abedimo"
+        "name": "Lolodorf"
     },
     {
         "id": "8",
-        "name": "Dikome-Balue"
+        "name": "Mvengue"
     },
     {
         "id": "9",
-        "name": "Toko"
+        "name": "Niété"
     }
 ]
