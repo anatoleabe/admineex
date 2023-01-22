@@ -52,6 +52,10 @@
         "en": "Categorie",
         "fr": "Categorie"
     },{
+        "id": "index",
+        "en": "Index/Level",
+        "fr": "Indce/Echelon"
+    },{
         "id": "telecom.0.value",
         "en": "Téléphone",
         "fr": "Téléphone"

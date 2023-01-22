@@ -20,6 +20,7 @@ var PersonnelSchema = new Schema({
     corps: {type: String, required: false},
     grade: {type: String, required: false},
     category: {type: String, required: false},
+    index: {type: String, required: false},//Indice ou echelon selon le status
     gender: {type: String, required: true},
     birthDate: Date,
     retirementDate: Date,
@@ -52,6 +53,7 @@ var PersonnelSchema = new Schema({
         signatory: String,
         startDate: Date,
         minfiEntryDate: Date,
+        minfiEntryRefAct: String,
         positions: [
             {
                 numAct: String,

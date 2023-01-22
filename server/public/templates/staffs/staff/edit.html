@@ -265,6 +265,15 @@
                                                     <label translate>Entry at MINFI</label>
                                                     <md-datepicker name="minfiEntryDate" class="md-block"  ng-model="personnel.history.minfiEntryDate" md-max-date="max" ></md-datepicker>
                                                 </md-input-container>
+                                                <md-input-container class="md-block" flex>
+                                                    <label translate>MINFI reference entry act</label>
+                                                    <input name="minfiEntryRefAct" ng-model="personnel.history.minfiEntryRefAct" required>
+                                                    <div ng-messages="step1.minfiEntryRefAct.$error">
+                                                        <div ng-message="required">
+                                                            The recruitment act number is required.
+                                                        </div>
+                                                    </div>
+                                                </md-input-container>
                                             </div>
 
                                             <span class="md-subhead" translate>Actual situation</span>
@@ -304,11 +313,21 @@
                                                         </md-option>
                                                     </md-select>
                                                 </md-input-container>
+                                            </div>
+                                            <div layout="row" >
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Category</label>
                                                     <md-select ng-model="personnel.category" >
                                                         <md-option ng-repeat="category in categories" value="{{category.id}}">
                                                             {{category.code| uppercase}}
+                                                        </md-option>
+                                                    </md-select>
+                                                </md-input-container>
+                                                 <md-input-container class="md-block" flex>
+                                                    <label translate >Index/Echelon</label>
+                                                    <md-select  ng-model="personnel.index" >
+                                                        <md-option ng-repeat="index in indexes" value="{{index.id}}">
+                                                            {{index.id}}
                                                         </md-option>
                                                     </md-select>
                                                 </md-input-container>
@@ -343,11 +362,11 @@
                                                     <md-datepicker class="md-block"  ng-model="personnel.qualifications.schools[0].date" md-max-date="max" ></md-datepicker>
                                                 </md-input-container>
                                                 <md-input-container class="md-block"  flex>
-                                                    <label translate>Authority</label>
+                                                    <label translate>School/Institution</label>
                                                     <input ng-model="personnel.qualifications.schools[0].authority">
                                                 </md-input-container>
                                                 <md-input-container class="md-block"  flex>
-                                                    <label translate>Domain</label>
+                                                    <label translate>Training area</label>
                                                     <input ng-model="personnel.qualifications.schools[0].domain">
                                                 </md-input-container>
                                                 <md-input-container class="md-block"  flex>

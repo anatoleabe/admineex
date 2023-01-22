@@ -37,7 +37,6 @@ angular.module('PersonnalRecordsCtrl', [[
 
     $scope.selectTab = function (tab) {
         $scope.currentTab = tab;
-        console.log(tab)
     };
 
     function sortMe(a, b) {
@@ -147,7 +146,6 @@ angular.module('PersonnalRecordsCtrl', [[
 
 
                                     $scope.newSanction = function (personnel, type) {
-                                        console.log(type)
                                         var form = "sanction.html";
                                         if (type === '3') {
                                             form = "award.html";
@@ -438,7 +436,7 @@ angular.module('PersonnalRecordsCtrl', [[
                                             });
                                         };
 
-                                        $scope.edit = function (doc) {
+                                        $scope.editDoc = function (doc) {
                                             $ocLazyLoad.load('js/controllers/staffs/staff/PhysicalRecordCtrl.js').then(function () {
                                                 $mdDialog.show({
                                                     controller: 'PhysicalRecordController',
@@ -554,7 +552,6 @@ angular.module('PersonnalRecordsCtrl', [[
                                                     headers: {'Content-Type': "blob"},
                                                     transformResponse: jsonBufferToObject
                                                 }).then(function (response) {
-                                                    console.log("downloaded ====")
                                                     var d = new Blob([response.data]);
                                                     $scope.documentToView = d;
                                                     $rootScope.kernel.loading = 100;
@@ -566,7 +563,6 @@ angular.module('PersonnalRecordsCtrl', [[
                                         }
 
                                         $scope.zipAll = function (document) {
-                                            console.log("zip", document)
                                             $ocLazyLoad.load('node_modules/angular-file-saver/dist/angular-file-saver.bundle.min.js').then(function () {
                                                 var FileSaver = $injector.get('FileSaver');
                                                 $rootScope.kernel.loading = 0;
@@ -872,6 +868,7 @@ angular.module('PersonnalRecordsCtrl', [[
             $scope.openPdf = function () {
                 var cni = $scope.personnelSelected.cni;
                 var p = $scope.personnelSelected;
+                console.log(p)
                 var structure = ($scope.personnelSelected.affectedTo && $scope.personnelSelected.affectedTo.position) ? $scope.personnelSelected.affectedTo.position.structure : undefined;
                 var poste = ($scope.personnelSelected.affectedTo && $scope.personnelSelected.affectedTo.position) ? $scope.personnelSelected.affectedTo.position : undefined;
 
@@ -1144,6 +1141,7 @@ angular.module('PersonnalRecordsCtrl', [[
                                         [{text: 'E10', style: 'tableHeader'}, {text: 'Date d\'entrée dans l\'Administrationn : ', style: 'tablecells', border: [true, true, false, true]}, {text: $filter('dateHuman')(p.history ? p.history.signatureDate : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
                                         [{text: 'E11', style: 'tableHeader'}, {text: 'Date d\'entrée au MINFI : ', style: 'tablecells', border: [true, true, false, true]}, {text: $filter('dateHuman')(p.history ? p.history.minfiEntryDate : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
                                         [{text: 'E12', style: 'tableHeader'}, {text: 'Administration de recrutement : ', style: 'tablecells', border: [true, true, false, true]}, {text: $filter('dateHuman')(p.history ? p.history.originalAdministration : ""), style: 'tablecells', border: [false, true, true, true], alignment: 'right'}],
+                                        [{text: 'E13', style: 'tableHeader'}, {text: 'Référence acte entrée MINFI : ', style: 'tablecells', border: [true, true, false, true]}, {text: (p.history ? (p.history.minfiEntryRefAct ? p.history.minfiEntryRefAct : "") : "") , style: 'tablecells', border: [false, true, true, true], alignment: 'right'}]
                                     ]
                                 },
                                 layout: {

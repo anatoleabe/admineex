@@ -296,6 +296,12 @@
                                         <md-divider></md-divider>
                                         <md-list-item>
                                             <md-icon>local_hospital</md-icon>
+                                            <p class="md-body-2" translate>Index/Level</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.index| uppercase | unknown}}</p>
+                                        </md-list-item>
+                                        <md-divider></md-divider>
+                                        <md-list-item>
+                                            <md-icon>local_hospital</md-icon>
                                             <p class="md-body-2" translate>Retirement date</p>
                                             <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.retirementDate| dateHuman | unknown}}</p>
                                         </md-list-item>
@@ -540,6 +546,14 @@
 
                     </md-table-container>
                 </md-content>
+
+                <div style="margin-bottom: 100px"></div>
+                <md-button  class="md-fab md-accent md-fab-bottom-right" ng-if="personnelSelected && (currentTab === 2 || currentTab === 2)" aria-label="Add" ng-click="new (personnelSelected)" >
+                    <md-icon>cloud_upload</md-icon>
+                    <md-tooltip md-direction="top">
+                        <span translate>Import file</span>
+                    </md-tooltip>
+                </md-button>
             </md-tab>
 
         </md-tabs>
@@ -563,10 +577,3 @@
     </md-content>
 </div>
 
-<div style="margin-bottom: 100px"></div>
-<md-button  class="md-fab md-accent md-fab-bottom-right" ng-if="personnelSelected && (currentTab === 0 || currentTab === 0)" aria-label="Add" ng-click="new (personnelSelected)" >
-    <md-icon>cloud_upload</md-icon>
-    <md-tooltip md-direction="top">
-        <span translate>Import file</span>
-    </md-tooltip>
-</md-button>

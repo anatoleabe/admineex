@@ -252,7 +252,7 @@ exports.api.list = function (req, res) {
                         }
 
                         if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4" || options.req.actor.role == "2") {
-                            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1,
+                            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, index: 1, cni: 1, status: 1,
                                 identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1,
                                 "affectation.position.fr": 1,
                                 "affectation.position.en": 1,
@@ -928,7 +928,7 @@ exports.api.export = function (req, res) {
                         toExport: true
                     }
 
-                    var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1,
+                    var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, index:1, cni: 1, status: 1,
                         identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1,
                         "affectation.position.fr": 1,
                         "affectation.position.en": 1,
@@ -939,7 +939,8 @@ exports.api.export = function (req, res) {
                         birthPlace: 1,
                         birthDate: 1,
                         "history.recruitmentActNumber": 1,
-                        "history.signatureDate": 1
+                        "history.signatureDate": 1,
+                        "history.minfiEntryRefAct": 1
                     };
 
                     options.projection = projection;
@@ -1399,7 +1400,7 @@ exports.api.followUpSheet = function (req, res) {
                 fs.mkdirSync("./tmp");
             }
 
-            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1,
+            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, index:1, cni: 1, status: 1,
                 identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1,
                 "affectation.position.fr": 1,
                 "affectation.position.en": 1,
@@ -1411,7 +1412,8 @@ exports.api.followUpSheet = function (req, res) {
                 birthPlace: 1,
                 birthDate: 1,
                 "history.recruitmentActNumber": 1,
-                "history.signatureDate": 1
+                "history.signatureDate": 1,
+                "history.minfiEntryRefAct": 1
             };
             filter.projection = projection;
             var options1 = {

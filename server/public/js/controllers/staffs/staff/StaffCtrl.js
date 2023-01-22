@@ -65,6 +65,7 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
         }];
     $scope.grades = [];
     $scope.categories = [];
+    $scope.indexes = [];
     $scope.personnels = [];
     $scope.corps = [];
     $scope.allYears = [];
@@ -220,14 +221,17 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                                 $scope.personnel.corps = undefined;
                                                 $scope.personnel.grade = undefined;
                                                 $scope.personnel.category = undefined;
+                                                $scope.personnel.index = undefined;
                                             }
                                         } else {
                                             $scope.corps = [];
                                             $scope.grades = [];
                                             $scope.categories = [];
+                                            $scope.indexes = [];
                                             $scope.personnel.corps = undefined;
                                             $scope.personnel.grade = undefined;
                                             $scope.personnel.category = undefined;
+                                            $scope.personnel.index = undefined;
                                         }
                                     });
 
@@ -245,6 +249,7 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                             $scope.categories = [];
                                             $scope.personnel.grade = undefined;
                                             $scope.personnel.category = undefined;
+                                            $scope.personnel.index = undefined;
                                         }
                                     });
 
@@ -257,10 +262,33 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
 
                                             if ($stateParams.id === undefined) {
                                                 $scope.personnel.category = undefined;
+                                                $scope.personnel.index = undefined;
                                             }
                                         } else {
                                             $scope.categories = [];
                                             $scope.personnel.category = undefined;
+                                            $scope.personnel.index = undefined;
+                                        }
+                                    });
+
+                                    watch.indexes = $scope.$watch('personnel.category', function (newval, oldval) {
+                                        if (newval) {
+
+                                            var file = $scope.personnel.status === "2" ? "echelon" : "categories";
+                                            Dictionary.jsonList({dictionary: 'personnel', levels: ['status', $scope.personnel.status, file]}).then(function (resp) {
+                                                if ($scope.personnel.status === "2"){
+                                                    $scope.indexes = resp.data.jsonList;
+                                                }else{
+                                                    $scope.indexes = findIndice(resp.data.jsonList, $scope.personnel.category);
+                                                }
+                                            });
+
+                                            if ($stateParams.id === undefined) {
+                                                $scope.personnel.index = undefined;
+                                            }
+                                        } else {
+                                            $scope.indexes = [];
+                                            $scope.personnel.index = undefined;
                                         }
                                     });
 
@@ -269,7 +297,16 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                         watch.status();
                                         watch.categories();
                                         watch.grades();
+                                        watch.indexes();
                                     });
+
+                                    function findIndice(data, idCategory) {
+                                        for (var i = 0; i < data.length; i++) {
+                                            if (data[i].id == idCategory) {
+                                                return(data[i].indices);
+                                            }
+                                        }
+                                    }
 
                                     function prepareForAngular() {
                                         if ($scope.personnel && $scope.personnel.qualifications) {

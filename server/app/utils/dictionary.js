@@ -208,6 +208,19 @@ var getJSONList = function (file, language) {
 exports.getJSONList = getJSONList;
 
 
+var getIndexesFromCategories = function (file, categoryId) {
+  var value = categoryId;
+  if (categoryId && categoryId !== "") {
+    var found = _.findWhere(require(file), { id: categoryId });
+    if (found) {
+      value = found.indexes;
+    }
+  }
+  return value;
+};
+exports.getIndexesFromCategories = getIndexesFromCategories;
+
+
 function sortIt(prop) {
     return function (a, b) {
         if (a[prop] > b[prop]) {

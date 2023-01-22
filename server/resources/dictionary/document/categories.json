@@ -1,90 +1,122 @@
 [
-    {
-        "id": "1",
-        "en": "Acte de mariage"
-    },
-    {
-        "id": "2",
-        "en": "Actes d’avancements"
-    },
-    {
-        "id": "3",
-        "en": "Actes de naissance"
-    },
-    {
-        "id": "4",
-        "en": "Actes de nominations"
-    },
-    {
-        "id": "5",
-        "en": "Actes de reclassements"
-    },
-    {
-        "id": "6",
-        "en": "Arrêté d’intégration"
-    },
-    {
-        "id": "7",
-        "en": "Arrêté de Titularisation"
-    },
-    {
-        "id": "8",
-        "en": "Attestation de présence effective au poste"
-    },
-    {
-        "id": "9",
-        "en": "Certificat de prise de service à la DGTCFM"
-    },
-    {
-        "id": "10",
-        "en": "Certificat de prise de service au Minfi"
-    },
-    {
-        "id": "11",
-        "en": "Certificat de prise de service au Minfopra"
-    },
-    {
-        "id": "12",
-        "en": "Certificats de prise de service à la structure d’emploi"
-    },
-    {
-        "id": "13",
-        "en": "CNI"
-    },
-    {
-        "id": "14",
-        "en": "Décision d’affectation du Minfi à la DGTCFM"
-    },
-    {
-        "id": "15",
-        "en": "Diplômes ou Attestations de formation"
-    },
-    {
-        "id": "16",
-        "en": "Curriculum vitae"
-    },
-    {
-        "id": "17",
-        "en": "Lettres de Motivation"
-    },
-    {
-        "id": "18",
-        "en": "Mise à disposition du Minfopra au Minfi"
-    },
-    {
-        "id": "19",
-        "en": "Notes d’affectations du DGTCFM à la structure d’emploi"
-    },
-    {
-        "id": "20",
-        "en": "Sanctions Disciplinaires"
-    },
-    {
-        "id": "21",
-        "en": "Contrat de travail"
-    },
-    {
-        "id": "22",
-        "en": "Décision d’engagement"
-    }
+ {
+   "id": "1",
+   "en": "Marriage certificate",
+   "fr": "Acte de mariage"
+ },
+ {
+   "id": "2",
+   "en": "Acts of advancement",
+   "fr": "Actes d’avancements"
+ },
+ {
+   "id": "3",
+   "en": "Birth certificates",
+   "fr": "Actes de naissance"
+ },
+ {
+   "id": "4",
+   "en": "Acts of appointment",
+   "fr": "Actes de nominations"
+ },
+ {
+   "id": "5",
+   "en": "Reclassification acts",
+   "fr": "Actes de reclassements"
+ },
+ {
+   "id": "6",
+   "en": "Integration order",
+   "fr": "Arrêté d’intégration"
+ },
+ {
+   "id": "7",
+   "en": "Order of tenure",
+   "fr": "Arrêté de Titularisation"
+ },
+ {
+   "id": "8",
+   "en": "Certificate of effective presence at the post",
+   "fr": "Attestation de présence effective au poste"
+ },
+ {
+   "id": "9",
+   "en": "Certificate of service at the DGTCFM",
+   "fr": "Certificat de prise de service à la DGTCFM"
+ },
+ {
+   "id": "10",
+   "en": "Minfi service certificate",
+   "fr": "Certificat de prise de service au Minfi"
+ },
+ {
+   "id": "11",
+   "en": "Certificate of service at Minfopra",
+   "fr": "Certificat de prise de service au Minfopra"
+ },
+ {
+   "id": "12",
+   "en": "Certificates of taking service at the employment structure",
+   "fr": "Certificats de prise de service à la structure d’emploi"
+ },
+ {
+   "id": "13",
+   "en": "CNI",
+   "fr": "CNI"
+ },
+ {
+   "id": "14",
+   "en": "Decision to assign the Minfi to the DGTCFM",
+   "fr": "Décision d’affectation du Minfi à la DGTCFM"
+ },
+ {
+   "id": "15",
+   "en": "Diplomas or training certificates",
+   "fr": "Diplômes ou Attestations de formation"
+ },
+ {
+   "id": "16",
+   "en": "Curriculum vitae",
+   "fr": "Curriculum vitae"
+ },
+ {
+   "id": "17",
+   "en": "Letters of motivation",
+   "fr": "Lettres de Motivation"
+ },
+ {
+   "id": "18",
+   "en": "Provision of Minfopra to Minfi",
+   "fr": "Mise à disposition du Minfopra au Minfi"
+ },
+ {
+   "id": "19",
+   "en": "Notes of assignments from the DGTCFM to the employment structure",
+   "fr": "Notes d’affectations du DGTCFM à la structure d’emploi"
+ },
+ {
+   "id": "20",
+   "en": "Disciplinary Sanctions",
+   "fr": "Sanctions Disciplinaires"
+ },
+ {
+   "id": "21",
+   "en": "Employment contract",
+   "fr": "Contrat de travail"
+ },
+ {
+   "id": "22",
+   "en": "Commitment decision",
+   "fr": "Décision d’engagement"
+ },
+ {
+   "id": "23",
+   "en": "Global Folder",
+   "fr": "Dossier global"
+ },
+ {
+   "id": "24",
+   "en": "Other",
+   "fr": "Autre"
+ }
 ]
