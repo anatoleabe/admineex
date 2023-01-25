@@ -9,12 +9,12 @@ msgstr ""
 msgid "#"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:350
+#: public/templates/staffs/personnal_records.html:356
 #: public/templates/staffs/personnal_records.html:63
 msgid "% of required profile"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:392
+#: public/templates/staffs/personnal_records.html:398
 #: public/templates/staffs/personnal_records.html:72
 msgid "% of required skills"
 msgstr ""
@@ -103,15 +103,15 @@ msgstr ""
 #: public/js/controllers/organizations/OrganizationsCtrl.js:49
 #: public/js/controllers/procrastinate/categories/CategoriesCtrl.js:54
 #: public/js/controllers/projects/ProjectsCtrl.js:49
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:463
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:703
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:461
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:699
 #: public/js/controllers/staffs/discipline/DisciplinesCtrl.js:49
 #: public/js/controllers/staffs/movement/MovementsCtrl.js:49
 #: public/js/controllers/staffs/staff/AssignmentHistoryCtrl.js:93
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:158
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:352
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:157
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:351
 #: public/js/controllers/staffs/staff/SanctionsManagementCtrl.js:222
-#: public/js/controllers/staffs/staff/StaffCtrl.js:345
+#: public/js/controllers/staffs/staff/StaffCtrl.js:382
 #: public/js/controllers/staffs/staff/StaffsCtrl.js:350
 #: public/js/controllers/staffs/status/StatussCtrl.js:49
 #: public/js/controllers/users/UsersCtrl.js:105
@@ -147,7 +147,7 @@ msgstr ""
 msgid "Act"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:427
+#: public/templates/staffs/staff/edit.html:446
 msgid "Action"
 msgstr ""
 
@@ -155,7 +155,7 @@ msgstr ""
 #: public/templates/administration/structures/main.html:84
 #: public/templates/dialogs/retireds.html:37
 #: public/templates/procrastinate/tasks/main.html:69
-#: public/templates/staffs/personnal_records.html:480
+#: public/templates/staffs/personnal_records.html:486
 #: public/templates/staffs/staff/assignmenthistory.html:72
 #: public/templates/staffs/staff/main.html:172
 #: public/templates/staffs/staff/physicalrecords.html:68
@@ -192,8 +192,8 @@ msgstr ""
 msgid "Actor"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:305
-#: public/templates/staffs/staff/edit.html:270
+#: public/templates/staffs/personnal_records.html:311
+#: public/templates/staffs/staff/edit.html:279
 msgid "Actual situation"
 msgstr ""
 
@@ -225,7 +225,7 @@ msgstr ""
 msgid "Add your credentials to login to your account"
 msgstr ""
 
-#: app/controllers/personnel.js:1247
+#: app/controllers/personnel.js:1248
 msgid "Admineex: Liste des personnes éligibles au poste de:"
 msgstr ""
 
@@ -233,7 +233,7 @@ msgstr ""
 msgid "Admineex: Liste des postes de travail"
 msgstr ""
 
-#: app/controllers/personnel.js:1002
+#: app/controllers/personnel.js:1003
 msgid "Admineex: Liste du personnel"
 msgstr ""
 
@@ -413,19 +413,19 @@ msgstr ""
 #: public/js/controllers/projects/ProjectCtrl.js:79
 #: public/js/controllers/recovery/LostCtrl.js:26
 #: public/js/controllers/recovery/ResetCtrl.js:42
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:1333
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:137
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:350
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:1331
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:136
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:348
 #: public/js/controllers/staffs/staff/MoreCtrl.js:124
-#: public/js/controllers/staffs/staff/PhysicalRecordCtrl.js:255
+#: public/js/controllers/staffs/staff/PhysicalRecordCtrl.js:259
 #: public/js/controllers/staffs/staff/SanctionCtrl.js:64
 #: public/js/controllers/staffs/staff/SanctionCtrl.js:96
 #: public/js/controllers/staffs/staff/SituationCtrl.js:30
 #: public/js/controllers/staffs/staff/SituationCtrl.js:58
-#: public/js/controllers/staffs/staff/StaffCtrl.js:315
-#: public/js/controllers/staffs/staff/StaffCtrl.js:405
-#: public/js/controllers/staffs/staff/StaffCtrl.js:441
-#: public/js/controllers/staffs/staff/StaffCtrl.js:450
+#: public/js/controllers/staffs/staff/StaffCtrl.js:352
+#: public/js/controllers/staffs/staff/StaffCtrl.js:442
+#: public/js/controllers/staffs/staff/StaffCtrl.js:478
+#: public/js/controllers/staffs/staff/StaffCtrl.js:487
 #: public/js/controllers/users/UserCtrl.js:100
 #: public/js/controllers/users/UserCtrl.js:141
 #: public/js/controllers/users/UserCtrl.js:71
@@ -444,7 +444,7 @@ msgid "April"
 msgstr ""
 
 #: public/js/controllers/staffs/staff/AssignmentHistoryCtrl.js:93
-#: public/js/controllers/staffs/staff/StaffCtrl.js:345
+#: public/js/controllers/staffs/staff/StaffCtrl.js:382
 msgid "Are you sure you want to cancel the affectation of"
 msgstr ""
 
@@ -478,10 +478,10 @@ msgstr ""
 msgid "Are you sure you want to delete the task"
 msgstr ""
 
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:463
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:703
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:158
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:352
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:461
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:699
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:157
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:351
 msgid "Are you sure you want to delete this document"
 msgstr ""
 
@@ -526,9 +526,7 @@ msgstr ""
 msgid "Author"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:346
-#: public/templates/staffs/staff/edit.html:369
-#: public/templates/staffs/staff/edit.html:388
+#: public/templates/staffs/staff/edit.html:407
 msgid "Authority"
 msgstr ""
 
@@ -617,15 +615,15 @@ msgstr ""
 #: public/js/controllers/procrastinate/categories/CategoriesCtrl.js:56
 #: public/js/controllers/procrastinate/tasks/TasksCtrl.js:354
 #: public/js/controllers/projects/ProjectsCtrl.js:51
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:465
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:705
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:463
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:701
 #: public/js/controllers/staffs/discipline/DisciplinesCtrl.js:51
 #: public/js/controllers/staffs/movement/MovementsCtrl.js:51
 #: public/js/controllers/staffs/staff/AssignmentHistoryCtrl.js:95
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:160
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:354
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:159
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:353
 #: public/js/controllers/staffs/staff/SanctionsManagementCtrl.js:224
-#: public/js/controllers/staffs/staff/StaffCtrl.js:347
+#: public/js/controllers/staffs/staff/StaffCtrl.js:384
 #: public/js/controllers/staffs/staff/StaffsCtrl.js:352
 #: public/js/controllers/staffs/status/StatussCtrl.js:51
 #: public/js/controllers/users/UsersCtrl.js:107
@@ -650,14 +648,14 @@ msgstr ""
 #: public/templates/settings/password.html:20
 #: public/templates/staffs/discipline/edit.html:94
 #: public/templates/staffs/mouvement/edit.html:148
-#: public/templates/staffs/staff/edit.html:454
+#: public/templates/staffs/staff/edit.html:473
 #: public/templates/staffs/status/edit.html:94
 #: public/templates/users/edit.html:62
 msgid "Cancel"
 msgstr ""
 
 #: public/js/controllers/staffs/staff/AssignmentHistoryCtrl.js:92
-#: public/js/controllers/staffs/staff/StaffCtrl.js:344
+#: public/js/controllers/staffs/staff/StaffCtrl.js:381
 #: public/templates/staffs/staff/assignmenthistory.html:111
 msgid "Cancel this affectation"
 msgstr ""
@@ -682,11 +680,11 @@ msgstr ""
 msgid "Categories"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:35
+#: public/templates/dialogs/physicalRecordDetails.html:36
 #: public/templates/procrastinate/tasks/dialogs/task.html:114
 #: public/templates/staffs/personnal_records.html:293
-#: public/templates/staffs/personnal_records.html:477
-#: public/templates/staffs/staff/edit.html:308
+#: public/templates/staffs/personnal_records.html:483
+#: public/templates/staffs/staff/edit.html:319
 #: public/templates/staffs/staff/physicalrecords.html:64
 msgid "Category"
 msgstr ""
@@ -716,13 +714,13 @@ msgid "Choose a color for your avatar"
 msgstr ""
 
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:130
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:267
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:265
 #: public/js/controllers/staffs/staff/MoreCtrl.js:48
 msgid "Choose a skill"
 msgstr ""
 
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:127
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:264
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:262
 #: public/js/controllers/staffs/staff/MoreCtrl.js:45
 msgid "Choose profile"
 msgstr ""
@@ -823,7 +821,7 @@ msgid "Core: Export projects"
 msgstr ""
 
 #: public/templates/staffs/personnal_records.html:281
-#: public/templates/staffs/staff/edit.html:292
+#: public/templates/staffs/staff/edit.html:301
 msgid "Corps"
 msgstr ""
 
@@ -841,10 +839,10 @@ msgstr ""
 msgid "Country:"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:95
+#: public/templates/dialogs/physicalRecordDetails.html:96
 #: public/templates/organizations/profile.html:33
 #: public/templates/projects/profile.html:93
-#: public/templates/staffs/personnal_records.html:418
+#: public/templates/staffs/personnal_records.html:424
 #: public/templates/users/profile.html:57
 msgid "Created"
 msgstr ""
@@ -910,10 +908,10 @@ msgstr ""
 #: public/templates/staffs/discipline/main.html:37
 #: public/templates/staffs/mouvement/edit.html:136
 #: public/templates/staffs/mouvement/main.html:39
-#: public/templates/staffs/personnal_records.html:479
+#: public/templates/staffs/personnal_records.html:485
 #: public/templates/staffs/staff/assignmenthistory.html:70
-#: public/templates/staffs/staff/edit.html:342
-#: public/templates/staffs/staff/edit.html:365
+#: public/templates/staffs/staff/edit.html:361
+#: public/templates/staffs/staff/edit.html:384
 #: public/templates/staffs/staff/physicalrecords.html:67
 #: public/templates/staffs/status/edit.html:77
 msgid "Date"
@@ -935,15 +933,15 @@ msgid "December"
 msgstr ""
 
 #: public/js/controllers/procrastinate/tasks/TasksCtrl.js:353
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:464
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:704
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:462
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:700
 #: public/js/controllers/staffs/staff/AssignmentHistoryCtrl.js:94
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:159
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:353
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:158
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:352
 #: public/js/controllers/staffs/staff/SanctionsManagementCtrl.js:223
-#: public/js/controllers/staffs/staff/StaffCtrl.js:346
+#: public/js/controllers/staffs/staff/StaffCtrl.js:383
 #: public/js/controllers/users/UsersCtrl.js:106
-#: public/templates/dialogs/physicalRecordDetails.html:121
+#: public/templates/dialogs/physicalRecordDetails.html:122
 #: public/templates/organizations/main.html:39
 #: public/templates/procrastinate/categories/main.html:34
 #: public/templates/procrastinate/tasks/dialogs/task.html:138
@@ -963,12 +961,12 @@ msgstr ""
 msgid "Delete this account"
 msgstr ""
 
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:462
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:702
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:157
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:351
-#: public/templates/staffs/personnal_records.html:531
-#: public/templates/staffs/staff/physicalrecords.html:123
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:460
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:698
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:156
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:350
+#: public/templates/staffs/personnal_records.html:537
+#: public/templates/staffs/staff/physicalrecords.html:124
 msgid "Delete this document"
 msgstr ""
 
@@ -997,8 +995,8 @@ msgid "Description"
 msgstr ""
 
 #: public/templates/procrastinate/tasks/edit.html:27
-#: public/templates/staffs/personnal_records.html:513
-#: public/templates/staffs/staff/physicalrecords.html:105
+#: public/templates/staffs/personnal_records.html:519
+#: public/templates/staffs/staff/physicalrecords.html:106
 msgid "Details"
 msgstr ""
 
@@ -1042,11 +1040,6 @@ msgstr ""
 msgid "Documentation <md-icon>{{doc == true ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</md-icon>"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:350
-#: public/templates/staffs/staff/edit.html:373
-msgid "Domain"
-msgstr ""
-
 #: public/templates/sign/signin.html:44
 msgid "Don't have an account?"
 msgstr ""
@@ -1077,16 +1070,16 @@ msgid "Dossiers physique"
 msgstr ""
 
 #: public/templates/staffs/personnal_records.html:34
-#: public/templates/staffs/personnal_records.html:525
-#: public/templates/staffs/staff/physicalrecords.html:117
+#: public/templates/staffs/personnal_records.html:531
+#: public/templates/staffs/staff/physicalrecords.html:118
 msgid "Download"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:467
+#: public/templates/staffs/personnal_records.html:473
 msgid "Download all"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:83
+#: public/templates/dialogs/physicalRecordDetails.html:84
 msgid "Downloaded"
 msgstr ""
 
@@ -1117,27 +1110,27 @@ msgstr ""
 #: public/templates/administration/positions/main.html:147
 #: public/templates/administration/structures/main.html:101
 #: public/templates/administration/structures/main.html:99
-#: public/templates/dialogs/physicalRecordDetails.html:128
+#: public/templates/dialogs/physicalRecordDetails.html:129
 #: public/templates/organizations/main.html:33
 #: public/templates/procrastinate/categories/main.html:28
 #: public/templates/procrastinate/tasks/details.html:20
 #: public/templates/procrastinate/tasks/details.html:238
 #: public/templates/procrastinate/tasks/dialogs/task.html:142
 #: public/templates/projects/main.html:33
-#: public/templates/staffs/personnal_records.html:519
-#: public/templates/staffs/personnal_records.html:556
+#: public/templates/staffs/personnal_records.html:525
+#: public/templates/staffs/personnal_records.html:570
 #: public/templates/staffs/staff/main.html:195
-#: public/templates/staffs/staff/physicalrecords.html:111
+#: public/templates/staffs/staff/physicalrecords.html:112
 #: public/templates/users/main.html:25
 #: public/templates/users/main.html:55
 msgid "Edit"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:332
+#: public/templates/staffs/personnal_records.html:338
 msgid "Edit profiles"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:374
+#: public/templates/staffs/personnal_records.html:380
 msgid "Edit skills"
 msgstr ""
 
@@ -1146,7 +1139,7 @@ msgstr ""
 msgid "Editor"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:326
+#: public/templates/staffs/staff/edit.html:345
 msgid "Educational status"
 msgstr ""
 
@@ -1179,7 +1172,7 @@ msgid "EnablerID:"
 msgstr ""
 
 #: public/templates/dialogs/affectation.html:185
-#: public/templates/staffs/staff/edit.html:396
+#: public/templates/staffs/staff/edit.html:415
 msgid "End"
 msgstr ""
 
@@ -1195,7 +1188,7 @@ msgstr ""
 msgid "End date of sanction"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:445
+#: public/templates/staffs/personnal_records.html:451
 msgid "End date:"
 msgstr ""
 
@@ -1237,8 +1230,8 @@ msgstr ""
 
 #: public/templates/administration/positions/details.html:39
 #: public/templates/procrastinate/tasks/details.html:39
-#: public/templates/staffs/staff/edit.html:338
-#: public/templates/staffs/staff/edit.html:361
+#: public/templates/staffs/staff/edit.html:357
+#: public/templates/staffs/staff/edit.html:380
 msgid "Entitled"
 msgstr ""
 
@@ -1246,8 +1239,8 @@ msgstr ""
 msgid "Entry at MINFI"
 msgstr ""
 
-#: public/js/controllers/staffs/staff/StaffCtrl.js:308
-#: public/js/controllers/staffs/staff/StaffCtrl.js:423
+#: public/js/controllers/staffs/staff/StaffCtrl.js:345
+#: public/js/controllers/staffs/staff/StaffCtrl.js:460
 msgid "Error:  this Register Number already exist."
 msgstr ""
 
@@ -1314,17 +1307,17 @@ msgstr ""
 msgid "Fiche de suivi"
 msgstr ""
 
-#: app/controllers/personnel.js:1394
+#: app/controllers/personnel.js:1395
 msgid "Fiche de suivi du personnel"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:71
-#: public/templates/staffs/personnal_records.html:478
+#: public/templates/dialogs/physicalRecordDetails.html:72
+#: public/templates/staffs/personnal_records.html:484
 #: public/templates/staffs/staff/physicalrecords.html:66
 msgid "File name"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:89
+#: public/templates/dialogs/physicalRecordDetails.html:90
 msgid "File size"
 msgstr ""
 
@@ -1463,7 +1456,7 @@ msgstr ""
 msgid "From"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:439
+#: public/templates/staffs/staff/edit.html:458
 msgid "From:"
 msgstr ""
 
@@ -1538,7 +1531,7 @@ msgstr ""
 #: public/templates/dialogs/eligibility.html:34
 #: public/templates/dialogs/retireds.html:34
 #: public/templates/staffs/personnal_records.html:287
-#: public/templates/staffs/staff/edit.html:300
+#: public/templates/staffs/staff/edit.html:309
 #: public/templates/staffs/staff/main.html:167
 #: public/templates/staffs/staff/retireds.html:86
 #: public/templates/statistics/directives/card4.html:36
@@ -1571,16 +1564,17 @@ msgstr ""
 msgid "Hierarchical rank"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:335
+#: public/templates/staffs/staff/edit.html:354
 msgid "Highest degree"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:326
+#: public/templates/staffs/staff/edit.html:345
+#: public/templates/staffs/staff/edit.html:347
 msgid "Highest level of education"
 msgstr ""
 
 #: public/templates/procrastinate/tasks/dialogs/task.html:67
-#: public/templates/staffs/personnal_records.html:435
+#: public/templates/staffs/personnal_records.html:441
 msgid "History"
 msgstr ""
 
@@ -1588,7 +1582,7 @@ msgstr ""
 msgid "History in Public Service"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:411
+#: public/templates/staffs/staff/edit.html:430
 msgid "History of positions"
 msgstr ""
 
@@ -1601,7 +1595,7 @@ msgstr ""
 msgid "Identification"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:476
+#: public/templates/staffs/personnal_records.html:482
 #: public/templates/staffs/staff/assignmenthistory.html:67
 #: public/templates/staffs/staff/physicalrecords.html:63
 #: public/templates/staffs/staff/sanctionsmanagement.html:113
@@ -1613,8 +1607,8 @@ msgstr ""
 msgid "Import"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:570
-#: public/templates/staffs/staff/physicalrecords.html:143
+#: public/templates/staffs/personnal_records.html:554
+#: public/templates/staffs/staff/physicalrecords.html:144
 msgid "Import file"
 msgstr ""
 
@@ -1628,6 +1622,14 @@ msgstr ""
 msgid "In talks"
 msgstr ""
 
+#: public/templates/staffs/staff/edit.html:327
+msgid "Index/Echelon"
+msgstr ""
+
+#: public/templates/staffs/personnal_records.html:299
+msgid "Index/Level"
+msgstr ""
+
 #: public/templates/statistics/directives/card2.html:36
 msgid "Inspecteurs Principaux du Trésor"
 msgstr ""
@@ -1637,7 +1639,7 @@ msgid "Inspecteurs du Trésor"
 msgstr ""
 
 #: public/templates/dialogs/physicalRecord.html:73
-#: public/templates/dialogs/physicalRecordDetails.html:47
+#: public/templates/dialogs/physicalRecordDetails.html:48
 msgid "Issue date"
 msgstr ""
 
@@ -1656,7 +1658,7 @@ msgstr ""
 msgid "June"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:53
+#: public/templates/dialogs/physicalRecordDetails.html:54
 msgid "Keys words"
 msgstr ""
 
@@ -1688,8 +1690,8 @@ msgstr ""
 msgid "Last modification:"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:101
-#: public/templates/staffs/personnal_records.html:424
+#: public/templates/dialogs/physicalRecordDetails.html:102
+#: public/templates/staffs/personnal_records.html:430
 msgid "Last modified"
 msgstr ""
 
@@ -1732,6 +1734,10 @@ msgstr ""
 
 #: public/js/controllers/ThresholdsCtrl.js:8
 msgid "Lower than"
+msgstr ""
+
+#: public/templates/staffs/staff/edit.html:269
+msgid "MINFI reference entry act"
 msgstr ""
 
 #: public/js/appFilters.js:337
@@ -1782,11 +1788,11 @@ msgstr ""
 msgid "MediScout"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:411
+#: public/templates/staffs/personnal_records.html:417
 msgid "Meta"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:64
+#: public/templates/dialogs/physicalRecordDetails.html:65
 msgid "Meta information"
 msgstr ""
 
@@ -1809,12 +1815,12 @@ msgstr ""
 msgid "Monitoring & Evaluation"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:500
+#: public/templates/staffs/personnal_records.html:506
 #: public/templates/staffs/staff/assignmenthistory.html:104
 #: public/templates/staffs/staff/assignmenthistory.html:33
 #: public/templates/staffs/staff/main.html:202
 #: public/templates/staffs/staff/main.html:70
-#: public/templates/staffs/staff/physicalrecords.html:92
+#: public/templates/staffs/staff/physicalrecords.html:93
 #: public/templates/staffs/staff/retireds.html:107
 #: public/templates/staffs/staff/retireds.html:51
 #: public/templates/staffs/staff/sanctionsmanagement.html:153
@@ -1856,7 +1862,7 @@ msgstr ""
 #: public/js/controllers/procrastinate/categories/CategoryCtrl.js:63
 #: public/js/controllers/procrastinate/tasks/TaskCtrl.js:175
 #: public/js/controllers/projects/ProjectCtrl.js:110
-#: public/js/controllers/staffs/staff/StaffCtrl.js:412
+#: public/js/controllers/staffs/staff/StaffCtrl.js:449
 #: public/js/controllers/users/UserCtrl.js:108
 #: public/templates/administration/positions/main.html:162
 #: public/templates/administration/structures/main.html:117
@@ -2162,8 +2168,8 @@ msgstr ""
 msgid "One Shot Sales"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:354
-#: public/templates/staffs/staff/edit.html:377
+#: public/templates/staffs/staff/edit.html:373
+#: public/templates/staffs/staff/edit.html:396
 msgid "Option"
 msgstr ""
 
@@ -2209,7 +2215,7 @@ msgstr ""
 msgid "Page"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:407
+#: public/templates/staffs/staff/edit.html:426
 msgid "Parcours professionnel"
 msgstr ""
 
@@ -2261,7 +2267,7 @@ msgstr ""
 msgid "Performance"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:424
+#: public/templates/staffs/staff/edit.html:443
 msgid "Period"
 msgstr ""
 
@@ -2322,13 +2328,13 @@ msgid "Phone number"
 msgstr ""
 
 #: app/controllers/ui.js:141
-#: public/templates/staffs/personnal_records.html:462
+#: public/templates/staffs/personnal_records.html:468
 msgid "Physical records"
 msgstr ""
 
 #: public/js/controllers/procrastinate/tasks/TaskCtrl.js:168
 #: public/js/controllers/procrastinate/tasks/TaskCtrl.js:213
-#: public/js/controllers/staffs/staff/PhysicalRecordCtrl.js:264
+#: public/js/controllers/staffs/staff/PhysicalRecordCtrl.js:268
 #: public/js/controllers/users/UserCtrl.js:167
 msgid "Please fill all required fields"
 msgstr ""
@@ -2451,12 +2457,12 @@ msgstr ""
 msgid "Profile"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:350
+#: public/templates/staffs/personnal_records.html:356
 #: public/templates/staffs/personnal_records.html:63
 msgid "Profile:"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:326
+#: public/templates/staffs/personnal_records.html:332
 msgid "Profiles"
 msgstr ""
 
@@ -2508,7 +2514,7 @@ msgstr ""
 msgid "ProviderID:"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:451
+#: public/templates/staffs/personnal_records.html:457
 #: public/templates/staffs/staff/assignmenthistory.html:83
 msgid "Précédement:"
 msgstr ""
@@ -2559,16 +2565,16 @@ msgstr ""
 msgid "Recruitment act number"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:358
-msgid "Recruitment diploma <small>(<span translate>in public service</span>)</small>"
+#: public/templates/staffs/staff/edit.html:377
+msgid "Recruitment diploma"
 msgstr ""
 
 #: public/js/appFilters.js:309
 msgid "Recurring Sales"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:41
-#: public/templates/staffs/staff/edit.html:421
+#: public/templates/dialogs/physicalRecordDetails.html:42
+#: public/templates/staffs/staff/edit.html:440
 msgid "Reference"
 msgstr ""
 
@@ -2598,7 +2604,7 @@ msgstr ""
 msgid "Registration number"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:286
+#: public/templates/staffs/staff/edit.html:295
 msgid "Registration number (Matricul)"
 msgstr ""
 
@@ -2657,7 +2663,7 @@ msgstr ""
 msgid "Retirement age"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:299
+#: public/templates/staffs/personnal_records.html:305
 msgid "Retirement date"
 msgstr ""
 
@@ -2713,18 +2719,23 @@ msgstr ""
 #: public/templates/installation/second.html:46
 #: public/templates/staffs/discipline/edit.html:95
 #: public/templates/staffs/mouvement/edit.html:149
-#: public/templates/staffs/staff/edit.html:455
+#: public/templates/staffs/staff/edit.html:474
 #: public/templates/staffs/status/edit.html:95
 #: public/templates/thresholds.html:66
 msgid "Save"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:322
+#: public/templates/staffs/staff/edit.html:341
 msgid "School &amp; Academy information"
 msgstr ""
 
 #: public/templates/staffs/personnal_records.html:223
 msgid "School and training"
+msgstr ""
+
+#: public/templates/staffs/staff/edit.html:365
+#: public/templates/staffs/staff/edit.html:388
+msgid "School/Institution"
 msgstr ""
 
 #: public/templates/administration/positions/main.html:47
@@ -2814,13 +2825,13 @@ msgid "Select duration"
 msgstr ""
 
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:126
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:263
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:261
 #: public/js/controllers/staffs/staff/MoreCtrl.js:44
 msgid "Select profiles (You can add up to 05 profiles):"
 msgstr ""
 
 #: public/js/controllers/administration/positions/PositionDetailsCtrl.js:129
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:266
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:264
 #: public/js/controllers/staffs/staff/MoreCtrl.js:47
 msgid "Select skills (You can add up to 05 skills):"
 msgstr ""
@@ -2943,11 +2954,11 @@ msgstr ""
 msgid "Situation"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:368
+#: public/templates/staffs/personnal_records.html:374
 msgid "Skills"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:392
+#: public/templates/staffs/personnal_records.html:398
 #: public/templates/staffs/personnal_records.html:72
 msgid "Skills:"
 msgstr ""
@@ -2981,13 +2992,13 @@ msgstr ""
 msgid "Staff management"
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:381
+#: public/templates/staffs/staff/edit.html:400
 msgid "Stages"
 msgstr ""
 
 #: public/templates/dialogs/affectation.html:176
 #: public/templates/installation/first.html:16
-#: public/templates/staffs/staff/edit.html:392
+#: public/templates/staffs/staff/edit.html:411
 msgid "Start"
 msgstr ""
 
@@ -3003,7 +3014,7 @@ msgstr ""
 msgid "Start date of service"
 msgstr ""
 
-#: public/templates/staffs/personnal_records.html:444
+#: public/templates/staffs/personnal_records.html:450
 msgid "Start date:"
 msgstr ""
 
@@ -3011,7 +3022,7 @@ msgstr ""
 #: public/templates/procrastinate/tasks/main.html:67
 #: public/templates/projects/profile.html:45
 #: public/templates/staffs/personnal_records.html:275
-#: public/templates/staffs/staff/edit.html:273
+#: public/templates/staffs/staff/edit.html:282
 msgid "Status"
 msgstr ""
 
@@ -3159,11 +3170,11 @@ msgstr ""
 
 #: public/js/controllers/administration/positions/EligibilityCtrl.js:83
 #: public/js/controllers/administration/positions/PositionsCtrl.js:280
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:522
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:604
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:762
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:217
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:413
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:520
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:600
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:758
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:216
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:412
 #: public/js/controllers/staffs/staff/SanctionsManagementCtrl.js:291
 #: public/js/controllers/staffs/staff/SanctionsStatisticsCtrl.js:214
 #: public/js/controllers/staffs/staff/StaffsCtrl.js:409
@@ -3173,7 +3184,7 @@ msgid "The Export is too big. Please reduce the date range"
 msgstr ""
 
 #: public/js/controllers/staffs/staff/AssignmentHistoryCtrl.js:105
-#: public/js/controllers/staffs/staff/StaffCtrl.js:357
+#: public/js/controllers/staffs/staff/StaffCtrl.js:394
 msgid "The affectation has been canceled successfully"
 msgstr ""
 
@@ -3197,14 +3208,14 @@ msgstr ""
 msgid "The data have been imported"
 msgstr ""
 
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:475
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:715
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:170
-#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:364
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:473
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:711
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:169
+#: public/js/controllers/staffs/staff/PhysicalRecordsCtrl.js:363
 msgid "The document has been deleted successfully"
 msgstr ""
 
-#: public/js/controllers/staffs/staff/PhysicalRecordCtrl.js:246
+#: public/js/controllers/staffs/staff/PhysicalRecordCtrl.js:250
 msgid "The document has been saved"
 msgstr ""
 
@@ -3253,7 +3264,7 @@ msgstr ""
 msgid "The organization has been updated"
 msgstr ""
 
-#: public/js/controllers/staffs/staff/StaffCtrl.js:434
+#: public/js/controllers/staffs/staff/StaffCtrl.js:471
 msgid "The personnel has been saved"
 msgstr ""
 
@@ -3298,7 +3309,7 @@ msgstr ""
 msgid "The sanction has been canceled successfully"
 msgstr ""
 
-#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:343
+#: public/js/controllers/staffs/PersonnalRecordsCtrl.js:341
 msgid "The staff has been updated"
 msgstr ""
 
@@ -3413,7 +3424,7 @@ msgstr ""
 
 #: public/templates/procrastinate/tasks/dialogs/task.html:17
 #: public/templates/procrastinate/tasks/main.html:65
-#: public/templates/staffs/staff/edit.html:384
+#: public/templates/staffs/staff/edit.html:403
 msgid "Title"
 msgstr ""
 
@@ -3437,7 +3448,7 @@ msgstr ""
 msgid "To turn off a specific feature, just click the toggle."
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:440
+#: public/templates/staffs/staff/edit.html:459
 msgid "To:"
 msgstr ""
 
@@ -3469,6 +3480,11 @@ msgstr ""
 
 #: public/templates/dashboard/directives/chart5.html:41
 msgid "Total structure"
+msgstr ""
+
+#: public/templates/staffs/staff/edit.html:369
+#: public/templates/staffs/staff/edit.html:392
+msgid "Training area"
 msgstr ""
 
 #: public/js/appFilters.js:48
@@ -3542,13 +3558,13 @@ msgstr ""
 msgid "Verify that the profile and skills required for the position have been completed"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:124
-#: public/templates/staffs/personnal_records.html:507
-#: public/templates/staffs/staff/physicalrecords.html:99
+#: public/templates/dialogs/physicalRecordDetails.html:125
+#: public/templates/staffs/personnal_records.html:513
+#: public/templates/staffs/staff/physicalrecords.html:100
 msgid "View"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:77
+#: public/templates/dialogs/physicalRecordDetails.html:78
 msgid "Viewed"
 msgstr ""
 
@@ -3650,8 +3666,8 @@ msgstr ""
 msgid "all structure"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:96
-#: public/templates/staffs/personnal_records.html:454
+#: public/templates/dialogs/physicalRecordDetails.html:97
+#: public/templates/staffs/personnal_records.html:460
 #: public/templates/staffs/staff/assignmenthistory.html:92
 msgid "by"
 msgstr ""
@@ -3673,7 +3689,7 @@ msgstr ""
 msgid "documents"
 msgstr ""
 
-#: public/templates/dialogs/physicalRecordDetails.html:131
+#: public/templates/dialogs/physicalRecordDetails.html:132
 msgid "download"
 msgstr ""
 
@@ -3689,7 +3705,7 @@ msgstr ""
 msgid "has assigned you a new task."
 msgstr ""
 
-#: public/templates/staffs/staff/edit.html:358
+#: public/templates/staffs/staff/edit.html:377
 msgid "in public service"
 msgstr ""
 

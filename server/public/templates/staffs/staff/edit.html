@@ -344,7 +344,7 @@
                                         <md-card-content>
                                             <h3 class="md-subhead"><span translate>Educational status</span> <small>(<span translate>Highest level of education</span>)</small></h3>
                                             <md-input-container class="md-block">
-                                                <label>Highest level of education</label>
+                                                <label translate>Highest level of education</label>
                                                 <md-select ng-model="personnel.qualifications.highestLevelEducation" >
                                                     <md-option ng-repeat="educationalLevel in educationLevels" value="{{educationalLevel.id}}">
                                                         {{educationalLevel.name}}
@@ -374,7 +374,7 @@
                                                     <input ng-model="personnel.qualifications.schools[0].option">
                                                 </md-input-container>
                                             </div>
-                                            <span class="md-subhead" translate>Recruitment diploma <small>(<span translate>in public service</span>)</small></span>
+                                            <span class="md-subhead" ><span translate>Recruitment diploma </span><small> (<span translate>in public service</span>)</small></span>
                                             <div layout="row" flex>
                                                 <md-input-container class="md-block" flex>
                                                     <label translate>Entitled</label>
@@ -385,11 +385,11 @@
                                                     <md-datepicker class="md-block"  ng-model="personnel.qualifications.schools[1].date" md-max-date="max" ></md-datepicker>
                                                 </md-input-container>
                                                 <md-input-container class="md-block"  flex>
-                                                    <label translate>Authority</label>
+                                                    <label translate>School/Institution</label>
                                                     <input ng-model="personnel.qualifications.schools[1].authority">
                                                 </md-input-container>
                                                 <md-input-container class="md-block"  flex>
-                                                    <label translate>Domain</label>
+                                                    <label translate>Training area</label>
                                                     <input ng-model="personnel.qualifications.schools[1].domain">
                                                 </md-input-container>
                                                 <md-input-container class="md-block"  flex>
