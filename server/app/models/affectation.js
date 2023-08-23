@@ -8,6 +8,7 @@ var AffectationSchema = new Schema({
     positionId: {type: ObjectId, required: true},
     oldPositionId: {type: ObjectId, ref: 'Position', required: false},
     positionCode: {type: String, required: false},
+    rank: {type: String, required: false},
     personnelId: {type: Schema.ObjectId, ref: 'Personnel', required: true}, //Personnel id
     actor: {type: Schema.ObjectId, ref: 'User', required: true}, //User ID
     interim: {type: Boolean, required: false, default: false},

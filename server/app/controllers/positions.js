@@ -127,6 +127,7 @@ exports.api.affectToPosition = function (req, res) {
                             startDate: fields.startDate,
                             mouvement: fields.mouvement,
                             nature: fields.nature,
+                            rank: fields.rank,
                             endDate: (fields.isCurrent && fields.isCurrent == "true") ? null : fields.endDate,
                         };
                         var filter = {

@@ -11,7 +11,8 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
         signatureDate: undefined,
         startDate: undefined,
         mouvement: undefined,
-        nature: undefined
+        nature: undefined,
+        rank: undefined
     };
 
     $scope.loading = true;
@@ -102,248 +103,251 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                 $scope.ranks = response.data.jsonList;
                 Dictionary.jsonList({dictionary: 'personnel', levels: ['mouvements']}).then(function (response) {
                     $scope.mouvements = response.data.jsonList;
-                    Dictionary.jsonList({dictionary: 'acts', levels: ['natures']}).then(function (response) {
-                        $scope.naturesAct = response.data.jsonList;
-                        $ocLazyLoad.load('js/services/StructureService.js').then(function () {
-                            var Structure = $injector.get('Structure');
-                            $ocLazyLoad.load('js/services/PositionService.js').then(function () {
-                                var Position = $injector.get('Position');
-                                $ocLazyLoad.load('js/services/StaffService.js').then(function () {
-                                    var Staff = $injector.get('Staff');
-                                    $ocLazyLoad.load('js/services/PositionService.js').then(function () {
-                                        var Position = $injector.get('Position');
-                                        $ocLazyLoad.load('js/services/StaffService.js').then(function () {
-                                            var StaffAgent = $injector.get('Staff');
+                    Dictionary.jsonList({dictionary: 'personnel', levels: ['ranks']}).then(function (response) {
+                        $scope.positionRanks = response.data.jsonList;
+                        Dictionary.jsonList({dictionary: 'acts', levels: ['natures']}).then(function (response) {
+                            $scope.naturesAct = response.data.jsonList;
+                            $ocLazyLoad.load('js/services/StructureService.js').then(function () {
+                                var Structure = $injector.get('Structure');
+                                $ocLazyLoad.load('js/services/PositionService.js').then(function () {
+                                    var Position = $injector.get('Position');
+                                    $ocLazyLoad.load('js/services/StaffService.js').then(function () {
+                                        var Staff = $injector.get('Staff');
+                                        $ocLazyLoad.load('js/services/PositionService.js').then(function () {
+                                            var Position = $injector.get('Position');
+                                            $ocLazyLoad.load('js/services/StaffService.js').then(function () {
+                                                var StaffAgent = $injector.get('Staff');
 
-                                            if ($scope.params.personnel) {
-                                                $scope.personnelFromParams = true;
-                                                $scope.selectedPersonnel = $scope.params.personnel._id;
-                                                $scope.personnels = [$scope.params.personnel];
-                                                $rootScope.kernel.loading = 100;
-                                            } else {
-                                                $rootScope.kernel.loading = 0;
-                                                StaffAgent.list({minify: true, limit: 0, skip: 0, search: $scope.staffsFilter, filters: JSON.stringify()}).then(function (response) {
+                                                if ($scope.params.personnel) {
+                                                    $scope.personnelFromParams = true;
+                                                    $scope.selectedPersonnel = $scope.params.personnel._id;
+                                                    $scope.personnels = [$scope.params.personnel];
                                                     $rootScope.kernel.loading = 100;
-                                                    $scope.personnels = response.data.data;
-                                                }).catch(function (response) {
-                                                    console.log(response);
-                                                });
-                                            }
-
-
-
-                                            $scope.loadStructures = function (type) {
-                                                $scope.loading = true;
-                                                $rootScope.kernel.loading = 0;
-                                                $scope.structures = undefined;
-                                                $scope.structures = undefined;
-                                                $scope.affectation.positionId = undefined
-                                                var option = {type: "t=" + type + "=r=" + 2};
-                                                if (type == 2) {
-                                                    option = {type: "t=" + type + "=r=" + 2};
-                                                }
-
-                                                Structure.minimalList(option).then(function (response) {
-                                                    var data = response.data;
-                                                    $scope.structures = data;
-                                                    $scope.loading = false;
-                                                    $rootScope.kernel.loading = 100;
-                                                    if ($scope.params && $scope.params.positionTo) {
-                                                        $scope.structure = $scope.params.positionTo.structure.father.code;
-                                                    }
-
-                                                }).catch(function (response) {
-                                                    console.error(response);
-                                                });
-                                            }
-
-                                            $scope.loadSubStructures = function (type, structureCode) {
-                                                $scope.loading = true;
-                                                $rootScope.kernel.loading = 0;
-                                                $scope.substructures = undefined;
-                                                $scope.affectation.positionId = undefined
-                                                var option = {type: "t=" + type};
-                                                if (type == 2) {
-                                                    option = {type: "t=" + type + "=r=" + 3};
-                                                }
-
-
-
-                                                Structure.minimalList(option).then(function (response) {
-                                                    var data = response.data;
-                                                    $scope.substructures = data;
-
-                                                    $scope.substructures.sort(function (a, b) {
-                                                        if (a.code < b.code) {
-                                                            return -1;
-                                                        }
-                                                        if (a.code > b.code) {
-                                                            return 1;
-                                                        }
-                                                        return 0;
-                                                    });
-
-                                                    var groupOfCodes = [];
-                                                    $scope.groupList = $scope.substructures.reduce(function (previous, current) {
-                                                        var father = {};
-                                                        if (current.rank == "3" && current.code.indexOf($scope.structure + "-") == 0) {
-
-                                                            if ((current.code.indexOf('-1') !== current.code.lastIndexOf('-1') || (current.code.indexOf($scope.structure + '-') === 0 && current.code.indexOf('-1') === current.code.lastIndexOf('-1'))) && //Les codes qui ??
-                                                                    current.code.lastIndexOf('-1') != -1 && // '-1' existe dans le code ou la première occurence du préfixe d'un code
-                                                                    groupOfCodes.indexOf(current.code.substring(0, current.code.lastIndexOf('-1'))) === -1) { // Eviter les doublons de groupe
-
-                                                                var code = current.code.substring(0, current.code.lastIndexOf('-1'));
-
-                                                                if (($scope.typeStructre !== "1" && code !== $scope.structure) || $scope.structure + '-1' === current.code || $scope.typeStructre === "1") {//Remove the main father to avoid duplication
-                                                                    father = {
-                                                                        name: current.name,
-                                                                        code: code
-                                                                    }
-                                                                    groupOfCodes.push(current.code.substring(0, current.code.lastIndexOf('-1')));
-                                                                    previous.push(father);
-                                                                }
-
-                                                            } else {
-                                                                if ($scope.structure + '-1' === current.code) {
-                                                                    father = {
-                                                                        name: current.name,
-                                                                        code: current.code.substring(0, current.code.lastIndexOf('-1'))
-                                                                    }
-                                                                    groupOfCodes.push(current.code.substring(0, current.code.lastIndexOf('-1')));
-                                                                    previous.push(father);
-                                                                }
-                                                            }
-                                                        }
-                                                        previous.sort(function (a, b) {
-                                                            if (a.name < b.name) {
-                                                                return -1;
-                                                            }
-                                                            if (a.name > b.name) {
-                                                                return 1;
-                                                            }
-                                                            return 0;
-                                                        })
-                                                        return previous;
-                                                    }, []);
-
-                                                    $scope.loading = false;
-                                                    $rootScope.kernel.loading = 100
-
-                                                    if ($scope.params && $scope.params.positionTo) {
-                                                        $scope.substructure = $scope.params.positionTo.structure.code;
-                                                    }
-
-                                                }).catch(function (response) {
-                                                    console.error(response);
-                                                });
-                                            }
-
-
-                                            $scope.onlySubDirection = function (item) {
-                                                if ($scope.structure) {
-                                                    var code = $scope.structure;
-                                                    return item.rank == "3" && item.code.indexOf(code + "-") == 0;
                                                 } else {
-                                                    return false;
+                                                    $rootScope.kernel.loading = 0;
+                                                    StaffAgent.list({minify: true, limit: 0, skip: 0, search: $scope.staffsFilter, filters: JSON.stringify()}).then(function (response) {
+                                                        $rootScope.kernel.loading = 100;
+                                                        $scope.personnels = response.data.data;
+                                                    }).catch(function (response) {
+                                                        console.log(response);
+                                                    });
                                                 }
-                                            };
 
 
 
-                                            var watch = {};
-
-                                            watch.structure = $scope.$watch('structure', function (newval, oldval) {
-                                                $scope.loadSubStructures($scope.typeStructre)
-                                            });
-
-                                            watch.substructure = $scope.$watch('substructure', function (newval, oldval) {
-                                                $scope.affectation.positionId = undefined;
-                                                if (newval) {
-                                                    getPositions(newval);
-                                                }
-                                            });
-
-                                            $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
-                                                watch.structure();
-                                                watch.substructure();
-                                            });
-
-                                            function getPositions(idStructure) {
-                                                $scope.helper = [];
-                                                $rootScope.kernel.loading = 0;
-                                                var deferred = $q.defer();
-                                                $scope.promise = deferred.promise;
-                                                var filterParams = {
-                                                    structure: idStructure
-                                                };
-
-                                                Position.list({filters: JSON.stringify(filterParams)}).then(function (response) {
-                                                    var data = response.data.data;
-                                                    $rootScope.kernel.loading = 100;
-                                                    $scope.positions = data;
-                                                    deferred.resolve();
-
-                                                    if ($scope.params && $scope.params.positionTo) {
-                                                        $scope.affectation.positionId = $scope.params.positionTo._id;
-                                                        $scope.affectation.positionCode = $scope.params.positionTo.code;
+                                                $scope.loadStructures = function (type) {
+                                                    $scope.loading = true;
+                                                    $rootScope.kernel.loading = 0;
+                                                    $scope.structures = undefined;
+                                                    $scope.structures = undefined;
+                                                    $scope.affectation.positionId = undefined
+                                                    var option = {type: "t=" + type + "=r=" + 2};
+                                                    if (type == 2) {
+                                                        option = {type: "t=" + type + "=r=" + 2};
                                                     }
 
-                                                }).catch(function (response) {
-                                                    console.error(response);
-                                                });
-                                            }
-
-                                            $scope.affectation.isCurrent = true;
-                                            if ($scope.params.origin == "staffCtrl") {
-                                                $scope.affectation.isCurrent = false;
-                                            }
-
-                                            // Modify or Add ?
-                                            if ($scope.params) {
-                                                if ($scope.params.positionTo) {
-                                                    $scope.positionFromParams = true;
-                                                    $scope.typeStructre = $scope.params.positionTo.structure.type;
-                                                    $scope.loadStructures($scope.typeStructre);
-
-                                                    $scope.affectation.positionId = $scope.params.positionTo._id;
-                                                    $scope.affectation.positionCode = $scope.params.positionTo.code;
-
-
-                                                }
-                                            }
-
-                                            // save
-                                            $scope.save = function () {
-                                                $rootScope.kernel.loading = 0;
-                                                $scope.affectation.occupiedBy = $scope.selectedPersonnel;
-                                                if ($scope.affectation.numAct && $scope.affectation.signatureDate && $scope.affectation.startDate && $scope.affectation.positionId){
-                                                    Position.affect($scope.affectation).then(function (response) {
+                                                    Structure.minimalList(option).then(function (response) {
+                                                        var data = response.data;
+                                                        $scope.structures = data;
+                                                        $scope.loading = false;
                                                         $rootScope.kernel.loading = 100;
-                                                        if ($scope.params.positionTo) {
-                                                            $state.go('home.administration.positions');
-                                                        } else if ($scope.params.origin == "staffCtrl") {
-
-                                                        } else if ($scope.params.personnel) {
-                                                            $state.go('home.staffs.main');
+                                                        if ($scope.params && $scope.params.positionTo) {
+                                                            $scope.structure = $scope.params.positionTo.structure.father.code;
                                                         }
 
-                                                        $rootScope.kernel.alerts.push({
-                                                            type: 3,
-                                                            msg: gettextCatalog.getString('The operation has been saved'),
-                                                            priority: 4
-                                                        });
-                                                        $scope.close();
                                                     }).catch(function (response) {
-                                                        $rootScope.kernel.loading = 100;
-                                                        $rootScope.kernel.alerts.push({
-                                                            type: 1,
-                                                            msg: gettextCatalog.getString('An error occurred, please try again later'),
-                                                            priority: 2
-                                                        });
                                                         console.error(response);
                                                     });
                                                 }
-                                            }
+
+                                                $scope.loadSubStructures = function (type, structureCode) {
+                                                    $scope.loading = true;
+                                                    $rootScope.kernel.loading = 0;
+                                                    $scope.substructures = undefined;
+                                                    $scope.affectation.positionId = undefined
+                                                    var option = {type: "t=" + type};
+                                                    if (type == 2) {
+                                                        option = {type: "t=" + type + "=r=" + 3};
+                                                    }
+
+
+
+                                                    Structure.minimalList(option).then(function (response) {
+                                                        var data = response.data;
+                                                        $scope.substructures = data;
+
+                                                        $scope.substructures.sort(function (a, b) {
+                                                            if (a.code < b.code) {
+                                                                return -1;
+                                                            }
+                                                            if (a.code > b.code) {
+                                                                return 1;
+                                                            }
+                                                            return 0;
+                                                        });
+
+                                                        var groupOfCodes = [];
+                                                        $scope.groupList = $scope.substructures.reduce(function (previous, current) {
+                                                            var father = {};
+                                                            if (current.rank == "3" && current.code.indexOf($scope.structure + "-") == 0) {
+
+                                                                if ((current.code.indexOf('-1') !== current.code.lastIndexOf('-1') || (current.code.indexOf($scope.structure + '-') === 0 && current.code.indexOf('-1') === current.code.lastIndexOf('-1'))) && //Les codes qui ??
+                                                                        current.code.lastIndexOf('-1') != -1 && // '-1' existe dans le code ou la première occurence du préfixe d'un code
+                                                                        groupOfCodes.indexOf(current.code.substring(0, current.code.lastIndexOf('-1'))) === -1) { // Eviter les doublons de groupe
+
+                                                                    var code = current.code.substring(0, current.code.lastIndexOf('-1'));
+
+                                                                    if (($scope.typeStructre !== "1" && code !== $scope.structure) || $scope.structure + '-1' === current.code || $scope.typeStructre === "1") {//Remove the main father to avoid duplication
+                                                                        father = {
+                                                                            name: current.name,
+                                                                            code: code
+                                                                        }
+                                                                        groupOfCodes.push(current.code.substring(0, current.code.lastIndexOf('-1')));
+                                                                        previous.push(father);
+                                                                    }
+
+                                                                } else {
+                                                                    if ($scope.structure + '-1' === current.code) {
+                                                                        father = {
+                                                                            name: current.name,
+                                                                            code: current.code.substring(0, current.code.lastIndexOf('-1'))
+                                                                        }
+                                                                        groupOfCodes.push(current.code.substring(0, current.code.lastIndexOf('-1')));
+                                                                        previous.push(father);
+                                                                    }
+                                                                }
+                                                            }
+                                                            previous.sort(function (a, b) {
+                                                                if (a.name < b.name) {
+                                                                    return -1;
+                                                                }
+                                                                if (a.name > b.name) {
+                                                                    return 1;
+                                                                }
+                                                                return 0;
+                                                            })
+                                                            return previous;
+                                                        }, []);
+
+                                                        $scope.loading = false;
+                                                        $rootScope.kernel.loading = 100
+
+                                                        if ($scope.params && $scope.params.positionTo) {
+                                                            $scope.substructure = $scope.params.positionTo.structure.code;
+                                                        }
+
+                                                    }).catch(function (response) {
+                                                        console.error(response);
+                                                    });
+                                                }
+
+
+                                                $scope.onlySubDirection = function (item) {
+                                                    if ($scope.structure) {
+                                                        var code = $scope.structure;
+                                                        return item.rank == "3" && item.code.indexOf(code + "-") == 0;
+                                                    } else {
+                                                        return false;
+                                                    }
+                                                };
+
+
+
+                                                var watch = {};
+
+                                                watch.structure = $scope.$watch('structure', function (newval, oldval) {
+                                                    $scope.loadSubStructures($scope.typeStructre)
+                                                });
+
+                                                watch.substructure = $scope.$watch('substructure', function (newval, oldval) {
+                                                    $scope.affectation.positionId = undefined;
+                                                    if (newval) {
+                                                        getPositions(newval);
+                                                    }
+                                                });
+
+                                                $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
+                                                    watch.structure();
+                                                    watch.substructure();
+                                                });
+
+                                                function getPositions(idStructure) {
+                                                    $scope.helper = [];
+                                                    $rootScope.kernel.loading = 0;
+                                                    var deferred = $q.defer();
+                                                    $scope.promise = deferred.promise;
+                                                    var filterParams = {
+                                                        structure: idStructure
+                                                    };
+
+                                                    Position.list({filters: JSON.stringify(filterParams)}).then(function (response) {
+                                                        var data = response.data.data;
+                                                        $rootScope.kernel.loading = 100;
+                                                        $scope.positions = data;
+                                                        deferred.resolve();
+
+                                                        if ($scope.params && $scope.params.positionTo) {
+                                                            $scope.affectation.positionId = $scope.params.positionTo._id;
+                                                            $scope.affectation.positionCode = $scope.params.positionTo.code;
+                                                        }
+
+                                                    }).catch(function (response) {
+                                                        console.error(response);
+                                                    });
+                                                }
+
+                                                $scope.affectation.isCurrent = true;
+                                                if ($scope.params.origin == "staffCtrl") {
+                                                    $scope.affectation.isCurrent = false;
+                                                }
+
+                                                // Modify or Add ?
+                                                if ($scope.params) {
+                                                    if ($scope.params.positionTo) {
+                                                        $scope.positionFromParams = true;
+                                                        $scope.typeStructre = $scope.params.positionTo.structure.type;
+                                                        $scope.loadStructures($scope.typeStructre);
+
+                                                        $scope.affectation.positionId = $scope.params.positionTo._id;
+                                                        $scope.affectation.positionCode = $scope.params.positionTo.code;
+
+
+                                                    }
+                                                }
+
+                                                // save
+                                                $scope.save = function () {
+                                                    $rootScope.kernel.loading = 0;
+                                                    $scope.affectation.occupiedBy = $scope.selectedPersonnel;
+                                                    if ($scope.affectation.numAct && $scope.affectation.signatureDate && $scope.affectation.startDate && $scope.affectation.positionId && $scope.affectation.rank) {
+                                                        Position.affect($scope.affectation).then(function (response) {
+                                                            $rootScope.kernel.loading = 100;
+                                                            if ($scope.params.positionTo) {
+                                                                $state.go('home.administration.positions');
+                                                            } else if ($scope.params.origin == "staffCtrl") {
+
+                                                            } else if ($scope.params.personnel) {
+                                                                $state.go('home.staffs.main');
+                                                            }
+
+                                                            $rootScope.kernel.alerts.push({
+                                                                type: 3,
+                                                                msg: gettextCatalog.getString('The operation has been saved'),
+                                                                priority: 4
+                                                            });
+                                                            $scope.close();
+                                                        }).catch(function (response) {
+                                                            $rootScope.kernel.loading = 100;
+                                                            $rootScope.kernel.alerts.push({
+                                                                type: 1,
+                                                                msg: gettextCatalog.getString('An error occurred, please try again later'),
+                                                                priority: 2
+                                                            });
+                                                            console.error(response);
+                                                        });
+                                                    }
+                                                }
+                                            });
                                         });
                                     });
                                 });
@@ -352,7 +356,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                     });
                 });
             });
-        });
 
+        });
     });
 });

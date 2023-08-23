@@ -118,6 +118,22 @@
                         </md-input-container>
 
                     </div>
+                    <div layout="row" ng-if="affectation.positionId">
+                        <md-input-container class="md-block" flex>
+                            <label translate>Rank </label>
+                            <md-select name="rank" ng-disabled="rankFromParams" ng-model="affectation.rank" required data-md-container-class="selectdemoSelectHeader" >
+                                <md-option ng-repeat="rank in positionRanks|filter:searchTerm" value="{{rank.id}}">
+                                    {{rank.name | uppercase}}
+                                </md-option>
+                            </md-select>
+                            <div ng-messages="rank.$error">
+                                <div ng-message="required" translate>
+                                    This field is required to proceed on next step.
+                                </div>
+                            </div>
+                        </md-input-container>
+
+                    </div>
                     <div layout="row" ng-if="substructure">
                         <md-input-container class="md-block" flex>
                             <label translate>Type of movement</label>

@@ -1,0 +1,62 @@
+[
+    {
+        "id": "SG",
+        "en": "Secrétaire Général",
+        "fr": "Secrétaire Général",
+        "hierarchy": "10"
+    },
+    {
+        "id": "SGA",
+        "en": "Secrétaire Général Adjoint",
+        "fr": "Secrétaire Général Adjoint",
+        "hierarchy": "9"
+    },
+    {
+        "id": "DIR",
+        "en": "Directeur",
+        "fr": "Directeur",
+        "hierarchy": "8"
+    },
+    {
+        "id": "DIRA",
+        "en": "Directeur Adjoint",
+        "fr": "Directeur Adjoint",
+        "hierarchy": "7"
+    },
+    {
+        "id": "SD",
+        "en": "Sous-Directeur",
+        "fr": "Sous-Directeur",
+        "hierarchy": "6"
+    },
+    {
+        "id": "CS",
+        "en": "Chef de Service",
+        "fr": "Chef de Service",
+        "hierarchy": "5"
+    },
+    {
+        "id": "CSA",
+        "en": "Chef Service-Adjoint",
+        "fr": "Chef Service-Adjoint",
+        "hierarchy": "4"
+    },
+    {
+        "id": "CB",
+        "en": "Chef de Bureau",
+        "fr": "Chef de Bureau",
+        "hierarchy": "3"
+    },
+    {
+        "id": "CA",
+        "en": "Cadre",
+        "fr": "Cadre",
+        "hierarchy": "2"
+    },
+    {
+        "id": "AG",
+        "en": "Agent",
+        "fr": "Agent",
+        "hierarchy": "1"
+    }
+]

@@ -488,7 +488,7 @@ exports.list = function (options, callback) {
 
     projection = {
         $project: {_id: 1, "personnel.name": 1, matricule: 1, metainfo: 1, mouvement: 1, positionId: 1, oldPositionId: 1, personnelId: 1, interim: 1,
-            lastModified: 1, date: 1, startDate: 1, endDate: 1, "personnel.identifier": 1, nature: 1, fname: 1, "situations": 1, numAct: 1,
+            lastModified: 1, date: 1, startDate: 1, endDate: 1, "personnel.identifier": 1, nature: 1, fname: 1, "situations": 1, numAct: 1, rank:1,
             "oldPosition._id": 1, "oldPosition.fr": 1, "newPosition._id": 1, "newPosition.fr": 1, "newPosition.code": 1,
             "structureAffectation._id": 1, "structureAffectation.fr": 1, "structureAffectationFather._id": 1, "structureAffectationFather.fr": 1, "structureAffectationFather.code": 1,
             "oldStructureAffectation._id": 1, "oldStructureAffectation.fr": 1, "oldStructureAffectationFather._id": 1, "oldStructureAffectationFather.fr": 1,
@@ -536,8 +536,8 @@ exports.list = function (options, callback) {
                 if (affectations[a].mouvement) {
                     affectations[a].mouvementBeautified = dictionary.getValueFromJSON('../../resources/dictionary/personnel/mouvements.json', affectations[a].mouvement, language);
                     affectations[a].natureBeautified = dictionary.getValueFromJSON('../../resources/dictionary/acts/natures.json', affectations[a].nature, language);
-                    affectations[a].startDate = moment(affectations[a].startDate).format("MM/DD/YYYY");;
-                    affectations[a].endDate = moment(affectations[a].endDate).format("MM/DD/YYYY");;
+                    affectations[a].startDate = moment(affectations[a].startDate).format("DD/MM/YYYY");;
+                    affectations[a].endDate = moment(affectations[a].endDate).format("DD/MM/YYYY");;
                 }
             }
             return callback (null, affectations);

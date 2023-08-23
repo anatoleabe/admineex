@@ -205,7 +205,6 @@ angular.module('PhysicalRecordCtrl', []).controller('PhysicalRecordController', 
                                     $scope.$on('$destroy', function () {// in case of destroy, we destroy the watch
                                         watch.file();
                                     });
-                                    console.log(selectedPersonal);
                                     if (selectedPersonal) {
                                         $scope.document.owner = selectedPersonal._id;
                                         $scope.selectedPersonal = selectedPersonal;

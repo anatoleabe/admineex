@@ -255,6 +255,7 @@ exports.api.list = function (req, res) {
                             var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, index: 1, cni: 1, status: 1,
                                 identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1,
                                 "affectation.position.fr": 1,
+                                "affectation.rank": 1,
                                 "affectation.position.en": 1,
                                 "affectation.position.code": 1,
                                 "affectation.position.structureId": 1,
@@ -767,6 +768,12 @@ exports.list = function (options, callback) {
                                             }
 
                                             if (personnels[a].affectation && personnels[a].affectation.position) {
+                                                var personalRank = (personnels[a].affectation.rank) ? personnels[a].affectation.rank : "";
+                                                if (personalRank != ""){
+                                                    personnels[a].affectation.rank = dictionary.getValueFromJSON('../../resources/dictionary/personnel/ranks.json', personalRank, language);
+                                                    console.log(personnels[a].affectation.rank);
+                                                }
+                                                
                                                 personnels[a].affectation.position.name = ((language && language !== "" && personnels[a].affectation.position[language] != undefined && personnels[a].affectation.position[language] != "") ? personnels[a].affectation.position[language] : personnels[a].affectation.position['en']);
                                                 controllers.structures.findStructureByCode(personnels[a].affectation.position.code.substring(0, personnels[a].affectation.position.code.indexOf('P')), language, function (err, structure) {
                                                     if (err) {
@@ -935,6 +942,7 @@ exports.api.export = function (req, res) {
                         "affectation.position.code": 1,
                         "affectation.position.structureId": 1,
                         "affectation.numAct": 1,
+                        "affectation.rank": 1,
                         address: 1,
                         birthPlace: 1,
                         birthDate: 1,
@@ -1433,12 +1441,12 @@ exports.api.followUpSheet = function (req, res) {
                     personnels[0].phone = personnels[0].telecom[0];
                     personnels[0].higherDiploma = personnels[0].qualifications.schools[0] ? personnels[0].qualifications.schools[0] : "";
                     personnels[0].recrutementDiploma = personnels[0].qualifications.schools[1] ? personnels[0].qualifications.schools[1] : "";
-                    personnels[0].birthDate = personnels[0].birthDate ? moment(personnels[0].birthDate).format("MM/DD/YYYY") : "Non connue";
-                    personnels[0].higherDiploma.date = personnels[0].higherDiploma ? moment(personnels[0].higherDiploma.date).format("MM/DD/YYYY") : "Non connue";
-                    personnels[0].recrutementDiploma.date = personnels[0].recrutementDiploma ? moment(personnels[0].recrutementDiploma.date).format("MM/DD/YYYY") : "Non connue";
+                    personnels[0].birthDate = personnels[0].birthDate ? moment(personnels[0].birthDate).format("DD/MM/YYYY") : "Non connue";
+                    personnels[0].higherDiploma.date = personnels[0].higherDiploma ? moment(personnels[0].higherDiploma.date).format("DD/MM/YYYY") : "Non connue";
+                    personnels[0].recrutementDiploma.date = personnels[0].recrutementDiploma ? moment(personnels[0].recrutementDiploma.date).format("DD/MM/YYYY") : "Non connue";
                     if (personnels[0].history) {
-                        personnels[0].history.signatureDate = personnels[0].history ? moment(personnels[0].history.signatureDate).format("MM/DD/YYYY") : "Non connue";
-                        personnels[0].history.minfiEntryDate = personnels[0].history ? moment(personnels[0].history.minfiEntryDate).format("MM/DD/YYYY") : "Non connue";
+                        personnels[0].history.signatureDate = personnels[0].history ? moment(personnels[0].history.signatureDate).format("DD/MM/YYYY") : "Non connue";
+                        personnels[0].history.minfiEntryDate = personnels[0].history ? moment(personnels[0].history.minfiEntryDate).format("DD/MM/YYYY") : "Non connue";
                     }
                     var options2 = {
                         req: req,
@@ -1669,6 +1677,9 @@ function beautify(options, personnels, callback) {
                         }
 
                         personnels[a].affectedTo = affectation;
+                        if (personnels[a].affectedTo && personnels[a].affectedTo.rank) {
+                            personnels[a].affectedTo.rank = dictionary.getValueFromJSON('../../resources/dictionary/personnel/ranks.json', personnels[a].affectedTo.rank, language);
+                        }
                         personnels[a].skillsCorresponding = 0;
                         personnels[a].profilesCorresponding = 0;
 
