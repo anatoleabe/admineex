@@ -771,7 +771,6 @@ exports.list = function (options, callback) {
                                                 var personalRank = (personnels[a].affectation.rank) ? personnels[a].affectation.rank : "";
                                                 if (personalRank != ""){
                                                     personnels[a].affectation.rank = dictionary.getValueFromJSON('../../resources/dictionary/personnel/ranks.json', personalRank, language);
-                                                    console.log(personnels[a].affectation.rank);
                                                 }
                                                 
                                                 personnels[a].affectation.position.name = ((language && language !== "" && personnels[a].affectation.position[language] != undefined && personnels[a].affectation.position[language] != "") ? personnels[a].affectation.position[language] : personnels[a].affectation.position['en']);

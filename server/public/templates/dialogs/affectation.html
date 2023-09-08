@@ -107,7 +107,9 @@
                             <label translate>New position </label>
                             <md-select name="newPosition" ng-disabled="positionFromParams" ng-model="affectation.positionId" required data-md-container-class="selectdemoSelectHeader" >
                                 <md-option ng-repeat="position in positions|filter:searchTerm" ng-s value="{{position._id}}">
-                                    {{position.name}} ({{position.code| uppercase}})
+                                    {{position.name}} ({{position.code| uppercase}})<br/>
+                                    <smal ng-if='position.status === "Pourvue"' style="font-size: 8; color: #666666">Occupant: {{position.helderName}}, Mle: {{position.helderMatricule}} </smal>
+                                    <smal ng-if='position.status === "Non pourvue"' style="font-size: 8; color: #666666" >Non pourvue</smal>
                                 </md-option>
                             </md-select>
                             <div ng-messages="newPosition.$error">

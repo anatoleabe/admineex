@@ -284,8 +284,9 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                         var data = response.data.data;
                                                         $rootScope.kernel.loading = 100;
                                                         $scope.positions = data;
+                                                        console.log(data)
                                                         deferred.resolve();
-
+                                                        
                                                         if ($scope.params && $scope.params.positionTo) {
                                                             $scope.affectation.positionId = $scope.params.positionTo._id;
                                                             $scope.affectation.positionCode = $scope.params.positionTo.code;
