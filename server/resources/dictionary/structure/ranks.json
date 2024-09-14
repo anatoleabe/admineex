@@ -1,5 +1,11 @@
 [
     {
+        "id": "0",
+        "code": "MIN",
+        "en": "Ministère",
+        "fr": "Ministère"
+    },
+    {
         "id": "1",
         "code": "DG",
         "en": "Direction Générale",

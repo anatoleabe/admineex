@@ -354,7 +354,7 @@ exports.read = function (options, id, callback) {
 };
 
 
-exports.list = function (options, callback) {
+exports.listOld = function (options, callback) {
     var filter = {rank: "2"};
     if (options.filter) {
         filter = options.filter;
@@ -391,6 +391,58 @@ exports.list = function (options, callback) {
                 }
             }
             LoopA(0);
+        }
+    });
+}
+
+exports.list = function (options, callback) {
+    var filter = { rank: "2" };
+    if (options.filter) {
+        filter = options.filter;
+    }
+
+    Structure.aggregate([
+        { $match: filter },
+        { $sort: { rank: 1 } },
+        {
+            $lookup: {
+                from: 'structures',
+                localField: '_id',
+                foreignField: 'fatherId',
+                as: 'children'
+            }
+        },
+        {
+            $lookup: {
+                from: 'structures',
+                localField: 'fatherId',
+                foreignField: '_id',
+                as: 'father'
+            }
+        },
+        {
+            $unwind: {
+                path: '$father',
+                "preserveNullAndEmptyArrays": true
+            }
+        },
+        { $sort: { 'children.rank': 1 } }
+    ]).exec(function (err, result) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            var structures = JSON.parse(JSON.stringify(result));
+            //callback(null, structures);
+            console.log(".... beautify structire");
+            // Remaining code logic...
+            beautify(options, structures, function (err, objects) {
+                if (err) {
+                    callback(err);
+                } else {
+                    callback(null, objects);
+                }
+            });
         }
     });
 }
@@ -549,7 +601,7 @@ exports.findStructureByCodeNoBeautify = function (code, language, callback) {
     });
 }
 
-exports.find = function (id, language, callback) {
+exports.findOld = function (id, language, callback) {
     Structure.findOne({
         _id: id
     }).lean().exec(function (err, result) {
@@ -564,10 +616,54 @@ exports.find = function (id, language, callback) {
                 beautify({language: language, beautify: true}, [structure], function (err, objects) {
                     if (err) {
                         callback(err);
-                    } else {
+            } else {
                         callback(null, objects[0]);
                     }
                 });
+            } else {
+                callback(null);
+            }
+        }
+    });
+}
+
+exports.find = function (options, language, callback) {
+    let id;
+    let doBeautify ;
+    if (options.id || (options.isFather)) {
+        id = options.id;
+    }else {
+        id = options;
+    }
+    if (options.beautify) {
+        doBeautify = options.beautify;
+    }else {
+        doBeautify = true;
+    }
+    
+    let isFather = options.isFather;
+    Structure.findOne({
+        _id: id
+    }).lean().exec(function (err, result) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            var structure = JSON.parse(JSON.stringify(result));
+
+            if (structure != null) {
+                structure.name = ((language && language !== "" && structure[language] != undefined && structure[language] != "") ? structure[language] : structure['en']);
+                if (doBeautify === true){
+                    beautify({language: language, beautify: true, isFather: isFather}, [structure], function (err, objects) {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            callback(null, objects[0]);
+                        }
+                    });
+                }else{
+                    callback(null, structure);
+                }
             } else {
                 callback(null);
             }
@@ -602,41 +698,44 @@ function beautify(options, objects, callback) {
     if (options.beautify && options.beautify === true) {
         //Address
         //objects = controllers.configuration.beautifyAddress({language: language}, objects);
-
         function Loop(o) {
             if (o < objects.length) {
                 objects[o].typeValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);
                 objects[o].rankValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/ranks.json', objects[o].rank, language);
                 objects[o].name = ((language && language !== "" && objects[o][language] != undefined && objects[o][language] != "") ? objects[o][language] : objects[o]['en']);
-                exports.find(objects[o].fatherId, language, function (err, structure) {
-                    if (err) {
-                        callback(err);
-                    } else {
-                        objects[o].father = structure;
-                        if (options.includePositions && objects[o].children) {
-                            function LoopB(b) {
-                                if (b < objects[o].children.length) {
-                                    objects[o].children[b].typeValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);
-                                    objects[o].children[b].rankValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/ranks.json', objects[o].rank, language);
-                                    objects[o].children[b].name = ((language && language !== "" && objects[o].children[b][language] != undefined && objects[o].children[b][language] != "") ? objects[o].children[b][language] : objects[o].children[b]['en']);
-                                    controllers.positions.findPositionsByStructureId({_id: objects[o].children[b]._id, beautify: true, structures: false, vacancies: options.vacancies, nomenclature: options.nomenclature}, function (err, positions) {
-                                        if (err) {
-                                            callback(err);
-                                        } else {
-                                            objects[o].children[b].positions = positions;
-                                            LoopB(b + 1);
-                                        }
-                                    });
-                                } else {
-                                    Loop(o + 1);
-                                }
-                            }
-                            LoopB(0)
+                if (objects[o].fatherId && options.isFather !== true){
+                    exports.find({id: objects[o].fatherId, isFather: true}, language, function (err, structure) {
+                        if (err) {
+                            callback(err);
                         } else {
-                            Loop(o + 1);
+                            objects[o].father = structure;
+                            if (options.includePositions && objects[o].children) {
+                                function LoopB(b) {
+                                    if (b < objects[o].children.length) {
+                                        objects[o].children[b].typeValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/types.json', objects[o].type, language);
+                                        objects[o].children[b].rankValue = dictionary.getValueFromJSON('../../resources/dictionary/structure/ranks.json', objects[o].rank, language);
+                                        objects[o].children[b].name = ((language && language !== "" && objects[o].children[b][language] != undefined && objects[o].children[b][language] != "") ? objects[o].children[b][language] : objects[o].children[b]['en']);
+                                        controllers.positions.findPositionsByStructureId({_id: objects[o].children[b]._id, beautify: true, structures: false, vacancies: options.vacancies, nomenclature: options.nomenclature}, function (err, positions) {
+                                            if (err) {
+                                                callback(err);
+                                            } else {
+                                                objects[o].children[b].positions = positions;
+                                                LoopB(b + 1);
+                                            }
+                                        });
+                                    } else {
+                                        Loop(o + 1);
+                                    }
+                                }
+                                LoopB(0)
+                            } else {
+                                Loop(o + 1);
+                            }
                         }
-                    }
-                });
+                    });
+                }else{
+                    Loop(o + 1);
+                }
             } else {
                 callback(null, objects);
             }

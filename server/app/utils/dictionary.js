@@ -11,6 +11,7 @@ var controllers = {
     configuration: require('../controllers/configuration')
 };
 
+var cache = {};
 // API
 exports.api = {};
 
@@ -90,14 +91,17 @@ exports.api.jsonList = function (req, res) {
 var getValueFromJSON = function (file, id, language) {
     var value = id;
     if (id && id !== "") {
-        var found = _.findWhere(require(file), {id: id});
+        if (!cache[file]) {
+            cache[file] = require(file);
+        }
+        var found = _.findWhere(cache[file], {id: id});
         if (found) {
-            if (language === "" || language === null || language === undefined) {
+            if (!language) {
                 value = found['en'];
             } else if (language !== "en" && language !== "fr") {
                 value = found[language]
             } else {
-                value = ((language !== "" && found[language] !== undefined && found[language] !== "") ? found[language] : found['en']);
+                value = (found[language] ? found[language] : found['en']);
             }
         }
     }

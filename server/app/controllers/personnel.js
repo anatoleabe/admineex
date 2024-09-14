@@ -267,11 +267,13 @@ exports.api.list = function (req, res) {
                                     identifier: 1, corps: 1, telecom: 1, fname: 1
                                 };
                             }
+                            console.log("==== Liste affiche 1");
                             exports.list(options, function (err, personnels) {
                                 if (err) {
                                     log.error(err);
                                     res.status(500).send(err);
                                 } else {
+                                    console.log("==== Liste affiche Apres ");
                                     personnels.sort(function (a, b) {
                                         if (a.fname < b.fname) {
                                             return -1;
@@ -521,6 +523,7 @@ exports.list = function (options, callback) {
         } else {
             var userStructure = [];
             var userStructureCodes = [];
+            console.log("==== Liste affiche - LoopS start");
             function LoopS(s) {
                 if (user.structures && s < user.structures.length && user.structures[s]) {
                     controllers.structures.find(user.structures[s], "en", function (err, structure) {
@@ -534,6 +537,7 @@ exports.list = function (options, callback) {
                         }
                     });
                 } else {
+                    console.log("==== Liste affiche - LoopS end");
                     if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4" || options.req.actor.role == "2") {
                         var query = {};
                         if (options.query) {
@@ -693,16 +697,17 @@ exports.list = function (options, callback) {
                         }
 
                         q = Personnel.aggregate(aggregate);
-
+                        console.log("==== Liste affiche - Before aggregation");
                         q.exec(function (err, personnels) {
                             if (err) {
                                 log.error(err);
                                 audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
                                 callback(err);
                             } else {
-
+                                console.log("==== Liste affiche - After aggregation");
                                 personnels = JSON.parse(JSON.stringify(personnels));
                                 var retirementLimit;
+                                console.log("==== Liste affiche - Loop  personnels");
                                 function LoopA(a) {
                                     if (a < personnels.length && personnels[a]) {
                                         personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
@@ -763,6 +768,8 @@ exports.list = function (options, callback) {
                                             personnels[a].active = (situation) ? situation : actif;
                                             personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
                                             if (status != "") {
+                                                if (status === "Fonctionnaire") status = "1";
+                                                if (status === "Non-staff personnel" || status === "Personnel non fonctionnaires") status = "2";
                                                 personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
                                                 personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, "code").toUpperCase();
                                             }
@@ -899,6 +906,7 @@ exports.list = function (options, callback) {
 
 
 exports.api.export = function (req, res) {
+    console.log("==== Demarrage... ")
     if (req.actor) {
         if (req.params.filters == undefined) {
             audit.logEvent(req.actor.id, 'Personnel', 'Export', '', '', 'failed',
@@ -920,11 +928,13 @@ exports.api.export = function (req, res) {
             var option = {
                 actor: req.actor, language: req.actor.language, beautify: true, filter: filter
             }
+            console.log("==== GET STRUCTURE ")
             controllers.structures.list(option, function (err, structures) {
                 if (err) {
                     log.error(err);
                     res.status(500).send(err);
                 } else {
+                    console.log("==== GET STRUCTURE ", structures.length)
                     var options = {
                         minify: false,
                         req: req,
@@ -951,12 +961,13 @@ exports.api.export = function (req, res) {
                     };
 
                     options.projection = projection;
-
+                    console.log("==== Avant Export list")
                     exports.list(options, function (err, personnels) {
                         if (err) {
                             log.error(err);
                             res.status(500).send(err);
                         } else {
+                            console.log("==== Apres Export list", personnels.length);
                             personnels.sort(function (a, b) {
                                 if (a.fname < b.fname) {
                                     return -1;
@@ -1010,6 +1021,7 @@ exports.api.export = function (req, res) {
                             options.title = gt.gettext("Admineex: Liste du personnel");
                             buildXLSX(options, function (err, filePath) {
                                 if (err) {
+                                    console.error(err);
                                     log.error(err);
                                 } else {
                                     var fileName = 'report.xlsx';

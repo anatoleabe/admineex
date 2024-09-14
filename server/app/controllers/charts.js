@@ -19,6 +19,7 @@ var controllers = {
 exports.api = {};
 
 exports.api.build = function (req, res) {
+    console.log("===CARD...", req.params.name)
     if (req.actor) {
         var name = req.params.name || '';
         if (name !== '') {
@@ -151,7 +152,7 @@ var whichChart = function (config, callback) {
  * @param {json} callback
  * optimized : true
  */
-var chart1 = function (config, callback) {
+let chart1 = function (config, callback) {
     var data = {
         totalWomen: 0,
         totalMen: 0
@@ -161,17 +162,35 @@ var chart1 = function (config, callback) {
         req: {
             actor: config.actor
         },
-        projection: {_id: 1, gender: 1}
-    }
-    controllers.personnel.list(options, function (err, personnels) {
+        projection: { _id: 1, gender: 1 }
+    };
+
+    // Pipeline for aggregation
+    var pipeline = [
+        { $match: { "gender": { $in: ["F", "M"] } } },
+        {
+            $group: {
+                _id: "$gender",
+                count: { $sum: 1 }
+            }
+        }
+    ];
+
+    // Execute the aggregation pipeline
+    Personnel.aggregate(pipeline, function (err, result) {
         if (err) {
             log.error(err);
             audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
             callback(err);
         } else {
-            data.totalStaff = personnels.length;
-            data.totalWomen = personnels.filter((p) => p.gender && p.gender === "F").length;
-            data.totalMen = personnels.filter((p) => p.gender && p.gender === "M").length;
+            result.forEach(function (item) {
+                if (item._id === "F") {
+                    data.totalWomen = item.count;
+                } else if (item._id === "M") {
+                    data.totalMen = item.count;
+                }
+            });
+            data.totalStaff = data.totalWomen+data.totalMen;
             callback(null, data);
         }
     });
@@ -183,7 +202,7 @@ var chart1 = function (config, callback) {
  * @param {json} callback
  * optimized : true
  */
-var card2 = function (config, callback) {
+let card2 = function (config, callback) {
     var data = {
         ipt: 0,
         it: 0,
@@ -198,50 +217,49 @@ var card2 = function (config, callback) {
         req: {
             actor: config.actor
         },
-        projection: {_id: 1, grade: 1, category: 1, status: 1, corps: 1}
-    }
-    controllers.personnel.list(options, function (err, personnels) {
+        projection: { _id: 1, grade: 1, category: 1, status: 1, corps: 1 }
+    };
+
+    // Define the filter criteria
+    var filter = {
+        status: "1",
+        grade: { $in: ["6", "5", "9", "10", "13", "14"] }
+    };
+
+    // Execute the query with the filter
+    Personnel.find(filter, options.projection, function (err, personnels) {
         if (err) {
             log.error(err);
             audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
             callback(err);
         } else {
-            for (var a = 0; a < personnels.length; a++) {
-                if (personnels[a]) {
-                    var grade = (personnels[a].grade) ? personnels[a].grade : "";
-                    var status = (personnels[a].status) ? personnels[a].status : "";
+            personnels.forEach(function (personnel) {
+                var grade = personnel.grade ? personnel.grade : "";
 
-                    if (status == "1") {
-                        var thisgrade = dictionary.getJSONById('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), "en");
-                        if (thisgrade) {
-                            corps = ((personnels[a].corps) ? personnels[a].corps : thisgrade.corps);
-                        }
-
-                        switch (grade) {
-                            case '6':
-                                data.ipt += 1;
-                                break;
-                            case '5':
-                                data.it += 1;
-                                break;
-                            case '9':
-                                data.cpt += 1;
-                                break;
-                            case '10':
-                                data.ct += 1;
-                                break;
-                            case '13':
-                                data.cat += 1;
-                                break;
-                            case '14':
-                                data.commis += 1;
-                                break;
-                            default:
-                                break;
-                        }
-                    }
+                switch (grade) {
+                    case '6':
+                        data.ipt += 1;
+                        break;
+                    case '5':
+                        data.it += 1;
+                        break;
+                    case '9':
+                        data.cpt += 1;
+                        break;
+                    case '10':
+                        data.ct += 1;
+                        break;
+                    case '13':
+                        data.cat += 1;
+                        break;
+                    case '14':
+                        data.commis += 1;
+                        break;
+                    default:
+                        break;
                 }
-            }
+            });
+
             callback(null, data);
         }
     });
@@ -253,7 +271,7 @@ var card2 = function (config, callback) {
  * @param {json} callback
  * optimized : true
  */
-var chart2 = function (config, callback) {
+var chart2xx = function (config, callback) {
     var data = {
         totalWomen: 0,
         totalMen: 0,
@@ -295,6 +313,51 @@ var chart2 = function (config, callback) {
                     }
                 }
             }
+            callback(null, data);
+        }
+    });
+};
+
+var chart2 = function (config, callback) {
+    var data = {
+        totalWomen: 0,
+        totalMen: 0,
+        totalCorpsTresor: 0,
+    };
+    var options = {
+        statistics: true,
+        req: {
+            actor: config.actor
+        },
+        projection: { _id: 1, grade: 1, gender: 1, category: 1, status: 1, corps: 1 }
+    };
+
+    // Define the filter criteria
+    var filter = {
+        status: "1",
+        corps: "2"
+    };
+
+    // Execute the query with the filter
+    Personnel.find(filter, options.projection, function (err, personnels) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
+            callback(err);
+        } else {
+            personnels.forEach(function (personnel) {
+                var grade = personnel.grade ? personnel.grade : "";
+                var gender = personnel.gender ? personnel.gender : "";
+
+                if (gender === "F") {
+                    data.totalWomen += 1;
+                } else {
+                    data.totalMen += 1;
+                }
+            });
+
+            data.totalCorpsTresor = personnels.length;
+
             callback(null, data);
         }
     });
@@ -372,37 +435,39 @@ var card4 = function (config, callback) {
  * optimized : true
  */
 var card6 = function (config, callback) {
-    var data = {
-        totalWomen: 0,
-        totalMen: 0,
-    };
-    var options = {
-        statistics: true,
-        req: {
-            actor: config.actor
+    var options = [
+        {
+            $match: {
+                "status": "2"
+            }
         },
-        projection: {_id: 1, grade: 1, gender: 1, category: 1, status: 1, corps: 1}
-    }
-    controllers.personnel.list(options, function (err, personnels) {
+        {
+            $group: {
+                _id: "$gender",
+                count: { $sum: 1 }
+            }
+        }
+    ];
+
+    Personnel.aggregate(options, function (err, result) {
         if (err) {
             log.error(err);
             audit.logEvent('[mongodb]', 'Chart', 'global', '', '', 'failed', 'Mongodb attempted to build global chart');
             callback(err);
         } else {
-            for (var a = 0; a < personnels.length; a++) {
-                if (a < personnels.length && personnels[a]) {
-                    var grade = (personnels[a].grade) ? personnels[a].grade : "";
-                    var status = (personnels[a].status) ? personnels[a].status : "";
+            var data = {
+                totalWomen: 0,
+                totalMen: 0
+            };
 
-                    if (status == "2") {
-                        if (personnels[a].gender == "F") {
-                            data.totalWomen += 1;
-                        } else {
-                            data.totalMen += 1;
-                        }
-                    }
+            result.forEach(function (group) {
+                if (group._id === "F") {
+                    data.totalWomen = group.count;
+                } else if (group._id === "M") {
+                    data.totalMen = group.count;
                 }
-            }
+            });
+
             callback(null, data);
         }
     });

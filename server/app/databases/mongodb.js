@@ -9,41 +9,18 @@ var controllers = {
 var mongodbURL = controllers.configuration.getConf().mongo;
 
 mongoose.Promise = global.Promise;
-mongoose.connect(mongodbURL, mongodbOptions, function (err, connection) {
+mongoose.connect(mongodbURL, mongodbOptions, function (err, res) {
     if (err) {
-        console.log('Connection to ' + mongodbURL + " refused.  err : ", err);
+        console.error('Connection to ' + mongodbURL + " refused.  err : ", err);
         log.error('Connection to ' + mongodbURL + " refused.  err : ", err);
     } else {
-        log.info('MongoDB is ready on port 27017');
-        //console.log(connection)
-        connection.createCollection("stataffectation", {
-            viewOn: "affectations",
-            pipeline: [{
-                    $sort: {lastModified: -1}
-                }, {
-                    $lookup: {
-                        from: 'personnels',
-                        localField: 'personnelId',
-                        foreignField: '_id',
-                        as: 'personnel',
-                    },
-                }, {
-                    "$unwind": {
-                        path: "$personnel",
-                        preserveNullAndEmptyArrays: false
-                    }
-                },
-                {
-                    $group: {_id: "$personnelId", personnel: {$first: "$personnel"}}},
-                {
-                    $group: {_id: "$personnel.gender", number: {$sum: 1}}},
-                {
-                    $match: {_id: {"$in": ["F", "M"]}}}
-
-            ],
-            collation: {
-                locale: "en",
-                strength: 2
+        var admin = new mongoose.mongo.Admin(mongoose.connection.db);
+        admin.buildInfo(function (err, info) {
+            if (err) {
+                console.error('Error while connecting to Admin collection of ' + mongodbURL + ".  err : ", err);
+                log.error('Error while connecting to Admin collection of' + mongodbURL + ".  err : ", err);
+            } else {
+                log.info('MongoDB ' + info.version + ' via Mongoose '+ mongoose.version +' is ready on ' + mongodbURL);
             }
         });
     }
