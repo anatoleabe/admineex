@@ -91,6 +91,10 @@ angular.module('StructuresCtrl', []).controller('StructuresController', function
             return item.rank == "2";
         };
 
+        $scope.onlyGeneralDirection = function (item) {
+            return item.rank == "1" ;
+        };
+
         $scope.resetForm = function () {
             $scope.filters.structure = undefined;
             $scope.filters.soustructure = undefined;

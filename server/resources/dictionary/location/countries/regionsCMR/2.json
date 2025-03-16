@@ -1,0 +1,52 @@
+[
+  {
+    "id": 5,
+    "name": "Méfou et Afamba",
+    "city": "Mfou"
+  },
+  {
+    "id": 6,
+    "name": "Haute Sanaga",
+    "city": "Nanga-Eboko"
+  },
+  {
+    "id": 9,
+    "name": "Méfou et Akono",
+    "city": "Ngoumou"
+  },
+  {
+    "id": 12,
+    "name": "Nyong et Mfoumou",
+    "city": "Akonolinga"
+  },
+  {
+    "id": 13,
+    "name": "Mbam et Inoubou",
+    "city": "Bafia"
+  },
+  {
+    "id": 14,
+    "name": "Nyong et Kellé",
+    "city": "Éséka"
+  },
+  {
+    "id": 21,
+    "name": "Mfoundi",
+    "city": "Yaoundé"
+  },
+  {
+    "id": 29,
+    "name": "Nyong et Soo",
+    "city": "Mbalmayo"
+  },
+  {
+    "id": 30,
+    "name": "Lekié",
+    "city": "Monatele"
+  },
+  {
+    "id": 35,
+    "name": "Mbam et Kim",
+    "city": "Ntui"
+  }
+]

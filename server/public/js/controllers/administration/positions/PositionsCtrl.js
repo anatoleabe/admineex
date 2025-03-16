@@ -12,6 +12,9 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                         icon: "account_balance"
                     };
 
+                    $scope.directions = [];
+                    $scope.services = [];
+                    $scope.offices = [];//Bureaux
                     $scope.organizations = [], $scope.helper = [];
                     $scope.search = false;
                     $scope.filters = {
@@ -26,6 +29,19 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                         page: 1,
                         order: "code"
                     };
+
+                    $scope.getStructure = function (structureStr) {
+
+                        if (!structureStr) return;
+                        $scope.selectedStructure = JSON.parse(structureStr);
+
+                        for (var i in $scope.structures) {
+                            if ($scope.structures[i]._id ==  $scope.selectedStructure._id) {
+                                $scope.onlySubDirection($scope.selectedStructure._id);
+                                break;
+                            }
+                        }
+                    }
 
                     $scope.openMoreMenu = function ($mdOpenMenu) {
                         $mdOpenMenu();
@@ -97,7 +113,7 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                     };
 
                     $scope.onlyDirection = function (item) {
-                        return item.rank == "2";
+                        return parseInt(item.rank, 10) < 2;
                     };
 
                     $scope.resetForm = function () {
@@ -107,7 +123,7 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                         getPositions("-1", $scope.showOnlyVacancies ? "0" : "-1");
                     };
 
-                    $scope.onlySubDirection = function (item) {
+                    $scope.onlySubDirectionOld = function (item) {
                         if ($scope.filters.structure) {
                             var code = JSON.parse($scope.filters.structure).code;
                             return item.rank == "3" && item.code.indexOf(code + "-") == 0;
@@ -115,6 +131,14 @@ angular.module('PositionsCtrl', []).controller('PositionsController', function (
                             return false;
                         }
 
+                    };
+
+                    $scope.onlySubDirection = function (itemId) {
+
+                        if (!itemId && itemId !== "undefined" ) return[];
+                        Structure.minimalList({id:itemId}).then(function (response) {
+                            $scope.directions = response.data;
+                        });
                     };
 
                     $scope.$watch('positionFilter', function (newval, oldval) {

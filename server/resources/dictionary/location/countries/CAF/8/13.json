@@ -1,0 +1,27 @@
+[
+    {
+        "id": "1",
+        "code": "59",
+        "name": "Basse-Batouri"
+    },
+    {
+        "id": "2",
+        "code": "60",
+        "name": "Basse-Boumn\u00e9"
+    },
+    {
+        "id": "3",
+        "code": "61",
+        "name": "Basse-Kad\u00e9i"
+    },
+    {
+        "id": "4",
+        "code": "62",
+        "name": "Haute-Boumb\u00e9"
+    },
+    {
+        "id": "5",
+        "code": "63",
+        "name": "Haute-Kad\u00e9i"
+    }
+]

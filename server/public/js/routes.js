@@ -808,7 +808,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         $rootScope.kernel.released = "26/04/2022";
 
         $rootScope.kernel.background = 'world';
-        $rootScope.kernel.title = 'Admineex - DGTCFM';
+        $rootScope.kernel.title = 'Admineex - RCA';
         $rootScope.kernel.logo = {
             large: '../img/logos/logo-full.png',
             small: '../img/logos/logo-small.png',

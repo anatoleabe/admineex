@@ -1,0 +1,32 @@
+[
+    {
+        "id": "1",
+        "code": "64",
+        "name": "Bakouma"
+    },
+    {
+        "id": "2",
+        "code": "65",
+        "name": "Bangassou"
+    },
+    {
+        "id": "3",
+        "code": "66",
+        "name": "Rafai"
+    },
+    {
+        "id": "4",
+        "code": "67",
+        "name": "Sayo Niakari"
+    },
+    {
+        "id": "5",
+        "code": "68",
+        "name": "Voungba-Balifondo"
+    },
+    {
+        "id": "6",
+        "code": "69",
+        "name": "Zangandou"
+    }
+]

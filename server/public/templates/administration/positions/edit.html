@@ -26,7 +26,7 @@
                             <md-input-container class="md-block" flex >
                                 <label translate>Sub structure</label>
                                 <md-select name="substructure" ng-model="substructure._id" ng-change="getNextPositionCode(substructure._id)" ng-disabled="position._id" required data-md-container-class="selectdemoSelectHeader">
-                                    <md-option ng-repeat="struct in structures | filter:substructureFilter" value="{{struct._id}}">
+                                    <md-option ng-repeat="struct in directions" value="{{struct._id}}">
                                         {{struct.name}} <em>(code: {{struct.code}})</em>
                                     </md-option>
                                 </md-select>

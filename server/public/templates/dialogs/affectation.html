@@ -14,30 +14,6 @@
             <md-card>
 
                 <md-card-content>
-                    <!--<div layout="row" >-->
-                    <!--                    <md-autocomplete md-search-text="personnelSearchText"
-                                                         md-selected-item-change="selectedPersonnelChange(perso)"
-                                                         md-items="perso in personnelQuerySearch(personnelSearchText)"
-                                                         md-item-text="perso.nom + ' ' + perso.prenom"
-                                                         md-min-length="1"
-                                                         required
-                                                         md-require-match
-                                                         flex
-                                                         md-floating-label="{{'Find the personnel concerned (find by: name, matricule, ID card, phone number...)' | translate}}"
-                                                         >
-                                            <md-item-template>
-                                                <span md-highlight-text="personnelSearchText">{{perso.nom}} {{perso.prenom}} </span>
-                                                <small>
-                                                    <span ng-if="perso.matricule">{{"(Mle: " + (perso.matricule)}} </span>
-                                                    <span ng-if="perso.sexe">| {{(perso.sexe)}} , {{(perso.age) + " ans"}}</span>
-                                                    <span ng-if="perso.fonction" > | {{perso.fonction}})</span>
-                                                </small>
-                                            </md-item-template>
-                                            <md-not-found>
-                                                "{{personnelSearchText}}"<span translate>:</span> <span translate> No matching information was found.</span>
-                                            </md-not-found>
-                                        </md-autocomplete>-->
-                    <!--</div>-->
                     <div layout="row">
                         <md-input-container flex>
                             <label translate>Select a personnel</label>
@@ -54,9 +30,6 @@
                             </div>
                         </md-input-container>
                     </div>
-                    <!--                <div layout="row" ng-if="!selectedPersonnel" style="margin-top: -40px; font-size: 12px; color: #E6504C">
-                                        <span ng-if="selectedPersonnel">Poste actuel: {{selectedPersonnelPosteActuel}} ({{selectedPersonnelStructureactuel}}) </span>
-                                    </div>-->
                     <md-input-container class="md-block" flex>
                         <label translate>Type of structure</label>
                         <md-select name="typeStructre" ng-model="typeStructre" required ng-change="loadStructures(typeStructre)">
@@ -73,9 +46,9 @@
                     <div layout="row" >
                         <md-input-container flex>
                             <label translate>Structure</label>
-                            <md-select name="structure" ng-disabled="positionFromParams" required ng-model="structure" ng-change="loadSubStructures(typeStructre)" style="min-width: 150px;">
-                                <md-option ng-repeat="struc in structures" value="{{struc.code}}" >
-                                    {{struc.name}} ({{struc.code}})
+                            <md-select name="structure" ng-disabled="positionFromParams" required ng-model="structure._id" ng-change="getStructure(structure._id)" style="min-width: 150px;">
+                                <md-option ng-repeat="struc in structures | filter:structureFilter" value="{{struc._id}}" >
+                                    {{struc.name}} <em>(code: {{struc.code}})</em>
                                 </md-option>
                             </md-select>
                             <div ng-messages="structure.$error">
@@ -89,11 +62,9 @@
                         <md-input-container flex>
                             <label translate>Sub structure</label>
                             <md-select name="substructure" ng-disabled="positionFromParams" required ng-model="substructure"  style="min-width: 150px;">
-                                <md-optgroup label="{{group.name}} ({{group.code}}) " ng-repeat="group in groupList">
-                                    <md-option ng-repeat="substruc in substructures| filter:onlySubDirection | regex: 'code': '^'+group.code+'-'" value="{{substruc.code}}" >
-                                        {{substruc.name}} ({{substruc.code}})
+                                    <md-option ng-repeat="substruc in directions" value="{{substruc.code}}" >
+                                        {{substruc.name}} <em>(code: {{substruc.code}})</em>
                                     </md-option>
-                                </md-optgroup>
                             </md-select>
                             <div ng-messages="substructure.$error">
                                 <div ng-message="required" translate>

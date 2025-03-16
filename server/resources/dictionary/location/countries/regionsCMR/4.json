@@ -1,0 +1,32 @@
+[
+  {
+    "id": 4,
+    "name": "Diamaré",
+    "city": "Maroua"
+  },
+  {
+    "id": 16,
+    "name": "Mayo Tsanaga",
+    "city": "Mokolo"
+  },
+  {
+    "id": 18,
+    "name": "Mayo Sava",
+    "city": "Mora"
+  },
+  {
+    "id": 23,
+    "name": "Mayo Kani",
+    "city": "Kaélé"
+  },
+  {
+    "id": 27,
+    "name": "Logone et Chari",
+    "city": "Kousséri"
+  },
+  {
+    "id": 36,
+    "name": "Mayo Danay",
+    "city": "Yagoua"
+  }
+]

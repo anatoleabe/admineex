@@ -35,7 +35,7 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
             positions: []
         },
         address: [{
-                country: "CMR",
+                country: "CAF",
                 region: undefined,
                 department: undefined,
                 arrondissement: undefined,
@@ -144,13 +144,13 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                 Dictionary.jsonList({dictionary: 'personnel', levels: ['educationLevels']}).then(function (response) {
                                     $scope.educationLevels = response.data.jsonList;
 
-                                    Dictionary.jsonList({dictionary: 'location', levels: ['countries', 'CMR']}).then(function (response) {
+                                    Dictionary.jsonList({dictionary: 'location', levels: ['countries', 'CAF']}).then(function (response) {
                                         var data = response.data;
                                         $rootScope.kernel.loading = 100;
                                         $scope.regions = data.jsonList;
                                         if (!firstTime === true) {
                                             $scope.departments = [];
-                                            $scope.personnel.address[0].country = "CMR";
+                                            $scope.personnel.address[0].country = "CAF";
                                             $scope.personnel.address[0].department = undefined;
                                             $scope.personnel.address[0].arrondissement = undefined;
                                         } else {

@@ -1,0 +1,37 @@
+[
+  {
+    "id": 2,
+    "name": "Bui",
+    "city": "Kumbo"
+  },
+  {
+    "id": 11,
+    "name": "Menchum",
+    "city": "Wum"
+  },
+  {
+    "id": 15,
+    "name": "Momo",
+    "city": "Mbengwi"
+  },
+  {
+    "id": 17,
+    "name": "Ngo Ketunjia",
+    "city": "Ndop"
+  },
+  {
+    "id": 19,
+    "name": "Donga Mantung",
+    "city": "Nkambé"
+  },
+  {
+    "id": 53,
+    "name": "Mezam",
+    "city": "Bamenda"
+  },
+  {
+    "id": 54,
+    "name": "Boyo",
+    "city": "Fundong"
+  }
+]

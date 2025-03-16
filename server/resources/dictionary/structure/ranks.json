@@ -22,5 +22,17 @@
         "code": "SDIR",
         "en": "Sous-Direction",
         "fr": "Sous-Direction"
+    },
+    {
+        "id": "4",
+        "code": "SVC",
+        "en": "Service",
+        "fr": "Service"
+    },
+    {
+        "id": "5",
+        "code": "SDIR",
+        "en": "Bureau",
+        "fr": "Bureau"
     }
 ]

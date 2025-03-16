@@ -233,8 +233,11 @@ exports.api.minimalList = function (req, res) {
     if (req.actor) {
         var language = req.actor.language.toLowerCase();
         var types = undefined;
+        let structureFatherId = undefined;
         if (req.params.structure && req.params.structure.indexOf('t=') != -1) {
             types = req.params.structure.split("=");
+        }else if (req.params.structure && req.params.structure != "-1"){
+            structureFatherId = req.params.structure;
         }
         controllers.users.findUser(req.actor.id, function (err, user) {
             if (err) {
@@ -258,7 +261,7 @@ exports.api.minimalList = function (req, res) {
                     } else {
                         var query = {};
                         if (types) {
-                            var query = {"type": types[1]};
+                            query = {"type": types[1]};
                         }
                         if (types && types[3]) {
                             query.rank = types[3];
@@ -268,6 +271,12 @@ exports.api.minimalList = function (req, res) {
                                 "code": {$in: userStructureCodes}
                             }
                         }
+                        if (structureFatherId && structureFatherId !== "undefined") {
+                            query = {
+                                "fatherId": structureFatherId
+                            }
+                        }
+
                         Structure.find(query).sort({"rank": 'asc'}).lean().exec(function (err, result) {
                             if (err) {
                                 log.error(err);
@@ -433,8 +442,6 @@ exports.list = function (options, callback) {
             callback(err);
         } else {
             var structures = JSON.parse(JSON.stringify(result));
-            //callback(null, structures);
-            console.log(".... beautify structire");
             // Remaining code logic...
             beautify(options, structures, function (err, objects) {
                 if (err) {
@@ -476,7 +483,7 @@ exports.initialize = function (path, callback) {
                     tasks: [],
                     address: [
                         {
-                            country: "CMR", //From json
+                            country: "CAF", //From json
                             region: structures[a].region,
                             department: structures[a].department,
                             arrondissement: ""

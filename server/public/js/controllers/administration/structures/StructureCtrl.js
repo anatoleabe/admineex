@@ -11,7 +11,7 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
     var firstTime = true;
     $scope.structure = {
         address: [{
-                country: "CMR",
+                country: "CAF",
                 region: undefined,
                 department: undefined,
                 arrondissement: undefined,
@@ -36,13 +36,13 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
 
                         $rootScope.kernel.loading = 100;
                         
-                        Dictionary.jsonList({dictionary: 'location', levels: ['countries', 'CMR']}).then(function (response) {
+                        Dictionary.jsonList({dictionary: 'location', levels: ['countries', 'CAF']}).then(function (response) {
                             var data = response.data;
                             $rootScope.kernel.loading = 100;
                             $scope.regions = data.jsonList;
                             if (!firstTime === true) {
                                 $scope.departments = [];
-                                $scope.structure.address[0].country = "CMR";
+                                $scope.structure.address[0].country = "CAF";
                                 $scope.structure.address[0].department = undefined;
                                 $scope.structure.address[0].arrondissement = undefined;
                             } else {
@@ -95,7 +95,7 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
                                 $scope.selected.structure = {
                                     _id: $scope.structure.fatherId
                                 }
-                                if ($scope.structure.rank == "1" || $scope.structure.rank == "2") {
+                                if ($scope.structure.rank == "0") {
                                     $scope.addFather = false;
                                 } else {
                                     $scope.addFather = true;
@@ -118,7 +118,7 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
                         $scope.rankChange = function () {
                             $scope.selected.structure = undefined;
 
-                            if ($scope.structure.rank == "1" || $scope.structure.rank == "2") {
+                            if ($scope.structure.rank == "0") {
                                 $scope.addFather = false;
                             } else {
                                 $scope.addFather = true;
@@ -136,7 +136,7 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
 
                         $scope.structureFilter = function (item) {
                             if ($scope.structure) {
-                                return parseInt(item.rank, 10) == parseInt($scope.structure.rank, 10) - 1;
+                                return parseInt(item.rank, 10) <= parseInt($scope.structure.rank, 10) - 1;
                             } else {
                                 return false
                             }

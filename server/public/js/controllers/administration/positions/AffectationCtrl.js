@@ -118,6 +118,10 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                             $ocLazyLoad.load('js/services/StaffService.js').then(function () {
                                                 var StaffAgent = $injector.get('Staff');
 
+                                                $scope.directions = [];
+                                                $scope.services = [];
+                                                $scope.offices = [];//Bureau
+
                                                 if ($scope.params.personnel) {
                                                     $scope.personnelFromParams = true;
                                                     $scope.selectedPersonnel = $scope.params.personnel._id;
@@ -141,9 +145,9 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                     $scope.structures = undefined;
                                                     $scope.structures = undefined;
                                                     $scope.affectation.positionId = undefined
-                                                    var option = {type: "t=" + type + "=r=" + 2};
+                                                    var option = {type: "t=" + type };
                                                     if (type == 2) {
-                                                        option = {type: "t=" + type + "=r=" + 2};
+                                                        option = {type: "t=" + type };
                                                     }
 
                                                     Structure.minimalList(option).then(function (response) {
@@ -160,6 +164,40 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                     });
                                                 }
 
+
+                                                $scope.getStructure = function (id) {
+                                                    $scope.structure = {};
+                                                    
+                                                    for (var i in $scope.structures) {
+                                                        if ($scope.structures[i]._id == id) {
+                                                            $scope.structure = $scope.structures[i];
+                                                            $scope.substructureFilter(id);
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+
+                                                $scope.structureFilter = function (item) {
+                                                    return parseInt(item.rank, 10) < 3;
+                                                };
+
+                                                $scope.substructureFilter = function (structureId) {
+                                                    if (!structureId) return;
+                                                    Structure.minimalList({id:structureId}).then(function (response) {
+                                                        $scope.directions = response.data;
+                                                        console.log("ddd", structureId, $scope.directions);
+
+                                                        console.log($scope.groupList);
+
+                                                        $scope.loading = false;
+                                                        $rootScope.kernel.loading = 100
+
+                                                        if ($scope.params && $scope.params.positionTo) {
+                                                            $scope.substructure = $scope.params.positionTo.structure.code;
+                                                        }
+                                                    });
+                                                };
+
                                                 $scope.loadSubStructures = function (type, structureCode) {
                                                     $scope.loading = true;
                                                     $rootScope.kernel.loading = 0;
@@ -167,7 +205,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                     $scope.affectation.positionId = undefined
                                                     var option = {type: "t=" + type};
                                                     if (type == 2) {
-                                                        option = {type: "t=" + type + "=r=" + 3};
+                                                        option = {type: "t=" + type};
                                                     }
 
 
@@ -187,7 +225,7 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                         });
 
                                                         var groupOfCodes = [];
-                                                        $scope.groupList = $scope.substructures.reduce(function (previous, current) {
+                                                        $scope.groupList = $scope.directions.reduce(function (previous, current) {
                                                             var father = {};
                                                             if (current.rank == "3" && current.code.indexOf($scope.structure + "-") == 0) {
 
@@ -228,6 +266,8 @@ angular.module('AffectationCtrl', []).controller('AffectationController', functi
                                                             })
                                                             return previous;
                                                         }, []);
+
+                                                        console.log($scope.groupList);
 
                                                         $scope.loading = false;
                                                         $rootScope.kernel.loading = 100

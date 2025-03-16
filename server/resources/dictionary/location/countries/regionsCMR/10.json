@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Koupé-Manengouba",
+    "city": "Bangem"
+  },
+  {
+    "id": 3,
+    "name": "Manyu",
+    "city": "Mamfé"
+  },
+  {
+    "id": 8,
+    "name": "Lebialem",
+    "city": "Menji"
+  },
+  {
+    "id": 31,
+    "name": "Ndian",
+    "city": "Mundemba"
+  },
+  {
+    "id": 51,
+    "name": "Meme",
+    "city": "Kumba"
+  },
+  {
+    "id": 55,
+    "name": "Fako",
+    "city": "Limbé"
+  }
+]

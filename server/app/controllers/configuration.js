@@ -97,13 +97,13 @@ exports.beautifyAddress = function (options, objects) {
                 var address = (objects[i].address.length) ? objects[i].address[0] : objects[i].address;
 
                 // Country
-                address.country = "CMR"
+                address.country = "CAF"
 
                 var region = address.region;
                 var department = address.department;
                 // State
                 if (address.region && address.region != "") {
-                    var found2 = _.findWhere(require('../../resources/dictionary/location/countries/CMR.json'), {
+                    var found2 = _.findWhere(require('../../resources/dictionary/location/countries/CAF.json'), {
                         id: address.region
                     });
                     if (found2) {

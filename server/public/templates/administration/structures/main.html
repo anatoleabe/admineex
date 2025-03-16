@@ -10,7 +10,7 @@
                                 <md-option value="-1" >
                                     {{'All structures'| translate}}
                                 </md-option>
-                                <md-option ng-repeat="struc in structuresDropDown| filter:onlyDirection " value="{{struc}}" >
+                                <md-option ng-repeat="struc in structuresDropDown| filter:onlyGeneralDirection " value="{{struc}}" >
                                     {{struc.name}}
                                 </md-option>
                             </md-optgroup>

@@ -1,0 +1,121 @@
+[
+    {
+      "id": "1",
+      "code": "bg",
+      "fr": "Bangui",
+      "en": "Bangui",
+      "in": "Bangui"
+    },
+    {
+      "id": "2",
+      "code": "bb",
+      "fr": "Bamingui-Bangoran",
+      "en": "Bamingui-Bangoran",
+      "in": "Bamingui-Bangoran"
+    },
+    {
+      "id": "3",
+      "code": "bk",
+      "fr": "Basse-Kotto",
+      "en": "Basse-Kotto",
+      "in": "Basse-Kotto"
+    },
+    {
+      "id": "4",
+      "code": "hk",
+      "fr": "Haute-Kotto",
+      "en": "Haute-Kotto",
+      "in": "Haute-Kotto"
+    },
+    {
+      "id": "5",
+      "code": "hm",
+      "fr": "Haut-Mbomou",
+      "en": "Haut-Mbomou",
+      "in": "Haut-Mbomou"
+    },
+    {
+      "id": "6",
+      "code": "kg",
+      "fr": "Kémo",
+      "en": "Kémo",
+      "in": "Kémo"
+    },
+    {
+      "id": "7",
+      "code": "lb",
+      "fr": "Lobaye",
+      "en": "Lobaye",
+      "in": "Lobaye"
+    },
+    {
+      "id": "8",
+      "code": "hs",
+      "fr": "Mambére-Kadei",
+      "en": "Mambére-Kadei",
+      "in": "Mambére-Kadei"
+    },
+    {
+      "id": "9",
+      "code": "mb",
+      "fr": "Mbomou",
+      "en": "Mbomou",
+      "in": "Mbomou"
+    },
+    {
+      "id": "10",
+      "code": "kb",
+      "fr": "Nana-Grébizi",
+      "en": "Nana-Grebizi",
+      "in": "Nana-Grebizi"
+    },
+    {
+      "id": "11",
+      "code": "nm",
+      "fr": "Nana-Mambéré",
+      "en": "Nana-Mambéré",
+      "in": "Nana-Mambéré"
+    },
+    {
+      "id": "12",
+      "code": "mp",
+      "fr": "Ombella-Mpoko",
+      "en": "Ombella-Mpoko",
+      "in": "Ombella-Mpoko"
+    },
+    {
+      "id": "13",
+      "code": "uk",
+      "fr": "Ouaka",
+      "en": "Ouaka",
+      "in": "Ouaka"
+    },
+    {
+      "id": "14",
+      "code": "ac",
+      "fr": "Ouham",
+      "en": "Ouham",
+      "in": "Ouham"
+    },
+    {
+      "id": "15",
+      "code": "op",
+      "fr": "Ouham-Pen",
+      "en": "Ouham-Pen",
+      "in": "Ouham-Pen"
+    },
+    {
+      "id": "16",
+      "code": "se",
+      "fr": "Sangha-Mbaere",
+      "en": "Sangha-Mbaere",
+      "in": "Sangha-Mbaere"
+    },
+    {
+      "id": "17",
+      "code": "vk",
+      "fr": "Vakaga",
+      "en": "Vakaga",
+      "in": "Vakaga"
+    }
+  ]

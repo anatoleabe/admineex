@@ -31,9 +31,12 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                             dictionary.profiles = response.data.jsonList;
                             Dictionary.jsonList({dictionary: "personnel", levels: ['skills']}).then(function (response) {
                                 dictionary.skills = response.data.jsonList;
+                                $scope.directions = [];
+                                $scope.services = [];
+                                $scope.offices = [];//Bureau
 
                                 Structure.minimalList().then(function (response) {
-                                    var data = response.data;
+                                    let data = response.data;
                                     $scope.structures = data;
 
                                     $rootScope.kernel.loading = 100;
@@ -44,6 +47,8 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                         for (var i in $scope.structures) {
                                             if ($scope.structures[i]._id == id) {
                                                 $scope.structure = $scope.structures[i];
+                                                $scope.substructureFilter(id);
+                                                break;
                                             }
                                         }
                                     }
@@ -64,7 +69,7 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                         return parseInt(item.rank, 10) < 3;
                                     };
 
-                                    $scope.substructureFilter = function (item) {
+                                    $scope.substructureFilterOld = function (item) {
                                         if ($scope.structure) {
                                             return item.code.indexOf($scope.structure.code + "-") == 0 && parseInt(item.rank, 10) == 3;
                                         } else {
@@ -72,11 +77,16 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                         }
                                     };
 
+                                    $scope.substructureFilter = function (structureId) {
+                                        if (!structureId) return;
+                                        Structure.minimalList({id:structureId}).then(function (response) {
+                                            $scope.directions = response.data;
+                                        });
+                                    };
+
                                     $scope.querySearchInResourcesDic = function (text, resourceList) {
-                                        console.log(text)
                                         var deferred = $q.defer();
                                         if (text) {
-                                            console.log(dictionary[resourceList])
                                             var profile = $.grep(dictionary[resourceList], function (c, i) {
                                                 return c.name.toLowerCase().includes(text.toLowerCase());
                                             });
@@ -88,7 +98,6 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                     }
 
                                     $scope.transformChip = function (chip) {
-                                        console.log(chip)
                                         if (angular.isObject(chip)) {
                                             return chip;
                                         }
@@ -159,7 +168,6 @@ angular.module('PositionCtrl', []).controller('PositionController', function ($s
                                                     code: $scope.position.code
                                                 }).then(function (response) {
                                                     var fundPosition = response.data;
-                                                    console.log(fundPosition)
                                                     if (fundPosition && fundPosition.code) {
                                                         $mdDialog.show(
                                                                 $mdDialog.alert()
