@@ -57,7 +57,7 @@ var PersonnelSchema = new Schema({
         positions: [
             {
                 numAct: String,
-                positionId: {type: ObjectId, required: false},
+                positionId: {type: ObjectId, ref: 'Position', required: false},
                 isCurrent: Boolean,
                 signatureDate: Date,
                 startDate: Date,

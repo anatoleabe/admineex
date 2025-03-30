@@ -1,27 +1,66 @@
-var log = require('../utils/log');
-var mongoose = require('mongoose');
-var mongodbOptions = {};
+const log = require('../utils/log');
+const mongoose = require('mongoose');
+const configuration = require('../controllers/configuration.js');
 
-// Controllers
-var controllers = {
-    configuration: require('../controllers/configuration.js')
+// Improved MongoDB connection options
+const mongodbOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds for server selection
+    socketTimeoutMS: 45000, // Close sockets after 45s of inactivity
+    connectTimeoutMS: 10000, // Give up initial connection after 10 seconds
+    retryWrites: true,
+    retryReads: true
 };
-var mongodbURL = controllers.configuration.getConf().mongo;
 
+// Get MongoDB URL from configuration
+const mongodbURL = configuration.getConf().mongo;
+
+// Set mongoose to use native promises
 mongoose.Promise = global.Promise;
-mongoose.connect(mongodbURL, mongodbOptions, function (err, res) {
-    if (err) {
-        console.error('Connection to ' + mongodbURL + " refused.  err : ", err);
-        log.error('Connection to ' + mongodbURL + " refused.  err : ", err);
-    } else {
-        var admin = new mongoose.mongo.Admin(mongoose.connection.db);
-        admin.buildInfo(function (err, info) {
-            if (err) {
-                console.error('Error while connecting to Admin collection of ' + mongodbURL + ".  err : ", err);
-                log.error('Error while connecting to Admin collection of' + mongodbURL + ".  err : ", err);
-            } else {
-                log.info('MongoDB ' + info.version + ' via Mongoose '+ mongoose.version +' is ready on ' + mongodbURL);
-            }
-        });
-    }
+
+// Connection event handlers
+mongoose.connection.on('connecting', () => {
+    log.info('Connecting to MongoDB...');
 });
+
+mongoose.connection.on('connected', () => {
+    log.info('MongoDB connection established');
+});
+
+mongoose.connection.on('error', (err) => {
+    log.error('MongoDB connection error:', err);
+});
+
+mongoose.connection.on('disconnected', () => {
+    log.warn('MongoDB disconnected');
+});
+
+// Handle process termination
+process.on('SIGINT', async () => {
+    await mongoose.connection.close();
+    log.info('MongoDB connection closed due to application termination');
+    process.exit(0);
+});
+
+// Improved connection function with retry logic
+const connectWithRetry = async () => {
+    try {
+        await mongoose.connect(mongodbURL, mongodbOptions);
+
+        // Verify connection by getting server info
+        const admin = new mongoose.mongo.Admin(mongoose.connection.db);
+        const info = await admin.buildInfo();
+        log.info(`MongoDB ${info.version} via Mongoose ${mongoose.version} is ready on ${mongodbURL}`);
+    } catch (err) {
+        log.error(`Failed to connect to MongoDB (${mongodbURL}):`, err);
+
+        // Retry after 5 seconds
+        setTimeout(connectWithRetry, 5000);
+    }
+};
+
+// Start the connection
+connectWithRetry().then();
+
+module.exports = mongoose;

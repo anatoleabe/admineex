@@ -291,10 +291,15 @@
                                                         </div>
                                                     </div>
                                                 </md-input-container>
-                                                <md-input-container class="md-block" flex>
-                                                    <label translate>Registration number (Matricul)</label>
-                                                    <input ng-model="personnel.identifier" required ng-keydown="$event.keyCode != 32 ? $event : $event.preventDefault()" ng-blur="checkIfMatriculeExist()" >
-                                                </md-input-container>
+                                               <md-input-container class="md-block" flex>
+                                                   <label translate>Registration number (Matricul)</label>
+                                                   <input ng-model="personnel.identifier" required ng-pattern="/^(0|1)\d{6}[A-Za-z]$/" ng-blur="checkIfMatriculeExist()">
+                                                   <div ng-messages="step1.identifier.$error" >
+                                                       <div ng-message="pattern">
+                                                           The registration number must be in the format 0123456X or 1123456X.
+                                                       </div>
+                                                   </div>
+                                               </md-input-container>
                                             </div>
                                             <div layout="row" >
                                                 <md-input-container class="md-block" flex>

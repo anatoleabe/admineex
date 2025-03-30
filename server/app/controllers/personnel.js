@@ -441,7 +441,7 @@ exports.checkRetirement = function (callback) {
                                 if (a < personnels.length && personnels[a]) {
                                     var age = _calculateAge(new Date(personnels[a].birthDate));
                                     //Decree N°2020/802 of 30 December 2020 of the President of the Republic harmonising the retirement age of civil servants.
-                                    if (personnels[a].status == "1") {//Civil servant
+                                    if (threshold1 && personnels[a].status == "1") {//Civil servant
                                         if (personnels[a].category && personnels[a].category != null && personnels[a].category != "") {
                                             if ((personnels[a].category == "5" || personnels[a].category == "6") && age >= parseInt(threshold1.values[1])) { //for category 'C' and 'D' staff, retirement at 55
                                                 candidates.push(personnels[a]._id);
@@ -454,13 +454,13 @@ exports.checkRetirement = function (callback) {
                                             candidates.push(personnels[a]._id);
                                         }
                                     } else {// Contractual
-                                        if (personnels[a].category && personnels[a].category != null && personnels[a].category != "") {
+                                        if (threshold2 && personnels[a].category && personnels[a].category != null && personnels[a].category != "") {
                                             if (parseInt(personnels[a].category, 10) >= 1 && parseInt(personnels[a].category, 10) <= 7 && age >= parseInt(threshold2.values[1])) { //Personnel non fonctionnaire CAT 1 à CAT 7 at 55 ans
                                                 candidates.push(personnels[a]._id);
                                             } else if (age >= parseInt(threshold2.values[0])) {//Personnel non fonctionnaire CAT 8 à CAT 12 à 60 ans
                                                 candidates.push(personnels[a]._id);
                                             }
-                                        } else if (age >= parseInt(threshold2.values[0])) {//other in case
+                                        } else if (threshold2 && age >= parseInt(threshold2.values[0])) {//other in case
                                             candidates.push(personnels[a]._id);
                                         }
                                     }

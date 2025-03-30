@@ -1,0 +1,17 @@
+version: '3.8'
+services:
+  mongodb:
+    build:
+      context: .
+      dockerfile: Dockerfile.mongo  # Use the custom Dockerfile for MongoDB
+    ports:
+      - "27020:27017"  # Expose MongoDB on port 27020
+    volumes:
+      - ./dump:/dump  # Mount your dump directory here
+
+  webapp:
+    build: .  # This will use your existing Node.js Dockerfile
+    ports:
+      - "4002:4002"  # Expose your Node.js app on port 4002
+    depends_on:
+      - mongodb  # Ensure MongoDB starts before the web app
