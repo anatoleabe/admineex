@@ -19,6 +19,7 @@ var PersonnelSchema = new Schema({
     status: {type: String, required: true},
     corps: {type: String, required: false},
     grade: {type: String, required: false},
+    rank: {type: String, required: false}, //Default Agent Rank. From json resources json rank. This is the default rank of the personnel. It can be changed by the affectation.
     category: {type: String, required: false},
     index: {type: String, required: false},//Indice ou echelon selon le status
     gender: {type: String, required: true},

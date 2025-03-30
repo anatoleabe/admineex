@@ -143,6 +143,8 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                 $scope.natures = response.data.jsonList;
                                 Dictionary.jsonList({dictionary: 'personnel', levels: ['educationLevels']}).then(function (response) {
                                     $scope.educationLevels = response.data.jsonList;
+                                    Dictionary.jsonList({dictionary: 'personnel', levels: ['ranks']}).then(function (response) {
+                                        $scope.positionRanks = response.data.jsonList;
 
                                     Dictionary.jsonList({dictionary: 'location', levels: ['countries', 'CMR']}).then(function (response) {
                                         var data = response.data;
@@ -409,6 +411,9 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                             id: $stateParams.id
                                         }).then(function (response) {
                                             $scope.personnel = response.data;
+                                            if ($scope.personnel.rank){
+                                                $scope.rankSet = true;
+                                            }
                                             prepareForAngular();
                                             loadsHistory = function () {
                                                 var deferred = $q.defer();
@@ -430,6 +435,14 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                                                 endDate: undefined
                                                             }]
                                                     }
+
+                                                    if ($scope.allAffectations.length > 0) {
+                                                        //Get the last personnel Rank based on the last affectation. The last affectation is based the lastModified date
+                                                        $scope.personnel.rank = $scope.allAffectations[0].rank;
+                                                        if ($scope.personnel.rank){
+                                                            $scope.rankSet = true;
+                                                        }
+                                                    }
                                                     return deferred.promise;
                                                 }).catch(function (response) {
                                                     console.log(response);
@@ -445,6 +458,7 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                             console.error(response);
                                         });
                                     } else {
+                                        $scope.rankSet = false;
                                         $scope.new = true;
                                         $scope.title = gettextCatalog.getString('New');
                                     }
@@ -490,6 +504,7 @@ angular.module('StaffCtrl', []).controller('StaffController', function ($scope, 
                                             console.error(response);
                                         });
                                     }
+                                });
                                 });
                             });
                         });

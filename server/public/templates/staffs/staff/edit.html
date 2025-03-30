@@ -337,6 +337,17 @@
                                                     </md-select>
                                                 </md-input-container>
                                             </div>
+                                            <div layout="row" >
+                                                <md-input-container class="md-block" flex>
+                                                    <label translate>Rank</label>
+                                                    <md-select ng-model="personnel.rank" ng-disabled="rankSet === true" >
+                                                        <md-option ng-repeat="rank in positionRanks" value="{{rank.id}}">
+                                                            {{rank.name}}
+                                                        </md-option>
+                                                    </md-select>
+                                                    <p class="md-caption" translate>This rank is editable only once if not set. To change it, please proceed with an affectation.</p>
+                                                </md-input-container>
+                                            </div>
                                         </md-card-content>
                                     </md-card>
 

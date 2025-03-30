@@ -93,117 +93,6 @@ exports.api.upsert = function (req, res) {
     }
 };
 
-exports.DONOTUSETHISMETHODE = function (callback) {//Insert a user from mysql database
-    var con = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "sygepet"
-    });
-
-    con.connect(function (err) {
-        if (err)
-            throw err;
-        con.query("SELECT * FROM personnel", function (err, personnels, fields) {
-            if (err) {
-                throw err;
-            } else {
-                var avoidedPersonnel = [];
-                var eci = 1;
-                function loopA(a) {
-                    if (a < personnels.length) {
-                        var personne = JSON.parse(JSON.stringify(personnels[a]));
-                        var fieldPerso = {
-                            "mysqlId": personne.id,
-                            "identifier": personne.matricule.replace(/\s+/g, ''),
-                            "name": {
-                                "family": personne.nom,
-                                "given": personne.prenom,
-                                "maiden": personne.nomDeJeuneFille
-                            },
-                            "status": personne.idStatut,
-                            "grade": personne.idGrade,
-                            "category": personne.idCategorie,
-                            "gender": personne.sexe,
-                            "birthDate": new Date(personne.dateNaissance || null),
-                            "birthPlace": personne.lieuNaissance,
-                            "children": personne.nbreEnfant,
-                            "maritalStatus": personne.situationFamiliale,
-                            "father": "",
-                            "mother": "",
-                            "partner": "",
-                            "telecom": [
-                                {
-                                    "system": "phone",
-                                    "value": personne.telephone,
-                                    "use": "home"
-                                },
-                                {
-                                    "system": "email",
-                                    "value": personne.email
-                                }
-                            ],
-                            "address": [
-                                {
-                                    "country": 1,
-                                    "region": personne.idRegion,
-                                    "department": personne.idDepartement,
-                                    "arrondissement": ""
-                                }
-                            ],
-                            "cni": {
-                                "identifier": personne.numCNI,
-                                "date": new Date(personne.dateDelivCNI || null),
-                                "city": personne.lieuDelivCNI,
-                                "by": personne.cniDelivrePar
-                            },
-                            "created": new Date(personne.dateEnregistrement || null),
-                            "lastModified": new Date(personne.miseajour || null)
-                        };
-                        if (personne.matricule == "ECI") {
-                            fieldPerso.identifier = "ECI-" + eci;
-                            eci = eci + 1;
-                        }
-                        exports.findByMatricule({matricule: fieldPerso.identifier}, function (err, personnel) {
-                            if (err) {
-                                log.error(err);
-                                callback(err);
-                            } else {
-                                if (personnel != null) {// If this structure already exist
-                                    if (!personnel.grade || personnel.grade == null || personnel.grade == "null" || !personnel.category || personnel.category == null || personnel.category == "null") {
-                                        exports.upsert(fieldPerso, function (err, structure) {
-                                            if (err) {
-                                                log.error(err);
-                                            } else {
-                                                loopA(a + 1);
-                                            }
-                                        });
-                                    } else {
-                                        avoidedPersonnel.push(personnel.identifier);
-                                        loopA(a + 1);
-                                    }
-                                } else {
-                                    exports.upsert(fieldPerso, function (err, structure) {
-                                        if (err) {
-                                            log.error(err);
-                                        } else {
-                                            loopA(a + 1);
-                                        }
-                                    });
-                                }
-                            }
-                        });
-
-                    } else {
-                        callback(null, avoidedPersonnel);
-                    }
-                }
-                loopA(0);
-            }
-        });
-    })
-}
-
 exports.api.list = function (req, res) {
 
     var minify = false;
@@ -252,7 +141,7 @@ exports.api.list = function (req, res) {
                         }
 
                         if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4" || options.req.actor.role == "2") {
-                            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, index: 1, cni: 1, status: 1,
+                            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, rank: 1, category: 1, index: 1, cni: 1, status: 1,
                                 identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1,
                                 "affectation.position.fr": 1,
                                 "affectation.rank": 1,
@@ -263,17 +152,15 @@ exports.api.list = function (req, res) {
                             options.projection = projection;
 
                             if (options.minify == true) {
-                                projection = {_id: 1, name: 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, cni: 1, status: 1,
+                                projection = {_id: 1, name: 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, rank: 1, category: 1, cni: 1, status: 1,
                                     identifier: 1, corps: 1, telecom: 1, fname: 1
                                 };
                             }
-                            console.log("==== Liste affiche 1");
                             exports.list(options, function (err, personnels) {
                                 if (err) {
                                     log.error(err);
                                     res.status(500).send(err);
                                 } else {
-                                    console.log("==== Liste affiche Apres ");
                                     personnels.sort(function (a, b) {
                                         if (a.fname < b.fname) {
                                             return -1;
@@ -523,7 +410,6 @@ exports.list = function (options, callback) {
         } else {
             var userStructure = [];
             var userStructureCodes = [];
-            console.log("==== Liste affiche - LoopS start");
             function LoopS(s) {
                 if (user.structures && s < user.structures.length && user.structures[s]) {
                     controllers.structures.find(user.structures[s], "en", function (err, structure) {
@@ -537,7 +423,6 @@ exports.list = function (options, callback) {
                         }
                     });
                 } else {
-                    console.log("==== Liste affiche - LoopS end");
                     if (options.req.actor.role == "1" || options.req.actor.role == "3" || options.req.actor.role == "4" || options.req.actor.role == "2") {
                         var query = {};
                         if (options.query) {
@@ -574,6 +459,10 @@ exports.list = function (options, callback) {
 
                             if (options.filters.grade && options.filters.grade != "-" && options.filters.grade != "") {
                                 aggregate.push({$match: {grade: options.filters.grade}});
+                            }
+
+                            if (options.filters.rank && options.filters.rank !== "-" && options.filters.rank !== "") {
+                                aggregate.push({$match: {rank: options.filters.rank}});
                             }
 
                             if (options.filters.category && options.filters.category != "-" && options.filters.category != "") {
@@ -697,17 +586,14 @@ exports.list = function (options, callback) {
                         }
 
                         q = Personnel.aggregate(aggregate);
-                        console.log("==== Liste affiche - Before aggregation");
                         q.exec(function (err, personnels) {
                             if (err) {
                                 log.error(err);
                                 audit.logEvent('[mongodb]', 'Personnel', 'List', '', '', 'failed', 'Mongodb attempted to retrieve personnel list');
                                 callback(err);
                             } else {
-                                console.log("==== Liste affiche - After aggregation");
                                 personnels = JSON.parse(JSON.stringify(personnels));
                                 var retirementLimit;
-                                console.log("==== Liste affiche - Loop  personnels");
                                 function LoopA(a) {
                                     if (a < personnels.length && personnels[a]) {
                                         personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
@@ -774,6 +660,10 @@ exports.list = function (options, callback) {
                                                 personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, "code").toUpperCase();
                                             }
 
+                                            if (rank) {
+                                                personnels[a].rank = dictionary.getValueFromJSON('../../resources/dictionary/personnel/ranks.json', rank, language);
+                                            }
+
                                             if (personnels[a].affectation && personnels[a].affectation.position) {
                                                 var personalRank = (personnels[a].affectation.rank) ? personnels[a].affectation.rank : "";
                                                 if (personalRank != ""){
@@ -796,9 +686,11 @@ exports.list = function (options, callback) {
                                         } else if (options.retiredOnly) {
                                             var status = (personnels[a].status) ? personnels[a].status : "";
                                             var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                                            var rank = (personnels[a].rank) ? personnels[a].rank : "";
                                             var language = options.language || "";
                                             language = language.toLowerCase();
                                             personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
+                                            personnels[a].rank = dictionary.getValueFromJSON('../../resources/dictionary/personnel/ranks.json', rank, language);
                                             personnels[a].age = _calculateAge(new Date(personnels[a].birthDate));
                                             LoopA(a + 1);
                                         } else {
@@ -944,7 +836,7 @@ exports.api.export = function (req, res) {
                         toExport: true
                     }
 
-                    var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, index:1, cni: 1, status: 1,
+                    var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, rank:1, category: 1, index:1, cni: 1, status: 1,
                         identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1,
                         "affectation.position.fr": 1,
                         "affectation.position.en": 1,
@@ -1314,6 +1206,7 @@ exports.eligibleTo = function (options, callback) {
                     skills: 1,
                     identifier: 1,
                     grade: 1,
+                    rank: 1,
                     corps: 1,
                     status: 1
                 };
@@ -1419,7 +1312,7 @@ exports.api.followUpSheet = function (req, res) {
                 fs.mkdirSync("./tmp");
             }
 
-            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1, category: 1, index:1, cni: 1, status: 1,
+            var projection = {_id: 1, name: 1, "retirement": 1, matricule: 1, metainfo: 1, gender: 1, grade: 1,  rank:1, category: 1, index:1, cni: 1, status: 1,
                 identifier: 1, corps: 1, telecom: 1, fname: 1, "affectation._id": 1, "affectation.positionCode": 1, "situations": 1,
                 "affectation.position.fr": 1,
                 "affectation.position.en": 1,
@@ -1598,6 +1491,7 @@ function beautify(options, personnels, callback) {
 
                         var status = (personnels[a].status) ? personnels[a].status : "";
                         var grade = (personnels[a].grade) ? personnels[a].grade : "";
+                        var rank = (personnels[a].rank) ? personnels[a].rank : "";
                         var category = (personnels[a].category) ? personnels[a].category : "";
 
                         var highestLevelEducation = (personnels[a].qualifications) ? personnels[a].qualifications.highestLevelEducation : "";
@@ -1647,6 +1541,10 @@ function beautify(options, personnels, callback) {
                             if (corps && corps != "") {
                                 personnels[a].corps = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/corps.json', corps + "", language);
                             }
+                        }
+
+                        if (rank){
+                            personnels[a].rank = dictionary.getValueFromJSON('../../resources/dictionary/personnel/ranks.json', rank, language);
                         }
 
                         if (highestLevelEducation != "") {
