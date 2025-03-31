@@ -1,25 +1,23 @@
-var Personnel = require('../models/personnel').Personnel;
-var Affectation = require('../models/affectation').Affectation;
-var audit = require('../utils/audit-log');
-var log = require('../utils/log');
-var mail = require('../utils/mail');
-var fs = require('fs');
-var Excel = require('exceljs');
-var keyGenerator = require("generate-key");
-var _ = require('lodash');
-var crypto = require('crypto');
-var dictionary = require('../utils/dictionary');
-var formidable = require("formidable");
-var mysql = require('mysql');
-var phantomjs = require('phantomjs');
-var pdf = require('dynamic-html-pdf');
-var moment = require('moment');
-var ObjectID = require('mongoose').mongo.ObjectID;
+const Personnel = require('../models/personnel').Personnel;
+const Affectation = require('../models/affectation').Affectation;
+const audit = require('../utils/audit-log');
+const log = require('../utils/log');
+const mail = require('../utils/mail');
+const fs = require('fs');
+const Excel = require('exceljs');
+const keyGenerator = require("generate-key");
+const _ = require('lodash');
+const dictionary = require('../utils/dictionary');
+const formidable = require("formidable");
+const phantomjs = require('phantomjs');
+const pdf = require('dynamic-html-pdf');
+const moment = require('moment');
+const ObjectID = require('mongoose').mongo.ObjectID;
 
 // API
 exports.api = {};
 
-var controllers = {
+const controllers = {
     affectations: require('./affectations'),
     configuration: require('./configuration'),
     users: require('./users'),
@@ -77,11 +75,15 @@ exports.api.upsert = function (req, res) {
                 audit.logEvent('[formidable]', 'Personnel', 'Upsert', "", "", 'failed', "Formidable attempted to parse personnel fields");
                 return res.status(500).send(err);
             } else {
-                exports.upsert(fields, function (err) {
+                exports.upsert(fields, function (err, result) {
                     if (err) {
                         log.error(err);
+                        audit.logEvent(req.actor.id, 'Personnel', 'Upsert', "", "", 'failed', "Failed to upsert personnel");
                         return res.status(500).send(err);
                     } else {
+                        var action = fields._id ? 'Update' : 'Create';
+                        var description = `The user has ${action.toLowerCase()}d the profile of ${fields.name.family} ${result.name.given}. Mat: ${fields.identifier}`;
+                        audit.logEvent(req.actor.id, 'Personnel', action, "Profile", result._id, 'succeed', description);
                         res.sendStatus(200);
                     }
                 });
@@ -1093,7 +1095,7 @@ exports.api.checkExistance = function (req, res) {
 }
 
 /**
- * This function output the list of staff corresponds to geven position
+ * This function output the list of staff corresponds to given position
  * @param {type} req
  * @param {type} res
  * @returns {unresolved}
@@ -1444,19 +1446,26 @@ exports.api.delete = function (req, res) {
             audit.logEvent(req.actor.id, 'Personnel', 'Remove', '', '', 'failed', 'The actor could not remove a personnel because one or more params of the request was not defined');
             return res.sendStatus(400);
         } else {
-            Personnel.remove({_id: req.params.id}, function (err) {
-                if (err) {
-                    log.error(err);
-                    return res.status(500).send(err);
+            Personnel.findOne({_id: req.params.id}, function (err, personnel) {
+                if (err || !personnel) {
+                    log.error(err || 'Personnel not found');
+                    return res.status(500).send(err || 'Personnel not found');
                 } else {
-                    Affectation.remove({personnelId: req.params.id}, function (err) {
+                    Personnel.remove({_id: req.params.id}, function (err) {
                         if (err) {
                             log.error(err);
                             return res.status(500).send(err);
                         } else {
-                            audit.logEvent(req.actor.id, 'Personnel', 'Staff member deletion', "PersonnelID", req.params.id, 'succeed',
-                                    'The actor has successfully deleted the staff member.');
-                            return res.sendStatus(200);
+                            Affectation.remove({personnelId: req.params.id}, function (err) {
+                                if (err) {
+                                    log.error(err);
+                                    return res.status(500).send(err);
+                                } else {
+                                    audit.logEvent(req.actor.id, 'Personnel', 'Staff member deletion', "PersonnelID", req.params.id, 'succeed',
+                                            `The actor has successfully deleted the staff member: ${personnel.name.family} ${personnel.name.given}`);
+                                    return res.sendStatus(200);
+                                }
+                            });
                         }
                     });
                 }
