@@ -89,6 +89,7 @@ exports.api.jsonList = function (req, res) {
 
 
 var getValueFromJSON = function (file, id, language) {
+    language = language.toString().toLowerCase()
     var value = id;
     if (id && id !== "") {
         if (!cache[file]) {

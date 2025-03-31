@@ -1,5 +1,6 @@
 var Position = require('../models/position').Position;
 var Sanction = require('../models/sanction').Sanction;
+var User = require('../models/user').User;
 var audit = require('../utils/audit-log');
 var log = require('../utils/log');
 var mail = require('../utils/mail');
@@ -19,6 +20,7 @@ exports.api = {};
 var controllers = {
     configuration: require('./configuration'),
     users: require('./users'),
+    personnel: require('./personnel'),
     structures: require('./structures'),
     organizations: require('./organizations')
 };
@@ -78,13 +80,24 @@ exports.upsert = function (fields, callback) {
     }
 
     fields.lastModified = new Date();
-    Sanction.findOneAndUpdate(filter, sanctionFields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
-        if (err) {
-            log.error(err);
-            audit.logEvent('[mongodb]', 'Sanction', 'Upsert', "", "", 'failed', "Mongodb attempted to update a sanction");
-            callback(err);
+    controllers.personnel.read({_id: fields.personnelId}, function (err, personnel) {
+        if (err || !personnel) {
+            log.error(err || 'Agent not found');
+            return res.status(500).send(err || 'Agent not found');
         } else {
-            callback(null, result);
+            Sanction.findOneAndUpdate(filter, sanctionFields, {setDefaultsOnInsert: true, upsert: true, new : true}, function (err, result) {
+                if (err) {
+                    log.error(err);
+                    audit.logEvent('[mongodb]', 'Sanction', 'Upsert', "", "", 'failed', "Mongodb attempted to update a sanction");
+                    callback(err);
+                } else {
+                    const sanctionType = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions.json', fields.type, fields.actor.language);
+                    const sanctionReason = dictionary.getJSONById('../../resources/dictionary/personnel/sanctions/' + personnel.status + '/' + fields.type + '.json', fields.sanction)[fields.actor.language.toString().toLowerCase()];
+                    const description = `Sanction upserted for ${personnel.name.family} ${personnel.name.given} (ID: ${personnel.identifier}). Date: ${moment(fields.dateofSignature).format("DD/MM/YYYY")}, Type: ${sanctionType}, Reason: ${sanctionReason}`;
+                    audit.logEvent(fields.actor.id, 'Sanction', 'Upsert', "SanctionID", result._id, 'succeed', description);
+                    callback(null, result);
+                }
+            });
         }
     });
 };
@@ -534,18 +547,34 @@ exports.api.statistics = function (req, res) {
 
 exports.api.remove = function (req, res) {
     if (req.actor) {
-        if (req.params.id == undefined) {
-            audit.logEvent(req.actor.id, 'Sanction', 'Delete', '', '', 'failed', 'The actor could not delete an sanction because one or more params of the request was not defined');
+        if (req.params.id === undefined) {
+            audit.logEvent(req.actor.id, 'Sanction', 'Delete', '', '', 'failed', 'The actor could not delete a sanction because one or more params of the request was not defined');
             return res.sendStatus(400);
         } else {
-            Sanction.remove({_id: req.params.id}, function (err) {
-                if (err) {
-                    log.error(err);
-                    return res.status(500).send(err);
+            Sanction.findById(req.params.id, function (err, sanction) {
+                if (err || !sanction) {
+                    log.error(err || 'Sanction not found');
+                    return res.status(500).send(err || 'Sanction not found');
                 } else {
-                    audit.logEvent(req.actor.id, 'Sanction', 'Delete an sanction', "SanctionID", req.params.id, 'succeed',
-                            'The actor has successfully deleted the sanction.');
-                    return res.sendStatus(200);
+                    controllers.personnel.read({_id:sanction.personnelId}, function (err, personnel) {
+                        if (err || !personnel) {
+                            log.error(err || 'Agent not found');
+                            return res.status(500).send(err || 'Agent not found');
+                        } else {
+                            Sanction.remove({_id: req.params.id}, function (err) {
+                                if (err) {
+                                    log.error(err);
+                                    return res.status(500).send(err);
+                                } else {
+                                    const sanctionType = dictionary.getValueFromJSON('../../resources/dictionary/personnel/sanctions.json', sanction.type, req.actor.language);
+                                    const sanctionReason = dictionary.getJSONById('../../resources/dictionary/personnel/sanctions/' + personnel.status + '/' + sanction.type + '.json', sanction.sanction)[req.actor.language.toString().toLowerCase()];
+                                    const description = `Sanction deleted for ${personnel.name.family} ${personnel.name.given} (ID: ${personnel.identifier}). Date: ${moment(sanction.dateofSignature).format("DD/MM/YYYY")}, Type: ${sanctionType}, Reason: ${sanctionReason}`;
+                                    audit.logEvent(req.actor.id, 'Sanction', 'Delete', "SanctionID", req.params.id, 'succeed', description);
+                                    return res.sendStatus(200);
+                                }
+                            });
+                        }
+                    });
                 }
             });
         }
