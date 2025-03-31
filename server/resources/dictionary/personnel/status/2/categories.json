@@ -1,50 +1,74 @@
 [
   {
     "id": "7",
-    "code": "CAT 1"
+    "code": "CAT 1",
+    "en": "CAT 1",
+    "fr": "CAT 1"
   },
   {
     "id": "8",
-    "code": "CAT 2"
+    "code": "CAT 2",
+    "en": "CAT 2",
+    "fr": "CAT 2"
   },
   {
     "id": "9",
-    "code": "CAT 3"
+    "code": "CAT 3",
+    "en": "CAT 3",
+    "fr": "CAT 3"
   },
   {
     "id": "10",
-    "code": "CAT 4"
+    "code": "CAT 4",
+    "en": "CAT 4",
+    "fr": "CAT 4"
   },
   {
     "id": "11",
-    "code": "CAT 5"
+    "code": "CAT 5",
+    "en": "CAT 5",
+    "fr": "CAT 5"
   },
   {
     "id": "12",
-    "code": "CAT 6"
+    "code": "CAT 6",
+    "en": "CAT 6",
+    "fr": "CAT 6"
   },
   {
     "id": "13",
-    "code": "CAT 7"
+    "code": "CAT 7",
+    "en": "CAT 7",
+    "fr": "CAT 7"
   },
   {
     "id": "14",
-    "code": "CAT 8"
+    "code": "CAT 8",
+    "en": "CAT 8",
+    "fr": "CAT 8"
   },
   {
     "id": "15",
-    "code": "CAT 9"
+    "code": "CAT 9",
+    "en": "CAT 9",
+    "fr": "CAT 9"
   },
   {
     "id": "16",
-    "code": "CAT 10"
+    "code": "CAT 10",
+    "en": "CAT 10",
+    "fr": "CAT 10"
   },
   {
     "id": "17",
-    "code": "CAT 11"
+    "code": "CAT 11",
+    "en": "CAT 11",
+    "fr": "CAT 11"
   },
   {
     "id": "18",
-    "code": "CAT 12"
+    "code": "CAT 12",
+    "en": "CAT 12",
+    "fr": "CAT 12"
   }
 ]

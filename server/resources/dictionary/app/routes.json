@@ -543,5 +543,35 @@
         "uri": "/api/documents/:id",
         "method": "GET",
         "roles": [1, 2, 3, 4, 5]
+    },
+    {
+        "id": 93,
+        "uri": "/api/export/create",
+        "method": "POST",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 94,
+        "uri": "/api/exports",
+        "method": "POST",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 95,
+        "uri": "/api/export/download/:id",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 96,
+        "uri": "/api/exports/delete",
+        "method": "POST",
+        "roles": [1,2,3,4,5]
+    },
+    {
+        "id": 97,
+        "uri": "/api/export/:id",
+        "method": "GET",
+        "roles": [1,2,3,4,5]
     }
 ]

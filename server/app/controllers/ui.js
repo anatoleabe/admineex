@@ -141,6 +141,13 @@ function buildNav(user, callback) {
         name: gt.gettext('Physical records')
     };
 
+    var staffManagementTab7 = {
+        href: 'home.staffs.export',
+        sref: '.staffs',
+        label: gt.gettext('Export'),
+        name: gt.gettext('Export')
+    };
+
     var task = {
         href: 'home.tasks.main',
         sref: '.tasks',
@@ -295,6 +302,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab5);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab6);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab7);
             // LEFT MENU MONITOR
 //            nav.left[0].items.push(monitoring);
 //            nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
@@ -326,6 +334,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab5);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab6);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab7);
             // LEFT MENU MONITOR
 //            nav.left[0].items.push(monitoring);
 //            nav.left[0].items[nav.left[0].items.length - 1].items.push(monitoringTab1);
@@ -347,6 +356,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab5);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab6);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab7);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
             // LEFT MENU TABS FOR ADMINISTRATION
@@ -364,6 +374,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab5);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab6);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab3);
+            nav.left[0].items[nav.left[0].items.length - 1].items.push(staffManagementTab7);
             // LEFT MENU ADMINISTRATION
             nav.left[0].items.push(administration);
             // LEFT MENU TABS FOR ADMINISTRATION

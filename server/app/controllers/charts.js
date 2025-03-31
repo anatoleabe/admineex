@@ -19,7 +19,6 @@ var controllers = {
 exports.api = {};
 
 exports.api.build = function (req, res) {
-    console.log("===CARD...", req.params.name)
     if (req.actor) {
         var name = req.params.name || '';
         if (name !== '') {

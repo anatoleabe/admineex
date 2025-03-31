@@ -1,18 +1,18 @@
-var audit = require('../utils/audit-log');
-var log = require('../utils/log');
-var moment = require('moment');
-var _ = require('underscore');
-var fs = require("fs");
-var pdf = require('dynamic-html-pdf');
-var keyGenerator = require("generate-key");
-var dictionary = require('../utils/dictionary');
-var phantomjs = require('phantomjs');
-var formidable = require("formidable");
-var Excel = require('exceljs');
+let audit = require('../utils/audit-log');
+let log = require('../utils/log');
+let moment = require('moment');
+let _ = require('underscore');
+let fs = require("fs");
+let pdf = require('dynamic-html-pdf');
+let keyGenerator = require("generate-key");
+let dictionary = require('../utils/dictionary');
+let phantomjs = require('phantomjs');
+let formidable = require("formidable");
+let Excel = require('exceljs');
 
 
 
-var controllers = {
+let controllers = {
     users: require('./users'),
     projects: require('./projects'),
     configuration: require('./configuration'),
@@ -33,15 +33,15 @@ exports.api.positions = function (req, res) {
         return options.inverse(this);
     })
 
-    var structureCode = req.params.structure || "-1";
-    var vacancies = req.params.vacancies;
-    var nomenclature = req.params.nomenclature;
-    var template = fs.readFileSync('resources/pdf/positions.html', 'utf8')
+    let structureCode = req.params.structure || "-1";
+    let vacancies = req.params.vacancies;
+    let nomenclature = req.params.nomenclature;
+    let template = fs.readFileSync('resources/pdf/positions.html', 'utf8')
 
-    var gt = dictionary.translator(req.actor.language);
-    var foot = 'SYGEPE-DGTCFM<br/>Imprimé le ' + dictionary.dateformater(new Date(), "dd/MM/yyyy HH:mm:s");
+    let gt = dictionary.translator(req.actor.language);
+    let foot = 'SYGEPE-DGTCFM<br/>Imprimé le ' + dictionary.dateformater(new Date(), "dd/MM/yyyy HH:mm:s");
 
-    var options = {
+    let options = {
         phantomPath: phantomjs.path,
         format: "A4",
         orientation: "landscape",
@@ -58,15 +58,15 @@ exports.api.positions = function (req, res) {
 //        "base": "file:///home/www/your-asset-path"
     };
 
-    var meta = {
+    let meta = {
         title: gt.gettext("LIST OF WORKSTATIONS BY STRUCTURE")
     };
 
-    var filter = {rank: "2"};
+    let filter = {rank: "2"};
     if (structureCode != "-1" && structureCode != "undefined") {
         filter.code = structureCode;
     }
-    var option = {
+    let option = {
         actor: req.actor, language: req.actor.language, beautify: true, includePositions: true, filter: filter,
     }
 
@@ -87,12 +87,12 @@ exports.api.positions = function (req, res) {
             if (structureCode != "-1") {
                 meta.structure = structures[0].name;
             }
-            var tmpFile = "./tmp/" + keyGenerator.generateKey() + ".pdf";
+            let tmpFile = "./tmp/" + keyGenerator.generateKey() + ".pdf";
             if (!fs.existsSync("./tmp")) {
                 fs.mkdirSync("./tmp");
             }
 
-            var document = {
+            let document = {
                 type: 'file', // 'file' or 'buffer'
                 template: template,
                 context: {
@@ -109,7 +109,7 @@ exports.api.positions = function (req, res) {
 
             pdf.create(document, options, res).then(res1 => {
 
-                var fileName = 'report.pdf';
+                let fileName = 'report.pdf';
                 res.set('Content-disposition', 'attachment; filename=' + fileName);
                 res.set('Content-Type', 'application/pdf');
                 res.download(tmpFile, fileName, function (err) {
@@ -133,10 +133,10 @@ exports.api.positions = function (req, res) {
 };
 
 exports.api.structures = function (req, res) {
-    var gt = dictionary.translator(req.actor.language);
-    var foot = 'SYGEPE-DGTCFM<br/>Imprimé le ' + dictionary.dateformater(new Date(), "dd/MM/yyyy HH:mm:s");
+    let gt = dictionary.translator(req.actor.language);
+    let foot = 'SYGEPE-DGTCFM<br/>Imprimé le ' + dictionary.dateformater(new Date(), "dd/MM/yyyy HH:mm:s");
     
-    var options = {
+    let options = {
         phantomPath: phantomjs.path,
         format: "A4",
         orientation: "portrait",
@@ -152,7 +152,7 @@ exports.api.structures = function (req, res) {
         }
     };
 
-    var meta = {
+    let meta = {
         title: gt.gettext("LIST OF DGTCFM'S STRUCTURES")
     };
     
@@ -162,12 +162,12 @@ exports.api.structures = function (req, res) {
             log.error(err);
             return res.status(500).send(err);
         } else {
-            var tmpFile = "./tmp/" + keyGenerator.generateKey() + ".pdf";
+            let tmpFile = "./tmp/" + keyGenerator.generateKey() + ".pdf";
             if (!fs.existsSync("./tmp")) {
                 fs.mkdirSync("./tmp");
             }
 
-            var document = {
+            let document = {
                 type: 'file', // 'file' or 'buffer'
                 template: fs.readFileSync('resources/pdf/structures.html', 'utf8'),
                 context: {
@@ -185,7 +185,7 @@ exports.api.structures = function (req, res) {
 
             pdf.create(document, options, res).then(res1 => {
 
-                var fileName = 'report.pdf';
+                let fileName = 'report.pdf';
                 res.set('Content-disposition', 'attachment; filename=' + fileName);
                 res.set('Content-Type', 'application/pdf');
                 res.download(tmpFile, fileName, function (err) {
@@ -211,7 +211,7 @@ exports.api.structures = function (req, res) {
 
 exports.api.table = function (req, res) {
     if (req.actor) {
-        var form = new formidable.IncomingForm();
+        let form = new formidable.IncomingForm();
         form.parse(req, function (err, fields, files) {
             if (err) {
                 log.error(err);
@@ -219,22 +219,22 @@ exports.api.table = function (req, res) {
                 return res.status(500).send(err);
             } else {
                 // Language
-                var language = req.actor.language.toLowerCase();
-                var gt = dictionary.translator(language);
+                let language = req.actor.language.toLowerCase();
+                let gt = dictionary.translator(language);
 
                 //Build XLSX
-                var options = {fields: fields.fields, fieldNames: fields.fieldNames};
+                let options = {fields: fields.fields, fieldNames: fields.fieldNames};
                 options.data = fields.data;
                 options.title = "Admineex" + gt.gettext(":") + " " + fields.title;
                 buildXLSX(options, function (err, filePath) {
                     if (err) {
                         log.error(err);
                     } else {
-                        var fileName = 'report.xlsx';
+                        let fileName = 'report.xlsx';
                         res.set('Content-disposition', 'attachment; filename=' + fileName);
                         res.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-                        var fileStream = fs.createReadStream(filePath);
-                        var pipeStream = fileStream.pipe(res);
+                        let fileStream = fs.createReadStream(filePath);
+                        let pipeStream = fileStream.pipe(res);
                         pipeStream.on('finish', function (err) {
                             fs.unlinkSync(filePath);
                         });
@@ -249,11 +249,11 @@ exports.api.table = function (req, res) {
 }
 
 function buildXLSX(options, callback) {
-    var add = 0;
-    var defaultCellStyle = {font: {name: "Calibri", sz: 11}, fill: {fgColor: {rgb: "FFFFAA00"}}};
-    var alpha = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-    var columns = [];
-    var a = 0;
+    let add = 0;
+    let defaultCellStyle = {font: {name: "Calibri", sz: 11}, fill: {fgColor: {rgb: "FFFFAA00"}}};
+    let alpha = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
+    let columns = [];
+    let a = 0;
     // Generate fields
 
     for (n = 0; n < options.fields.length; n++) {
@@ -277,9 +277,9 @@ function buildXLSX(options, callback) {
     }
 
     // create workbook & add worksheet
-    var workbook = new Excel.Workbook();
+    let workbook = new Excel.Workbook();
     //2. Start holding the work sheet
-    var ws = workbook.addWorksheet('Procrastinate statistiques');
+    let ws = workbook.addWorksheet('Procrastinate statistiques');
 
     //3. set style around A1
     ws.getCell('A1').value = options.title;
@@ -332,8 +332,8 @@ function buildXLSX(options, callback) {
     for (i = 0; i < options.data.length; i++) {
         
         for (j = 0; j < options.fields.length; j++) {
-            var query = options.fields[j].split(".");
-            var value, field;
+            let query = options.fields[j].split(".");
+            let value, field;
             if (query.length == 1) {
                 value = options.data[i][query[0]] == undefined ? "" : options.data[i][query[0]];
                 field = query[0];
@@ -381,7 +381,7 @@ function buildXLSX(options, callback) {
     ws.mergeCells('A1:' + columns[options.fieldNames.length - 1] + "1");
 
     // save workbook to disk
-    var tmpFile = "./tmp/" + keyGenerator.generateKey() + ".xlsx";
+    let tmpFile = "./tmp/" + keyGenerator.generateKey() + ".xlsx";
     if (!fs.existsSync("./tmp")) {
         fs.mkdirSync("./tmp");
     }
