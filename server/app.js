@@ -1,13 +1,16 @@
-var fs              = require('fs');
-var express         = require('express');
-var helmet          = require('helmet');
-var methodOverride  = require('method-override');
-var bodyParser      = require('body-parser');
-var favicon         = require('serve-favicon');
-var nconf           = require('nconf');
-var randtoken       = require('rand-token').uid;
-var app             = express();
-var server          = require('http').Server(app);
+const fs              = require('fs');
+const express = require('express');
+const helmet = require('helmet');
+const methodOverride = require('method-override');
+const favicon = require('serve-favicon');
+const nconf = require('nconf');
+const randtoken = require('rand-token').uid;
+const app = express();
+const server = require('http').Server(app);
+var compression     = require('compression');
+
+var socketio        = require('socket.io');
+let io;
 
 nconf.file('config/server.json');
 
@@ -49,7 +52,16 @@ nconf.load(function (err, result) {
         changed |= setDefault("mailer:auth:pass", "ylpeR6102oN");
         changed |= setDefault("mailer:sender:name", "Admineex");
         changed |= setDefault("mailer:sender:address", "anatoleabe@gmail.com");
-        
+
+        //Export
+        changed |= setDefault("export:protectExportFile", false);
+        changed |= setDefault("export:mailAlertAfterMS", 120000); // 2 Minutes
+        changed |= setDefault("export:maxRowsOnFetch", 100); // From 50-infinite, according to server power
+        changed |= setDefault("export:maxRunningJobs", 1); //one running export task per default
+        changed |= setDefault("export:defaultLockLifetime", 172800000); // 2 days non finished job will be unlocked
+        changed |= setDefault("export:csvDelimiter", ','); // 2 days non finished job will be unlocked
+
+
         //Rate limiter
         changed |= setDefault("rateLimiter:points", 200);
         changed |= setDefault("rateLimiter:duration", 1);
@@ -76,7 +88,7 @@ nconf.load(function (err, result) {
 });
 
 
-function main() {
+async function main() {
     // this must be called BEFORE require('./app/log/log') and
     // AND                 AFTER  the configuration is completely loaded
     require('./app/databases/mongodb');
@@ -110,6 +122,7 @@ function main() {
     app.use(express.static(__dirname + '/public'));
     app.use(favicon(__dirname + '/public/img/logos/favicon.ico'));
     app.use(methodOverride());
+    app.use(compression()); //use compression
 
     // MongoDB
     require('./app/databases/mongodb');
@@ -117,12 +130,32 @@ function main() {
     // Routes
     require('./app/routes')(app);
 
+    // Socket
+    io = await socketio.listen(server);
+
+    // Socket on connection
+    io.on('connection', function (client) {
+        log.info('Client connected');
+        audit.logEvent('[socket]', 'client', 'Connection', 'Client', client.id, 'succeed', 'Client connected');
+        client.on('disconnect', function () {
+            log.info('Client disconnected');
+            audit.logEvent('[socket]', 'client', 'Disconnection', 'Client', client.id, 'succeed', 'Client disconnected');
+        });
+    });
+
     // Start server
     server.listen(nconf.get('server').httpPort);
+
+    // Replanning all incompleted export jobs
+    if (nconf.get('server')){
+        const staffController = require('./app/controllers/personnel');
+        await staffController.replanIncompletedJobs(io);
+    }
 
     // Log
     log.info('Admineex started on port ' + nconf.get('server').httpPort);
     audit.logEvent('[app]', 'main app', 'Start', 'Port', nconf.get('server').httpPort, 'succeed', 'Server successfully started.');   
 }
 
+exports.io = io;
 exports = module.exports = app;

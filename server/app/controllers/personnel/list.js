@@ -11,8 +11,7 @@ const controllersUsers = require("../users");
 const controllersStructures = require("../structures");
 const controllersPositions = require("../positions");
 const controllersPersonnelIndex = require("./index");
-
-
+const controllersConfiguration = require("../configuration");
 
 exports.list = function (options, callback) {
     controllersUsers.findUser(options.req.actor.id, function (err, user) {
@@ -268,7 +267,7 @@ exports.list = function (options, callback) {
                                             if (status) {
                                                 let statusKey = status === "Fonctionnaire" ? "1" : (status.includes("Personnel non fonctionnaire") ? "2" : status);
                                                 person.grade = dictionary.getValueFromJSON(`../../resources/dictionary/personnel/status/${statusKey}/grades.json`, parseInt(grade, 10), language);
-                                                person.category = dictionary.getValueFromJSON(`../../resources/dictionary/personnel/status/${statusKey}/categories.json`, person.category, "code").toUpperCase();
+                                                person.category = dictionary.getValueFromJSON(`../../resources/dictionary/personnel/status/${statusKey}/categories.json`, person.category, "code")?.toUpperCase();
                                             }
 
                                             if (rank) {
@@ -409,3 +408,256 @@ exports.list = function (options, callback) {
         }
     });
 }
+
+exports.count = function (options, callback) {
+    controllersUsers.findUser(options.req.actor.id, function (err, user) {
+        if (err) {
+            log.error(err);
+            callback(err);
+        } else {
+            let userStructure = [];
+            let userStructureCodes = [];
+
+            function LoopS(s) {
+                if (user.structures && s < user.structures.length && user.structures[s]) {
+                    controllersStructures.find(user.structures[s], "en", function (err, structure) {
+                        if (err) {
+                            log.error(err);
+                            callback(err);
+                        } else {
+                            userStructure.push({id: structure._id, code: structure.code});
+                            userStructureCodes.push(new RegExp("^" + structure.code + "-"));
+                            LoopS(s + 1);
+                        }
+                    });
+                } else {
+                    if (options.req.actor.role === "1" || options.req.actor.role === "3" || options.req.actor.role === "4" || options.req.actor.role === "2") {
+                        let query = {};
+                        if (options.query) {
+                            query = options.query;
+                        }
+
+                        let aggregate = [];
+
+                        // Set the same filters as in the list function
+                        if (options.filters) {
+                            if (options.filters.gender && options.filters.gender !== "-" && options.filters.gender !== "") {
+                                aggregate.push({$match: {gender: options.filters.gender}});
+                            }
+
+                            if (options.filters.status && options.filters.status !== "-" && options.filters.status !== "") {
+                                aggregate.push({$match: {status: options.filters.status}});
+                            }
+
+                            if (options.filters.grade && options.filters.grade !== "-" && options.filters.grade !== "") {
+                                aggregate.push({$match: {grade: options.filters.grade}});
+                            }
+
+                            if (options.filters.rank && options.filters.rank !== "-" && options.filters.rank !== "") {
+                                aggregate.push({$match: {rank: options.filters.rank}});
+                            }
+
+                            if (options.filters.category && options.filters.category !== "-" && options.filters.category !== "") {
+                                aggregate.push({$match: {category: options.filters.category}});
+                            }
+
+                            if (options.filters.situation && options.filters.situation !== "-" && options.filters.situation !== "") {
+                                aggregate.push({$addFields: {lastSituation: {$arrayElemAt: ["$situations", -1]}}});
+
+                                if (options.filters.situation === "12") {
+                                    aggregate.push({"$match": {"retirement.retirement": true}});
+                                    aggregate.push({"$match": {"retirement.notified": {$exists: false}}});
+                                    aggregate.push({"$match": {$or: [{"retirement.extended": {$exists: false}}, {"retirement.extended": false}]}});
+                                } else if (options.filters.situation === "0") {
+                                    aggregate.push({$match: {$and: [
+                                                {"lastSituation.situation": {$ne: "3"}},
+                                                {"lastSituation.situation": {$ne: "5"}},
+                                                {"lastSituation.situation": {$ne: "8"}},
+                                                {"lastSituation.situation": {$ne: "10"}}
+                                            ]}});
+                                } else {
+                                    aggregate.push({$match: {"lastSituation.situation": options.filters.situation}});
+                                }
+                            }
+                        }
+
+                        if (!options.statistics) {
+                            aggregate.push({"$unwind": "$name"});
+                            aggregate.push({"$unwind": {path: "$name.family", preserveNullAndEmptyArrays: true}});
+                            aggregate.push({"$unwind": {path: "$name.given", preserveNullAndEmptyArrays: true}});
+                            aggregate.push({"$unwind": {path: "$retirement", preserveNullAndEmptyArrays: true}});
+
+                            if (options.minify === false) {
+                                aggregate.push({
+                                    $lookup: {
+                                        from: 'affectations',
+                                        localField: '_id',
+                                        foreignField: 'personnelId',
+                                        as: 'affectation',
+                                    }
+                                });
+                                aggregate.push({
+                                    "$addFields": {
+                                        "affectation": {"$slice": ["$affectation", -1]}
+                                    }
+                                });
+                                aggregate.push({
+                                    "$unwind": {
+                                        path: "$affectation",
+                                        preserveNullAndEmptyArrays: true
+                                    }
+                                });
+
+                                if (options.req.actor.role === "2") {
+                                    aggregate.push({
+                                        "$match": {"affectation.positionCode": {$in: userStructureCodes}}
+                                    });
+                                }
+
+                                aggregate.push({
+                                    $lookup: {
+                                        from: 'positions',
+                                        localField: 'affectation.positionCode',
+                                        foreignField: 'code',
+                                        as: 'affectation.position',
+                                    }
+                                });
+
+                                if (options.filters) {
+                                    if (options.filters.structure && options.filters.structure !== "-" && options.filters.structure !== "") {
+                                        aggregate.push({
+                                            $match: {
+                                                $or: [{"affectation.positionCode": new RegExp("^" + options.filters.structure)}]
+                                            }
+                                        });
+                                    }
+                                }
+
+                                aggregate.push({
+                                    "$unwind": {
+                                        path: "$affectation.position",
+                                        preserveNullAndEmptyArrays: true
+                                    }
+                                });
+                            }
+                        }
+
+                        // Filter by search keyword
+                        if (options.search) {
+                            let concatMeta = [
+                                {"$ifNull": ["$name.family", ""]},
+                                {"$ifNull": ["$name.given", ""]},
+                                {"$ifNull": ["$identifier", ""]}
+                            ];
+
+                            aggregate.push({
+                                "$addFields": {
+                                    "metainfo": {$concat: concatMeta}
+                                }
+                            });
+                            aggregate.push({
+                                $match: {
+                                    $or: [{"metainfo": dictionary.makePattern(options.search)}]
+                                }
+                            });
+                        }
+
+                        // Filter by ID if specified
+                        if (options._id) {
+                            aggregate.push({$match: {_id: new ObjectID(options._id)}});
+                        }
+
+                        // Retirement filter
+                        if (options.retiredOnly) {
+                            aggregate.push({"$match": options.query});
+                        } else {
+                            aggregate.push({"$match": {"retirement.notified": {$exists: false}}});
+                        }
+
+                        // Add count stage
+                        aggregate.push({$count: "count"});
+
+                        Personnel.aggregate(aggregate).exec(function (err, result) {
+                            if (err) {
+                                log.error(err);
+                                audit.logEvent('[mongodb]', 'Personnel', 'Count', '', '', 'failed', 'Mongodb attempted to count personnel');
+                                callback(err);
+                            } else {
+                                callback(null, result[0] ? result[0].count : 0);
+                            }
+                        });
+                    } else {
+                        // For role = 2 (structure managers)
+                        let aggregat = [
+                            {"$match": {"positionCode": {$in: userStructureCodes}}},
+                            {
+                                "$lookup": {
+                                    "from": "personnels",
+                                    "localField": "personnelId",
+                                    "foreignField": "_id",
+                                    "as": "AffectedPersonnal"
+                                }
+                            },
+                            {"$unwind": "$AffectedPersonnal"},
+                            {"$unwind": "$AffectedPersonnal.name"},
+                            {"$unwind": {path: "$AffectedPersonnal.name.family", preserveNullAndEmptyArrays: true}},
+                            {"$unwind": {path: "$AffectedPersonnal.name.given", preserveNullAndEmptyArrays: true}}
+                        ];
+
+                        // Add retirement filters if needed
+                        if (options.retiredOnly) {
+                            aggregat.push({
+                                "$addFields": {
+                                    "retirement": "$AffectedPersonnal.retirement.retirement",
+                                    "notified": "$AffectedPersonnal.retirement.notified",
+                                    "extended": "$AffectedPersonnal.retirement.extended"
+                                }
+                            });
+                            aggregat.push({"$match": {"retirement": true}});
+                            aggregat.push({"$match": {"notified": {$exists: true}}});
+                            aggregat.push({
+                                "$match": {
+                                    $or: [{"extended": {$exists: false}}, {"extended": false}]
+                                }
+                            });
+                        }
+
+                        // Add search filter if needed
+                        if (options.search && options.search !== "-" && options.search !== "") {
+                            let concatMeta = [
+                                {"$ifNull": ["$AffectedPersonnal.name.family", ""]},
+                                {"$ifNull": ["$AffectedPersonnal.name.given", ""]},
+                                {"$ifNull": ["$AffectedPersonnal.identifier", ""]},
+                                {"$ifNull": ["$positionCode", ""]}
+                            ];
+
+                            aggregat.push({
+                                "$addFields": {
+                                    "metainfo": {$concat: concatMeta}
+                                }
+                            });
+                            aggregat.push({
+                                $match: {
+                                    $or: [{"metainfo": dictionary.makePattern(options.search)}]
+                                }
+                            });
+                        }
+
+                        // Add count stage
+                        aggregat.push({$count: "count"});
+
+                        Affectation.aggregate(aggregat).exec(function (err, result) {
+                            if (err) {
+                                log.error(err);
+                                callback(err);
+                            } else {
+                                callback(null, result[0] ? result[0].count : 0);
+                            }
+                        });
+                    }
+                }
+            }
+            LoopS(0);
+        }
+    });
+};

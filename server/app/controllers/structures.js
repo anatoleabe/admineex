@@ -434,7 +434,6 @@ exports.list = function (options, callback) {
         } else {
             var structures = JSON.parse(JSON.stringify(result));
             //callback(null, structures);
-            console.log(".... beautify structire");
             // Remaining code logic...
             beautify(options, structures, function (err, objects) {
                 if (err) {

@@ -18,7 +18,15 @@ exports.api = {
     read: controllersPersonnelApi.readAPI,
     delete: controllersPersonnelApi.deleteAPI,
     search: controllersPersonnelApi.searchAPI,
-    export: controllersPersonnelExport.exportAPI,
+    //export: controllersPersonnelExport.exportAPI,
+    createExportAPI: controllersPersonnelExport.createExportAPI,
+    export:{
+        create: controllersPersonnelExport.createExportAPI,
+        download: controllersPersonnelExport.downloadExportAPI,
+        list: controllersPersonnelExport.listAPI,
+        delete: controllersPersonnelExport.deleteExportAPI,
+        getAJob: controllersPersonnelExport.getAJobAPI,
+    },
     retired: controllersPersonnelApi.retiredAPI,
     checkExistance: controllersPersonnelApi.checkExistanceAPI,
     eligibleTo: controllersPersonnelApi.eligibleToAPI,
@@ -27,6 +35,7 @@ exports.api = {
 };
 
 exports.list = controllersPersonnelList.list;
+exports.replanIncompletedJobs = controllersPersonnelExport.replanIncompletedJobs;
 exports.buildXLSX = controllersPersonnelExport.buildXLSX;
 exports.buildXLSX2 = controllersPersonnelExport.buildXLSX2;
 exports.eligibleTo = controllersPersonnelApi.eligibleTo;

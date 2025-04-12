@@ -285,6 +285,18 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }]
             },
             breadcrumbs: ["Staff management", "Physical records"]
+        }).state('home.staffs.export', {
+            url: '/export',
+            params: {id: undefined, opath: undefined},
+            templateUrl: 'templates/staffs/staff/exports.html',
+            controller: 'ExportsController',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/staffs/staff/ExportsCtrl.js');
+                    }]
+            },
+            breadcrumbs: ["Staff management", "Staff data export"]
         }).state('home.staffs.statofsanctions', {
             url: '/statofsanctions',
             params: {id: undefined, opath: undefined},

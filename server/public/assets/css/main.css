@@ -782,3 +782,13 @@ th{
     color: #fff;
     font-weight: bold;
 }
+
+.searchexport{
+    padding: 0 15px!important;
+    height: 40px!important;
+    font-size: 14px!important;
+    border: none !important;
+    border-radius: 2px !important;
+    background: rgb(255, 255, 255) !important;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 2px 2px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px !important;
+}

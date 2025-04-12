@@ -444,13 +444,6 @@ var routes = [
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.retired],
         access: _.findWhere(aclRoutes, {id: 54}).roles
     },
-    // Export staff
-    {
-        path: _.findWhere(aclRoutes, {id: 59}).uri,
-        httpMethod: _.findWhere(aclRoutes, {id: 59}).method,
-        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.personnel.api.export],
-        access: _.findWhere(aclRoutes, {id: 59}).roles
-    },
     
     // Download .xls file of a card
     {
@@ -716,42 +709,42 @@ var routes = [
 
     // ==================================EXPORT STAFF API ROUTES========================================
 
-   /** // post an export job
+    // post an export job
     {
         path: _.findWhere(aclRoutes, { id: 93 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 93 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.export.api.createExport],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.personnel.api.export.create],
         access: _.findWhere(aclRoutes, { id: 93 }).roles
     },
     //get list of export jobs
     {
         path: _.findWhere(aclRoutes, { id: 94 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 94 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.export.api.list],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.personnel.api.export.list],
         access: _.findWhere(aclRoutes, { id: 94 }).roles
     },
     //download export file by id
     {
         path: _.findWhere(aclRoutes, { id: 95 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 95 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.export.api.downloadExport],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.personnel.api.export.download],
         access: _.findWhere(aclRoutes, { id: 95 }).roles
     },
     //delete export by array of ids
     {
         path: _.findWhere(aclRoutes, { id: 96 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 96 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.export.api.deleteExport],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.personnel.api.export.delete],
         access: _.findWhere(aclRoutes, { id: 96 }).roles
     },
     //read export by ids
     {
         path: _.findWhere(aclRoutes, { id: 97 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 97 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.export.api.getAJob],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.personnel.api.export.getAJob],
         access: _.findWhere(aclRoutes, { id: 97 }).roles
     },
-**/
+
     // === OTHER ROUTES ==========================================================
     // Search In Dictionary
     {

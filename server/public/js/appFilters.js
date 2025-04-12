@@ -114,7 +114,6 @@ angular.module('limitFilters', []).filter('limitMessage', function () {
     };
 });
 
-
 angular.module('mappingFilters', []).filter('address', function (gettextCatalog) {
     return function (address) {
         var toReturn = "";
@@ -147,7 +146,35 @@ angular.module('mappingFilters', []).filter('address', function (gettextCatalog)
         }
         return toReturn;
     }
-}).filter('role', function (gettextCatalog) {
+}).filter('exportFilter', function() {
+    return function(items, searchText) {
+        if (items && items.length>0){
+            if (searchText && searchText.length>0){
+                const ret= items.filter(function (item) {
+                    return (
+                        item.data.query.exportName
+                            .toLowerCase()
+                            .indexOf(searchText.toLowerCase()) !== -1
+                    );
+                });
+                return ret;
+            } else{
+                return items;
+            }
+        } else {
+            return [];
+        }
+    };
+}).filter('bytesToSize', ['gettextCatalog', function(gettextCatalog) {
+    return function (bytes) {
+        if (bytes == 0) return '0 Bytes';
+        var k = 1000,
+            dm = 5,
+            sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+            i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    }
+}]).filter('role', function (gettextCatalog) {
     return function (role) {
         var toReturn = gettextCatalog.getString("unknown");
         switch (role) {

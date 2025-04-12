@@ -546,31 +546,31 @@
     },
     {
         "id": 93,
-        "uri": "/api/export/create",
+        "uri": "/api/exportStaffs/create",
         "method": "POST",
         "roles": [1,2,3,4,5]
     },
     {
         "id": 94,
-        "uri": "/api/exports",
+        "uri": "/api/exportStaffs",
         "method": "POST",
         "roles": [1,2,3,4,5]
     },
     {
         "id": 95,
-        "uri": "/api/export/download/:id",
+        "uri": "/api/exportStaffs/download/:id",
         "method": "GET",
         "roles": [1,2,3,4,5]
     },
     {
         "id": 96,
-        "uri": "/api/exports/delete",
+        "uri": "/api/exportStaffs/delete",
         "method": "POST",
         "roles": [1,2,3,4,5]
     },
     {
         "id": 97,
-        "uri": "/api/export/:id",
+        "uri": "/api/exportStaffs/:id",
         "method": "GET",
         "roles": [1,2,3,4,5]
     }
