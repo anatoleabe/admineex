@@ -30,6 +30,10 @@ angular.module('StaffManagementCtrl', [[
         $scope.currentTab = 4;
     }
 
+    $scope.goToTab = function(path) {
+        $location.path(path);
+    };
+
     $scope.label = {
         page: gettextCatalog.getString("Page")  + gettextCatalog.getString(":"),
         rowsPerPage: gettextCatalog.getString("Rows per page") + gettextCatalog.getString(":"),

@@ -39,7 +39,6 @@ angular.module('ExportsCtrl', []).controller('ExportsController', ['$mdDialog', 
                 }
                 const data = response.data;  
                 $rootScope.kernel.loading = 100
-                console.log(data)
                 $scope.exports = data;
             }).catch(function(response) {
                 console.error(response);
@@ -385,8 +384,6 @@ angular.module('ExportsCtrl', []).controller('ExportsController', ['$mdDialog', 
             reconnectionDelay: 1000
         });
 
-        console.log(socket)
-
         socket.on('jobProgress', function (status) {
             if (status.reload){  //&& (!status.userId || status.userId && status.userId === $rootScope.account.id)){
                 getExports();
@@ -427,7 +424,6 @@ angular.module('ExportsCtrl', []).controller('ExportsController', ['$mdDialog', 
 
 
         socket.on('disconnect', function (status) {
-            console.log(`Socket disconnected`);
             for (let index = 0; index < $scope.exports.length; index++) {
                 if (!$scope.exports[index].data.success){
                     $scope.exports[index].data.percentage = 0;
@@ -437,7 +433,6 @@ angular.module('ExportsCtrl', []).controller('ExportsController', ['$mdDialog', 
         });
 
         socket.on('reconnect', function(attemptNumber) {
-            console.log('Attempts to reconnect...');
             getExports();
         });
         
