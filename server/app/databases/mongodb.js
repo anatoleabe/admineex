@@ -19,22 +19,6 @@ const mongodbURL = configuration.getConf().mongo;
 // Set mongoose to use native promises
 mongoose.Promise = global.Promise;
 
-// Connection event handlers
-mongoose.connection.on('connecting', () => {
-    log.info('Connecting to MongoDB...');
-});
-
-mongoose.connection.on('connected', () => {
-    log.info('MongoDB connection established');
-});
-
-mongoose.connection.on('error', (err) => {
-    log.error('MongoDB connection error:', err);
-});
-
-mongoose.connection.on('disconnected', () => {
-    log.warn('MongoDB disconnected');
-});
 
 // Handle process termination
 process.on('SIGINT', async () => {

@@ -20,6 +20,7 @@ const controllersStructures = require('../structures');
 const controllersPositions = require('../positions');
 const controllersConfiguration = require('../configuration');
 const controllersAffectations = require('../affectations');
+const controllersPersonnelsList = require("./list");
 
 
 exports.upsertAPI = function (req, res) {
@@ -114,7 +115,16 @@ exports.listAPI = function (req, res) {
                                     identifier: 1, corps: 1, telecom: 1, fname: 1
                                 };
                             }
-                            controllersPersonnelList.list(options, function (err, personnels) {
+
+                            const getPersonnelCount = async (options) => {
+                                return new Promise((resolve, reject) => {
+                                    controllersPersonnelsList.count(options, (err, count) => {
+                                        err ? reject(err) : resolve(count);
+                                    });
+                                });
+                            };
+
+                            controllersPersonnelList.list(options, async function (err, personnels) {
                                 if (err) {
                                     log.error(err);
                                     res.status(500).send(err);
@@ -128,7 +138,8 @@ exports.listAPI = function (req, res) {
                                         } else
                                             return 0;
                                     })
-                                    return res.json({data: personnels, count: 0});
+                                    //const totalCount = await getPersonnelCount(options); I COMMENT THIS BECAUSE OF SLOWNESS until we find the optimised way to count and list at the same time
+                                    return res.json({data: personnels, count: 3800});//WE SET 3800 AS DEFAULT VALUE
                                 }
                             });
 

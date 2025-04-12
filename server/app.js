@@ -135,11 +135,10 @@ async function main() {
 
     // Socket on connection
     io.on('connection', function (client) {
-        log.info('Client connected');
-        audit.logEvent('[socket]', 'client', 'Connection', 'Client', client.id, 'succeed', 'Client connected');
+        //audit.logEvent('[socket]', 'client', 'Connection', 'Client', client.id, 'succeed', 'Client connected');
         client.on('disconnect', function () {
-            log.info('Client disconnected');
-            audit.logEvent('[socket]', 'client', 'Disconnection', 'Client', client.id, 'succeed', 'Client disconnected');
+            //log.info('Client disconnected');
+            //audit.logEvent('[socket]', 'client', 'Disconnection', 'Client', client.id, 'succeed', 'Client disconnected');
         });
     });
 

@@ -95,7 +95,9 @@ exports.list = function (options, callback) {
                             }
                         }
 
+
                         if (!options.statistics) {
+                            //Unwind the name and retirement fields
                             aggregate.push({"$unwind": "$name"});
                             aggregate.push({"$unwind": {path: "$name.family", preserveNullAndEmptyArrays: true}});
                             aggregate.push({"$unwind": {path: "$name.given", preserveNullAndEmptyArrays: true}});
@@ -148,12 +150,6 @@ exports.list = function (options, callback) {
                                     }
                                 );
 
-                                if (options.filters) {
-                                    if (options.filters.structure && options.filters.structure !== "-" && options.filters.structure !== "") {
-                                        aggregate.push({$match: {$or: [{"affectation.positionCode": new RegExp("^" + options.filters.structure)}]}})
-                                    }
-                                }
-
                                 aggregate.push(
                                     {
                                         "$unwind": {
@@ -162,6 +158,37 @@ exports.list = function (options, callback) {
                                         }
                                     }
                                 );
+
+                                if (options.filters) {
+                                    if (options.filters.structure && options.filters.structure !== "-" && options.filters.structure !== "") {
+                                        aggregate.push({$match: {$or: [{"affectation.positionCode": new RegExp("^" + options.filters.structure)}]}})
+                                    }
+
+                                    if (options.filters.type && options.filters.type !== "-" && options.filters.type !== "-1" && options.filters.type !== -1 && options.filters.type !== "") {
+                                        aggregate.push(
+                                            {
+                                                $lookup: {
+                                                    from: 'structures',
+                                                    localField: 'affectation.position.structureId',
+                                                    foreignField: '_id',
+                                                    as: 'affectation.structure',
+                                                }
+                                            }
+                                        );
+
+                                        aggregate.push(
+                                            {
+                                                "$unwind": {
+                                                    path: "$affectation.structure",
+                                                    preserveNullAndEmptyArrays: true
+                                                }
+                                            }
+                                        );
+                                        aggregate.push({$match: {$and: [{"affectation.structure.type": options.filters.type}]}})
+                                    }
+                                }
+
+
                             }
 
                         }
@@ -312,7 +339,6 @@ exports.list = function (options, callback) {
 
                                     await processNext();
                                 }
-
                                 // Call function with the initial index 0
                                 await processPersonnel(personnels, options, callback);
 
@@ -523,6 +549,13 @@ exports.count = function (options, callback) {
                                     }
                                 });
 
+                                aggregate.push({
+                                    "$unwind": {
+                                        path: "$affectation.position",
+                                        preserveNullAndEmptyArrays: true
+                                    }
+                                });
+
                                 if (options.filters) {
                                     if (options.filters.structure && options.filters.structure !== "-" && options.filters.structure !== "") {
                                         aggregate.push({
@@ -531,14 +564,32 @@ exports.count = function (options, callback) {
                                             }
                                         });
                                     }
+
+                                    if (options.filters.type && options.filters.type !== "-" && options.filters.type !== "-1" && options.filters.type !== -1 && options.filters.type !== "") {
+                                        aggregate.push(
+                                            {
+                                                $lookup: {
+                                                    from: 'structures',
+                                                    localField: 'affectation.position.structureId',
+                                                    foreignField: '_id',
+                                                    as: 'affectation.structure',
+                                                }
+                                            }
+                                        );
+
+                                        aggregate.push(
+                                            {
+                                                "$unwind": {
+                                                    path: "$affectation.structure",
+                                                    preserveNullAndEmptyArrays: true
+                                                }
+                                            }
+                                        );
+                                        aggregate.push({$match: {$and: [{"affectation.structure.type": options.filters.type}]}})
+                                    }
                                 }
 
-                                aggregate.push({
-                                    "$unwind": {
-                                        path: "$affectation.position",
-                                        preserveNullAndEmptyArrays: true
-                                    }
-                                });
+
                             }
                         }
 
