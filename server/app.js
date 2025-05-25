@@ -1,5 +1,6 @@
 const fs              = require('fs');
 const express = require('express');
+const { errorHandler, notFoundHandler } = require('./app/utils/ApiError');
 const helmet = require('helmet');
 const methodOverride = require('method-override');
 const favicon = require('serve-favicon');
@@ -8,6 +9,8 @@ const randtoken = require('rand-token').uid;
 const app = express();
 const server = require('http').Server(app);
 var compression     = require('compression');
+
+const { validationErrorHandler } = require('./app/middlewares/validate');
 
 var socketio        = require('socket.io');
 let io;
@@ -86,6 +89,13 @@ nconf.load(function (err, result) {
         }
     }
 });
+
+// Catch 404
+app.use(notFoundHandler);
+// Error handler
+app.use(errorHandler);
+// Error handlers
+app.use(validationErrorHandler); // Handles validation errors
 
 
 async function main() {

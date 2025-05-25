@@ -573,5 +573,255 @@
         "uri": "/api/exportStaffs/:id",
         "method": "GET",
         "roles": [1,2,3,4,5]
+    },
+
+    {
+        "id": 200,
+        "uri": "/api/bonus/templates",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 201,
+        "uri": "/api/bonus/templates",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
+    },
+    {
+        "id": 202,
+        "uri": "/api/bonus/templates/:id",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
+    },
+    {
+        "id": 203,
+        "uri": "/api/bonus/templates/:id",
+        "method": "PUT",
+        "roles": [1, 2]
+    },
+    {
+        "id": 204,
+        "uri": "/api/bonus/templates/:id",
+        "method": "DELETE",
+        "roles": [1]
+    },
+    {
+        "id": 205,
+        "uri": "/api/bonus/templates/:id/activate",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 206,
+        "uri": "/api/bonus/templates/:id/clone",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 207,
+        "uri": "/api/bonus/templates/validate",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 208,
+        "uri": "/api/bonus/templates/:id/test-calculation",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 209,
+        "uri": "/api/bonus/templates/:id/usage",
+        "method": "GET",
+        "roles": [1, 2, 3]
+    },
+
+    {
+        "id": 210,
+        "uri": "/api/bonus/rules",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 211,
+        "uri": "/api/bonus/rules",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
+    },
+    {
+        "id": 212,
+        "uri": "/api/bonus/rules/:id",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
+    },
+    {
+        "id": 213,
+        "uri": "/api/bonus/rules/:id",
+        "method": "PUT",
+        "roles": [1, 2]
+    },
+    {
+        "id": 214,
+        "uri": "/api/bonus/rules/:id",
+        "method": "DELETE",
+        "roles": [1]
+    },
+    {
+        "id": 215,
+        "uri": "/api/bonus/rules/:id/activate",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 216,
+        "uri": "/api/bonus/rules/validate",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 217,
+        "uri": "/api/bonus/rules/:id/test",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+
+    {
+        "id": 220,
+        "uri": "/api/bonus/instances",
+        "method": "POST",
+        "roles": [1, 2, 3]
+    },
+    {
+        "id": 221,
+        "uri": "/api/bonus/instances",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
+    },
+    {
+        "id": 222,
+        "uri": "/api/bonus/instances/:id",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
+    },
+    {
+        "id": 223,
+        "uri": "/api/bonus/instances/:id",
+        "method": "PUT",
+        "roles": [1, 2, 3]
+    },
+    {
+        "id": 224,
+        "uri": "/api/bonus/instances/:id/approve",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 225,
+        "uri": "/api/bonus/instances/:id/reject",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 226,
+        "uri": "/api/bonus/instances/:id/cancel",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 227,
+        "uri": "/api/bonus/instances/:id/generate-payments",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 228,
+        "uri": "/api/bonus/instances/:id/export",
+        "method": "GET",
+        "roles": [1, 2, 3]
+    },
+    {
+        "id": 229,
+        "uri": "/api/bonus/instances/:id/notify",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+
+    {
+        "id": 230,
+        "uri": "/api/bonus/allocations",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
+    },
+    {
+        "id": 231,
+        "uri": "/api/bonus/allocations/:id",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
+    },
+    {
+        "id": 232,
+        "uri": "/api/bonus/allocations/:id/adjust",
+        "method": "POST",
+        "roles": [1, 2, 3]
+    },
+    {
+        "id": 233,
+        "uri": "/api/bonus/allocations/:id/exclude",
+        "method": "POST",
+        "roles": [1, 2, 3]
+    },
+    {
+        "id": 234,
+        "uri": "/api/bonus/allocations/:id/include",
+        "method": "POST",
+        "roles": [1, 2, 3]
+    },
+    {
+        "id": 235,
+        "uri": "/api/bonus/allocations/:id/history",
+        "method": "GET",
+        "roles": [1, 2, 3]
+    },
+    {
+        "id": 236,
+        "uri": "/api/personnel/:personnelId/snapshots",
+        "method": "POST",
+        "roles": [1, 2, 3]
+    },
+    {
+        "id": 237,
+        "uri": "/api/personnel/:personnelId/snapshots",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
+    },
+    {
+        "id": 238,
+        "uri": "/api/personnel/:personnelId/snapshots/:date",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
+    },
+    {
+        "id": 239,
+        "uri": "/api/personnel/:personnelId/snapshots/compare",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
+    },
+    {
+        "id": 240,
+        "uri": "/api/personnel/snapshots/:id",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
+    },
+    {
+        "id": 241,
+        "uri": "/api/bonus/generation/periodic",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 242,
+        "uri": "/api/bonus/generation/template",
+        "method": "POST",
+        "roles": [1, 2]
     }
 ]

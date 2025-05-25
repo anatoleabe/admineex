@@ -69,20 +69,6 @@ var PersonnelSchema = new Schema({
             }
         ]
     },
-    qualifications: {
-        highestLevelEducation: String, //From json
-        schools: [
-            {
-//                diploma: String,
-//                date: Date,
-//                authority: String,
-//                option: String,
-//                domain: String,
-//                type: String, //recrutement or higher
-            }
-        ],
-        stages: [{}]
-    },
     more: {},
     sanctions: [
         {

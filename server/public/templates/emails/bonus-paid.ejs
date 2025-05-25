@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title><%= subject %></title>
+</head>
+<body>
+<p>Hello <%= recipient.name %>,</p>
+
+<p>We are pleased to inform you that your <strong><%= instance.templateId.name %></strong>
+    bonus for <%= referencePeriod %> has been processed.</p>
+
+<p>Amount: <strong><%= recipient.amount.toLocaleString() %> XAF</strong></p>
+
+<p>The amount should reflect in your account within 2-3 business days.</p>
+
+<p>Best regards,<br>
+    HR System</p>
+</body>
+</html>

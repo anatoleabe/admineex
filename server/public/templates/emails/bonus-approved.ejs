@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title><%= subject %></title>
+</head>
+<body>
+<p>Hello <%= recipient.firstname %>,</p>
+
+<p>The bonus for <strong><%= instance.templateId.name %></strong>
+    (<%= referencePeriod %>) has been approved and is ready for payment processing.</p>
+
+<% if (recipient.department === 'finance') { %>
+    <p>Please proceed with the payment process.</p>
+<% } %>
+
+<p>Best regards,<br>
+    HR System</p>
+</body>
+</html>

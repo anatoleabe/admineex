@@ -1,21 +1,23 @@
-var jwt = require('express-jwt');
-var path = require('path');
-var jsonwebtoken = require('jsonwebtoken');
-var _ = require('underscore');
-var tokenManager = require('./managers/token');
-var nconf = require('nconf');
+const jwt = require('express-jwt');
+const path = require('path');
+const jsonwebtoken = require('jsonwebtoken');
+const _ = require('underscore');
+const tokenManager = require('./managers/token');
+const nconf = require('nconf');
 nconf.file("config/server.json");
-var User = require('./models/user').User;
-var aclRoutes = require('../resources/dictionary/app/routes.json');
-var audit = require('./utils/audit-log');
-var log = require('./utils/log');
-var dictionary = require('./utils/dictionary');
-var secret = nconf.get('token').secret;
-var app = require('../app');
-var moment = require('moment');
+const User = require('./models/user').User;
+const aclRoutes = require('../resources/dictionary/app/routes.json');
+const audit = require('./utils/audit-log');
+const log = require('./utils/log');
+const dictionary = require('./utils/dictionary');
+const secret = nconf.get('token').secret;
+const app = require('../app');
+const moment = require('moment');
+
+const initializationManager = require('./initialization');
 
 // Controllers
-var controllers = {};
+const controllers = {};
 controllers.audit = require('./controllers/auditLogs');
 controllers.account = require('./controllers/account');
 controllers.users = require('./controllers/users');
@@ -24,6 +26,14 @@ controllers.structures = require('./controllers/structures');
 controllers.positions = require('./controllers/positions');
 controllers.affectations = require('./controllers/affectations');
 controllers.personnel = require('./controllers/personnel');
+controllers.personnelSnapshot = require('./controllers/personnel/snapshot');
+controllers.bonus = {
+    instance: require('./controllers/bonus/instance'),
+    template: require('./controllers/bonus/template'),
+    allocation: require('./controllers/bonus/allocation'),
+    rule: require('./controllers/bonus/rule'),
+    generation: require('./controllers/bonus/generation'),
+}
 controllers.sanctions = require('./controllers/sanctions');
 controllers.organizations = require('./controllers/organizations');
 controllers.tasks = require('./controllers/tasks');
@@ -44,10 +54,24 @@ controllers.angular = function (req, res) {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 };
 
-startBot();
+const { validate } = require('./middlewares/validate');
+
+
+const {
+    createPersonnelSnapshot,
+    getPersonnelSnapshots,
+    getSnapshotAtDate,
+    compareSnapshots,
+    getSnapshotById
+} = require('./validations/personnel/snapshot');
+
+const bonusInstanceValidations = require('./validations/bonus/instance');
+const bonusAllocationValidations = require('./validations/bonus/allocation');
+const bonusRuleValidations = require('./validations/bonus/rule');
+const bonusGenerationValidation = require('./validations/bonus/generation');
 
 //Routes
-var routes = [
+let routes = [
     // API ROUTES ===============================================================
     // === AUDIT ROUTES ========================================================
     // Retrieve audit logs by date
@@ -745,6 +769,267 @@ var routes = [
         access: _.findWhere(aclRoutes, { id: 97 }).roles
     },
 
+    // ================================== BONUS TEMPLATES API ROUTES =================================
+    {
+        path: _.findWhere(aclRoutes, { id: 200 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 200 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.template.api.create],
+        access: _.findWhere(aclRoutes, { id: 200 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 201 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 201 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.template.api.getAll],
+        access: _.findWhere(aclRoutes, { id: 201 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 202 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 202 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.template.api.getById],
+        access: _.findWhere(aclRoutes, { id: 202 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 203 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 203 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.template.api.update],
+        access: _.findWhere(aclRoutes, { id: 203 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 204 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 204 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.template.api.delete],
+        access: _.findWhere(aclRoutes, { id: 204 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 205 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 205 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.template.api.activate],
+        access: _.findWhere(aclRoutes, { id: 205 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 206 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 206 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.template.api.clone],
+        access: _.findWhere(aclRoutes, { id: 206 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 207 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 207 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.template.api.validate],
+        access: _.findWhere(aclRoutes, { id: 207 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 208 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 208 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.template.api.testCalculation],
+        access: _.findWhere(aclRoutes, { id: 208 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 209 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 209 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.template.api.getUsageStats],
+        access: _.findWhere(aclRoutes, { id: 209 }).roles
+    },
+
+// ================================== BONUS RULES API ROUTES =================================
+    {
+        path: _.findWhere(aclRoutes, { id: 210 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 210 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusRuleValidations.createBonusRule), controllers.bonus.rule.api.create],
+        access: _.findWhere(aclRoutes, { id: 210 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 211 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 211 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusRuleValidations.getBonusRules), controllers.bonus.rule.api.getAll],
+        access: _.findWhere(aclRoutes, { id: 211 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 212 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 212 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.rule.api.getById],
+        access: _.findWhere(aclRoutes, { id: 212 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 213 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 213 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusRuleValidations.updateBonusRule), controllers.bonus.rule.api.update],
+        access: _.findWhere(aclRoutes, { id: 213 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 214 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 214 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.rule.api.delete],
+        access: _.findWhere(aclRoutes, { id: 214 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 215 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 215 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.rule.api.activate],
+        access: _.findWhere(aclRoutes, { id: 215 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 216 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 216 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusRuleValidations.validateBonusRule), controllers.bonus.rule.api.validate],
+        access: _.findWhere(aclRoutes, { id: 216 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 217 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 217 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusRuleValidations.testBonusRule), controllers.bonus.rule.api.test],
+        access: _.findWhere(aclRoutes, { id: 217 }).roles
+    },
+
+// ================================== BONUS INSTANCES API ROUTES =================================
+    {
+        path: _.findWhere(aclRoutes, { id: 220 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 220 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.createBonusInstance), controllers.bonus.instance.api.create],
+        access: _.findWhere(aclRoutes, { id: 220 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 221 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 221 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.getBonusInstances), controllers.bonus.instance.api.getAll],
+        access: _.findWhere(aclRoutes, { id: 221 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 222 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 222 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.getById],
+        access: _.findWhere(aclRoutes, { id: 222 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 223 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 223 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.updateBonusInstance), controllers.bonus.instance.api.update],
+        access: _.findWhere(aclRoutes, { id: 223 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 224 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 224 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.approveBonusInstance), controllers.bonus.instance.api.approve],
+        access: _.findWhere(aclRoutes, { id: 224 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 225 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 225 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.rejectBonusInstance), controllers.bonus.instance.api.reject],
+        access: _.findWhere(aclRoutes, { id: 225 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 226 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 226 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.cancelBonusInstance), controllers.bonus.instance.api.cancel],
+        access: _.findWhere(aclRoutes, { id: 226 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 227 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 227 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.generatePayments],
+        access: _.findWhere(aclRoutes, { id: 227 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 228 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 228 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.export],
+        access: _.findWhere(aclRoutes, { id: 228 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 229 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 229 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.notify],
+        access: _.findWhere(aclRoutes, { id: 229 }).roles
+    },
+
+// ================================== BONUS ALLOCATIONS API ROUTES =================================
+    {
+        path: _.findWhere(aclRoutes, { id: 230 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 230 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusAllocationValidations.getAllBonusAllocations), controllers.bonus.allocation.api.getAll],
+        access: _.findWhere(aclRoutes, { id: 230 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 231 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 231 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.allocation.api.getById],
+        access: _.findWhere(aclRoutes, { id: 231 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 232 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 232 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusAllocationValidations.getAllBonusAllocations), controllers.bonus.allocation.api.adjust],
+        access: _.findWhere(aclRoutes, { id: 232 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 233 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 233 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusAllocationValidations.excludeBonusAllocation), controllers.bonus.allocation.api.exclude],
+        access: _.findWhere(aclRoutes, { id: 233 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 234 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 234 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusAllocationValidations.includeBonusAllocation), controllers.bonus.allocation.api.include],
+        access: _.findWhere(aclRoutes, { id: 234 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 235 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 235 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.allocation.api.getHistory],
+        access: _.findWhere(aclRoutes, { id: 235 }).roles
+    },
+
+
+
+
+// ================================== PERSONNEL SNAPSHOTS API ROUTES =================================
+    {
+        path: _.findWhere(aclRoutes, { id: 236 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 236 }).method,
+        middleware: [ jwt({ secret: secret }), tokenManager.verifyToken, validate(createPersonnelSnapshot), controllers.personnelSnapshot.api.create],
+        access: _.findWhere(aclRoutes, { id: 236 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 237 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 237 }).method,
+        middleware: [ jwt({ secret: secret }), tokenManager.verifyToken, validate(getPersonnelSnapshots), controllers.personnelSnapshot.api.getAll ],
+        access: _.findWhere(aclRoutes, { id: 237 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 238 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 238 }).method,
+        middleware: [ jwt({ secret: secret }), tokenManager.verifyToken, validate(getSnapshotAtDate), controllers.personnelSnapshot.api.getAtDate ],
+        access: _.findWhere(aclRoutes, { id: 238 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 239 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 239 }).method,
+        middleware: [ jwt({ secret: secret }), tokenManager.verifyToken, validate(compareSnapshots), controllers.personnelSnapshot.api.compare ],
+        access: _.findWhere(aclRoutes, { id: 239 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 240 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 240 }).method,
+        middleware: [ jwt({ secret: secret }), tokenManager.verifyToken, validate(getSnapshotById), controllers.personnelSnapshot.api.getById ],
+        access: _.findWhere(aclRoutes, { id: 240 }).roles
+    },
+
+    // ================================== BONUS GENERATION API ROUTES =================================
+    {
+        path: _.findWhere(aclRoutes, { id: 241 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 241 }).method,
+        middleware: [ jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusGenerationValidation.generatePeriodic), controllers.bonus.generation.api.generatePeriodicBonuses ],
+        access: _.findWhere(aclRoutes, { id: 241 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 242 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 242 }).method,
+        middleware: [ jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusGenerationValidation.generateTemplate), controllers.bonus.generation.api.generateTemplateBonuses ],
+        access: _.findWhere(aclRoutes, { id: 242 }).roles
+    },
+
     // === OTHER ROUTES ==========================================================
     // Search In Dictionary
     {
@@ -893,95 +1178,5 @@ function ensureAuthorized(req, res, next) {
     }
 }
 
-function startBot() {
-//    //1
-//var path = "2021/extremenord_2/";
-//console.log("oieiuiueuieui")
-//    controllers.structures.initialize(path, function (err, avoided) {
-//        if (err) {
-//            log.error(err);
-//            console.log(err);
-//        } else {
-//            console.log("oieiuiueuieui 4")
-//            var avoidedmsg = "";
-//            if (avoided && avoided.length > 0) {
-//                avoidedmsg = "Skipped structure: " + avoided;
-//                log.warn(avoidedmsg);
-//            }
-//            audit.logEvent('[anonymous]', 'Routes', 'startBot', "", "", 'Success', "Initialization of structures succesful done. " + avoidedmsg);
-//            controllers.positions.INITPOSITIONDATAFROMJSON(path, function (err, avoided) {
-//                if (err) {
-//                    log.error(err);
-//                    console.log(err);
-//                } else {
-//                    console.log(avoided)
-//                    console.log("End of structure creation")
-////                    controllers.positions.affectToPositionFromJson(path, function (err, avoided) {
-////                        if (err) {
-////                            log.error(err);
-////                            console.log(err);
-////                        } else {
-////                            console.log(avoided)
-////                        }
-////                    });
-//                }
-//            });
-//            //2
-//        }
-//    });
-
-//    controllers.personnel.initializeFromMysql(function (err, avoided) {
-//        if (err) {
-//            log.error(err);
-//            console.log(err);
-//        } else {
-//            console.log(avoided)
-//        }
-//    });
-
-
-    controllers.positions.patrol0(function (err, avoided) {
-        if (err) {
-            log.error(err);
-            console.log(err);
-        } else {
-
-        }
-    });
-//
-
-
-//    controllers.positions.SETPOSITIONORDERFROMJSON(function (err) {
-//        if (err) {
-//            log.error(err);
-//            console.log(err);
-//        } else {
-//            console.log("===END====")
-//        }
-//    });
-
-    var CronJob = require('cron').CronJob;
-    new CronJob('00 11 06 * * *', function () {
-        /*
-         * Runs every weekday (Monday through Friday)
-         * at 06:00:00 AM. It does not run on Saturday or Sunday.
-         */
-        controllers.personnel.checkRetirement(function (err, count) {
-            if (err) {
-                log.error(err);
-                console.log(err);
-            } else {
-                console.log("Check of new retirment done. New retirement = ", count)
-            }
-        });
-    }, null, true);
-
-    controllers.personnel.checkRetirement(function (err, count) {
-        if (err) {
-            log.error(err);
-            console.log(err);
-        } else {
-            console.log("Check of new retirment done. New retirement = ", count)
-        }
-    });
-}
+//Run the initialization manager
+initializationManager.run();
