@@ -1,221 +1,161 @@
-<!-- Dashboard main content -->
-<div class="content">
-    <!-- Quick stats boxes -->
-    <div class="row">
-        <div class="col-lg-4">
-            <!-- Personnel stats -->
-            <div class="card bg-teal-400 stats-card">
-                <div class="card-body">
-                    <div class="d-flex">
-                        <h3 class="font-weight-semibold mb-0">{{ stats.personnelCount || '0' }}</h3>
-                        <div class="list-icons ml-auto">
-                            <a class="list-icons-item" ng-click="refreshStats()">
-                                <i class="icon-sync"></i>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <span translate>Personnel actifs</span>
-                        <div class="font-size-sm opacity-75">{{ stats.personnelActiveCount || '0' }} <span translate>actifs</span> / {{ stats.personnelInactiveCount || '0' }} <span translate>inactifs</span></div>
-                    </div>
-                </div>
-
-                <div class="container-fluid">
-                    <div id="personnel-chart" class="c3-chart" style="height: 50px; position: relative;"></div>
-                </div>
-            </div>
-            <!-- /personnel stats -->
+<div class="dashboard-container" layout="column" flex>
+    <!-- Dashboard Header -->
+    <div class="dashboard-header" layout="row" layout-align="space-between center">
+        <div>
+            <h1 class="dashboard-title" translate>Dashboard</h1>
+            <p class="dashboard-subtitle" translate>Personnel and system overview</p>
         </div>
-
-        <div class="col-lg-4">
-            <!-- Primes en cours -->
-            <div class="card bg-pink-400 stats-card">
-                <div class="card-body">
-                    <div class="d-flex">
-                        <h3 class="font-weight-semibold mb-0">{{ stats.bonusCount || '0' }}</h3>
-                        <div class="list-icons ml-auto">
-                            <a class="list-icons-item" ng-click="refreshStats()">
-                                <i class="icon-sync"></i>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <span translate>Primes en cours</span>
-                        <div class="font-size-sm opacity-75">{{ stats.bonusPendingCount || '0' }} <span translate>en attente</span> / {{ stats.bonusApprovedCount || '0' }} <span translate>approuvées</span></div>
-                    </div>
-                </div>
-
-                <div id="bonus-chart" class="c3-chart" style="height: 50px; position: relative;"></div>
-            </div>
-            <!-- /primes en cours -->
-        </div>
-
-        <div class="col-lg-4">
-            <!-- Montant total -->
-            <div class="card bg-blue-400 stats-card">
-                <div class="card-body">
-                    <div class="d-flex">
-                        <h3 class="font-weight-semibold mb-0">{{ stats.bonusTotalAmount | currency:'FCFA ':0 }}</h3>
-                        <div class="list-icons ml-auto">
-                            <a class="list-icons-item" ng-click="refreshStats()">
-                                <i class="icon-sync"></i>
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div>
-                        <span translate>Montant total des primes</span>
-                        <div class="font-size-sm opacity-75">{{ stats.bonusMonthlyAmount | currency:'FCFA ':0 }} <span translate>ce mois</span></div>
-                    </div>
-                </div>
-
-                <div id="amount-chart" class="c3-chart" style="height: 50px; position: relative;"></div>
-            </div>
-            <!-- /montant total -->
+        <div class="dashboard-actions">
+            <md-button class="md-icon-button" ng-click="loadDashboard()">
+                <md-icon>refresh</md-icon>
+                <md-tooltip translate>Refresh dashboard</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" ng-click="showFilterDialog()">
+                <md-icon>filter_list</md-icon>
+                <md-tooltip translate>Filter options</md-tooltip>
+            </md-button>
         </div>
     </div>
-    <!-- /quick stats boxes -->
-
-    <!-- Charts row -->
-    <div class="row">
-        <div class="col-xl-6">
-            <!-- Personnel par structure -->
-            <div class="card">
-                <div class="card-header header-elements-inline">
-                    <h6 class="card-title" translate>Personnel par structure</h6>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"><i class="icon-minus3"></i></a>
-                            <a class="list-icons-item" ng-click="refreshCharts()"><i class="icon-sync"></i></a>
-                            <a class="list-icons-item" data-action="fullscreen"><i class="icon-enlarge7"></i></a>
+    
+    <!-- Personnel Search Widget -->
+    <md-card class="dashboard-widget search-widget" ng-if="widgets.personnelSearch.enabled">
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-title" translate>Personnel Search</span>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            <md-autocomplete
+                md-search-text="personnelSearchText"
+                md-selected-item-change="selectPersonnel(item)"
+                md-items="item in personnelQuerySearch(personnelSearchText)"
+                md-item-text="item.fname"
+                md-min-length="2"
+                placeholder="{{'Search personnel...' | translate}}"
+                md-no-cache="true"
+                flex>
+                <md-item-template>
+                    <div class="personnel-search-result">
+                        <div class="result-avatar" ng-style="{'background-color': item.gender === 'M' ? '#E3F2FD' : '#FCE4EC'}">
+                            {{item.fname.charAt(0)}}
+                        </div>
+                        <div class="result-info">
+                            <div class="result-name">{{item.fname}}</div>
+                            <div class="result-details">{{item.identifier}} - {{item.affectedTo.position.name}}</div>
                         </div>
                     </div>
-                </div>
-
-                <div class="card-body">
-                    <div class="chart-container">
-                        <div data-ng-include="'templates/dashboard/charts/chart1.html'"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- /personnel par structure -->
+                </md-item-template>
+            </md-autocomplete>
+        </md-card-content>
+    </md-card>
+    
+    <!-- Stats Cards Row -->
+    <div class="stats-row" layout="row" layout-wrap>
+        <div flex="33" flex-xs="100">
+            <stats-widget
+                title="{{'Total Personnel' | translate}}"
+                value="stats.totalPersonnel"
+                subtitle="{{'Active employees' | translate}}"
+                icon="people"
+                color="primary"
+                loading="widgets.personnelStats.loading">
+            </stats-widget>
         </div>
-
-        <div class="col-xl-6">
-            <!-- Primes par type -->
-            <div class="card">
-                <div class="card-header header-elements-inline">
-                    <h6 class="card-title" translate>Primes par type</h6>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"><i class="icon-minus3"></i></a>
-                            <a class="list-icons-item" ng-click="refreshCharts()"><i class="icon-sync"></i></a>
-                            <a class="list-icons-item" data-action="fullscreen"><i class="icon-enlarge7"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div class="chart-container">
-                        <div data-ng-include="'templates/dashboard/charts/chart2.html'"></div>
-                    </div>
-                </div>
-            </div>
-            <!-- /primes par type -->
+        <div flex="33" flex-xs="100">
+            <stats-widget
+                title="{{'Active Personnel' | translate}}"
+                value="stats.activePersonnel"
+                subtitle="{{'Currently working' | translate}}"
+                icon="person"
+                color="success"
+                loading="widgets.personnelStats.loading">
+            </stats-widget>
         </div>
-    </div>
-    <!-- /charts row -->
-
-    <!-- Activity and recent events -->
-    <div class="row">
-        <div class="col-xl-8">
-            <!-- Latest activity -->
-            <div class="card">
-                <div class="card-header header-elements-inline">
-                    <h6 class="card-title" translate>Activité récente</h6>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"><i class="icon-minus3"></i></a>
-                            <a class="list-icons-item" ng-click="refreshActivity()"><i class="icon-sync"></i></a>
-                            <a class="list-icons-item" data-action="fullscreen"><i class="icon-enlarge7"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div data-ng-include="'templates/statistics/cards/card1.html'"></div>
-                </div>
-            </div>
-            <!-- /latest activity -->
-        </div>
-
-        <div class="col-xl-4">
-            <!-- Statistiques -->
-            <div class="card">
-                <div class="card-header header-elements-inline">
-                    <h6 class="card-title" translate>Statistiques</h6>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"><i class="icon-minus3"></i></a>
-                            <a class="list-icons-item" ng-click="refreshStats()"><i class="icon-sync"></i></a>
-                            <a class="list-icons-item" data-action="fullscreen"><i class="icon-enlarge7"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div data-ng-include="'templates/statistics/cards/card2.html'"></div>
-                </div>
-            </div>
-            <!-- /statistiques -->
-
-            <!-- Dernières primes -->
-            <div class="card">
-                <div class="card-header header-elements-inline">
-                    <h6 class="card-title" translate>Dernières primes</h6>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"><i class="icon-minus3"></i></a>
-                            <a class="list-icons-item" ng-click="refreshBonuses()"><i class="icon-sync"></i></a>
-                            <a class="list-icons-item" data-action="fullscreen"><i class="icon-enlarge7"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div data-ng-include="'templates/statistics/cards/card4.html'"></div>
-                </div>
-            </div>
-            <!-- /dernières primes -->
+        <div flex="33" flex-xs="100">
+            <stats-widget
+                title="{{'Structures' | translate}}"
+                value="stats.byStructure.length"
+                subtitle="{{'Organizational units' | translate}}"
+                icon="account_tree"
+                color="info"
+                loading="widgets.personnelStats.loading">
+            </stats-widget>
         </div>
     </div>
-    <!-- /activity and recent events -->
-
-    <!-- Additional stats -->
-    <div class="row">
-        <div class="col-12">
-            <!-- Statistiques supplémentaires -->
-            <div class="card">
-                <div class="card-header header-elements-inline">
-                    <h6 class="card-title" translate>Statistiques supplémentaires</h6>
-                    <div class="header-elements">
-                        <div class="list-icons">
-                            <a class="list-icons-item" data-action="collapse"><i class="icon-minus3"></i></a>
-                            <a class="list-icons-item" ng-click="refreshStats()"><i class="icon-sync"></i></a>
-                            <a class="list-icons-item" data-action="fullscreen"><i class="icon-enlarge7"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card-body">
-                    <div data-ng-include="'templates/statistics/cards/card6.html'"></div>
-                </div>
-            </div>
-            <!-- /statistiques supplémentaires -->
+    
+    <!-- Charts Row -->
+    <div class="charts-row" layout="row" layout-wrap>
+        <div flex="50" flex-xs="100">
+            <md-card class="dashboard-widget chart-widget">
+                <md-card-header>
+                    <md-card-header-text>
+                        <span class="md-title" translate>Personnel by Gender</span>
+                    </md-card-header-text>
+                    <md-button class="md-icon-button" ng-click="exportChart('gender-chart', 'Personnel by Gender')">
+                        <md-icon>file_download</md-icon>
+                        <md-tooltip translate>Export chart</md-tooltip>
+                    </md-button>
+                </md-card-header>
+                <md-card-content>
+                    <personnel-chart
+                        chart-type="doughnut"
+                        chart-id="gender-chart"
+                        data="chartData.genderChart"
+                        loading="widgets.chartPersonnelByGender.loading">
+                    </personnel-chart>
+                </md-card-content>
+            </md-card>
+        </div>
+        <div flex="50" flex-xs="100">
+            <md-card class="dashboard-widget chart-widget">
+                <md-card-header>
+                    <md-card-header-text>
+                        <span class="md-title" translate>Personnel by Structure</span>
+                    </md-card-header-text>
+                    <md-button class="md-icon-button" ng-click="exportChart('structure-chart', 'Personnel by Structure')">
+                        <md-icon>file_download</md-icon>
+                        <md-tooltip translate>Export chart</md-tooltip>
+                    </md-button>
+                </md-card-header>
+                <md-card-content>
+                    <personnel-chart
+                        chart-type="bar"
+                        chart-id="structure-chart"
+                        data="chartData.structureChart"
+                        loading="widgets.chartPersonnelByStructure.loading">
+                    </personnel-chart>
+                </md-card-content>
+            </md-card>
         </div>
     </div>
-    <!-- /additional stats -->
+    
+    <!-- Recent Activity Widget -->
+    <md-card class="dashboard-widget activity-widget" ng-if="widgets.recentActivity.enabled">
+        <md-card-header>
+            <md-card-header-text>
+                <span class="md-title" translate>Recent Activity</span>
+            </md-card-header-text>
+        </md-card-header>
+        <md-card-content>
+            <div class="loading-overlay" ng-if="widgets.recentActivity.loading">
+                <md-progress-circular md-mode="indeterminate" md-diameter="50"></md-progress-circular>
+            </div>
+            <md-list class="activity-list">
+                <md-list-item ng-repeat="activity in stats.recentChanges | limitTo:5">
+                    <md-icon>{{activity.icon}}</md-icon>
+                    <div class="md-list-item-text">
+                        <h3>{{activity.title}}</h3>
+                        <p>{{activity.description}} - {{activity.date | date:'short'}}</p>
+                    </div>
+                </md-list-item>
+                <md-list-item ng-if="stats.recentChanges.length === 0 && !widgets.recentActivity.loading">
+                    <md-icon>info</md-icon>
+                    <div class="md-list-item-text">
+                        <h3 translate>No recent activity</h3>
+                        <p translate>There is no recent activity to display</p>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-card-content>
+    </md-card>
 </div>
-<!-- /dashboard main content -->

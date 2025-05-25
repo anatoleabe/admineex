@@ -1,0 +1,19 @@
+<md-card class="{{cardClass}} stats-widget">
+    <md-card-content layout="row" layout-align="space-between center">
+        <div class="stats-content">
+            <div class="stats-value" ng-if="!loading">
+                <span class="value-number">{{value | number}}</span>
+            </div>
+            <div class="stats-loading" ng-if="loading">
+                <md-progress-circular md-diameter="40"></md-progress-circular>
+            </div>
+            <div class="stats-info">
+                <h3 class="stats-title">{{title}}</h3>
+                <p class="stats-subtitle">{{subtitle}}</p>
+            </div>
+        </div>
+        <div class="stats-icon">
+            <md-icon class="icon-large">{{icon}}</md-icon>
+        </div>
+    </md-card-content>
+</md-card>
