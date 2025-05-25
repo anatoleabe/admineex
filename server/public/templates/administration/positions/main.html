@@ -1,165 +1,180 @@
-<div flex="90" flex-offset="5" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0" style="height:100%;"> 
+<div class="positions-container" flex="90" flex-offset="5" flex-md="60" flex-offset-md="20" flex-sm="70" flex-offset-sm="15" flex-xs="100" flex-offset-xs="0"> 
 
-    <md-toolbar class="toolbar-filter">
-        <div class="md-toolbar-tools md-default">
-            <span translate>Number of positions: {{positions.count}}</span>
+    <md-toolbar class="positions-toolbar">
+        <div class="md-toolbar-tools">
+            <span class="positions-count" translate>Number of positions: {{positions.count}}</span>
             <span flex></span>
 
-            <md-menu>
-                <md-button class="md-icon-button"  ng-click="openMoreMenu($mdOpenMenu)" >
-                    <md-icon class="material-icons" >print</md-icon>
-                    <md-tooltip>
-                        <span translate>Print options</span>
-                    </md-tooltip>
+            <div class="positions-actions">
+                <md-menu>
+                    <md-button class="md-icon-button" ng-click="openMoreMenu($mdOpenMenu)" aria-label="Export options">
+                        <md-icon>print</md-icon>
+                        <md-tooltip md-direction="bottom" translate>Export options</md-tooltip>
+                    </md-button>
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="download()">
+                                <md-icon>table_chart</md-icon>
+                                <span translate>Export the list (Excel)</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="exportPDF('nomenclature')">
+                                <md-icon>description</md-icon>
+                                <span translate>Nomenclature of positions (PDF)</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-divider></md-divider>
+                        <md-menu-item>
+                            <md-button ng-click="exportPDF('occupants')">
+                                <md-icon>people</md-icon>
+                                <span translate>Positions and occupant (PDF)</span>
+                            </md-button>
+                        </md-menu-item>
+                        <md-divider></md-divider>
+                        <md-menu-item>
+                            <md-button ng-click="download('vacancy')">
+                                <md-icon>work_off</md-icon>
+                                <span translate>Vacancies (Excel)</span>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined">
+                    <md-icon>search</md-icon>
+                    <md-tooltip md-direction="bottom" translate>Search</md-tooltip>
                 </md-button>
-                <md-menu-content width="4">
-                    <md-menu-item>
-                        <md-button ng-click="download()">
-                            <md-icon class="material-icons" >print</md-icon>
-                            <span translate>Export the list (Excel) </span>
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button ng-click="exportPDF('nomenclature')">
-                            <md-icon class="material-icons" >print</md-icon>
-                            <span translate>Nomenclature of positions (PDF)</span>
-                        </md-button>
-                    </md-menu-item>
-                    <md-divider ></md-divider>
-                    <md-menu-item>
-                        <md-button ng-click="exportPDF('occupants')">
-                            <md-icon class="material-icons" >print</md-icon>
-                            <span translate>Positions and occupant (PDF)</span>
-                        </md-button>
-                    </md-menu-item>
-                    <md-divider ></md-divider>
-                    <md-menu-item>
-                        <md-button ng-click="download('vacancy')">
-                            <md-icon class="material-icons" >print</md-icon>
-                            <span translate>Vacancies (Excel)</span>
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
-            <md-button class="md-icon-button" aria-label="search" ng-click="search = !search;$parent.setFocus('search');" ng-hide="search == undefined" >
-                <md-icon class="material-icons" >search</md-icon>
-                <md-tooltip>
-                    <span translate>Search</span>
-                </md-tooltip>
-            </md-button>
+            </div>
         </div>
     </md-toolbar>
 
     <md-card>
-        <md-toolbar class="md-table-toolbar md-default">
-            <div class="md-toolbar-tools">
-                <md-icon>filter_list</md-icon>
-                <md-input-container flex style="max-width: 300px;">
+        <div class="positions-filter-section">
+            <h3 class="positions-filter-title"><md-icon>filter_list</md-icon> <span translate>Filters</span></h3>
+            
+            <div layout="row" layout-wrap layout-align="start center" class="positions-filter-row">
+                <md-input-container flex>
                     <label translate>Filter by structure</label>
-                    <md-select ng-model="filters.structure"  style="min-width: 150px;">
-                        <md-optgroup label="{{'Filtre by structure'| translate}}">
-                            <md-option value="-1" >
-                                {{'All structures'| translate}}
-                            </md-option>
-                            <md-option ng-repeat="struc in structures| filter:onlyDirection " value="{{struc}}" >
+                    <md-icon>account_tree</md-icon>
+                    <md-select ng-model="filters.structure">
+                        <md-optgroup label="{{'Filter by structure'| translate}}">
+                            <md-option value="-1">{{'All structures'| translate}}</md-option>
+                            <md-option ng-repeat="struc in structures| filter:onlyDirection | filter:typeOfService" value="{{struc}}">
                                 {{struc.name}}
                             </md-option>
                         </md-optgroup>
                     </md-select>
                 </md-input-container>
-                <md-input-container flex >
+                
+                <md-input-container flex>
                     <label translate>Filter by sub structure</label>
-                    <md-select ng-model="filters.subStructure"  >
-                        <md-optgroup label="{{'Filtre by sub structure'| translate}}">
-                            <md-option value="-1" >
-                                {{'All sub structures'| translate}}
-                            </md-option>
-                            <md-option ng-repeat="struc in structures| filter:onlySubDirection" value="{{struc}}" >
+                    <md-icon>subdirectory_arrow_right</md-icon>
+                    <md-select ng-model="filters.subStructure">
+                        <md-optgroup label="{{'Filter by sub structure'| translate}}">
+                            <md-option value="-1">{{'All sub structures'| translate}}</md-option>
+                            <md-option ng-repeat="struc in structures| filter:onlySubDirection" value="{{struc}}">
                                 {{struc.name}}
                             </md-option>
                         </md-optgroup>
                     </md-select>
                 </md-input-container>
-                <md-input-container flex >
+            </div>
+            
+            <div layout="row" layout-wrap layout-align="start center" class="positions-filter-row">
+                <md-input-container flex>
                     <label translate>Filter by status</label>
-                    <md-select ng-model="filters.status"  >
-                        <md-option ng-selected value="-1" >
-                            {{'All'| translate}}
-                        </md-option>
-                        <md-option value="1" >
-                            {{'Occupied'| translate}}
-                        </md-option>
-                        <md-option value="0" >
-                            {{'Not filled'| translate}}
-                        </md-option>
+                    <md-icon>how_to_reg</md-icon>
+                    <md-select ng-model="filters.status">
+                        <md-option value="-1">{{'All'| translate}}</md-option>
+                        <md-option value="1">{{'Occupied'| translate}}</md-option>
+                        <md-option value="0">{{'Not filled'| translate}}</md-option>
                     </md-select>
                 </md-input-container>
-                <md-input-container flex >
+                
+                <md-input-container flex>
                     <label translate>Filter by type of service</label>
-                    <md-select ng-model="filters.type"  >
-                        <md-option ng-selected value="-1" >
-                            {{'All'| translate}}
-                        </md-option>
-                        <md-option ng-repeat="t in types" value="{{t.id}}" >
+                    <md-icon>category</md-icon>
+                    <md-select ng-model="filters.type">
+                        <md-option value="-1">{{'All'| translate}}</md-option>
+                        <md-option ng-repeat="t in types" value="{{t.id}}">
                             {{t.name}}
                         </md-option>
                     </md-select>
                 </md-input-container>
-                <md-button class="md-icon-button" ng-click="" aria-label="close">
-                    <md-icon class="material-icons">close</md-icon>
-                </md-button>
             </div>
-            <div class="md-toolbar-tools" >
-                <md-icon>search</md-icon>
-                <form flex>
-                    <md-input-container class="md-block" flex-gt-xs>
-                        <input type="text" name="search" ng-model="positionFilter" placeholder="{{ 'search among workstations...' | translate }}">
-                    </md-input-container>
-                </form>
-                <md-button class="md-icon-button" ng-click="positionFilter = '';filters.subStructure = undefined; resetForm()" aria-label="close">
-                    <md-icon class="material-icons">close</md-icon>
-                </md-button>
-            </div>
-        </md-toolbar>
-        <md-table-container>
-            <table md-table md-progress="promise">
+        </div>
+        
+        <div class="positions-search">
+            <md-icon>search</md-icon>
+            <form flex class="positions-search-input">
+                <md-input-container class="md-block" flex>
+                    <input type="text" name="search" ng-model="positionFilter" placeholder="{{ 'Search positions...' | translate }}">
+                </md-input-container>
+            </form>
+            <md-button class="md-icon-button" ng-click="positionFilter = '';filters.subStructure = undefined; resetForm()" aria-label="Clear search">
+                <md-icon>close</md-icon>
+                <md-tooltip md-direction="left" translate>Clear search</md-tooltip>
+            </md-button>
+        </div>
+        
+        <md-table-container class="positions-table-container">
+            <table md-table md-progress="promise" class="positions-table">
                 <thead md-head md-order="query.order">
                     <tr md-row>
-                        <th md-column md-order-by="code" translate style="min-width: 150px;">Code</th>
+                        <th md-column md-order-by="code" translate>Code</th>
                         <th md-column md-order-by="name" translate>Position name</th>
                         <th md-column md-order-by="structure.name" translate>Structure</th>
-                        <th md-column md-order-by="vancancies" style="width: 50px" translate>Vancancy</th>
+                        <th md-column md-order-by="vancancies" translate>Vacancy</th>
                         <th md-column translate>Actions</th>
                     </tr>
                 </thead>
                 <tbody md-body>
-                    <tr md-row data-ng-repeat="position in positions.data| filter:positionFilter | filter:vacanciesOnly | orderBy: query.order" style="min-width: 150px;">
-                        <td md-cell ng-click="details({id: position._id})">{{position.code| uppercase | unknown}}</td>
-                        <td md-cell ng-click="details({id: position._id})">{{position.name}} </td>
-                        <td md-cell ng-click="details({id: position._id})">{{position.structure.father.name| unknown}} <br/><span><md-icon class="material-icons">subdirectory_arrow_right</md-icon><small><i>{{position.structure.name}}</i></small></span> </td>
-                        <td md-cell ng-click="details({id: position._id})" style="width: 50px"><md-icon style="color:{{position.vacancies > 0 ?'red':'green'}}">fiber_manual_record  </md-icon> </td>
-                <td md-cell >
-                <md-button ng-click="edit({id: position._id})" aria-label="Edit" >
-                    <md-icon>edit</md-icon>
-                    <md-tooltip md-direction="top">
-                        <span translate>Edit</span>
-                    </md-tooltip>
-                    <span translate>Edit</span>
-                </md-button>
-                </td>
-                </tr>
+                    <tr md-row ng-if="positions.data.length === 0 || (positions.data | filter:positionFilter | filter:vacanciesOnly).length === 0">
+                        <td md-cell colspan="5">
+                            <div class="positions-empty">
+                                <md-icon>work_off</md-icon>
+                                <div class="positions-empty-title" translate>No positions found</div>
+                                <div class="positions-empty-subtitle" translate>Try adjusting your filters or search criteria</div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr md-row ng-repeat="position in positions.data | filter:positionFilter | filter:vacanciesOnly | orderBy: query.order">
+                        <td md-cell ng-click="details({id: position._id})">{{position.code | uppercase | unknown}}</td>
+                        <td md-cell ng-click="details({id: position._id})">{{position.name}}</td>
+                        <td md-cell ng-click="details({id: position._id})">
+                            <div class="structure-name">{{position.structure.father.name | unknown}}</div>
+                            <div class="sub-structure" ng-if="position.structure.name">
+                                <md-icon>subdirectory_arrow_right</md-icon>
+                                {{position.structure.name}}
+                            </div>
+                        </td>
+                        <td md-cell ng-click="details({id: position._id})" class="positions-vacancy">
+                            <md-icon ng-style="{color: position.vacancies > 0 ? '#F44336' : '#4CAF50'}">
+                                fiber_manual_record
+                            </md-icon>
+                            <md-tooltip md-direction="left">
+                                {{position.vacancies > 0 ? ('Vacant' | translate) : ('Occupied' | translate)}}
+                            </md-tooltip>
+                        </td>
+                        <td md-cell class="positions-actions-cell">
+                            <md-button class="md-icon-button" ng-click="edit({id: position._id})" aria-label="Edit">
+                                <md-icon>edit</md-icon>
+                                <md-tooltip md-direction="left" translate>Edit</md-tooltip>
+                            </md-button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </md-table-container>
-        <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 25, 50, 100]" md-page="query.page" md-total="{{positions.count}}" 
-                              md-page-select="true" md-label="{{label}}" md-on-paginate="load">
-
+        
+        <md-table-pagination md-limit="query.limit" md-limit-options="[10, 15, 25, 50, 100]" md-page="query.page" 
+                            md-total="{{positions.count}}" md-page-select="true" md-label="{{label}}" md-on-paginate="load">
+        </md-table-pagination>
     </md-card>
-    <div style="margin-bottom: 100px"></div>
-    <md-button  class="md-fab md-accent pos-fix md-fab-bottom-right " style="position: fixed; margin-bottom: 50px" aria-label="Add" ng-click="new ()" ng-if="account.role == '1' || account.role == '4'">
+    
+    <md-button class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ng-click="new()" 
+              ng-if="account.role == '1' || account.role == '4'">
         <md-icon>add</md-icon>
-        <md-tooltip md-direction="top">
-            <span translate>New</span>
-        </md-tooltip>
+        <md-tooltip md-direction="left" translate>Add new position</md-tooltip>
     </md-button>
 </div>
