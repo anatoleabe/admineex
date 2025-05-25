@@ -1,10 +1,8 @@
 <!-- Main navbar -->
 <div class="navbar navbar-expand-md navbar-dark">
     <div class="navbar-brand">
-        <a href="../full/index.html" class="d-inline-block">
-            <!--<img src="global_assets/images/logo_light.png" alt="">-->
-            <img src="img/logos/logo-light.png" alt="">
-            <!--<img src="{{kernel.logo.app}}" alt="">-->
+        <a ui-sref="home.dashboard.main" class="d-inline-block">
+            <img src="img/logos/logo-light.png" alt="Admineex" class="logo-main">
         </a>
     </div>
 
@@ -24,74 +22,118 @@
                     <i class="icon-paragraph-justify3"></i>
                 </a>
             </li>
+            <li class="nav-item d-none d-md-block">
+                <span class="navbar-text ml-2">
+                    <span class="badge badge-success">{{kernel.environment || 'Production'}}</span>
+                </span>
+            </li>
         </ul>
-        <ul class="navbar-nav ml-auto" >
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="#" class="navbar-nav-link">
-                        <!--                        Text link-->
+
+        <span class="navbar-text mx-md-auto text-center text-md-left d-none d-md-inline-block">
+            <span class="font-weight-semibold">{{kernel.title || 'Admineex'}}</span>
+            <span class="text-muted ml-1" translate>- Système de Gestion du Personnel</span>
+        </span>
+
+        <ul class="navbar-nav ml-auto">
+            <!-- Language selector -->
+            <li class="nav-item dropdown">
+                <a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">
+                    <i class="icon-earth"></i>
+                    <span class="d-md-none ml-2" translate>Langue</span>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="#" class="dropdown-item active" ng-click="changeLanguage('fr')">
+                        <img src="img/flags/fr.png" class="img-flag mr-2" alt="">
+                        <span translate>Français</span>
                     </a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
-                        <i class="icon-bell2"></i>
-                        <span class="d-md-none ml-2">Notifications</span>
-                        <span class="badge badge-mark border-white ml-auto ml-md-0"></span>
+                    <a href="#" class="dropdown-item" ng-click="changeLanguage('en')">
+                        <img src="img/flags/gb.png" class="img-flag mr-2" alt="">
+                        <span translate>English</span>
                     </a>
+                </div>
+            </li>
 
-                    <div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350">
-                        <div class="dropdown-content-header">
-                            <span class="font-weight-semibold">Messages</span>
-                            <a href="#" class="text-default"><i class="icon-compose"></i></a>
-                        </div>
+            <!-- Notifications -->
+            <li class="nav-item dropdown">
+                <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
+                    <i class="icon-bell2"></i>
+                    <span class="d-md-none ml-2" translate>Notifications</span>
+                    <span class="badge badge-pill badge-warning badge-notification" ng-if="notifications.length > 0">{{notifications.length}}</span>
+                </a>
 
-                        <div class="dropdown-content-body dropdown-scrollable">
-                            <md-list class="md-dense" style="padding: 0;">
-                                <div ng-repeat="notification in notifications">
-                                    <md-list-item class="md-3-line md-long-text"  style="padding: 0;margin: 0;" ng-click="read(notification);" ng-class="{'read': notification.read}">
-                                        <!--<img ng-src="../img/notifications/{{notification.type}}.png" class="md-avatar" alt="{{notification.type}}">-->
-                                        <md-icon aria-label="" class="material-icons">notifications</md-icon>
-                                        <div class="md-list-item-text" style="padding: 0;">
-                                            <h3>
-                                                {{ notification.author}} <span class="md-caption" style="color:#CF6935;right: 16px;position: absolute;">{{ notification.created | smartDatetime}}</span>
-                                            </h3>
-                                            <p>{{ notification.abstract}}</p>
-                                        </div>
-                                    </md-list-item>
-                                    <md-divider ng-if="!$last"></md-divider>
-                                </div>
-                            </md-list>
-                        </div>
-
-                        <div class="dropdown-content-footer justify-content-center p-0">
-                            <a href="#" class="bg-light text-grey w-100 py-2" data-popup="tooltip" title="Load more"><i class="icon-menu7 d-block top-0"></i></a>
-                        </div>
+                <div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350">
+                    <div class="dropdown-content-header">
+                        <span class="font-weight-semibold" translate>Notifications</span>
+                        <a href="#" class="text-default" ng-click="markAllAsRead()"><i class="icon-check"></i></a>
                     </div>
 
-                </li>
-
-                <li class="nav-item dropdown dropdown-user">
-                    <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                        <div class="avatar" ng-style="{'background-color': account.avatar}">
-                            {{account.firstname.substr(0, 1).toUpperCase()}}
+                    <div class="dropdown-content-body dropdown-scrollable">
+                        <div class="text-center p-3" ng-if="!notifications || notifications.length === 0">
+                            <i class="icon-bell-check icon-2x text-muted mb-2"></i>
+                            <p class="mb-0" translate>Aucune notification</p>
                         </div>
-                        <span>{{account.firstname}} {{account.lastname}}</span>
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a ui-sref="home.profile.main" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
-                        <div class="dropdown-divider"></div>
-                        <a ui-sref="home.settings.main" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a>
-                        <a ng-click="go('#');" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
+                        <md-list class="md-dense" style="padding: 0;" ng-if="notifications && notifications.length > 0">
+                            <div ng-repeat="notification in notifications">
+                                <md-list-item class="md-3-line md-long-text notification-item" ng-click="read(notification);" ng-class="{'read': notification.read}">
+                                    <md-icon aria-label="" class="material-icons notification-icon">{{notification.icon || 'notifications'}}</md-icon>
+                                    <div class="md-list-item-text notification-content">
+                                        <h3 class="notification-title">
+                                            {{ notification.author}}
+                                            <span class="notification-time">{{ notification.created | smartDatetime}}</span>
+                                        </h3>
+                                        <p class="notification-message">{{ notification.abstract}}</p>
+                                    </div>
+                                </md-list-item>
+                                <md-divider ng-if="!$last"></md-divider>
+                            </div>
+                        </md-list>
                     </div>
-                </li>
-            </ul>
 
-            <div class="loading-general" layout="row" layout-sm="column" layout-align="space-around" ng-if="kernel.loading < 100">
-                <md-progress-circular md-mode="{'determinate': kernel.loading > 0 && kernel.loading < 100, 'indeterminate': kernel.loading === 0 || kernel.loading === 100" md-diameter="30" class="md-accent" value="{{kernel.loading}}"></md-progress-circular>
-            </div>
+                    <div class="dropdown-content-footer justify-content-center p-0">
+                        <a href="#" class="bg-light text-grey w-100 py-2" data-popup="tooltip" title="{{'Voir toutes les notifications' | translate}}">
+                            <i class="icon-menu7 d-block top-0"></i>
+                        </a>
+                    </div>
+                </div>
+            </li>
+
+            <!-- User account -->
+            <li class="nav-item dropdown dropdown-user">
+                <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+                    <div class="avatar" ng-style="{'background-color': account.avatar}">
+                        {{account.firstname.substr(0, 1).toUpperCase()}}
+                    </div>
+                    <span>{{account.firstname}} {{account.lastname}}</span>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a ui-sref="home.profile.main" class="dropdown-item">
+                        <i class="icon-user"></i> <span translate>Mon profil</span>
+                    </a>
+                    <a ui-sref="home.settings.main" class="dropdown-item">
+                        <i class="icon-cog5"></i> <span translate>Paramètres</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a ui-sref="home.help" class="dropdown-item">
+                        <i class="icon-help"></i> <span translate>Aide</span>
+                    </a>
+                    <a ng-click="signout()" class="dropdown-item">
+                        <i class="icon-switch2"></i> <span translate>Déconnexion</span>
+                    </a>
+                </div>
+            </li>
         </ul>
+
+        <!-- Loading indicator -->
+        <div class="loading-indicator" ng-if="kernel.loading < 100">
+            <md-progress-circular 
+                md-mode="{{kernel.loading > 0 && kernel.loading < 100 ? 'determinate' : 'indeterminate'}}" 
+                md-diameter="30" 
+                class="md-accent" 
+                value="{{kernel.loading}}">
+            </md-progress-circular>
+        </div>
     </div>
 </div>
 

@@ -6,14 +6,13 @@
         <a href="#" class="sidebar-mobile-main-toggle">
             <i class="icon-arrow-left8"></i>
         </a>
-        Navigation
+        <span class="font-weight-semibold" translate>Navigation</span>
         <a href="#" class="sidebar-mobile-expand">
             <i class="icon-screen-full"></i>
             <i class="icon-screen-normal"></i>
         </a>
     </div>
     <!-- /sidebar mobile toggler -->
-
 
     <!-- Sidebar content -->
     <div class="sidebar-content">
@@ -33,31 +32,81 @@
                     </div>
 
                     <div class="ml-3 align-self-center">
-                        <a href="#" class="text-white"><i class="icon-cog3"></i></a>
+                        <a ui-sref="home.profile.main" class="text-white" data-popup="tooltip" title="{{'Mon profil' | translate}}">
+                            <i class="icon-user"></i>
+                        </a>
                     </div>
                 </div>
             </div>
         </div>
         <!-- /user menu -->
 
+        <!-- Search -->
+        <div class="card">
+            <div class="card-body">
+                <div class="form-group-feedback form-group-feedback-left">
+                    <input type="search" class="form-control" placeholder="{{'Rechercher...' | translate}}" ng-model="searchMenu">
+                    <div class="form-control-feedback">
+                        <i class="icon-search4 text-muted"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /search -->
 
         <!-- Main navigation -->
         <div class="card card-sidebar-mobile">
             <ul class="nav nav-sidebar" data-nav-type="accordion">
-                <!-- Main -->
-                <div class="nav nav-sidebar" ng-repeat="n in nav" >
-                    <li class="nav-item-header" ng-if="n.header != '' && n.items.length > 0"><div class="text-uppercase font-size-xs line-height-xs" >{{n.header}}</div> <i class="icon-menu" title="{{n.header}}"></i></li>
-                    <li  class="nav-item " ng-class='(item.items && item.items.length > 0) ? "nav-item-submenu" : ""' ui-sref="{{item.sref}}" ui-sref-active='nav-item-expanded nav-item-open' ng-repeat="item in n.items">
-                        <a ui-sref="{{item.href}}" class="nav-link"><i class="{{item.icomoon}}"></i><span>{{item.name}}</span></a>
-                        <ul class="nav nav-group-sub" data-submenu-title="Layouts" ng-if="item.items && item.items.length > 0" >
-                            <li class="nav-item" ng-repeat="subItem in item.items"><a ui-sref="{{subItem.href}}" class="nav-link " ui-sref-active='active'>{{subItem.name}}</a></li>
+                <!-- Dashboard shortcut -->
+                <li class="nav-item">
+                    <a ui-sref="home.dashboard.main" class="nav-link" ui-sref-active="active">
+                        <i class="icon-home4"></i>
+                        <span translate>Tableau de bord</span>
+                    </a>
+                </li>
 
+                <!-- Main navigation items -->
+                <div class="nav nav-sidebar" ng-repeat="n in nav | filter:searchMenu" >
+                    <li class="nav-item-header" ng-if="n.header != '' && n.items.length > 0">
+                        <div class="text-uppercase font-size-xs line-height-xs" translate>{{n.header}}</div> 
+                        <i class="icon-menu" title="{{n.header}}"></i>
+                    </li>
+                    <li class="nav-item" 
+                        ng-class='(item.items && item.items.length > 0) ? "nav-item-submenu" : ""' 
+                        ui-sref="{{item.sref}}" 
+                        ui-sref-active='nav-item-expanded nav-item-open' 
+                        ng-repeat="item in n.items | filter:searchMenu">
+                        <a ui-sref="{{item.href}}" class="nav-link">
+                            <i class="{{item.icomoon}}"></i>
+                            <span translate>{{item.name}}</span>
+                            <span class="badge bg-primary-400 ml-auto" ng-if="item.badge">{{item.badge}}</span>
+                        </a>
+                        <ul class="nav nav-group-sub" data-submenu-title="{{item.name}}" ng-if="item.items && item.items.length > 0">
+                            <li class="nav-item" ng-repeat="subItem in item.items | filter:searchMenu">
+                                <a ui-sref="{{subItem.href}}" class="nav-link" ui-sref-active='active'>
+                                    <i class="{{subItem.icomoon || 'icon-circle-small'}}" ng-if="subItem.icomoon"></i>
+                                    <span translate>{{subItem.name}}</span>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </div>
             </ul>
         </div>
         <!-- /main navigation -->
+
+        <!-- Sidebar footer -->
+        <div class="sidebar-footer d-flex justify-content-between align-items-center py-2 px-3 mt-auto">
+            <div>
+                <span class="font-size-xs text-muted">v{{kernel.version || '1.0.0'}}</span>
+            </div>
+            <div>
+                <a ui-sref="home.settings.main" class="text-white-50" data-popup="tooltip" title="{{'Paramètres' | translate}}">
+                    <i class="icon-cog3"></i>
+                </a>
+            </div>
+        </div>
+        <!-- /sidebar footer -->
 
     </div>
     <!-- /sidebar content -->
