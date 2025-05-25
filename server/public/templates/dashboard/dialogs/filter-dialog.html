@@ -1,0 +1,54 @@
+<md-dialog aria-label="Dashboard Filters" class="filter-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 translate>Dashboard Filters</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon>close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <h3 class="filter-section-title" translate>Date Range</h3>
+            <div layout="row" layout-align="space-between center">
+                <md-datepicker ng-model="filters.dateRange.start" md-placeholder="{{'Start date' | translate}}"></md-datepicker>
+                <span class="date-separator">-</span>
+                <md-datepicker ng-model="filters.dateRange.end" md-placeholder="{{'End date' | translate}}"></md-datepicker>
+            </div>
+            
+            <md-divider class="filter-divider"></md-divider>
+            
+            <h3 class="filter-section-title" translate>Structure</h3>
+            <md-input-container class="md-block">
+                <label translate>Filter by structure</label>
+                <md-select ng-model="filters.structureId">
+                    <md-option value="null" translate>All structures</md-option>
+                    <md-option ng-repeat="structure in structures" value="{{structure._id}}">
+                        {{structure.name}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            
+            <md-divider class="filter-divider"></md-divider>
+            
+            <h3 class="filter-section-title" translate>Status</h3>
+            <md-input-container class="md-block">
+                <label translate>Filter by status</label>
+                <md-select ng-model="filters.status">
+                    <md-option value="null" translate>All statuses</md-option>
+                    <md-option value="active" translate>Active</md-option>
+                    <md-option value="inactive" translate>Inactive</md-option>
+                    <md-option value="suspended" translate>Suspended</md-option>
+                    <md-option value="retired" translate>Retired</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+    </md-dialog-content>
+    
+    <md-dialog-actions layout="row">
+        <md-button ng-click="cancel()" translate>Cancel</md-button>
+        <md-button class="md-primary" ng-click="apply()" translate>Apply Filters</md-button>
+    </md-dialog-actions>
+</md-dialog>

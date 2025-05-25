@@ -1,0 +1,81 @@
+<md-dialog aria-label="Personnel Details" class="personnel-details-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 translate>Personnel Details</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="close()">
+                <md-icon>close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <div class="personnel-header" layout="row" layout-align="start center">
+                <div class="personnel-avatar" ng-style="{'background-color': personnel.gender === 'M' ? '#E3F2FD' : '#FCE4EC'}">
+                    {{personnel.fname.charAt(0)}}
+                </div>
+                <div class="personnel-info">
+                    <h2 class="personnel-name">{{personnel.fname}}</h2>
+                    <p class="personnel-position">{{personnel.affectedTo.position.name}}</p>
+                </div>
+            </div>
+            
+            <md-divider></md-divider>
+            
+            <div class="personnel-details">
+                <div class="detail-section">
+                    <h3 class="section-title" translate>Personal Information</h3>
+                    <div class="detail-row" layout="row">
+                        <div class="detail-label" translate>ID</div>
+                        <div class="detail-value">{{personnel.identifier}}</div>
+                    </div>
+                    <div class="detail-row" layout="row">
+                        <div class="detail-label" translate>Gender</div>
+                        <div class="detail-value">{{personnel.gender === 'M' ? 'Male' : 'Female'}}</div>
+                    </div>
+                    <div class="detail-row" layout="row" ng-if="personnel.birthdate">
+                        <div class="detail-label" translate>Birth Date</div>
+                        <div class="detail-value">{{personnel.birthdate | date:'mediumDate'}}</div>
+                    </div>
+                    <div class="detail-row" layout="row" ng-if="personnel.email">
+                        <div class="detail-label" translate>Email</div>
+                        <div class="detail-value">{{personnel.email}}</div>
+                    </div>
+                    <div class="detail-row" layout="row" ng-if="personnel.phone">
+                        <div class="detail-label" translate>Phone</div>
+                        <div class="detail-value">{{personnel.phone}}</div>
+                    </div>
+                </div>
+                
+                <md-divider></md-divider>
+                
+                <div class="detail-section">
+                    <h3 class="section-title" translate>Professional Information</h3>
+                    <div class="detail-row" layout="row" ng-if="personnel.affectedTo.structure">
+                        <div class="detail-label" translate>Structure</div>
+                        <div class="detail-value">{{personnel.affectedTo.structure.name}}</div>
+                    </div>
+                    <div class="detail-row" layout="row" ng-if="personnel.affectedTo.position">
+                        <div class="detail-label" translate>Position</div>
+                        <div class="detail-value">{{personnel.affectedTo.position.name}}</div>
+                    </div>
+                    <div class="detail-row" layout="row" ng-if="personnel.status">
+                        <div class="detail-label" translate>Status</div>
+                        <div class="detail-value">{{personnel.status}}</div>
+                    </div>
+                    <div class="detail-row" layout="row" ng-if="personnel.category">
+                        <div class="detail-label" translate>Category</div>
+                        <div class="detail-value">{{personnel.category}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </md-dialog-content>
+    
+    <md-dialog-actions layout="row">
+        <span flex></span>
+        <md-button class="md-primary" ng-click="close()" translate>Close</md-button>
+        <md-button class="md-primary" ng-href="#/staffs/staff/edit/{{personnel._id}}" translate>View Full Profile</md-button>
+    </md-dialog-actions>
+</md-dialog>
