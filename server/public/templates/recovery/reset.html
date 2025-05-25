@@ -1,33 +1,121 @@
-<div class="loading" layout="row" layout-sm="column" layout-align="space-around" ng-if="loading">
-    <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
-</div>
-<div layout="column" layout-align="center center">
-    <md-card class="signupBox md-whiteframe-z1" style="margin-top: 10px;">
-        <md-card-content>
-            <h3 class="md-title" style="text-align:center;" translate>Reset your password</h3>
-            <h3 class="md-subhead" translate>Enter a new password for your Core account.</h3>
-            <form ng-submit="submit();" name="reset">
-                <div layout="column">
-                    <md-input-container class="md-block" style="margin: 0;">
-                        <label translate>Password</label>
-                        <input type="password" md-minlength="6" ng-model="newPassword" name="newPassword" required>
-                        <div ng-messages="reset.newPassword.$error">
-                            <div ng-message="md-minlength">
-                                <span translate>Use at least 6 characters</span><span>.</span>
-                            </div>
-                        </div>
-                    </md-input-container>
-                    <md-input-container class="md-block">
-                        <label translate>Confirmation</label>
-                        <input type="password" ng-model="newPasswordConfirmation" required>
-                    </md-input-container>
-                    <div layout="row" layout-align="center center">
-                        <md-button class="md-raised" ui-sref="signin"><span translate>Back</span></md-button>
-                        <div flex="flex"></div>
-                        <md-button class="md-raised md-accent" type="submit" ng-disabled="loading"><span translate>Submit</span></md-button>
+<div class="auth-container">
+    <!-- Auth card -->
+    <div class="auth-card">
+        <!-- Loading overlay -->
+        <div class="auth-loading" ng-if="loading">
+            <md-progress-circular md-mode="indeterminate" md-diameter="50" class="md-accent"></md-progress-circular>
+        </div>
+
+        <!-- Auth header -->
+        <div class="auth-header">
+            <div class="auth-icon-container">
+                <md-icon class="material-icons auth-icon">lock_reset</md-icon>
+            </div>
+            <h1 class="auth-title" translate>Réinitialisation du mot de passe</h1>
+            <p class="auth-subtitle" translate>Entrez un nouveau mot de passe pour votre compte.</p>
+        </div>
+
+        <!-- Auth body -->
+        <div class="auth-body">
+            <!-- Error message -->
+            <div class="auth-error" ng-if="resetError">
+                <md-icon class="material-icons">error_outline</md-icon>
+                <span>{{resetError}}</span>
+                <button type="button" class="close" ng-click="resetError = null">×</button>
+            </div>
+            
+            <!-- Success message -->
+            <div class="auth-success" ng-if="resetSuccess">
+                <md-icon class="material-icons">check_circle</md-icon>
+                <span>{{resetSuccess}}</span>
+            </div>
+
+            <!-- Reset form -->
+            <form class="auth-form" name="resetForm" ng-submit="submit();" novalidate>
+                <md-input-container class="md-block">
+                    <label translate>Nouveau mot de passe</label>
+                    <md-icon class="material-icons">lock</md-icon>
+                    <input type="{{ showPassword ? 'text' : 'password' }}" ng-model="newPassword" name="newPassword" required 
+                           minlength="6" autocomplete="new-password" ng-keypress="handleKeyPress($event)">
+                    <div class="password-toggle">
+                        <md-button class="md-icon-button" ng-click="showPassword = !showPassword" aria-label="Toggle password visibility">
+                            <md-icon class="material-icons">{{ showPassword ? 'visibility_off' : 'visibility' }}</md-icon>
+                        </md-button>
                     </div>
+                    <div ng-messages="resetForm.newPassword.$error" ng-if="resetForm.newPassword.$touched">
+                        <div ng-message="required" translate>Le mot de passe est requis</div>
+                        <div ng-message="minlength" translate>Utilisez au moins 6 caractères</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label translate>Confirmation du mot de passe</label>
+                    <md-icon class="material-icons">lock_outline</md-icon>
+                    <input type="{{ showPassword ? 'text' : 'password' }}" ng-model="newPasswordConfirmation" name="newPasswordConfirmation" required
+                           autocomplete="new-password" ng-keypress="handleKeyPress($event)">
+                    <div ng-messages="resetForm.newPasswordConfirmation.$error" ng-if="resetForm.newPasswordConfirmation.$touched">
+                        <div ng-message="required" translate>La confirmation est requise</div>
+                    </div>
+                    <div class="validation-error" ng-if="resetForm.newPasswordConfirmation.$touched && newPassword !== newPasswordConfirmation">
+                        <span translate>Les mots de passe ne correspondent pas</span>
+                    </div>
+                </md-input-container>
+
+                <md-button type="submit" class="md-primary md-raised" ng-disabled="resetForm.$invalid || newPassword !== newPasswordConfirmation || loading">
+                    <span ng-if="!loading" translate>Enregistrer le mot de passe</span>
+                    <span ng-if="loading"><md-icon class="material-icons spin">sync</md-icon> <span translate>Traitement en cours...</span></span>
+                </md-button>
+
+                <div class="auth-divider">
+                    <span translate>Vous avez déjà un compte?</span>
                 </div>
+
+                <md-button class="md-raised" ui-sref="signin" aria-label="Retour à la connexion">
+                    <md-icon class="material-icons">arrow_back</md-icon>
+                    <span translate>Retour à la connexion</span>
+                </md-button>
             </form>
-        </md-card-content>
-    </md-card>
+        </div>
+
+        <!-- Auth footer -->
+        <div class="auth-footer">
+            <p translate>© {{currentYear = (currentYear || new Date().getFullYear())}} Admineex - Système de Gestion du Personnel</p>
+        </div>
+    </div>
 </div>
+
+<style>
+/* Animation for spinner */
+.spin {
+    animation: spin 1.5s linear infinite;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Password validation error */
+.validation-error {
+    color: #F44336;
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+/* Success message */
+.auth-success {
+    background-color: #E8F5E9;
+    color: #2E7D32;
+    padding: 12px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+}
+
+.auth-success md-icon {
+    margin-right: 8px;
+    min-width: 20px;
+}
+</style>
