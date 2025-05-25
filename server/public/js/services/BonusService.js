@@ -80,6 +80,26 @@ app.factory('BonusService', ['$http', function($http) {
             return $http.post('/api/bonus/reports/export', data, { 
                 responseType: 'arraybuffer' 
             });
+        },
+        
+        getAuditLogs: function(filters) {
+            return $http.get('/api/bonus/audit-logs', { params: filters });
+        },
+        exportAuditLogs: function(filters) {
+            return $http.get('/api/bonus/audit-logs/export', { 
+                params: filters,
+                responseType: 'arraybuffer' 
+            });
+        },
+        
+        getDashboardStats: function(filters) {
+            return $http.get('/api/bonus/dashboard/stats', { params: filters });
+        },
+        exportDashboard: function(filters) {
+            return $http.get('/api/bonus/dashboard/export', { 
+                params: filters,
+                responseType: 'arraybuffer' 
+            });
         }
     };
 }]);

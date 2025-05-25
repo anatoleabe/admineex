@@ -1,0 +1,228 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="card-title">Tableau de bord des primes</h4>
+                    <button class="btn btn-sm btn-success" ng-click="exportToPDF()">
+                        <i class="fa fa-file-pdf-o"></i> Exporter en PDF
+                    </button>
+                </div>
+                <div class="card-body">
+                    <!-- Filters -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Filtres</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Date de début</label>
+                                                <md-datepicker ng-model="filters.startDate" md-placeholder="Entrez la date"></md-datepicker>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Date de fin</label>
+                                                <md-datepicker ng-model="filters.endDate" md-placeholder="Entrez la date"></md-datepicker>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Structure</label>
+                                                <select class="form-control" ng-model="filters.structureId">
+                                                    <option value="">Toutes les structures</option>
+                                                    <option ng-repeat="structure in structures" value="{{structure._id}}">{{structure.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Modèle de prime</label>
+                                                <select class="form-control" ng-model="filters.templateId">
+                                                    <option value="">Tous les modèles</option>
+                                                    <option ng-repeat="template in templates" value="{{template._id}}">{{template.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 text-right">
+                                            <button class="btn btn-secondary mr-2" ng-click="resetFilters()">
+                                                <i class="fa fa-refresh"></i> Réinitialiser
+                                            </button>
+                                            <button class="btn btn-primary" ng-click="applyFilters()">
+                                                <i class="fa fa-search"></i> Appliquer les filtres
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Loading indicator -->
+                    <div ng-if="loading" class="text-center p-5">
+                        <i class="fa fa-spinner fa-spin fa-3x"></i>
+                        <p class="mt-3">Chargement des statistiques...</p>
+                    </div>
+                    
+                    <!-- Error message -->
+                    <div ng-if="error" class="alert alert-danger">
+                        <i class="fa fa-exclamation-triangle"></i> {{error}}
+                    </div>
+                    
+                    <!-- Dashboard content -->
+                    <div ng-if="!loading && !error">
+                        <!-- Summary cards -->
+                        <div class="row mb-4">
+                            <div class="col-md-3">
+                                <div class="card bg-primary text-white">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="card-title">Total des primes</h6>
+                                                <h3 class="mb-0">{{stats.summary.totalAmount | currency:'FCFA ':0}}</h3>
+                                            </div>
+                                            <i class="fa fa-money fa-3x opacity-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-success text-white">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="card-title">Nombre d'instances</h6>
+                                                <h3 class="mb-0">{{stats.summary.instanceCount}}</h3>
+                                            </div>
+                                            <i class="fa fa-list fa-3x opacity-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-info text-white">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="card-title">Nombre de bénéficiaires</h6>
+                                                <h3 class="mb-0">{{stats.summary.beneficiaryCount}}</h3>
+                                            </div>
+                                            <i class="fa fa-users fa-3x opacity-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card bg-warning text-white">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <h6 class="card-title">Montant moyen</h6>
+                                                <h3 class="mb-0">{{stats.summary.averageAmount | currency:'FCFA ':0}}</h3>
+                                            </div>
+                                            <i class="fa fa-calculator fa-3x opacity-50"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Charts -->
+                        <div class="row mb-4">
+                            <!-- Period chart -->
+                            <div class="col-md-12 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Évolution des primes par période</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div style="height: 300px;">
+                                            <canvas id="periodChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Structure chart -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Primes par structure</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div style="height: 300px;">
+                                            <canvas id="structureChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Template chart -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Primes par modèle</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div style="height: 300px;">
+                                            <canvas id="templateChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Status chart -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Instances par statut</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div style="height: 300px;">
+                                            <canvas id="statusChart"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Top beneficiaries -->
+                            <div class="col-md-6 mb-4">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="mb-0">Top 10 des bénéficiaires</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Matricule</th>
+                                                    <th>Nom</th>
+                                                    <th>Montant total</th>
+                                                    <th>Nombre de primes</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="beneficiary in stats.topBeneficiaries">
+                                                    <td>{{beneficiary.matricule}}</td>
+                                                    <td>{{beneficiary.fullName}}</td>
+                                                    <td>{{beneficiary.totalAmount | currency:'FCFA ':0}}</td>
+                                                    <td>{{beneficiary.bonusCount}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

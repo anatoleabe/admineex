@@ -896,6 +896,32 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                 }]
             },
             breadcrumbs: ["Bonus Management", "Reports"]
+        })
+        
+        .state('home.bonus.audit', {
+            url: '/audit',
+            templateUrl: 'templates/bonus/audit/main.html',
+            controller: 'BonusAuditCtrl',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load('js/controllers/bonus/BonusAuditCtrl.js');
+                }]
+            },
+            breadcrumbs: ["Bonus Management", "Audit Logs"]
+        })
+        
+        .state('home.bonus.dashboard', {
+            url: '/dashboard',
+            templateUrl: 'templates/bonus/dashboard/main.html',
+            controller: 'BonusDashboardCtrl',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load('js/controllers/bonus/BonusDashboardCtrl.js');
+                }]
+            },
+            breadcrumbs: ["Bonus Management", "Dashboard"]
         });
 
         $locationProvider.html5Mode(true);

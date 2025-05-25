@@ -33,6 +33,8 @@ controllers.bonus = {
     allocation: require('./controllers/bonus/allocation'),
     rule: require('./controllers/bonus/rule'),
     generation: require('./controllers/bonus/generation'),
+    audit: require('./controllers/bonus/audit'),
+    dashboard: require('./controllers/bonus/dashboard')
 }
 controllers.sanctions = require('./controllers/sanctions');
 controllers.organizations = require('./controllers/organizations');
@@ -983,6 +985,34 @@ let routes = [
 
 
 
+
+// ================================== BONUS AUDIT API ROUTES =================================
+    {
+        path: '/api/bonus/audit-logs',
+        httpMethod: 'GET',
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.audit.api.list],
+        access: ['admin', 'manager', 'director']
+    },
+    {
+        path: '/api/bonus/audit-logs/export',
+        httpMethod: 'GET',
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.audit.api.export],
+        access: ['admin', 'manager', 'director']
+    },
+
+// ================================== BONUS DASHBOARD API ROUTES =================================
+    {
+        path: '/api/bonus/dashboard/stats',
+        httpMethod: 'GET',
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.dashboard.api.getStats],
+        access: ['admin', 'manager', 'director', 'user']
+    },
+    {
+        path: '/api/bonus/dashboard/export',
+        httpMethod: 'GET',
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.dashboard.api.export],
+        access: ['admin', 'manager', 'director']
+    },
 
 // ================================== PERSONNEL SNAPSHOTS API ROUTES =================================
     {
