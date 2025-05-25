@@ -1,0 +1,90 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Modèles de primes</h4>
+                <div class="card-tools">
+                    <button class="btn btn-primary btn-sm" ng-click="createTemplate()">
+                        <i class="fa fa-plus"></i> Nouveau modèle
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Rechercher..." ng-model="filters.search" ng-change="loadTemplates()">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary" type="button" ng-click="loadTemplates()">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="btn-group float-right">
+                            <button class="btn btn-outline-secondary" ng-class="{'active': filters.category === ''}" ng-click="filterByCategory('')">Tous</button>
+                            <button class="btn btn-outline-secondary" ng-class="{'active': filters.category === 'with_parts'}" ng-click="filterByCategory('with_parts')">Avec parts</button>
+                            <button class="btn btn-outline-secondary" ng-class="{'active': filters.category === 'fixed_amount'}" ng-click="filterByCategory('fixed_amount')">Montant fixe</button>
+                            <button class="btn btn-outline-secondary" ng-class="{'active': filters.category === 'percentage'}" ng-click="filterByCategory('percentage')">Pourcentage</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Catégorie</th>
+                                <th>Périodicité</th>
+                                <th>Statut</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-if="loading">
+                                <td colspan="5" class="text-center">
+                                    <i class="fa fa-spinner fa-spin"></i> Chargement...
+                                </td>
+                            </tr>
+                            <tr ng-if="!loading && templates.length === 0">
+                                <td colspan="5" class="text-center">
+                                    Aucun modèle de prime trouvé
+                                </td>
+                            </tr>
+                            <tr ng-repeat="template in templates">
+                                <td>{{template.name}}</td>
+                                <td>{{getCategoryName(template.category)}}</td>
+                                <td>{{getPeriodicityName(template.periodicity)}}</td>
+                                <td>
+                                    <span class="badge" ng-class="{'badge-success': template.isActive, 'badge-secondary': !template.isActive}">
+                                        {{template.isActive ? 'Actif' : 'Inactif'}}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button class="btn btn-sm btn-info" ng-click="editTemplate(template)" title="Modifier">
+                                            <i class="fa fa-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm" ng-class="{'btn-warning': template.isActive, 'btn-success': !template.isActive}" 
+                                                ng-click="toggleTemplate(template)" 
+                                                title="{{template.isActive ? 'Désactiver' : 'Activer'}}">
+                                            <i class="fa" ng-class="{'fa-toggle-on': template.isActive, 'fa-toggle-off': !template.isActive}"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-primary" ng-click="cloneTemplate(template)" title="Cloner">
+                                            <i class="fa fa-copy"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" ng-click="deleteTemplate($event, template)" title="Supprimer">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

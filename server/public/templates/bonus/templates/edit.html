@@ -1,0 +1,329 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">{{isEdit ? 'Modifier' : 'Créer'}} un modèle de prime</h4>
+            </div>
+            <div class="card-body">
+                <form name="templateForm" novalidate>
+                    <div ng-if="loading" class="text-center p-5">
+                        <i class="fa fa-spinner fa-spin fa-2x"></i>
+                        <p>Chargement du modèle...</p>
+                    </div>
+                    
+                    <div ng-if="!loading">
+                        <!-- Informations générales -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Informations générales</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="name">Nom du modèle <span class="text-danger">*</span></label>
+                                            <input type="text" id="name" class="form-control" ng-model="template.name" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="isActive">Statut</label>
+                                            <div>
+                                                <md-switch ng-model="template.isActive" aria-label="Statut">
+                                                    {{template.isActive ? 'Actif' : 'Inactif'}}
+                                                </md-switch>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label for="description">Description</label>
+                                            <textarea id="description" class="form-control" ng-model="template.description" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="category">Catégorie <span class="text-danger">*</span></label>
+                                            <select id="category" class="form-control" ng-model="template.category" required>
+                                                <option ng-repeat="category in categories" value="{{category.id}}">{{category.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="periodicity">Périodicité <span class="text-danger">*</span></label>
+                                            <select id="periodicity" class="form-control" ng-model="template.periodicity" required>
+                                                <option ng-repeat="periodicity in periodicities" value="{{periodicity.id}}">{{periodicity.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Règles d'éligibilité -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Règles d'éligibilité</h5>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted">Définissez les critères que le personnel doit remplir pour être éligible à cette prime.</p>
+                                
+                                <div class="eligibility-rules">
+                                    <div class="rule-item mb-3" ng-repeat="rule in template.eligibilityRules">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <select class="form-control" ng-model="rule.field">
+                                                    <option ng-repeat="field in fields" value="{{field.id}}">{{field.name}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <select class="form-control" ng-model="rule.operator">
+                                                    <option ng-repeat="operator in operators" value="{{operator.id}}">{{operator.name}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <input type="text" class="form-control" ng-model="rule.value" placeholder="Valeur">
+                                            </div>
+                                            <div class="col-md-1">
+                                                <button type="button" class="btn btn-danger btn-sm" ng-click="removeEligibilityRule($index)">
+                                                    <i class="fa fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button type="button" class="btn btn-outline-primary" ng-click="addEligibilityRule()">
+                                        <i class="fa fa-plus"></i> Ajouter une règle
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Configuration du calcul -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Configuration du calcul</h5>
+                            </div>
+                            <div class="card-body">
+                                <!-- Avec parts -->
+                                <div ng-if="template.category === 'with_parts'">
+                                    <p class="text-muted">Définissez les règles d'attribution des parts et la valeur d'une part.</p>
+                                    
+                                    <div class="form-group">
+                                        <label for="shareValue">Valeur d'une part <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input type="number" id="shareValue" class="form-control" ng-model="template.calculationConfig.shareValue" min="0" required>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">FCFA</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="part-rules mt-4">
+                                        <h6>Règles d'attribution des parts</h6>
+                                        
+                                        <div class="rule-item card mb-3" ng-repeat="rule in template.calculationConfig.partRules">
+                                            <div class="card-body">
+                                                <div class="row mb-2">
+                                                    <div class="col-md-10">
+                                                        <h6>Si les conditions suivantes sont remplies:</h6>
+                                                    </div>
+                                                    <div class="col-md-2 text-right">
+                                                        <button type="button" class="btn btn-danger btn-sm" ng-click="removePartRule($index)">
+                                                            <i class="fa fa-times"></i> Supprimer
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="conditions">
+                                                    <div class="condition-item mb-2" ng-repeat="condition in rule.conditions">
+                                                        <div class="row">
+                                                            <div class="col-md-4">
+                                                                <select class="form-control" ng-model="condition.field">
+                                                                    <option ng-repeat="field in fields" value="{{field.id}}">{{field.name}}</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <select class="form-control" ng-model="condition.operator">
+                                                                    <option ng-repeat="operator in operators" value="{{operator.id}}">{{operator.name}}</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <input type="text" class="form-control" ng-model="condition.value" placeholder="Valeur">
+                                                            </div>
+                                                            <div class="col-md-1">
+                                                                <button type="button" class="btn btn-danger btn-sm" ng-click="removeCondition(rule, $index)" ng-disabled="rule.conditions.length <= 1">
+                                                                    <i class="fa fa-times"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <button type="button" class="btn btn-outline-secondary btn-sm mb-3" ng-click="addCondition(rule)">
+                                                        <i class="fa fa-plus"></i> Ajouter une condition
+                                                    </button>
+                                                </div>
+                                                
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label>Alors attribuer:</label>
+                                                            <div class="input-group">
+                                                                <input type="number" class="form-control" ng-model="rule.parts" min="0" step="0.5" required>
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text">parts</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <button type="button" class="btn btn-outline-primary" ng-click="addPartRule()">
+                                            <i class="fa fa-plus"></i> Ajouter une règle de parts
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Montant fixe -->
+                                <div ng-if="template.category === 'fixed_amount'">
+                                    <p class="text-muted">Définissez le montant fixe à attribuer à chaque bénéficiaire éligible.</p>
+                                    
+                                    <div class="form-group">
+                                        <label for="fixedAmount">Montant fixe <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <input type="number" id="fixedAmount" class="form-control" ng-model="template.calculationConfig.fixedAmount" min="0" required>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">FCFA</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Pourcentage -->
+                                <div ng-if="template.category === 'percentage'">
+                                    <p class="text-muted">Définissez le pourcentage à appliquer sur un champ de base.</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="baseField">Champ de base <span class="text-danger">*</span></label>
+                                                <select id="baseField" class="form-control" ng-model="template.calculationConfig.baseField" required>
+                                                    <option value="salary">Salaire</option>
+                                                    <option value="base_salary">Salaire de base</option>
+                                                    <option value="gross_salary">Salaire brut</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="percentage">Pourcentage <span class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <input type="number" id="percentage" class="form-control" ng-model="template.calculationConfig.percentage" min="0" max="100" step="0.01" required>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text">%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Formule personnalisée -->
+                                <div ng-if="template.category === 'custom_formula'">
+                                    <p class="text-muted">Définissez une formule personnalisée pour calculer le montant de la prime.</p>
+                                    
+                                    <div class="form-group">
+                                        <label for="customFormula">Formule personnalisée <span class="text-danger">*</span></label>
+                                        <textarea id="customFormula" class="form-control" ng-model="template.calculationConfig.customFormula" rows="3" required></textarea>
+                                        <small class="form-text text-muted">
+                                            Utilisez les variables suivantes: salary, base_salary, parts, grade, category, etc.
+                                            Exemple: salary * 0.05 + (parts * 10000)
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Workflow d'approbation -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Workflow d'approbation</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label for="workflowType">Type de workflow</label>
+                                    <select id="workflowType" class="form-control" ng-model="template.approvalWorkflow.type">
+                                        <option ng-repeat="type in workflowTypes" value="{{type.id}}">{{type.name}}</option>
+                                    </select>
+                                    <small class="form-text text-muted" ng-if="template.approvalWorkflow.type === 'sequential'">
+                                        Les étapes d'approbation seront exécutées dans l'ordre défini.
+                                    </small>
+                                    <small class="form-text text-muted" ng-if="template.approvalWorkflow.type === 'parallel'">
+                                        Toutes les étapes d'approbation seront exécutées en parallèle.
+                                    </small>
+                                </div>
+                                
+                                <div class="workflow-steps mt-4">
+                                    <h6>Étapes d'approbation</h6>
+                                    
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Rôle</th>
+                                                    <th>Obligatoire</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="step in template.approvalWorkflow.steps">
+                                                    <td>
+                                                        <select class="form-control" ng-model="step.role">
+                                                            <option ng-repeat="role in roles" value="{{role.id}}">{{role.name}}</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <md-switch ng-model="step.required" aria-label="Obligatoire">
+                                                            {{step.required ? 'Oui' : 'Non'}}
+                                                        </md-switch>
+                                                    </td>
+                                                    <td>
+                                                        <button type="button" class="btn btn-danger btn-sm" ng-click="removeWorkflowStep($index)" ng-disabled="template.approvalWorkflow.steps.length <= 1">
+                                                            <i class="fa fa-times"></i>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                    <button type="button" class="btn btn-outline-primary" ng-click="addWorkflowStep()">
+                                        <i class="fa fa-plus"></i> Ajouter une étape
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-actions text-right">
+                            <button type="button" class="btn btn-secondary mr-2" ng-click="cancel()">Annuler</button>
+                            <button type="button" class="btn btn-info mr-2" ng-click="validateTemplate()">Valider</button>
+                            <button type="submit" class="btn btn-primary" ng-click="saveTemplate()" ng-disabled="templateForm.$invalid || saving">
+                                <i class="fa fa-spinner fa-spin" ng-if="saving"></i>
+                                {{isEdit ? 'Mettre à jour' : 'Enregistrer'}}
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,116 @@
+<md-dialog aria-label="Générer une prime" class="fullscreen-dialog">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Générer une prime</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <i class="fa fa-times" aria-label="Fermer"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div ng-if="loading" class="text-center p-5">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                    <p>Chargement...</p>
+                </div>
+                
+                <div ng-if="!loading">
+                    <div class="alert alert-danger" ng-if="error">
+                        <i class="fa fa-exclamation-triangle"></i> {{error}}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="templateId">Modèle de prime <span class="text-danger">*</span></label>
+                        <select id="templateId" class="form-control" ng-model="generationData.templateId" ng-change="selectTemplate()" required>
+                            <option value="">Sélectionnez un modèle</option>
+                            <option ng-repeat="template in templates" value="{{template._id}}">{{template.name}}</option>
+                        </select>
+                    </div>
+                    
+                    <div ng-if="selectedTemplate">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h5 class="mb-0">Détails du modèle</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <p><strong>Catégorie:</strong> {{selectedTemplate.category}}</p>
+                                        <p><strong>Périodicité:</strong> {{selectedTemplate.periodicity}}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p><strong>Description:</strong> {{selectedTemplate.description}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="title">Titre <span class="text-danger">*</span></label>
+                            <input type="text" id="title" class="form-control" ng-model="generationData.title" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea id="description" class="form-control" ng-model="generationData.description" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="periodStart">Début de période <span class="text-danger">*</span></label>
+                                    <md-datepicker ng-model="generationData.periodStart" id="periodStart" md-placeholder="Entrez la date"></md-datepicker>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="periodEnd">Fin de période <span class="text-danger">*</span></label>
+                                    <md-datepicker ng-model="generationData.periodEnd" id="periodEnd" md-placeholder="Entrez la date"></md-datepicker>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Custom parameters for with_parts category -->
+                        <div ng-if="selectedTemplate.category === 'with_parts'" class="form-group">
+                            <label for="shareValue">Valeur d'une part (FCFA) <span class="text-danger">*</span></label>
+                            <input type="number" id="shareValue" class="form-control" ng-model="generationData.customParameters.shareValue" min="0" required>
+                            <small class="form-text text-muted">
+                                Valeur par défaut: {{selectedTemplate.calculationConfig.shareValue || 0}} FCFA
+                            </small>
+                        </div>
+                        
+                        <!-- Custom parameters for fixed_amount category -->
+                        <div ng-if="selectedTemplate.category === 'fixed_amount'" class="form-group">
+                            <label for="fixedAmount">Montant fixe (FCFA) <span class="text-danger">*</span></label>
+                            <input type="number" id="fixedAmount" class="form-control" ng-model="generationData.customParameters.fixedAmount" min="0" required>
+                            <small class="form-text text-muted">
+                                Valeur par défaut: {{selectedTemplate.calculationConfig.fixedAmount || 0}} FCFA
+                            </small>
+                        </div>
+                        
+                        <!-- Custom parameters for percentage category -->
+                        <div ng-if="selectedTemplate.category === 'percentage'" class="form-group">
+                            <label for="percentage">Pourcentage (%) <span class="text-danger">*</span></label>
+                            <input type="number" id="percentage" class="form-control" ng-model="generationData.customParameters.percentage" min="0" max="100" step="0.01" required>
+                            <small class="form-text text-muted">
+                                Valeur par défaut: {{selectedTemplate.calculationConfig.percentage || 0}}%
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+        
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel()">Annuler</md-button>
+            <md-button class="md-primary md-raised" ng-click="generateBonus()" ng-disabled="!generationData.templateId || !generationData.title || loading">
+                <i class="fa fa-spinner fa-spin" ng-if="loading"></i>
+                Générer
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

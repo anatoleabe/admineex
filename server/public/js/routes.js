@@ -795,6 +795,107 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
             templateUrl: 'templates/about.html',
             access: {requiredAuthentication: true},
             noLoading: true
+        })
+        
+        .state('home.bonus', {
+            abstract: true,
+            url: 'bonus',
+            templateUrl: 'templates/bonus/main.html',
+            access: {requiredAuthentication: true}
+        })
+        
+        .state('home.bonus.templates', {
+            abstract: true,
+            url: '/templates',
+            templateUrl: 'templates/bonus/templates/templates.html',
+            access: {requiredAuthentication: true}
+        })
+        .state('home.bonus.templates.main', {
+            url: '',
+            templateUrl: 'templates/bonus/templates/main.html',
+            controller: 'BonusTemplatesCtrl',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load('js/controllers/bonus/BonusTemplatesCtrl.js');
+                }]
+            },
+            breadcrumbs: ["Bonus Management", "Templates"]
+        })
+        .state('home.bonus.templates.new', {
+            url: '/new',
+            templateUrl: 'templates/bonus/templates/edit.html',
+            controller: 'BonusTemplateCtrl',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load('js/controllers/bonus/BonusTemplateCtrl.js');
+                }]
+            },
+            breadcrumbs: ["Bonus Management", "Templates", "New"]
+        })
+        .state('home.bonus.templates.edit', {
+            url: '/edit/:id',
+            templateUrl: 'templates/bonus/templates/edit.html',
+            controller: 'BonusTemplateCtrl',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load('js/controllers/bonus/BonusTemplateCtrl.js');
+                }]
+            },
+            breadcrumbs: ["Bonus Management", "Templates", "Edit"]
+        })
+        
+        .state('home.bonus.instances', {
+            abstract: true,
+            url: '/instances',
+            templateUrl: 'templates/bonus/instances/instances.html',
+            access: {requiredAuthentication: true}
+        })
+        .state('home.bonus.instances.main', {
+            url: '',
+            templateUrl: 'templates/bonus/instances/main.html',
+            controller: 'BonusInstancesCtrl',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        'js/controllers/bonus/BonusInstancesCtrl.js',
+                        'js/controllers/bonus/BonusGenerationCtrl.js'
+                    ]);
+                }]
+            },
+            breadcrumbs: ["Bonus Management", "Instances"]
+        })
+        .state('home.bonus.instances.view', {
+            url: '/view/:id',
+            templateUrl: 'templates/bonus/instances/view.html',
+            controller: 'BonusInstanceCtrl',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load([
+                        'js/controllers/bonus/BonusInstanceCtrl.js',
+                        'js/controllers/bonus/BonusApprovalCtrl.js',
+                        'js/controllers/bonus/BonusAllocationEditCtrl.js'
+                    ]);
+                }]
+            },
+            breadcrumbs: ["Bonus Management", "Instances", "View"]
+        })
+        
+        .state('home.bonus.reports', {
+            url: '/reports',
+            templateUrl: 'templates/bonus/reports/main.html',
+            controller: 'BonusReportsCtrl',
+            access: {requiredAuthentication: true},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    return $ocLazyLoad.load('js/controllers/bonus/BonusReportsCtrl.js');
+                }]
+            },
+            breadcrumbs: ["Bonus Management", "Reports"]
         });
 
         $locationProvider.html5Mode(true);

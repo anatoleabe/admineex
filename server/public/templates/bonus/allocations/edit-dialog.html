@@ -1,0 +1,55 @@
+<md-dialog aria-label="Modifier l'allocation" class="allocation-dialog">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>Modifier l'allocation</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <i class="fa fa-times" aria-label="Fermer"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div ng-if="loading" class="text-center p-5">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                    <p>Traitement en cours...</p>
+                </div>
+                
+                <div ng-if="!loading">
+                    <div class="alert alert-danger" ng-if="error">
+                        <i class="fa fa-exclamation-triangle"></i> {{error}}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Détails du personnel</h5>
+                        <p><strong>Matricule:</strong> {{allocation.personnel.matricule}}</p>
+                        <p><strong>Nom:</strong> {{allocation.personnel.firstName}} {{allocation.personnel.lastName}}</p>
+                        <p><strong>Structure:</strong> {{allocation.personnel.structure}}</p>
+                        <p><strong>Grade:</strong> {{allocation.personnel.grade}}</p>
+                    </div>
+                    
+                    <div ng-if="template.category === 'with_parts'" class="form-group">
+                        <label for="parts">Nombre de parts</label>
+                        <input type="number" id="parts" class="form-control" ng-model="allocation.parts" min="0" step="0.5">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="amount">Montant (FCFA)</label>
+                        <input type="number" id="amount" class="form-control" ng-model="allocation.amount" min="0">
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+        
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel()">Annuler</md-button>
+            <md-button class="md-primary md-raised" ng-click="updateAllocation()" ng-disabled="loading">
+                <i class="fa fa-spinner fa-spin" ng-if="loading"></i>
+                Mettre à jour
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

@@ -1,0 +1,50 @@
+<md-dialog aria-label="{{title}}" class="approval-dialog">
+    <form ng-cloak>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>{{title}}</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <i class="fa fa-times" aria-label="Fermer"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div ng-if="loading" class="text-center p-5">
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                    <p>Traitement en cours...</p>
+                </div>
+                
+                <div ng-if="!loading">
+                    <div class="alert alert-danger" ng-if="error">
+                        <i class="fa fa-exclamation-triangle"></i> {{error}}
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Détails de la prime</h5>
+                        <p><strong>Titre:</strong> {{instance.title}}</p>
+                        <p><strong>Période:</strong> {{instance.periodStart | date:'dd/MM/yyyy'}} - {{instance.periodEnd | date:'dd/MM/yyyy'}}</p>
+                        <p><strong>Nombre de bénéficiaires:</strong> {{instance.beneficiaryCount || 0}}</p>
+                        <p><strong>Montant total:</strong> {{instance.totalAmount | currency:'FCFA ':0}}</p>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="comments">Commentaires</label>
+                        <textarea id="comments" class="form-control" ng-model="approvalData.comments" rows="3" placeholder="Ajoutez vos commentaires ici..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </md-dialog-content>
+        
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="cancel()">Annuler</md-button>
+            <md-button class="md-primary md-raised" ng-class="{'md-warn': action === 'reject'}" ng-click="submitApproval()" ng-disabled="loading">
+                <i class="fa fa-spinner fa-spin" ng-if="loading"></i>
+                {{buttonText}}
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
