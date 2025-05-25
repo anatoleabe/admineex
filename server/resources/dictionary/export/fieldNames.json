@@ -1,85 +1,106 @@
 [
     {
+        "section": "personal",
         "id": "fname",
         "en": "Nom",
         "fr": "Nom"
     },{
+        "section": "personal",
         "id": "matricule",
         "en": "Matricule",
         "fr": "Matricule"
     },{
+        "section": "personal",
         "id": "gender",
         "en": "Sexe",
         "fr": "Sexe"
     },{
+        "section": "personal",
         "id": "birthDate",
         "en": "Date de naissance",
         "fr": "Date de naissance"
     },{
+        "section": "personal",
         "id": "birthPlace",
         "en": "Lieu de naissance",
         "fr": "Lieu de naissance"
     },{
+        "section": "address",
         "id": "address.0.region",
         "en": "Région",
         "fr": "Région"
     },{
+        "section": "address",
         "id": "address.0.department",
         "en": "Département",
         "fr": "Département"
     },{
+        "section": "address",
         "id": "address.0.arrondissement",
         "en": "Arrondissement",
         "fr": "Arrondissement"
     },{
+        "section": "professional",
         "id": "grade",
         "en": "Grade",
         "fr": "Grade"
     },{
+        "section": "professional",
         "id": "status",
         "en": "Statut",
         "fr": "Statut"
     },{
+        "section": "administrative",
         "id": "history.recruitmentActNumber",
         "en": "Ref acte de recrutement",
         "fr": "Ref acte de recrutement"
     },{
+        "section": "administrative",
         "id": "history.signatureDate",
-        "en": "Date d’entrée à l’administration",
-        "fr": "Date d’entrée à l’administration"
+        "en": "Date d'entrée à l'administration",
+        "fr": "Date d'entrée à l'administration"
     },{
+        "section": "professional",
         "id": "category",
         "en": "Categorie",
         "fr": "Categorie"
     },{
+        "section": "professional",
         "id": "index",
         "en": "Index/Level",
         "fr": "Indce/Echelon"
     },{
+        "section": "personal",
         "id": "telecom.0.value",
         "en": "Téléphone",
         "fr": "Téléphone"
     },{
+        "section": "affectation",
         "id": "affectation.position.name",
         "en": "Function",
         "fr": "Fonction"
     },{
+        "section": "affectation",
         "id": "affectation.numAct",
         "en": "Ref acte affectation/nommination",
         "fr": "Ref acte affectation/nommination"
     },{
+        "section": "affectation",
         "id": "affectation.structure.father.name",
         "en": "Structure",
         "fr": "Structure"
     },{
+        "section": "affectation",
         "id": "affectation.structure.name",
         "en": "Sous structure",
         "fr": "Sous Structure"
     },{
+        "section": "affectation",
         "id": "affectation.structure.father.typeValue",
         "en": "Type",
         "fr": "Type"
     },{
+        "section": "professional",
         "id": "active",
         "en": "Situation",
         "fr": "Situation"

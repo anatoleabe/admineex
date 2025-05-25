@@ -1,251 +1,321 @@
-<md-toolbar class="toolbar-filter" style="margin-bottom: 30px; margin-top: 10px">
-    <div class="md-toolbar-tools md-default" >
-        <div  >
-            <span style="display: inline-block;margin-top: 18px;" >
-                <md-input-container  >
+<div class="personnel-container">
+    <md-toolbar class="toolbar-filter personnel-toolbar">
+        <div class="md-toolbar-tools md-default">
+            <div class="filter-section">
+                <md-input-container class="filter-input">
                     <label translate>Filter by location</label>
-                    <md-select ng-model="filters.type"  style="min-width: 150px;">
-                        <md-option ng-selected value="-1" >
+                    <md-select ng-model="filters.type" class="filter-select">
+                        <md-option ng-selected value="-1">
                             {{'All'| translate}}
                         </md-option>
-                        <md-option ng-repeat="t in types" value="{{t.id}}" >
+                        <md-option ng-repeat="t in types" value="{{t.id}}">
                             {{t.name}}
                         </md-option>
                     </md-select>
                 </md-input-container>
-            </span>
-        </div>
-        <div flex ng-show="filters.type">
-            <span style="display: inline-block;margin-top: 18px;" >
-                <md-input-container flex>
+            </div>
+            
+            <div class="filter-section" ng-show="filters.type">
+                <md-input-container class="filter-input">
                     <label translate>Filter by structure</label>
-                    <md-select ng-model="filters.structure"  style="min-width: 150px;">
+                    <md-select ng-model="filters.structure" class="filter-select">
                         <md-optgroup label="{{'Filtre by structure'| translate}}">
-                            <md-option value="-" >
+                            <md-option value="-">
                                 {{'All structures'| translate}}
                             </md-option>
-                            <md-option ng-repeat="struc in structures| filter:onlyDirection  | filter:typeOfService " value="{{struc}}" >
+                            <md-option ng-repeat="struc in structures| filter:onlyDirection | filter:typeOfService" value="{{struc}}">
                                 {{struc.name}}
                             </md-option>
                         </md-optgroup>
                     </md-select>
                 </md-input-container>
-            </span>
-        </div>
-        <div flex ng-show="filters.structure">
-            <span style="display: inline-block;margin-top: 18px;" >
-                <md-input-container flex>
+            </div>
+            
+            <div class="filter-section" ng-show="filters.structure">
+                <md-input-container class="filter-input">
                     <label translate>Filter by sub structure</label>
-                    <md-select ng-model="filters.subStructure"  style="min-width: 150px;">
+                    <md-select ng-model="filters.subStructure" class="filter-select">
                         <md-optgroup label="{{'Filtre by sub structure'| translate}}">
-                            <md-option value="-" >
+                            <md-option value="-">
                                 {{'All sub structures'| translate}}
                             </md-option>
-                            <md-option ng-repeat="struc in structures| filter:onlySubDirection" value="{{struc}}" >
+                            <md-option ng-repeat="struc in structures| filter:onlySubDirection" value="{{struc}}">
                                 {{struc.name}}
                             </md-option>
                         </md-optgroup>
                     </md-select>
                 </md-input-container>
-
-            </span>
-
-        </div>
-        <span flex></span>
-
-        <button type="button" class="btn btn-outline alpha-success text-success-800 border-success-600" ng-click="goToTab('/staffs/export')"><i class="icon-file-excel mr-2"></i> <span translate>Export to Excel</span>
-            <md-tooltip>
-                <span translate>Export to Excel</span>
-            </md-tooltip>
-        </button>
-
-
-        <md-menu>
-            <md-button class="md-icon-button"  ng-click="openMoreMenu($mdOpenMenu)" >
-                <md-icon class="material-icons" >more_vert</md-icon>
-                <md-tooltip>
-                    <span translate>More actions</span>
-                </md-tooltip>
-            </md-button>
-            <md-menu-content width="4">
-                <md-menu-item>
-                    <md-button ng-click="showRetired()">
-                        <md-icon class="material-icons" >people</md-icon>
-                        Show retired people
+            </div>
+            
+            <span flex></span>
+            
+            <div class="action-buttons">
+                <md-button class="md-raised md-primary export-button" ng-click="goToTab('/staffs/export')">
+                    <md-icon>file_download</md-icon>
+                    <span translate>Export to Excel</span>
+                </md-button>
+                
+                <md-menu>
+                    <md-button class="md-icon-button" ng-click="openMoreMenu($mdOpenMenu)">
+                        <md-icon class="material-icons">more_vert</md-icon>
+                        <md-tooltip>
+                            <span translate>More actions</span>
+                        </md-tooltip>
                     </md-button>
-                </md-menu-item>
-
-            </md-menu-content>
-        </md-menu>
-    </div>
-</md-toolbar>
-
-<md-card>
-    <md-toolbar class="md-table-toolbar md-default" >
-        <div class="md-toolbar-tools">
-            <md-icon>filter_list</md-icon>
-            <md-input-container >
-                <md-select ng-model="filters.gender" aria-label='Genders'  style="min-width: 130px;">
-                    <md-option ng-selected value="-" >
-                        {{'All genders'| translate}}
-                    </md-option>
-                    <md-option value="M" >
-                        {{'Male '| translate}}
-                    </md-option>
-                    <md-option value="F" >
-                        {{'Female'| translate}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container flex>
-                <md-select ng-model="filters.status" aria-label='Status' style="min-width: 150px;">
-                    <md-option ng-selected value="-">
-                        {{'All status'| translate}}
-                    </md-option>
-                    <md-option ng-repeat="sta in status" value="{{sta.id}}">
-                        {{sta.name}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container flex>
-                <md-select ng-model="filters.grade" aria-label='Grade'  style="min-width: 150px;">
-                    <md-option ng-selected value="-">
-                        {{'All grades'| translate}}
-                    </md-option>
-                    <md-option ng-repeat="grade in grades" value="{{grade.id}}">
-                        {{grade.name}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container flex>
-                <md-select ng-model="filters.category" aria-label='Category' style="min-width: 150px;">
-                    <md-option ng-selected value="-">
-                        {{'All categories'| translate}}
-                    </md-option>
-                    <md-option ng-repeat="category in categories" value="{{category.id}}">
-                        {{category.code| uppercase}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-input-container flex>
-                <md-select ng-model="filters.situation" aria-label='Situation' style="min-width: 150px;">
-                    <md-option value="-">
-                        {{'All situations'| translate}}
-                    </md-option>
-                    <md-option ng-repeat="situation in situations" value="{{situation.id}}">
-                        {{situation.name}}
-                    </md-option>
-                </md-select>
-            </md-input-container>
-            <md-button class="md-icon-button" ng-click="" aria-label="close">
-                <md-icon class="material-icons">close</md-icon>
-            </md-button>
-        </div>
-        <div class="md-toolbar-tools">
-            <!--<label flex translate>Nombre de resultats: {{personnels.count}}</label>-->
-            <md-icon>search</md-icon>
-            <md-input-container flex>
-                <input type="text" name="search" ng-model="staffsFilter" placeholder="{{ 'Search amongs staff...' | translate }}">
-            </md-input-container>
-            <md-button class="md-icon-button" ng-click="filters.structure = '-1';staffsFilter = ''" aria-label="close">
-                <md-icon class="material-icons">close</md-icon>
-            </md-button>
-
-
+                    <md-menu-content width="4">
+                        <md-menu-item>
+                            <md-button ng-click="showRetired()">
+                                <md-icon class="material-icons">people</md-icon>
+                                <span translate>Show retired people</span>
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+            </div>
         </div>
     </md-toolbar>
-    <md-table-container>
-        <table md-table md-progress="promise">
-            <thead md-head md-order="query.order">
-                <tr md-row>
-                    <th md-column md-order-by="name"><span translate>Full name</span></th>
-                    <th md-column md-order-by="matricule" style="max-width: 100px"><span translate>Reg. number</span></th>
-                    <th md-column md-order-by="sexe" style="max-width: 10px"><span translate>Sex</span></th>
-                    <th md-column md-order-by="grade" ><span translate>Grade</span></th>
-                    <th md-column md-order-by="posteActuel[0].nom"><span translate>Function</span></th>
-                    <th md-column md-order-by="posteActuel[0].structure[0].nom"><span translate>Structure aff.</span></th>
-                    <!--<th md-column md-order-by="miseajour" ><span translate>Service began</span></th>-->
-                    <th md-column md-order-by="telephone"><span translate>Phone</span></th>
-                    <th md-column style="width: 200px"><span translate>Actions</span></th>
-                </tr>
-            </thead>
-            <tbody md-body>
-                <tr md-row data-ng-repeat="personnel in personnels.data| filter:retiredOnly | orderBy: query.order "  ng-class="{'retired': personnel.retirement.retirement == 'true' || personnel.retirement.retirement == true || personnel.retirement.retirement === 'true'}" >
-                    <td md-cell ng-click="read(personnel)">{{personnel.fname?personnel.fname:personnel.name.family[0] + " "+ personnel.name.given[0]}}</td>
-                    <td md-cell style="max-width: 100px" ng-click="read(personnel)">{{personnel.identifier| uppercase | unknown}}</td>
-                    <td md-cell style="max-width: 10px" ng-click="read(personnel)">{{personnel.gender| uppercase | unknown}}</td>
-                    <td md-cell  ng-click="read(personnel)">{{personnel.grade| unknown}}</td>
-                    <td md-cell ng-click="read(personnel)">{{personnel.affectation.position.name| unknown}}</td>
-                    <td md-cell ng-click="read(personnel)">{{personnel.affectation.structure.name| unknown}}<span ng-if="personnel.affectation.structure"><br/><md-icon class="material-icons">subdirectory_arrow_right</md-icon><small><i> {{personnel.affectation.structure.father.name}} </i></small></span></td>
-                    <!--<td md-cell ng-click="read(personnel)">{{personnel.affectedTo.date| date:'dd/MM/yyyy'|unknown}}</td>-->
-                    <td md-cell ng-click="read(personnel)">{{personnel.telecom[0].value| unknown}}</td>
-                    <td md-cell style="width: 200px">
-            <md-button ng-click="affect(personnel)" class="md-fab md-primary md-hue-2 md-mini"  aria-label="Affecte" ng-if="account.role == '1' || account.role == '3'" >
-                <md-icon>transfer_within_a_station</md-icon>
-                <md-tooltip md-direction="top">
-                    <span translate>Affect to new position</span>
-                </md-tooltip>
-            </md-button>
-            <md-button class="md-fab md-primary md-hue-2 md-mini" ng-click="edit({id: personnel._id})" aria-label="Edit" >
-                <md-icon>edit</md-icon>
-                <md-tooltip md-direction="top">
-                    <span translate>Edit</span>
-                </md-tooltip>
-            </md-button>
-            <md-menu>
-                <md-button class="md-icon-button"  ng-click="openMoreMenu($mdOpenMenu)" >
-                    <md-icon class="material-icons" >more_vert</md-icon>
-                    <md-tooltip>
-                        <span translate>More actions</span>
-                    </md-tooltip>
-                </md-button>
-                <md-menu-content width="4">
-                    <md-menu-item>
-                        <md-button ng-click="newStaffSituation(personnel)">
-                            <md-icon class="material-icons" >flag</md-icon>
-                            <span translate>New staff situation</span>
-                        </md-button>
-                    </md-menu-item>
-                    <md-divider ></md-divider>
-                    <md-menu-item>
-                        <md-button ng-click="newStaffSanction(personnel)">
-                            <md-icon class="material-icons" >class</md-icon>
-                            <span translate>New disciplinary sanction</span>
-                        </md-button>
-                    </md-menu-item>
-                    <md-divider ></md-divider>
-                    <md-menu-item ng-if="account.role == '1'">
-                        <md-button class="md-secondary " aria-label="Delete" ng-click="showConfirm(personnel)">
-                            <md-icon aria-label="Delete">delete</md-icon>
-                            <md-tooltip>
-                                <span translate>Delete</span>
-                            </md-tooltip>
-                            <span translate>Delete</span>
-                        </md-button>
-                    </md-menu-item>
-                    <md-divider ></md-divider>
 
-                    <!--                    <md-menu-item >
-                                            <md-button ng-click="evaluate(personnel)" ng-disabled="!personnel.affectedTo || personnel.affectedTo === null || personnel.affectedTo === 'null' ">
-                                                <md-icon class="material-icons" >verified_user</md-icon>
-                                                <span translate>New quarter evaluation</span>
+    <md-card class="personnel-card">
+        <md-toolbar class="md-table-toolbar md-default personnel-filters">
+            <div class="md-toolbar-tools filter-toolbar">
+                <div class="filter-group">
+                    <md-icon>filter_list</md-icon>
+                    <span class="filter-label" translate>Filters:</span>
+                </div>
+                
+                <div class="filter-row">
+                    <md-input-container class="filter-input">
+                        <label translate>Gender</label>
+                        <md-select ng-model="filters.gender" aria-label='Genders'>
+                            <md-option ng-selected value="-">
+                                {{'All genders'| translate}}
+                            </md-option>
+                            <md-option value="M">
+                                {{'Male'| translate}}
+                            </md-option>
+                            <md-option value="F">
+                                {{'Female'| translate}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    
+                    <md-input-container class="filter-input">
+                        <label translate>Status</label>
+                        <md-select ng-model="filters.status" aria-label='Status'>
+                            <md-option ng-selected value="-">
+                                {{'All status'| translate}}
+                            </md-option>
+                            <md-option ng-repeat="sta in status" value="{{sta.id}}">
+                                {{sta.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    
+                    <md-input-container class="filter-input">
+                        <label translate>Grade</label>
+                        <md-select ng-model="filters.grade" aria-label='Grade'>
+                            <md-option ng-selected value="-">
+                                {{'All grades'| translate}}
+                            </md-option>
+                            <md-option ng-repeat="grade in grades" value="{{grade.id}}">
+                                {{grade.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    
+                    <md-input-container class="filter-input">
+                        <label translate>Category</label>
+                        <md-select ng-model="filters.category" aria-label='Category'>
+                            <md-option ng-selected value="-">
+                                {{'All categories'| translate}}
+                            </md-option>
+                            <md-option ng-repeat="category in categories" value="{{category.id}}">
+                                {{category.code| uppercase}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    
+                    <md-input-container class="filter-input">
+                        <label translate>Situation</label>
+                        <md-select ng-model="filters.situation" aria-label='Situation'>
+                            <md-option value="-">
+                                {{'All situations'| translate}}
+                            </md-option>
+                            <md-option ng-repeat="situation in situations" value="{{situation.id}}">
+                                {{situation.name}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    
+                    <md-button class="md-icon-button reset-filters" ng-click="resetFilters()" aria-label="Reset filters">
+                        <md-icon class="material-icons">refresh</md-icon>
+                        <md-tooltip md-direction="top">
+                            <span translate>Reset filters</span>
+                        </md-tooltip>
+                    </md-button>
+                </div>
+            </div>
+            
+            <div class="md-toolbar-tools search-toolbar">
+                <div class="search-container">
+                    <md-icon>search</md-icon>
+                    <md-input-container class="search-input" flex>
+                        <input type="text" name="search" ng-model="staffsFilter" 
+                               placeholder="{{ 'Search among staff...' | translate }}"
+                               aria-label="Search">
+                    </md-input-container>
+                    <md-button class="md-icon-button clear-search" 
+                               ng-click="filters.structure = '-1'; staffsFilter = ''" 
+                               aria-label="Clear search"
+                               ng-show="staffsFilter">
+                        <md-icon class="material-icons">close</md-icon>
+                        <md-tooltip md-direction="top">
+                            <span translate>Clear search</span>
+                        </md-tooltip>
+                    </md-button>
+                </div>
+                
+                <div class="results-count" ng-show="personnels.count > 0">
+                    <span translate>Results:</span> {{personnels.count}}
+                </div>
+            </div>
+        </md-toolbar>
+        
+        <div class="personnel-table-container">
+            <md-table-container>
+                <table md-table md-progress="promise" class="personnel-table">
+                    <thead md-head md-order="query.order">
+                        <tr md-row>
+                            <th md-column md-order-by="name"><span translate>Full name</span></th>
+                            <th md-column md-order-by="matricule"><span translate>Reg. number</span></th>
+                            <th md-column md-order-by="sexe"><span translate>Sex</span></th>
+                            <th md-column md-order-by="grade"><span translate>Grade</span></th>
+                            <th md-column md-order-by="posteActuel[0].nom"><span translate>Function</span></th>
+                            <th md-column md-order-by="posteActuel[0].structure[0].nom"><span translate>Structure</span></th>
+                            <th md-column md-order-by="telephone"><span translate>Phone</span></th>
+                            <th md-column><span translate>Actions</span></th>
+                        </tr>
+                    </thead>
+                    <tbody md-body>
+                        <tr md-row data-ng-repeat="personnel in personnels.data | filter:retiredOnly | orderBy: query.order" 
+                            ng-class="{'retired': personnel.retirement.retirement == 'true' || personnel.retirement.retirement == true || personnel.retirement.retirement === 'true'}"
+                            class="personnel-row">
+                            <td md-cell ng-click="read(personnel)" class="personnel-name">
+                                {{personnel.fname ? personnel.fname : personnel.name.family[0] + " " + personnel.name.given[0]}}
+                            </td>
+                            <td md-cell ng-click="read(personnel)" class="personnel-id">
+                                {{personnel.identifier | uppercase | unknown}}
+                            </td>
+                            <td md-cell ng-click="read(personnel)" class="personnel-gender">
+                                {{personnel.gender | uppercase | unknown}}
+                            </td>
+                            <td md-cell ng-click="read(personnel)" class="personnel-grade">
+                                {{personnel.grade | unknown}}
+                            </td>
+                            <td md-cell ng-click="read(personnel)" class="personnel-function">
+                                {{personnel.affectation.position.name | unknown}}
+                            </td>
+                            <td md-cell ng-click="read(personnel)" class="personnel-structure">
+                                {{personnel.affectation.structure.name | unknown}}
+                                <span ng-if="personnel.affectation.structure" class="structure-parent">
+                                    <md-icon class="material-icons">subdirectory_arrow_right</md-icon>
+                                    <small><i>{{personnel.affectation.structure.father.name}}</i></small>
+                                </span>
+                            </td>
+                            <td md-cell ng-click="read(personnel)" class="personnel-phone">
+                                {{personnel.telecom[0].value | unknown}}
+                            </td>
+                            <td md-cell class="personnel-actions">
+                                <md-button ng-click="affect(personnel)" 
+                                           class="md-fab md-primary md-hue-2 md-mini action-button" 
+                                           aria-label="Affect" 
+                                           ng-if="account.role == '1' || account.role == '3'">
+                                    <md-icon>transfer_within_a_station</md-icon>
+                                    <md-tooltip md-direction="top">
+                                        <span translate>Affect to new position</span>
+                                    </md-tooltip>
+                                </md-button>
+                                
+                                <md-button class="md-fab md-primary md-hue-2 md-mini action-button" 
+                                           ng-click="edit({id: personnel._id})" 
+                                           aria-label="Edit">
+                                    <md-icon>edit</md-icon>
+                                    <md-tooltip md-direction="top">
+                                        <span translate>Edit</span>
+                                    </md-tooltip>
+                                </md-button>
+                                
+                                <md-menu>
+                                    <md-button class="md-icon-button action-menu-button" 
+                                               ng-click="openMoreMenu($mdOpenMenu)">
+                                        <md-icon class="material-icons">more_vert</md-icon>
+                                        <md-tooltip>
+                                            <span translate>More actions</span>
+                                        </md-tooltip>
+                                    </md-button>
+                                    <md-menu-content width="4" class="personnel-menu">
+                                        <md-menu-item>
+                                            <md-button ng-click="newStaffSituation(personnel)">
+                                                <md-icon class="material-icons">flag</md-icon>
+                                                <span translate>New staff situation</span>
                                             </md-button>
-                                        </md-menu-item>-->
-                </md-menu-content>
-            </md-menu>
-            </td>
-            </tr>
-            </tbody>
-        </table>
-    </md-table-container>
-    <md-table-pagination  md-limit="query.limit" md-limit-options="[10, 15, 25, 50, 100]" md-page="query.page" md-total="{{personnels.count}}" 
-                          md-page-select="true" md-label="{{label}}" md-on-paginate="getAgents">
-
-</md-card>
-<div style="margin-bottom: 100px"></div>
-<md-button  class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ui-sref="home.staffs.new" ng-if="account.role == '1' || account.role == '3'">
-    <md-icon>add</md-icon>
-    <md-tooltip md-direction="top">
-        <span translate>New</span>
-    </md-tooltip>
-</md-button>
+                                        </md-menu-item>
+                                        <md-divider></md-divider>
+                                        <md-menu-item>
+                                            <md-button ng-click="newStaffSanction(personnel)">
+                                                <md-icon class="material-icons">class</md-icon>
+                                                <span translate>New disciplinary sanction</span>
+                                            </md-button>
+                                        </md-menu-item>
+                                        <md-divider></md-divider>
+                                        <md-menu-item ng-if="account.role == '1'">
+                                            <md-button class="md-warn" 
+                                                       aria-label="Delete" 
+                                                       ng-click="showConfirm(personnel)">
+                                                <md-icon aria-label="Delete">delete</md-icon>
+                                                <span translate>Delete</span>
+                                            </md-button>
+                                        </md-menu-item>
+                                    </md-menu-content>
+                                </md-menu>
+                            </td>
+                        </tr>
+                        
+                        <!-- Empty state message when no results -->
+                        <tr ng-if="personnels.data.length === 0" class="empty-state-row">
+                            <td md-cell colspan="8" class="empty-state-cell">
+                                <div class="empty-state">
+                                    <md-icon class="empty-icon">person_off</md-icon>
+                                    <h2 class="empty-title" translate>No personnel found</h2>
+                                    <p class="empty-subtitle" translate>Try adjusting your search or filters</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </md-table-container>
+            
+            <md-table-pagination md-limit="query.limit" 
+                                 md-limit-options="[10, 15, 25, 50, 100]" 
+                                 md-page="query.page" 
+                                 md-total="{{personnels.count}}" 
+                                 md-page-select="true" 
+                                 md-label="{{label}}" 
+                                 md-on-paginate="getAgents"
+                                 class="personnel-pagination">
+            </md-table-pagination>
+        </div>
+    </md-card>
+    
+    <div class="personnel-footer-spacer"></div>
+    
+    <md-button class="md-fab md-accent md-fab-bottom-right add-personnel-button" 
+               aria-label="Add" 
+               ui-sref="home.staffs.new" 
+               ng-if="account.role == '1' || account.role == '3'">
+        <md-icon>add</md-icon>
+        <md-tooltip md-direction="top">
+            <span translate>New personnel</span>
+        </md-tooltip>
+    </md-button>
+</div>

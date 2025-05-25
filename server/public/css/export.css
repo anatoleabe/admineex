@@ -1,0 +1,126 @@
+/* Export Dialog Styles */
+.export-dialog {
+  max-width: 800px;
+  width: 100%;
+}
+
+.export-dialog md-dialog-content {
+  padding: 0;
+}
+
+.export-form {
+  padding: 16px;
+}
+
+.export-section {
+  margin-bottom: 24px;
+  padding: 16px;
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.export-section-title {
+  display: flex;
+  align-items: center;
+  margin-top: 0;
+  margin-bottom: 16px;
+  color: #3f51b5;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.export-section-title md-icon {
+  margin-right: 8px;
+}
+
+.export-description {
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 14px;
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+.export-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+  padding: 8px;
+}
+
+.export-actions md-button {
+  margin-left: 8px;
+}
+
+/* Field organization section */
+.field-organization {
+  margin-top: 16px;
+}
+
+.field-organization-title {
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.field-section {
+  margin-bottom: 16px;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.field-section-personal {
+  background-color: rgba(79, 129, 189, 0.1);
+  border-left: 4px solid #4f81bd;
+}
+
+.field-section-address {
+  background-color: rgba(155, 187, 89, 0.1);
+  border-left: 4px solid #9bbb59;
+}
+
+.field-section-professional {
+  background-color: rgba(192, 80, 77, 0.1);
+  border-left: 4px solid #c0504d;
+}
+
+.field-section-affectation {
+  background-color: rgba(128, 100, 162, 0.1);
+  border-left: 4px solid #8064a2;
+}
+
+.field-section-administrative {
+  background-color: rgba(75, 172, 198, 0.1);
+  border-left: 4px solid #4bacc6;
+}
+
+/* Progress indicator */
+.export-progress {
+  margin-top: 16px;
+}
+
+.export-progress-label {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  margin-bottom: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .export-dialog {
+    max-width: 100%;
+  }
+  
+  .export-section {
+    padding: 12px;
+  }
+  
+  .export-actions {
+    flex-direction: column;
+  }
+  
+  .export-actions md-button {
+    margin-left: 0;
+    margin-top: 8px;
+    width: 100%;
+  }
+}

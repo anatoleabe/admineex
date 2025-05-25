@@ -820,11 +820,26 @@ async function zipDirectory(options) {
 
 function buildFields(language, file) {
     let fields = require("../../../resources/dictionary/export/" + file);
-    let options = {fields: [], fieldNames: []};
+    let options = {fields: [], fieldNames: [], sections: {}};
+    
     for (i = 0; i < fields.length; i++) {
-        options.fieldNames.push(((language != "" && fields[i][language] != undefined && fields[i][language] != "") ? fields[i][language] : fields[i]['en']));
+        const section = fields[i].section || 'other';
+        if (!options.sections[section]) {
+            options.sections[section] = {
+                fields: [],
+                fieldNames: [],
+                startIndex: options.fields.length
+            };
+        }
+        
+        const fieldName = ((language != "" && fields[i][language] != undefined && fields[i][language] != "") ? fields[i][language] : fields[i]['en']);
+        options.fieldNames.push(fieldName);
         options.fields.push(fields[i].id);
+        
+        options.sections[section].fields.push(fields[i].id);
+        options.sections[section].fieldNames.push(fieldName);
     }
+    
     return options;
 }
 
@@ -989,6 +1004,28 @@ function buildXLSX(options, callback) {
     let workbook = new Excel.Workbook();
     //2. Start holding the work sheet
     let ws = workbook.addWorksheet('Admineex export');
+    
+    let metaWs = workbook.addWorksheet('Export Information');
+    metaWs.getCell('A1').value = 'Export Information';
+    metaWs.getCell('A1').font = { size: 14, bold: true };
+    metaWs.getCell('A3').value = 'Export Date:';
+    metaWs.getCell('B3').value = moment().format('DD/MM/YYYY HH:mm:ss');
+    metaWs.getCell('A4').value = 'Total Records:';
+    
+    let totalPersonnel = 0;
+    for (let i = 0; i < options.data.length; i++) {
+        if (options.data[i].children) {
+            for (let c = 0; c < options.data[i].children.length; c++) {
+                if (options.data[i].children[c].personnels) {
+                    totalPersonnel += options.data[i].children[c].personnels.length;
+                }
+            }
+        }
+    }
+    metaWs.getCell('B4').value = totalPersonnel;
+    
+    metaWs.getColumn('A').width = 20;
+    metaWs.getColumn('B').width = 40;
 
     //3. set style around A1
     ws.getCell('A1').value = options.title;
@@ -1005,43 +1042,105 @@ function buildXLSX(options, callback) {
     };
     ws.getCell('A1').alignment = {vertical: 'middle', horizontal: 'center'};
 
-
-    //4. Row 1
-    for (i = 1; i < options.fieldNames.length; i++) {
-        // For the last column, add right border
-        if (i == options.fieldNames.length - 1) {
-            ws.getCell(columns[i] + "1").border = {
-                top: {style: 'thick', color: {argb: 'FF964714'}},
-                right: {style: 'medium', color: {argb: 'FF964714'}},
-                bottom: {style: 'thick', color: {argb: 'FF964714'}}
+    let currentCol = 0;
+    const sectionColors = {
+        'personal': 'FF4F81BD',    // Blue
+        'address': 'FF9BBB59',     // Green
+        'professional': 'FFC0504D', // Red
+        'affectation': 'FF8064A2',  // Purple
+        'administrative': 'FF4BACC6', // Teal
+        'other': 'FFFF9900'        // Orange
+    };
+    
+    const sectionNames = {
+        'personal': 'Personal Information',
+        'address': 'Address Information',
+        'professional': 'Professional Information',
+        'affectation': 'Affectation Information',
+        'administrative': 'Administrative Information',
+        'other': 'Other Information'
+    };
+    
+    if (options.sections) {
+        let row = 2;
+        for (const section in options.sections) {
+            if (options.sections[section].fields.length > 0) {
+                const startCol = options.sections[section].startIndex;
+                const endCol = startCol + options.sections[section].fields.length - 1;
+                
+                if (startCol < endCol) {
+                    ws.mergeCells(`${columns[startCol]}${row}:${columns[endCol]}${row}`);
+                }
+                
+                ws.getCell(`${columns[startCol]}${row}`).value = sectionNames[section] || section;
+                ws.getCell(`${columns[startCol]}${row}`).fill = {
+                    type: 'pattern', 
+                    pattern: 'solid', 
+                    fgColor: {argb: sectionColors[section] || 'FFFF9900'}
+                };
+                ws.getCell(`${columns[startCol]}${row}`).font = {
+                    color: {argb: 'FFFFFF'},
+                    bold: true
+                };
+                ws.getCell(`${columns[startCol]}${row}`).alignment = {
+                    vertical: 'middle', 
+                    horizontal: 'center'
+                };
+                
+                for (let i = startCol; i <= endCol; i++) {
+                    ws.getCell(`${columns[i]}${row}`).border = {
+                        top: {style: 'thin', color: {argb: 'FF000000'}},
+                        bottom: {style: 'thin', color: {argb: 'FF000000'}},
+                        left: i === startCol ? {style: 'thin', color: {argb: 'FF000000'}} : undefined,
+                        right: i === endCol ? {style: 'thin', color: {argb: 'FF000000'}} : undefined
+                    };
+                }
+            }
+        }
+        row++;
+        
+        for (i = 0; i < options.fieldNames.length; i++) {
+            ws.getCell(columns[i] + row).value = options.fieldNames[i];
+            ws.getCell(columns[i] + row).alignment = {vertical: 'middle', horizontal: 'left', "wrapText": true};
+            ws.getCell(columns[i] + row).border = {
+                top: {style: 'thin', color: {argb: 'FF000000'}},
+                bottom: {style: 'medium', color: {argb: 'FF000000'}},
+                left: {style: 'thin', color: {argb: 'FF000000'}},
+                right: {style: 'thin', color: {argb: 'FF000000'}}
             };
-        } else {//Set this border for the middle cells
-            ws.getCell(columns[i] + "1").border = {
-                top: {style: 'thick', color: {argb: 'FF964714'}},
-                bottom: {style: 'thick', color: {argb: 'FF964714'}}
+            
+            for (const section in options.sections) {
+                const startCol = options.sections[section].startIndex;
+                const endCol = startCol + options.sections[section].fields.length - 1;
+                if (i >= startCol && i <= endCol) {
+                    ws.getCell(columns[i] + row).fill = {
+                        type: 'pattern', 
+                        pattern: 'solid', 
+                        fgColor: {argb: sectionColors[section] + '33'} // Add transparency
+                    };
+                    break;
+                }
+            }
+        }
+    } else {
+        for (i = 0; i < options.fieldNames.length; i++) {
+            ws.getCell(columns[i] + "2").value = options.fieldNames[i];
+            ws.getCell(columns[i] + "2").alignment = {vertical: 'middle', horizontal: 'left', "wrapText": true};
+            ws.getCell(columns[i] + "2").border = {
+                top: {style: 'thin', color: {argb: 'FF000000'}},
+                bottom: {style: 'medium', color: {argb: 'FF000000'}},
+                left: {style: 'thin', color: {argb: 'FF000000'}},
+                right: {style: 'thin', color: {argb: 'FF000000'}}
             };
         }
-        ws.getCell(columns[i] + "1").fill = {type: 'pattern', pattern: 'solid', fgColor: {argb: 'FFE06B21'}};
-        ws.getCell(columns[i] + "1").alignment = {vertical: 'middle', horizontal: 'center', "wrapText": true};
-    }
-
-    //5 Row 2
-    for (i = 0; i < options.fieldNames.length; i++) {
-        ws.getCell(columns[i] + "2").value = options.fieldNames[i];
-        ws.getCell(columns[i] + "2").alignment = {vertical: 'middle', horizontal: 'left', "wrapText": true};
-        ws.getCell(columns[i] + "2").border = {
-            top: {style: 'thin', color: {argb: 'FF000000'}},
-            bottom: {style: 'medium', color: {argb: 'FF000000'}},
-            left: {style: 'thin', color: {argb: 'FF000000'}},
-            right: {style: 'thin', color: {argb: 'FF000000'}}
-        };
     }
 
     //6. Fill data rows
-    let nextRow = 3;
+    let nextRow = options.sections ? 4 : 3;
+    
     for (i = 0; i < options.data.length; i++) {
         if ((options.staffOnly != false && options.staffOnly != "false")) {
-            //6.1 Row 3 set the style
+            //6.1 Row set the style for structure header
             ws.getCell('A' + nextRow).value = options.data[i].name + " - " + options.data[i].code;
             ws.getCell('A' + nextRow).border = {
                 top: {style: 'thick', color: {argb: 'FF964714'}},
@@ -1055,7 +1154,6 @@ function buildXLSX(options, callback) {
                 bold: true
             };
             ws.getCell('A' + nextRow).alignment = {vertical: 'middle', horizontal: 'center'};
-            //6.2 Row 3 set the length
             for (r = 1; r < options.fieldNames.length; r++) {
                 // For the last column, add right border
                 if (r == options.fieldNames.length - 1) {
@@ -1076,7 +1174,11 @@ function buildXLSX(options, callback) {
             /// 6.3 Merges Structure name cells
             ws.mergeCells('A' + nextRow + ":" + columns[options.fieldNames.length - 1] + nextRow);
         } else {
-            nextRow = 4;
+            if (options.sections) {
+                nextRow = 4; // Start after section headers and field names
+            } else {
+                nextRow = 3; // Start after field names only
+            }
             nextRow = nextRow - 1;
         }
 

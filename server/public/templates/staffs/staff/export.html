@@ -1,132 +1,150 @@
-<md-dialog>
-    <md-dialog-content style="max-width: 700px;">
+<md-dialog class="export-dialog">
+    <md-dialog-content>
         <md-toolbar class="md-accent">
             <div class="md-toolbar-tools">
-                <h2><span translate>New Staff Export Task</span></h2>
+                <h2><md-icon>cloud_download</md-icon> <span translate>Personnel Export</span></h2>
                 <span flex></span>
-                <md-button class="md-icon-button" ng-click="cancel()">
+                <md-button class="md-icon-button" ng-click="cancel()" aria-label="Close">
                     <md-icon>close</md-icon>
+                    <md-tooltip md-direction="left" translate>Close</md-tooltip>
                 </md-button>
             </div>
         </md-toolbar>
 
-        <form ng-submit="createExport();" layout="column">
-            <md-card>
-                <md-card-content layout="column">
+        <form ng-submit="createExport();" layout="column" class="export-form">
+            <!-- Description and Task Name -->
+            <div class="export-section">
+                <h3 class="export-section-title"><md-icon>info_outline</md-icon> <span translate>Export Information</span></h3>
+                
+                <p class="export-description">
+                    <span translate>Here you can create an export file of a list of personnel as a compressed <i>(.zip)</i> file. The export will be processed in the background and you will be notified when it's ready for download.</span>
+                </p>
 
-                    <!-- Description -->
-                    <p>
-            <span translate>
-              Here you can create an export file of a list of staff as a compressed <i>(.zip)</i> file
-            </span>.
-                    </p>
-
-                    <!-- Export Task Name -->
-                    <md-input-container>
-                        <label translate>Export Task Name</label>
-                        <input ng-model="export.title" required>
-                    </md-input-container>
-
-                    <!-- Filter by Location -->
-                    <md-input-container>
-                        <label translate>Filter by location</label>
-                        <md-select ng-model="filters.type" ng-init="filters.type = '-1'">
-                            <md-option value="-1">{{'All' | translate}}</md-option>
-                            <md-option ng-repeat="t in types" value="{{t.id}}">{{t.name}}</md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <!-- Structure + Sub Structure in the same line -->
-                    <div layout="row" layout-wrap layout-align="start center">
-                        <md-input-container flex>
-                            <label translate>Filter by structure</label>
-                            <md-select ng-model="filters.structure" ng-init="filters.structure = '-'">
-                                <md-optgroup label="{{'Filtre by structure' | translate}}">
-                                    <md-option value="-">{{'All structures' | translate}}</md-option>
-                                    <md-option ng-repeat="struc in structures | filter:onlyDirection | filter:typeOfService" value="{{struc}}">
-                                        {{struc.name}}
-                                    </md-option>
-                                </md-optgroup>
-                            </md-select>
-                        </md-input-container>
-
-                        <md-input-container flex ng-show="filters.structure">
-                            <label translate>Filter by sub structure</label>
-                            <md-select ng-model="filters.subStructure" ng-init="filters.subStructure = '-'">
-                                <md-optgroup label="{{'Filtre by sub structure' | translate}}">
-                                    <md-option value="-">{{'All sub structures' | translate}}</md-option>
-                                    <md-option ng-repeat="struc in structures | filter:onlySubDirection" value="{{struc}}">
-                                        {{struc.name}}
-                                    </md-option>
-                                </md-optgroup>
-                            </md-select>
-                        </md-input-container>
+                <md-input-container class="md-block">
+                    <label translate>Export Task Name</label>
+                    <md-icon>label</md-icon>
+                    <input ng-model="export.title" required placeholder="{{'Enter a name for this export' | translate}}">
+                    <div class="md-errors-spacer" ng-if="!export.title">
+                        <div class="md-input-message-animation" translate>Please provide a name for this export</div>
                     </div>
+                </md-input-container>
+            </div>
 
-                    <!-- Switch -->
-                    <md-switch ng-model="filters.staffOnly" aria-label="Validated">
-                        <span translate>Avec en tête de structure</span>
-                    </md-switch>
+            <!-- Organizational Filters -->
+            <div class="export-section">
+                <h3 class="export-section-title"><md-icon>business</md-icon> <span translate>Organizational Filters</span></h3>
+                
+                <md-input-container class="md-block">
+                    <label translate>Filter by location</label>
+                    <md-icon>location_on</md-icon>
+                    <md-select ng-model="filters.type" ng-init="filters.type = '-1'">
+                        <md-option value="-1">{{'All' | translate}}</md-option>
+                        <md-option ng-repeat="t in types" value="{{t.id}}">{{t.name}}</md-option>
+                    </md-select>
+                </md-input-container>
 
-                    <!-- Gender -->
-                    <md-input-container>
-                        <label translate>Gender</label>
-                        <md-select ng-model="filters.gender" ng-init="filters.gender = '-'">
-                            <md-option value="-">{{'All genders' | translate}}</md-option>
-                            <md-option value="M">{{'Male' | translate}}</md-option>
-                            <md-option value="F">{{'Female' | translate}}</md-option>
-                        </md-select>
-                    </md-input-container>
-
-                    <!-- Status + Grade -->
-                    <div layout="row" layout-wrap layout-align="start center">
-                        <md-input-container flex>
-                            <label translate>Status</label>
-                            <md-select ng-model="filters.status" ng-init="filters.status = '-'">
-                                <md-option value="-">{{'All status' | translate}}</md-option>
-                                <md-option ng-repeat="sta in status" value="{{sta.id}}">{{sta.name}}</md-option>
-                            </md-select>
-                        </md-input-container>
-
-                        <md-input-container flex>
-                            <label translate>Grade</label>
-                            <md-select ng-model="filters.grade" ng-init="filters.grade = '-'">
-                                <md-option value="-">{{'All grades' | translate}}</md-option>
-                                <md-option ng-repeat="grade in grades" value="{{grade.id}}">{{grade.name}}</md-option>
-                            </md-select>
-                        </md-input-container>
-                    </div>
-
-                    <!-- Category + Situation -->
-                    <div layout="row" layout-wrap layout-align="start center">
-                        <md-input-container flex>
-                            <label translate>Category</label>
-                            <md-select ng-model="filters.category" ng-init="filters.category = '-'">
-                                <md-option value="-">{{'All categories' | translate}}</md-option>
-                                <md-option ng-repeat="category in categories" value="{{category.id}}">
-                                    {{category.code | uppercase}}
+                <div layout="row" layout-wrap layout-align="start center">
+                    <md-input-container flex>
+                        <label translate>Filter by structure</label>
+                        <md-icon>account_tree</md-icon>
+                        <md-select ng-model="filters.structure" ng-init="filters.structure = '-'">
+                            <md-optgroup label="{{'Filter by structure' | translate}}">
+                                <md-option value="-">{{'All structures' | translate}}</md-option>
+                                <md-option ng-repeat="struc in structures | filter:onlyDirection | filter:typeOfService" value="{{struc}}">
+                                    {{struc.name}}
                                 </md-option>
-                            </md-select>
-                        </md-input-container>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
 
-                        <md-input-container flex>
-                            <label translate>Situation</label>
-                            <md-select ng-model="filters.situation" ng-init="filters.situation = '-'">
-                                <md-option value="-">{{'All situations' | translate}}</md-option>
-                                <md-option ng-repeat="situation in situations" value="{{situation.id}}">{{situation.name}}</md-option>
-                            </md-select>
-                        </md-input-container>
-                    </div>
+                    <md-input-container flex ng-show="filters.structure">
+                        <label translate>Filter by sub structure</label>
+                        <md-icon>subdirectory_arrow_right</md-icon>
+                        <md-select ng-model="filters.subStructure" ng-init="filters.subStructure = '-'">
+                            <md-optgroup label="{{'Filter by sub structure' | translate}}">
+                                <md-option value="-">{{'All sub structures' | translate}}</md-option>
+                                <md-option ng-repeat="struc in structures | filter:onlySubDirection" value="{{struc}}">
+                                    {{struc.name}}
+                                </md-option>
+                            </md-optgroup>
+                        </md-select>
+                    </md-input-container>
+                </div>
 
-                </md-card-content>
-            </md-card>
+                <md-switch ng-model="filters.staffOnly" aria-label="Include structure headers" class="md-primary">
+                    <span translate>Include structure headers in export</span>
+                    <md-tooltip md-direction="right" translate>When enabled, the export will include structure headers to group personnel</md-tooltip>
+                </md-switch>
+            </div>
+
+            <!-- Personnel Filters -->
+            <div class="export-section">
+                <h3 class="export-section-title"><md-icon>person</md-icon> <span translate>Personnel Filters</span></h3>
+                
+                <md-input-container class="md-block">
+                    <label translate>Gender</label>
+                    <md-icon>wc</md-icon>
+                    <md-select ng-model="filters.gender" ng-init="filters.gender = '-'">
+                        <md-option value="-">{{'All genders' | translate}}</md-option>
+                        <md-option value="M">{{'Male' | translate}}</md-option>
+                        <md-option value="F">{{'Female' | translate}}</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <div layout="row" layout-wrap layout-align="start center">
+                    <md-input-container flex>
+                        <label translate>Status</label>
+                        <md-icon>how_to_reg</md-icon>
+                        <md-select ng-model="filters.status" ng-init="filters.status = '-'">
+                            <md-option value="-">{{'All status' | translate}}</md-option>
+                            <md-option ng-repeat="sta in status" value="{{sta.id}}">{{sta.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container flex>
+                        <label translate>Grade</label>
+                        <md-icon>military_tech</md-icon>
+                        <md-select ng-model="filters.grade" ng-init="filters.grade = '-'">
+                            <md-option value="-">{{'All grades' | translate}}</md-option>
+                            <md-option ng-repeat="grade in grades" value="{{grade.id}}">{{grade.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+
+                <div layout="row" layout-wrap layout-align="start center">
+                    <md-input-container flex>
+                        <label translate>Category</label>
+                        <md-icon>category</md-icon>
+                        <md-select ng-model="filters.category" ng-init="filters.category = '-'">
+                            <md-option value="-">{{'All categories' | translate}}</md-option>
+                            <md-option ng-repeat="category in categories" value="{{category.id}}">
+                                {{category.code | uppercase}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+
+                    <md-input-container flex>
+                        <label translate>Situation</label>
+                        <md-icon>assignment_ind</md-icon>
+                        <md-select ng-model="filters.situation" ng-init="filters.situation = '-'">
+                            <md-option value="-">{{'All situations' | translate}}</md-option>
+                            <md-option ng-repeat="situation in situations" value="{{situation.id}}">{{situation.name}}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+            </div>
 
             <!-- Submit -->
-            <md-card-actions layout="row" layout-align="end center">
-                <md-button class="md-raised md-accent" type="submit">
-                    <span translate>Save</span>
+            <div class="export-actions">
+                <md-button class="md-raised" ng-click="cancel()" aria-label="Cancel">
+                    <md-icon>cancel</md-icon>
+                    <span translate>Cancel</span>
                 </md-button>
-            </md-card-actions>
+                <md-button class="md-raised md-accent" type="submit" aria-label="Create Export">
+                    <md-icon>save</md-icon>
+                    <span translate>Create Export</span>
+                </md-button>
+            </div>
         </form>
     </md-dialog-content>
 </md-dialog>

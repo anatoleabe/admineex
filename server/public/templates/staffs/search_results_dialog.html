@@ -1,0 +1,45 @@
+<md-dialog aria-label="Search Results" class="search-results-dialog">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2 translate>Search Results</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon>close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    
+    <md-dialog-content>
+        <div class="md-dialog-content">
+            <p class="search-results-summary">
+                <span translate>Found</span> <strong>{{results.length}}</strong> <span translate>results for</span> <strong>"{{searchText}}"</strong>
+            </p>
+            
+            <md-list>
+                <md-list-item class="search-result-item" ng-repeat="result in results" ng-click="selectResult(result)">
+                    <div class="search-result-avatar" ng-style="{'background-color': result.gender === 'M' ? '#E3F2FD' : '#FCE4EC'}">
+                        <span>{{result.fname.charAt(0)}}</span>
+                    </div>
+                    <div class="search-result-content">
+                        <span class="search-result-name">{{result.fname}}</span>
+                        <div class="search-result-details">
+                            <span class="search-result-id" ng-if="result.identifier">
+                                <md-icon class="detail-icon">badge</md-icon>
+                                {{result.identifier}}
+                            </span>
+                            <span class="search-result-gender" ng-if="result.gender">
+                                <md-icon class="detail-icon">{{result.gender === 'M' ? 'male' : 'female'}}</md-icon>
+                                {{result.gender}}, {{result.age}} <span translate>years</span>
+                            </span>
+                            <span class="search-result-position" ng-if="result.affectedTo.position.name">
+                                <md-icon class="detail-icon">work</md-icon>
+                                {{result.affectedTo.position.name}}
+                            </span>
+                        </div>
+                    </div>
+                    <md-icon class="md-secondary">chevron_right</md-icon>
+                </md-list-item>
+            </md-list>
+        </div>
+    </md-dialog-content>
+</md-dialog>
