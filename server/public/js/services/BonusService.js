@@ -65,6 +65,21 @@ app.factory('BonusService', ['$http', function($http) {
         
         getBonusReports: function(filters) {
             return $http.get('/api/bonus/reports', { params: filters });
+        },
+        
+        getReportByStructure: function(filters) {
+            return $http.get('/api/bonus/reports/by-structure', { params: filters });
+        },
+        getReportByPeriod: function(filters) {
+            return $http.get('/api/bonus/reports/by-period', { params: filters });
+        },
+        getReportByTemplate: function(filters) {
+            return $http.get('/api/bonus/reports/by-template', { params: filters });
+        },
+        exportReport: function(data) {
+            return $http.post('/api/bonus/reports/export', data, { 
+                responseType: 'arraybuffer' 
+            });
         }
     };
 }]);
