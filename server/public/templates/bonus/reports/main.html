@@ -1,0 +1,226 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Rapports des primes</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Filters -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Filtres</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Date de début</label>
+                                                <md-datepicker ng-model="filters.startDate" md-placeholder="Entrez la date"></md-datepicker>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Date de fin</label>
+                                                <md-datepicker ng-model="filters.endDate" md-placeholder="Entrez la date"></md-datepicker>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Structure</label>
+                                                <select class="form-control" ng-model="filters.structureId">
+                                                    <option value="">Toutes les structures</option>
+                                                    <option ng-repeat="structure in structures" value="{{structure._id}}">{{structure.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Modèle de prime</label>
+                                                <select class="form-control" ng-model="filters.templateId">
+                                                    <option value="">Tous les modèles</option>
+                                                    <option ng-repeat="template in templates" value="{{template._id}}">{{template.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-md-12 text-right">
+                                            <button class="btn btn-primary" ng-click="loadReports()">
+                                                <i class="fa fa-search"></i> Appliquer les filtres
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Loading indicator -->
+                    <div ng-if="loading" class="text-center p-5">
+                        <i class="fa fa-spinner fa-spin fa-3x"></i>
+                        <p class="mt-3">Chargement des rapports...</p>
+                    </div>
+                    
+                    <!-- Reports -->
+                    <div ng-if="!loading" class="row">
+                        <!-- Report by Structure -->
+                        <div class="col-md-12 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Rapport par structure</h5>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-secondary mr-2" ng-click="exportToExcel('byStructure')">
+                                            <i class="fa fa-file-excel-o"></i> Excel
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" ng-click="exportToPDF('byStructure')">
+                                            <i class="fa fa-file-pdf-o"></i> PDF
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div ng-if="reports.byStructure.loading" class="text-center p-3">
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                        <p>Chargement...</p>
+                                    </div>
+                                    <div ng-if="reports.byStructure.error" class="alert alert-danger">
+                                        <i class="fa fa-exclamation-triangle"></i> {{reports.byStructure.error}}
+                                    </div>
+                                    <div ng-if="!reports.byStructure.loading && !reports.byStructure.error">
+                                        <div ng-if="reports.byStructure.data.length === 0" class="alert alert-info">
+                                            <i class="fa fa-info-circle"></i> Aucune donnée disponible pour ce rapport.
+                                        </div>
+                                        <div ng-if="reports.byStructure.data.length > 0">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Structure</th>
+                                                        <th>Nombre de primes</th>
+                                                        <th>Montant total</th>
+                                                        <th>Nombre de bénéficiaires</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in reports.byStructure.data">
+                                                        <td>{{item.structure ? item.structure.name : 'N/A'}}</td>
+                                                        <td>{{item.count}}</td>
+                                                        <td>{{item.totalAmount | currency:'FCFA ':0}}</td>
+                                                        <td>{{item.beneficiaryCount}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Report by Period -->
+                        <div class="col-md-12 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Rapport par période</h5>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-secondary mr-2" ng-click="exportToExcel('byPeriod')">
+                                            <i class="fa fa-file-excel-o"></i> Excel
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" ng-click="exportToPDF('byPeriod')">
+                                            <i class="fa fa-file-pdf-o"></i> PDF
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div ng-if="reports.byPeriod.loading" class="text-center p-3">
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                        <p>Chargement...</p>
+                                    </div>
+                                    <div ng-if="reports.byPeriod.error" class="alert alert-danger">
+                                        <i class="fa fa-exclamation-triangle"></i> {{reports.byPeriod.error}}
+                                    </div>
+                                    <div ng-if="!reports.byPeriod.loading && !reports.byPeriod.error">
+                                        <div ng-if="reports.byPeriod.data.length === 0" class="alert alert-info">
+                                            <i class="fa fa-info-circle"></i> Aucune donnée disponible pour ce rapport.
+                                        </div>
+                                        <div ng-if="reports.byPeriod.data.length > 0">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Période</th>
+                                                        <th>Nombre de primes</th>
+                                                        <th>Montant total</th>
+                                                        <th>Nombre de bénéficiaires</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in reports.byPeriod.data">
+                                                        <td>{{item.period | date:'MMMM yyyy'}}</td>
+                                                        <td>{{item.count}}</td>
+                                                        <td>{{item.totalAmount | currency:'FCFA ':0}}</td>
+                                                        <td>{{item.beneficiaryCount}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Report by Template -->
+                        <div class="col-md-12 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-0">Rapport par modèle de prime</h5>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-secondary mr-2" ng-click="exportToExcel('byTemplate')">
+                                            <i class="fa fa-file-excel-o"></i> Excel
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" ng-click="exportToPDF('byTemplate')">
+                                            <i class="fa fa-file-pdf-o"></i> PDF
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div ng-if="reports.byTemplate.loading" class="text-center p-3">
+                                        <i class="fa fa-spinner fa-spin"></i>
+                                        <p>Chargement...</p>
+                                    </div>
+                                    <div ng-if="reports.byTemplate.error" class="alert alert-danger">
+                                        <i class="fa fa-exclamation-triangle"></i> {{reports.byTemplate.error}}
+                                    </div>
+                                    <div ng-if="!reports.byTemplate.loading && !reports.byTemplate.error">
+                                        <div ng-if="reports.byTemplate.data.length === 0" class="alert alert-info">
+                                            <i class="fa fa-info-circle"></i> Aucune donnée disponible pour ce rapport.
+                                        </div>
+                                        <div ng-if="reports.byTemplate.data.length > 0">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Modèle de prime</th>
+                                                        <th>Nombre de primes</th>
+                                                        <th>Montant total</th>
+                                                        <th>Nombre de bénéficiaires</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in reports.byTemplate.data">
+                                                        <td>{{item.template ? item.template.name : 'N/A'}}</td>
+                                                        <td>{{item.count}}</td>
+                                                        <td>{{item.totalAmount | currency:'FCFA ':0}}</td>
+                                                        <td>{{item.beneficiaryCount}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
