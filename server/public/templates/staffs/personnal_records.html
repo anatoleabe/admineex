@@ -2,34 +2,143 @@
 <div class="personnel-container" ui-view>
     <md-content layout="column" flex>
         <!-- Search Section -->
-        <div class="personnel-search">
-            <form>
-                <md-autocomplete md-search-text="personnelSearchText"
-                                md-selected-item-change="selectedPersonnelChange(perso)"
-                                md-items="perso in personnelQuerySearch(personnelSearchText)"
-                                md-item-text="perso.fname"
-                                md-min-length="2"
-                                placeholder="{{'Search a staff (Name, matricule or CNI)' | translate}}"
-                                required
-                                md-require-match
-                                flex>
-                    <md-item-template>
-                        <div class="search-result-item">
-                            <span md-highlight-text="deficitaireSearchText" class="search-result-name">{{perso.fname}}</span>
-                            <small class="search-result-details">
-                                <span ng-if="perso.identifier">{{"Mle: " + (perso.identifier)}}</span>
-                                <span ng-if="perso.gender"> | {{(perso.gender)}}, {{(perso.age) + " ans"}}</span>
-                                <span ng-if="perso.affectedTo.position.name"> | {{perso.affectedTo.position.name}}</span>
-                            </small>
+        <div class="personnel-search-container">
+            <div class="personnel-search">
+                <div class="search-header">
+                    <h2 class="search-title" translate>Personnel Search</h2>
+                    <p class="search-subtitle" translate>Find personnel by name, registration number, or ID</p>
+                </div>
+                
+                <form class="search-form">
+                    <div class="search-input-container">
+                        <md-icon class="search-icon">search</md-icon>
+                        <md-autocomplete 
+                            md-search-text="personnelSearchText"
+                            md-selected-item-change="selectedPersonnelChange(perso)"
+                            md-items="perso in personnelQuerySearch(personnelSearchText)"
+                            md-item-text="perso.fname"
+                            md-min-length="2"
+                            placeholder="{{'Search a staff (Name, matricule or CNI)' | translate}}"
+                            required
+                            md-require-match
+                            class="search-autocomplete"
+                            md-no-cache="true"
+                            md-delay="300"
+                            md-select-on-match="true"
+                            md-autoselect="true"
+                            flex>
+                            <md-item-template>
+                                <div class="search-result-item">
+                                    <div class="search-result-avatar" ng-style="{'background-color': perso.gender === 'M' ? '#E3F2FD' : '#FCE4EC'}">
+                                        <span>{{perso.fname.charAt(0)}}</span>
+                                    </div>
+                                    <div class="search-result-content">
+                                        <span md-highlight-text="personnelSearchText" class="search-result-name">{{perso.fname}}</span>
+                                        <div class="search-result-details">
+                                            <span class="search-result-id" ng-if="perso.identifier">
+                                                <md-icon class="detail-icon">badge</md-icon>
+                                                {{perso.identifier}}
+                                            </span>
+                                            <span class="search-result-gender" ng-if="perso.gender">
+                                                <md-icon class="detail-icon">{{perso.gender === 'M' ? 'male' : 'female'}}</md-icon>
+                                                {{perso.gender}}, {{perso.age}} <span translate>years</span>
+                                            </span>
+                                            <span class="search-result-position" ng-if="perso.affectedTo.position.name">
+                                                <md-icon class="detail-icon">work</md-icon>
+                                                {{perso.affectedTo.position.name}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </md-item-template>
+                            <md-not-found>
+                                <div class="search-no-results">
+                                    <md-icon>search_off</md-icon>
+                                    <div class="no-results-message">
+                                        <p class="no-results-query">"{{personnelSearchText}}"</p>
+                                        <p class="no-results-text" translate>No matching personnel found</p>
+                                    </div>
+                                </div>
+                            </md-not-found>
+                        </md-autocomplete>
+                        <md-button class="md-icon-button clear-search-button" 
+                                   ng-click="personnelSearchText = ''" 
+                                   ng-show="personnelSearchText">
+                            <md-icon>close</md-icon>
+                            <md-tooltip md-direction="bottom">
+                                <span translate>Clear search</span>
+                            </md-tooltip>
+                        </md-button>
+                    </div>
+                    
+                    <div class="search-filters" ng-show="showAdvancedSearch">
+                        <div class="filter-row">
+                            <md-input-container class="filter-input">
+                                <label translate>Structure</label>
+                                <md-select ng-model="searchFilters.structure">
+                                    <md-option value="" selected translate>All structures</md-option>
+                                    <md-option ng-repeat="structure in structures" value="{{structure.id}}">
+                                        {{structure.name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            
+                            <md-input-container class="filter-input">
+                                <label translate>Status</label>
+                                <md-select ng-model="searchFilters.status">
+                                    <md-option value="" selected translate>All status</md-option>
+                                    <md-option ng-repeat="status in statuses" value="{{status.id}}">
+                                        {{status.name}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+                            
+                            <md-input-container class="filter-input">
+                                <label translate>Gender</label>
+                                <md-select ng-model="searchFilters.gender">
+                                    <md-option value="" selected translate>All genders</md-option>
+                                    <md-option value="M" translate>Male</md-option>
+                                    <md-option value="F" translate>Female</md-option>
+                                </md-select>
+                            </md-input-container>
                         </div>
-                    </md-item-template>
-                    <md-not-found>
-                        <div class="search-no-results">
-                            "{{personnelSearchText}}"<span translate>:</span> <span translate>No matching information was found.</span>
-                        </div>
-                    </md-not-found>
-                </md-autocomplete>
-            </form>
+                    </div>
+                    
+                    <div class="search-actions">
+                        <md-button class="md-button toggle-advanced-search" 
+                                   ng-click="showAdvancedSearch = !showAdvancedSearch">
+                            <md-icon>{{showAdvancedSearch ? 'expand_less' : 'expand_more'}}</md-icon>
+                            <span translate>{{showAdvancedSearch ? 'Hide advanced search' : 'Show advanced search'}}</span>
+                        </md-button>
+                        
+                        <span flex></span>
+                        
+                        <md-button class="md-raised md-primary search-button" 
+                                   ng-click="advancedSearch()" 
+                                   ng-disabled="!personnelSearchText && !searchFilters.structure && !searchFilters.status && !searchFilters.gender">
+                            <md-icon>search</md-icon>
+                            <span translate>Search</span>
+                        </md-button>
+                    </div>
+                </form>
+                
+                <div class="recent-searches" ng-if="recentSearches && recentSearches.length > 0">
+                    <div class="recent-searches-header">
+                        <h3 class="recent-searches-title" translate>Recent Searches</h3>
+                        <md-button class="md-button clear-history-button" ng-click="clearSearchHistory()">
+                            <span translate>Clear history</span>
+                        </md-button>
+                    </div>
+                    <div class="recent-searches-list">
+                        <md-button class="recent-search-item" 
+                                   ng-repeat="search in recentSearches | limitTo:5" 
+                                   ng-click="applyRecentSearch(search)">
+                            <md-icon>history</md-icon>
+                            <span>{{search.text}}</span>
+                        </md-button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Action Buttons -->
