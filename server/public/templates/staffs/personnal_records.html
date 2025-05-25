@@ -334,38 +334,47 @@
                                     </md-button>
                                 </md-card-actions>
                             </md-card>
-                            <md-card>
-                                <md-card-title class="card-container">
-                                    <md-card-title-text class="card-container-left">
+                            <md-card class="profile-card">
+                                <md-card-title>
+                                    <md-card-title-text>
                                         <span class="md-headline" translate>Profiles</span>
                                     </md-card-title-text>
-                                    <md-card-actions layout="row" >
-                                        <span flex></span>
-                                        <md-button ng-click="add(personnelSelected, 'profiles', 'profiles')" aria-label="Edit" >
+                                    <md-card-actions layout="row">
+                                        <md-button class="md-icon-button" ng-click="add(personnelSelected, 'profiles', 'profiles')" aria-label="Edit profiles">
                                             <md-icon>edit</md-icon>
-                                            <span translate>Edit profiles</span>
+                                            <md-tooltip md-direction="top">
+                                                <span translate>Edit profiles</span>
+                                            </md-tooltip>
                                         </md-button>
                                     </md-card-actions>
                                 </md-card-title>
-                                <md-card-content layout="column" flex>
-                                    <md-list ng-cloak flex>
-                                        <div  ng-repeat="profile in profiles">
-                                            <md-list-item ui-sref="#">
-                                                <p class="md-body-2" >{{profile.name}}</p>
+                                <md-card-content>
+                                    <md-list class="profile-list" ng-cloak>
+                                        <div ng-repeat="profile in profiles" class="profile-item">
+                                            <md-list-item>
+                                                <md-icon>check_circle</md-icon>
+                                                <p class="info-label">{{profile.name}}</p>
                                             </md-list-item>
-                                            <md-divider></md-divider>
+                                            <md-divider ng-if="!$last"></md-divider>
                                         </div>
-                                        <div layout="row" layout-align="center center" data-ng-if="profiles && profiles.length <= 0" style="opacity:0.2; margin-top: -40px">
+                                        <div class="empty-state" layout="row" layout-align="center center" 
+                                             data-ng-if="profiles && profiles.length <= 0">
+                                            <md-icon class="empty-icon">assignment_ind</md-icon>
                                             <h2 class="md-title">{{helperNoData.title}}</h2>
                                         </div>
                                     </md-list>
-                                    <div flex>
-                                        <div style="padding:0;margin: 0;" layout="row" layout-align="center center">
-                                            <p style="white-space: nowrap; font-weight: bold;padding:0;margin: 0; font-size: 80%;" > <span translate>Profile: </span> {{personnelSelected.profilesCorresponding}}<span translate>% of required profile</span> </p>
+                                    
+                                    <div class="profile-progress">
+                                        <div class="progress-header" layout="row" layout-align="space-between center">
+                                            <p class="progress-label">
+                                                <span translate>Profile match</span>
+                                            </p>
+                                            <p class="progress-value">{{personnelSelected.profilesCorresponding}}%</p>
                                         </div>
-                                        <div layout="row" layout-align="center center">
-                                            <div style="margin-right:5px;"> <md-icon style="color: #0288d1;">star</md-icon></div>
-                                            <md-progress-linear style="max-width: 20%;" md-mode="determinate" value="{{personnelSelected.profilesCorresponding}}"></md-progress-linear>
+                                        <div class="progress-bar-container">
+                                            <md-progress-linear md-mode="determinate" 
+                                                               value="{{personnelSelected.profilesCorresponding}}"
+                                                               class="profile-progress-bar"></md-progress-linear>
                                         </div>
                                     </div>
                                     <!--                                    <span flex></span>
@@ -376,38 +385,47 @@
                                 </md-card-content>
                             </md-card>
                             <!--required skills-->
-                            <md-card>
-                                <md-card-title class="card-container">
-                                    <md-card-title-text class="card-container-left">
+                            <md-card class="skills-card">
+                                <md-card-title>
+                                    <md-card-title-text>
                                         <span class="md-headline" translate>Skills</span>
                                     </md-card-title-text>
-                                    <md-card-actions layout="row" >
-                                        <span flex></span>
-                                        <md-button ng-click="add(personnelSelected, 'skills', 'skills')" aria-label="Edit" >
+                                    <md-card-actions layout="row">
+                                        <md-button class="md-icon-button" ng-click="add(personnelSelected, 'skills', 'skills')" aria-label="Edit skills">
                                             <md-icon>edit</md-icon>
-                                            <span translate>Edit skills</span>
+                                            <md-tooltip md-direction="top">
+                                                <span translate>Edit skills</span>
+                                            </md-tooltip>
                                         </md-button>
                                     </md-card-actions>
                                 </md-card-title>
-                                <md-card-content layout="column" flex>
-                                    <md-list ng-cloak flex>
-                                        <div  ng-repeat="skill in skills">
-                                            <md-list-item ui-sref="#">
-                                                <p class="md-body-2" >{{skill.name}}</p>
+                                <md-card-content>
+                                    <md-list class="skills-list" ng-cloak>
+                                        <div ng-repeat="skill in skills" class="skill-item">
+                                            <md-list-item>
+                                                <md-icon>school</md-icon>
+                                                <p class="info-label">{{skill.name}}</p>
                                             </md-list-item>
-                                            <md-divider></md-divider>
+                                            <md-divider ng-if="!$last"></md-divider>
                                         </div>
-                                        <div layout="row" layout-align="center center" data-ng-if="skills && skills.length <= 0" style="opacity:0.2; margin-top: -40px">
+                                        <div class="empty-state" layout="row" layout-align="center center" 
+                                             data-ng-if="skills && skills.length <= 0">
+                                            <md-icon class="empty-icon">school</md-icon>
                                             <h2 class="md-title">{{helperNoData.title}}</h2>
                                         </div>
                                     </md-list>
-                                    <div flex>
-                                        <div style="padding:0;margin: 0;" layout="row" layout-align="center center">
-                                            <p style="white-space: nowrap; font-weight: bold;padding:0;margin: 0; font-size: 80%;" > <span translate>Skills: </span> {{personnelSelected.skillsCorresponding}}<span translate>% of required skills</span> </p>
+                                    
+                                    <div class="skill-progress">
+                                        <div class="progress-header" layout="row" layout-align="space-between center">
+                                            <p class="progress-label">
+                                                <span translate>Skills match</span>
+                                            </p>
+                                            <p class="progress-value">{{personnelSelected.skillsCorresponding}}%</p>
                                         </div>
-                                        <div layout="row" layout-align="center center">
-                                            <div style="margin-right:5px;"> <md-icon style="color: #0288d1;">star</md-icon></div>
-                                            <md-progress-linear style="max-width: 20%;" md-mode="determinate" value="{{personnelSelected.skillsCorresponding}}"></md-progress-linear>
+                                        <div class="progress-bar-container">
+                                            <md-progress-linear md-mode="determinate" 
+                                                               value="{{personnelSelected.skillsCorresponding}}"
+                                                               class="skill-progress-bar"></md-progress-linear>
                                         </div>
                                     </div>
                                     <!--                                    <span flex></span>
@@ -419,24 +437,24 @@
                             </md-card>
                         </md-card>
                         <!--Meta--> 
-                        <md-card>
+                        <md-card class="meta-card">
                             <md-card-title>
                                 <md-card-title-text>
                                     <span class="md-headline" translate>Meta</span>
                                 </md-card-title-text>
                             </md-card-title>
                             <md-card-content>
-                                <md-list>
+                                <md-list class="meta-list">
                                     <md-list-item>
-                                        <md-icon>event</md-icon>
-                                        <p class="md-body-2" translate>Created</p>
-                                        <p class="md-body-1 md-secondary">{{personnelSelected.created| dateHuman}}</p>
+                                        <md-icon>event_available</md-icon>
+                                        <p class="info-label" translate>Created</p>
+                                        <p class="info-value md-secondary">{{personnelSelected.created | dateHuman}}</p>
                                     </md-list-item>
                                     <md-divider></md-divider>
                                     <md-list-item>
-                                        <md-icon>event</md-icon>
-                                        <p class="md-body-2" translate>Last modified</p>
-                                        <p class="md-body-1 md-secondary">{{personnelSelected.lastModified| dateHuman}}</p>
+                                        <md-icon>update</md-icon>
+                                        <p class="info-label" translate>Last modified</p>
+                                        <p class="info-value md-secondary">{{personnelSelected.lastModified | dateHuman}}</p>
                                     </md-list-item>
                                 </md-list>
                             </md-card-content>
