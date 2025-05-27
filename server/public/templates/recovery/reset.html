@@ -1,33 +1,137 @@
 <div class="loading" layout="row" layout-sm="column" layout-align="space-around" ng-if="loading">
     <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
 </div>
-<div layout="column" layout-align="center center">
-    <md-card class="signupBox md-whiteframe-z1" style="margin-top: 10px;">
+<div layout="column" layout-align="center center" style="min-height: 100vh; background: #f5f7fa;">
+    <md-card class="signupBox md-whiteframe-z2" style="margin-top: 40px; max-width: 400px; width: 100%;">
         <md-card-content>
-            <h3 class="md-title" style="text-align:center;" translate>Reset your password</h3>
-            <h3 class="md-subhead" translate>Enter a new password for your Core account.</h3>
-            <form ng-submit="submit();" name="reset">
-                <div layout="column">
+            <div style="text-align:center; margin-bottom: 16px;">
+                <img src="/assets/img/logos/logo.png" alt="Logo" style="width: 80px; margin-bottom: 8px;" />
+                <h3 class="md-title" style="margin-bottom: 0;" translate>Reset your password</h3>
+                <p class="md-subhead" style="color: #666; margin-top: 4px;" translate>Enter a new password for your Core account.</p>
+                <md-button class="md-icon-button" ng-click="toggleDarkMode()" aria-label="Toggle dark mode" style="float:right; margin-top:-40px;">
+                    <md-icon md-svg-icon="{{darkMode ? 'brightness_7' : 'brightness_4'}}"></md-icon>
+                </md-button>
+            </div>
+            <form ng-submit="submit();" name="reset" novalidate autocomplete="off">
+                <div layout="column" style="gap: 12px;">
                     <md-input-container class="md-block" style="margin: 0;">
                         <label translate>Password</label>
-                        <input type="password" md-minlength="6" ng-model="newPassword" name="newPassword" required>
+                        <input type="password" md-minlength="6" ng-model="newPassword" name="newPassword" required ng-attr-id="reset-password" ng-change="checkStrength()">
+                        <md-button class="md-icon-button" type="button" ng-click="showPassword = !showPassword" aria-label="Show password" style="position: absolute; right: 0; top: 0;">
+                            <md-icon md-svg-icon="{{showPassword ? 'visibility_off' : 'visibility'}}"></md-icon>
+                        </md-button>
                         <div ng-messages="reset.newPassword.$error">
                             <div ng-message="md-minlength">
                                 <span translate>Use at least 6 characters</span><span>.</span>
                             </div>
                         </div>
+                        <div ng-if="passwordStrength" style="margin-top: 4px;">
+                            <md-progress-linear md-mode="determinate" value="{{passwordStrength}}" class="md-accent"></md-progress-linear>
+                            <span style="font-size: 12px; color: #888;">{{passwordStrengthLabel}}</span>
+                        </div>
                     </md-input-container>
                     <md-input-container class="md-block">
                         <label translate>Confirmation</label>
-                        <input type="password" ng-model="newPasswordConfirmation" required>
+                        <input type="password" ng-model="newPasswordConfirmation" required ng-attr-id="reset-confirm" ng-change="checkMatch()">
+                        <md-button class="md-icon-button" type="button" ng-click="showConfirm = !showConfirm" aria-label="Show confirmation" style="position: absolute; right: 0; top: 0;">
+                            <md-icon md-svg-icon="{{showConfirm ? 'visibility_off' : 'visibility'}}"></md-icon>
+                        </md-button>
+                        <div ng-if="!passwordsMatch && newPasswordConfirmation" style="color: #e53935; font-size: 12px;">Passwords do not match.</div>
                     </md-input-container>
-                    <div layout="row" layout-align="center center">
+                    <div layout="row" layout-align="center center" style="margin-top: 16px;">
                         <md-button class="md-raised" ui-sref="signin"><span translate>Back</span></md-button>
-                        <div flex="flex"></div>
-                        <md-button class="md-raised md-accent" type="submit" ng-disabled="loading"><span translate>Submit</span></md-button>
+                        <div flex></div>
+                        <md-button class="md-raised md-accent" type="submit" ng-disabled="loading || !reset.$valid || !passwordsMatch || passwordStrength < 60"><span translate>Submit</span></md-button>
                     </div>
                 </div>
             </form>
         </md-card-content>
     </md-card>
 </div>
+<script>
+angular.module('ResetCtrl').controller('ResetController', function($scope, gettextCatalog, $ocLazyLoad, $injector, $stateParams, $state, $mdToast) {
+    $ocLazyLoad.load('js/services/AccountService.js').then(function() {
+        $scope.loading = false;
+        var Account = $injector.get('Account');
+        $scope.showPassword = false;
+        $scope.showConfirm = false;
+        $scope.passwordStrength = 0;
+        $scope.passwordStrengthLabel = '';
+        $scope.passwordsMatch = true;
+        $scope.darkMode = false;
+
+        $scope.checkStrength = function() {
+            var pwd = $scope.newPassword || '';
+            var score = 0;
+            if (pwd.length >= 6) score += 30;
+            if (/[A-Z]/.test(pwd)) score += 20;
+            if (/[0-9]/.test(pwd)) score += 20;
+            if (/[^A-Za-z0-9]/.test(pwd)) score += 30;
+            $scope.passwordStrength = score;
+            if (score < 40) $scope.passwordStrengthLabel = gettextCatalog.getString('Weak');
+            else if (score < 70) $scope.passwordStrengthLabel = gettextCatalog.getString('Medium');
+            else $scope.passwordStrengthLabel = gettextCatalog.getString('Strong');
+        };
+        $scope.checkMatch = function() {
+            $scope.passwordsMatch = $scope.newPassword === $scope.newPasswordConfirmation;
+        };
+        $scope.$watchGroup(['newPassword', 'newPasswordConfirmation'], function() {
+            $scope.checkStrength();
+            $scope.checkMatch();
+        });
+        $scope.submit = function() {
+            $scope.loading = true;
+            Account.resetPassword({
+                token: $stateParams.token,
+                newPassword: $scope.newPassword,
+                newPasswordConfirmation: $scope.newPasswordConfirmation
+            }).then(function(response) {
+                var data = response.data;
+                $scope.loading = false;
+                if(!data.token){
+                    $scope.newPassword = "";
+                    $scope.newPasswordConfirmation = "";
+                    $mdToast.show(
+                        $mdToast.simple()
+                        .textContent(gettextCatalog.getString('The link has expired'))
+                        .position('top left right')
+                        .hideDelay(3000)
+                    );
+                } else {
+                    if(!data.changed){
+                        $scope.newPassword = "";
+                        $scope.newPasswordConfirmation = "";
+                        $mdToast.show(
+                            $mdToast.simple()
+                            .textContent(gettextCatalog.getString('Fill out the form correctly'))
+                            .position('top left right')
+                            .hideDelay(3000)
+                        );
+                    } else {
+                        $state.go("signin", {"isResetted": true, "email": data.email});
+                    }
+                }
+            }).catch(function(response) {
+                $scope.newPassword = "";
+                $scope.newPasswordConfirmation = "";
+                $scope.loading = false;
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent(gettextCatalog.getString('An error occurred, please try again later'))
+                    .position('top left right')
+                    .hideDelay(3000)
+                );
+            });
+        }
+        $scope.toggleDarkMode = function() {
+            $scope.darkMode = !$scope.darkMode;
+            if ($scope.darkMode) {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+        };
+    });
+});
+</script>
+

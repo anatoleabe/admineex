@@ -1,0 +1,31 @@
+body.dark-mode {
+  background: #181a1b !important;
+  color: #e0e0e0 !important;
+}
+body.dark-mode md-card,
+body.dark-mode .md-card {
+  background: #23272b !important;
+  color: #e0e0e0 !important;
+}
+body.dark-mode md-input-container label,
+body.dark-mode .md-input-container label {
+  color: #b0b0b0 !important;
+}
+body.dark-mode input,
+body.dark-mode .md-input {
+  background: #23272b !important;
+  color: #e0e0e0 !important;
+}
+body.dark-mode .md-button.md-primary,
+body.dark-mode .md-button.md-accent {
+  background: #1976d2 !important;
+  color: #fff !important;
+}
+body.dark-mode .md-button {
+  color: #90caf9 !important;
+}
+body.dark-mode .md-progress-circular path,
+body.dark-mode .md-progress-linear .md-bar {
+  stroke: #90caf9 !important;
+}
+

@@ -3,59 +3,46 @@
         <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
     </div>
 
-    <div layout="column"  layout-align="center center" style="margin-top: 0 auto">
-
-        <!-- Content area -->
-        <div class="loginBox md-whiteframe-z1 content d-flex justify-content-center align-items-center">
-
-            <!-- Login card -->
-            <form class="login-form" ng-submit="signin();">
-                <div class="card mb-0">
-                    <div class="card-body">
-                        <div class="text-center mb-3">
-                            <img src="{{kernel.logo.apps}}" style="width:255px;margin-top: 10px;" class="text-warning-400 border-warning-400 border-3 rounded-round p-3 mb-3 mt-1">
-                            <h5 class="mb-0 " style="color: rgba(0,0,0,0.87);">Welcome to {{kernel.title}}</h5>
-                            <span class="d-block text-muted" translate>Add your credentials to login to your account</span>
-                        </div>
-
-                        <div class="form-group form-group-feedback form-group-feedback-left">
-                            <input type="text" class="form-control" ng-model="email" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="{{'Email'| translate}}" required>
-                            <div class="form-control-feedback">
-                                <i class="icon-user text-muted"></i>
-                            </div>
-                        </div>
-
-                        <div class="form-group form-group-feedback form-group-feedback-left">
-                            <input type="password" class="form-control" ng-model="password" name="password" placeholder="{{'Password'| translate}}" required>
-                            <div class="form-control-feedback">
-                                <i class="icon-lock2 text-muted"></i>
-                            </div>
-                        </div>
-
-                        <div class="form-group d-flex align-items-center">
-                            <a ui-sref="recovery.lost" class="ml-auto" translate>Forgot password?</a>
-                        </div>
-
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-primary btn-block" translate>Sign in <i class="icon-circle-right2 ml-2"></i></button>
-                        </div>
-
-                        <div class="form-group text-center text-muted content-divider">
-                            <span class="px-2" translate>Don't have an account?</span>
-                        </div>
-
-                        <div class="form-group">
-                            <a href="#" class="btn btn-light btn-block" translate>Sign up</a>
-                        </div>
-
-                        <span class="form-text text-center text-muted" translate>By continuing, you're confirming that you've read our <a href="#" translate>Terms &amp; Conditions</a> and <a href="#" translate>Cookie Policy</a></span>
-                    </div>
+    <div layout="column" layout-align="center center" style="min-height: 100vh; background: #f5f7fa;">
+        <md-card class="md-whiteframe-z2" style="margin-top: 40px; max-width: 400px; width: 100%;">
+            <md-card-content>
+                <div style="text-align:center; margin-bottom: 16px; position: relative;">
+                    <img ng-src="{{kernel.logo.apps}}" alt="Logo" style="width: 120px; margin-bottom: 8px;" />
+                    <h3 class="md-title" style="margin-bottom: 0;">Welcome to {{kernel.title}}</h3>
+                    <p class="md-subhead" style="color: #666; margin-top: 4px;" translate>Add your credentials to login to your account</p>
+                    <md-button class="md-icon-button" ng-click="toggleDarkMode()" aria-label="Toggle dark mode" style="position: absolute; top: 0; right: 0;">
+                        <md-icon md-svg-icon="{{darkMode ? 'brightness_7' : 'brightness_4'}}"></md-icon>
+                    </md-button>
                 </div>
-            </form>
-            <!-- /login card -->
-
-        </div>
-        <!-- /content area -->
+                <form ng-submit="signin();" name="signinForm" novalidate autocomplete="off">
+                    <md-input-container class="md-block">
+                        <label translate>Email</label>
+                        <input type="email" ng-model="email" name="email" required autocomplete="off">
+                    </md-input-container>
+                    <md-input-container class="md-block" style="position:relative;">
+                        <label translate>Password</label>
+                        <input type="password" ng-model="password" name="password" required autocomplete="off" ng-attr-id="signin-password">
+                        <md-button class="md-icon-button" type="button" ng-click="showPassword = !showPassword" aria-label="Show password" style="position: absolute; right: 0; top: 0;">
+                            <md-icon md-svg-icon="{{showPassword ? 'visibility_off' : 'visibility'}}"></md-icon>
+                        </md-button>
+                    </md-input-container>
+                    <div layout="row" layout-align="space-between center" style="margin-bottom: 8px;">
+                        <md-checkbox ng-model="rememberme" aria-label="Remember me" style="margin:0;">
+                            <span translate>Remember me</span>
+                        </md-checkbox>
+                        <a ui-sref="recovery.lost" style="font-size: 13px; color: #1976d2; text-decoration: none;" translate>Forgot password?</a>
+                    </div>
+                    <md-button class="md-raised md-primary" type="submit" style="width:100%; margin-bottom: 8px;" ng-disabled="loading || !signinForm.$valid" translate>Sign in <md-icon md-svg-icon="icon-circle-right2"></md-icon></md-button>
+                    <div style="text-align:center; color:#888; font-size:13px; margin: 8px 0;">
+                        <span translate>Don't have an account?</span>
+                    </div>
+                    <md-button class="md-raised" style="width:100%; background:#fff; color:#1976d2; border:1px solid #1976d2;" href="#" translate>Sign up</md-button>
+                    <div style="text-align:center; color:#aaa; font-size:12px; margin-top: 12px;">
+                        <span translate>By continuing, you're confirming that you've read our <a href="#" translate>Terms &amp; Conditions</a> and <a href="#" translate>Cookie Policy</a></span>
+                    </div>
+                </form>
+            </md-card-content>
+        </md-card>
     </div>
-
 </div>
+

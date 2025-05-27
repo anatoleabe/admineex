@@ -31,14 +31,15 @@ exports.api.lostPassword = function(req, res) {
                 if (err) {
                     log.error(err);
                     audit.logEvent('[mongodb]', 'Account', 'Lost password', 'email', email, 'failed', 'Mongodb attempted to find the email');
-                    return res.status(500).send(err);
+                    // Always return generic response for security
+                    return res.json({ exists: false });
                 } else {
                     if (user === null) {
+                        // Mask user existence for security
                         audit.logEvent('[anonymous]', 'Account', 'Lost password', 'email', email, 'failed',
                                        'The user tried to send an email to reset password but the email does not exist');
-                        return res.json({
-                            exists: false
-                        });
+                        // Always return generic response
+                        return res.json({ exists: false });
                     } else {
                         //Create a token
                         crypto.randomBytes(20, function(err, buf) {
@@ -100,10 +101,11 @@ exports.api.resetPassword = function(req, res) {
         var token = fields.token || '';
         var password = fields.newPassword || '';
         var passwordConfirmation = fields.newPasswordConfirmation || '';
-
-        if (password === '' || passwordConfirmation === '' || token === '') {
+        // Enforce strong password policy
+        var strongPassword = password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password);
+        if (password === '' || passwordConfirmation === '' || token === '' || !strongPassword) {
             audit.logEvent('[anonymous]', 'Account', 'Reset password', '', '', 'failed',
-                           'The user tried to reset password but one or more params of the request was not defined');
+                           'The user tried to reset password but one or more params of the request was not defined or password is weak');
             return res.sendStatus(400);
         } else {
             if (password !== passwordConfirmation) {
@@ -639,3 +641,4 @@ exports.api.update = function(req, res) {
         return res.send(401);
     }
 };
+

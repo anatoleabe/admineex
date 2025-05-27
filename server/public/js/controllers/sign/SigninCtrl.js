@@ -1,5 +1,17 @@
 angular.module('SigninCtrl', []).controller('SigninController', function($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $stateParams, $mdToast, $mdDialog) {    
     $scope.loading = false;
+    $scope.darkMode = localStorage.getItem('darkMode') === 'true';
+    if ($scope.darkMode) document.body.classList.add('dark-mode');
+    $scope.toggleDarkMode = function() {
+        $scope.darkMode = !$scope.darkMode;
+        localStorage.setItem('darkMode', $scope.darkMode);
+        if ($scope.darkMode) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+    };
+    $scope.showPassword = false;
     $ocLazyLoad.load('js/services/AccountService.js').then(function() {
         var Account = $injector.get('Account');
         
@@ -47,6 +59,7 @@ angular.module('SigninCtrl', []).controller('SigninController', function($scope,
                     rememberme: $scope.rememberme
                 }).then(function(response) {
                     var data = response.data;
+                    $scope.password = ""; // Clear password for security
                     if(data.activated){
                         $window.localStorage.language = data.language;
                         $window.localStorage.token = data.token;
@@ -63,21 +76,16 @@ angular.module('SigninCtrl', []).controller('SigninController', function($scope,
                 }).catch(function(response) {
                     $scope.loading = false;
                     $scope.password = "";
-                    if(response.status === 401){
-                        $mdToast.show(
-                            $mdToast.simple()
-                            .textContent(gettextCatalog.getString('The email or password you entered is incorrect.'))
-                            .position('top left right')
-                            .hideDelay(3000)
-                        );
-                    } else {
-                        $mdToast.show(
-                            $mdToast.simple()
-                            .textContent(status)
-                            .position('top right')
-                            .hideDelay(3000)
-                        );
-                    }
+                    $scope.showPassword = false;
+                    var msg = (response.status === 401)
+                        ? gettextCatalog.getString('The email or password you entered is incorrect.')
+                        : gettextCatalog.getString('A server error occurred. Please try again.');
+                    $mdToast.show(
+                        $mdToast.simple()
+                        .textContent(msg)
+                        .position('top left right')
+                        .hideDelay(3000)
+                    );
                 });
             } else {
                 $mdToast.show(
