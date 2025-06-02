@@ -795,7 +795,90 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
             templateUrl: 'templates/about.html',
             access: {requiredAuthentication: true},
             noLoading: true
-        });
+        })
+            // === BONUS MANAGEMENT ===
+            .state('home.bonus', {
+                abstract: true,
+                url: 'bonus',
+                templateUrl: 'templates/bonus/bonus.html',
+                access: {requiredAuthentication: true},
+                breadcrumbs: ['Bonus management']
+            })
+            .state('home.bonus.dashboard', {
+                url: '',
+                templateUrl: 'templates/bonus/dashboard.html',
+                controller: 'BonusManagementController',
+                resolve: {
+                    loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/bonus/BonusManagementCtrl.js');
+                    }]
+                },
+                breadcrumbs: ['Bonus management', 'Dashboard']
+            })
+            .state('home.bonus.templates', {
+                url: '/templates',
+                templateUrl: 'templates/bonus/templates.html',
+                controller: 'BonusTemplatesController',
+                access: {requiredAuthentication: true},
+                resolve: {
+                    loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/bonus/BonusTemplatesCtrl.js');
+                    }]
+                },
+                breadcrumbs: ['Bonus management', 'Templates']
+            })
+            .state('home.bonus.rules', {
+                url: '/rules',
+                templateUrl: 'templates/bonus/rules.html',
+                controller: 'BonusRulesController',
+                access: {requiredAuthentication: true},
+                resolve: {
+                    loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/bonus/BonusRulesCtrl.js');
+                    }]
+                },
+                breadcrumbs: ['Bonus management', 'Rules']
+            })
+            .state('home.bonus.instances', {
+                url: '/instances',
+                templateUrl: 'templates/bonus/instances.html',
+                controller: 'BonusInstancesController',
+                access: {requiredAuthentication: true},
+                resolve: {
+                    loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/bonus/BonusInstancesCtrl.js');
+                    }]
+                },
+                breadcrumbs: ['Bonus management', 'Instances']
+            })
+            .state('home.bonus.allocations', {
+                url: '/allocations',
+                templateUrl: 'templates/bonus/allocations.html',
+                controller: 'BonusAllocationsController',
+                access: {requiredAuthentication: true},
+                resolve: {
+                    loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/bonus/BonusAllocationsCtrl.js');
+                    }]
+                },
+                breadcrumbs: ['Bonus management', 'Allocations']
+            })
+            .state('home.bonus.reports', {
+                url: '/reports',
+                templateUrl: 'templates/bonus/reports.html',
+                controller: 'BonusReportsController',
+                access: {requiredAuthentication: true},
+                resolve: {
+                    loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/bonus/BonusReportsCtrl.js');
+                    }]
+                },
+                breadcrumbs: ['Bonus management', 'Reports']
+            })
+            .state('home.bonus.default', {
+                url: '',
+                template: '<div ui-view></div>'
+            });
 
         $locationProvider.html5Mode(true);
         $httpProvider.interceptors.push('TokenInterceptor');

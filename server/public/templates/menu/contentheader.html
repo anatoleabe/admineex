@@ -36,20 +36,3 @@
     </div>
 </div>
 <!--/page header--> 
-
-<div class="page-header-content header-elements-md-inline">
-    <div class="page-title d-flex">
-        <h4>
-            <i class="icon-arrow-left52 mr-2"></i> 
-            <span class="font-weight-semibold" translate>Home</span> -
-            <span class="breadcrumb-item active" ng-repeat="breadcrumb in kernel.breadcrumbs" ng-if="$last" >{{breadcrumb| translate}}</span>
-        </h4>
-        <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
-    </div>
-
-    <div class="header-elements d-none" style="margin-top: -10px">
-        <div class="d-flex justify-content-center" >
-            <a ui-sref="home.staffs.statofsanctions" class="btn btn-link btn-float text-default" ng-if="true"><i class="icon-bars-alt text-primary"></i><span>Statistics</span></a>
-        </div>
-    </div>
-</div>

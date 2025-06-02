@@ -1,0 +1,150 @@
+<div class="bonus-templates-page" ng-controller="BonusTemplatesController">
+  <!-- Page Header with Stats -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h3 class="mb-0">
+        <i class="icon-stack2 mr-2"></i> Bonus Templates
+      </h3>
+      <small class="text-muted">Manage all bonus calculation templates</small>
+    </div>
+    <div class="d-flex">
+      <div class="mr-3">
+        <div class="stat-card bg-primary-100 p-2 rounded">
+          <div class="text-primary font-weight-bold">{{templates.length}}</div>
+          <small class="text-muted">Total Templates</small>
+        </div>
+      </div>
+      <button class="btn btn-primary" ng-click="openTemplateForm()">
+        <i class="icon-plus22 mr-1"></i> New Template
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters and Search -->
+  <div class="card mb-3">
+    <div class="card-body p-2">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group mb-0">
+            <div class="input-group">
+              <span class="input-group-prepend">
+                <span class="input-group-text"><i class="icon-search4"></i></span>
+              </span>
+              <input type="text" class="form-control" ng-model="searchQuery" placeholder="Search templates...">
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <select class="form-control" ng-model="statusFilter" ng-change="applyFilters()">
+            <option value="">All Statuses</option>
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <select class="form-control" ng-model="categoryFilter" ng-change="applyFilters()">
+            <option value="">All Categories</option>
+            <option ng-repeat="cat in constants.categories" value="{{cat.value}}">{{cat.label}}</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <button class="btn btn-light btn-block" ng-click="resetFilters()">
+            <i class="icon-reset"></i> Reset
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Templates Table -->
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered table-striped">
+        <thead class="thead-dark">
+        <tr>
+          <th width="20%">Name</th>
+          <th width="15%">Code</th>
+          <th width="15%">Category</th>
+          <th width="15%">Periodicity</th>
+          <th width="10%">Status</th>
+          <th width="15%">Last Updated</th>
+          <th width="10%" class="text-center">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="template in filteredTemplates = (templates | filter:searchFilter) track by template._id">
+          <td>
+            <a href="javascript:void(0)" ng-click="viewTemplate(template)">
+              <strong>{{template.name}}</strong>
+            </a>
+            <div class="text-muted small">{{template.description | limitTo:50}}{{template.description.length > 50 ? '...' : ''}}</div>
+          </td>
+          <td>
+            <span class="badge-light">{{template.code}}</span>
+          </td>
+          <td>
+            {{getCategoryLabel(template.category)}}
+          </td>
+          <td>
+            {{getPeriodicityLabel(template.periodicity)}}
+          </td>
+          <td>
+              <span class="badge" ng-class="{'badge-success': template.isActive, 'badge-secondary': !template.isActive}">
+                {{template.isActive ? 'Active' : 'Inactive'}}
+              </span>
+          </td>
+          <td>
+            <span class="d-block">{{template.updatedAt | date:'shortDate'}}</span>
+            <small class="text-muted">{{template.updatedAt | date:'shortTime'}}</small>
+          </td>
+          <td class="text-center">
+            <div class="btn-group btn-group-sm">
+              <button class="btn btn-outline-info" ng-click="viewTemplate(template)"
+                      title="View Template">
+                <i class="icon-eye"></i>
+              </button>
+              <button class="btn btn-outline-primary" ng-click="editTemplate(template)"
+                      title="Edit Template">
+                <i class="icon-pencil7"></i>
+              </button>
+              <button class="btn btn-outline-danger" ng-click="confirmDelete(template)"
+                      title="Delete Template">
+                <i class="icon-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+        <tr ng-if="!templates.length && !state.loading">
+          <td colspan="7" class="text-center text-muted py-4">
+            No bonus templates found. Click "New Template" to create one.
+          </td>
+        </tr>
+        <tr ng-if="state.loading">
+          <td colspan="7" class="text-center py-4">
+            <i class="icon-spinner4 spinner mr-2"></i> Loading templates...
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Basic modal -->
+  <div id="modal_basic" class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div ng-include="'templates/bonus/template-form.html'"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Template Modal -->
+  <div id="modal_view_template" class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div ng-include="'templates/bonus/template-view.html'"></div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -270,21 +270,48 @@ function buildNav(user, callback) {
         label: 'Audit',
         name: 'Audit'
     };
-//    // Account
-//    var profile = {
-//        href: 'home.profile.main',
-//        sref: 'home.profile.main',
-//        icon: 'account_circle',
-//        label: gt.gettext('Profile'),
-//        name: gt.gettext('Profile')
-//    };
-//    var settings = {
-//        href: 'home.settings.main',
-//        sref: 'settings.main',
-//        icon: 'tune',
-//        label: gt.gettext('Settings'),
-//        name: gt.gettext('Settings')
-//    };
+
+    // Bonus Management Menu
+    var bonusManagement = {
+        href: 'home.bonus.instances',
+        sref: 'home.bonus.instances',
+        icon: 'card_giftcard',
+        icomoon: 'icon-gift',
+        label: gt.gettext('Bonus Management'),
+        name: gt.gettext('Bonus Management'),
+        items: [
+            {
+                href: 'home.bonus.rules',
+                sref: 'home.bonus.rules',
+                label: gt.gettext('Rules'),
+                name: gt.gettext('Rules')
+            },
+            {
+                href: 'home.bonus.templates',
+                sref: 'home.bonus.templates',
+                label: gt.gettext('Templates'),
+                name: gt.gettext('Templates')
+            },
+            {
+                href: 'home.bonus.instances',
+                sref: 'home.bonus.instances',
+                label: gt.gettext('Instances'),
+                name: gt.gettext('Instances')
+            },
+            {
+                href: 'home.bonus.allocations',
+                sref: 'home.bonus.allocations',
+                label: gt.gettext('Allocations'),
+                name: gt.gettext('Allocations')
+            },
+            {
+                href: 'home.bonus.reports',
+                sref: 'home.bonus.reports',
+                label: gt.gettext('Reports'),
+                name: gt.gettext('Reports')
+            }
+        ]
+    };
 
     //END DIAMA MENU
     // Build the nav
@@ -323,6 +350,7 @@ function buildNav(user, callback) {
             nav.left[1].items.push(users);
             nav.left[1].items.push(configuration);
             nav.left[1].items.push(audit);
+            nav.left[0].items.push(bonusManagement);
             break;
         case '2'://Manager
             // LEFT MENU STAFF MANAGEMENT
@@ -345,6 +373,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
             
             nav.left[0].items.push(thresholds);
+            nav.left[0].items.push(bonusManagement);
             break;
         case '3'://Supervisor
             // LEFT MENU STAFF MANAGEMENT
@@ -363,6 +392,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
             nav.left[1].items.push(users);
+            nav.left[0].items.push(bonusManagement);
             break;
         case '4'://Editor
             // LEFT MENU STAFF MANAGEMENT
@@ -382,6 +412,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2_menu1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
+            nav.left[0].items.push(bonusManagement);
             break;
         case '5'://Task user
             // LEFT MENU TASK

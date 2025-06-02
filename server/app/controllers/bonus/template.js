@@ -8,7 +8,6 @@ const formidable = require('formidable');
 exports.api = {};
 
 
-
 /**
  * Create bonus template
  */
@@ -91,36 +90,44 @@ exports.api.getById = async (req, res, next) => {
  * Update bonus template
  */
 exports.api.update = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const updateData = req.body;
-        updateData.updatedAt = new Date();
+    const form = formidable({ multiples: false });
 
-        // Prevent changing template code
-        if (updateData.code) {
-            delete updateData.code;
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return next(badRequest('Form data parsing failed'));
         }
 
-        // Validate formula if being updated
-        if (updateData.calculationConfig?.formula) {
-            if (!validateFormula(updateData.calculationConfig.formula)) {
-                throw badRequest('Invalid formula syntax');
+        try {
+            const { id } = req.params;
+            const updateData = fields;
+            updateData.updatedAt = new Date();
+
+            // Prevent changing template code
+            if (updateData.code) {
+                delete updateData.code;
             }
+
+            // Validate formula if being updated
+            if (updateData.calculationConfig?.formula) {
+                if (!validateFormula(updateData.calculationConfig.formula)) {
+                    throw badRequest('Invalid formula syntax');
+                }
+            }
+
+            const template = await Template.findByIdAndUpdate(id, updateData, {
+                new: true,
+                runValidators: true
+            });
+
+            if (!template) {
+                throw notFound('Bonus template not found');
+            }
+
+            res.json(template);
+        } catch (error) {
+            next(error);
         }
-
-        const template = await Template.findByIdAndUpdate(id, updateData, {
-            new: true,
-            runValidators: true
-        });
-
-        if (!template) {
-            throw notFound('Bonus template not found');
-        }
-
-        res.json(template);
-    } catch (error) {
-        next(error);
-    }
+    });
 }
 
 /**

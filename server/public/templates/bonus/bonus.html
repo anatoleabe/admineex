@@ -1,0 +1,103 @@
+<div class="bonus-management-container">
+  <!-- Header with title and description -->
+  <div class="bonus-header">
+    <!-- Enhanced Horizontal Navigation -->
+    <div class="bonus-nav-container">
+      <nav class="nav nav-pills bonus-nav">
+        <a class="nav-link" ui-sref="home.bonus.dashboard" ui-sref-active="active">
+          <i class="icon-dashboard mr-1"></i>
+          Dashboard
+        </a>
+        <a class="nav-link" ui-sref="home.bonus.rules" ui-sref-active="active">
+          <i class="icon-rule mr-1"></i>
+          Rules
+        </a>
+        <a class="nav-link" ui-sref="home.bonus.templates" ui-sref-active="active">
+          <i class="icon-template mr-1"></i>
+          Templates
+        </a>
+        <a class="nav-link" ui-sref="home.bonus.instances" ui-sref-active="active">
+          <i class="icon-cube3 mr-1"></i>
+          Instances
+        </a>
+        <a class="nav-link" ui-sref="home.bonus.allocations" ui-sref-active="active">
+          <i class="icon-distribute mr-1"></i>
+          Allocations
+        </a>
+        <a class="nav-link" ui-sref="home.bonus.reports" ui-sref-active="active">
+          <i class="icon-stats-bars2 mr-1"></i>
+          Reports
+        </a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Content Area -->
+  <div class="bonus-content card border-0 shadow-sm">
+    <div class="card-body p-4">
+      <div ui-view></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Custom styling for horizontal navigation */
+  .bonus-nav-container {
+    border-bottom: 1px solid #e9ecef;
+    margin-bottom: 1.5rem;
+    overflow-x: auto; /* For mobile responsiveness */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .bonus-nav {
+    display: flex;
+    flex-wrap: nowrap;
+    padding-bottom: 0px; /* For border overlap */
+  }
+
+  .bonus-nav .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1.25rem;
+    color: #495057;
+    border-radius: 0;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    white-space: nowrap;
+    margin-right: 0.25rem;
+  }
+
+  .bonus-nav .nav-link:hover {
+    color: #007bff;
+    background-color: #f8f9fa;
+    border-bottom-color: #dee2e6;
+  }
+
+  .bonus-nav .nav-link.active {
+    color: #007bff;
+    background-color: transparent;
+    border-bottom-color: #007bff;
+    font-weight: 500;
+  }
+
+  .bonus-nav .nav-link i {
+    font-size: 1.1em;
+    margin-right: 0.5rem;
+  }
+
+  .bonus-header {
+    padding: 0rem 0;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .bonus-nav .nav-link {
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+
+    .bonus-nav .nav-link i {
+      margin-right: 0.25rem;
+    }
+  }
+</style>

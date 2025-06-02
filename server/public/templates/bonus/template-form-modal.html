@@ -1,0 +1,34 @@
+<div class="modal-header">
+    <h5 class="modal-title">{{editingTemplate ? 'Edit Template' : 'New Template'}}</h5>
+    <button type="button" class="close" ng-click="closeTemplateForm()">
+        <span>&times;</span>
+    </button>
+</div>
+<form name="templateForm" ng-submit="saveTemplate()">
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="templateName">Name</label>
+            <input type="text" class="form-control" id="templateName" name="name" ng-model="templateFormData.name" required>
+        </div>
+        <div class="form-group">
+            <label for="defaultShareAmount">Default Share Amount</label>
+            <input type="number" class="form-control" id="defaultShareAmount" name="defaultShareAmount" ng-model="templateFormData.calculationConfig.defaultShareAmount" required>
+        </div>
+        <div class="form-group">
+            <label for="templateDescription">Description</label>
+            <textarea class="form-control" id="templateDescription" name="description" ng-model="templateFormData.description" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="templateStatus">Status</label>
+            <select class="form-control" id="templateStatus" name="active" ng-model="templateFormData.active">
+                <option ng-value="true">Active</option>
+                <option ng-value="false">Inactive</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" ng-click="closeTemplateForm()">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+</form>
+

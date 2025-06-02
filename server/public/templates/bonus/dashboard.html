@@ -1,0 +1,104 @@
+<div class="content-wrapper">
+    <div class="content">
+        <!-- Statistics cards -->
+        <div class="row">
+            <div class="col-sm-6 col-xl-3">
+                <div class="card card-body bg-blue-400 has-bg-image">
+                    <div class="media">
+                        <div class="media-body">
+                            <h3 class="mb-0">{{templates.length}}</h3>
+                            <span class="text-uppercase font-size-xs">{{ 'Bonus Templates' | translate }}</span>
+                        </div>
+                        <div class="ml-3 align-self-center">
+                            <i class="icon-files-empty icon-3x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+                <div class="card card-body bg-danger-400 has-bg-image">
+                    <div class="media">
+                        <div class="media-body">
+                            <h3 class="mb-0">{{rules.length}}</h3>
+                            <span class="text-uppercase font-size-xs">{{ 'Bonus Rules' | translate }}</span>
+                        </div>
+                        <div class="ml-3 align-self-center">
+                            <i class="icon-list icon-3x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+                <div class="card card-body bg-success-400 has-bg-image">
+                    <div class="media">
+                        <div class="media-body">
+                            <h3 class="mb-0">{{instances.length}}</h3>
+                            <span class="text-uppercase font-size-xs">{{ 'Active Instances' | translate }}</span>
+                        </div>
+                        <div class="ml-3 align-self-center">
+                            <i class="icon-stack icon-3x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xl-3">
+                <div class="card card-body bg-indigo-400 has-bg-image">
+                    <div class="media">
+                        <div class="media-body">
+                            <h3 class="mb-0">{{allocations.length}}</h3>
+                            <span class="text-uppercase font-size-xs">{{ 'Recent Allocations' | translate }}</span>
+                        </div>
+                        <div class="ml-3 align-self-center">
+                            <i class="icon-coin-dollar icon-3x opacity-75"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /statistics cards -->
+
+        <!-- Recent bonus activity -->
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header header-elements-inline">
+                        <h6 class="card-title">{{ 'Recent Bonus Activity' | translate }}</h6>
+                    </div>
+
+                    <div class="card-body py-0">
+                        <div class="table-responsive">
+                            <table class="table text-nowrap">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'Status' | translate }}</th>
+                                        <th>{{ 'Type' | translate }}</th>
+                                        <th>{{ 'Date' | translate }}</th>
+                                        <th>{{ 'Amount' | translate }}</th>
+                                        <th>{{ 'Description' | translate }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="activity in recentActivity">
+                                        <td>
+                                            <span class="badge" ng-class="{'badge-success': activity.status === 'completed', 'badge-warning': activity.status === 'pending', 'badge-danger': activity.status === 'failed'}">
+                                                {{activity.status}}
+                                            </span>
+                                        </td>
+                                        <td>{{activity.type}}</td>
+                                        <td>{{activity.date | date:'medium'}}</td>
+                                        <td>{{activity.amount | currency}}</td>
+                                        <td>{{activity.description}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /recent bonus activity -->
+    </div>
+</div>

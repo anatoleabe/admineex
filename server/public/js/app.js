@@ -1,6 +1,7 @@
 var app = angular.module('app', [
     'ngMaterial',
     'ui.router',
+    'ui.bootstrap',  // Add UI Bootstrap dependency
     'routes',
     'oc.lazyLoad',
     'angular-jwt',
@@ -14,7 +15,8 @@ var app = angular.module('app', [
     'chart.js',
     'ngSanitize',
     'PendingRequestService',
-    'CancellableHTTPService'
+    'CancellableHTTPService',
+    'toastr'
 ]).config(function($mdThemingProvider) {
     $mdThemingProvider.definePalette('savics', {
         '50': 'ffffff',
@@ -131,3 +133,4 @@ var app = angular.module('app', [
 
 // Dialog params
 app.value('params', {});
+
