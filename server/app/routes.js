@@ -1,9 +1,11 @@
+const express = require('express');
 const jwt = require('express-jwt');
 const path = require('path');
 const jsonwebtoken = require('jsonwebtoken');
 const _ = require('underscore');
 const tokenManager = require('./managers/token');
 const nconf = require('nconf');
+const validate = require('./middlewares/validate');
 nconf.file("config/server.json");
 const User = require('./models/user').User;
 const aclRoutes = require('../resources/dictionary/app/routes.json');
@@ -53,9 +55,6 @@ controllers.thresholds = require('./controllers/thresholds');
 controllers.angular = function (req, res) {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 };
-
-const { validate } = require('./middlewares/validate');
-
 
 const {
     createPersonnelSnapshot,
@@ -897,7 +896,7 @@ let routes = [
     {
         path: _.findWhere(aclRoutes, { id: 222 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 222 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.getById],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.getBonusInstanceById), controllers.bonus.instance.api.getById],
         access: _.findWhere(aclRoutes, { id: 222 }).roles
     },
     {
@@ -921,26 +920,20 @@ let routes = [
     {
         path: _.findWhere(aclRoutes, { id: 226 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 226 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.cancelBonusInstance), controllers.bonus.instance.api.cancel],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.generateBonusPayments), controllers.bonus.instance.api.generatePayments],
         access: _.findWhere(aclRoutes, { id: 226 }).roles
     },
     {
         path: _.findWhere(aclRoutes, { id: 227 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 227 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.generatePayments],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.exportBonusInstance), controllers.bonus.instance.api.export],
         access: _.findWhere(aclRoutes, { id: 227 }).roles
     },
     {
         path: _.findWhere(aclRoutes, { id: 228 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 228 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.export],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.notifyBonusInstance), controllers.bonus.instance.api.notify],
         access: _.findWhere(aclRoutes, { id: 228 }).roles
-    },
-    {
-        path: _.findWhere(aclRoutes, { id: 229 }).uri,
-        httpMethod: _.findWhere(aclRoutes, { id: 229 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.notify],
-        access: _.findWhere(aclRoutes, { id: 229 }).roles
     },
 
 // ================================== BONUS ALLOCATIONS API ROUTES =================================

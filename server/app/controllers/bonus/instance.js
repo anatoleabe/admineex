@@ -2,6 +2,7 @@ const httpStatus = require('http-status');
 const mongoose = require('mongoose');
 const { BonusInstance } = require('../../models/bonus/instance');
 const { BonusTemplate } = require('../../models/bonus/template');
+const { BonusAllocation } = require('../../models/bonus/allocation');
 const { badRequest, notFound, forbidden } = require('../../utils/ApiError');
 const { generatePaymentFile } = require('../../services/bonusService');
 const { sendNotification } = require('../../services/notificationService');
@@ -11,8 +12,6 @@ const { bulkCreateSnapshots } = require('../../services/snapshotService');
 
 // API methods
 exports.api = {};
-
-
 
 /**
  * Create a bonus instance
@@ -27,7 +26,7 @@ exports.api.create = async (req, res, next) => {
 
         try {
             console.log(fields);
-            const { templateId, referencePeriod, notes, shareAmount} = fields;
+            const { templateId, referencePeriod, notes, shareAmount } = fields;
 
             if (!templateId || !referencePeriod) {
                 throw badRequest('templateId and referencePeriod are required');
@@ -105,17 +104,24 @@ exports.api.search = async (req, res, next) => {
     }
 };
 
-
 /**
  * Get all bonus instances
  */
 exports.api.getAll = async (req, res, next) => {
     try {
-        const { status, templateId, fromDate, toDate, limit = 50, sortBy = 'createdAt:desc' } = req.query;
+        const {
+            status,
+            templateId,
+            fromDate,
+            toDate,
+            limit = 10,
+            offset = 0,
+            sortBy = 'createdAt:desc'
+        } = req.query;
 
         const filter = {};
         if (status) filter.status = status;
-        if (templateId) filter.templateId = templateId;
+        if (templateId) filter.templateId = mongoose.Types.ObjectId(templateId);
 
         if (fromDate || toDate) {
             filter.createdAt = {};
@@ -126,13 +132,34 @@ exports.api.getAll = async (req, res, next) => {
         const [sortField, sortOrder] = sortBy.split(':');
         const sort = { [sortField]: sortOrder === 'desc' ? -1 : 1 };
 
-        const instances = await BonusInstance.find(filter)
+        // Get total count for pagination
+        const total = await BonusInstance.countDocuments(filter);
+
+        // Get paginated results with populated data
+        const items = await BonusInstance.find(filter)
             .sort(sort)
+            .skip(Number(offset))
             .limit(Number(limit))
             .populate('templateId', 'name code')
-            .populate('createdBy', 'firstname lastname');
+            .populate('createdBy', 'firstname lastname')
+            .lean()
+            .exec();
 
-        res.json(instances);
+        // Get allocation counts for each instance
+        const instances = await Promise.all(items.map(async (instance) => {
+            const allocationsCount = await BonusAllocation.countDocuments({
+                instanceId: instance._id,
+                status: { $ne: 'cancelled' }
+            });
+            return { ...instance, allocationsCount };
+        }));
+
+        res.json({
+            items: instances,
+            total,
+            limit: Number(limit),
+            offset: Number(offset)
+        });
     } catch (error) {
         next(error);
     }
@@ -359,3 +386,4 @@ exports.api.notify = async (req, res, next) => {
         next(error);
     }
 };
+

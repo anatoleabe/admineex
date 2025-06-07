@@ -89,9 +89,7 @@
             {{getPeriodicityLabel(template.periodicity)}}
           </td>
           <td>
-              <span class="badge" ng-class="{'badge-success': template.isActive, 'badge-secondary': !template.isActive}">
                 {{template.isActive ? 'Active' : 'Inactive'}}
-              </span>
           </td>
           <td>
             <span class="d-block">{{template.updatedAt | date:'shortDate'}}</span>

@@ -1,8 +1,200 @@
-<div class="bonus-instances-page">
-  <h3>Bonus Instances</h3>
-  <div ng-controller="BonusInstancesController">
-    <!-- Table/list of instances will go here -->
-    <p>List, create, approve/reject/cancel, export, notify, and generate payments for bonus instances.</p>
-  </div>
-</div>
+<div class="page-content">
+    <!-- Main content -->
+    <div class="content-wrapper">
+        <!-- Page header -->
+        <div class="page-header page-header-light">
+            <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
+                <div class="d-flex">
+                    <div class="breadcrumb">
+                        <a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
+                        <span class="breadcrumb-item">Bonus</span>
+                        <span class="breadcrumb-item active">Instances</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /page header -->
 
+        <!-- Content area -->
+        <div class="content" ng-controller="BonusInstancesController">
+            <!-- Basic card -->
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">Bonus Instances</h5>
+                    <div class="header-elements">
+                        <button type="button" class="btn btn-primary" ui-sref="bonus.create">
+                            <i class="mi-add mr-2"></i>
+                            Create New Instance
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Template</label>
+                                <select class="form-control" ng-model="filters.templateId" ng-change="loadInstances()">
+                                    <option value="">All Templates</option>
+                                    <option ng-repeat="template in templates" value="{{template._id}}">{{template.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <select class="form-control" ng-model="filters.status" ng-change="loadInstances()">
+                                    <option value="">All Statuses</option>
+                                    <option value="draft">Draft</option>
+                                    <option value="pending_generation">Pending Generation</option>
+                                    <option value="generated">Generated</option>
+                                    <option value="under_review">Under Review</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="paid">Paid</option>
+                                    <option value="cancelled">Cancelled</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>From Date</label>
+                                <input type="date" class="form-control" ng-model="filters.fromDate" ng-change="loadInstances()">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>To Date</label>
+                                <input type="date" class="form-control" ng-model="filters.toDate" ng-change="loadInstances()">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+                                <button class="btn btn-light btn-block" ng-click="resetFilters()">
+                                    <i class="mi-refresh mr-2"></i>
+                                    Reset Filters
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Template</th>
+                                <th>Period</th>
+                                <th>Status</th>
+                                <th class="text-center">Allocations</th>
+                                <th class="text-right">Total Amount</th>
+                                <th>Generation Date</th>
+                                <th class="text-center" style="width: 100px;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="instance in instances">
+                                <td>
+                                    <a ui-sref="bonus.instance.details({id: instance._id})" class="text-blue font-weight-semibold">
+                                        {{instance.templateId.name}} - {{instance.referencePeriod}}
+                                    </a>
+                                </td>
+                                <td>{{instance.templateId.name}}</td>
+                                <td>{{instance.referencePeriod}}</td>
+                                <td>
+                                    <span class="badge" ng-class="{
+                                        'badge-secondary': instance.status === 'draft',
+                                        'badge-info': instance.status === 'pending_generation',
+                                        'badge-primary': instance.status === 'generated',
+                                        'badge-warning': instance.status === 'under_review',
+                                        'badge-success': instance.status === 'approved',
+                                        'badge-dark': instance.status === 'paid',
+                                        'badge-danger': instance.status === 'cancelled'
+                                    }">
+                                        {{instance.status | capitalize}}
+                                    </span>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge badge-info">{{instance.allocationsCount || 0}}</span>
+                                </td>
+                                <td class="text-right font-weight-semibold">{{instance.totalAmount | currency}}</td>
+                                <td>{{instance.generationDate | date:'medium'}}</td>
+                                <td>
+                                    <div class="list-icons">
+                                        <div class="dropdown">
+                                            <a href="#" class="list-icons-item" data-toggle="dropdown">
+                                                <i class="mi-more-vert"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" ui-sref="bonus.instance.details({id: instance._id})">
+                                                    <i class="mi-visibility mr-2"></i> View Details
+                                                </a>
+                                                <a class="dropdown-item" ng-click="approve(instance)"
+                                                   ng-if="instance.status === 'generated' || instance.status === 'under_review'">
+                                                    <i class="mi-check mr-2"></i> Approve
+                                                </a>
+                                                <a class="dropdown-item" ng-click="reject(instance)"
+                                                   ng-if="instance.status === 'generated' || instance.status === 'under_review'">
+                                                    <i class="mi-close mr-2"></i> Reject
+                                                </a>
+                                                <a class="dropdown-item" ng-click="generatePayments(instance)"
+                                                   ng-if="instance.status === 'approved'">
+                                                    <i class="mi-payment mr-2"></i> Generate Payments
+                                                </a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" ng-click="export(instance)">
+                                                    <i class="mi-file-download mr-2"></i> Export
+                                                </a>
+                                                <a class="dropdown-item" ng-click="notify(instance)">
+                                                    <i class="mi-notifications mr-2"></i> Send Notifications
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-if="!instances.length && !loading">
+                                <td colspan="8" class="text-center text-muted p-4">
+                                    <i class="mi-info-outline d-block mb-2" style="font-size: 2rem;"></i>
+                                    <p class="mb-0">No bonus instances found</p>
+                                </td>
+                            </tr>
+                            <tr ng-if="loading">
+                                <td colspan="8" class="text-center p-4">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <span class="text-muted">
+                        Showing {{(pagination.offset + 1)}} to {{Math.min(pagination.offset + pagination.limit, pagination.total)}} of {{pagination.total}} entries
+                    </span>
+                    <ul class="pagination pagination-flat mb-0">
+                        <li class="page-item" ng-class="{disabled: pagination.offset === 0}">
+                            <a class="page-link" href="#" ng-click="prevPage()">
+                                <i class="mi-chevron-left"></i> Previous
+                            </a>
+                        </li>
+                        <li class="page-item" ng-class="{disabled: (pagination.offset + pagination.limit) >= pagination.total}">
+                            <a class="page-link" href="#" ng-click="nextPage()">
+                                Next <i class="mi-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- /basic card -->
+        </div>
+        <!-- /content area -->
+    </div>
+    <!-- /main content -->
+</div>

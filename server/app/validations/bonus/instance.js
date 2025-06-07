@@ -1,63 +1,83 @@
-const Joi = require('joi');
+const { Joi } = require('celebrate');
+const { ObjectId } = require('mongoose').Types;
 
-const createBonusInstance = {
-    body: Joi.object().keys({
-        templateId: Joi.string().required(),
-        referencePeriod: Joi.string().required().pattern(/^\d{4}-[QqSsTt]\d$/),
-        notes: Joi.string().allow('')
-    })
+const isValidObjectId = (value, helpers) => {
+    if (!ObjectId.isValid(value)) {
+        return helpers.error('any.invalid');
+    }
+    return value;
 };
 
-const updateBonusInstance = {
-    params: Joi.object().keys({
-        id: Joi.string().required()
-    }),
-    body: Joi.object().keys({
-        notes: Joi.string().allow(''),
-        customOverrides: Joi.object()
-    })
+const schemas = {
+    createBonusInstance: {
+        body: Joi.object({
+            templateId: Joi.string().custom(isValidObjectId).required(),
+            referencePeriod: Joi.string().required(),
+            notes: Joi.string().allow('', null),
+            shareAmount: Joi.number().positive().allow(null)
+        })
+    },
+
+    getBonusInstances: {
+        query: Joi.object({
+            status: Joi.string().valid('draft', 'pending_generation', 'generated', 'under_review', 'approved', 'paid', 'cancelled').allow(''),
+            templateId: Joi.string().custom(isValidObjectId).allow(''),
+            fromDate: Joi.date().iso().allow(''),
+            toDate: Joi.date().iso().min(Joi.ref('fromDate')).allow(''),
+            limit: Joi.number().integer().min(1).max(100).default(10),
+            offset: Joi.number().integer().min(0).default(0),
+            sortBy: Joi.string().pattern(/^[a-zA-Z]+:(asc|desc)$/).default('createdAt:desc')
+        })
+    },
+
+    getBonusInstanceById: {
+        params: Joi.object({
+            id: Joi.string().custom(isValidObjectId).required()
+        })
+    },
+
+    updateBonusInstance: {
+        params: Joi.object({
+            id: Joi.string().custom(isValidObjectId).required()
+        }),
+        body: Joi.object({
+            notes: Joi.string().allow('', null),
+            customOverrides: Joi.object().allow(null)
+        })
+    },
+
+    approveBonusInstance: {
+        params: Joi.object({
+            id: Joi.string().custom(isValidObjectId).required()
+        })
+    },
+
+    rejectBonusInstance: {
+        params: Joi.object({
+            id: Joi.string().custom(isValidObjectId).required()
+        }),
+        body: Joi.object({
+            reason: Joi.string().required()
+        })
+    },
+
+    generateBonusPayments: {
+        params: Joi.object({
+            id: Joi.string().custom(isValidObjectId).required()
+        })
+    },
+
+    exportBonusInstance: {
+        params: Joi.object({
+            id: Joi.string().custom(isValidObjectId).required()
+        })
+    },
+
+    notifyBonusInstance: {
+        params: Joi.object({
+            id: Joi.string().custom(isValidObjectId).required()
+        })
+    }
 };
 
-const approveBonusInstance = {
-    params: Joi.object().keys({
-        id: Joi.string().required()
-    })
-};
-
-const rejectBonusInstance = {
-    params: Joi.object().keys({
-        id: Joi.string().required()
-    }),
-    body: Joi.object().keys({
-        reason: Joi.string().allow('')
-    })
-};
-
-const cancelBonusInstance = {
-    params: Joi.object().keys({
-        id: Joi.string().required()
-    }),
-    body: Joi.object().keys({
-        reason: Joi.string().allow('')
-    })
-};
-
-const getBonusInstances = {
-    query: Joi.object().keys({
-        status: Joi.string().valid('draft', 'pending_generation', 'generated', 'under_review', 'approved', 'paid', 'cancelled'),
-        templateId: Joi.string(),
-        fromDate: Joi.date(),
-        toDate: Joi.date(),
-        limit: Joi.number().integer().min(1).max(1000).default(50),
-        sortBy: Joi.string().default('createdAt:desc')
-    })
-};
-
-module.exports = {
-    createBonusInstance,
-    updateBonusInstance,
-    approveBonusInstance,
-    rejectBonusInstance,
-    cancelBonusInstance,
-    getBonusInstances
-};
+module.exports = schemas;
