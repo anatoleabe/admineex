@@ -1,0 +1,185 @@
+<div class="modal-header bg-primary text-white">
+    <h5 class="modal-title d-flex align-items-center">
+        <i class="icon-file-plus mr-2"></i>
+        <span>Create Bonus Instance</span>
+    </h5>
+    <button type="button" class="close text-white" ng-click="closeInstanceForm()" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<form name="instanceForm" ng-submit="instanceForm.$valid && saveInstance()" class="form-validate">
+    <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+        <!-- Template Selection Card -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h6 class="mb-0 font-weight-semibold">
+                    <i class="icon-template mr-2"></i>Template Configuration
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="d-flex align-items-center">
+                        <i class="icon-stack2 mr-1 text-muted"></i>
+                        Bonus Template
+                        <span class="text-danger ml-1">*</span>
+                    </label>
+                    <select class="form-control select2"
+                            id="templateSelect"
+                            name="templateId"
+                            ng-model="instanceFormData.templateId"
+                            required
+                            ng-change="onTemplateChange()">
+                        <option value="">Select a template</option>
+                        <option ng-repeat="template in templates | filter:{isActive:true}"
+                                value="{{template._id}}"
+                                data-periodicity="{{template.periodicity}}">
+                            {{template.name}} ({{template.code}})
+                        </option>
+                    </select>
+                    <small class="form-text text-muted" ng-if="selectedTemplate">
+                        Periodicity: <span class="badge badge-light">{{getPeriodicityLabel(selectedTemplate.periodicity)}}</span>
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Period Configuration Card -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-light">
+                <h6 class="mb-0 font-weight-semibold">
+                    <i class="icon-calendar mr-2"></i>Period Configuration
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="d-flex align-items-center">
+                        <i class="icon-clock mr-1 text-muted"></i>
+                        Reference Period
+                        <span class="text-danger ml-1">*</span>
+                    </label>
+                    <div class="input-group">
+                        <input type="month"
+                               class="form-control"
+                               id="referencePeriod"
+                               name="referencePeriod"
+                               ng-model="instanceFormData.referencePeriod"
+                               required
+                               ng-change="validatePeriod()">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" ng-click="suggestPeriod()">
+                                <i class="icon-magic-wand"></i> Suggest
+                            </button>
+                        </div>
+                    </div>
+                    <div class="alert alert-warning mt-2" ng-if="periodWarning">
+                        <i class="icon-alert-circle"></i> {{periodWarning}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Options Card -->
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-light">
+                <h6 class="mb-0 font-weight-semibold">
+                    <i class="icon-settings mr-2"></i>Additional Options
+                </h6>
+            </div>
+            <div class="card-body">
+                <div class="form-group">
+                    <label class="d-flex align-items-center">
+                        <i class="icon-edit-2 mr-1 text-muted"></i>
+                        Description
+                    </label>
+                    <textarea class="form-control"
+                              id="description"
+                              name="description"
+                              ng-model="instanceFormData.description"
+                              rows="2"
+                              placeholder="Optional description for this instance"></textarea>
+                </div>
+
+                <div class="form-group mt-4">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox"
+                               class="custom-control-input"
+                               id="autoGenerateCheckbox"
+                               name="autoGenerate"
+                               ng-model="instanceFormData.autoGenerate">
+                        <label class="custom-control-label" for="autoGenerateCheckbox">
+                            <i class="icon-zap mr-1"></i> Auto-generate allocations
+                        </label>
+                        <small class="form-text text-muted">
+                            Automatically create allocations based on template rules
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Template Preview (conditional) -->
+                <div class="template-preview mt-3" ng-if="selectedTemplate">
+                    <h6 class="font-weight-semibold mb-2">
+                        <i class="icon-eye mr-1"></i>Template Preview
+                    </h6>
+                    <div class="border rounded p-3 bg-light">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="small text-muted">Default Share</label>
+                                <div>{{selectedTemplate.calculationConfig.defaultShareAmount | currency}}</div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="small text-muted">Formula Type</label>
+                                <div>{{getFormulaTypeLabel(selectedTemplate.calculationConfig.formulaType)}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer bg-light">
+        <button type="button" class="btn btn-light" ng-click="closeInstanceForm()">
+            <i class="icon-cross mr-1"></i> Cancel
+        </button>
+        <button type="submit" class="btn btn-primary" ng-disabled="instanceForm.$invalid || processing">
+            <i class="icon-check mr-1"></i>
+            <span ng-if="!processing">Create Instance</span>
+            <span ng-if="processing">Processing...</span>
+        </button>
+    </div>
+</form>
+
+<style>
+    /* Custom styles */
+    .select2 {
+        width: 100% !important;
+    }
+
+    .template-preview {
+        transition: all 0.3s ease;
+    }
+
+    .card {
+        border-radius: 0.5rem;
+    }
+
+    .card-header {
+        border-radius: 0.5rem 0.5rem 0 0 !important;
+    }
+
+    .modal-body {
+        scrollbar-width: thin;
+    }
+
+    .modal-body::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    .modal-body::-webkit-scrollbar-thumb {
+        background-color: #dee2e6;
+        border-radius: 4px;
+    }
+</style>
+
+

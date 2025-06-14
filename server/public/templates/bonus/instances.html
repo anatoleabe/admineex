@@ -15,6 +15,13 @@
         </div>
         <!-- /page header -->
 
+        <!-- Auto-generation alert -->
+        <div class="alert alert-info alert-styled-left" ng-if="pendingAutoGenerations">
+            <button type="button" class="close" data-dismiss="alert">×</button>
+            <span class="font-weight-semibold">{{pendingAutoGenerations}} bonuses</span> were auto-generated and need review.
+            <a href="#" ng-click="showPending()" class="alert-link">View pending instances</a>
+        </div>
+
         <!-- Content area -->
         <div class="content" ng-controller="BonusInstancesController">
             <!-- Basic card -->
@@ -22,10 +29,61 @@
                 <div class="card-header header-elements-inline">
                     <h5 class="card-title">Bonus Instances</h5>
                     <div class="header-elements">
-                        <button type="button" class="btn btn-primary" ui-sref="bonus.create">
-                            <i class="mi-add mr-2"></i>
-                            Create New Instance
+                        <button type="button" class="btn btn-primary" ng-click="createInstance()">
+                            <i class="mi-add mr-2"></i> Create New Instance
                         </button>
+                        <div class="btn-group ml-2">
+                            <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
+                                <i class="mi-playlist-add mr-2"></i> Bulk Actions
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <a class="dropdown-item" ng-click="bulkApprove()">
+                                    <i class="mi-check-circle mr-2"></i> Approve Selected
+                                </a>
+                                <a class="dropdown-item" ng-click="bulkExport()">
+                                    <i class="mi-file-download mr-2"></i> Export Selected
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" ng-click="bulkGeneratePayments()">
+                                    <i class="mi-payment mr-2"></i> Generate Payments
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Template stats cards -->
+                <div class="card-body bg-light">
+                    <div class="row">
+                        <div class="col-md-3" ng-repeat="template in templateStats">
+                            <div class="card card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="mr-3">
+                                        <div class="bg-primary-100 text-primary rounded-pill p-2">
+                                            <i class="mi-receipt"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-fill">
+                                        <h6 class="mb-0">{{template.name}}</h6>
+                                        <span class="text-muted">{{template.periodicity | capitalize}}</span>
+                                        <span ng-if="template.periodicity !== 'on_demand'"
+                                              class="badge badge-flat border-primary text-primary ml-2"
+                                              title="Auto-generates {{template.periodicity}}ly">
+                                            <i class="mi-schedule"></i> Auto
+                                        </span>
+                                    </div>
+                                    <div class="ml-3 text-right">
+                                        <div class="font-weight-semibold">{{template.instanceCount}} instances</div>
+                                        <span class="text-success">{{template.approvedPercentage}}% approved</span>
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    <button class="btn btn-sm btn-light" ng-click="generateForTemplate(template)">
+                                        <i class="mi-bolt mr-1"></i> Generate Now
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -53,6 +111,7 @@
                                     <option value="approved">Approved</option>
                                     <option value="paid">Paid</option>
                                     <option value="cancelled">Cancelled</option>
+                                    <option value="auto_generated">Auto-Generated</option>
                                 </select>
                             </div>
                         </div>
@@ -72,8 +131,7 @@
                             <div class="form-group">
                                 <label>&nbsp;</label>
                                 <button class="btn btn-light btn-block" ng-click="resetFilters()">
-                                    <i class="mi-refresh mr-2"></i>
-                                    Reset Filters
+                                    <i class="mi-refresh mr-2"></i> Reset
                                 </button>
                             </div>
                         </div>
@@ -84,91 +142,115 @@
                 <div class="table-responsive">
                     <table class="table table-striped table-hover">
                         <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Template</th>
-                                <th>Period</th>
-                                <th>Status</th>
-                                <th class="text-center">Allocations</th>
-                                <th class="text-right">Total Amount</th>
-                                <th>Generation Date</th>
-                                <th class="text-center" style="width: 100px;">Actions</th>
-                            </tr>
+                        <tr>
+                            <th style="width: 5%;"></th> <!-- Checkbox column -->
+                            <th>Name</th>
+                            <th>Template</th>
+                            <th>Period</th>
+                            <th>Status</th>
+                            <th class="text-center">Allocations</th>
+                            <th class="text-right">Total Amount</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="instance in instances">
-                                <td>
-                                    <a ui-sref="bonus.instance.details({id: instance._id})" class="text-blue font-weight-semibold">
-                                        {{instance.templateId.name}} - {{instance.referencePeriod}}
-                                    </a>
-                                </td>
-                                <td>{{instance.templateId.name}}</td>
-                                <td>{{instance.referencePeriod}}</td>
-                                <td>
-                                    <span class="badge" ng-class="{
-                                        'badge-secondary': instance.status === 'draft',
-                                        'badge-info': instance.status === 'pending_generation',
-                                        'badge-primary': instance.status === 'generated',
-                                        'badge-warning': instance.status === 'under_review',
-                                        'badge-success': instance.status === 'approved',
-                                        'badge-dark': instance.status === 'paid',
-                                        'badge-danger': instance.status === 'cancelled'
-                                    }">
-                                        {{instance.status | capitalize}}
-                                    </span>
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge badge-info">{{instance.allocationsCount || 0}}</span>
-                                </td>
-                                <td class="text-right font-weight-semibold">{{instance.totalAmount | currency}}</td>
-                                <td>{{instance.generationDate | date:'medium'}}</td>
-                                <td>
-                                    <div class="list-icons">
-                                        <div class="dropdown">
-                                            <a href="#" class="list-icons-item" data-toggle="dropdown">
-                                                <i class="mi-more-vert"></i>
+                        <tr ng-repeat="instance in instances">
+                            <td>
+                                <input type="checkbox" class="form-check-input" ng-model="instance.selected">
+                            </td>
+                            <td>
+                                <a ui-sref="bonus.instance.details({id: instance._id})" class="text-blue font-weight-semibold">
+                                    {{instance.templateId.name}} - {{instance.referencePeriod}}
+                                </a>
+                            </td>
+                            <td>{{instance.templateId.name}}</td>
+                            <td>{{instance.referencePeriod}}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="mr-2">
+                                        <div class="timeline-badge" ng-class="{
+                                                'bg-secondary': instance.status === 'draft',
+                                                'bg-info': instance.status === 'pending_generation',
+                                                'bg-primary': instance.status === 'generated',
+                                                'bg-warning': instance.status === 'under_review',
+                                                'bg-success': instance.status === 'approved',
+                                                'bg-dark': instance.status === 'paid',
+                                                'bg-danger': instance.status === 'cancelled'
+                                            }"></div>
+                                    </div>
+                                    <div>
+                                        <span class="d-block font-weight-semibold">{{instance.status | capitalize}}</span>
+                                        <small class="text-muted" ng-if="instance.generationDate">
+                                            {{getStatusTimeline(instance)}}
+                                        </small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge badge-info">{{instance.allocationsCount || 0}}</span>
+                            </td>
+                            <td class="text-right font-weight-semibold">{{instance.totalAmount | currency}}</td>
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <!-- Quick Action Buttons -->
+                                    <button class="btn btn-sm btn-outline-primary"
+                                            ng-click="viewDetails(instance)"
+                                            title="View Details">
+                                        <i class="mi-visibility"></i>
+                                    </button>
+
+                                    <button class="btn btn-sm btn-outline-success"
+                                            ng-if="instance.status === 'generated' || instance.status === 'under_review'"
+                                            ng-click="approve(instance)"
+                                            title="Approve">
+                                        <i class="mi-check"></i>
+                                    </button>
+
+                                    <button class="btn btn-sm btn-outline-danger"
+                                            ng-if="instance.status === 'approved'"
+                                            ng-click="generatePayments(instance)"
+                                            title="Generate Payments">
+                                        <i class="mi-payment"></i>
+                                    </button>
+
+                                    <!-- Dropdown for more actions -->
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                                data-toggle="dropdown" aria-expanded="false">
+                                            <i class="mi-more-vert"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" ng-click="exportExcel(instance)">
+                                                <i class="mi-file-excel mr-2"></i> Export Excel
                                             </a>
-                                            <div class="dropdown-menu dropdown-menu-right">
-                                                <a class="dropdown-item" ui-sref="bonus.instance.details({id: instance._id})">
-                                                    <i class="mi-visibility mr-2"></i> View Details
-                                                </a>
-                                                <a class="dropdown-item" ng-click="approve(instance)"
-                                                   ng-if="instance.status === 'generated' || instance.status === 'under_review'">
-                                                    <i class="mi-check mr-2"></i> Approve
-                                                </a>
-                                                <a class="dropdown-item" ng-click="reject(instance)"
-                                                   ng-if="instance.status === 'generated' || instance.status === 'under_review'">
-                                                    <i class="mi-close mr-2"></i> Reject
-                                                </a>
-                                                <a class="dropdown-item" ng-click="generatePayments(instance)"
-                                                   ng-if="instance.status === 'approved'">
-                                                    <i class="mi-payment mr-2"></i> Generate Payments
-                                                </a>
-                                                <div class="dropdown-divider"></div>
-                                                <a class="dropdown-item" ng-click="export(instance)">
-                                                    <i class="mi-file-download mr-2"></i> Export
-                                                </a>
-                                                <a class="dropdown-item" ng-click="notify(instance)">
-                                                    <i class="mi-notifications mr-2"></i> Send Notifications
-                                                </a>
-                                            </div>
+                                            <a class="dropdown-item" ng-click="exportPDF(instance)">
+                                                <i class="mi-picture-as-pdf mr-2"></i> Export PDF
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item" ng-click="notify(instance)">
+                                                <i class="mi-notifications mr-2"></i> Send Notifications
+                                            </a>
+                                            <a class="dropdown-item text-danger" ng-click="cancelInstance(instance)">
+                                                <i class="mi-delete mr-2"></i> Cancel Instance
+                                            </a>
                                         </div>
                                     </div>
-                                </td>
-                            </tr>
-                            <tr ng-if="!instances.length && !loading">
-                                <td colspan="8" class="text-center text-muted p-4">
-                                    <i class="mi-info-outline d-block mb-2" style="font-size: 2rem;"></i>
-                                    <p class="mb-0">No bonus instances found</p>
-                                </td>
-                            </tr>
-                            <tr ng-if="loading">
-                                <td colspan="8" class="text-center p-4">
-                                    <div class="spinner-border text-primary" role="status">
-                                        <span class="sr-only">Loading...</span>
-                                    </div>
-                                </td>
-                            </tr>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-if="!instances.length && !loading">
+                            <td colspan="9" class="text-center text-muted p-4">
+                                <i class="mi-info-outline d-block mb-2" style="font-size: 2rem;"></i>
+                                <p class="mb-0">No bonus instances found</p>
+                            </td>
+                        </tr>
+                        <tr ng-if="loading">
+                            <td colspan="9" class="text-center p-4">
+                                <div class="spinner-border text-primary" role="status">
+                                    <span class="sr-only">Loading...</span>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -192,9 +274,6 @@
                     </ul>
                 </div>
             </div>
-            <!-- /basic card -->
         </div>
-        <!-- /content area -->
     </div>
-    <!-- /main content -->
 </div>

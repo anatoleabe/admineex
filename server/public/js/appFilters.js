@@ -465,6 +465,13 @@ angular.module('mappingFilters', []).filter('address', function (gettextCatalog)
         }
         return toReturn;
     }
+}).filter('capitalize', function() {
+    return function(input) {
+        if (input && typeof input === 'string') {
+            return input.charAt(0).toUpperCase() + input.substring(1).toLowerCase();
+        }
+        return input;
+    };
 });
 
 
@@ -491,3 +498,4 @@ function addZero(str) {
     }
     return str;
 }
+

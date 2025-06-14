@@ -1,5 +1,4 @@
-angular.module('app')
-    .controller('BonusInstancesController', ['$scope', '$http', 'toastr', '$uibModal', function($scope, $http, toastr, $uibModal) {
+angular.module('app').controller('BonusInstancesController', ['$scope', '$http', 'toastr', '$uibModal', '$ocLazyLoad', '$mdDialog', function($scope, $http, toastr, $uibModal, $ocLazyLoad, $mdDialog) {
         $scope.instances = [];
         $scope.loading = false;
         $scope.filters = {
@@ -46,7 +45,8 @@ angular.module('app')
             $scope.loading = true;
             let queryParams = {
                 limit: $scope.pagination.limit,
-                offset: $scope.pagination.offset
+                offset: $scope.pagination.offset,
+                includeStats: true // Request allocation stats with instances
             };
 
             // Add filters if they are set
@@ -60,6 +60,13 @@ angular.module('app')
                     $scope.instances = response.data.items;
                     $scope.pagination.total = response.data.total;
                     $scope.loading = false;
+
+                    // Make sure totalAmount and allocationsCount are available
+                    $scope.instances.forEach(function(instance) {
+                        // Default values if not provided by the API
+                        instance.allocationsCount = instance.allocationsCount || 0;
+                        instance.totalAmount = instance.totalAmount || 0;
+                    });
                 })
                 .catch(function(error) {
                     toastr.error('Failed to load bonus instances');
@@ -130,7 +137,62 @@ angular.module('app')
                 });
         };
 
+        $scope.exportPdf = function(instanceId) {
+            $scope.exporting = true;
+            toastr.info('Preparing PDF export...');
+
+            $http.get('/api/bonus/instances/' + instanceId + '/export/pdf', {
+                responseType: 'blob'
+            })
+            .then(function(response) {
+                // Create a blob from the PDF data
+                var blob = new Blob([response.data], { type: 'application/pdf' });
+
+                // Create a link element to trigger the download
+                var downloadLink = document.createElement('a');
+                downloadLink.href = URL.createObjectURL(blob);
+                downloadLink.download = 'bonus-instance-' + instanceId + '.pdf';
+
+                // Append to the document, click, and remove
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
+                $scope.exporting = false;
+                toastr.success('PDF export completed successfully');
+            })
+            .catch(function(error) {
+                $scope.exporting = false;
+                toastr.error('Failed to export PDF. Please try again.');
+                console.error('PDF export error:', error);
+            });
+        };
+
+        // Instance Form handling
+        $scope.createInstance = function() {
+            $ocLazyLoad.load('js/controllers/bonus/CreateInstanceCtrl.js').then(function() {
+                $mdDialog.show({
+                    controller: 'CreateInstanceController',
+                    templateUrl: 'templates/bonus/modals/create-instance.html',
+                    parent: angular.element(document.body),
+                    clickOutsideToClose: true,
+                    locals: {
+                        templates: $scope.templates
+                    }
+                }).then(function(response) {
+                    toastr.success('Bonus instance created successfully');
+                    $scope.loadInstances();
+                }, function() {
+                    // Dialog cancelled
+                });
+            });
+        };
+
+        // Add Math to the scope for use in the template
+        $scope.Math = window.Math;
+
         // Initialize
         loadTemplates();
         $scope.loadInstances();
     }]);
+

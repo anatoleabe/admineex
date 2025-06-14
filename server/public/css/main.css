@@ -1055,3 +1055,27 @@ div {
   color: grey; 
 }
 
+/* Action button group styling */
+.btn-group .btn {
+    padding: 0.25rem 0.5rem;
+}
+
+/* Timeline badge sizing */
+.timeline-badge {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+/* Hover effects for action buttons */
+.btn-outline-primary:hover,
+.btn-outline-success:hover,
+.btn-outline-danger:hover {
+    color: white !important;
+}
+
+/* Compact table cells */
+.table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+}

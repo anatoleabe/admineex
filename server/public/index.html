@@ -23,7 +23,7 @@
         <!-- /global stylesheets -->
         <script src="node_modules/pdfjs-dist/build/pdf.js"></script>
         <script src="node_modules/pdf.js-viewer/pdf.js"></script> 
-        
+
     </head>
     <body  ng-app="app">
 
@@ -93,19 +93,24 @@
         <script src="node_modules/chart.js/dist/Chart.min.js"></script>
         <script src="node_modules/angular-chart.js/dist/angular-chart.min.js"></script>
         <script src="node_modules/angular-drag-and-drop-lists/angular-drag-and-drop-lists.min.js"></script>
-        <!-- concatenated flow.js + ng-flow libraries -->
-        <script src="node_modules/@flowjs/flow.js/dist/flow.min.js"></script>
-        <!--<script src="node_modules/angularjs-gauge/dist/angularjs-gauge.min.js"></script>-->
 
-        <!-- App -->
+        <!-- Angular UI Bootstrap -->
+        <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+
+        <!-- App Core -->
+        <script src="js/app.js"></script>
+        <script src="js/routes.js"></script>
+        <script src="js/appTranslations.js"></script>
+        <script src="js/appFilters.js"></script>
+
+        <!-- Services -->
         <script src="js/services/PendingRequestService.js"></script>
         <script src="js/services/CancellableHTTPService.js"></script>
         <script src="js/services/TokenInterceptorService.js"></script>
-        <script src="js/appTranslations.js"></script>
-        <script src="js/appFilters.js"></script>
-        <script src="js/routes.js"></script>
-        <script src="js/app.js"></script>
 
+        <!-- Controllers -->
+        <script src="js/controllers/bonus/BonusInstancesCtrl.js"></script>
+        <script src="js/controllers/bonus/CreateInstanceModalCtrl.js"></script>
 
         <!-- Core JS files -->
         <script src="global_assets/js/main/jquery.min.js"></script>
@@ -143,7 +148,6 @@
         <!-- /core JS files -->
 
         <!-- Angular dependencies -->
-        <script src="node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
         <!-- /Angular dependencies -->
     </body>
 </html>
