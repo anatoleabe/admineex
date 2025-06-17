@@ -823,5 +823,11 @@
         "uri": "/api/bonus/generation/template",
         "method": "POST",
         "roles": [1, 2]
+    },
+    {
+        "id": 243,
+        "uri": "/api/bonus/instances/:id/allocations/stats",
+        "method": "GET",
+        "roles": [1, 2, 3, 4]
     }
 ]

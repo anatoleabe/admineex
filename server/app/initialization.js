@@ -1,4 +1,3 @@
-
 // Description: This file contains the initialization functions for the application.
 const snapshotJob = require('./jobs/snapshotJob');
 const {exec} = require("child_process");
@@ -20,7 +19,7 @@ exports.run = async () => {
 
 }
 
-function startBot() {
+async function startBot() {
     controllers.positions.patrol0(function (err, avoided) {
         if (err) {
             log.error(err);
@@ -33,6 +32,11 @@ function startBot() {
 
     // Schedule the retirement check job
     scheduleRetirementCheckJob();
+
+    // Schedule the bonus generation job
+    scheduleBonusGenerationJobs();
+
+    await snapshotJob.generateBonusForPeriodTEST("quarterly");//TODO remove this line after testing
 
     // Initial retirement check
     controllers.personnel.checkRetirement(function (err, count) {
@@ -73,3 +77,9 @@ function scheduleRetirementCheckJob() {
     }, null, true);
 }
 
+function scheduleBonusGenerationJobs() {
+    console.log('Initializing bonus generation jobs...');
+    // Initialize bonus generation cronjobs from snapshotJob module
+    snapshotJob.initializeCronJobs();
+    console.log('Bonus generation jobs initialized successfully');
+}

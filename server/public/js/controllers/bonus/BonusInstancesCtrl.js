@@ -61,11 +61,12 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
                     $scope.pagination.total = response.data.total;
                     $scope.loading = false;
 
-                    // Make sure totalAmount and allocationsCount are available
+                    // Make sure totalAmount and allocationsCount are available for each instance
                     $scope.instances.forEach(function(instance) {
-                        // Default values if not provided by the API
-                        instance.allocationsCount = instance.allocationsCount || 0;
-                        instance.totalAmount = instance.totalAmount || 0;
+                        // If stats are not provided from the API, fetch them individually
+                        if (instance.allocationsCount === undefined || instance.totalAmount === undefined) {
+                            $scope.fetchInstanceStats(instance._id);
+                        }
                     });
                 })
                 .catch(function(error) {
@@ -142,7 +143,7 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
             toastr.info('Preparing PDF export...');
 
             $http.get('/api/bonus/instances/' + instanceId + '/export/pdf', {
-                responseType: 'blob'
+                responseType: 'arraybuffer'
             })
             .then(function(response) {
                 // Create a blob from the PDF data
@@ -168,6 +169,61 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
             });
         };
 
+    $scope.exportDocument = function(instance) {
+        $scope.exporting = true;
+        toastr.info('Preparing bonus export...');
+
+        $http({
+            url: '/api/bonus/instances/' + instance._id + '/export',
+            method: 'GET',
+            responseType: 'arraybuffer', // Important for binary data
+            headers: {
+                'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            }
+        })
+            .then(function(response) {
+                console.log('Export response:', response);
+                // Create blob from Excel data
+                var blob = new Blob([response.data], {
+                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                });
+
+                // Try to get filename from content-disposition header
+                var fileName = 'bonus-' + (instance.referencePeriod || 'export') + '.xlsx';
+                var disposition = response.headers('content-disposition');
+                if (disposition) {
+                    var filenameMatch = disposition.match(/filename="?([^";]+)"?/);
+                    if (filenameMatch && filenameMatch[1]) {
+                        fileName = filenameMatch[1];
+                    }
+                }
+
+                // Create and trigger download
+                var downloadLink = document.createElement('a');
+                downloadLink.href = URL.createObjectURL(blob);
+                downloadLink.download = fileName;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
+                // Clean up
+                setTimeout(() => URL.revokeObjectURL(downloadLink.href), 100);
+
+                $scope.exporting = false;
+                toastr.success('Bonus export completed successfully');
+            })
+            .catch(function(error) {
+                $scope.exporting = false;
+                toastr.error('Failed to export bonus. Please try again.');
+                console.error('Export error:', error);
+            });
+    };
+
+        // Remove the separate export functions and use the unified function instead
+        $scope.exportExcel = function(instance) {
+            $scope.exportDocument(instance);
+        };
+
         // Instance Form handling
         $scope.createInstance = function() {
             $ocLazyLoad.load('js/controllers/bonus/CreateInstanceCtrl.js').then(function() {
@@ -191,8 +247,23 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
         // Add Math to the scope for use in the template
         $scope.Math = window.Math;
 
+        // Fetch allocation stats for a single instance
+        $scope.fetchInstanceStats = function(instanceId) {
+            $http.get('/api/bonus/instances/' + instanceId + '/allocations/stats')
+                .then(function(response) {
+                    // Find the instance in our array and update its stats
+                    const instanceIndex = $scope.instances.findIndex(instance => instance._id === instanceId);
+                    if (instanceIndex !== -1) {
+                        $scope.instances[instanceIndex].allocationsCount = response.data.count || 0;
+                        $scope.instances[instanceIndex].totalAmount = response.data.totalAmount || 0;
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Failed to fetch allocation stats for instance:', instanceId);
+                });
+        };
+
         // Initialize
         loadTemplates();
         $scope.loadInstances();
     }]);
-

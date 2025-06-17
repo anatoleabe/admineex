@@ -924,16 +924,16 @@ let routes = [
         access: _.findWhere(aclRoutes, { id: 226 }).roles
     },
     {
-        path: _.findWhere(aclRoutes, { id: 227 }).uri,
-        httpMethod: _.findWhere(aclRoutes, { id: 227 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.exportBonusInstance), controllers.bonus.instance.api.export],
-        access: _.findWhere(aclRoutes, { id: 227 }).roles
-    },
-    {
         path: _.findWhere(aclRoutes, { id: 228 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 228 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.notifyBonusInstance), controllers.bonus.instance.api.notify],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.exportBonusInstance), controllers.bonus.instance.api.export],
         access: _.findWhere(aclRoutes, { id: 228 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 229 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 229 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.notifyBonusInstance), controllers.bonus.instance.api.notify],
+        access: _.findWhere(aclRoutes, { id: 229 }).roles
     },
 
 // ================================== BONUS ALLOCATIONS API ROUTES =================================
@@ -973,7 +973,12 @@ let routes = [
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.allocation.api.getHistory],
         access: _.findWhere(aclRoutes, { id: 235 }).roles
     },
-
+    {
+        path: _.findWhere(aclRoutes, { id: 243 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 243 }).method,
+        middleware: [ jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.getAllocationStats ],
+        access: _.findWhere(aclRoutes, { id: 243 }).roles
+    },
 
 
 

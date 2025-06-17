@@ -187,9 +187,9 @@
                                 </div>
                             </td>
                             <td class="text-center">
-                                <span class="badge badge-info">{{instance.allocationsCount || 0}}</span>
+                                <span class="badge-info">{{instance.allocationsCount || 0}}</span>
                             </td>
-                            <td class="text-right font-weight-semibold">{{instance.totalAmount | currency}}</td>
+                            <td class="text-right font-weight-semibold">{{instance.totalAmount | number:0}} FCFA</td>
                             <td class="text-center">
                                 <div class="btn-group">
                                     <!-- Quick Action Buttons -->
@@ -226,6 +226,7 @@
                                             <a class="dropdown-item" ng-click="exportPDF(instance)">
                                                 <i class="mi-picture-as-pdf mr-2"></i> Export PDF
                                             </a>
+
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" ng-click="notify(instance)">
                                                 <i class="mi-notifications mr-2"></i> Send Notifications
@@ -277,3 +278,4 @@
         </div>
     </div>
 </div>
+

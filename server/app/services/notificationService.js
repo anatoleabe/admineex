@@ -1,6 +1,6 @@
 // services/notificationService.js
-//const BonusAllocation = require('../models/bonus/bonusAllocation');
-//const BonusInstance = require('../models/bonus/bonusInstance');
+const { BonusAllocation } = require('../models/bonus/allocation');
+const { BonusInstance } = require('../models/bonus/instance');
 const User = require('../models/user');
 const { badRequest, notFound , ApiError } = require('../utils/ApiError');
 const nodemailer = require('nodemailer');
@@ -31,8 +31,27 @@ const transporter = nodemailer.createTransport({
  * @param {String} options.status - New status
  * @returns {Promise<Object>} - Notification results
  */
-exports.sendNotification = async ({ instanceId, templateId, referencePeriod, status }) => {
+exports.sendNotification = async ({ instanceId, templateId, referencePeriod, status, isExport = false }) => {
     try {
+        // Skip notifications if this is an export operation
+        if (isExport) {
+            return {
+                success: true,
+                skipped: true,
+                message: 'Notifications skipped for export operation'
+            };
+        }
+
+        // Skip notifications for draft status
+        if (status === 'draft') {
+            console.info('Skipping notifications for draft status');
+            return {
+                success: true,
+                skipped: true,
+                message: 'Notifications skipped for draft status'
+            };
+        }
+
         // Get the bonus instance details
         const instance = await BonusInstance.findById(instanceId)
             .populate('templateId', 'name code')
@@ -63,16 +82,76 @@ exports.sendNotification = async ({ instanceId, templateId, referencePeriod, sta
                 subject = `Bonus Paid - ${instance.templateId.name} ${referencePeriod}`;
                 templateName = 'bonus-paid.ejs';
                 break;
+            case 'retirement':
+                notificationType = 'BONUS_RETIREMENT';
+                subject = `Bonus Retirement - ${instance.templateId.name} ${referencePeriod}`;
+                templateName = 'bonus-generated.ejs'; // Fallback to a default template
+                break;
             default:
-                throw badRequest('Invalid notification status');
+                console.warn(`Unhandled notification status: ${status}`);
+                notificationType = 'BONUS_GENERIC';
+                subject = `Bonus Update - ${instance.templateId.name} ${referencePeriod}`;
+                templateName = 'bonus-generated.ejs'; // Fallback to a default template
         }
 
         // Get recipients based on notification type
         const recipients = await this.getRecipients(notificationType, instance);
 
-        // Prepare notification content
+        if (!recipients.length) {
+            return {
+                success: true,
+                notificationType,
+                message: 'No recipients found for notification',
+                sentCount: 0,
+                failedCount: 0,
+                results: []
+            };
+        }
+
+        // Prepare notification content - check if template exists
         const templatePath = path.join(__dirname, '../templates/emails', templateName);
-        const template = fs.readFileSync(templatePath, 'utf-8');
+        let template;
+
+        try {
+            template = fs.readFileSync(templatePath, 'utf-8');
+        } catch (error) {
+            console.error(`Template file not found: ${templatePath}. Using fallback template.`);
+            // Use a simple fallback template when the file doesn't exist
+            template = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Bonus Notification</title>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; }
+                    .container { max-width: 600px; margin: 0 auto; padding: 20px; }
+                    .header { background-color: #f5f5f5; padding: 10px; border-bottom: 1px solid #ddd; }
+                    .footer { margin-top: 20px; font-size: 12px; color: #777; }
+                </style>
+            </head>
+            <body>
+                <div class="container">
+                    <div class="header">
+                        <h2>Bonus Update Notification</h2>
+                    </div>
+                    <div class="content">
+                        <p>Dear <%= recipient.firstname || 'User' %>,</p>
+                        <p>This is to inform you that a bonus has been updated:</p>
+                        <ul>
+                            <li><strong>Bonus:</strong> <%= instance.templateId.name %></li>
+                            <li><strong>Period:</strong> <%= referencePeriod %></li>
+                            <li><strong>Status:</strong> <%= status %></li>
+                            <li><strong>Date:</strong> <%= date %></li>
+                        </ul>
+                        <p>Please log in to the system for more details.</p>
+                    </div>
+                    <div class="footer">
+                        <p>This is an automated message. Please do not reply directly to this email.</p>
+                    </div>
+                </div>
+            </body>
+            </html>`;
+        }
 
         const notificationResults = [];
 
@@ -161,7 +240,7 @@ exports.getRecipients = async (notificationType, instance) => {
     switch (notificationType) {
         case 'BONUS_GENERATED':
             // Notify admins and managers
-            const admins = await User.find({
+            const admins = await mongoose.model('User').find({
                 role: { $in: ['admin', 'manager'] },
                 'preferences.notification.email': true
             });
@@ -170,7 +249,7 @@ exports.getRecipients = async (notificationType, instance) => {
 
         case 'BONUS_APPROVED':
             // Notify finance team and instance creator
-            const financeTeam = await User.find({
+            const financeTeam = await mongoose.model('User').find({
                 department: 'finance',
                 'preferences.notification.email': true
             });
@@ -201,6 +280,19 @@ exports.getRecipients = async (notificationType, instance) => {
                     });
                 }
             }
+            break;
+
+        case 'BONUS_RETIREMENT':
+        case 'BONUS_GENERIC':
+            // For retirement and other generic notifications, notify admins and instance creator
+            const notifyUsers = await mongoose.model('User').find({
+                $or: [
+                    { role: 'admin' },
+                    { _id: instance.createdBy?._id }
+                ],
+                'preferences.notification.email': true
+            });
+            recipients.push(...notifyUsers);
             break;
     }
 

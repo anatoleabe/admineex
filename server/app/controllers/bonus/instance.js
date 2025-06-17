@@ -6,9 +6,11 @@ const { BonusAllocation } = require('../../models/bonus/allocation');
 const { badRequest, notFound, forbidden } = require('../../utils/ApiError');
 const { generatePaymentFile } = require('../../services/bonusService');
 const { sendNotification } = require('../../services/notificationService');
-const { exportToExcel } = require('../../services/exportService');
+const { exportBonusToExcel } = require('../../services/exportService');
 const formidable = require('formidable');
 const { bulkCreateSnapshots } = require('../../services/snapshotService');
+const exportService = require('../../services/exportService');
+const fs = require('fs');
 
 // API methods
 exports.api = {};
@@ -145,13 +147,34 @@ exports.api.getAll = async (req, res, next) => {
             .lean()
             .exec();
 
-        // Get allocation counts for each instance
+        // Get allocation counts and total amounts for each instance
         const instances = await Promise.all(items.map(async (instance) => {
-            const allocationsCount = await BonusAllocation.countDocuments({
-                instanceId: instance._id,
-                status: { $ne: 'cancelled' }
-            });
-            return { ...instance, allocationsCount };
+            // Calculate allocation stats using aggregation
+            const stats = await BonusAllocation.aggregate([
+                {
+                    $match: {
+                        instanceId: mongoose.Types.ObjectId(instance._id),
+                        status: { $ne: 'cancelled' }
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        count: { $sum: 1 },
+                        totalAmount: { $sum: "$finalAmount" }
+                    }
+                }
+            ]);
+
+            const allocStats = stats.length > 0 ? {
+                allocationsCount: stats[0].count,
+                totalAmount: stats[0].totalAmount || 0
+            } : {
+                allocationsCount: 0,
+                totalAmount: 0
+            };
+
+            return { ...instance, ...allocStats };
         }));
 
         res.json({
@@ -338,21 +361,21 @@ exports.api.generatePayments = async (req, res, next) => {
  */
 exports.api.export = async (req, res, next) => {
     try {
-        const instance = await BonusInstance.findById(req.params.id)
-            .populate('templateId');
-
+        const instance = await BonusInstance.findById(req.params.id);
         if (!instance) {
-            throw notFound('Bonus instance not found');
+            throw new Error('Bonus instance not found');
         }
 
-        const exportData = await exportToExcel(instance);
+        const workbook = await exportBonusToExcel(instance);
 
-        res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        res.setHeader('Content-Disposition', `attachment; filename=bonus-instance-${instance.referencePeriod}.xlsx`);
+        res.setHeader('Content-Type',
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
-        exportData.xlsx.write(res).then(() => {
-            res.end();
-        });
+        const filename = `bonus-export-${instance.referencePeriod || 'all'}.xlsx`;
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+
+        await workbook.xlsx.write(res);
+        res.end();
     } catch (error) {
         next(error);
     }
@@ -387,3 +410,43 @@ exports.api.notify = async (req, res, next) => {
     }
 };
 
+/**
+ * Get allocation statistics for a specific instance
+ * Returns the count of allocations and the total amount
+ */
+exports.api.getAllocationStats = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            throw badRequest('Invalid instance ID');
+        }
+
+        // Get the instance
+        const instance = await BonusInstance.findById(id);
+        if (!instance) {
+            throw notFound('Bonus instance not found');
+        }
+
+        // Calculate allocation stats
+        const stats = await BonusAllocation.aggregate([
+            { $match: { instanceId: mongoose.Types.ObjectId(id) } },
+            {
+                $group: {
+                    _id: null,
+                    count: { $sum: 1 },
+                    totalAmount: { $sum: "$finalAmount" }
+                }
+            }
+        ]);
+
+        const result = stats.length > 0 ? {
+            count: stats[0].count,
+            totalAmount: stats[0].totalAmount
+        } : { count: 0, totalAmount: 0 };
+
+        res.status(httpStatus.OK).json(result);
+    } catch (error) {
+        next(error);
+    }
+};
