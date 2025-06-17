@@ -12,7 +12,7 @@ const PersonnelSnapshotSchema = new Schema({
         status: { type: String },
         salary: { type: Number },
         position: {
-            id: { type: mongoose.Schema.Types.ObjectId },
+            id: { type: mongoose.Schema.Types.ObjectId, ref: 'Position' },
             code: { type: String },
             rank: { type: String }
         },

@@ -3,6 +3,7 @@ const { BonusInstance } = require('../models/bonus/instance');
 const { BonusAllocation } = require('../models/bonus/allocation');
 const { ApiError } = require('../utils/ApiError');
 const httpStatus = require('http-status');
+const dictionary = require('../utils/dictionary'); // Add dictionary import
 
 exports.exportBonusToExcel = async (instance) => {
     try {
@@ -93,11 +94,35 @@ exports.exportBonusToExcel = async (instance) => {
 
         // 8. Add data rows
         allocations.forEach((allocation, index) => {
+            if (allocation.personnelId && allocation.personnelId.name) {
+                const name = allocation.personnelId.name;
+                allocation.personnelId.formattedName = `${name.family?.join(' ')} ${name.given?.join(' ')}`.trim();
+            }
+
+            // Beautify grade based on status
+            let gradeValue = 'N/A';
+            if (allocation.personnelSnapshotId?.data) {
+                const status = allocation.personnelSnapshotId.data.status || '';
+                const grade = allocation.personnelSnapshotId.data.grade || '';
+
+                if (status && grade) {
+                    // Default language to French if not available
+                    const language = 'fr';
+                    gradeValue = dictionary.getValueFromJSON(
+                        '../../resources/dictionary/personnel/status/' + status + '/grades.json',
+                        parseInt(grade, 10),
+                        "code"
+                    ) || grade;
+                } else {
+                    gradeValue = grade || 'N/A';
+                }
+            }
+
             const rowData = {
                 index: index + 1,
-                name: allocation.personnelId?.name?.text || 'N/A',
+                name: allocation.personnelId.formattedName || 'N/A',
                 matricule: allocation.personnelId?.identifier || 'N/A',
-                grade: allocation.personnelSnapshotId?.data?.grade || 'N/A',
+                grade: gradeValue,
                 parts: allocation.calculationInputs?.parts || 1,
                 brut: allocation.finalAmount || 0,
                 tax: (allocation.finalAmount || 0) * 0.0528,

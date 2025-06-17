@@ -38,7 +38,7 @@
     {
         "id": 9,
         "corps": 2,
-        "code": null,
+        "code": "CPT",
         "fr": "Contrôleur Principal du Trésor",
         "en": "Contrôleur Principal du Trésor",
         "category": 3,
@@ -47,7 +47,7 @@
     {
         "id": 10,
         "corps": 2,
-        "code": null,
+        "code": "CT",
         "fr": "Contrôleur Trésor",
         "en": "Contrôleur Trésor",
         "category": 4,
@@ -56,7 +56,7 @@
     {
         "id": 13,
         "corps": 2,
-        "code": null,
+        "code": "CAT",
         "fr": "Contrôleur adjoint du Trésor",
         "en": "Contrôleur adjoint du Trésor",
         "category": 5,
@@ -65,7 +65,7 @@
     {
         "id": 14,
         "corps": 2,
-        "code": null,
+        "code": "COT",
         "fr": "Commis  du Trésor",
         "en": "Commis  du Trésor",
         "category": 6,
@@ -74,7 +74,7 @@
     {
         "id": 15,
         "corps": 7,
-        "code": null,
+        "code": "IPI",
         "fr": "Inspecteur Principal des Impots ",
         "en": "Inspecteur Principal des Impots ",
         "category": 1,
@@ -92,7 +92,7 @@
     {
         "id": 17,
         "corps": 4,
-        "code": "SA",
+        "code": "",
         "fr": "Secretaire d'Administration",
         "en": "Secretaire d'Administration",
         "category": 4,
@@ -101,7 +101,7 @@
     {
         "id": 18,
         "corps": 4,
-        "code": "AD",
+        "code": "",
         "fr": "Adjoints d'Administration",
         "en": "Adjoints d'Administration",
         "category": 5,
@@ -110,7 +110,7 @@
     {
         "id": 19,
         "corps": 4,
-        "code": "CA",
+        "code": "CAD",
         "fr": "Commis d'Administration",
         "en": "Commis d'Administration",
         "category": 6,
@@ -119,7 +119,7 @@
     {
         "id": 20,
         "corps": 4,
-        "code": null,
+        "code": "ICM",
         "fr": "Inspecteurs de la comptabilite matieres",
         "en": "Inspecteurs de la comptabilite matieres",
         "category": 2,
@@ -128,7 +128,7 @@
     {
         "id": 22,
         "corps": 4,
-        "code": null,
+        "code": "CCM",
         "fr": "Controleurs  de la comptabilite matieres",
         "en": "Controleurs  de la comptabilite matieres",
         "category": 4,
@@ -137,7 +137,7 @@
     {
         "id": 23,
         "corps": 4,
-        "code": null,
+        "code": "CAM",
         "fr": "Controleurs adjoints de la comptabilite matieres",
         "en": "Controleurs adjoints de la comptabilite matieres",
         "category": 5,
@@ -146,7 +146,7 @@
     {
         "id": 24,
         "corps": 4,
-        "code": null,
+        "code": "IPPM",
         "fr": "Inspecteurs Prix Poids et mesure",
         "en": "Inspecteurs Prix Poids et mesure",
         "category": 2,
@@ -155,7 +155,7 @@
     {
         "id": 25,
         "corps": 4,
-        "code": null,
+        "code": "CPPM",
         "fr": "Controleurs adjoint Prix Poids et mesure",
         "en": "Controleurs adjoint Prix Poids et mesure",
         "category": 5,
@@ -173,7 +173,7 @@
     {
         "id": 27,
         "corps": 14,
-        "code": null,
+        "code": "",
         "fr": "Controleurs des Postes et Telecom",
         "en": "Controleurs des Postes et Telecom",
         "category": 4,
@@ -182,7 +182,7 @@
     {
         "id": 28,
         "corps": 4,
-        "code": null,
+        "code": "CDOC",
         "fr": "Commis de la documentation",
         "en": "Commis de la documentation",
         "category": 6,
@@ -191,7 +191,7 @@
     {
         "id": 29,
         "corps": 4,
-        "code": null,
+        "code": "ITAG",
         "fr": "Ingenieur de Travaux d'agriculture",
         "en": "Ingenieur de Travaux d'agriculture",
         "category": 2,
@@ -209,7 +209,7 @@
     {
         "id": 34,
         "corps": 4,
-        "code": null,
+        "code": "Magistrats",
         "fr": "Magistrats",
         "en": "Magistrats",
         "category": 1,
@@ -218,7 +218,7 @@
     {
         "id": 35,
         "corps": 4,
-        "code": null,
+        "code": "AP",
         "fr": "Analyste et Programmeur",
         "en": "Analyste et Programmeur",
         "category": 2,
@@ -227,7 +227,7 @@
     {
         "id": 36,
         "corps": 4,
-        "code": null,
+        "code": "ITS",
         "fr": "Ingenieur de Travaux Statistique",
         "en": "Ingenieur de Travaux Statistique",
         "category": 2,
@@ -236,7 +236,7 @@
     {
         "id": 37,
         "corps": 4,
-        "code": null,
+        "code": "ISE",
         "fr": "Ingenieur Statisticien Economiste",
         "en": "Ingenieur Statisticien Economiste",
         "category": 1,
@@ -245,7 +245,7 @@
     {
         "id": 38,
         "corps": 4,
-        "code": null,
+        "code": "II",
         "fr": "Ingénieur Informaticien",
         "en": "Ingénieur Informaticien",
         "category": 1,
@@ -272,7 +272,7 @@
     {
         "id": 47,
         "corps": 4,
-        "code": null,
+        "code": "IPCM",
         "fr": "Inspecteurs Principal de la Comptabilite Matieres",
         "en": "Inspecteurs Principal de la Comptabilite Matieres",
         "category": 1,
@@ -281,7 +281,7 @@
     {
         "id": 51,
         "corps": 4,
-        "code": null,
+        "code": "CADM",
         "fr": "Contrôleur Adjoint de la comptabilite matiere",
         "en": "Contrôleur Adjoint de la comptabilite matiere",
         "category": 5,
@@ -290,7 +290,7 @@
     {
         "id": 52,
         "corps": 4,
-        "code": null,
+        "code": "CPCM",
         "fr": "Contrôleur Principal de la comptabilite matiere",
         "en": "Contrôleur Principal de la comptabilite matiere",
         "category": 3,
@@ -299,7 +299,7 @@
     {
         "id": 54,
         "corps": 4,
-        "code": null,
+        "code": "CCM",
         "fr": "Commis de la comptabilite matiere",
         "en": "Commis de la comptabilite matiere",
         "category": 6,
@@ -308,7 +308,7 @@
     {
         "id": 55,
         "corps": 4,
-        "code": null,
+        "code": "IPD",
         "fr": "Inspecteur Principal de la Documentation",
         "en": "Inspecteur Principal de la Documentation",
         "category": 1,
@@ -317,7 +317,7 @@
     {
         "id": 56,
         "corps": 4,
-        "code": null,
+        "code": "ID",
         "fr": "Inspecteur de la Documentation",
         "en": "Inspecteur de la Documentation",
         "category": 2,
@@ -326,7 +326,7 @@
     {
         "id": 58,
         "corps": 4,
-        "code": null,
+        "code": "CD",
         "fr": "Controleur de la Documentation",
         "en": "Controleur de la Documentation",
         "category": 4,
@@ -335,7 +335,7 @@
     {
         "id": 59,
         "corps": 4,
-        "code": null,
+        "code": "CPD",
         "fr": "Controleur Principal de la Documentation",
         "en": "Controleur Principal de la Documentation",
         "category": 3,
@@ -344,7 +344,7 @@
     {
         "id": 60,
         "corps": 4,
-        "code": null,
+        "code": "CAD",
         "fr": "Controleur Adjoint de la Documentation",
         "en": "Controleur Adjoint de la Documentation",
         "category": 5,
@@ -353,7 +353,7 @@
     {
         "id": 61,
         "corps": 4,
-        "code": null,
+        "code": "CD",
         "fr": "Commis de la Documentation",
         "en": "Commis de la Documentation",
         "category": 6,
@@ -362,7 +362,7 @@
     {
         "id": 63,
         "corps": 14,
-        "code": null,
+        "code": "IPT",
         "fr": "Ingénieur des Postes et Télécommunications",
         "en": "Ingénieur des Postes et Télécommunications",
         "category": 1,
@@ -371,7 +371,7 @@
     {
         "id": 64,
         "corps": 14,
-        "code": null,
+        "code": "ITT",
         "fr": "Ingénieur des Travaux Postes et Télécommunications",
         "en": "Ingénieur des Travaux Postes et Télécommunications",
         "category": 2,
@@ -380,7 +380,7 @@
     {
         "id": 65,
         "corps": 14,
-        "code": null,
+        "code": "TST",
         "fr": "Tech. Supérieur des Télécommunications",
         "en": "Tech. Supérieur des Télécommunications",
         "category": 3,
@@ -389,7 +389,7 @@
     {
         "id": 66,
         "corps": 14,
-        "code": null,
+        "code": "TT",
         "fr": "Tech. des Télécommunications",
         "en": "Tech. des Télécommunications",
         "category": 4,
@@ -398,7 +398,7 @@
     {
         "id": 67,
         "corps": 14,
-        "code": null,
+        "code": "ATT",
         "fr": "Agent Technique des Télécommunications",
         "en": "Agent Technique des Télécommunications",
         "category": 6,
@@ -407,25 +407,16 @@
     {
         "id": 69,
         "corps": 14,
-        "code": null,
+        "code": "IPT",
         "fr": "Inspecteur des Postes et Télécom",
         "en": "Inspecteur des Postes et Télécom",
         "category": 1,
         "priority": null
     },
     {
-        "id": 70,
-        "corps": 7,
-        "code": null,
-        "fr": "Contrôleur Principal des Impots",
-        "en": "Contrôleur Principal des Impots",
-        "category": 3,
-        "priority": null
-    },
-    {
         "id": 71,
         "corps": 4,
-        "code": null,
+        "code": "Programmeur",
         "fr": "Programmeur",
         "en": "Programmeur",
         "category": 3,
