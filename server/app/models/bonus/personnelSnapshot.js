@@ -14,7 +14,12 @@ const PersonnelSnapshotSchema = new Schema({
         position: {
             id: { type: mongoose.Schema.Types.ObjectId, ref: 'Position' },
             code: { type: String },
-            rank: { type: String }
+            name: { type: String },
+            structure: {
+                id: { type: mongoose.Schema.Types.ObjectId, ref: 'Structure' },
+                name: { type: String },
+                code: { type: String },
+            },
         },
         sanctions: [{
             type: { type: String },
