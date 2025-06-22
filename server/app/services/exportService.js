@@ -188,7 +188,7 @@ exports.exportBonusToExcel = async (instance) => {
                     }
                 }
 
-                const parts = allocation.calculationInputs?.parts || 1;
+                const parts = allocation.calculationInputs?.parts || 0;
                 const brutAmount = allocation.finalAmount || 0;
                 const taxAmount = brutAmount * 0.0528;
                 const netAmount = brutAmount * 0.9472;
@@ -197,6 +197,9 @@ exports.exportBonusToExcel = async (instance) => {
                 structureTotalBrut += brutAmount;
                 structureTotalTax += taxAmount;
                 structureTotalNet += netAmount;
+
+                // Get the comment from calculationInputs
+                const observations = allocation.calculationInputs?.comment || '';
 
                 const rowData = [
                     globalIndex++,
@@ -208,7 +211,7 @@ exports.exportBonusToExcel = async (instance) => {
                     taxAmount,
                     netAmount,
                     '',
-                    '',
+                    observations,
                     ''
                 ];
 
@@ -228,6 +231,11 @@ exports.exportBonusToExcel = async (instance) => {
                         bottom: { style: 'thin' },
                         right: { style: 'thin' }
                     };
+
+                    // Set font color to red for excluded status or when parts are 0
+                    if (allocation.status === 'excluded' || parts === 0) {
+                        cell.font = { color: { argb: 'FFFF0000' } };
+                    }
                 });
             });
 

@@ -75,6 +75,14 @@ async function createPersonnelSnapshot(personnelId, snapshotDate = new Date()) {
         endDate: sanction.endDate
     }));
 
+    // Get the latest situation for this personnel
+    let latestSituation = null;
+    if (personnel.situations && personnel.situations.length > 0) {
+        // Sort situations by lastModified in descending order and take the first one
+        latestSituation = [...personnel.situations]
+            .sort((a, b) => new Date(b.lastModified) - new Date(a.lastModified))[0];
+    }
+
     const snapshotData = {
         personnelId,
         snapshotDate,
@@ -85,6 +93,10 @@ async function createPersonnelSnapshot(personnelId, snapshotDate = new Date()) {
             index: personnel.index,
             status: personnel.status,
             salary: personnel.salary,
+            situation: latestSituation ? {
+                situation: latestSituation.situation,
+                date: latestSituation.date,
+            } : null,
             position: positionData,
             sanctions: sanctionsData
         }

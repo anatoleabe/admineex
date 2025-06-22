@@ -14,7 +14,12 @@ const BonusAllocationSchema = new mongoose.Schema({
         grade: { type: String },
         status: { type: String },
         rank: { type: String },
+        situationText: { type: String },
+        sanctionText: { type: String },
         parts: { type: Number },
+        situation: {},
+        sanctions: [{}],
+        comment: { type: String },
         adjustmentFactors: { type: mongoose.Schema.Types.Mixed }
     },
 

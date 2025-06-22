@@ -11,6 +11,10 @@ const PersonnelSnapshotSchema = new Schema({
         index: { type: String },
         status: { type: String },
         salary: { type: Number },
+        situation: {
+            situation: { type: String },
+            date: { type: Date }
+        },
         position: {
             id: { type: mongoose.Schema.Types.ObjectId, ref: 'Position' },
             code: { type: String },
@@ -23,6 +27,7 @@ const PersonnelSnapshotSchema = new Schema({
         },
         sanctions: [{
             type: { type: String },
+            sanction: { type: String },
             startDate: { type: Date },
             endDate: { type: Date }
         }]

@@ -6,6 +6,7 @@ const { PersonnelSnapshot } = require('../models/bonus/PersonnelSnapshot');
 const { BonusAllocation } = require('../models/bonus/allocation');
 const { createPersonnelSnapshot, bulkCreateSnapshots} = require('./snapshotService');
 const {Personnel} = require("../models/personnel");
+const dictionary = require('../utils/dictionary');
 const vm = require('vm');
 const _= require("underscore");
 const fs = require('fs');
@@ -78,55 +79,68 @@ async function generateBonusesForTemplate(templateId, referencePeriod) {
  * Core allocation generation logic
  */
 async function generateAllocationsForInstance(instanceId) {
-    const instance = await BonusInstance.findById(instanceId).populate('templateId');
-    if (!instance) throw new Error('Instance not found');
+    try {
+        const instance = await BonusInstance.findById(instanceId).populate('templateId');
+        if (!instance) throw new Error('Instance not found');
 
-    // 1. Ensure we have fresh snapshots
-    await bulkCreateSnapshots(new Date());
+        // 1. Ensure we have fresh snapshots
+        await bulkCreateSnapshots(new Date());
 
-    // 2. Find eligible personnel
-    const eligiblePersonnel = await findEligiblePersonnel(instance.templateId);
+        // 2. Find eligible personnel
+        const eligiblePersonnel = await findEligiblePersonnel(instance.templateId);
 
-    // 3. Create allocations
-    const allocations = await Promise.all(
-        eligiblePersonnel.map(async (personnel) => {
-            try {
-                const snapshot = await PersonnelSnapshot.findOne({ personnelId: personnel._id })
-                    .sort({ snapshotDate: -1 });
+        // 3. Create allocations
+        const allocations = await Promise.all(
+            eligiblePersonnel.map(async (personnel) => {
+                try {
+                    const snapshot = await PersonnelSnapshot.findOne({ personnelId: personnel._id })
+                        .sort({ snapshotDate: -1 });
 
-                if (!snapshot) {
-                    console.warn(`No snapshot found for personnel ID: ${personnel._id}`);
+                    if (!snapshot) {
+                        console.warn(`No snapshot found for personnel ID: ${personnel._id}`);
+                        return null;
+                    }
+
+                    // Calculate parts
+                    const parts = await calculateParts(instance.templateId, snapshot.data);
+
+                    // Calculate inputs and amounts
+                    const calculatedInputs = await calculateInputs(instance.templateId, snapshot.data, parts);
+
+                    // Calculate amount based on inputs (may be zero based on situation/sanctions)
+                    const calculatedAmount = calculatedInputs.parts > 0 ?
+                        await calculateAmount(instance, snapshot.data, calculatedInputs.parts) : 0;
+
+                    // Create allocation
+                    const allocationItem = {
+                        instanceId: instance._id,
+                        personnelId: personnel._id,
+                        personnelSnapshotId: snapshot._id,
+                        templateId: instance.templateId._id,
+                        calculationInputs: calculatedInputs,
+                        calculatedAmount: calculatedAmount || 0,
+                        finalAmount: calculatedAmount || 0,
+                        status: calculatedInputs.parts > 0 ? 'eligible' : 'excluded',
+                        comment: calculatedInputs.comment || '',
+                        situationText: calculatedInputs.situationText || {},
+                        situation: calculatedInputs.situation || {},
+                        sanctionText: calculatedInputs.sanctionText || {},
+                        sanctions: calculatedInputs.sanctions || [],
+                    };
+
+                    return BonusAllocation.create(allocationItem);
+                } catch (error) {
+                    console.error(`Error creating allocation for personnel ID: ${personnel._id}`, error);
                     return null;
                 }
+            })
+        );
 
-                // Calculate parts
-                const parts = await calculateParts(instance.templateId, snapshot.data);
-
-                // Calculate inputs and amounts
-                const calculatedInputs = await calculateInputs(instance.templateId, snapshot.data, parts);
-                const calculatedAmount = await calculateAmount(instance, snapshot.data, parts);
-
-                // Create allocation
-                const allocationItem = {
-                    instanceId: instance._id,
-                    personnelId: personnel._id,
-                    personnelSnapshotId: snapshot._id,
-                    templateId: instance.templateId._id,
-                    calculationInputs: calculatedInputs,
-                    calculatedAmount: calculatedAmount || 0,
-                    finalAmount: calculatedAmount || 0,
-                    status: 'eligible'
-                };
-
-                return BonusAllocation.create(allocationItem);
-            } catch (error) {
-                console.error(`Error creating allocation for personnel ID: ${personnel._id}`, error);
-                return null;
-            }
-        })
-    );
-
-    return allocations.filter(Boolean).length;
+        return allocations.filter(Boolean).length;
+    } catch (error) {
+        console.error('Error generating allocations for instance:', error);
+        throw new Error(`Failed to generate allocations: ${error.message}`);
+    }
 }
 
 /**
@@ -316,15 +330,81 @@ function evaluateCondition(condition, context) {
 
 
 async function calculateInputs(template, snapshotData, parts) {
+    try {
+        // Extract situation and sanctions data
+        const situationId = snapshotData.situation ? snapshotData.situation.situation : null;
+        const sanctions = snapshotData.sanctions || [];
 
-    return {
-        baseSalary: snapshotData.salary,
-        category: snapshotData.category,
-        status: snapshotData.status,
-        grade: snapshotData.grade,
-        rank: snapshotData.rank,
-        parts: parts
-    };
+        // Beautify situation value using dictionary
+        let situationValue = '';
+        if (situationId) {
+            situationValue = dictionary.getValueFromJSON(
+                '../../resources/dictionary/personnel/situations.json',
+                situationId,
+                'fr'
+            ) || situationId;
+        }
+
+        // Beautify the last sanction value if available
+        let lastSanctionValue = '';
+        if (sanctions.length > 0) {
+            // Sort sanctions by date (descending) and get the latest one
+            const sortedSanctions = [...sanctions].sort((a, b) => {
+                if (a.startDate && b.startDate) {
+                    return new Date(b.startDate) - new Date(a.startDate);
+                }
+                return 0;
+            });
+
+            const lastSanctionId = sortedSanctions[0]?.sanction;
+            if (lastSanctionId) {
+                lastSanctionValue = dictionary.getValueFromJSON(
+                    '../../resources/dictionary/personnel/sanctions.json',
+                    lastSanctionId,
+                    'fr'
+                ) || lastSanctionId;
+            }
+        }
+
+        // Check if personnel has any disqualifying sanctions
+        const hasSevereActiveSanctions = sanctions.some(sanction => {
+            const sanctionId = sanction.sanction;
+            return ['26', '27', '28', '29', '20', '22'].includes(sanctionId);
+        });
+
+        // Check if personnel has a disqualifying situation
+        const hasDisqualifyingSituation = ['3', '5', '6', '8', '10'].includes(situationId);
+
+        // Apply logic for parts adjustment
+        let adjustedParts = parts;
+        let comment = '';
+
+        // Use concise comments based on the actual situation or sanction
+        if (hasDisqualifyingSituation) {
+            adjustedParts = 0;
+            comment = situationValue; // Just use the situation text, e.g. "Décédé", "Retraité"
+        } else if (hasSevereActiveSanctions) {
+            adjustedParts = 0;
+            comment = lastSanctionValue; // Use the actual sanction text
+        }
+
+        return {
+            baseSalary: snapshotData.salary,
+            category: snapshotData.category,
+            status: snapshotData.status,
+            grade: snapshotData.grade,
+            rank: snapshotData.rank,
+            parts: adjustedParts,
+            situation: situationId,
+            situationText: situationValue,
+            sanctions: sanctions.map(s => s.sanction).join(','),
+            sanctionText: lastSanctionValue,
+            comment: comment
+        };
+    } catch (error) {
+        console.error('Error calculating inputs:', error);
+        throw new Error(`Failed to calculate inputs: ${error.message}`);
+    }
 }
 
 
