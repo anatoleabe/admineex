@@ -745,6 +745,24 @@
         "method": "POST",
         "roles": [1, 2]
     },
+    {
+        "id": 244,
+        "uri": "/api/bonus/instances/:id/wizard-step",
+        "method": "POST",
+        "roles": [1, 2]
+    },
+    {
+        "id": 245,
+        "uri": "/api/bonus/instances/:id/historical-data",
+        "method": "GET",
+        "roles": [1, 2, 3]
+    },
+    {
+        "id": 246,
+        "uri": "/api/bonus/instances/:id/snapshots",
+        "method": "GET",
+        "roles": [1, 2, 3]
+    },
 
     {
         "id": 230,

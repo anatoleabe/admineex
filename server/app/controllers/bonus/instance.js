@@ -450,3 +450,133 @@ exports.api.getAllocationStats = async (req, res, next) => {
         next(error);
     }
 };
+
+/**
+ * Update wizard step (multi-step workflow)
+ */
+exports.api.updateWizardStep = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { step } = req.body;
+
+        if (!['adjust', 'confirm', 'export', 'completed'].includes(step)) {
+            throw badRequest('Invalid wizard step');
+        }
+
+        const instance = await BonusInstance.findById(id);
+        if (!instance) {
+            throw notFound('Bonus instance not found');
+        }
+
+        // Prevent step updates to approved/paid instances
+        if (['approved', 'paid'].includes(instance.status)) {
+            throw forbidden('Cannot modify an approved or paid instance');
+        }
+
+        const updatedInstance = await BonusInstance.findByIdAndUpdate(
+            id,
+            {
+                wizardStep: step,
+                updatedAt: new Date()
+            },
+            { new: true }
+        );
+
+        res.json(updatedInstance);
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * Get historical snapshot data for a bonus instance
+ */
+exports.api.getHistoricalData = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const instance = await BonusInstance.findById(id);
+        if (!instance) {
+            throw notFound('Bonus instance not found');
+        }
+
+        // Find all allocations for this instance with their snapshot data
+        const allocations = await BonusAllocation.find({ instanceId: id })
+            .populate({
+                path: 'personnelId',
+                select: 'identifier name'
+            })
+            .populate({
+                path: 'personnelSnapshotId',
+                select: 'snapshotDate data'
+            })
+            .lean();
+
+        // Group by personnel with historical data
+        const personnelHistoricalData = allocations.reduce((acc, allocation) => {
+            if (!allocation.personnelId || !allocation.personnelSnapshotId) return acc;
+
+            const personnelId = allocation.personnelId._id.toString();
+
+            acc[personnelId] = {
+                personnelId: allocation.personnelId._id,
+                name: allocation.personnelId.name,
+                identifier: allocation.personnelId.identifier,
+                snapshotDate: allocation.personnelSnapshotId.snapshotDate,
+                historicalData: allocation.personnelSnapshotId.data,
+                allocationId: allocation._id,
+                allocationStatus: allocation.status,
+                calculatedAmount: allocation.calculatedAmount,
+                finalAmount: allocation.finalAmount,
+                calculationInputs: allocation.calculationInputs
+            };
+
+            return acc;
+        }, {});
+
+        res.json({
+            instance,
+            personnelData: Object.values(personnelHistoricalData)
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+/**
+ * View all personnel snapshots used in instance calculations
+ */
+exports.api.getInstanceSnapshots = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+
+        const instance = await BonusInstance.findById(id);
+        if (!instance) {
+            throw notFound('Bonus instance not found');
+        }
+
+        // Find all allocations for this instance to get the snapshot IDs
+        const allocations = await BonusAllocation.find({
+            instanceId: id
+        }).select('personnelSnapshotId personnelId').lean();
+
+        // Extract unique snapshot IDs and personnel IDs
+        const snapshotIds = [...new Set(allocations.map(a => a.personnelSnapshotId))];
+
+        // Find the actual snapshots
+        const snapshots = await PersonnelSnapshot.find({
+            _id: { $in: snapshotIds }
+        }).populate({
+            path: 'personnelId',
+            select: 'identifier name'
+        }).lean();
+
+        res.json({
+            instance,
+            snapshotsCount: snapshots.length,
+            snapshots
+        });
+    } catch (error) {
+        next(error);
+    }
+};

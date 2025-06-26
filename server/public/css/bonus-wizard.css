@@ -1,0 +1,204 @@
+/* Improved Button Styles for Better Visibility */
+.btn-icon {
+    width: 40px;  /* Slightly larger */
+    height: 40px;
+    padding: 0;
+    line-height: 38px;
+    border-radius: 50%;
+    margin: 0 5px;  /* More spacing */
+    transition: all 0.3s ease;  /* Smooth hover effect */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);  /* Subtle shadow */
+    border-width: 2px;  /* Thicker border */
+}
+
+.btn-icon:hover {
+    transform: translateY(-2px);  /* Slight lift effect */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);  /* Enhanced shadow on hover */
+}
+
+.btn-icon i {
+    font-size: 20px;  /* Slightly larger icons */
+    line-height: inherit;
+    vertical-align: middle;
+}
+
+/* Colorful hover states with better contrast */
+.btn-outline-primary {
+    color: #2196F3;
+    border-color: #2196F3;
+}
+.btn-outline-primary:hover {
+    color: #fff;
+    background-color: #2196F3;
+    border-color: #2196F3;
+}
+
+.btn-outline-danger {
+    color: #F44336;
+    border-color: #F44336;
+}
+.btn-outline-danger:hover {
+    color: #fff;
+    background-color: #F44336;
+    border-color: #F44336;
+}
+
+.btn-outline-success {
+    color: #4CAF50;
+    border-color: #4CAF50;
+}
+.btn-outline-success:hover {
+    color: #fff;
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.btn-outline-info {
+    color: #00BCD4;
+    border-color: #00BCD4;
+}
+.btn-outline-info:hover {
+    color: #fff;
+    background-color: #00BCD4;
+    border-color: #00BCD4;
+}
+
+/* Button group improvements */
+.table .btn-group {
+    white-space: nowrap;
+    display: flex;  /* Better alignment */
+    gap: 8px;  /* Consistent spacing */
+}
+
+/* Additional styles for better visibility */
+.action-buttons {
+    opacity: 0.9;  /* Slightly transparent when not hovered */
+}
+.action-buttons:hover {
+    opacity: 1;  /* Fully opaque on hover */
+}
+
+/* Tooltip styles for better button identification */
+.btn-icon {
+    position: relative;
+}
+.btn-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+}
+.btn-icon:hover::after {
+    opacity: 1;
+}
+
+/* Enhanced Steps Indicator */
+.steps-list .step-indicator {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+    background-color: #e0e0e0;
+    transition: all 0.3s ease;
+}
+
+.steps-list .active-step {
+    background-color: #2196F3;
+    box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3);
+}
+
+.steps-list .inactive-step {
+    background-color: #e0e0e0;
+    color: #9e9e9e;
+}
+
+.steps-list .completed-step {
+    background-color: #4CAF50;
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* Enhanced Summary Items */
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.summary-item.highlight {
+    padding: 12px 0;
+    border-bottom: none;
+    font-size: 1.1rem;
+}
+
+/* Enhanced Action Buttons */
+.btn-group-actions .btn-icon {
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 2px;
+    transition: all 0.3s ease;
+}
+
+.btn-group-actions .btn-icon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Empty State Styles */
+.empty-state {
+    padding: 30px 0;
+}
+
+.empty-state i {
+    opacity: 0.6;
+}
+
+/* Enhanced Accordion */
+.accordion .card-header button {
+    text-decoration: none !important;
+}
+
+/* Tooltip Styles */
+[data-tooltip] {
+    position: relative;
+}
+
+[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    white-space: nowrap;
+    z-index: 100;
+}
+
+[data-tooltip]:hover::after {
+    opacity: 1;
+}

@@ -220,6 +220,9 @@
                                             <i class="mi-more-vert"></i>
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-right">
+                                            <a class="dropdown-item" ng-click="openWizard(instance)" ng-if="instance.status !== 'cancelled'">
+                                                <i class="mi-assignment mr-2"></i> Manage in Wizard
+                                            </a>
                                             <a class="dropdown-item" ng-click="exportExcel(instance)">
                                                 <i class="mi-file-excel mr-2"></i> Export Excel
                                             </a>
@@ -278,4 +281,3 @@
         </div>
     </div>
 </div>
-

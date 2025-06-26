@@ -1,0 +1,107 @@
+/* Custom Material Icons CSS with mi- prefix */
+@font-face {
+  font-family: 'Material Icons';
+  font-style: normal;
+  font-weight: 400;
+  src: url(../fonts/MaterialIcons/MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: local('Material Icons'),
+       local('MaterialIcons-Regular'),
+       url(../fonts/MaterialIcons/MaterialIcons-Regular.woff2) format('woff2'),
+       url(../fonts/MaterialIcons/MaterialIcons-Regular.woff) format('woff'),
+       url(../fonts/MaterialIcons/MaterialIcons-Regular.ttf) format('truetype');
+}
+
+/* Base class for all Material Icons with mi- prefix */
+[class^="mi-"], [class*=" mi-"] {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 20px;  /* Reduced from 24px to 20px */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+/* Fix for icon buttons */
+.btn-icon {
+  width: 28px; /* Further reduced from 32px to 28px */
+  height: 28px; /* Further reduced from 32px to 28px */
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px; /* Adding smaller border radius for better look */
+}
+
+.btn-icon [class^="mi-"], .btn-icon [class*=" mi-"] {
+  font-size: 16px; /* Reduced from 18px to 16px for buttons */
+}
+
+/* Individual icon definitions */
+.mi-edit:before {
+  content: "edit";
+}
+
+/* Add more icon definitions as needed */
+.mi-file-download:before {
+  content: "file_download";
+}
+
+.mi-check:before {
+  content: "check";
+}
+
+.mi-check-circle:before {
+  content: "check_circle";
+}
+
+.mi-arrow-back:before {
+  content: "arrow_back";
+}
+
+.mi-arrow-forward:before {
+  content: "arrow_forward";
+}
+
+.mi-tune:before {
+  content: "tune";
+}
+
+.mi-not-interested:before {
+  content: "not_interested";
+}
+
+.mi-history:before {
+  content: "history";
+}
+
+.mi-more-vert:before {
+  content: "more_vert";
+}
+
+.mi-chevron-down:before {
+  content: "keyboard_arrow_down";
+}
+
+.mi-picture-as-pdf:before {
+  content: "picture_as_pdf";
+}
+
+.mi-file-excel:before {
+  content: "insert_drive_file";
+}

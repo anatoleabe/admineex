@@ -920,8 +920,14 @@ let routes = [
     {
         path: _.findWhere(aclRoutes, { id: 226 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 226 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.generateBonusPayments), controllers.bonus.instance.api.generatePayments],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.cancel],
         access: _.findWhere(aclRoutes, { id: 226 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 227 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 227 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.generateBonusPayments), controllers.bonus.instance.api.generatePayments],
+        access: _.findWhere(aclRoutes, { id: 227 }).roles
     },
     {
         path: _.findWhere(aclRoutes, { id: 228 }).uri,
@@ -934,6 +940,25 @@ let routes = [
         httpMethod: _.findWhere(aclRoutes, { id: 229 }).method,
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusInstanceValidations.notifyBonusInstance), controllers.bonus.instance.api.notify],
         access: _.findWhere(aclRoutes, { id: 229 }).roles
+    },
+    // New routes for the multi-step wizard and historical data
+    {
+        path: _.findWhere(aclRoutes, { id: 244 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 244 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.updateWizardStep],
+        access: _.findWhere(aclRoutes, { id: 244 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 245 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 245 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.getHistoricalData],
+        access: _.findWhere(aclRoutes, { id: 245 }).roles
+    },
+    {
+        path: _.findWhere(aclRoutes, { id: 246 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 246 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.getInstanceSnapshots],
+        access: _.findWhere(aclRoutes, { id: 246 }).roles
     },
 
 // ================================== BONUS ALLOCATIONS API ROUTES =================================

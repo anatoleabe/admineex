@@ -7,6 +7,9 @@ const BonusAllocationSchema = new mongoose.Schema({
     personnelSnapshotId: { type: mongoose.Schema.Types.ObjectId, ref: 'PersonnelSnapshot', required: true },
     templateId: { type: mongoose.Schema.Types.ObjectId, ref: 'BonusTemplate', required: true },
 
+    // Added for frontend display
+    beautifiedGrade: { type: String },
+
     // Calculation inputs (preserved)
     calculationInputs: {
         baseSalary: { type: Number },
@@ -48,4 +51,3 @@ const Allocation = mongoose.model('BonusAllocation', BonusAllocationSchema);
 
 // Export Models
 exports.BonusAllocation = Allocation;
-

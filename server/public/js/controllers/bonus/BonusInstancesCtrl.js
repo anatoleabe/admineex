@@ -1,4 +1,4 @@
-angular.module('app').controller('BonusInstancesController', ['$scope', '$http', 'toastr', '$uibModal', '$ocLazyLoad', '$mdDialog', function($scope, $http, toastr, $uibModal, $ocLazyLoad, $mdDialog) {
+angular.module('app').controller('BonusInstancesController', ['$scope', '$http', 'toastr', '$uibModal', '$ocLazyLoad', '$mdDialog', '$state', function($scope, $http, toastr, $uibModal, $ocLazyLoad, $mdDialog, $state) {
         $scope.instances = [];
         $scope.loading = false;
         $scope.filters = {
@@ -242,6 +242,11 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
                     // Dialog cancelled
                 });
             });
+        };
+
+        // Open the multi-step wizard for managing a bonus instance
+        $scope.openWizard = function(instance) {
+            $state.go('home.bonus.instance.wizard', {instanceId: instance._id});
         };
 
         // Add Math to the scope for use in the template

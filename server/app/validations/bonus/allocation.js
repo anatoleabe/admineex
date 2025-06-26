@@ -5,7 +5,7 @@ const getAllBonusAllocations = {
         instanceId: Joi.string(),
         personnelId: Joi.string(),
         status: Joi.string().valid('eligible', 'excluded', 'adjusted', 'paid', 'cancelled'),
-        limit: Joi.number().integer().min(1).max(1000).default(100),
+        limit: Joi.number().integer().min(1).max(5000).default(100),
         sortBy: Joi.string().default('createdAt:desc')
     })
 };

@@ -851,6 +851,25 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                 },
                 breadcrumbs: ['Bonus management', 'Instances']
             })
+            // Define parent state for instance details
+            .state('home.bonus.instance', {
+                abstract: true,
+                url: '/instance/:instanceId',
+                template: '<div ui-view></div>',
+                access: {requiredAuthentication: true}
+            })
+            .state('home.bonus.instance.wizard', {
+                url: '/wizard',
+                templateUrl: 'templates/bonus/instance-wizard.html',
+                controller: 'BonusInstanceWizardCtrl',
+                access: {requiredAuthentication: true},
+                resolve: {
+                    loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/bonus/BonusInstanceWizardCtrl.js');
+                    }]
+                },
+                breadcrumbs: ['Bonus management', 'Instances', 'Wizard']
+            })
             .state('home.bonus.allocations', {
                 url: '/allocations',
                 templateUrl: 'templates/bonus/allocations.html',

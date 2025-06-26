@@ -16,7 +16,8 @@ var app = angular.module('app', [
     'ngSanitize',
     'PendingRequestService',
     'CancellableHTTPService',
-    'toastr'
+    'toastr',
+    'oitozero.ngSweetAlert'  // Add SweetAlert dependency
 ]).config(function($mdThemingProvider) {
     $mdThemingProvider.definePalette('savics', {
         '50': 'ffffff',
@@ -133,4 +134,3 @@ var app = angular.module('app', [
 
 // Dialog params
 app.value('params', {});
-

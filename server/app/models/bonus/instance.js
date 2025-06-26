@@ -6,8 +6,14 @@ let BonusInstanceSchema = new mongoose.Schema({
     referencePeriod: { type: String, required: true }, // e.g., "2023-Q1"
     status: {
         type: String,
-        enum: ['draft', 'pending_generation', 'generated', 'under_review', 'approved', 'paid', 'cancelled'],
+        enum: ['draft', 'under_review', 'approved', 'paid', 'cancelled'],
         default: 'draft'
+    },
+    // Workflow step tracking
+    wizardStep: {
+        type: String,
+        enum: ['adjust', 'confirm', 'export', 'completed'],
+        default: 'adjust'
     },
     shareAmount: { type: Number }, //Share amount for the instance. It default value comes from the template.
     generationDate: { type: Date },
@@ -25,4 +31,3 @@ let Instance = mongoose.model('BonusInstance', BonusInstanceSchema);
 
 // Export Models
 exports.BonusInstance = Instance;
-

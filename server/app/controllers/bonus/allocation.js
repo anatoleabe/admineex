@@ -5,6 +5,7 @@ const { BonusInstance } = require('../../models/bonus/instance');
 const { Personnel } = require('../../models/personnel');
 //const { PersonnelSnapshot } = require('../../models/bonus/PersonnelSnapshot');
 const { badRequest, notFound, forbidden } = require('../../utils/ApiError');
+const dictionary = require('../../utils/dictionary');
 
 // API methods
 exports.api = {};
@@ -30,8 +31,37 @@ exports.api.getAll = async (req, res, next) => {
             .populate('instanceId', 'referencePeriod status')
             .populate('personnelId', 'identifier name')
             .populate('templateId', 'name code')
-            .populate('personnelSnapshotId', 'snapshotDate');
+            .populate('personnelSnapshotId'); // Include all snapshot data including position information
 
+        // Process and beautify grades for all allocations
+        for (const allocation of allocations) {
+            if (allocation.personnelSnapshotId?.data) {
+                const status = allocation.personnelSnapshotId.data.status || '';
+                const grade = allocation.personnelSnapshotId.data.grade || '';
+
+                if (status && grade) {
+                    // Default language to French if not available
+                    const language = 'fr';
+                    const beautifiedGrade = dictionary.getValueFromJSON(
+                        '../../resources/dictionary/personnel/status/' + status + '/grades.json',
+                        parseInt(grade, 10),
+                        "code"
+                    ) || grade;
+
+                    // Add beautifiedGrade to the allocation object
+                    allocation.personnelSnapshotId.data.beautifiedGrade = beautifiedGrade;
+
+                    // Also add beautifiedGrade directly to the allocation for frontend access
+                    allocation.beautifiedGrade = beautifiedGrade;
+
+                    // Add position name if available
+                    if (allocation.personnelSnapshotId.data.position && allocation.personnelSnapshotId.data.position.name) {
+                        allocation.personnelSnapshotId.data.beautifiedGrade += " / " + allocation.personnelSnapshotId.data.position.name;
+                        allocation.beautifiedGrade += " / " + allocation.personnelSnapshotId.data.position.name;
+                    }
+                }
+            }
+        }
         res.json(allocations);
     } catch (error) {
         next(error);
