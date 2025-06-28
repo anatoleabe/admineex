@@ -31,6 +31,7 @@ function($scope, $http, $stateParams, $state, SweetAlert, toastr) {
                 $scope.allocations = response.data;
                 console.log($scope.allocations)
                 $scope.loading = false;
+                $scope.kernel.loading = 100;
 
                 // Calculate totals
                 $scope.calculateTotals();
@@ -44,6 +45,7 @@ function($scope, $http, $stateParams, $state, SweetAlert, toastr) {
                 console.error('Error loading instance data', error);
                 toastr.error('Could not load bonus instance data');
                 $scope.loading = false;
+                $scope.kernel.loading = 100;
             });
     };
 

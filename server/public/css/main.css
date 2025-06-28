@@ -1079,3 +1079,88 @@ div {
     padding: 0.75rem;
     vertical-align: middle;
 }
+
+/* ------------------------------------------------------------------------------
+ *  # Main content layout
+ * ------------------------------------------------------------------------------ */
+.page-content {
+  position: relative;
+  min-height: 100vh;
+}
+
+.content-wrapper {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -ms-flex: 1;
+  flex: 1;
+  overflow: visible;
+  position: relative;
+}
+
+.content {
+  padding: 1.25rem 1.25rem;
+  -ms-flex: 1;
+  flex: 1;
+}
+
+/* ------------------------------------------------------------------------------
+ * # Page header
+ * ------------------------------------------------------------------------------ */
+.page-header {
+  position: relative;
+  z-index: 100;
+}
+
+.page-title {
+  padding: 2rem 0;
+  position: relative;
+}
+
+.page-header-light {
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+}
+
+.page-header-dark {
+  background-color: #333;
+  color: #fff;
+}
+
+/* ------------------------------------------------------------------------------
+ * # Breadcrumbs
+ * ------------------------------------------------------------------------------ */
+.breadcrumb-line {
+  border-bottom: 1px solid #ddd;
+}
+
+.breadcrumb-line-light {
+  background-color: #f5f5f5;
+}
+
+.breadcrumb-line-dark {
+  background-color: #444;
+}
+
+/* ------------------------------------------------------------------------------
+ * # Footer
+ * ------------------------------------------------------------------------------ */
+.footer {
+  padding: 1.25rem 1.25rem;
+  background-color: #f5f5f5;
+  border-top: 1px solid #ddd;
+}
+
+/* Fix for dropdown menu visibility in responsive tables */
+.table-responsive {
+    overflow: visible;
+}
+
+.table-responsive {
+    overflow: visible !important;
+}
+
+.card {
+    overflow: visible !important;
+}

@@ -60,6 +60,8 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
                     $scope.instances = response.data.items;
                     $scope.pagination.total = response.data.total;
                     $scope.loading = false;
+                    $scope.kernel.loading = 100;
+
 
                     // Make sure totalAmount and allocationsCount are available for each instance
                     $scope.instances.forEach(function(instance) {
@@ -72,6 +74,7 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
                 .catch(function(error) {
                     toastr.error('Failed to load bonus instances');
                     $scope.loading = false;
+                    $scope.kernel.loading = 100;
                 });
         };
 

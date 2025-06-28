@@ -1,30 +1,6 @@
 <!-- Bonus Instance Wizard Template -->
 <div class="page-content">
     <div class="content-wrapper">
-        <!-- Improved Page Header -->
-        <div class="page-header page-header-light bg-white shadow-sm">
-            <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
-                <div class="d-flex align-items-center">
-                    <div class="breadcrumb">
-                        <a href="/" class="breadcrumb-item text-primary"><i class="icon-home2 mr-2"></i> Home</a>
-                        <a href="#!/bonus/instances" class="breadcrumb-item text-primary">Bonus</a>
-                        <a href="#!/bonus/instances" class="breadcrumb-item text-primary">Instances</a>
-                        <span class="breadcrumb-item active font-weight-semibold">Wizard</span>
-                    </div>
-                    <div class="ml-auto d-flex align-items-center">
-                        <span class="badge badge-pill" ng-class="{
-                            'badge-secondary': instance.status === 'draft',
-                            'badge-info': instance.status === 'generated',
-                            'badge-primary': instance.status === 'under_review',
-                            'badge-success': instance.status === 'approved',
-                            'badge-dark': instance.status === 'paid',
-                            'badge-danger': instance.status === 'cancelled'
-                        }">{{instance.status | uppercase}}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Content area -->
         <div class="content" ng-controller="BonusInstanceWizardCtrl">
             <!-- Enhanced Loading Indicator -->
@@ -54,6 +30,14 @@
 
                             <p class="text-muted mb-4">
                                 <i class="icon-file-text2 mr-2"></i>{{instance.templateId.name}}
+                                <span class=" badge-pill" ng-class="{
+                            'badge-secondary': instance.status === 'draft',
+                            'badge-info': instance.status === 'generated',
+                            'badge-primary': instance.status === 'under_review',
+                            'badge-success': instance.status === 'approved',
+                            'badge-dark': instance.status === 'paid',
+                            'badge-danger': instance.status === 'cancelled'
+                        }">{{instance.status | uppercase}}</span>
                             </p>
 
                             <!-- Enhanced Progress Bar -->

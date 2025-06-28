@@ -1,19 +1,6 @@
 <div class="page-content">
     <!-- Main content -->
     <div class="content-wrapper">
-        <!-- Page header -->
-        <div class="page-header page-header-light">
-            <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
-                <div class="d-flex">
-                    <div class="breadcrumb">
-                        <a href="/" class="breadcrumb-item"><i class="icon-home2 mr-2"></i> Home</a>
-                        <span class="breadcrumb-item">Bonus</span>
-                        <span class="breadcrumb-item active">Instances</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /page header -->
 
         <!-- Auto-generation alert -->
         <div class="alert alert-info alert-styled-left" ng-if="pendingAutoGenerations">
@@ -154,7 +141,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr ng-repeat="instance in instances">
+                        <tr ng-repeat="instance in instances" class="align-middle">
                             <td>
                                 <input type="checkbox" class="form-check-input" ng-model="instance.selected">
                             </td>
@@ -191,53 +178,37 @@
                             </td>
                             <td class="text-right font-weight-semibold">{{instance.totalAmount | number:0}} FCFA</td>
                             <td class="text-center">
-                                <div class="btn-group">
-                                    <!-- Quick Action Buttons -->
-                                    <button class="btn btn-sm btn-outline-primary"
-                                            ng-click="viewDetails(instance)"
-                                            title="View Details">
-                                        <i class="mi-visibility"></i>
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        Actions
                                     </button>
-
-                                    <button class="btn btn-sm btn-outline-success"
-                                            ng-if="instance.status === 'generated' || instance.status === 'under_review'"
-                                            ng-click="approve(instance)"
-                                            title="Approve">
-                                        <i class="mi-check"></i>
-                                    </button>
-
-                                    <button class="btn btn-sm btn-outline-danger"
-                                            ng-if="instance.status === 'approved'"
-                                            ng-click="generatePayments(instance)"
-                                            title="Generate Payments">
-                                        <i class="mi-payment"></i>
-                                    </button>
-
-                                    <!-- Dropdown for more actions -->
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                                                data-toggle="dropdown" aria-expanded="false">
-                                            <i class="mi-more-vert"></i>
-                                        </button>
-                                        <div class="dropdown-menu dropdown-menu-right">
-                                            <a class="dropdown-item" ng-click="openWizard(instance)" ng-if="instance.status !== 'cancelled'">
-                                                <i class="mi-assignment mr-2"></i> Manage in Wizard
-                                            </a>
-                                            <a class="dropdown-item" ng-click="exportExcel(instance)">
-                                                <i class="mi-file-excel mr-2"></i> Export Excel
-                                            </a>
-                                            <a class="dropdown-item" ng-click="exportPDF(instance)">
-                                                <i class="mi-picture-as-pdf mr-2"></i> Export PDF
-                                            </a>
-
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" ng-click="notify(instance)">
-                                                <i class="mi-notifications mr-2"></i> Send Notifications
-                                            </a>
-                                            <a class="dropdown-item text-danger" ng-click="cancelInstance(instance)">
-                                                <i class="mi-delete mr-2"></i> Cancel Instance
-                                            </a>
-                                        </div>
+                                    <div class="dropdown-menu dropdown-menu-right" style="z-index: 2050; position: fixed;">
+                                        <a class="dropdown-item" ng-click="viewDetails(instance)">
+                                            <i class="mi-visibility mr-2"></i> View Details
+                                        </a>
+                                        <a class="dropdown-item" ng-if="instance.status === 'generated' || instance.status === 'under_review'" ng-click="approve(instance)">
+                                            <i class="mi-check-circle mr-2"></i> Approve
+                                        </a>
+                                        <a class="dropdown-item" ng-if="instance.status === 'approved'" ng-click="generatePayments(instance)">
+                                            <i class="mi-payment mr-2"></i> Generate Payments
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" ng-click="openWizard(instance)" ng-if="instance.status !== 'cancelled'">
+                                            <i class="mi-assignment mr-2"></i> Manage in Wizard
+                                        </a>
+                                        <a class="dropdown-item" ng-click="exportExcel(instance)">
+                                            <i class="mi-file-excel mr-2"></i> Export Excel
+                                        </a>
+                                        <a class="dropdown-item" ng-click="exportPDF(instance)">
+                                            <i class="mi-picture-as-pdf mr-2"></i> Export PDF
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" ng-click="notify(instance)">
+                                            <i class="mi-notifications mr-2"></i> Send Notifications
+                                        </a>
+                                        <a class="dropdown-item text-danger" ng-click="cancelInstance(instance)">
+                                            <i class="mi-delete mr-2"></i> Cancel Instance
+                                        </a>
                                     </div>
                                 </div>
                             </td>
