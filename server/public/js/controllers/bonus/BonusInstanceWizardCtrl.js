@@ -57,7 +57,8 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
             excluded: 0,
             adjusted: 0,
             total: 0,
-            amount: 0
+            amount: 0,
+            parts: 0
         };
 
         if ($scope.allocations && $scope.allocations.length) {
@@ -67,11 +68,13 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
                 if (allocation.status === 'eligible') {
                     $scope.totals.eligible++;
                     $scope.totals.amount += allocation.finalAmount || 0;
+                    $scope.totals.parts += allocation.calculationInputs?.parts || 0;
                 } else if (allocation.status === 'excluded') {
                     $scope.totals.excluded++;
                 } else if (allocation.status === 'adjusted') {
                     $scope.totals.adjusted++;
                     $scope.totals.amount += allocation.finalAmount || 0;
+                    $scope.totals.parts += allocation.calculationInputs?.parts || 0;
                 }
             });
         }

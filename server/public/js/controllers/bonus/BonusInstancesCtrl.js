@@ -66,7 +66,7 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
                     // Make sure totalAmount and allocationsCount are available for each instance
                     $scope.instances.forEach(function(instance) {
                         // If stats are not provided from the API, fetch them individually
-                        if (instance.allocationsCount === undefined || instance.totalAmount === undefined) {
+                        if (instance.allocationsCount === undefined || instance.totalAmount === undefined || instance.totalParts === undefined) {
                             $scope.fetchInstanceStats(instance._id);
                         }
                     });
@@ -264,6 +264,7 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
                     if (instanceIndex !== -1) {
                         $scope.instances[instanceIndex].allocationsCount = response.data.count || 0;
                         $scope.instances[instanceIndex].totalAmount = response.data.totalAmount || 0;
+                        $scope.instances[instanceIndex].totalParts = response.data.totalParts || 0;
                     }
                 })
                 .catch(function(error) {

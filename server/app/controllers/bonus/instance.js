@@ -507,22 +507,29 @@ exports.api.getAllocationStats = async (req, res, next) => {
 
         // Calculate allocation stats
         const stats = await BonusAllocation.aggregate([
-            { $match: { instanceId: mongoose.Types.ObjectId(id) } },
+            {
+                $match: {
+                    instanceId: mongoose.Types.ObjectId(id),
+                    status: { $ne: 'excluded' }  // Exclude allocations with status "excluded"
+                }
+            },
             {
                 $group: {
                     _id: null,
                     count: { $sum: 1 },
-                    totalAmount: { $sum: "$finalAmount" }
+                    totalAmount: { $sum: "$finalAmount" },
+                    totalParts: { $sum: "$calculationInputs.parts" }  // Access parts in calculationInputs
                 }
             }
         ]);
 
         const result = stats.length > 0 ? {
             count: stats[0].count,
-            totalAmount: stats[0].totalAmount
-        } : { count: 0, totalAmount: 0 };
+            totalAmount: stats[0].totalAmount,
+            totalParts: stats[0].totalParts || 0
+        } : { count: 0, totalAmount: 0, totalParts: 0 };
 
-        res.status(httpStatus.OK).json(result);
+        res.status(200).json(result);
     } catch (error) {
         next(error);
     }

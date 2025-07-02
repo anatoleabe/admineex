@@ -174,7 +174,8 @@
                                 </div>
                             </td>
                             <td class="text-center">
-                                <span class="badge-info">{{instance.allocationsCount || 0}}</span>
+                                <span class="badge-info">{{instance.allocationsCount || 0}} Allocations</span> |
+                                <span class="badge-secondary ml-1">{{instance.totalParts || 0}} parts</span>
                             </td>
                             <td class="text-right font-weight-semibold">{{instance.totalAmount | number:0}} FCFA</td>
                             <td class="text-center">
