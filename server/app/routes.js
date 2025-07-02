@@ -967,6 +967,13 @@ let routes = [
         access: _.findWhere(aclRoutes, { id: 247 }).roles
     },
 
+    {
+        path: _.findWhere(aclRoutes, { id: 248 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 248 }).method,
+        middleware: [ jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.updateShareAmount ],
+        access: _.findWhere(aclRoutes, { id: 248 }).roles
+    },
+
 // ================================== BONUS ALLOCATIONS API ROUTES =================================
     {
         path: _.findWhere(aclRoutes, { id: 230 }).uri,

@@ -553,6 +553,154 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
             });
     };
 
+    // Update share amount for the instance
+    $scope.updateShareAmount = function() {
+        // Display modal for updating share amount
+        $mdDialog.show({
+            controller: function($scope, $mdDialog, instance, currentShareAmount) {
+                $scope.instance = instance;
+                $scope.formData = {
+                    currentShareAmount: currentShareAmount,
+                    newShareAmount: currentShareAmount,
+                    reason: ''
+                };
+                $scope.updating = false;
+
+                $scope.cancel = function() {
+                    $mdDialog.cancel();
+                };
+
+                $scope.save = function() {
+                    if ($scope.updating) return;
+
+                    if (!$scope.formData.newShareAmount) {
+                        toastr.error('Please enter a valid amount');
+                        return;
+                    }
+
+                    if (!$scope.formData.reason) {
+                        toastr.error('Please provide a reason for the change');
+                        return;
+                    }
+
+                    $scope.updating = true;
+
+                    $http.post('/api/bonus/instances/' + instance._id + '/update-share-amount', {
+                        newShareAmount: $scope.formData.newShareAmount,
+                        reason: $scope.formData.reason
+                    })
+                    .then(function(response) {
+                        $mdDialog.hide(response.data);
+                    })
+                    .catch(function(error) {
+                        console.error('Error updating share amount', error);
+                        toastr.error('Could not update share amount: ' + (error.data?.message || 'Unknown error'));
+                        $scope.updating = false;
+                    });
+                };
+            },
+            templateUrl: 'templates/bonus/modals/update-share-amount.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose: false,
+            locals: {
+                instance: $scope.instance,
+                currentShareAmount: $scope.instance.shareAmount
+            }
+        }).then(function(updatedInstance) {
+            // Update the instance in the scope
+            $scope.instance = updatedInstance;
+            toastr.success('Share amount updated successfully. Recalculation in progress.');
+
+            // Start polling for recalculation progress
+            $scope.startRecalculationPolling();
+        });
+    };
+
+    // Poll for recalculation progress
+    $scope.startRecalculationPolling = function() {
+        if ($scope.recalculationPolling) {
+            $timeout.cancel($scope.recalculationPolling);
+        }
+
+        function checkRecalculationProgress() {
+            $http.get('/api/bonus/instances/' + $scope.instanceId)
+                .then(function(response) {
+                    $scope.instance = response.data;
+
+                    // If recalculation is complete, stop polling
+                    if (!$scope.instance.recalculationStatus.inProgress) {
+                        $timeout.cancel($scope.recalculationPolling);
+                        $scope.recalculationPolling = null;
+
+                        // Reload allocations to get updated values
+                        $scope.loading = true;
+                        $scope.loadInstanceData();
+                        toastr.success('Allocation recalculation completed successfully.');
+                    } else {
+                        // Continue polling
+                        $scope.recalculationPolling = $timeout(checkRecalculationProgress, 2000);
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Error checking recalculation status', error);
+                    $timeout.cancel($scope.recalculationPolling);
+                    $scope.recalculationPolling = null;
+                });
+        }
+
+        // Start polling
+        $scope.recalculationPolling = $timeout(checkRecalculationProgress, 2000);
+    };
+
+    // Load instance data
+    $scope.loadInstanceData = function() {
+        $http.get('/api/bonus/instances/' + $scope.instanceId)
+            .then(function(response) {
+                $scope.instance = response.data;
+                $scope.currentStep = $scope.instance.wizardStep || 'adjust';
+
+                // Load allocations for this instance
+                return $http.get('/api/bonus/allocations', {
+                    params: {
+                        instanceId: $scope.instanceId,
+                        limit: 4000
+                    }
+                });
+            })
+            .then(function(response) {
+                $scope.allocations = response.data;
+                console.log($scope.allocations)
+                $scope.loading = false;
+                $scope.kernel.loading = 100;
+
+                // Calculate totals
+                $scope.calculateTotals();
+
+                // Load historical data if on the confirm step
+                if ($scope.currentStep === 'confirm' || $scope.currentStep === 'export') {
+                    $scope.loadHistoricalData();
+                }
+            })
+            .catch(function(error) {
+                console.error('Error loading instance data', error);
+                toastr.error('Could not load bonus instance data');
+                $scope.loading = false;
+                $scope.kernel.loading = 100;
+            });
+    };
+
+    // Initialize with improved loading function
+    $scope.initialize = function() {
+        $scope.instanceId = $stateParams.instanceId;
+        $scope.currentStep = 'adjust'; // Default step
+        $scope.loading = true;
+        $scope.historicalData = [];
+        $scope.historicalDataByPersonnelId = {};
+
+        // Load the instance data
+        $scope.loadInstanceData();
+    };
+
     // Initialize when controller loads
     $scope.initialize();
 }]);

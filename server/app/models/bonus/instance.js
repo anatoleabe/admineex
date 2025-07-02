@@ -16,6 +16,24 @@ let BonusInstanceSchema = new mongoose.Schema({
         default: 'adjust'
     },
     shareAmount: { type: Number }, //Share amount for the instance. It default value comes from the template.
+    // Track shareAmount history
+    shareAmountHistory: [{
+        date: { type: Date, default: Date.now },
+        previousAmount: { type: Number },
+        newAmount: { type: Number },
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        userName: { type: String },
+        reason: { type: String }
+    }],
+    // Track recalculation status
+    recalculationStatus: {
+        inProgress: { type: Boolean, default: false },
+        startedAt: { type: Date },
+        completedAt: { type: Date },
+        progress: { type: Number, default: 0 }, // Percentage of completion (0-100)
+        totalAllocations: { type: Number, default: 0 },
+        processedAllocations: { type: Number, default: 0 }
+    },
     generationDate: { type: Date },
     approvalDate: { type: Date },
     paymentDate: { type: Date },

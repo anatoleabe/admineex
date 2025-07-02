@@ -684,3 +684,204 @@ exports.api.getInstanceSnapshots = async (req, res, next) => {
         next(error);
     }
 };
+
+/**
+ * Update share amount and recalculate allocations
+ */
+exports.api.updateShareAmount = async (req, res, next) => {
+    const form = formidable({ multiples: false });
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return next(badRequest('Failed to parse form data'));
+        }
+        try {
+            const instanceId = req.params.id;
+            const { newShareAmount, reason } = fields;
+
+            const parsedShareAmount = Number(newShareAmount);
+
+            if (!parsedShareAmount || typeof parsedShareAmount !== 'number' || parsedShareAmount <= 0) {
+                return next(badRequest('Valid newShareAmount is required'));
+            }
+
+            if (!reason) {
+                return next(badRequest('Reason for share amount change is required'));
+            }
+
+            // Find the instance
+            const instance = await BonusInstance.findById(instanceId);
+            if (!instance) {
+                return next(notFound('Bonus instance not found'));
+            }
+
+            // Check if the instance can be modified
+            if (['approved', 'paid', 'cancelled'].includes(instance.status)) {
+                return next(forbidden('Cannot update share amount for instances with status: ' + instance.status));
+            }
+
+            // Store the previous amount for history
+            const previousShareAmount = instance.shareAmount;
+
+            // Create history entry
+            const historyEntry = {
+                date: new Date(),
+                previousAmount: previousShareAmount,
+                newAmount: parsedShareAmount,
+                userId: req.actor.id,
+                userName: req.actor.name || 'User ' + req.actor.id,
+                reason
+            };
+
+            // Update share amount
+            instance.shareAmount = parsedShareAmount;
+
+            // Add to history
+            if (!instance.shareAmountHistory) {
+                instance.shareAmountHistory = [];
+            }
+            instance.shareAmountHistory.push(historyEntry);
+
+            // Update recalculation status
+            instance.recalculationStatus = {
+                inProgress: true,
+                startedAt: new Date(),
+                completedAt: null,
+                progress: 0,
+                totalAllocations: 0,
+                processedAllocations: 0
+            };
+
+            // Save the instance first to update the status
+            await instance.save();
+
+            // Start the recalculation process asynchronously
+            recalculateAllocations(instance, parsedShareAmount, previousShareAmount)
+                .catch(err => {
+                    console.error('Error during allocation recalculation:', err);
+                    // Update instance to reflect the error
+                    BonusInstance.findByIdAndUpdate(
+                        instanceId,
+                        {
+                            $set: {
+                                'recalculationStatus.inProgress': false,
+                                'recalculationStatus.completedAt': new Date()
+                            }
+                        }
+                    ).exec();
+                });
+
+            res.status(200).json(instance);
+        } catch (err) {
+            next(err);
+        }
+    });
+};
+
+/**
+ * Helper function to recalculate all allocations for an instance
+ * based on the new share amount
+ */
+async function recalculateAllocations(instance, newShareAmount, oldShareAmount) {
+    try {
+        // Count total allocations
+        const totalAllocations = await BonusAllocation.countDocuments({
+            instanceId: instance._id
+        });
+
+        // Update the instance with the total count
+        await BonusInstance.findByIdAndUpdate(
+            instance._id,
+            {
+                $set: {
+                    'recalculationStatus.totalAllocations': totalAllocations
+                }
+            }
+        );
+
+        // Calculate the ratio between new and old share amounts
+        const ratio = newShareAmount / oldShareAmount;
+
+        // Process allocations in batches
+        const batchSize = 50;
+        let processedCount = 0;
+        let currentBatch = 0;
+
+        while (processedCount < totalAllocations) {
+            // Get a batch of allocations
+            const allocations = await BonusAllocation.find({ instanceId: instance._id })
+                .skip(currentBatch * batchSize)
+                .limit(batchSize);
+
+            if (allocations.length === 0) break;
+
+            // Process each allocation in the batch
+            const updatePromises = allocations.map(allocation => {
+                // Only recalculate if not excluded
+                if (allocation.status !== 'excluded') {
+                    // Scale the amount based on the ratio
+                    const calculatedAmount = allocation.calculatedAmount || 0;
+                    const finalAmount = allocation.finalAmount || calculatedAmount;
+
+                    // If the allocation was manually adjusted, keep the difference
+                    const wasAdjusted = allocation.status === 'adjusted';
+                    let newFinalAmount;
+
+                    if (wasAdjusted) {
+                        // Preserve the manual adjustment ratio
+                        const adjustmentRatio = finalAmount / calculatedAmount;
+                        const newCalculatedAmount = calculatedAmount * ratio;
+                        newFinalAmount = newCalculatedAmount * adjustmentRatio;
+                    } else {
+                        // Simply scale by the new ratio
+                        newFinalAmount = finalAmount * ratio;
+                    }
+
+                    return BonusAllocation.findByIdAndUpdate(
+                        allocation._id,
+                        {
+                            $set: {
+                                calculatedAmount: calculatedAmount * ratio,
+                                finalAmount: newFinalAmount,
+                                updatedAt: new Date()
+                            }
+                        }
+                    );
+                }
+                return Promise.resolve();
+            });
+
+            await Promise.all(updatePromises);
+
+            processedCount += allocations.length;
+            currentBatch++;
+
+            // Update progress
+            const progress = Math.min(100, Math.round((processedCount / totalAllocations) * 100));
+            await BonusInstance.findByIdAndUpdate(
+                instance._id,
+                {
+                    $set: {
+                        'recalculationStatus.progress': progress,
+                        'recalculationStatus.processedAllocations': processedCount
+                    }
+                }
+            );
+        }
+
+        // Mark recalculation as complete
+        await BonusInstance.findByIdAndUpdate(
+            instance._id,
+            {
+                $set: {
+                    'recalculationStatus.inProgress': false,
+                    'recalculationStatus.completedAt': new Date(),
+                    'recalculationStatus.progress': 100
+                }
+            }
+        );
+
+    } catch (error) {
+        console.error('Error in recalculation process:', error);
+        throw error;
+    }
+}

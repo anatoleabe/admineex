@@ -769,6 +769,12 @@
         "method": "POST",
         "roles": [1, 2, 3]
     },
+    {
+        "id": 248,
+        "uri": "/api/bonus/instances/:id/update-share-amount",
+        "method": "POST",
+        "roles": [1, 2]
+    },
 
     {
         "id": 230,

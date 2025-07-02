@@ -160,6 +160,10 @@
                                 <span class="font-weight-semibold">Total parts:</span>
                                 <span class="badge-secondary badge-pill">{{totals.parts || 0}} parts</span>
                             </div>
+                            <div class="summary-item">
+                                <span class="font-weight-semibold">Share Amount:</span>
+                                <span class="badge-info badge-pill">{{instance.shareAmount | number:0}} FCFA</span>
+                            </div>
                             <div class="summary-item highlight">
                                 <span class="font-weight-semibold">Total bonus amount:</span>
                                 <span class="font-weight-bold text-success">{{totals.amount | number:0}} FCFA</span>
@@ -171,6 +175,10 @@
                                 <button class="btn btn-success btn-block mb-2" ng-click="directApproveInstance()"
                                         ng-if="currentStep === 'completed' && instance.status !== 'approved' && instance.status !== 'paid'">
                                     <i class="mi-check-circle mr-1"></i> Approve Instance
+                                </button>
+                                <button class="btn btn-warning btn-block mb-2" ng-click="updateShareAmount()"
+                                        ng-if="instance.status !== 'approved' && instance.status !== 'paid'">
+                                    <i class="mi-attach-money mr-1"></i> Update Share Amount
                                 </button>
                                 <button class="btn btn-primary btn-block" ng-click="exportInstance()">
                                     <i class="mi-file-download mr-1"></i> Export Data
