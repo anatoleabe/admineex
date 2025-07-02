@@ -10,7 +10,18 @@ function($scope, $http, toastr, $mdDialog, allocation) {
         calculationInputs: {
             parts: allocation.calculationInputs?.parts || allocation.parts || 0,
             comment: allocation.calculationInputs?.comment || ''
-        }
+        },
+        shareAmount: allocation.instanceId.shareAmount || 0
+    };
+
+    // Function to update final amount based on parts
+    $scope.updateFinalAmount = function() {
+        // Calculate final amount by multiplying parts by share amount
+        $scope.selectedAllocation.finalAmount =
+            $scope.selectedAllocation.calculationInputs.parts * $scope.selectedAllocation.shareAmount;
+
+        // Ensure the final amount is a whole number
+        $scope.selectedAllocation.finalAmount = Math.round($scope.selectedAllocation.finalAmount);
     };
 
     // Load allocation history

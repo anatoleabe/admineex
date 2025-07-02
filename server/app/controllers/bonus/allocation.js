@@ -28,7 +28,7 @@ exports.api.getAll = async (req, res, next) => {
         const allocations = await BonusAllocation.find(filter)
             .sort(sort)
             .limit(Number(limit))
-            .populate('instanceId', 'referencePeriod status')
+            .populate('instanceId', 'referencePeriod status shareAmount')
             .populate('personnelId', 'identifier name')
             .populate('templateId', 'name code')
             .populate('personnelSnapshotId'); // Include all snapshot data including position information

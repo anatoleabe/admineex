@@ -1,4 +1,4 @@
-<md-dialog aria-label="Adjust Allocation" class="modal-lg">
+<md-dialog aria-label="Adjust Allocation" class="modal-lg adjust-allocation-modal" style="min-width: 600px; width: 60%;">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>Adjust Allocation</h2>
@@ -69,9 +69,12 @@
                                     <span class="input-group-text"><i class="icon-stack"></i></span>
                                 </div>
                                 <input type="number" class="form-control form-control-lg"
-                                       ng-model="selectedAllocation.calculationInputs.parts">
+                                       ng-model="selectedAllocation.calculationInputs.parts"
+                                       ng-change="updateFinalAmount()">
                             </div>
-                            <small class="form-text text-muted">Modify this value to adjust the calculation</small>
+                            <small class="form-text text-muted">
+                                Share value: {{selectedAllocation.shareAmount | number:0}} FCFA
+                            </small>
                         </div>
                     </div>
 
@@ -83,8 +86,9 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="icon-coin-dollar"></i></span>
                                 </div>
-                                <input type="number" class="form-control form-control-lg"
-                                       ng-model="selectedAllocation.finalAmount">
+                                <div class="form-control form-control-lg text-right" >
+                                    {{selectedAllocation.finalAmount | number:0}}
+                                </div>
                                 <div class="input-group-append">
                                     <span class="input-group-text">FCFA</span>
                                 </div>
