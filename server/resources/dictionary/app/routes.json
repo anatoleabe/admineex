@@ -763,6 +763,12 @@
         "method": "GET",
         "roles": [1, 2, 3]
     },
+    {
+        "id": 247,
+        "uri": "/api/bonus/instances/:id/record-export",
+        "method": "POST",
+        "roles": [1, 2, 3]
+    },
 
     {
         "id": 230,

@@ -960,6 +960,12 @@ let routes = [
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.getInstanceSnapshots],
         access: _.findWhere(aclRoutes, { id: 246 }).roles
     },
+    {
+        path: _.findWhere(aclRoutes, { id: 247 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 247 }).method,
+        middleware: [ jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.recordExport ],
+        access: _.findWhere(aclRoutes, { id: 247 }).roles
+    },
 
 // ================================== BONUS ALLOCATIONS API ROUTES =================================
     {

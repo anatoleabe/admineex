@@ -16,6 +16,66 @@ const fs = require('fs');
 exports.api = {};
 
 /**
+ * Record an export event in the instance history
+ */
+exports.api.recordExport = async (req, res, next) => {
+    const form = formidable({ multiples: false });
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return next(badRequest('Failed to parse form data'));
+        }
+
+        try {
+            const instanceId = req.params.id;
+            const { type, user, userId, fileSize } = fields;
+
+            // Validate required fields
+            if (!type || !['Excel', 'PDF'].includes(type)) {
+                return next(badRequest('Invalid export type. Must be "Excel" or "PDF".'));
+            }
+
+            // Find the instance
+            const instance = await BonusInstance.findById(instanceId);
+            if (!instance) {
+                return next(notFound('Bonus instance not found'));
+            }
+
+            // Add export record to the instance
+            if (!instance.exports) {
+                instance.exports = [];
+            }
+
+            const exportRecord = {
+                date: new Date(),
+                type,
+                user,
+                fileSize
+            };
+
+            // Add userId if provided
+            if (req.actor.id) {
+                exportRecord.userId = req.actor.id;
+            }
+
+            instance.exports.push(exportRecord);
+            instance.updatedAt = new Date();
+
+            // Save the instance with the new export record
+            await instance.save();
+
+            // Return the updated instance with exports
+            return res.json({
+                message: 'Export recorded successfully',
+                exports: instance.exports
+            });
+        } catch (error) {
+            console.error('Error recording export:', error);
+            return next(error);
+        }
+    });
+};
+
+/**
  * Create a bonus instance
  */
 exports.api.create = async (req, res, next) => {
@@ -361,22 +421,39 @@ exports.api.generatePayments = async (req, res, next) => {
  */
 exports.api.export = async (req, res, next) => {
     try {
-        const instance = await BonusInstance.findById(req.params.id);
+        const instance = await BonusInstance.findById(req.params.id)
+            .populate('templateId')
+            .populate('createdBy', 'firstname lastname');
+
         if (!instance) {
-            throw new Error('Bonus instance not found');
+            throw notFound('Bonus instance not found');
         }
 
-        const workbook = await exportBonusToExcel(instance);
+        // Get the requested format from the query parameter (default to Excel)
+        const format = req.query.format?.toLowerCase() || 'excel';
 
-        res.setHeader('Content-Type',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        if (format === 'pdf') {
+            // PDF Export
+            const pdfBuffer = await exportService.exportBonusToPdf(instance);
 
-        const filename = `bonus-export-${instance.referencePeriod || 'all'}.xlsx`;
-        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+            res.setHeader('Content-Type', 'application/pdf');
+            const filename = `bonus-export-${instance.referencePeriod || 'all'}.pdf`;
+            res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
 
-        await workbook.xlsx.write(res);
-        res.end();
+            res.send(pdfBuffer);
+        } else {
+            // Excel Export (default)
+            const workbook = await exportService.exportBonusToExcel(instance);
+
+            res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            const filename = `bonus-export-${instance.referencePeriod || 'all'}.xlsx`;
+            res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+
+            await workbook.xlsx.write(res);
+            res.end();
+        }
     } catch (error) {
+        console.error('Export error:', error);
         next(error);
     }
 };
@@ -455,37 +532,57 @@ exports.api.getAllocationStats = async (req, res, next) => {
  * Update wizard step (multi-step workflow)
  */
 exports.api.updateWizardStep = async (req, res, next) => {
-    try {
-        const { id } = req.params;
-        const { step } = req.body;
-
-        if (!['adjust', 'confirm', 'export', 'completed'].includes(step)) {
-            throw badRequest('Invalid wizard step');
+    const form = formidable({ multiples: false });
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return next(badRequest('Failed to parse form data'));
         }
+        try {
+            const { id } = req.params;
+            const { step } = fields;
 
-        const instance = await BonusInstance.findById(id);
-        if (!instance) {
-            throw notFound('Bonus instance not found');
+            if (!step || !['adjust', 'confirm', 'export', 'completed'].includes(step)) {
+                throw badRequest('Invalid step provided');
+            }
+
+            const instance = await BonusInstance.findById(id);
+            if (!instance) {
+                throw notFound('Bonus instance not found');
+            }
+
+            // Prevent step updates to approved/paid instances
+            if (['approved', 'paid', 'cancelled'].includes(instance.status)) {
+                throw forbidden('Cannot modify an approved, paid or cancelled instance');
+            }
+
+            // Update the wizard step
+            instance.wizardStep = step;
+
+            // Update the instance status based on the wizard step
+            // Only change the status if it's currently in draft state or we're moving back to a previous step
+            if (instance.status === 'draft' || step === 'adjust') {
+                switch (step) {
+                    case 'adjust':
+                        instance.status = 'draft';
+                        break;
+                    case 'confirm':
+                    case 'export':
+                        instance.status = 'under_review';
+                        break;
+                    case 'completed':
+                        // When the wizard is completed, it's ready for approval but status remains under_review
+                        instance.status = 'under_review';
+                        break;
+                }
+            }
+
+            await instance.save();
+
+            res.json(instance);
+        } catch (error) {
+            next(error);
         }
-
-        // Prevent step updates to approved/paid instances
-        if (['approved', 'paid'].includes(instance.status)) {
-            throw forbidden('Cannot modify an approved or paid instance');
-        }
-
-        const updatedInstance = await BonusInstance.findByIdAndUpdate(
-            id,
-            {
-                wizardStep: step,
-                updatedAt: new Date()
-            },
-            { new: true }
-        );
-
-        res.json(updatedInstance);
-    } catch (error) {
-        next(error);
-    }
+    });
 };
 
 /**

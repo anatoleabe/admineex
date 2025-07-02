@@ -93,39 +93,64 @@ exports.api.getById = async (req, res, next) => {
 /**
  * Adjust bonus allocation
  */
+const formidable = require('formidable');
+
 exports.api.adjust = async (req, res, next) => {
     try {
-        const { id } = req.params;
-        const { amount, parts, reason } = req.body;
+        const form = formidable({ multiples: false });
+        form.parse(req, async (err, fields) => {
+            if (err) {
+                return next(badRequest('Invalid form data'));
+            }
 
-        const allocation = await BonusAllocation.findById(id)
-            .populate('instanceId');
+            const { id } = req.params;
+            const { amount, parts, reason } = fields;
 
-        if (!allocation) {
-            throw notFound('Bonus allocation not found');
-        }
+            // Require a reason for the adjustment for better history tracking
+            if (!reason) {
+                throw badRequest('Adjustment reason is required');
+            }
 
-        // Check if instance allows modifications
-        if (['approved', 'paid'].includes(allocation.instanceId.status)) {
-            throw forbidden('Cannot modify allocations for approved or paid instances');
-        }
+            const allocation = await BonusAllocation.findById(id)
+                .populate('instanceId');
 
-        // Create new version
-        const newAllocation = await BonusAllocation.create({
-            ...allocation.toObject(),
-            _id: undefined,
-            version: allocation.version + 1,
-            previousVersion: allocation._id,
-            calculationInputs: {
-                ...allocation.calculationInputs,
-                parts: parts !== undefined ? parts : allocation.calculationInputs.parts
-            },
-            finalAmount: amount !== undefined ? amount : allocation.finalAmount,
-            status: 'adjusted',
-            updatedAt: new Date()
+            if (!allocation) {
+                throw notFound('Bonus allocation not found');
+            }
+
+            // Check if instance allows modifications
+            if (['approved', 'paid'].includes(allocation.instanceId.status)) {
+                throw forbidden('Cannot modify allocations for approved or paid instances');
+            }
+
+            // Push current state into history
+            if (!allocation.calculationInputs.adjustmentHistory) {
+                allocation.calculationInputs.adjustmentHistory = [];
+            }
+
+            allocation.calculationInputs.adjustmentHistory.push({
+                timestamp: new Date(),
+                user: req.user.id, // Assuming req.user contains authenticated user info
+                userName: req.user.name, // Assuming req.user contains authenticated user info
+                reason,
+                previousAmount: allocation.finalAmount,
+                previousParts: allocation.calculationInputs.parts,
+                previousComment: allocation.calculationInputs.comment,
+                newAmount: amount,
+                newParts: parts
+            });
+
+            // Update the main object with the latest adjustment
+            allocation.finalAmount = amount;
+            allocation.calculationInputs.parts = parts;
+            allocation.calculationInputs.comment = reason; // Update with the latest comment
+            allocation.status = 'adjusted';
+            allocation.updatedAt = new Date();
+
+            await allocation.save();
+
+            res.json(allocation);
         });
-
-        res.json(newAllocation);
     } catch (error) {
         next(error);
     }
@@ -136,37 +161,44 @@ exports.api.adjust = async (req, res, next) => {
  */
 exports.api.exclude = async (req, res, next) => {
     try {
-        const { id } = req.params;
-        const { reason } = req.body;
+        const form = formidable({ multiples: false });
+        form.parse(req, async (err, fields) => {
+            if (err) {
+                return next(badRequest('Invalid form data'));
+            }
 
-        const allocation = await BonusAllocation.findById(id)
-            .populate('instanceId');
+            const { id } = req.params;
+            const { reason } = fields;
 
-        if (!allocation) {
-            throw notFound('Bonus allocation not found');
-        }
+            const allocation = await BonusAllocation.findById(id)
+                .populate('instanceId');
 
-        if (['approved', 'paid'].includes(allocation.instanceId.status)) {
-            throw forbidden('Cannot modify allocations for approved or paid instances');
-        }
+            if (!allocation) {
+                throw notFound('Bonus allocation not found');
+            }
 
-        const updatedAllocation = await BonusAllocation.findByIdAndUpdate(
-            id,
-            {
-                status: 'excluded',
-                calculationInputs: {
-                    ...allocation.calculationInputs,
-                    adjustmentFactors: {
-                        ...(allocation.calculationInputs.adjustmentFactors || {}),
-                        exclusionReason: reason
-                    }
+            if (['approved', 'paid'].includes(allocation.instanceId.status)) {
+                throw forbidden('Cannot modify allocations for approved or paid instances');
+            }
+
+            const updatedAllocation = await BonusAllocation.findByIdAndUpdate(
+                id,
+                {
+                    status: 'excluded',
+                    calculationInputs: {
+                        ...allocation.calculationInputs,
+                        adjustmentFactors: {
+                            ...(allocation.calculationInputs.adjustmentFactors || {}),
+                            exclusionReason: reason
+                        }
+                    },
+                    updatedAt: new Date()
                 },
-                updatedAt: new Date()
-            },
-            { new: true }
-        );
+                { new: true }
+            );
 
-        res.json(updatedAllocation);
+            res.json(updatedAllocation);
+        });
     } catch (error) {
         next(error);
     }
@@ -177,33 +209,41 @@ exports.api.exclude = async (req, res, next) => {
  */
 exports.api.include = async (req, res, next) => {
     try {
-        const { id } = req.params;
+        const form = formidable({ multiples: false });
+        form.parse(req, async (err, fields) => {
+            if (err) {
+                return next(badRequest('Invalid form data'));
+            }
 
-        const allocation = await BonusAllocation.findById(id)
-            .populate('instanceId');
+            const { id } = req.params;
+            console.log('Including allocation with ID:', id);
 
-        if (!allocation) {
-            throw notFound('Bonus allocation not found');
-        }
+            const allocation = await BonusAllocation.findById(id)
+                .populate('instanceId');
 
-        if (['approved', 'paid'].includes(allocation.instanceId.status)) {
-            throw forbidden('Cannot modify allocations for approved or paid instances');
-        }
+            if (!allocation) {
+                throw notFound('Bonus allocation not found');
+            }
 
-        const updatedAllocation = await BonusAllocation.findByIdAndUpdate(
-            id,
-            {
-                status: 'eligible',
-                calculationInputs: {
-                    ...allocation.calculationInputs,
-                    adjustmentFactors: {}
+            if (['approved', 'paid'].includes(allocation.instanceId.status)) {
+                throw forbidden('Cannot modify allocations for approved or paid instances');
+            }
+
+            const updatedAllocation = await BonusAllocation.findByIdAndUpdate(
+                id,
+                {
+                    status: 'eligible',
+                    calculationInputs: {
+                        ...allocation.calculationInputs,
+                        adjustmentFactors: {}
+                    },
+                    updatedAt: new Date()
                 },
-                updatedAt: new Date()
-            },
-            { new: true }
-        );
+                { new: true }
+            );
 
-        res.json(updatedAllocation);
+            res.json(updatedAllocation);
+        });
     } catch (error) {
         next(error);
     }
@@ -216,24 +256,30 @@ exports.api.getHistory = async (req, res, next) => {
     try {
         const { id } = req.params;
 
-        const currentAllocation = await BonusAllocation.findById(id);
+        const currentAllocation = await BonusAllocation.findById(id)
+            .populate({
+                path: 'calculationInputs.adjustmentHistory.user',
+                select: 'firstname lastname'
+            })
+            .populate('personnelId');
+
         if (!currentAllocation) {
             throw notFound('Bonus allocation not found');
         }
 
-        // Find all versions of this allocation
-        const history = await BonusAllocation.find({
-            $or: [
-                { _id: id },
-                { previousVersion: id },
-                { _id: currentAllocation.previousVersion }
-            ]
-        })
-            .sort({ version: 1 })
-            .populate('personnelId', 'identifier name')
-            .populate('instanceId', 'referencePeriod');
+        // Process history to include full user names
+        const history = currentAllocation.calculationInputs.adjustmentHistory.map(entry => ({
+            timestamp: entry.timestamp,
+            user: entry.user ? `${entry.user.firstname} ${entry.user.lastname}` : 'System', // Handle null user
+            reason: entry.reason,
+            previousAmount: entry.previousAmount,
+            newAmount: entry.newAmount,
+            previousParts: entry.previousParts,
+            newParts: entry.newParts,
+            previousComment: entry.previousComment
+        }));
 
-        res.json(history);
+        res.json({ current: currentAllocation, history });
     } catch (error) {
         next(error);
     }

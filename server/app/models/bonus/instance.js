@@ -21,6 +21,14 @@ let BonusInstanceSchema = new mongoose.Schema({
     paymentDate: { type: Date },
     customOverrides: { type: mongoose.Schema.Types.Mixed }, // Allows temporary rule modifications
     notes: { type: String },
+    // Export history tracking
+    exports: [{
+        date: { type: Date, default: Date.now },
+        type: { type: String, enum: ['Excel', 'PDF'] },
+        user: { type: String },
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        fileSize: { type: String }
+    }],
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now }

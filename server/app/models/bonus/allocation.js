@@ -23,7 +23,17 @@ const BonusAllocationSchema = new mongoose.Schema({
         situation: {},
         sanctions: [{}],
         comment: { type: String },
-        adjustmentFactors: { type: mongoose.Schema.Types.Mixed }
+        adjustmentFactors: { type: mongoose.Schema.Types.Mixed },
+        adjustmentHistory: [{
+            timestamp: { type: Date, default: Date.now },
+            user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+            userName: { type: String },
+            reason: { type: String },
+            previousAmount: { type: Number },
+            newAmount: { type: Number },
+            previousParts: { type: Number },
+            newParts: { type: Number }
+        }]
     },
 
     // Calculation results
