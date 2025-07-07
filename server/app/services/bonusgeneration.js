@@ -111,6 +111,12 @@ async function generateAllocationsForInstance(instanceId) {
                     const calculatedAmount = calculatedInputs.parts > 0 ?
                         await calculateAmount(instance, snapshot.data, calculatedInputs.parts) : 0;
 
+                    // Calculate tax information
+                    const taxRate = instance.taxPercentage ? instance.taxPercentage / 100 : 0;
+                    const grossAmount = calculatedAmount; // Pre-tax amount
+                    const taxAmount = grossAmount * taxRate; // Amount deducted for tax
+                    const netAmount = grossAmount - taxAmount; // Amount after tax deduction
+
                     // Create allocation
                     const allocationItem = {
                         instanceId: instance._id,
@@ -120,6 +126,11 @@ async function generateAllocationsForInstance(instanceId) {
                         calculationInputs: calculatedInputs,
                         calculatedAmount: calculatedAmount || 0,
                         finalAmount: calculatedAmount || 0,
+                        // Add tax-related fields
+                        grossAmount: grossAmount || 0,
+                        taxAmount: taxAmount || 0,
+                        netAmount: netAmount || 0,
+                        taxRate: taxRate || 0,
                         status: calculatedInputs.parts > 0 ? 'eligible' : 'excluded',
                         comment: calculatedInputs.comment || '',
                         situationText: calculatedInputs.situationText || {},

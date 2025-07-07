@@ -775,6 +775,12 @@
         "method": "POST",
         "roles": [1, 2]
     },
+    {
+        "id": 249,
+        "uri": "/api/bonus/instances/:id/update-tax-config",
+        "method": "POST",
+        "roles": [1, 2]
+    },
 
     {
         "id": 230,

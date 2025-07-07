@@ -616,6 +616,78 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
         });
     };
 
+    // Update tax configuration for the instance
+    $scope.updateTaxConfig = function() {
+        // Display modal for updating tax configuration
+        $mdDialog.show({
+            controller: function($scope, $mdDialog, instance, currentTaxName, currentTaxPercentage) {
+                $scope.instance = instance;
+                $scope.formData = {
+                    currentTaxName: currentTaxName,
+                    currentTaxPercentage: currentTaxPercentage,
+                    newTaxName: currentTaxName,
+                    newTaxPercentage: currentTaxPercentage,
+                    reason: ''
+                };
+                $scope.updating = false;
+
+                $scope.cancel = function() {
+                    $mdDialog.cancel();
+                };
+
+                $scope.save = function() {
+                    if ($scope.updating) return;
+
+                    if (!$scope.formData.newTaxName) {
+                        toastr.error('Please enter a valid tax name');
+                        return;
+                    }
+
+                    if ($scope.formData.newTaxPercentage === undefined || $scope.formData.newTaxPercentage < 0 || $scope.formData.newTaxPercentage > 100) {
+                        toastr.error('Please enter a valid tax percentage (0-100%)');
+                        return;
+                    }
+
+                    if (!$scope.formData.reason) {
+                        toastr.error('Please provide a reason for the change');
+                        return;
+                    }
+
+                    $scope.updating = true;
+
+                    $http.post('/api/bonus/instances/' + instance._id + '/update-tax-config', {
+                        taxName: $scope.formData.newTaxName,
+                        taxPercentage: $scope.formData.newTaxPercentage,
+                        reason: $scope.formData.reason
+                    })
+                    .then(function(response) {
+                        $mdDialog.hide(response.data);
+                    })
+                    .catch(function(error) {
+                        console.error('Error updating tax configuration', error);
+                        toastr.error('Could not update tax configuration: ' + (error.data?.message || 'Unknown error'));
+                        $scope.updating = false;
+                    });
+                };
+            },
+            templateUrl: 'templates/bonus/modals/update-tax-config.html',
+            parent: angular.element(document.body),
+            clickOutsideToClose: false,
+            locals: {
+                instance: $scope.instance,
+                currentTaxName: $scope.instance.taxName,
+                currentTaxPercentage: $scope.instance.taxPercentage
+            }
+        }).then(function(updatedInstance) {
+            // Update the instance in the scope
+            $scope.instance = updatedInstance;
+            toastr.success('Tax configuration updated successfully. Recalculation in progress.');
+
+            // Start polling for recalculation progress
+            $scope.startRecalculationPolling();
+        });
+    };
+
     // Poll for recalculation progress
     $scope.startRecalculationPolling = function() {
         if ($scope.recalculationPolling) {

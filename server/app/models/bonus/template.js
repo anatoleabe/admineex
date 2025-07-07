@@ -47,6 +47,10 @@ const BonusTemplateSchema = new mongoose.Schema({
             }]
         }
     },
+    taxConfig: {
+        taxName: { type: String, default: "Impôt sur le revenu" },
+        taxPercentage: { type: Number, default: 5.28 } // Default to 5.28%
+    },
     approvalWorkflow: {
         steps: [{
             role: { type: String, required: true },

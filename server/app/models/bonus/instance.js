@@ -25,6 +25,20 @@ let BonusInstanceSchema = new mongoose.Schema({
         userName: { type: String },
         reason: { type: String }
     }],
+    // Tax configuration for this instance (copied from template and can be modified)
+    taxName: { type: String, default: "Impôt sur le revenu" },
+    taxPercentage: { type: Number, default: 5.28 }, // Default to 5.28%
+    // Track tax configuration history
+    taxConfigHistory: [{
+        date: { type: Date, default: Date.now },
+        previousName: { type: String },
+        previousPercentage: { type: Number },
+        newName: { type: String },
+        newPercentage: { type: Number },
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        userName: { type: String },
+        reason: { type: String }
+    }],
     // Track recalculation status
     recalculationStatus: {
         inProgress: { type: Boolean, default: false },

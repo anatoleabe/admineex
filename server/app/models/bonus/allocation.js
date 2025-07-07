@@ -40,6 +40,12 @@ const BonusAllocationSchema = new mongoose.Schema({
     calculatedAmount: { type: Number },
     finalAmount: { type: Number },
 
+    // Tax calculation fields
+    grossAmount: { type: Number }, // Pre-tax amount
+    taxAmount: { type: Number },   // Amount deducted for tax
+    netAmount: { type: Number },   // Amount after tax deduction
+    taxRate: { type: Number },     // Tax rate applied (stored as decimal, e.g., 0.0528)
+
     // Status and tracking
     status: {
         type: String,

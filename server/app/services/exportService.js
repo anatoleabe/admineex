@@ -95,7 +95,7 @@ exports.exportBonusToExcel = async (instance) => {
             'Fonction/Grade',
             'Nombre de parts',
             'MONTANT BRUT',
-            '{5,28%}',
+            `{${bonusInstance.taxPercentage || 5.28}%}`,
             'Net à Percevoir',
             'CNI',
             'Observations',
@@ -188,11 +188,13 @@ exports.exportBonusToExcel = async (instance) => {
                     }
                 }
 
+                // Use stored values instead of calculating
                 const parts = allocation.calculationInputs?.parts || 0;
-                const brutAmount = allocation.finalAmount || 0;
-                const taxAmount = brutAmount * 0.0528;
-                const netAmount = brutAmount * 0.9472;
+                const brutAmount = allocation.calculatedAmount || 0;
+                const netAmount = allocation.finalAmount || 0;
+                const taxAmount = brutAmount - netAmount;
 
+                // Add to structure totals
                 structureTotalParts += parts;
                 structureTotalBrut += brutAmount;
                 structureTotalTax += taxAmount;
@@ -423,7 +425,7 @@ exports.exportBonusToPdf = async (instance) => {
                     'Fonction/Grade',
                     'Nb parts',
                     'MONTANT BRUT',
-                    '{5,28%}',
+                    `{${bonusInstance.taxPercentage || 5.28}%}`,
                     'Net à Percevoir',
                     'CNI',
                     'Observations'
@@ -446,7 +448,7 @@ exports.exportBonusToPdf = async (instance) => {
                 colNames.forEach((name, i) => {
                     doc.text(name, currentX + 2, startY + 8, { // Adjusted vertical position for centering
                         width: colWidths[i] - 4,
-                        align: 'center', // Changed from conditional alignment to center for all headers
+                        align: 'center' // Changed from conditional alignment to center for all headers
                     });
                     currentX += colWidths[i];
                 });
@@ -479,7 +481,7 @@ exports.exportBonusToPdf = async (instance) => {
                         colNames.forEach((name, i) => {
                             doc.text(name, currentX + 2, startY + 8, { // Adjusted from +5 to +8 for vertical centering
                                 width: colWidths[i] - 4,
-                                align: 'center', // Changed from conditional alignment to center for all headers
+                                align: 'center' // Changed from conditional alignment to center for all headers
                             });
                             currentX += colWidths[i];
                         });
@@ -531,7 +533,7 @@ exports.exportBonusToPdf = async (instance) => {
                             colNames.forEach((name, i) => {
                                 doc.text(name, currentX + 2, startY + 8, { // Adjusted from +5 to +8 for vertical centering
                                     width: colWidths[i] - 4,
-                                    align: 'center', // Changed from conditional alignment to center for all headers
+                                    align: 'center' // Changed from conditional alignment to center for all headers
                                 });
                                 currentX += colWidths[i];
                             });
@@ -571,11 +573,11 @@ exports.exportBonusToPdf = async (instance) => {
                             }
                         }
 
-                        // Calculate amounts (same as Excel)
+                        // Use stored values instead of calculating
                         const parts = allocation.calculationInputs?.parts || 0;
-                        const brutAmount = allocation.finalAmount || 0;
-                        const taxAmount = brutAmount * 0.0528;
-                        const netAmount = brutAmount * 0.9472;
+                        const brutAmount = allocation.calculatedAmount || 0;
+                        const netAmount = allocation.finalAmount || 0;
+                        const taxAmount = brutAmount - netAmount;
 
                         // Add to structure totals
                         structureTotalParts += parts;

@@ -164,6 +164,13 @@
                                 <span class="font-weight-semibold">Share Amount:</span>
                                 <span class="badge-info badge-pill">{{instance.shareAmount | number:0}} FCFA</span>
                             </div>
+                            <div class="summary-item">
+                                <div>
+                                    <div class="font-weight-semibold">Tax Rate:</div>
+                                    <div class="text-muted font-size-sm">{{instance.taxName}}</div>
+                                </div>
+                                <span class="badge-info badge-pill">{{instance.taxPercentage || 0}}%</span>
+                            </div>
                             <div class="summary-item highlight">
                                 <span class="font-weight-semibold">Total bonus amount:</span>
                                 <span class="font-weight-bold text-success">{{totals.amount | number:0}} FCFA</span>
@@ -179,6 +186,10 @@
                                 <button class="btn btn-warning btn-block mb-2" ng-click="updateShareAmount()"
                                         ng-if="instance.status !== 'approved' && instance.status !== 'paid'">
                                     <i class="mi-attach-money mr-1"></i> Update Share Amount
+                                </button>
+                                <button class="btn btn-info btn-block mb-2" ng-click="updateTaxConfig()"
+                                        ng-if="instance.status !== 'approved' && instance.status !== 'paid'">
+                                    <i class="mi-percent mr-1"></i> Update Tax Configuration
                                 </button>
                                 <button class="btn btn-primary btn-block" ng-click="exportInstance()">
                                     <i class="mi-file-download mr-1"></i> Export Data
@@ -252,11 +263,12 @@
                                     <table class="table table-hover table-bordered">
                                         <thead class="thead-light sticky-top" style="position: sticky; top: 0; z-index: 10;">
                                         <tr>
-                                            <th width="25%">Employee</th>
-                                            <th width="15%">Position</th>
-                                            <th width="10%">Status</th>
-                                            <th width="10%" class="text-center">Parts</th>
-                                            <th width="15%" class="text-right">Amount</th>
+                                            <th width="20%">Employee</th>
+                                            <th width="13%">Position</th>
+                                            <th width="8%">Status</th>
+                                            <th width="8%" class="text-center">Parts</th>
+                                            <th width="13%" class="text-right">Gross Amount</th>
+                                            <th width="13%" class="text-right">Net Amount</th>
                                             <th width="25%" class="text-center">Actions</th>
                                         </tr>
                                         </thead>
@@ -283,6 +295,7 @@
                                                     }">{{allocation.status | capitalize}}</span>
                                             </td>
                                             <td class="text-center">{{allocation.calculationInputs.parts || 0}}</td>
+                                            <td class="text-right font-weight-semibold">{{allocation.calculatedAmount | number:0}} FCFA</td>
                                             <td class="text-right font-weight-semibold">{{allocation.finalAmount | number:0}} FCFA</td>
                                             <td class="text-center">
                                                 <div class="btn-group btn-group-actions">
@@ -302,7 +315,7 @@
                                             </td>
                                         </tr>
                                         <tr ng-if="!allocations.length">
-                                            <td colspan="6" class="text-center py-4">
+                                            <td colspan="7" class="text-center py-4">
                                                 <div class="empty-state">
                                                     <i class="icon-people mi-4x text-muted mb-3"></i>
                                                     <h4 class="font-weight-semibold">No allocations found</h4>
@@ -356,12 +369,13 @@
                                         <table class="table table-hover table-bordered">
                                             <thead class="thead-light sticky-top" style="position: sticky; top: 0; z-index: 10;">
                                                 <tr>
-                                                    <th width="25%">Employee</th>
-                                                    <th width="15%">Position</th>
-                                                    <th width="10%">Status</th>
-                                                    <th width="10%" class="text-center">Parts</th>
-                                                    <th width="15%" class="text-right">Current Amount</th>
-                                                    <th width="15%" class="text-right">Previous Amount</th>
+                                                    <th width="20%">Employee</th>
+                                                    <th width="13%">Position</th>
+                                                    <th width="7%">Status</th>
+                                                    <th width="7%" class="text-center">Parts</th>
+                                                    <th width="13%" class="text-right">Gross Amount</th>
+                                                    <th width="13%" class="text-right">Net Amount</th>
+                                                    <th width="13%" class="text-right">Previous</th>
                                                     <th width="10%" class="text-center">Actions</th>
                                                 </tr>
                                             </thead>
@@ -387,6 +401,7 @@
                                                         }">{{allocation.status | capitalize}}</span>
                                                     </td>
                                                     <td class="text-center">{{allocation.calculationInputs.parts || 0}}</td>
+                                                    <td class="text-right font-weight-semibold">{{allocation.calculatedAmount | number:0}} FCFA</td>
                                                     <td class="text-right font-weight-semibold">{{allocation.finalAmount | number:0}} FCFA</td>
                                                     <!-- Display previous amount from historical data -->
                                                     <td class="text-right">

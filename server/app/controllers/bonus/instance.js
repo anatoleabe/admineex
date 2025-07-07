@@ -114,7 +114,10 @@ exports.api.create = async (req, res, next) => {
                 templateId,
                 referencePeriod,
                 notes,
-                shareAmount,
+                shareAmount: shareAmount || template.calculationConfig.defaultShareAmount,
+                // Copy tax configuration from template
+                taxName: template.taxConfig?.taxName || "Impôt sur le revenu",
+                taxPercentage: template.taxConfig?.taxPercentage || 5.28,
                 createdBy: req.user?.id,
                 status: 'draft'
             });
@@ -882,6 +885,258 @@ async function recalculateAllocations(instance, newShareAmount, oldShareAmount) 
 
     } catch (error) {
         console.error('Error in recalculation process:', error);
+        throw error;
+    }
+}
+
+/**
+ * Update tax configuration and recalculate allocations
+ */
+exports.api.updateTaxConfig = async (req, res, next) => {
+    const form = formidable({ multiples: false });
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return next(badRequest('Failed to parse form data'));
+        }
+        try {
+            const instanceId = req.params.id;
+            const { taxName, taxPercentage, reason } = fields;
+
+            const parsedTaxPercentage = Number(taxPercentage);
+
+            if (typeof taxName !== 'string' || !taxName.trim()) {
+                return next(badRequest('Valid taxName is required'));
+            }
+
+            if (!parsedTaxPercentage || typeof parsedTaxPercentage !== 'number' || parsedTaxPercentage < 0 || parsedTaxPercentage > 100) {
+                return next(badRequest('Valid taxPercentage is required (0-100)'));
+            }
+
+            if (!reason) {
+                return next(badRequest('Reason for tax configuration change is required'));
+            }
+
+            // Find the instance
+            const instance = await BonusInstance.findById(instanceId);
+            if (!instance) {
+                return next(notFound('Bonus instance not found'));
+            }
+
+            // Check if the instance can be modified
+            if (['approved', 'paid', 'cancelled'].includes(instance.status)) {
+                return next(forbidden('Cannot update tax configuration for instances with status: ' + instance.status));
+            }
+
+            // Store the previous values for history
+            const previousTaxName = instance.taxName;
+            const previousTaxPercentage = instance.taxPercentage;
+
+            // Create history entry
+            const historyEntry = {
+                date: new Date(),
+                previousName: previousTaxName,
+                previousPercentage: previousTaxPercentage,
+                newName: taxName,
+                newPercentage: parsedTaxPercentage,
+                userId: req.actor.id,
+                userName: req.actor.name || 'User ' + req.actor.id,
+                reason
+            };
+
+            // Update tax configuration
+            instance.taxName = taxName;
+            instance.taxPercentage = parsedTaxPercentage;
+
+            // Add to history
+            if (!instance.taxConfigHistory) {
+                instance.taxConfigHistory = [];
+            }
+            instance.taxConfigHistory.push(historyEntry);
+
+            // Update recalculation status
+            instance.recalculationStatus = {
+                inProgress: true,
+                startedAt: new Date(),
+                completedAt: null,
+                progress: 0,
+                totalAllocations: 0,
+                processedAllocations: 0
+            };
+
+            // Save the instance first to update the status
+            await instance.save();
+
+            // Start the recalculation process asynchronously to apply tax deduction to final amounts
+            recalculateAllocationsWithTax(instance, parsedTaxPercentage, previousTaxPercentage)
+                .catch(err => {
+                    console.error('Error during allocation recalculation:', err);
+                    // Update instance to reflect the error
+                    BonusInstance.findByIdAndUpdate(
+                        instanceId,
+                        {
+                            $set: {
+                                'recalculationStatus.inProgress': false,
+                                'recalculationStatus.completedAt': new Date()
+                            }
+                        }
+                    ).exec();
+                });
+
+            res.status(200).json(instance);
+        } catch (err) {
+            next(err);
+        }
+    });
+};
+
+/**
+ * Helper function to recalculate all allocations for an instance
+ * based on the new tax percentage
+ */
+async function recalculateAllocationsWithTax(instance, newTaxPercentage, oldTaxPercentage) {
+    try {
+        // Count total allocations
+        const totalAllocations = await BonusAllocation.countDocuments({
+            instanceId: instance._id
+        });
+
+        // Update the instance with the total count
+        await BonusInstance.findByIdAndUpdate(
+            instance._id,
+            {
+                $set: {
+                    'recalculationStatus.totalAllocations': totalAllocations
+                }
+            }
+        );
+
+        let processedCount = 0;
+
+        // Process allocations in batches to avoid memory issues
+        const batchSize = 100;
+        let currentBatch = 0;
+
+        while (true) {
+            const allocations = await BonusAllocation.find({ instanceId: instance._id })
+                .skip(currentBatch * batchSize)
+                .limit(batchSize);
+
+            if (allocations.length === 0) break;
+
+            // Process each allocation in the current batch
+            for (const allocation of allocations) {
+                // Skip excluded allocations
+                if (allocation.status === 'excluded') {
+                    processedCount++;
+                    continue;
+                }
+
+                const calculatedAmount = allocation.calculatedAmount || 0;
+                const finalAmount = allocation.finalAmount || calculatedAmount;
+
+                // Calculate gross amount (pre-tax amount)
+                const oldTaxRate = oldTaxPercentage / 100;
+                const newTaxRate = newTaxPercentage / 100;
+
+                // Calculate gross amount (pre-tax)
+                const grossAmount = allocation.grossAmount || finalAmount / (1 - oldTaxRate);
+
+                // Calculate new tax amount
+                const taxAmount = grossAmount * newTaxRate;
+
+                // Calculate net amount (after tax deduction)
+                const netAmount = grossAmount - taxAmount;
+
+                // Prepare history entry for the adjustment
+                const adjustmentEntry = {
+                    timestamp: new Date(),
+                    userName: 'System',
+                    reason: `Tax configuration updated: ${oldTaxPercentage}% to ${newTaxPercentage}%`,
+                    previousTaxRate: oldTaxPercentage,
+                    newTaxRate: newTaxPercentage,
+                    previousGrossAmount: allocation.grossAmount || grossAmount,
+                    newGrossAmount: grossAmount,
+                    previousTaxAmount: allocation.taxAmount || (grossAmount * oldTaxRate),
+                    newTaxAmount: taxAmount,
+                    previousNetAmount: allocation.netAmount || finalAmount,
+                    newNetAmount: netAmount
+                };
+
+                // Ensure we have adjustmentHistory array
+                if (!allocation.calculationInputs) {
+                    allocation.calculationInputs = {};
+                }
+
+                if (!allocation.calculationInputs.adjustmentHistory) {
+                    allocation.calculationInputs.adjustmentHistory = [];
+                }
+
+                // Add the adjustment history entry
+                allocation.calculationInputs.adjustmentHistory.push(adjustmentEntry);
+
+                // Update the allocation with tax fields while keeping finalAmount
+                await BonusAllocation.findByIdAndUpdate(allocation._id, {
+                    $set: {
+                        'grossAmount': grossAmount,
+                        'taxAmount': taxAmount,
+                        'netAmount': netAmount,
+                        'taxRate': newTaxRate,
+                        'finalAmount': finalAmount, // Keep the original finalAmount
+                        'calculationInputs.adjustmentHistory': allocation.calculationInputs.adjustmentHistory,
+                        'calculationInputs.comment': allocation.calculationInputs.comment || 'Tax configuration updated',
+                        'status': allocation.status === 'eligible' ? 'adjusted' : allocation.status, // Mark as adjusted if it was eligible
+                        updatedAt: new Date()
+                    }
+                });
+
+                processedCount++;
+
+                // Update progress every 10 allocations or when reaching 100%
+                if (processedCount % 10 === 0 || processedCount === totalAllocations) {
+                    const progress = Math.floor((processedCount / totalAllocations) * 100);
+                    await BonusInstance.findByIdAndUpdate(
+                        instance._id,
+                        {
+                            $set: {
+                                'recalculationStatus.progress': progress,
+                                'recalculationStatus.processedAllocations': processedCount
+                            }
+                        }
+                    );
+                }
+            }
+
+            // Move to the next batch
+            currentBatch++;
+        }
+
+        // Mark recalculation as complete
+        await BonusInstance.findByIdAndUpdate(
+            instance._id,
+            {
+                $set: {
+                    'recalculationStatus.inProgress': false,
+                    'recalculationStatus.completedAt': new Date(),
+                    'recalculationStatus.progress': 100,
+                    'recalculationStatus.processedAllocations': processedCount
+                }
+            }
+        );
+
+        console.log(`Recalculation complete for instance ${instance._id}. Processed ${processedCount} allocations.`);
+
+    } catch (error) {
+        console.error('Error during tax recalculation:', error);
+        // Update instance to reflect the error
+        await BonusInstance.findByIdAndUpdate(
+            instance._id,
+            {
+                $set: {
+                    'recalculationStatus.inProgress': false,
+                    'recalculationStatus.completedAt': new Date()
+                }
+            }
+        );
         throw error;
     }
 }
