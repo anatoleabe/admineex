@@ -15,12 +15,19 @@ exports.api = {};
  */
 exports.api.getAll = async (req, res, next) => {
     try {
-        const { instanceId, personnelId, status, limit = 100, sortBy = 'createdAt:desc' } = req.query;
+        const { instanceId, personnelId, status, fromDate, toDate, limit = 100, sortBy = 'createdAt:desc' } = req.query;
 
         const filter = {};
         if (instanceId) filter.instanceId = instanceId;
         if (personnelId) filter.personnelId = personnelId;
-        if (status) filter.status = status;
+        if (status && status !== 'all') filter.status = status;
+
+        // Add date range filtering
+        if (fromDate || toDate) {
+            filter.createdAt = {};
+            if (fromDate) filter.createdAt.$gte = new Date(fromDate);
+            if (toDate) filter.createdAt.$lte = new Date(toDate);
+        }
 
         const [sortField, sortOrder] = sortBy.split(':');
         const sort = { [sortField]: sortOrder === 'desc' ? -1 : 1 };

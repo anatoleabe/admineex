@@ -35,6 +35,7 @@ controllers.bonus = {
     allocation: require('./controllers/bonus/allocation'),
     rule: require('./controllers/bonus/rule'),
     generation: require('./controllers/bonus/generation'),
+    export: require('./controllers/bonus/exportBonus'),
 }
 controllers.sanctions = require('./controllers/sanctions');
 controllers.organizations = require('./controllers/organizations');
@@ -1088,6 +1089,16 @@ let routes = [
         middleware: [controllers.dictionary.api.jsonList],
     },
 
+    // Personnel Bonus Export route - moved higher to avoid being overridden by wildcard routes
+    {
+        path: '/api/bonus/personnel/export',
+        httpMethod: 'GET',
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, function(req, res, next) {
+            next();
+        }, controllers.bonus.export.exportPersonnelBonusHistory],
+        access: [1, 2, 3, 4, 5] // Allow all user roles to access this route
+    },
+
     // FRONTEND ROUTES ========================================================
     // Route to handle all angular requests
     {
@@ -1104,8 +1115,16 @@ let routes = [
         httpMethod: _.findWhere(aclRoutes, {id: 87}).method,
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.documents.api.upsert],
         access: _.findWhere(aclRoutes, {id: 87}).roles
-    }
-   
+    },
+
+    // Export personnel bonus history - alternative path
+    {
+        path: '/api/personnel/:personnelId/bonus/export/:fromDate?/:toDate?',
+        httpMethod: 'GET',
+        middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.bonus.export.exportPersonnelBonusHistory],
+        access: [1, 2, 3, 4, 5] // Allow all authorized users to access
+    },
+
 ];
 
 

@@ -4,7 +4,9 @@ const getAllBonusAllocations = {
     query: Joi.object().keys({
         instanceId: Joi.string(),
         personnelId: Joi.string(),
-        status: Joi.string().valid('eligible', 'excluded', 'adjusted', 'paid', 'cancelled'),
+        status: Joi.string().valid('eligible', 'excluded', 'adjusted', 'paid', 'cancelled', 'approved', 'all'),
+        fromDate: Joi.string().pattern(/^\d{4}-\d{2}-\d{2}$/),
+        toDate: Joi.string().pattern(/^\d{4}-\d{2}-\d{2}$/),
         limit: Joi.number().integer().min(1).max(5000).default(100),
         sortBy: Joi.string().default('createdAt:desc')
     })

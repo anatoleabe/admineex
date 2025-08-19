@@ -801,15 +801,31 @@ async function recalculateAllocations(instance, newShareAmount, oldShareAmount) 
             }
         );
 
+        if (totalAllocations === 0) {
+            await BonusInstance.findByIdAndUpdate(
+                instance._id,
+                {
+                    $set: {
+                        'recalculationStatus.inProgress': false,
+                        'recalculationStatus.completedAt': new Date(),
+                        'recalculationStatus.progress': 100,
+                        'recalculationStatus.processedAllocations': 0
+                    }
+                }
+            );
+            return;
+        }
+
         // Calculate the ratio between new and old share amounts
         const ratio = newShareAmount / oldShareAmount;
+        const taxRate = (instance.taxPercentage || 0) / 100;
 
-        // Process allocations in batches
-        const batchSize = 50;
+        // Process allocations in batches (align with tax recalculation logic)
+        const batchSize = 100;
         let processedCount = 0;
         let currentBatch = 0;
 
-        while (processedCount < totalAllocations) {
+        while (true) {
             // Get a batch of allocations
             const allocations = await BonusAllocation.find({ instanceId: instance._id })
                 .skip(currentBatch * batchSize)
@@ -817,58 +833,107 @@ async function recalculateAllocations(instance, newShareAmount, oldShareAmount) 
 
             if (allocations.length === 0) break;
 
-            // Process each allocation in the batch
-            const updatePromises = allocations.map(allocation => {
-                // Only recalculate if not excluded
-                if (allocation.status !== 'excluded') {
-                    // Scale the amount based on the ratio
-                    const calculatedAmount = allocation.calculatedAmount || 0;
-                    const finalAmount = allocation.finalAmount || calculatedAmount;
+            // Process each allocation in the current batch
+            for (const allocation of allocations) {
+                // Skip excluded allocations
+                if (allocation.status === 'excluded') {
+                    processedCount++;
+                    continue;
+                }
 
-                    // If the allocation was manually adjusted, keep the difference
-                    const wasAdjusted = allocation.status === 'adjusted';
-                    let newFinalAmount;
+                const previousCalculatedAmount = allocation.calculatedAmount || 0;
+                const previousFinalAmount = allocation.finalAmount ?? previousCalculatedAmount;
 
-                    if (wasAdjusted) {
-                        // Preserve the manual adjustment ratio
-                        const adjustmentRatio = finalAmount / calculatedAmount;
-                        const newCalculatedAmount = calculatedAmount * ratio;
-                        newFinalAmount = newCalculatedAmount * adjustmentRatio;
-                    } else {
-                        // Simply scale by the new ratio
-                        newFinalAmount = finalAmount * ratio;
+                // Derive previous gross/tax/net if missing, using current instance tax rate
+                const previousNetBase = allocation.netAmount ?? previousFinalAmount;
+                const previousGrossAmount = allocation.grossAmount ?? (taxRate < 1 ? (previousNetBase / (1 - taxRate)) : previousNetBase);
+                const previousTaxAmount = allocation.taxAmount ?? (previousGrossAmount * taxRate);
+                const previousNetAmount = allocation.netAmount ?? (previousGrossAmount - previousTaxAmount);
+
+                // New calculated amount scales with ratio
+                const newCalculatedAmount = previousCalculatedAmount * ratio;
+
+                // Preserve manual adjustment ratio when status is 'adjusted'
+                const wasAdjusted = allocation.status === 'adjusted';
+                let newFinalAmount;
+                if (wasAdjusted && previousCalculatedAmount > 0) {
+                    const adjustmentRatio = previousFinalAmount / previousCalculatedAmount;
+                    newFinalAmount = newCalculatedAmount * adjustmentRatio;
+                } else {
+                    // Otherwise scale final amount directly
+                    newFinalAmount = previousFinalAmount * ratio;
+                }
+
+                // Scale gross by ratio, then recompute tax and net at current tax rate
+                const newGrossAmount = previousGrossAmount * ratio;
+                const newTaxAmount = newGrossAmount * taxRate;
+                const newNetAmount = newGrossAmount - newTaxAmount;
+
+                // Prepare history entry (align structure with tax recalculation)
+                const adjustmentEntry = {
+                    timestamp: new Date(),
+                    userName: 'System',
+                    reason: `Share amount updated: ${oldShareAmount} to ${newShareAmount}`,
+                    previousShareAmount: oldShareAmount,
+                    newShareAmount: newShareAmount,
+                    previousCalculatedAmount,
+                    newCalculatedAmount,
+                    previousGrossAmount,
+                    newGrossAmount,
+                    previousTaxAmount,
+                    newTaxAmount,
+                    previousNetAmount,
+                    newNetAmount,
+                    previousFinalAmount,
+                    newFinalAmount
+                };
+
+                // Ensure calculationInputs and history array exist
+                if (!allocation.calculationInputs) {
+                    allocation.calculationInputs = {};
+                }
+                if (!allocation.calculationInputs.adjustmentHistory) {
+                    allocation.calculationInputs.adjustmentHistory = [];
+                }
+                allocation.calculationInputs.adjustmentHistory.push(adjustmentEntry);
+
+                // Update the allocation with recalculated fields
+                await BonusAllocation.findByIdAndUpdate(
+                    allocation._id,
+                    {
+                        $set: {
+                            calculatedAmount: newCalculatedAmount,
+                            finalAmount: newFinalAmount,
+                            grossAmount: newGrossAmount,
+                            taxAmount: newTaxAmount,
+                            netAmount: newNetAmount,
+                            taxRate: taxRate,
+                            'calculationInputs.adjustmentHistory': allocation.calculationInputs.adjustmentHistory,
+                            'calculationInputs.comment': allocation.calculationInputs.comment || 'Share amount updated',
+                            status: allocation.status === 'eligible' ? 'adjusted' : allocation.status,
+                            updatedAt: new Date()
+                        }
                     }
+                );
 
-                    return BonusAllocation.findByIdAndUpdate(
-                        allocation._id,
+                processedCount++;
+
+                // Update progress every 10 allocations or on completion
+                if (processedCount % 10 === 0 || processedCount === totalAllocations) {
+                    const progress = Math.floor((processedCount / totalAllocations) * 100);
+                    await BonusInstance.findByIdAndUpdate(
+                        instance._id,
                         {
                             $set: {
-                                calculatedAmount: calculatedAmount * ratio,
-                                finalAmount: newFinalAmount,
-                                updatedAt: new Date()
+                                'recalculationStatus.progress': progress,
+                                'recalculationStatus.processedAllocations': processedCount
                             }
                         }
                     );
                 }
-                return Promise.resolve();
-            });
+            }
 
-            await Promise.all(updatePromises);
-
-            processedCount += allocations.length;
             currentBatch++;
-
-            // Update progress
-            const progress = Math.min(100, Math.round((processedCount / totalAllocations) * 100));
-            await BonusInstance.findByIdAndUpdate(
-                instance._id,
-                {
-                    $set: {
-                        'recalculationStatus.progress': progress,
-                        'recalculationStatus.processedAllocations': processedCount
-                    }
-                }
-            );
         }
 
         // Mark recalculation as complete
@@ -878,13 +943,24 @@ async function recalculateAllocations(instance, newShareAmount, oldShareAmount) 
                 $set: {
                     'recalculationStatus.inProgress': false,
                     'recalculationStatus.completedAt': new Date(),
-                    'recalculationStatus.progress': 100
+                    'recalculationStatus.progress': 100,
+                    'recalculationStatus.processedAllocations': processedCount
                 }
             }
         );
 
     } catch (error) {
         console.error('Error in recalculation process:', error);
+        // Update instance to reflect the error
+        await BonusInstance.findByIdAndUpdate(
+            instance._id,
+            {
+                $set: {
+                    'recalculationStatus.inProgress': false,
+                    'recalculationStatus.completedAt': new Date()
+                }
+            }
+        );
         throw error;
     }
 }

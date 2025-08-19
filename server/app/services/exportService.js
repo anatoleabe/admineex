@@ -1,10 +1,15 @@
 const excel = require('exceljs');
 const { BonusInstance } = require('../models/bonus/instance');
+const { Personnel } = require('../models/personnel');
 const { BonusAllocation } = require('../models/bonus/allocation');
 const { ApiError } = require('../utils/ApiError');
 const httpStatus = require('http-status');
 const dictionary = require('../utils/dictionary');
 const _ = require('lodash');
+const PDFDocument = require('pdfkit');
+const moment = require('moment');
+const mongoose = require('mongoose');
+const qr = require('qr-image');
 
 exports.exportBonusToExcel = async (instance) => {
     try {
@@ -190,8 +195,8 @@ exports.exportBonusToExcel = async (instance) => {
 
                 // Use stored values instead of calculating
                 const parts = allocation.calculationInputs?.parts || 0;
-                const brutAmount = allocation.calculatedAmount || 0;
-                const netAmount = allocation.finalAmount || 0;
+                const brutAmount = allocation.grossAmount || 0;
+                const netAmount = allocation.netAmount || 0;
                 const taxAmount = brutAmount - netAmount;
 
                 // Add to structure totals
@@ -575,8 +580,8 @@ exports.exportBonusToPdf = async (instance) => {
 
                         // Use stored values instead of calculating
                         const parts = allocation.calculationInputs?.parts || 0;
-                        const brutAmount = allocation.calculatedAmount || 0;
-                        const netAmount = allocation.finalAmount || 0;
+                        const brutAmount = allocation.grossAmount || 0;
+                        const netAmount = allocation.netAmount || 0;
                         const taxAmount = brutAmount - netAmount;
 
                         // Add to structure totals
@@ -794,5 +799,374 @@ exports.exportBonusToPdf = async (instance) => {
     } catch (error) {
         console.error('Error generating PDF export:', error);
         throw error;
+    }
+};
+
+/**
+ * Export personnel bonus history to PDF
+ * @param {string} personnelId - ID of the personnel
+ * @param {Date} fromDate - Start date for filtering bonuses
+ * @param {Date} toDate - End date for filtering bonuses
+ * @returns {Promise<Buffer>} - A buffer containing the PDF data
+ */
+exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
+    try {
+        // --- Data Fetching ---
+        if (!mongoose.Types.ObjectId.isValid(personnelId)) {
+            throw new ApiError('Invalid personnel ID', httpStatus.BAD_REQUEST);
+        }
+
+        const personnel = await Personnel.findById(personnelId);
+        if (!personnel) {
+            throw new ApiError('Personnel not found', httpStatus.NOT_FOUND);
+        }
+
+        const startDate = fromDate ? new Date(fromDate) : new Date(new Date().getFullYear() - 3, 0, 1);
+        const endDate = toDate ? new Date(toDate) : new Date();
+
+        const bonusAllocations = await BonusAllocation.find({
+            personnelId: personnelId,
+            status: { $ne: 'excluded' },
+            createdAt: { $gte: startDate, $lte: endDate }
+        })
+            .populate('instanceId', 'name referencePeriod taxPercentage')
+            .populate('templateId', 'name category') // Ensure category is populated
+            .populate('personnelSnapshotId') // Populate snapshot
+            .sort({ createdAt: -1 });
+
+        if (!bonusAllocations || bonusAllocations.length === 0) {
+            throw new ApiError('No bonus data found for the selected period', httpStatus.NOT_FOUND);
+        }
+
+        // --- PDF Generation Setup ---
+        const doc = new PDFDocument({
+            size: 'A4',
+            margins: { top: 180, bottom: 40, left: 50, right: 50 }, // Increased top margin to accommodate header
+            bufferPages: true
+        });
+
+        const buffers = [];
+        doc.on('data', buffers.push.bind(buffers));
+
+        // --- Styling and Helpers ---
+        const FONT_REGULAR = 'Helvetica';
+        const FONT_BOLD = 'Helvetica-Bold';
+        const COLOR_PRIMARY = '#1A237E';
+        const COLOR_SECONDARY = '#5C6BC0';
+        const COLOR_TEXT = '#333333';
+        const COLOR_LIGHT_TEXT = '#666666';
+        const COLOR_HEADER_BG = '#F5F5F5';
+        const COLOR_TABLE_HEADER_BG = '#E8EAF6';
+        const COLOR_ROW_ALT = '#FAFAFA';
+
+        const categoryLabels = {
+            with_parts: 'Primes basées sur les parts',
+            without_parts: 'Primes sans parts',
+            fixed_amount: 'Primes à montant fixe',
+            calculated: 'Primes calculées',
+            uncategorized: 'Primes manuelles / Non catégorisées'
+        };
+
+        // --- Generate Official Header ---
+        const generateOfficialHeader = () => {
+            // Layout based on the provided example image
+            const pageWidth = doc.page.width;
+            const logoSize = 80;
+            const logoY = doc.page.margins.top - 180;
+            const logoX = (pageWidth - logoSize) / 2;
+            const colWidth = 400;
+            const leftColX = -60;
+            const rightColX = pageWidth - colWidth + 80;
+            const headerTextY = logoY + 20;
+            const lineHeight = 10;
+            const fontSize = 8;
+
+            // French column (left)
+            doc.font('Helvetica-Bold').fontSize(fontSize).fillColor('black');
+            doc.text('REPUBLIQUE DU CAMEROUN', leftColX, headerTextY, { width: colWidth, align: 'center' });
+            doc.text('Paix- Travail- Patrie', leftColX, headerTextY + lineHeight, { width: colWidth, align: 'center' });
+            doc.text('---   ----------', leftColX, headerTextY + 2 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('MINISTERE DES FINANCES', leftColX, headerTextY + 3 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('---------------', leftColX, headerTextY + 4 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('SECRETARIAT GENERAL', leftColX, headerTextY + 5 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('---------------', leftColX, headerTextY + 6 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('DIRECTION GENERALE DU TRESOR, DE LA COOPERATION', leftColX, headerTextY + 7 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('FINANCIERE ET MONETAIRE', leftColX, headerTextY + 8 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('---------------', leftColX, headerTextY + 9 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('DIRECTION DES AFFAIRES GENERALES', leftColX, headerTextY + 10 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('---------------', leftColX, headerTextY + 11 * lineHeight, { width: colWidth, align: 'center' });
+
+            // English column (right)
+            doc.font('Helvetica-Bold').fontSize(fontSize).fillColor('black');
+            doc.text('REPUBLIC OF CAMEROON', rightColX, headerTextY, { width: colWidth, align: 'center' });
+            doc.text('Peace- Work- Fatherland', rightColX, headerTextY + lineHeight, { width: colWidth, align: 'center' });
+            doc.text('--------------', rightColX, headerTextY + 2 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('MINISTRY OF FINANCE', rightColX, headerTextY + 3 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('----------------', rightColX, headerTextY + 4 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('GENERAL SECRETARIAT', rightColX, headerTextY + 5 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('----------------', rightColX, headerTextY + 6 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('DIRECTORATE GENERAL OF TREASURY,', rightColX, headerTextY + 7 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('FINANCIAL AND MONETARY COOPERATION', rightColX, headerTextY + 8 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('----------------', rightColX, headerTextY + 9 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('DEPARTMENT OF GENERAL AFFAIRS', rightColX, headerTextY + 10 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('----------------', rightColX, headerTextY + 11 * lineHeight, { width: colWidth, align: 'center' });
+
+            // Coat of arms in the center
+            try {
+                const imgPath = __dirname + '/../../public/img/amoiriecmr.jpg';
+                doc.image(imgPath, (pageWidth - logoSize) / 2, headerTextY + 3 * lineHeight, { width: logoSize });
+            } catch (error) {
+                doc.rect((pageWidth - logoSize) / 2, headerTextY + 3 * lineHeight, logoSize, logoSize).stroke();
+            }
+        };
+
+        const generateHeader = () => {
+            // Only add the official header on the first page
+            if (doc.bufferedPageRange().count === 1) {
+                generateOfficialHeader();
+                doc.moveDown(4);
+            }
+
+            doc.fillColor(COLOR_PRIMARY)
+                .fontSize(16).font(FONT_BOLD)
+                .text('HISTORIQUE DES PRIMES ET GRATIFICATIONS', doc.page.margins.left, doc.y, {
+                    align: 'center',
+                    width: doc.page.width - doc.page.margins.left - doc.page.margins.right
+                });
+            const formattedName = `${personnel.name?.family?.join(' ') || ''} ${personnel.name?.given?.join(' ') || ''}`.trim();
+            doc.fontSize(10).font(FONT_REGULAR).fillColor(COLOR_LIGHT_TEXT)
+                .text(formattedName, doc.page.margins.left, doc.y, {
+                    align: 'center',
+                    width: doc.page.width - doc.page.margins.left - doc.page.margins.right
+                });
+            doc.moveDown(2);
+
+        };
+
+        // Adjust the footer generation to ensure no blank spaces are added unexpectedly
+        const generateFooter = (qrImage) => {
+            const pageCount = doc.bufferedPageRange().count;
+
+            // Store current page to restore it later
+            const currentPage = doc._pageNumber || 0;
+
+            for (let i = 0; i < pageCount; i++) {
+                doc.switchToPage(i);
+
+                // Ensure footer does not trigger a new page
+                const footerY = doc.page.height - doc.page.margins.bottom - 20; // Adjusted position
+                if (footerY > doc.page.height - 30) {
+                    continue; // Skip adding footer if it exceeds the page height
+                }
+
+                // Add footer text
+                const footerText = `Page ${i + 1} sur ${pageCount} | Généré par Admineex le ${moment().format('DD/MM/YYYY à HH:mm')}`;
+                doc.fontSize(8).fillColor(COLOR_LIGHT_TEXT)
+                    .text(footerText,
+                        doc.page.margins.left,
+                        footerY,
+                        {
+                            align: 'center',
+                            width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
+                            lineBreak: false
+                        });
+
+                // Add QR code if provided
+                if (qrImage) {
+                    const qrSize = 50;
+                    const qrX = doc.page.width - doc.page.margins.right - qrSize;
+                    const qrY = footerY - qrSize - 10; // Adjusted position
+                    if (qrY > doc.page.margins.top) {
+                        doc.image(qrImage, qrX, qrY, { width: qrSize, height: qrSize });
+                    }
+                }
+            }
+
+            // Restore the page we were on
+            doc.switchToPage(currentPage);
+        };
+
+        // Ensure no blank spaces are added in the document content
+        const removeBlankSpaces = (doc) => {
+            const pageCount = doc.bufferedPageRange().count;
+
+            for (let i = 0; i < pageCount; i++) {
+                doc.switchToPage(i);
+
+                // Adjust content to remove unnecessary blank spaces
+                const contentY = doc.page.margins.top;
+                if (contentY > doc.page.height - doc.page.margins.bottom) {
+                    continue; // Skip if content exceeds page height
+                }
+
+                // Ensure content is properly aligned
+                doc.text('', doc.page.margins.left, contentY, {
+                    align: 'left',
+                    width: doc.page.width - doc.page.margins.left - doc.page.margins.right
+                });
+            }
+        };
+
+        // --- PDF Content ---
+        generateHeader(doc);
+
+        // --- Info Section ---
+        const latestAllocation = bonusAllocations[0];
+        const position = latestAllocation.personnelSnapshotId?.data?.position;
+
+        doc.fontSize(10).font(FONT_BOLD).fillColor(COLOR_TEXT);
+        const infoTop = doc.y;
+        doc.text('Matricule:', 50, infoTop).text('Poste:', 50, infoTop + 15).text('Structure:', 50, infoTop + 30);
+        doc.font(FONT_REGULAR);
+        doc.text(personnel.identifier || 'N/A', 150, infoTop);
+        doc.text(position?.name || 'N/A', 150, infoTop + 15);
+        doc.text(position?.structure?.name || 'N/A', 150, infoTop + 30);
+        doc.font(FONT_BOLD).text('Période du rapport:', 300, infoTop);
+        doc.font(FONT_REGULAR).text(`${moment(startDate).format('DD/MM/YYYY')} au ${moment(endDate).format('DD/MM/YYYY')}`, 420, infoTop);
+        doc.moveDown(4);
+
+        // --- Data Processing and Grouping ---
+        let totalGross = 0, totalTax = 0, totalNet = 0;
+        bonusAllocations.forEach(bonus => {
+            const grossAmount = bonus.calculatedAmount || 0;
+            const netAmount = bonus.finalAmount || 0;
+            totalGross += grossAmount;
+            totalTax += (grossAmount - netAmount);
+            totalNet += netAmount;
+            bonus.displayGross = grossAmount;
+            bonus.displayTax = grossAmount - netAmount;
+            bonus.displayNet = netAmount;
+        });
+
+        const groupedBonuses = _.groupBy(bonusAllocations, bonus => bonus.templateId?.category || 'uncategorized');
+
+        // --- Summary Section ---
+        const summaryY = doc.y;
+        const summaryBoxWidth = 150, summaryBoxHeight = 50, summarySpacing = 20;
+        const drawSummaryBox = (x, y, title, value) => {
+            doc.rect(x, y, summaryBoxWidth, summaryBoxHeight).fill(COLOR_HEADER_BG);
+            doc.fillColor(COLOR_SECONDARY).font(FONT_BOLD).fontSize(10).text(title, x + 10, y + 10);
+            doc.fillColor(COLOR_TEXT).font(FONT_REGULAR).fontSize(12).text(`${Math.round(value).toLocaleString()} FCFA`, x + 10, y + 28);
+        };
+        drawSummaryBox(50, summaryY, 'MONTANT BRUT TOTAL', totalGross);
+        drawSummaryBox(50 + summaryBoxWidth + summarySpacing, summaryY, 'TOTAL RETENUES', totalTax);
+        drawSummaryBox(50 + 2 * (summaryBoxWidth + summarySpacing), summaryY, 'MONTANT NET TOTAL', totalNet);
+        doc.moveDown(3);
+
+        // --- Tables Section ---
+        const tableHeaders = ['Période', 'Type de Prime', 'Montant Brut', 'Retenue', 'Montant Net'];
+        const tableWidths = [100, 170, 80, 80, 80];
+        const tableStartX = 50;
+        const tableWidth = tableWidths.reduce((a, b) => a + b);
+
+        const drawTableHeader = (y) => {
+            doc.rect(tableStartX, y, tableWidth, 25).fill(COLOR_TABLE_HEADER_BG);
+            doc.font(FONT_BOLD).fontSize(9).fillColor(COLOR_PRIMARY);
+            let currentX = tableStartX;
+            tableHeaders.forEach((header, i) => {
+                doc.text(header, currentX + 5, y + 8, { width: tableWidths[i] - 10, align: 'center' });
+                currentX += tableWidths[i];
+            });
+            return y + 25;
+        };
+
+        const checkNewPage = (y, requiredHeight) => {
+            if (y + requiredHeight > doc.page.height - doc.page.margins.bottom) {
+                doc.addPage();
+                generateHeader(doc);
+                return drawTableHeader(doc.y);
+            }
+            return y;
+        };
+
+        let currentY = doc.y;
+
+        const categoriesToProcess = Object.keys(categoryLabels).filter(
+            category => groupedBonuses[category] && groupedBonuses[category].length > 0
+        );
+
+        categoriesToProcess.forEach((category, index) => {
+            const isLastCategory = index === categoriesToProcess.length - 1;
+
+            // Check space for category header and table header
+            currentY = checkNewPage(currentY, 50);
+            doc.fontSize(12).font(FONT_BOLD).fillColor(COLOR_PRIMARY)
+                .text(categoryLabels[category], tableStartX, currentY, { underline: true });
+            currentY += 25;
+
+            currentY = drawTableHeader(currentY);
+
+            let categoryGross = 0, categoryTax = 0, categoryNet = 0;
+
+            groupedBonuses[category].forEach((bonus, i) => {
+                // Check space for one row
+                currentY = checkNewPage(currentY, 25);
+                const rowColor = i % 2 === 0 ? '#FFFFFF' : COLOR_ROW_ALT;
+                doc.rect(tableStartX, currentY, tableWidth, 25).fill(rowColor);
+                doc.font(FONT_REGULAR).fontSize(8).fillColor(COLOR_TEXT);
+
+                const rowData = [
+                    { text: bonus.instanceId?.referencePeriod || moment(bonus.createdAt).format('MMMM YYYY'), align: 'left' },
+                    { text: bonus.templateId?.name || 'Bonus Manuel', align: 'left' },
+                    { text: Math.round(bonus.displayGross).toLocaleString(), align: 'right' },
+                    { text: Math.round(bonus.displayTax).toLocaleString(), align: 'right' },
+                    { text: Math.round(bonus.displayNet).toLocaleString(), align: 'right' }
+                ];
+
+                let currentX = tableStartX;
+                rowData.forEach((cell, j) => {
+                    doc.text(cell.text, currentX + 5, currentY + 8, { width: tableWidths[j] - 10, align: cell.align });
+                    currentX += tableWidths[j];
+                });
+                currentY += 25;
+
+                categoryGross += bonus.displayGross;
+                categoryTax += bonus.displayTax;
+                categoryNet += bonus.displayNet;
+            });
+
+            // Check space for subtotal row
+            currentY = checkNewPage(currentY, 20);
+            doc.rect(tableStartX, currentY, tableWidth, 20).fill(COLOR_HEADER_BG);
+            doc.font(FONT_BOLD).fontSize(8).fillColor(COLOR_TEXT);
+            const subtotalData = [
+                { text: 'SOUS-TOTAL', align: 'right', width: tableWidths.slice(0, 2).reduce((a, b) => a + b) },
+                { text: Math.round(categoryGross).toLocaleString(), align: 'right', width: tableWidths[2] },
+                { text: Math.round(categoryTax).toLocaleString(), align: 'right', width: tableWidths[3] },
+                { text: Math.round(categoryNet).toLocaleString(), align: 'right', width: tableWidths[4] }
+            ];
+            let subtotalX = tableStartX;
+            subtotalData.forEach(cell => {
+                doc.text(cell.text, subtotalX + 5, currentY + 6, { width: cell.width - 10, align: cell.align });
+                subtotalX += cell.width;
+            });
+            currentY += 20;
+
+            // Add space only if it's not the last category
+            if (!isLastCategory) {
+                currentY += 10;
+            }
+        });
+
+        // --- QR Code Generation ---
+        const verificationUrl = `https://your-verification-url.com/verify?personnel=${encodeURIComponent(personnel.name?.text)}&date=${Date.now()}`;
+        const qrImage = qr.imageSync(verificationUrl, { type: 'png' });
+
+
+        // --- Finalization ---
+        generateFooter(qrImage);
+        doc.end();
+
+        return new Promise((resolve, reject) => {
+            doc.on('end', () => resolve(Buffer.concat(buffers)));
+            doc.on('error', reject);
+        });
+
+    } catch (error) {
+        console.error('Export error:', error);
+        throw new ApiError(
+            error.message || 'Failed to export personnel bonus history',
+            error.statusCode || httpStatus.INTERNAL_SERVER_ERROR
+        );
     }
 };

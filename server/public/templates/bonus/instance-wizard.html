@@ -295,8 +295,8 @@
                                                     }">{{allocation.status | capitalize}}</span>
                                             </td>
                                             <td class="text-center">{{allocation.calculationInputs.parts || 0}}</td>
-                                            <td class="text-right font-weight-semibold">{{allocation.calculatedAmount | number:0}} FCFA</td>
-                                            <td class="text-right font-weight-semibold">{{allocation.finalAmount | number:0}} FCFA</td>
+                                            <td class="text-right font-weight-semibold">{{allocation.grossAmount | number:0}} FCFA</td>
+                                            <td class="text-right font-weight-semibold">{{allocation.netAmount | number:0}} FCFA</td>
                                             <td class="text-center">
                                                 <div class="btn-group btn-group-actions">
                                                     <button class="btn btn-icon btn-primary rounded-pill" data-tooltip="Edit" ng-click="adjustAllocation(allocation)" ng-if="allocation.status !== 'excluded'">
@@ -401,8 +401,8 @@
                                                         }">{{allocation.status | capitalize}}</span>
                                                     </td>
                                                     <td class="text-center">{{allocation.calculationInputs.parts || 0}}</td>
-                                                    <td class="text-right font-weight-semibold">{{allocation.calculatedAmount | number:0}} FCFA</td>
-                                                    <td class="text-right font-weight-semibold">{{allocation.finalAmount | number:0}} FCFA</td>
+                                                    <td class="text-right font-weight-semibold">{{allocation.grossAmount | number:0}} FCFA</td>
+                                                    <td class="text-right font-weight-semibold">{{allocation.netAmount | number:0}} FCFA</td>
                                                     <!-- Display previous amount from historical data -->
                                                     <td class="text-right">
                                                         <span ng-if="getHistoricalDataForPersonnel(allocation.personnelId._id)">

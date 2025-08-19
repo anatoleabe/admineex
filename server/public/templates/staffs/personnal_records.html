@@ -69,7 +69,7 @@
                     </div>
                     <div flex>
                         <div style="padding:0;margin: 0;" layout="row" layout-align="center center">
-                            <p style="white-space: nowrap; font-weight: bold;padding:0;margin: 0; font-size: 80%;" > <span translate>Skills: </span> {{personnelSelected.skillsCorresponding}}<span translate>% of required skills</span> </p>
+                            <p style="white-space: nowrap; font-weight: bold;padding:0;margin: 0; font-size: 80%" > <span translate>Skills: </span> {{personnelSelected.skillsCorresponding}}<span translate>% of required skills</span> </p>
                         </div>
                         <div layout="row" layout-align="center center">
                             <div style="margin-right:5px;"> <md-icon style="color: #0288d1;">star</md-icon></div>
@@ -401,7 +401,7 @@
                                     </md-list>
                                     <div flex>
                                         <div style="padding:0;margin: 0;" layout="row" layout-align="center center">
-                                            <p style="white-space: nowrap; font-weight: bold;padding:0;margin: 0; font-size: 80%;" > <span translate>Skills: </span> {{personnelSelected.skillsCorresponding}}<span translate>% of required skills</span> </p>
+                                            <p style="white-space: nowrap; font-weight: bold;padding:0;margin: 0; font-size: 80%" > <span translate>Skills: </span> {{personnelSelected.skillsCorresponding}}<span translate>% of required skills</span> </p>
                                         </div>
                                         <div layout="row" layout-align="center center">
                                             <div style="margin-right:5px;"> <md-icon style="color: #0288d1;">star</md-icon></div>
@@ -562,6 +562,206 @@
                 </md-button>
             </md-tab>
 
+            <!-- New Bonus Tab -->
+            <md-tab label='{{"Bonuses"| translate }}' ng-click="selectTab(3)">
+                <md-content class="md-padding">
+                    <div class="panel panel-flat">
+                        <div class="panel-heading">
+                            <h5 class="panel-title">
+                                <i class="icon-coin-dollar mr-2"></i> {{'Personnel Bonus History' | translate}}
+                            </h5>
+                            <div class="heading-elements">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="icon-file-download mr-1"></i> {{'Export' | translate}}
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" ng-click="exportBonusData('pdf')" ng-disabled="loadingBonusData || !bonusData.length">
+                                            <i class="icon-file-pdf mr-2"></i> {{'Export to PDF' | translate}}
+                                        </a>
+                                        <a class="dropdown-item" ng-click="exportBonusData('excel')" ng-disabled="loadingBonusData || !bonusData.length">
+                                            <i class="icon-file-excel mr-2"></i> {{'Export to Excel' | translate}}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="panel-body">
+                            <!-- Period selection -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="d-block">{{'Select Period Type' | translate}}</label>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" ng-model="bonusPeriodType" value="predefined">
+                                                {{'Predefined Periods' | translate}}
+                                            </label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <label class="form-check-label">
+                                                <input type="radio" class="form-check-input" ng-model="bonusPeriodType" value="custom">
+                                                {{'Custom Date Range' | translate}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="d-block">{{'Status Filter' | translate}}</label>
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn" ng-class="{'btn-primary': bonusStatusFilter === 'paid', 'btn-outline-primary': bonusStatusFilter !== 'paid'}"
+                                                    ng-click="updateBonusStatusFilter('paid')">
+                                                {{'Paid' | translate}}
+                                            </button>
+                                            <button type="button" class="btn" ng-class="{'btn-primary': bonusStatusFilter === 'approved', 'btn-outline-primary': bonusStatusFilter !== 'approved'}"
+                                                    ng-click="updateBonusStatusFilter('approved')">
+                                                {{'Approved' | translate}}
+                                            </button>
+                                            <button type="button" class="btn" ng-class="{'btn-primary': bonusStatusFilter === 'all', 'btn-outline-primary': bonusStatusFilter !== 'all'}"
+                                                    ng-click="updateBonusStatusFilter('all')">
+                                                {{'All' | translate}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Predefined period selection -->
+                            <div class="row" ng-if="bonusPeriodType === 'predefined'">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>{{'Select Period' | translate}}</label>
+                                        <select class="form-control" ng-model="selectedBonusPeriod" ng-change="updateBonusPeriodSelection()">
+                                            <option ng-repeat="period in predefinedBonusPeriods" value="{{period.value}}">{{period.label}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Custom date range -->
+                            <div class="row" ng-if="bonusPeriodType === 'custom'">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>{{'From Date' | translate}}</label>
+                                        <md-datepicker ng-model="bonusDateRange.from" md-placeholder="{{'From Date' | translate}}"></md-datepicker>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>{{'To Date' | translate}}</label>
+                                        <md-datepicker ng-model="bonusDateRange.to" md-placeholder="{{'To Date' | translate}}"></md-datepicker>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label>&nbsp;</label>
+                                        <div class="d-block">
+                                            <button type="button" class="btn btn-primary" ng-click="loadBonusData()">
+                                                <i class="icon-search4 mr-1"></i> {{'Search' | translate}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Summary card -->
+                            <div class="row mb-3" ng-if="!loadingBonusData && bonusData.length">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row text-center">
+                                                <div class="col">
+                                                    <h3 class="font-weight-semibold mb-0">{{bonusSummary.count}}</h3>
+                                                    <span class="text-muted">{{'Total Bonuses' | translate}}</span>
+                                                </div>
+                                                <div class="col">
+                                                    <h3 class="font-weight-semibold mb-0">{{formatCurrency(bonusSummary.totalGross)}}</h3>
+                                                    <span class="text-muted">{{'Total Gross Amount' | translate}}</span>
+                                                </div>
+                                                <div class="col">
+                                                    <h3 class="font-weight-semibold mb-0">{{formatCurrency(bonusSummary.totalTax)}}</h3>
+                                                    <span class="text-muted">{{'Total Tax' | translate}}</span>
+                                                </div>
+                                                <div class="col">
+                                                    <h3 class="font-weight-semibold mb-0">{{formatCurrency(bonusSummary.totalNet)}}</h3>
+                                                    <span class="text-muted">{{'Total Net Amount' | translate}}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bonus data table -->
+                            <div class="table-responsive" ng-if="!loadingBonusData && bonusData.length">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>{{'Date' | translate}}</th>
+                                        <th>{{'Bonus Type' | translate}}</th>
+                                        <th>{{'Period' | translate}}</th>
+                                        <th>{{'Status' | translate}}</th>
+                                        <th class="text-right">{{'Gross Amount' | translate}}</th>
+                                        <th class="text-right">{{'Tax' | translate}}</th>
+                                        <th class="text-right">{{'Net Amount' | translate}}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="bonus in bonusData">
+                                        <td>{{formatDate(bonus.createdAt)}}</td>
+                                        <td>
+                                            <span ng-if="bonus.templateId">{{bonus.templateId.name}}</span>
+                                            <span ng-if="!bonus.templateId">{{'Manual Bonus' | translate}}</span>
+                                        </td>
+                                        <td>
+                                            <span ng-if="bonus.instanceId.referencePeriod">{{bonus.instanceId.referencePeriod}}</span>
+                                            <span ng-if="!bonus.instanceId.referencePeriod" class="text-muted">{{'N/A' | translate}}</span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="mr-2">
+                                                    <div class="timeline-badge"
+                                                         ng-class="{
+                                                            'bg-secondary': bonus.instanceId.status === 'draft',
+                                                            'bg-info': bonus.instanceId.status === 'pending_generation',
+                                                            'bg-primary': bonus.instanceId.status === 'generated',
+                                                            'bg-warning': bonus.instanceId.status === 'under_review' || bonus.instanceId.status === 'approved',
+                                                            'bg-success': bonus.instanceId.status === 'paid',
+                                                            'bg-danger': bonus.instanceId.status === 'cancelled'
+                                                         }"
+                                                         aria-label="{{getBonusStatusInfo(bonus.instanceId.status).text}}">
+                                                        <md-tooltip>{{getBonusStatusInfo(bonus.instanceId.status).text}}</md-tooltip>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <span class="d-block font-weight-semibold">{{getBonusStatusInfo(bonus.instanceId.status).text}}</span>
+
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="text-right">{{formatCurrency(bonus.displayGross)}}</td>
+                                        <td class="text-right">{{formatCurrency(bonus.displayTax)}}</td>
+                                        <td class="text-right">{{formatCurrency(bonus.displayNet)}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Loading indicator -->
+                            <div class="text-center p-5" ng-if="loadingBonusData">
+                                <i class="icon-spinner4 spinner mr-2"></i> {{'Loading bonus data...' | translate}}
+                            </div>
+
+                            <!-- No data message -->
+                            <div class="text-center p-5" ng-if="!loadingBonusData && !bonusData.length">
+                                <i class="icon-alert mr-2"></i> {{'No bonus records found for the selected period.' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </md-content>
+            </md-tab>
         </md-tabs>
 
 
@@ -582,4 +782,3 @@
         </md-card-actions>
     </md-content>
 </div>
-
