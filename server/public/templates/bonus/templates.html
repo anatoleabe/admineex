@@ -7,11 +7,23 @@
       </h3>
       <small class="text-muted">Manage all bonus calculation templates</small>
     </div>
-    <div class="d-flex">
+    <div class="d-flex align-items-stretch">
+      <div class="mr-2">
+        <div class="stat-card bg-primary-100 p-2 rounded text-center">
+          <div class="text-primary font-weight-bold">{{templates.length || 0}}</div>
+          <small class="text-muted">Total</small>
+        </div>
+      </div>
+      <div class="mr-2">
+        <div class="stat-card bg-success-100 p-2 rounded text-center">
+          <div class="text-success font-weight-bold">{{stats.active}}</div>
+          <small class="text-muted">Active</small>
+        </div>
+      </div>
       <div class="mr-3">
-        <div class="stat-card bg-primary-100 p-2 rounded">
-          <div class="text-primary font-weight-bold">{{templates.length}}</div>
-          <small class="text-muted">Total Templates</small>
+        <div class="stat-card bg-danger-100 p-2 rounded text-center">
+          <div class="text-danger font-weight-bold">{{stats.inactive}}</div>
+          <small class="text-muted">Inactive</small>
         </div>
       </div>
       <button class="btn btn-primary" ng-click="openTemplateForm()">
@@ -20,101 +32,118 @@
     </div>
   </div>
 
-  <!-- Filters and Search -->
+  <!-- Toolbar: Search, Filters, Sort, View Toggle -->
   <div class="card mb-3">
     <div class="card-body p-2">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="form-group mb-0">
-            <div class="input-group">
-              <span class="input-group-prepend">
-                <span class="input-group-text"><i class="icon-search4"></i></span>
-              </span>
-              <input type="text" class="form-control" ng-model="searchQuery" placeholder="Search templates...">
+      <div class="row align-items-center">
+        <div class="col-lg-4 mb-2 mb-lg-0">
+          <div class="input-group">
+            <span class="input-group-prepend">
+              <span class="input-group-text"><i class="icon-search4"></i></span>
+            </span>
+            <input type="text" class="form-control" placeholder="Search by name, code, description" aria-label="Search templates" ng-model="searchQuery" ng-model-options="{ debounce: 300 }" ng-change="applyFilters(true)">
+          </div>
+        </div>
+
+        <div class="col-lg-4 mb-2 mb-lg-0">
+          <div class="d-flex align-items-center flex-wrap">
+            <div class="mr-2 text-muted small">Status:</div>
+            <div class="btn-group btn-group-sm mr-3" role="group" aria-label="Status filter">
+              <button type="button" class="btn" ng-class="{'btn-primary': statusFilter==='','btn-light': statusFilter!==''}" ng-click="setStatusFilter('')">All</button>
+              <button type="button" class="btn" ng-class="{'btn-primary': statusFilter==='true','btn-light': statusFilter!=='true'}" ng-click="setStatusFilter('true')">Active</button>
+              <button type="button" class="btn" ng-class="{'btn-primary': statusFilter==='false','btn-light': statusFilter!=='false'}" ng-click="setStatusFilter('false')">Inactive</button>
+            </div>
+
+            <div class="mr-2 text-muted small">Categories:</div>
+            <div class="d-flex flex-wrap" role="group" aria-label="Category filters">
+              <button type="button"
+                      class="btn btn-sm mr-1 mb-1 rounded-pill"
+                      ng-repeat="cat in constants.categories"
+                      ng-class="categoryFilters.indexOf(cat.value)!==-1 ? 'btn-primary' : 'btn-outline-secondary'"
+                      ng-click="toggleCategory(cat.value)"
+                      aria-pressed="{{categoryFilters.indexOf(cat.value)!==-1}}">
+                <i class="icon-price-tag2 mr-1"></i>{{cat.label}}
+              </button>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
-          <select class="form-control" ng-model="statusFilter" ng-change="applyFilters()">
-            <option value="">All Statuses</option>
-            <option value="true">Active</option>
-            <option value="false">Inactive</option>
-          </select>
-        </div>
-        <div class="col-md-3">
-          <select class="form-control" ng-model="categoryFilter" ng-change="applyFilters()">
-            <option value="">All Categories</option>
-            <option ng-repeat="cat in constants.categories" value="{{cat.value}}">{{cat.label}}</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <button class="btn btn-light btn-block" ng-click="resetFilters()">
-            <i class="icon-reset"></i> Reset
-          </button>
+
+        <div class="col-lg-4 d-flex align-items-center justify-content-lg-end">
+          <div class="d-flex align-items-center mr-3">
+            <span class="text-muted small mr-2">Sort by:</span>
+            <select class="form-control form-control-sm mr-2" style="width:auto;" aria-label="Sort by" ng-model="sortField" ng-change="applyFilters(true)">
+              <option value="updatedAt">Updated</option>
+              <option value="name">Name</option>
+              <option value="code">Code</option>
+            </select>
+            <button class="btn btn-light btn-sm" ng-click="toggleSortDir()" title="Toggle sort order">
+              <i class="icon-arrow-up7" ng-if="sortDir==='asc'"></i>
+              <i class="icon-arrow-down7" ng-if="sortDir==='desc'"></i>
+            </button>
+          </div>
+          <div class="btn-group btn-group-sm" role="group" aria-label="View mode">
+            <button class="btn" ng-class="{'btn-primary': viewMode==='list','btn-light': viewMode!=='list'}" ng-click="setViewMode('list')"><i class="icon-list"></i></button>
+            <button class="btn" ng-class="{'btn-primary': viewMode==='cards','btn-light': viewMode!=='cards'}" ng-click="setViewMode('cards')"><i class="icon-grid6"></i></button>
+          </div>
+          <button class="btn btn-light btn-sm ml-2" ng-click="resetFilters()" title="Reset filters"><i class="icon-reset"></i></button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Templates Table -->
-  <div class="card">
+  <!-- List View -->
+  <div class="card" ng-if="viewMode==='list'">
     <div class="table-responsive">
       <table class="table table-hover table-bordered table-striped">
         <thead class="thead-dark">
         <tr>
-          <th width="20%">Name</th>
-          <th width="15%">Code</th>
-          <th width="15%">Category</th>
-          <th width="15%">Periodicity</th>
-          <th width="10%">Status</th>
-          <th width="15%">Last Updated</th>
+          <th width="24%">Name</th>
+          <th width="12%">Code</th>
+          <th width="14%">Category</th>
+          <th width="14%">Periodicity</th>
+          <th width="12%">Status</th>
+          <th width="14%">Last Updated</th>
           <th width="10%" class="text-center">Actions</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="template in filteredTemplates = (templates | filter:searchFilter) track by template._id">
+        <tr ng-repeat="template in paginatedTemplates track by template._id">
           <td>
             <a href="javascript:void(0)" ng-click="viewTemplate(template)">
               <strong>{{template.name}}</strong>
             </a>
-            <div class="text-muted small">{{template.description | limitTo:50}}{{template.description.length > 50 ? '...' : ''}}</div>
+            <div class="text-muted small">{{template.description | limitTo:80}}{{template.description && template.description.length > 80 ? '...' : ''}}</div>
           </td>
+          <td><span class="badge badge-light">{{template.code}}</span></td>
+          <td>{{getCategoryLabel(template.category)}}</td>
+          <td>{{getPeriodicityLabel(template.periodicity)}}</td>
           <td>
-            <span class="badge-light">{{template.code}}</span>
-          </td>
-          <td>
-            {{getCategoryLabel(template.category)}}
-          </td>
-          <td>
-            {{getPeriodicityLabel(template.periodicity)}}
-          </td>
-          <td>
-                {{template.isActive ? 'Active' : 'Inactive'}}
+            <label class="mb-0 d-inline-flex align-items-center" title="Toggle active">
+              <input type="checkbox" ng-checked="template.isActive" ng-disabled="state.saving" ng-change="toggleActive(template)" ng-model="template.isActive">
+              <span class="ml-2" ng-class="{'text-success': template.isActive, 'text-muted': !template.isActive}">{{template.isActive ? 'Active' : 'Inactive'}}</span>
+            </label>
           </td>
           <td>
             <span class="d-block">{{template.updatedAt | date:'shortDate'}}</span>
             <small class="text-muted">{{template.updatedAt | date:'shortTime'}}</small>
           </td>
           <td class="text-center">
-            <div class="btn-group btn-group-sm">
-              <button class="btn btn-outline-info" ng-click="viewTemplate(template)"
-                      title="View Template">
-                <i class="icon-eye"></i>
+            <div class="dropdown">
+              <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Actions
               </button>
-              <button class="btn btn-outline-primary" ng-click="editTemplate(template)"
-                      title="Edit Template">
-                <i class="icon-pencil7"></i>
-              </button>
-              <button class="btn btn-outline-danger" ng-click="confirmDelete(template)"
-                      title="Delete Template">
-                <i class="icon-trash"></i>
-              </button>
+              <div class="dropdown-menu dropdown-menu-right">
+                <a class="dropdown-item" href="javascript:void(0)" ng-click="viewTemplate(template)"><i class="icon-eye mr-2"></i> View</a>
+                <a class="dropdown-item" href="javascript:void(0)" ng-click="editTemplate(template)"><i class="icon-pencil7 mr-2"></i> Edit</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item text-danger" href="javascript:void(0)" ng-click="confirmDelete(template)"><i class="icon-trash mr-2"></i> Delete</a>
+              </div>
             </div>
           </td>
         </tr>
-        <tr ng-if="!templates.length && !state.loading">
+        <tr ng-if="!state.loading && filteredTemplates.length===0">
           <td colspan="7" class="text-center text-muted py-4">
-            No bonus templates found. Click "New Template" to create one.
+            No templates match your filters.
           </td>
         </tr>
         <tr ng-if="state.loading">
@@ -127,7 +156,74 @@
     </div>
   </div>
 
-  <!-- Basic modal -->
+  <!-- Cards View -->
+  <div class="row" ng-if="viewMode==='cards'">
+    <div class="col-md-4 mb-3" ng-repeat="template in paginatedTemplates track by template._id">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h6 class="mb-1">{{template.name}}</h6>
+              <span class="badge badge-light">{{template.code}}</span>
+            </div>
+            <span class="badge" ng-class="template.isActive ? 'badge-success' : 'badge-secondary'">{{template.isActive ? 'Active' : 'Inactive'}}</span>
+          </div>
+          <div class="mt-2 text-muted small">{{template.description || 'No description'}}</div>
+          <div class="mt-3 d-flex flex-wrap small">
+            <span class="mr-3"><i class="icon-price-tag2 mr-1"></i>{{getCategoryLabel(template.category)}}</span>
+            <span class="mr-3"><i class="icon-calendar3 mr-1"></i>{{getPeriodicityLabel(template.periodicity)}}</span>
+            <span class="text-muted"><i class="icon-clock mr-1"></i>{{template.updatedAt | date:'short'}}</span>
+          </div>
+        </div>
+        <div class="card-footer d-flex justify-content-between align-items-center">
+          <label class="mb-0 small d-inline-flex align-items-center" title="Toggle active">
+            <input type="checkbox" ng-checked="template.isActive" ng-disabled="state.saving" ng-change="toggleActive(template)" ng-model="template.isActive">
+            <span class="ml-2">{{template.isActive ? 'Active' : 'Inactive'}}</span>
+          </label>
+          <div class="btn-group btn-group-sm">
+            <button class="btn btn-outline-info" ng-click="viewTemplate(template)" title="View"><i class="icon-eye"></i></button>
+            <button class="btn btn-outline-primary" ng-click="editTemplate(template)" title="Edit"><i class="icon-pencil7"></i></button>
+            <button class="btn btn-outline-danger" ng-click="confirmDelete(template)" title="Delete"><i class="icon-trash"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-12" ng-if="!state.loading && filteredTemplates.length===0">
+      <div class="card">
+        <div class="card-body text-center text-muted py-4">No templates match your filters.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  <div class="d-flex justify-content-between align-items-center mt-3" ng-if="filteredTemplates.length > 0">
+    <div class="text-muted small">
+      Showing {{(currentPage-1)*pageSize + 1}}–{{ Math.min(currentPage*pageSize, filteredTemplates.length) }} of {{filteredTemplates.length}}
+    </div>
+    <div class="d-flex align-items-center">
+      <select class="form-control form-control-sm mr-2" style="width:auto;" aria-label="Page size" ng-model="pageSize" ng-change="applyFilters(true)">
+        <option value="10">10</option>
+        <option value="20">20</option>
+        <option value="50">50</option>
+      </select>
+      <nav aria-label="Templates pagination">
+        <ul class="pagination pagination-sm mb-0">
+          <li class="page-item" ng-class="{disabled: currentPage===1}">
+            <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage-1)">Prev</a>
+          </li>
+          <li class="page-item" ng-repeat="p in [].constructor(pageCount) track by $index" ng-class="{active: ($index+1)===currentPage}">
+            <a class="page-link" href="javascript:void(0)" ng-click="setPage($index+1)">{{$index+1}}</a>
+          </li>
+          <li class="page-item" ng-class="{disabled: currentPage===pageCount}">
+            <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage+1)">Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Modals -->
   <div id="modal_basic" class="modal fade">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -136,7 +232,6 @@
     </div>
   </div>
 
-  <!-- View Template Modal -->
   <div id="modal_view_template" class="modal fade">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -145,5 +240,3 @@
     </div>
   </div>
 </div>
-
-

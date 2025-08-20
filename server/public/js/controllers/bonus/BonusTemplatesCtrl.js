@@ -10,14 +10,31 @@ angular.module('app')
 
         $scope.templates = [];
         $scope.filteredTemplates = [];
+        $scope.paginatedTemplates = [];
         $scope.editingTemplate = null;
         $scope.viewedTemplate = null;
         $scope.templateFormData = null;
 
+        // Stats
+        $scope.stats = { active: 0, inactive: 0 };
+
+        // View and sorting
+        $scope.viewMode = 'list';
+        $scope.sortField = 'updatedAt';
+        $scope.sortDir = 'desc';
+
+        // Pagination
+        $scope.pageSize = 10;
+        $scope.currentPage = 1;
+        $scope.pageCount = 1;
+
         // Filter variables
         $scope.searchQuery = '';
         $scope.statusFilter = '';
+        // Deprecated single category filter kept for compatibility
         $scope.categoryFilter = '';
+        // New multi-select category filters
+        $scope.categoryFilters = [];
 
         // Constants for dropdown options
         $scope.constants = {
@@ -84,22 +101,87 @@ angular.module('app')
             };
         }
 
-        // Apply filters to templates
-        $scope.applyFilters = function() {
-            $scope.filteredTemplates = $scope.templates.filter(template => {
-                const matchesSearch = !$scope.searchQuery ||
-                    template.name.toLowerCase().includes($scope.searchQuery.toLowerCase()) ||
-                    template.code.toLowerCase().includes($scope.searchQuery.toLowerCase()) ||
-                    (template.description && template.description.toLowerCase().includes($scope.searchQuery.toLowerCase()));
+        function computeStats() {
+            const active = ($scope.templates || []).filter(t => !!t.isActive).length;
+            const inactive = ($scope.templates || []).length - active;
+            $scope.stats = { active, inactive };
+        }
 
-                const matchesStatus = !$scope.statusFilter ||
-                    template.isActive.toString() === $scope.statusFilter;
+        // Apply filters to templates, then sort and paginate
+        $scope.applyFilters = function(resetPage) {
+            const list = $scope.templates || [];
 
-                const matchesCategory = !$scope.categoryFilter ||
-                    template.category === $scope.categoryFilter;
+            const query = ($scope.searchQuery || '').toLowerCase();
+            const status = $scope.statusFilter; // '', 'true', 'false'
+            const categorySet = new Set($scope.categoryFilters && $scope.categoryFilters.length ? $scope.categoryFilters : ($scope.categoryFilter ? [$scope.categoryFilter] : []));
+
+            // Filter
+            $scope.filteredTemplates = list.filter(template => {
+                const matchesSearch = !query ||
+                    (template.name && template.name.toLowerCase().includes(query)) ||
+                    (template.code && template.code.toLowerCase().includes(query)) ||
+                    (template.description && template.description.toLowerCase().includes(query));
+
+                const matchesStatus = !status || (template.isActive + '' === status);
+
+                const matchesCategory = categorySet.size === 0 || categorySet.has(template.category);
 
                 return matchesSearch && matchesStatus && matchesCategory;
             });
+
+            // Sort
+            const field = $scope.sortField;
+            const dir = $scope.sortDir === 'asc' ? 1 : -1;
+            $scope.filteredTemplates.sort((a, b) => {
+                let va = a[field];
+                let vb = b[field];
+                // Normalize values for comparison
+                if (field === 'updatedAt') {
+                    va = va ? new Date(va).getTime() : 0;
+                    vb = vb ? new Date(vb).getTime() : 0;
+                } else {
+                    va = (va || '').toString().toLowerCase();
+                    vb = (vb || '').toString().toLowerCase();
+                }
+                if (va < vb) return -1 * dir;
+                if (va > vb) return 1 * dir;
+                return 0;
+            });
+
+            // Pagination
+            if (resetPage) $scope.currentPage = 1;
+            $scope.pageCount = Math.max(1, Math.ceil($scope.filteredTemplates.length / $scope.pageSize));
+            const start = ($scope.currentPage - 1) * $scope.pageSize;
+            const end = start + Number($scope.pageSize);
+            $scope.paginatedTemplates = $scope.filteredTemplates.slice(start, end);
+        };
+
+        $scope.setPage = function(page) {
+            if (!page || page < 1 || page > $scope.pageCount) return;
+            $scope.currentPage = page;
+            $scope.applyFilters(false);
+        };
+
+        $scope.setStatusFilter = function(value) {
+            $scope.statusFilter = value;
+            $scope.applyFilters(true);
+        };
+
+        $scope.toggleCategory = function(value) {
+            if (!$scope.categoryFilters) $scope.categoryFilters = [];
+            const idx = $scope.categoryFilters.indexOf(value);
+            if (idx === -1) $scope.categoryFilters.push(value);
+            else $scope.categoryFilters.splice(idx, 1);
+            $scope.applyFilters(true);
+        };
+
+        $scope.setViewMode = function(mode) {
+            $scope.viewMode = mode;
+        };
+
+        $scope.toggleSortDir = function() {
+            $scope.sortDir = $scope.sortDir === 'asc' ? 'desc' : 'asc';
+            $scope.applyFilters(false);
         };
 
         // Reset all filters
@@ -107,7 +189,9 @@ angular.module('app')
             $scope.searchQuery = '';
             $scope.statusFilter = '';
             $scope.categoryFilter = '';
-            $scope.applyFilters();
+            $scope.categoryFilters = [];
+            $scope.currentPage = 1;
+            $scope.applyFilters(true);
         };
 
         // Get label for category
@@ -273,7 +357,8 @@ angular.module('app')
             return $http.get('/api/bonus/templates')
                 .then(function(response) {
                     $scope.templates = response.data;
-                    $scope.applyFilters();
+                    computeStats();
+                    $scope.applyFilters(true);
                     return $q.resolve(response.data);
                 })
                 .catch(function(error) {
@@ -285,6 +370,31 @@ angular.module('app')
                     $scope.state.loading = false;
                 });
         }
+
+        // Toggle active status
+        $scope.toggleActive = function(template) {
+            const updated = { isActive: !!template.isActive };
+            $scope.state.saving = true;
+            $http.put('/api/bonus/templates/' + template._id, updated)
+                .then(function(res) {
+                    // Update updatedAt from server if returned
+                    if (res && res.data) {
+                        template.updatedAt = res.data.updatedAt || template.updatedAt;
+                        template.isActive = res.data.isActive !== undefined ? res.data.isActive : template.isActive;
+                    }
+                    computeStats();
+                    toastr.success('Template ' + (template.isActive ? 'activated' : 'deactivated'), 'Success');
+                })
+                .catch(function(err) {
+                    console.error('Error updating status:', err);
+                    toastr.error('Failed to update status', 'Error');
+                    // Revert toggle on error
+                    template.isActive = !template.isActive;
+                })
+                .finally(function() {
+                    $scope.state.saving = false;
+                });
+        };
 
         // Initial load
         loadTemplates();
@@ -450,7 +560,7 @@ angular.module('app')
             const url = '/api/bonus/templates' + ($scope.editingTemplate ? '/' + $scope.editingTemplate._id : '');
 
             $http[method](url, cleanedData)
-                .then(function(response) {
+                .then(function() {
                     toastr.success('Template saved successfully', 'Success');
                     loadTemplates();
                     $scope.closeTemplateForm();
