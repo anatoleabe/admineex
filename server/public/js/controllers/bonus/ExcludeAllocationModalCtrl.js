@@ -17,13 +17,14 @@ angular.module('app')
         if (!$scope.selectedAllocation) return;
 
         const allocationId = $scope.selectedAllocation._id;
-        const excludeData = {
-            reason: $scope.selectedAllocation.calculationInputs.comment || 'Manual exclusion'
-        };
+        const fd = new FormData();
+        fd.append('reason', $scope.selectedAllocation.calculationInputs.comment || 'Manual exclusion');
 
         $scope.excluding = true;
 
-        $http.post('/api/bonus/allocations/' + allocationId + '/exclude', excludeData)
+        $http.post('/api/bonus/allocations/' + allocationId + '/exclude', fd, {
+            headers: { 'Content-Type': undefined }
+        })
             .then(function(response) {
                 $mdDialog.hide(response.data);
                 toastr.success('Allocation excluded');

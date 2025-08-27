@@ -1,8 +1,9 @@
-angular.module('app').controller('BonusAllocationsController', ['$scope', '$http', 'toastr', '$uibModal', '$mdDialog', '$state', function($scope, $http, toastr, $uibModal, $mdDialog, $state) {
+angular.module('app').controller('BonusAllocationsController', ['$scope', '$http', 'toastr', '$uibModal', '$mdDialog', '$state', '$timeout', function($scope, $http, toastr, $uibModal, $mdDialog, $state, $timeout) {
     $scope.allocations = [];
     $scope.loading = false;
+    $scope.searchTerm = '';
     $scope.filters = {
-        status: 'paid', // Default to 'paid' status
+        status: 'all',
         instanceId: '',
         fromDate: '',
         toDate: ''
@@ -20,18 +21,17 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
         { value: 'eligible', label: 'Eligible' },
         { value: 'excluded', label: 'Excluded' },
         { value: 'adjusted', label: 'Adjusted' },
-        { value: 'approved', label: 'Approved' },
         { value: 'paid', label: 'Paid' },
         { value: 'cancelled', label: 'Cancelled' }
     ];
 
     // Load bonus instances for filter
     function loadInstances() {
-        $http.get('/api/bonus/instances')
+        $http.get('/api/bonus/instances', { params: { limit: 100, offset: 0, sortBy: 'createdAt:desc' } })
             .then(function(response) {
                 $scope.instances = response.data.items || response.data;
             })
-            .catch(function(error) {
+            .catch(function() {
                 toastr.error('Failed to load bonus instances');
             });
     }
@@ -66,26 +66,37 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
         $scope.loading = true;
         let queryParams = {
             limit: $scope.pagination.limit,
-            offset: $scope.pagination.offset
+            offset: $scope.pagination.offset,
+            envelope: true
         };
 
         // Add filters if they are set
-        if ($scope.filters.status) queryParams.status = $scope.filters.status;
+        if ($scope.filters.status && $scope.filters.status !== 'all') queryParams.status = $scope.filters.status;
         if ($scope.filters.instanceId) queryParams.instanceId = $scope.filters.instanceId;
 
         // Format dates for API
         if ($scope.filters.fromDate) queryParams.fromDate = formatDate($scope.filters.fromDate);
         if ($scope.filters.toDate) queryParams.toDate = formatDate($scope.filters.toDate);
 
+        // Add search term
+        if ($scope.searchTerm && $scope.searchTerm.trim().length) queryParams.search = $scope.searchTerm.trim();
+
         $http.get('/api/bonus/allocations', { params: queryParams })
             .then(function(response) {
-                $scope.allocations = response.data;
-                $scope.pagination.total = response.headers('X-Total-Count') || $scope.allocations.length;
-                $scope.loading = false;
+                const data = response.data;
+                if (data && data.items) {
+                    $scope.allocations = data.items;
+                    $scope.pagination.total = data.total || data.items.length || 0;
+                } else {
+                    $scope.allocations = Array.isArray(data) ? data : [];
+                    $scope.pagination.total = $scope.allocations.length;
+                }
             })
             .catch(function(error) {
                 toastr.error('Failed to load bonus allocations');
                 console.error('Error loading allocations:', error);
+            })
+            .finally(function() {
                 $scope.loading = false;
             });
     };
@@ -98,14 +109,44 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
 
     // Reset filters
     $scope.resetFilters = function() {
+        $scope.searchTerm = '';
         $scope.filters = {
-            status: 'paid', // Default to 'paid' status
+            status: 'all',
             instanceId: '',
             fromDate: '',
             toDate: ''
         };
         $scope.pagination.offset = 0;
         $scope.loadAllocations();
+    };
+
+    // Debounce search input
+    let searchDebounce;
+    $scope.$watch('searchTerm', function(newVal, oldVal) {
+        if (newVal === oldVal) return;
+        if (searchDebounce) $timeout.cancel(searchDebounce);
+        searchDebounce = $timeout(function() {
+            $scope.pagination.offset = 0;
+            $scope.loadAllocations();
+        }, 300);
+    });
+
+    // Helper to display personnel
+    $scope.getPersonnelDisplay = function(personnel) {
+        if (!personnel) return 'N/A';
+        try {
+            if (personnel.name) {
+                if (personnel.name.text) return personnel.name.text;
+                if (personnel.name.use) return personnel.name.use;
+                const family = Array.isArray(personnel.name.family) && personnel.name.family.length ? personnel.name.family[0] : '';
+                const given = Array.isArray(personnel.name.given) && personnel.name.given.length ? personnel.name.given[0] : '';
+                const combined = (family + ' ' + given).trim();
+                if (combined) return combined;
+            }
+            return personnel.identifier || 'N/A';
+        } catch (e) {
+            return personnel.identifier || 'N/A';
+        }
     };
 
     // Initialize

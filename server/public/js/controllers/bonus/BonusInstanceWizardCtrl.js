@@ -3,54 +3,120 @@
  * Handles the multi-step workflow for adjusting and reviewing bonus instances
  */
 angular.module('app')
-.controller('BonusInstanceWizardCtrl', ['$scope', '$http', '$stateParams', '$state', '$ocLazyLoad', 'SweetAlert', '$mdDialog', 'toastr',
-function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog, toastr) {
+.controller('BonusInstanceWizardCtrl', ['$scope', '$http', '$stateParams', '$state', '$ocLazyLoad', 'SweetAlert', '$mdDialog', 'toastr', '$timeout',
+function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog, toastr, $timeout) {
 
-    // Initialize the wizard
-    $scope.initialize = function() {
-        $scope.instanceId = $stateParams.instanceId;
-        $scope.currentStep = 'adjust'; // Default step
-        $scope.loading = true;
-        $scope.historicalData = [];
-        $scope.historicalDataByPersonnelId = {};
+    // Helper to ensure numeric pagination
+    function toInt(val, fallback) {
+        const n = parseInt(val, 10);
+        return isNaN(n) ? (fallback !== undefined ? fallback : 0) : n;
+    }
 
-        // Load the instance details
-        $http.get('/api/bonus/instances/' + $scope.instanceId)
+    // Pagination state
+    $scope.pagination = {
+        limit: 50,
+        offset: 0,
+        total: 0
+    };
+
+    // Totals (sidebar) based on server stats
+    $scope.totals = {
+        eligible: 0,
+        excluded: 0,
+        adjusted: 0,
+        total: 0,
+        amount: 0,
+        parts: 0
+    };
+
+    // Map stats payload to $scope.totals
+    function setTotalsFromStats(stats) {
+        if (!stats) return;
+        $scope.totals = {
+            eligible: stats.eligible || 0,
+            excluded: stats.excluded || 0,
+            adjusted: stats.adjusted || 0,
+            total: stats.total || 0,
+            amount: stats.totalAmount || 0,
+            parts: stats.totalParts || 0
+        };
+    }
+
+    // Load one page of allocations with optional status filter
+    $scope.loadAllocationsPage = function() {
+        // Coerce numbers
+        $scope.pagination.limit = toInt($scope.pagination.limit, 50);
+        $scope.pagination.offset = toInt($scope.pagination.offset, 0);
+
+        const params = {
+            instanceId: $scope.instanceId,
+            limit: $scope.pagination.limit,
+            offset: $scope.pagination.offset,
+            sortBy: 'createdAt:desc',
+            envelope: true,
+            search: ($scope.searchTerm || '').trim()
+        };
+        if ($scope.filterStatus) {
+            params.status = $scope.filterStatus;
+        }
+
+        return $http.get('/api/bonus/allocations', { params })
             .then(function(response) {
-                $scope.instance = response.data;
-                $scope.currentStep = $scope.instance.wizardStep || 'adjust';
+                if (response.data && response.data.items) {
+                    $scope.allocations = response.data.items;
+                    $scope.pagination.total = toInt(response.data.total, 0);
+                    $scope.pagination.limit = toInt(response.data.limit, $scope.pagination.limit);
+                    // Clamp offset if it overflows total
+                    const maxOffset = Math.max(0, $scope.pagination.total - $scope.pagination.limit);
+                    $scope.pagination.offset = Math.min(toInt(response.data.offset, 0), maxOffset);
 
-                // Load allocations for this instance
-                return $http.get('/api/bonus/allocations', {
-                    params: {
-                        instanceId: $scope.instanceId,
-                        limit:4000
+                    // Update sidebar totals with filtered stats when available
+                    if (response.data.stats) {
+                        setTotalsFromStats(response.data.stats);
+                    } else {
+                        // Fallback to client calculation if stats missing
+                        $scope.calculateTotals();
                     }
-                });
-            })
-            .then(function(response) {
-                $scope.allocations = response.data;
-                console.log($scope.allocations)
-                $scope.loading = false;
-                $scope.kernel.loading = 100;
-
-                // Calculate totals
-                $scope.calculateTotals();
-
-                // Load historical data if on the confirm step
-                if ($scope.currentStep === 'confirm' || $scope.currentStep === 'export') {
-                    $scope.loadHistoricalData();
+                    return response.data.stats;
+                } else {
+                    $scope.allocations = response.data || [];
+                    $scope.pagination.total = $scope.allocations.length;
+                    // Fallback to client totals for non-envelope responses
+                    $scope.calculateTotals();
+                    return null;
                 }
             })
             .catch(function(error) {
-                console.error('Error loading instance data', error);
-                toastr.error('Could not load bonus instance data');
-                $scope.loading = false;
-                $scope.kernel.loading = 100;
+                console.error('Error loading allocations page', error);
+                toastr.error('Could not load allocations');
+                throw error;
             });
     };
 
-    // Calculate allocation totals
+    // Refresh global stats (not affected by current filter)
+    $scope.refreshGlobalStats = function() {
+        const params = {
+            instanceId: $scope.instanceId,
+            limit: 1,
+            offset: 0,
+            envelope: true
+        };
+        return $http.get('/api/bonus/allocations', { params })
+            .then(function(response) {
+                if (response.data && response.data.stats) {
+                    setTotalsFromStats(response.data.stats);
+                } else {
+                    // Fallback to client totals for current page
+                    $scope.calculateTotals();
+                }
+            })
+            .catch(function(error) {
+                console.error('Error refreshing stats', error);
+                // Keep previous totals if stats fail
+            });
+    };
+
+    // Calculate client-side totals for current allocations list (fallback only)
     $scope.calculateTotals = function() {
         $scope.totals = {
             eligible: 0,
@@ -78,6 +144,55 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
                 }
             });
         }
+    };
+
+    // Navigation helpers
+    $scope.canPrevPage = function() {
+        return toInt($scope.pagination.offset, 0) > 0;
+    };
+    $scope.canNextPage = function() {
+        const offset = toInt($scope.pagination.offset, 0);
+        const limit = toInt($scope.pagination.limit, 50);
+        const total = toInt($scope.pagination.total, 0);
+        return (offset + limit) < total;
+    };
+    $scope.nextPage = function() {
+        if (!$scope.canNextPage()) return;
+        $scope.pagination.offset = toInt($scope.pagination.offset, 0) + toInt($scope.pagination.limit, 50);
+        $scope.reloadPage();
+    };
+    $scope.prevPage = function() {
+        if (!$scope.canPrevPage()) return;
+        $scope.pagination.offset = Math.max(0, toInt($scope.pagination.offset, 0) - toInt($scope.pagination.limit, 50));
+        $scope.reloadPage();
+    };
+    $scope.goToPage = function(pageNumber) {
+        const limit = toInt($scope.pagination.limit, 50);
+        const total = toInt($scope.pagination.total, 0);
+        const maxPage = Math.max(1, Math.ceil(total / Math.max(1, limit)));
+        const page = Math.max(1, Math.min(toInt(pageNumber, 1), maxPage));
+        $scope.pagination.offset = (page - 1) * limit;
+        $scope.reloadPage();
+    };
+
+    // Ensure changing page size resets to first page
+    $scope.$watch('pagination.limit', function(newVal, oldVal) {
+        if (newVal === oldVal) return;
+        $scope.pagination.limit = toInt(newVal, 50);
+        $scope.pagination.offset = 0;
+    });
+
+    $scope.reloadPage = function() {
+        $scope.loading = true;
+        var hasActiveFilters = ($scope.filterStatus && $scope.filterStatus.length) || ($scope.searchTerm && $scope.searchTerm.trim().length);
+        $scope.loadAllocationsPage()
+            .then(function() {
+                // Only load global stats when no active filters
+                if (!hasActiveFilters) {
+                    return $scope.refreshGlobalStats();
+                }
+            })
+            .finally(function() { $scope.loading = false; });
     };
 
     // Load historical personnel data
@@ -222,7 +337,7 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
                 if (index !== -1) {
                     $scope.allocations[index] = updatedAllocation;
                 }
-                $scope.calculateTotals();
+                $scope.reloadPage();
                 toastr.success('Allocation adjusted successfully');
             });
         });
@@ -256,7 +371,7 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
                 }
 
                 $scope.adjusting = false;
-                $scope.calculateTotals();
+                $scope.reloadPage();
                 $('#adjustAllocationModal').modal('hide');
                 toastr.success('Allocation adjusted successfully');
             })
@@ -283,7 +398,7 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
                 if (index !== -1) {
                     $scope.allocations[index] = updatedAllocation;
                 }
-                $scope.calculateTotals();
+                $scope.reloadPage();
                 toastr.success('Allocation excluded successfully');
             });
         });
@@ -305,7 +420,7 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
                 if (index !== -1) {
                     $scope.allocations[index] = updatedAllocation;
                 }
-                $scope.calculateTotals();
+                $scope.reloadPage();
                 toastr.success('Allocation included successfully');
             });
         });
@@ -730,24 +845,21 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
             .then(function(response) {
                 $scope.instance = response.data;
                 $scope.currentStep = $scope.instance.wizardStep || 'adjust';
-
-                // Load allocations for this instance
-                return $http.get('/api/bonus/allocations', {
-                    params: {
-                        instanceId: $scope.instanceId,
-                        limit: 4000
-                    }
-                });
+                // Reset pagination on first load
+                $scope.pagination.offset = 0;
+                // Load first page of allocations
+                return $scope.loadAllocationsPage();
             })
-            .then(function(response) {
-                $scope.allocations = response.data;
-                console.log($scope.allocations)
+            .then(function() {
+                // If no active filters, ensure sidebar shows global stats
+                var hasActiveFilters = ($scope.filterStatus && $scope.filterStatus.length) || ($scope.searchTerm && $scope.searchTerm.trim().length);
+                if (!hasActiveFilters) {
+                    return $scope.refreshGlobalStats();
+                }
+            })
+            .then(function() {
                 $scope.loading = false;
-                $scope.kernel.loading = 100;
-
-                // Calculate totals
-                $scope.calculateTotals();
-
+                $scope.kernel && ($scope.kernel.loading = 100);
                 // Load historical data if on the confirm step
                 if ($scope.currentStep === 'confirm' || $scope.currentStep === 'export') {
                     $scope.loadHistoricalData();
@@ -757,19 +869,39 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
                 console.error('Error loading instance data', error);
                 toastr.error('Could not load bonus instance data');
                 $scope.loading = false;
-                $scope.kernel.loading = 100;
+                $scope.kernel && ($scope.kernel.loading = 100);
             });
     };
 
-    // Initialize with improved loading function
+    // Debounced search watcher
+    let searchDebouncePromise;
+    $scope.$watch('searchTerm', function(newVal, oldVal) {
+        if (newVal === oldVal && $scope.allocations) return;
+        if (searchDebouncePromise) {
+            $timeout.cancel(searchDebouncePromise);
+        }
+        searchDebouncePromise = $timeout(function() {
+            $scope.pagination.offset = 0;
+            $scope.reloadPage();
+            searchDebouncePromise = null;
+        }, 300);
+    });
+
+    // Watch status filter to refetch from server
+    $scope.$watch('filterStatus', function(newVal, oldVal) {
+        if (newVal === oldVal && $scope.allocations) return;
+        // Reset to first page when filter changes
+        $scope.pagination.offset = 0;
+        $scope.reloadPage();
+    });
+
+    // Initialize
     $scope.initialize = function() {
         $scope.instanceId = $stateParams.instanceId;
-        $scope.currentStep = 'adjust'; // Default step
+        $scope.currentStep = 'adjust';
         $scope.loading = true;
         $scope.historicalData = [];
         $scope.historicalDataByPersonnelId = {};
-
-        // Load the instance data
         $scope.loadInstanceData();
     };
 

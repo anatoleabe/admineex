@@ -2,7 +2,7 @@
 <div class="page-content">
     <div class="content-wrapper">
         <!-- Content area -->
-        <div class="content" ng-controller="BonusInstanceWizardCtrl">
+        <div class="content">
             <!-- Enhanced Loading Indicator -->
             <div class="text-center p-5" ng-if="loading">
                 <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -273,7 +273,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr ng-repeat="allocation in allocations | filter:{personnelId:{name: searchTerm}} | filter:(filterStatus ? {status: filterStatus} : {})">
+                                        <tr ng-repeat="allocation in allocations">
                                             <td>
                                                 <div class="d-flex align-items-center">
 
@@ -325,6 +325,29 @@
                                         </tr>
                                         </tbody>
                                     </table>
+                                </div>
+
+                                <!-- Pagination controls -->
+                                <div class="d-flex align-items-center justify-content-between mt-2">
+                                    <div class="text-muted font-size-sm">
+                                        Showing {{pagination.total ? (pagination.offset + 1) : 0}}-
+                                        {{Math.min(pagination.offset + (allocations ? allocations.length : 0), pagination.total || 0)}}
+                                        of {{pagination.total || 0}}
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="mr-2">Rows per page:</div>
+                                        <select class="form-control form-control-sm mr-3" style="width: auto;" ng-model="pagination.limit" ng-change="goToPage(1)">
+                                            <option value="25">25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                        <button class="btn btn-sm btn-outline-secondary mr-2" ng-click="prevPage()" ng-disabled="!canPrevPage()">
+                                            <i class="mi-chevron-left"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" ng-click="nextPage()" ng-disabled="!canNextPage()">
+                                            <i class="mi-chevron-right"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
 
@@ -380,7 +403,7 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr ng-repeat="allocation in allocations | filter:{personnelId:{name: searchTerm}} | filter:(filterStatus ? {status: filterStatus} : {})">
+                                                <tr ng-repeat="allocation in allocations">
                                                     <td>
                                                         <div class="d-flex align-items-center">
                                                             <div>
@@ -429,6 +452,29 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+                                    </div>
+
+                                    <!-- Pagination controls -->
+                                    <div class="d-flex align-items-center justify-content-between mt-2">
+                                        <div class="text-muted font-size-sm">
+                                            Showing {{pagination.total ? (pagination.offset + 1) : 0}}-
+                                            {{Math.min(pagination.offset + (allocations ? allocations.length : 0), pagination.total || 0)}}
+                                            of {{pagination.total || 0}}
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="mr-2">Rows per page:</div>
+                                            <select class="form-control form-control-sm mr-3" style="width: auto;" ng-model="pagination.limit" ng-change="goToPage(1)">
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                            <button class="btn btn-sm btn-outline-secondary mr-2" ng-click="prevPage()" ng-disabled="!canPrevPage()">
+                                                <i class="mi-chevron-left"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-secondary" ng-click="nextPage()" ng-disabled="!canNextPage()">
+                                                <i class="mi-chevron-right"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

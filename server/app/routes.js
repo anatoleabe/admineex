@@ -998,13 +998,13 @@ let routes = [
     {
         path: _.findWhere(aclRoutes, { id: 232 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 232 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusAllocationValidations.getAllBonusAllocations), controllers.bonus.allocation.api.adjust],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.allocation.api.adjust],
         access: _.findWhere(aclRoutes, { id: 232 }).roles
     },
     {
         path: _.findWhere(aclRoutes, { id: 233 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 233 }).method,
-        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusAllocationValidations.excludeBonusAllocation), controllers.bonus.allocation.api.exclude],
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.allocation.api.exclude],
         access: _.findWhere(aclRoutes, { id: 233 }).roles
     },
     {

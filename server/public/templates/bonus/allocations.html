@@ -7,6 +7,13 @@
         <h6 class="mb-0">Filters</h6>
       </div>
       <div class="card-body">
+          <div class="row mb-12">
+              <!-- Search by employee -->
+            <div class="col-md-3 mb-3">
+                <label>Search by employee</label>
+                <input type="text" class="form-control" placeholder="Name or identifier" ng-model="searchTerm">
+            </div>
+          </div>
         <div class="row">
           <!-- Status filter -->
           <div class="col-md-3 mb-3">
@@ -69,18 +76,18 @@
               <td colspan="6" class="text-center">No allocations found matching your filters.</td>
             </tr>
             <tr ng-repeat="allocation in allocations">
-              <td>{{allocation.personnelId.name || allocation.personnelId.identifier}}</td>
+              <td>{{ getPersonnelDisplay(allocation.personnelId) }}</td>
               <td>{{allocation.instanceId.referencePeriod}}</td>
               <td>
                 <span class="badge" ng-class="{
                   'badge-primary': allocation.status === 'eligible',
                   'badge-danger': allocation.status === 'excluded',
                   'badge-warning': allocation.status === 'adjusted',
-                  'badge-success': allocation.status === 'approved' || allocation.status === 'paid',
+                  'badge-success': allocation.status === 'paid',
                   'badge-secondary': allocation.status === 'cancelled'
                 }">{{allocation.status}}</span>
               </td>
-              <td>{{allocation.finalAmount | currency}}</td>
+              <td>{{allocation.finalAmount | number:0}} FCFA</td>
               <td>{{allocation.createdAt | date:'yyyy-MM-dd'}}</td>
               <td>
                 <!-- Actions would go here -->

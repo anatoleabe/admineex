@@ -13,13 +13,17 @@ angular.module('app')
             if (!$scope.selectedAllocation) return;
 
             const allocationId = $scope.selectedAllocation._id;
-            const includeData = {
-                reason: $scope.selectedAllocation.comment || 'Manual exclusion'
-            };
+            var fd = new FormData();
+            // reason is optional for include; send comment if present
+            if ($scope.selectedAllocation.comment) {
+                fd.append('reason', $scope.selectedAllocation.comment);
+            }
 
             $scope.including = true;
 
-            $http.post('/api/bonus/allocations/' + allocationId + '/include', includeData)
+            $http.post('/api/bonus/allocations/' + allocationId + '/include', fd, {
+                headers: { 'Content-Type': undefined }
+            })
                 .then(function(response) {
                     $mdDialog.hide(response.data);
                     toastr.success('Allocation included');

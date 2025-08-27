@@ -15,11 +15,20 @@ exports.api = {};
  */
 exports.api.getAll = async (req, res, next) => {
     try {
-        const { instanceId, personnelId, status, fromDate, toDate, limit = 100, sortBy = 'createdAt:desc' } = req.query;
+        const { instanceId, personnelId, status, fromDate, toDate, limit = 100, sortBy = 'createdAt:desc', offset = 0, envelope = 'false', search = '' } = req.query;
 
+        // Build a typed filter usable by both Mongoose queries and raw aggregations
         const filter = {};
-        if (instanceId) filter.instanceId = instanceId;
-        if (personnelId) filter.personnelId = personnelId;
+        if (instanceId) {
+            filter.instanceId = mongoose.Types.ObjectId.isValid(instanceId)
+                ? new mongoose.Types.ObjectId(instanceId)
+                : instanceId;
+        }
+        if (personnelId) {
+            filter.personnelId = mongoose.Types.ObjectId.isValid(personnelId)
+                ? new mongoose.Types.ObjectId(personnelId)
+                : personnelId;
+        }
         if (status && status !== 'all') filter.status = status;
 
         // Add date range filtering
@@ -29,47 +38,127 @@ exports.api.getAll = async (req, res, next) => {
             if (toDate) filter.createdAt.$lte = new Date(toDate);
         }
 
+        // Server-side search by personnel identifier or name
+        let matchedPersonnelIds = null;
+        const trimmedSearch = typeof search === 'string' ? search.trim() : '';
+        if (trimmedSearch) {
+            const regex = new RegExp(trimmedSearch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+            const people = await Personnel.find({
+                $or: [
+                    { identifier: regex },
+                    { 'name.text': regex },
+                    { 'name.use': regex },
+                    { 'name.family': regex },
+                    { 'name.given': regex }
+                ]
+            }).select('_id').lean();
+            matchedPersonnelIds = people.map(p => p._id);
+
+            // If an explicit personnelId filter exists, intersect it with search results
+            if (filter.personnelId) {
+                const explicitIds = Array.isArray(filter.personnelId?.$in)
+                    ? filter.personnelId.$in
+                    : [filter.personnelId];
+                const explicitSet = new Set(explicitIds.map(id => id.toString()));
+                matchedPersonnelIds = matchedPersonnelIds.filter(id => explicitSet.has(id.toString()));
+            }
+
+            if (matchedPersonnelIds.length === 0) {
+                // No matches; return empty response quickly if envelope requested
+                const wantsEnvelopeQuick = String(envelope).toLowerCase() === 'true' || envelope === '1';
+                if (wantsEnvelopeQuick) {
+                    return res.json({ items: [], total: 0, limit: Number(limit), offset: Number(offset), stats: { eligible: 0, excluded: 0, adjusted: 0, totalParts: 0, totalAmount: 0, total: 0 } });
+                } else {
+                    return res.json([]);
+                }
+            }
+
+            filter.personnelId = { $in: matchedPersonnelIds };
+        }
+
         const [sortField, sortOrder] = sortBy.split(':');
         const sort = { [sortField]: sortOrder === 'desc' ? -1 : 1 };
 
-        const allocations = await BonusAllocation.find(filter)
+        // Always get paginated items
+        const items = await BonusAllocation.find(filter)
             .sort(sort)
+            .skip(Number(offset))
             .limit(Number(limit))
             .populate('instanceId', 'referencePeriod status shareAmount')
             .populate('personnelId', 'identifier name')
             .populate('templateId', 'name code')
-            .populate('personnelSnapshotId'); // Include all snapshot data including position information
+            .populate('personnelSnapshotId');
 
-        // Process and beautify grades for all allocations
-        for (const allocation of allocations) {
+        // Beautify grades for page items
+        for (const allocation of items) {
             if (allocation.personnelSnapshotId?.data) {
-                const status = allocation.personnelSnapshotId.data.status || '';
+                const statusVal = allocation.personnelSnapshotId.data.status || '';
                 const grade = allocation.personnelSnapshotId.data.grade || '';
-
-                if (status && grade) {
-                    // Default language to French if not available
-                    const language = 'fr';
+                if (statusVal && grade) {
                     const beautifiedGrade = dictionary.getValueFromJSON(
-                        '../../resources/dictionary/personnel/status/' + status + '/grades.json',
+                        '../../resources/dictionary/personnel/status/' + statusVal + '/grades.json',
                         parseInt(grade, 10),
-                        "code"
+                        'code'
                     ) || grade;
-
-                    // Add beautifiedGrade to the allocation object
                     allocation.personnelSnapshotId.data.beautifiedGrade = beautifiedGrade;
-
-                    // Also add beautifiedGrade directly to the allocation for frontend access
                     allocation.beautifiedGrade = beautifiedGrade;
-
-                    // Add position name if available
                     if (allocation.personnelSnapshotId.data.position && allocation.personnelSnapshotId.data.position.name) {
-                        allocation.personnelSnapshotId.data.beautifiedGrade += " / " + allocation.personnelSnapshotId.data.position.name;
-                        allocation.beautifiedGrade += " / " + allocation.personnelSnapshotId.data.position.name;
+                        allocation.personnelSnapshotId.data.beautifiedGrade += ' / ' + allocation.personnelSnapshotId.data.position.name;
+                        allocation.beautifiedGrade += ' / ' + allocation.personnelSnapshotId.data.position.name;
                     }
                 }
             }
         }
-        res.json(allocations);
+
+        // Fast path: default behavior returns array for backward compatibility
+        const wantsEnvelope = String(envelope).toLowerCase() === 'true' || envelope === '1';
+        if (!wantsEnvelope) {
+            return res.json(items);
+        }
+
+        // Compute total count and stats across the full filtered set
+        const [total, statAgg] = await Promise.all([
+            BonusAllocation.countDocuments(filter),
+            BonusAllocation.aggregate([
+                { $match: filter },
+                {
+                    $group: {
+                        _id: null,
+                        total: { $sum: 1 },
+                        eligible: { $sum: { $cond: [{ $eq: ['$status', 'eligible'] }, 1, 0] } },
+                        excluded: { $sum: { $cond: [{ $eq: ['$status', 'excluded'] }, 1, 0] } },
+                        adjusted: { $sum: { $cond: [{ $eq: ['$status', 'adjusted'] }, 1, 0] } },
+                        totalParts: { $sum: { $cond: [
+                            { $ne: ['$status', 'excluded'] },
+                            { $ifNull: ['$calculationInputs.parts', 0] },
+                            0
+                        ] } },
+                        totalAmount: { $sum: { $cond: [
+                            { $ne: ['$status', 'excluded'] },
+                            { $ifNull: ['$finalAmount', 0] },
+                            0
+                        ] } }
+                    }
+                }
+            ])
+        ]);
+
+        const stats = statAgg && statAgg.length ? {
+            eligible: statAgg[0].eligible || 0,
+            excluded: statAgg[0].excluded || 0,
+            adjusted: statAgg[0].adjusted || 0,
+            totalParts: statAgg[0].totalParts || 0,
+            totalAmount: statAgg[0].totalAmount || 0,
+            total: statAgg[0].total || total
+        } : { eligible: 0, excluded: 0, adjusted: 0, totalParts: 0, totalAmount: 0, total };
+
+        return res.json({
+            items,
+            total,
+            limit: Number(limit),
+            offset: Number(offset),
+            stats
+        });
     } catch (error) {
         next(error);
     }

@@ -48,13 +48,14 @@ function($scope, $http, toastr, $mdDialog, allocation) {
 
         $scope.adjusting = true;
 
-        const adjustmentData = {
-            parts: $scope.selectedAllocation.calculationInputs.parts,
-            amount: $scope.selectedAllocation.finalAmount,
-            reason: $scope.selectedAllocation.calculationInputs.comment
-        };
+        var fd = new FormData();
+        fd.append('parts', $scope.selectedAllocation.calculationInputs.parts);
+        fd.append('amount', $scope.selectedAllocation.finalAmount);
+        fd.append('reason', $scope.selectedAllocation.calculationInputs.comment);
 
-        $http.post('/api/bonus/allocations/' + allocation._id + '/adjust', adjustmentData)
+        $http.post('/api/bonus/allocations/' + allocation._id + '/adjust', fd, {
+            headers: { 'Content-Type': undefined }
+        })
             .then(function(response) {
                 $scope.adjusting = false;
                 $mdDialog.hide(response.data);
