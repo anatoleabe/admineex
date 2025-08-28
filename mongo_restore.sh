@@ -1,3 +1,3 @@
 #!/bin/bash
 # Restore from dump
-mongorestore -d persabeRCA /dump/persabeRCA
+mongorestore -d persabeDGTCFM /dump/persabe30072025
