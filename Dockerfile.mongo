@@ -1,10 +1,10 @@
 # Use the official MongoDB image as the base image
-FROM mongo:latest
+FROM mongo:6
 
-# Copy the MongoDB dump into the container
-COPY ./dump /dump
+# Create dump mount point
+RUN mkdir -p /dump
 
-# Add a script to restore the database from the dump
+# Add a script to restore the database from the dump (runs on first init)
 COPY mongo_restore.sh /docker-entrypoint-initdb.d/
 
 # Make the restore script executable

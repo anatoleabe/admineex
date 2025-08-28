@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   mongodb:
     build:
@@ -6,12 +5,34 @@ services:
       dockerfile: Dockerfile.mongo  # Use the custom Dockerfile for MongoDB
     ports:
       - "27020:27017"  # Expose MongoDB on port 27020
+    environment:
+      - MONGO_INITDB_DATABASE=persabe30072025
     volumes:
-      - ./dump:/dump  # Mount your dump directory here
+      - mongo_data:/data/db
+      - ./dump:/dump:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
 
   webapp:
     build: .  # This will use your existing Node.js Dockerfile
     ports:
       - "4002:4002"  # Expose your Node.js app on port 4002
+    environment:
+      - NODE_ENV=production
+      - HTTP_PORT=4002
+      - MONGO_URL=mongodb://mongodb:27017/persabe30072025
+      - LOG_PATH=/usr/src/app/codabe/admineex/logs
+    volumes:
+      - ./logs:/usr/src/app/codabe/admineex/logs
+      - ./uploads:/usr/src/app/codabe/admineex/server/uploads
     depends_on:
-      - mongodb  # Ensure MongoDB starts before the web app
+      mongodb:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mongo_data:

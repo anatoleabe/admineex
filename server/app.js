@@ -71,6 +71,44 @@ nconf.load(function (err, result) {
         changed |= setDefault("initialize:structures", 0);//0 = not done, 1 = done
         changed |= setDefault("initialize:positions", 0);//0 = not done, 1 = done
 
+        // Environment overrides for containerized deployments
+        try {
+            const envPort = process.env.HTTP_PORT || process.env.PORT;
+            if (envPort && parseInt(envPort, 10) !== nconf.get('server:httpPort')) {
+                nconf.set('server:httpPort', parseInt(envPort, 10));
+                changed = true;
+            }
+            const envMongo = process.env.MONGO_URL;
+            if (envMongo && envMongo !== nconf.get('mongo')) {
+                nconf.set('mongo', envMongo);
+                changed = true;
+            }
+            const envLogPath = process.env.LOG_PATH;
+            if (envLogPath && envLogPath !== nconf.get('system:logPath')) {
+                nconf.set('system:logPath', envLogPath);
+                changed = true;
+            }
+            // Mailer overrides
+            if (process.env.MAILER_HOST) {
+                nconf.set('mailer:host', process.env.MAILER_HOST);
+                changed = true;
+            }
+            if (process.env.MAILER_PORT) {
+                nconf.set('mailer:port', parseInt(process.env.MAILER_PORT, 10));
+                changed = true;
+            }
+            if (process.env.MAILER_USER) {
+                nconf.set('mailer:auth:user', process.env.MAILER_USER);
+                changed = true;
+            }
+            if (process.env.MAILER_PASS) {
+                nconf.set('mailer:auth:pass', process.env.MAILER_PASS);
+                changed = true;
+            }
+        } catch (e) {
+            console.log('Warning applying environment overrides:', e && e.message ? e.message : e);
+        }
+
         // write the config changes to disk and run the server
         if (changed) {
             nconf.save(function (err) {
