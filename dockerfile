@@ -7,6 +7,12 @@ RUN apt-get update \
        ca-certificates fontconfig libfreetype6 \
     && rm -rf /var/lib/apt/lists/*
 
+# Ensure temp dirs and npm postinstall run correctly in container
+ENV TMP=/tmp \
+    TEMP=/tmp \
+    TMPDIR=/tmp \
+    npm_config_unsafe_perm=true
+
 # Create app directory
 WORKDIR /usr/src/app/codabe/admineex
 

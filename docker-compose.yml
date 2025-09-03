@@ -1,5 +1,6 @@
 services:
   mongodb:
+    image: ${REGISTRY}/${NAMESPACE}/persabe-mongo:${VERSION}
     build:
       context: .
       dockerfile: Dockerfile.mongo  # Use the custom Dockerfile for MongoDB
@@ -18,7 +19,11 @@ services:
     restart: unless-stopped
 
   webapp:
-    build: .  # This will use your existing Node.js Dockerfile
+    image: ${REGISTRY}/${NAMESPACE}/persabe-webapp:${VERSION}
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "4002:4002"  # Expose your Node.js app on port 4002
     environment:
