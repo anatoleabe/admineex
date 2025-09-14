@@ -267,7 +267,7 @@
                                         <md-list-item>
                                             <md-icon>local_hospital</md-icon>
                                             <p class="md-body-2" translate>Rank</p>
-                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{personnelSelected.affectedTo.rank| uppercase | unknown}}</p>
+                                            <p class="md-body-1 md-secondary" style="white-space: nowrap;">{{(personnelSelected.affectedTo.rank || personnelSelected.rank) | uppercase | unknown}}</p>
                                         </md-list-item>
                                         <md-divider></md-divider>
                                         <md-list-item>
