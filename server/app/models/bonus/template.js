@@ -34,11 +34,21 @@ const BonusTemplateSchema = new mongoose.Schema({
         formulaType: {
             type: String,
             enum: ['fixed', 'percentage', 'custom_formula', 'parts_based'],
-            required: true
+            required: function() { return this.category === 'calculated'; }
+        },
+        subType: {
+            type: String,
+            enum: ['remise', 'ift'],
+            required: function() { return this.category === 'without_parts'; }
         },
         baseField: { type: String }, // e.g., "salary", "grade_points"
         formula: { type: String }, // e.g., "base * 0.03 * parts"
+        // Default share amount (used for with_parts and parts_based)
         defaultShareAmount: { type: Number },
+        // Specific fields for other calculation categories
+        fixedAmount: { type: Number }, // used when category === 'fixed_amount' or formulaType === 'fixed'
+        percentage: { type: Number }, // percentage value (e.g., 3 means 3%)
+        rate: { type: Number }, // e.g., TX for salary-based remises
         partsConfig: {
             defaultParts: { type: Number, default: 1 },
             partRules: [{

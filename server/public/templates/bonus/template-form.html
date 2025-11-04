@@ -36,7 +36,8 @@
                     </label>
                     <input type="text" name="code" class="form-control"
                            ng-model="templateFormData.code"
-                           pattern="[A-Z0-9_-]+" required
+                           ng-pattern="/^[A-Z0-9_-]+$/" required
+                           ng-change="onCodeChange()"
                            ng-disabled="editingTemplate"
                            placeholder="e.g., SALES_BONUS_2025">
                     <div class="invalid-feedback" ng-show="templateForm.code.$error.pattern">
@@ -115,7 +116,8 @@
                 <div class="card border-0 shadow-sm">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
+                            <!-- Show Formula Type only for calculated category -->
+                            <div class="col-md-6" ng-if="templateFormData.category === 'calculated'">
                                 <div class="form-group">
                                     <label class="d-flex align-items-center">
                                         Formula Type
@@ -126,11 +128,12 @@
                                         <option value="fixed">Fixed Amount</option>
                                         <option value="percentage">Percentage Based</option>
                                         <option value="custom_formula">Custom Formula</option>
-                                        <option value="parts_based">Parts Based</option>
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+
+                            <!-- Base Field for percentage in calculated mode -->
+                            <div class="col-md-6" ng-if="templateFormData.category === 'calculated' && templateFormData.calculationConfig.formulaType === 'percentage'">
                                 <div class="form-group">
                                     <label class="d-flex align-items-center">
                                         Base Field
@@ -145,15 +148,15 @@
                             </div>
                         </div>
 
-                        <!-- Default Share Amount Field (Added here) -->
-                        <div class="row" ng-if="templateFormData.calculationConfig.formulaType !== 'fixed'">
+                        <!-- Default Share Amount (with parts) -->
+                        <div class="row" ng-if="templateFormData.category === 'with_parts'">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="d-flex align-items-center">
                                         <i class="icon-coins mr-1"></i>Default Share Amount
                                         <span class="text-danger ml-1">*</span>
                                         <i class="icon-help ml-1 text-muted"
-                                           uib-tooltip="Default amount to be used in calculations"
+                                           uib-tooltip="Default amount per part used for calculations"
                                            tooltip-placement="right"></i>
                                     </label>
                                     <div class="input-group">
@@ -169,8 +172,42 @@
                             </div>
                         </div>
 
-                        <!-- Formula Editor -->
-                        <div ng-if="templateFormData.calculationConfig.formulaType === 'custom_formula'" class="mt-3">
+                        <!-- Fixed Amount -->
+                        <div class="row" ng-if="templateFormData.category === 'fixed_amount' || (templateFormData.category === 'calculated' && templateFormData.calculationConfig.formulaType === 'fixed')">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="d-flex align-items-center">Fixed Amount <span class="text-danger ml-1">*</span></label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$</span>
+                                        </div>
+                                        <input type="number" class="form-control" name="fixedAmount"
+                                               ng-model="templateFormData.calculationConfig.fixedAmount"
+                                               min="0" required step="0.01" placeholder="0.00">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Percentage Amount -->
+                        <div class="row" ng-if="templateFormData.category === 'calculated' && templateFormData.calculationConfig.formulaType === 'percentage'">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="d-flex align-items-center">Percentage <span class="text-danger ml-1">*</span></label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" name="percentage"
+                                               ng-model="templateFormData.calculationConfig.percentage"
+                                               min="0" step="0.01" required placeholder="e.g., 3 for 3%">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom Formula Editor -->
+                        <div ng-if="templateFormData.category === 'calculated' && templateFormData.calculationConfig.formulaType === 'custom_formula'" class="mt-3">
                             <label class="d-flex align-items-center">
                                 <i class="icon-math mr-1"></i>Formula
                                 <span class="text-danger ml-1">*</span>
@@ -189,26 +226,34 @@
                             </div>
                         </div>
 
-                        <!-- Parts Configuration -->
-                        <div ng-if="templateFormData.calculationConfig.formulaType === 'parts_based'" class="mt-3">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="d-flex align-items-center">
-                                            Default Share Amount
-                                            <span class="text-danger ml-1">*</span>
-                                        </label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">$</span>
-                                            </div>
-                                            <input type="number" class="form-control" name="defaultShareAmount"
-                                                   ng-model="templateFormData.calculationConfig.defaultShareAmount"
-                                                   min="0" required step="0.01"
-                                                   placeholder="0.00">
-                                        </div>
-                                    </div>
+                        <!-- Without parts: Subtype selector -->
+                        <div class="row" ng-if="templateFormData.category === 'without_parts'">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="d-flex align-items-center">Subtype <span class="text-danger ml-1">*</span>
+                                        <i class="icon-help ml-1 text-muted" uib-tooltip="Choose Remise sur salaire or IFT (IRPP not deducted)" tooltip-placement="right"></i>
+                                    </label>
+                                    <select class="form-control" name="subType" ng-model="templateFormData.calculationConfig.subType" required>
+                                        <option value="remise">Remise sur salaire</option>
+                                        <option value="ift">IFT (IRPP pas prélevé)</option>
+                                    </select>
                                 </div>
+                            </div>
+                            <div class="col-md-6" ng-if="templateFormData.calculationConfig.subType === 'remise'">
+                                <div class="alert alert-secondary mb-0">
+                                    R = SBI × 3 × TX, with TX = 45% for DIR/SD, otherwise 30%.
+                                </div>
+                            </div>
+                            <div class="col-md-6" ng-if="templateFormData.calculationConfig.subType === 'ift'">
+                                <div class="alert alert-secondary mb-0">
+                                    IFT: IRPP not deducted. Calculation will be handled per policy.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Parts Configuration (for with_parts) -->
+                        <div ng-if="templateFormData.category === 'with_parts'" class="mt-3">
+                            <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="d-flex align-items-center">
@@ -269,11 +314,11 @@
                                             <div class="col-md-2 d-flex align-items-end">
                                                 <div class="form-group w-100">
                                                     <button type="button" class="btn btn-light btn-block"
-                                                            ng-click="moveRuleUp($index)" ng-if="$index > 0">
+                                                            ng-click="movePartRule($index, 'up')" ng-if="$index > 0">
                                                         <i class="icon-arrow-up2"></i>
                                                     </button>
                                                     <button type="button" class="btn btn-light btn-block"
-                                                            ng-click="moveRuleDown($index)"
+                                                            ng-click="movePartRule($index, 'down')"
                                                             ng-if="$index < templateFormData.calculationConfig.partsConfig.partRules.length - 1">
                                                         <i class="icon-arrow-down2"></i>
                                                     </button>
@@ -353,11 +398,11 @@
                                 <div class="col-md-1 d-flex align-items-end">
                                     <div class="form-group w-100">
                                         <button type="button" class="btn btn-light btn-block"
-                                                ng-click="moveRuleUp($index)" ng-if="$index > 0">
+                                                ng-click="moveEligibilityRule($index, 'up')" ng-if="$index > 0">
                                             <i class="icon-arrow-up2"></i>
                                         </button>
                                         <button type="button" class="btn btn-light btn-block"
-                                                ng-click="moveRuleDown($index)"
+                                                ng-click="moveEligibilityRule($index, 'down')"
                                                 ng-if="$index < templateFormData.eligibilityRules.length - 1">
                                             <i class="icon-arrow-down2"></i>
                                         </button>

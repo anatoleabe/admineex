@@ -162,70 +162,71 @@ exports.api.resetPassword = function(req, res) {
 };
 
 exports.api.signin = function(req, res) {
+
     var tokenSecret = controllers.configuration.getConf().token.secret;
-    var form = new formidable.IncomingForm();
-    form.parse(req, function(err, fields, files) {
-        var email = fields.email || '';
-        var password = fields.password || '';
-        var expiration = tokenManager.TOKEN_EXPIRATION;
-        if(expiration < 60){
-            expiration = 900;
-        }
 
-        if (email === '' || password === '') {
-            audit.logEvent('[anonymous]', 'Account', 'Sign in', '', '', 'failed',
-                           'The user tried to sign in but one or more params of the request was not defined');
-            return res.sendStatus(400);
+    // Use parsed body directly instead of formidable
+    var fields = req.body || {};
+    var email = fields.email || '';
+    var password = fields.password || '';
+    var expiration = tokenManager.TOKEN_EXPIRATION;
+    if (expiration < 60) {
+        expiration = 900;
+    }
+
+    if (email === '' || password === '') {
+        audit.logEvent('[anonymous]', 'Account', 'Sign in', '', '', 'failed',
+                       'The user tried to sign in but one or more params of the request was not defined');
+        return res.sendStatus(400);
+    }
+
+    if (fields.rememberme) {
+        expiration = 1000 * 60 * 24 * 7;
+    }
+
+    User.findOne({email: email}, function (err, user) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[mongodb]', 'Account', 'Sign in', 'used email', email, 'failed', 'Mongodb attempted to find the email');
+            return res.status(500).send(err);
         } else {
-            if(fields.rememberme){
-                expiration = 1000 * 60 * 24 * 7;
-            }
-
-            User.findOne({email: email}, function (err, user) {
-                if (err) {
-                    log.error(err);
-                    audit.logEvent('[mongodb]', 'Account', 'Sign in', 'used email', email, 'failed', 'Mongodb attempted to find the email');
-                    return res.status(500).send(err);
+            if (user) {
+                if (user.activationToken !== '0') {
+                    audit.logEvent('[anonymous]', 'Account', 'Sign in', 'used email', email, 'failed',
+                                   'The user tried to sign in but the account is not activated');
+                    return res.send({
+                        activated: false
+                    });
                 } else {
-                    if (user) {
-                        if(user.activationToken !== '0'){
-                            audit.logEvent('[anonymous]', 'Account', 'Sign in', 'used email', email, 'failed',
-                                           'The user tried to sign in but the account is not activated');
-                            return res.send({
-                                activated:false
-                            });
+                    user.comparePassword(password, function(isMatch) {
+                        if (!isMatch) {
+                            audit.logEvent(user._id, 'Account', 'Sign in', 'used email', email, 'failed',
+                                           'The user tried to sign in but the password was incorrect');
+                            return res.sendStatus(401);
                         } else {
-                            user.comparePassword(password, function(isMatch) {
-                                if (!isMatch) {
-                                    audit.logEvent(user._id, 'Account', 'Sign in', 'used email', email, 'failed',
-                                                   'The user tried to sign in but the password was incorrect');
-                                    return res.sendStatus(401);
+                            var token = jsonwebtoken.sign({id: user._id}, tokenSecret, { expiresIn: expiration });
+                            audit.logEvent(user._id, 'Account', 'Sign in', 'used email', email, 'succeed',
+                                           'The user has successfully signed in to his account');
+                            user.save(function(err) {
+                                if (err) {
+                                    log.error(err);
+                                    return res.status(500).send(err);
                                 } else {
-                                    var token = jsonwebtoken.sign({id: user._id}, tokenSecret, { expiresIn: expiration });
-                                    audit.logEvent(user._id, 'Account', 'Sign in', 'used email', email, 'succeed',
-                                                   'The user has successfully signed in to his account');
-                                    user.save(function(err) {
-                                        if (err) {
-                                            log.error(err);
-                                            return res.status(500).send(err);
-                                        } else {
-                                            return res.status(200).json({
-                                                activated:true,
-                                                token:token,
-                                                language: user.language
-                                            });
-                                        }
+                                    return res.status(200).json({
+                                        activated: true,
+                                        token: token,
+                                        language: user.language
                                     });
                                 }
                             });
                         }
-                    } else {
-                        audit.logEvent('[anonymous]', 'Account', 'Sign in', 'used email', email, 'failed',
-                                       'The user tried to sign in but the used email does not exist');
-                        return res.sendStatus(401);
-                    }
+                    });
                 }
-            });
+            } else {
+                audit.logEvent('[anonymous]', 'Account', 'Sign in', 'used email', email, 'failed',
+                               'The user tried to sign in but the used email does not exist');
+                return res.sendStatus(401);
+            }
         }
     });
 };

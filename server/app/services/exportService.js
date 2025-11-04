@@ -10,29 +10,89 @@ const PDFDocument = require('pdfkit');
 const moment = require('moment');
 const mongoose = require('mongoose');
 const qr = require('qr-image');
+const fs = require('fs');
+const path = require('path');
 
 exports.exportBonusToExcel = async (instance) => {
     try {
         // 1. Get instance data
         const bonusInstance = await BonusInstance.findById(instance._id)
-            .populate('templateId', 'name code')
+            .populate('templateId', 'name code category')
             .populate('createdBy', 'firstname lastname');
 
         if (!bonusInstance) {
             throw new ApiError('Bonus instance not found', httpStatus.NOT_FOUND);
         }
 
+        const isWithoutParts = bonusInstance.templateId?.category === 'without_parts';
+
         // 2. Get allocations with structure info from snapshots
         const allocations = await BonusAllocation.find({ instanceId: instance._id })
             .populate('personnelId', 'identifier name')
             .populate('personnelSnapshotId');
 
+        // Helper to convert column index (1-based) to Excel letter
+        function colLetter(n) {
+            let s = '';
+            while (n > 0) {
+                const m = (n - 1) % 26;
+                s = String.fromCharCode(65 + m) + s;
+                n = Math.floor((n - m) / 26);
+            }
+            return s;
+        }
+
+        // Helper to load ranks.json
+        function loadRanks() {
+            try {
+                const p = path.resolve(__dirname, '../../resources/dictionary/personnel/ranks.json');
+                return JSON.parse(fs.readFileSync(p, 'utf8'));
+            } catch (e) {
+                return null;
+            }
+        }
+
         // 3. Create workbook
         const workbook = new excel.Workbook();
         const worksheet = workbook.addWorksheet('Bonus Allocations');
 
+        // Define headers now so we know how many columns to merge
+        const headersSansPart = [
+            { header: "N° d'ordre", key: 'index', width: 8 },
+            { header: 'NOMS ET PRENOMS', key: 'name', width: 28 },
+            { header: 'MATRICULE', key: 'matricule', width: 16 },
+            { header: 'Indice/Cat', key: 'indiceCat', width: 14 },
+            { header: 'Grade', key: 'grade', width: 18 },
+            { header: 'Fonction', key: 'fonction', width: 22 },
+            { header: 'TAUX (%)', key: 'taux', width: 10 },
+            { header: 'Montant Brut (F CFA)', key: 'brut', width: 18 },
+            { header: `{${bonusInstance.taxPercentage || 5.28}%}`, key: 'tax', width: 14 },
+            { header: 'Net à Percevoir', key: 'net', width: 16 },
+            { header: 'Emargement', key: 'signature', width: 16 },
+            { header: 'Observations', key: 'obs', width: 24 }
+        ];
+
+        const headersWithParts = [
+            { header: "N° d'ordre", key: 'index', width: 8 },
+            { header: 'NOMS ET PRENOMS', key: 'name', width: 28 },
+            { header: 'MATRICULE', key: 'matricule', width: 16 },
+            { header: 'Fonction/Grade', key: 'grade', width: 26 },
+            { header: 'Nombre de parts', key: 'parts', width: 16 },
+            { header: 'MONTANT BRUT', key: 'brut', width: 16 },
+            { header: `{${bonusInstance.taxPercentage || 5.28}%}`, key: 'tax', width: 14 },
+            { header: 'Net à Percevoir', key: 'net', width: 16 },
+            { header: 'CNI', key: 'cni', width: 14 },
+            { header: 'Observations', key: 'obs', width: 24 },
+            { header: 'Emargement', key: 'signature', width: 16 }
+        ];
+
+        const chosenHeaders = isWithoutParts ? headersSansPart : headersWithParts;
+        worksheet.columns = chosenHeaders;
+
+        const lastCol = colLetter(chosenHeaders.length);
+
         // 4. Add title and section headers (MERGED CELLS)
-        worksheet.mergeCells('A1:K1');
+        worksheet.mergeCells(`A1:${lastCol}1`);
         worksheet.getCell('A1').value = `ETAT DE REPARTITION D'${bonusInstance.templateId.name} ${bonusInstance.referencePeriod}`;
         worksheet.getCell('A1').font = { bold: true, size: 14 };
         worksheet.getCell('A1').alignment = { horizontal: 'center' };
@@ -41,284 +101,202 @@ exports.exportBonusToExcel = async (instance) => {
         worksheet.addRow([]);
 
         // Section headers
-        worksheet.mergeCells('B3:J3');
+        worksheet.mergeCells(`B3:${lastCol}3`);
         worksheet.getCell('B3').value = 'I: PAIEMENTS PAR VIREMENT';
         worksheet.getCell('B3').font = { bold: true, size: 12 };
 
-        worksheet.mergeCells('B4:J4');
+        worksheet.mergeCells(`B4:${lastCol}4`);
         worksheet.getCell('B4').value = 'a: Services centraux, agences comptables et autres services';
         worksheet.getCell('B4').font = { italic: true };
 
-        // 5. Define column headers
         worksheet.addRow([]); // Empty row before headers
 
-        // 6. Set column widths
-        worksheet.columns = [
-            { key: 'index', width: 10 },
-            { key: 'name', width: 25 },
-            { key: 'matricule', width: 15 },
-            { key: 'grade', width: 15 },
-            { key: 'parts', width: 15 },
-            { key: 'brut', width: 15 },
-            { key: 'tax', width: 15 },
-            { key: 'net', width: 15 },
-            { key: 'cni', width: 15 },
-            { key: 'obs', width: 15 },
-            { key: 'signature', width: 15 }
-        ];
-
-        // 7. Group allocations by structure
-        // Extract structure info for each allocation
+        // 7. Group allocations by structure and number them by structure code
         allocations.forEach(allocation => {
-            if (allocation.personnelSnapshotId?.data?.position?.structure) {
-                allocation.structureInfo = allocation.personnelSnapshotId.data.position.structure;
-            } else {
-                allocation.structureInfo = { id: 'undefined', code: '000', name: 'STRUCTURE INCONNUE' };
-            }
+            const structure = allocation.personnelSnapshotId?.data?.position?.structure;
+            allocation.structureInfo = structure ? structure : { id: 'undefined', code: '000', name: 'STRUCTURE INCONNUE' };
         });
-
-        // Group by structure
-        const groupedAllocations = _.groupBy(allocations, allocation => allocation.structureInfo.id);
-
-        // Sort structures by code for consistent output
+        const groupedAllocations = _.groupBy(allocations, a => a.structureInfo.id);
         const structureIds = Object.keys(groupedAllocations).sort((a, b) => {
             const codeA = groupedAllocations[a][0]?.structureInfo?.code || '999';
             const codeB = groupedAllocations[b][0]?.structureInfo?.code || '999';
             return codeA.localeCompare(codeB);
         });
 
-        // Track the current row for iterating through the worksheet
-        let currentRowNum = 6; // Start after headers
-        let globalIndex = 1;
-
-        // 8. Add headers once at the top
-        const headerRow = worksheet.getRow(currentRowNum);
-        headerRow.values = [
-            "N° d'ordre",
-            'NOMS ET PRENOMS',
-            'MATRICULE',
-            'Fonction/Grade',
-            'Nombre de parts',
-            'MONTANT BRUT',
-            `{${bonusInstance.taxPercentage || 5.28}%}`,
-            'Net à Percevoir',
-            'CNI',
-            'Observations',
-            'Emargement'
-        ];
-
-        // Style header row
+        // Header row styling
+        const headerRow = worksheet.getRow(6);
+        headerRow.values = chosenHeaders.map(h => h.header);
         headerRow.eachCell((cell) => {
             cell.font = { bold: true };
             cell.alignment = { horizontal: 'center' };
-            cell.fill = {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: { argb: 'FFD3D3D3' }
-            };
-            cell.border = {
-                top: { style: 'thin' },
-                left: { style: 'thin' },
-                bottom: { style: 'thin' },
-                right: { style: 'thin' }
-            };
+            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } };
+            cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
         });
-        currentRowNum++;
 
-        // 9. Add data rows grouped by structure
-        let grandTotalParts = 0;
-        let grandTotalBrut = 0;
-        let grandTotalTax = 0;
-        let grandTotalNet = 0;
+        let currentRowNum = 7;
+        let globalIndex = 1;
+
+        let grandTotals = { parts: 0, brut: 0, tax: 0, net: 0 };
+        let groupCount = 0;
+
+        const ranksJson = loadRanks();
+        function computeTxPercentFromSnapshot(snapshot) {
+            const rank = snapshot?.data?.rank;
+            if (!rank || !Array.isArray(ranksJson)) return null;
+            const row = ranksJson.find(r => String(r.id) === String(rank));
+            if (!row || typeof row.bonusRate !== 'number') return null;
+            return Math.round(row.bonusRate * 100); // integer percent
+        }
 
         for (const structureId of structureIds) {
-            const structureAllocations = groupedAllocations[structureId];
-            if (!structureAllocations || structureAllocations.length === 0) continue;
+            groupCount++;
+            const list = groupedAllocations[structureId] || [];
+            if (!list.length) continue;
+            const info = list[0].structureInfo;
 
-            // Get structure info from the first allocation in the group
-            const structureInfo = structureAllocations[0].structureInfo;
-
-            // Add structure header row
-            const structureHeaderRow = worksheet.addRow([]);
-            currentRowNum++;
-
-            // Merge cells for structure header
-            worksheet.mergeCells(`A${currentRowNum}:K${currentRowNum}`);
+            // Structure header row
+            worksheet.mergeCells(`A${currentRowNum}:${lastCol}${currentRowNum}`);
             const structureCell = worksheet.getCell(`A${currentRowNum}`);
-            structureCell.value = `${structureInfo.name} - ${structureInfo.code}`;
-            structureCell.font = { color: { argb: 'FFFFFF' }, size: 16, bold: true };
+            structureCell.value = `${groupCount}. ${info.name}${info.code ? ' - ' + info.code : ''}`;
+            structureCell.font = { color: { argb: 'FFFFFFFF' }, size: 14, bold: true };
             structureCell.alignment = { vertical: 'middle', horizontal: 'center' };
             structureCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE06B21' } };
-            structureCell.border = {
-                top: { style: 'thick', color: { argb: 'FF964714' } },
-                left: { style: 'thick', color: { argb: 'FF964714' } },
-                bottom: { style: 'thick', color: { argb: 'FF964714' } },
-                right: { style: 'thick', color: { argb: 'FF964714' } }
-            };
+            structureCell.border = { top: { style: 'thick', color: { argb: 'FF964714' } }, left: { style: 'thick', color: { argb: 'FF964714' } }, bottom: { style: 'thick', color: { argb: 'FF964714' } }, right: { style: 'thick', color: { argb: 'FF964714' } } };
             currentRowNum++;
 
-            // Add data rows for this structure
-            let structureTotalParts = 0;
-            let structureTotalBrut = 0;
-            let structureTotalTax = 0;
-            let structureTotalNet = 0;
+            // Totals per structure
+            let subtotals = { parts: 0, brut: 0, tax: 0, net: 0 };
 
-            structureAllocations.forEach((allocation) => {
-                if (allocation.personnelId && allocation.personnelId.name) {
+            for (const allocation of list) {
+                // Format personnel name
+                if (allocation.personnelId?.name) {
                     const name = allocation.personnelId.name;
                     allocation.personnelId.formattedName = `${name.family?.join(' ')} ${name.given?.join(' ')}`.trim();
                 }
 
-                // Beautify grade based on status
-                let gradeValue = 'N/A';
-                if (allocation.personnelSnapshotId?.data) {
-                    const status = allocation.personnelSnapshotId.data.status || '';
-                    const grade = allocation.personnelSnapshotId.data.grade || '';
-
-                    if (status && grade) {
-                        // Default language to French if not available
-                        const language = 'fr';
-                        gradeValue = dictionary.getValueFromJSON(
-                            '../../resources/dictionary/personnel/status/' + status + '/grades.json',
-                            parseInt(grade, 10),
-                            "code"
-                        ) || grade;
-                    } else {
-                        gradeValue = grade || 'N/A';
-                    }
-
-                    // Add position name if available
-                    if (allocation.personnelSnapshotId.data.position && allocation.personnelSnapshotId.data.position.name) {
-                        gradeValue = gradeValue + " / " + allocation.personnelSnapshotId.data.position.name;
-                    }
+                // Compute grade code using dictionary and extract position name
+                let gradeCode = '';
+                let indiceCat = '';
+                let fonctionLabel = allocation.personnelSnapshotId?.data?.position?.name || '';
+                const status = allocation.personnelSnapshotId?.data?.status || '';
+                const grade = allocation.personnelSnapshotId?.data?.grade || '';
+                if (status && grade) {
+                    const gradeTxt = dictionary.getValueFromJSON(
+                        `../../resources/dictionary/personnel/status/${status}/grades.json`,
+                        parseInt(grade, 10),
+                        'code'
+                    );
+                    gradeCode = gradeTxt || String(grade);
                 }
 
-                // Use stored values instead of calculating
-                const parts = allocation.calculationInputs?.parts || 0;
-                const brutAmount = allocation.grossAmount || 0;
-                const netAmount = allocation.netAmount || 0;
-                const taxAmount = brutAmount - netAmount;
+                // Build Indice/Cat display
+                if (String(status) === '1') {
+                    indiceCat = allocation.personnelSnapshotId?.data?.index || '';
+                } else if (String(status) === '2') {
+                    const cat = allocation.personnelSnapshotId?.data?.category || '';
+                    const ech = allocation.personnelSnapshotId?.data?.index || '';
+                    indiceCat = `Cat ${cat} / Echelon ${ech}`;
+                }
 
-                // Add to structure totals
-                structureTotalParts += parts;
-                structureTotalBrut += brutAmount;
-                structureTotalTax += taxAmount;
-                structureTotalNet += netAmount;
+                // TAUX (%) for without parts
+                let tauxPercent = null;
+                if (isWithoutParts) {
+                    const fromInputs = allocation.calculationInputs?.txPercent;
+                    tauxPercent = Number.isFinite(fromInputs) ? Math.round(fromInputs) : computeTxPercentFromSnapshot(allocation.personnelSnapshotId);
+                }
 
-                // Get the comment from calculationInputs
-                const observations = allocation.calculationInputs?.comment || '';
+                // Use stored and already rounded values
+                const brut = Math.round(allocation.grossAmount || allocation.finalAmount || 0);
+                const tax = Math.round(allocation.taxAmount || ((allocation.grossAmount || 0) - (allocation.netAmount || 0)));
+                const net = Math.round(allocation.netAmount || ((allocation.grossAmount || 0) - (tax)));
 
-                const rowData = [
+                // Subtotals
+                subtotals.parts += allocation.calculationInputs?.parts || 0;
+                subtotals.brut += brut;
+                subtotals.tax += tax;
+                subtotals.net += net;
+
+                // Row values
+                const rowValuesSansPart = [
                     globalIndex++,
-                    allocation.personnelId.formattedName || 'N/A',
+                    allocation.personnelId?.formattedName || 'N/A',
                     allocation.personnelId?.identifier || 'N/A',
-                    gradeValue,
-                    parts,
-                    brutAmount,
-                    taxAmount,
-                    netAmount,
+                    indiceCat,
+                    gradeCode,
+                    fonctionLabel,
+                    isFinite(tauxPercent) ? tauxPercent : '',
+                    brut,
+                    tax,
+                    net,
+                    '', // Emargement
+                    allocation.calculationInputs?.comment || ''
+                ];
+
+                const rowValuesWithParts = [
+                    globalIndex++,
+                    allocation.personnelId?.formattedName || 'N/A',
+                    allocation.personnelId?.identifier || 'N/A',
+                    `${gradeCode}${fonctionLabel ? ' / ' + fonctionLabel : ''}`,
+                    allocation.calculationInputs?.parts || 0,
+                    brut,
+                    tax,
+                    net,
                     '',
-                    observations,
+                    allocation.calculationInputs?.comment || '',
                     ''
                 ];
 
-                const dataRow = worksheet.addRow(rowData);
-                currentRowNum++;
+                const dataRow = worksheet.addRow(isWithoutParts ? rowValuesSansPart : rowValuesWithParts);
+                // Number formats
+                const colsForNumbers = isWithoutParts ? ['H','I','J'] : ['F','G','H'];
+                colsForNumbers.forEach(col => worksheet.getCell(`${col}${dataRow.number}`).numFmt = '#,##0');
 
-                // Format number columns
-                ['F', 'G', 'H'].forEach(col => {
-                    worksheet.getCell(`${col}${dataRow.number}`).numFmt = '#,##0';
-                });
-
-                // Add light borders to data cells
+                // Style row border and excluded coloring
                 dataRow.eachCell((cell) => {
-                    cell.border = {
-                        top: { style: 'thin' },
-                        left: { style: 'thin' },
-                        bottom: { style: 'thin' },
-                        right: { style: 'thin' }
-                    };
-
-                    // Set font color to red for excluded status or when parts are 0
-                    if (allocation.status === 'excluded' || parts === 0) {
+                    cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+                    if (allocation.status === 'excluded' || (allocation.calculationInputs?.parts || 0) === 0) {
                         cell.font = { color: { argb: 'FFFF0000' } };
                     }
                 });
-            });
 
-            // Add structure subtotal row
-            const subtotalRow = worksheet.addRow([
-                '',
-                '',
-                '',
-                'SOUS-TOTAL',
-                structureTotalParts,
-                structureTotalBrut,
-                structureTotalTax,
-                structureTotalNet,
-                '',
-                '',
-                ''
-            ]);
-            currentRowNum++;
+                currentRowNum++;
+            }
 
-            // Style subtotal row
+            // Subtotal row
+            const subtotalValues = isWithoutParts
+                ? ['', '', '', '', '', 'SOUS-TOTAL', '', subtotals.brut, subtotals.tax, subtotals.net, '', '']
+                : ['', '', '', 'SOUS-TOTAL', subtotals.parts, subtotals.brut, subtotals.tax, subtotals.net, '', '', ''];
+            const subtotalRow = worksheet.addRow(subtotalValues);
             subtotalRow.eachCell((cell) => {
                 cell.font = { bold: true };
-                cell.border = {
-                    top: { style: 'thin' },
-                    bottom: { style: 'double' }
-                };
+                cell.border = { top: { style: 'thin' }, bottom: { style: 'double' } };
             });
-
-            // Format number columns for subtotal
-            ['E', 'F', 'G', 'H'].forEach(col => {
-                worksheet.getCell(`${col}${subtotalRow.number}`).numFmt = '#,##0';
-            });
-
-            // Add empty row after each structure
-            worksheet.addRow([]);
+            const subtotalCols = isWithoutParts ? ['H','I','J'] : ['E','F','G','H'];
+            subtotalCols.forEach(col => worksheet.getCell(`${col}${subtotalRow.number}`).numFmt = '#,##0');
             currentRowNum++;
 
-            // Add to grand totals
-            grandTotalParts += structureTotalParts;
-            grandTotalBrut += structureTotalBrut;
-            grandTotalTax += structureTotalTax;
-            grandTotalNet += structureTotalNet;
+            grandTotals.parts += subtotals.parts;
+            grandTotals.brut += subtotals.brut;
+            grandTotals.tax += subtotals.tax;
+            grandTotals.net += subtotals.net;
+
+            worksheet.addRow([]);
+            currentRowNum++;
         }
 
-        // 10. Add grand total row
-        const grandTotalRow = worksheet.addRow([
-            '',
-            '',
-            '',
-            'TOTAL GENERAL',
-            grandTotalParts,
-            grandTotalBrut,
-            grandTotalTax,
-            grandTotalNet,
-            '',
-            '',
-            ''
-        ]);
-
-        // Style grand total row
+        // Grand total
+        const grandRowValues = isWithoutParts
+            ? ['', '', '', '', '', 'TOTAL GENERAL', '', grandTotals.brut, grandTotals.tax, grandTotals.net, '', '']
+            : ['', '', '', 'TOTAL GENERAL', grandTotals.parts, grandTotals.brut, grandTotals.tax, grandTotals.net, '', '', ''];
+        const grandTotalRow = worksheet.addRow(grandRowValues);
         grandTotalRow.eachCell((cell) => {
             cell.font = { bold: true, size: 12 };
-            cell.border = {
-                top: { style: 'thin' },
-                bottom: { style: 'double' }
-            };
+            cell.border = { top: { style: 'thin' }, bottom: { style: 'double' } };
         });
-
-        // Format number columns for grand total
-        ['E', 'F', 'G', 'H'].forEach(col => {
+        const grandCols = isWithoutParts ? ['H','I','J'] : ['E','F','G','H'];
+        grandCols.forEach(col => {
             worksheet.getCell(`${col}${grandTotalRow.number}`).numFmt = '#,##0';
-            worksheet.getCell(`${col}${grandTotalRow.number}`).fill = {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: { argb: 'FFEBEBEB' }
-            };
+            worksheet.getCell(`${col}${grandTotalRow.number}`).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEBEBEB' } };
         });
 
         return workbook;

@@ -88,6 +88,9 @@ angular.module('app')
                     baseField: '',
                     formula: '',
                     defaultShareAmount: 0,
+                    fixedAmount: 0,
+                    percentage: 0,
+                    rate: 0,
                     partsConfig: {
                         defaultParts: 1,
                         partRules: []
@@ -244,17 +247,41 @@ angular.module('app')
 
             // Clean calculation config
             if (cleaned.calculationConfig) {
-                if (cleaned.calculationConfig.partsConfig) {
-                    if (cleaned.calculationConfig.partsConfig.partRules &&
-                        cleaned.calculationConfig.partsConfig.partRules.length === 0) {
-                        delete cleaned.calculationConfig.partsConfig.partRules;
+                // Remove partsConfig if not with_parts
+                if (cleaned.category !== 'with_parts' && cleaned.calculationConfig.partsConfig) {
+                    delete cleaned.calculationConfig.partsConfig;
+                }
+                // Remove defaultShareAmount if not with_parts
+                if (cleaned.category !== 'with_parts' && cleaned.calculationConfig.defaultShareAmount !== undefined) {
+                    delete cleaned.calculationConfig.defaultShareAmount;
+                }
+                // Remove rate if not without_parts
+                if (cleaned.category !== 'without_parts' && cleaned.calculationConfig.rate !== undefined) {
+                    delete cleaned.calculationConfig.rate;
+                }
+                // For non-calculated, drop formula settings except fixed amount as applicable
+                if (cleaned.category !== 'calculated') {
+                    delete cleaned.calculationConfig.formulaType;
+                    delete cleaned.calculationConfig.formula;
+                    delete cleaned.calculationConfig.baseField;
+                    delete cleaned.calculationConfig.percentage;
+                } else {
+                    // In calculated, keep only the needed fields per formulaType
+                    if (cleaned.calculationConfig.formulaType === 'fixed') {
+                        delete cleaned.calculationConfig.baseField;
+                        delete cleaned.calculationConfig.percentage;
+                        delete cleaned.calculationConfig.formula;
+                    } else if (cleaned.calculationConfig.formulaType === 'percentage') {
+                        delete cleaned.calculationConfig.formula;
+                    } else if (cleaned.calculationConfig.formulaType === 'custom_formula') {
+                        delete cleaned.calculationConfig.baseField;
+                        delete cleaned.calculationConfig.percentage;
+                        delete cleaned.calculationConfig.fixedAmount;
                     }
                 }
-
-                // Remove partsConfig if not needed
-                if (cleaned.calculationConfig.formulaType !== 'parts_based' &&
-                    cleaned.calculationConfig.partsConfig) {
-                    delete cleaned.calculationConfig.partsConfig;
+                // For fixed_amount category ensure unrelated fields are dropped
+                if (cleaned.category === 'fixed_amount') {
+                    delete cleaned.calculationConfig.rate;
                 }
             }
 
@@ -283,32 +310,21 @@ angular.module('app')
                 errors.push('Periodicity is required');
             }
 
-            // Validate calculation config
-            if (template.calculationConfig) {
-                if (template.calculationConfig.formulaType === 'custom_formula' &&
-                    (!template.calculationConfig.formula || !template.calculationConfig.formula.trim())) {
-                    errors.push('Formula is required for custom formula type');
-                }
-
-                if (template.calculationConfig.defaultShareAmount === null ||
-                    template.calculationConfig.defaultShareAmount === undefined ||
-                    isNaN(template.calculationConfig.defaultShareAmount)) {
-                    errors.push('Default share amount is required');
-                } else if (template.calculationConfig.defaultShareAmount < 0) {
-                    errors.push('Default share amount cannot be negative');
-                }
-
-                if (template.calculationConfig.formulaType === 'parts_based') {
-                    if (!template.calculationConfig.partsConfig) {
-                        errors.push('Parts configuration is required for parts-based calculations');
-                    } else {
-                        if (template.calculationConfig.partsConfig.defaultParts < 1) {
+            // Category-specific validation
+            const cfg = template.calculationConfig || {};
+            switch (template.category) {
+                case 'with_parts':
+                    if (cfg.defaultShareAmount === null || cfg.defaultShareAmount === undefined || isNaN(cfg.defaultShareAmount)) {
+                        errors.push('Default share amount is required for with-parts category');
+                    } else if (Number(cfg.defaultShareAmount) < 0) {
+                        errors.push('Default share amount cannot be negative');
+                    }
+                    if (cfg.partsConfig) {
+                        if (cfg.partsConfig.defaultParts < 1) {
                             errors.push('Default parts must be at least 1');
                         }
-
-                        // Validate part rules if they exist
-                        if (template.calculationConfig.partsConfig.partRules) {
-                            template.calculationConfig.partsConfig.partRules.forEach((rule, index) => {
+                        if (cfg.partsConfig.partRules) {
+                            cfg.partsConfig.partRules.forEach((rule, index) => {
                                 if (!rule.condition || !rule.condition.trim()) {
                                     errors.push(`Part rule ${index + 1}: Condition is required`);
                                 }
@@ -318,7 +334,45 @@ angular.module('app')
                             });
                         }
                     }
-                }
+                    break;
+                case 'without_parts':
+                    if (cfg.rate === null || cfg.rate === undefined || isNaN(cfg.rate)) {
+                        errors.push('Rate (TX) is required for without-parts category');
+                    } else if (Number(cfg.rate) < 0) {
+                        errors.push('Rate (TX) cannot be negative');
+                    }
+                    break;
+                case 'fixed_amount':
+                    if (cfg.fixedAmount === null || cfg.fixedAmount === undefined || isNaN(cfg.fixedAmount)) {
+                        errors.push('Fixed amount is required for fixed amount category');
+                    } else if (Number(cfg.fixedAmount) < 0) {
+                        errors.push('Fixed amount cannot be negative');
+                    }
+                    break;
+                case 'calculated':
+                    if (!cfg.formulaType) {
+                        errors.push('Formula type is required for calculated category');
+                    } else if (cfg.formulaType === 'custom_formula') {
+                        if (!cfg.formula || !cfg.formula.trim()) {
+                            errors.push('Formula is required for custom formula type');
+                        }
+                    } else if (cfg.formulaType === 'percentage') {
+                        if (!cfg.baseField || !cfg.baseField.trim()) {
+                            errors.push('Base field is required for percentage formula type');
+                        }
+                        if (cfg.percentage === null || cfg.percentage === undefined || isNaN(cfg.percentage)) {
+                            errors.push('Percentage is required for percentage formula type');
+                        } else if (Number(cfg.percentage) < 0) {
+                            errors.push('Percentage cannot be negative');
+                        }
+                    } else if (cfg.formulaType === 'fixed') {
+                        if (cfg.fixedAmount === null || cfg.fixedAmount === undefined || isNaN(cfg.fixedAmount)) {
+                            errors.push('Fixed amount is required for fixed formula type');
+                        } else if (Number(cfg.fixedAmount) < 0) {
+                            errors.push('Fixed amount cannot be negative');
+                        }
+                    }
+                    break;
             }
 
             // Validate eligibility rules if they exist
@@ -330,7 +384,7 @@ angular.module('app')
                     if (!rule.operator) {
                         errors.push(`Eligibility rule ${index + 1}: Operator is required`);
                     }
-                    if (!rule.value || !rule.value.trim()) {
+                    if (rule.value === undefined || rule.value === null || (typeof rule.value === 'string' && !rule.value.trim())) {
                         errors.push(`Eligibility rule ${index + 1}: Value is required`);
                     }
                 });
@@ -543,6 +597,18 @@ angular.module('app')
                 $scope.templateFormData.approvalWorkflow.steps[index + 1] = $scope.templateFormData.approvalWorkflow.steps[index];
                 $scope.templateFormData.approvalWorkflow.steps[index] = temp;
             }
+        };
+
+        // Normalize template code: uppercase, replace whitespace with underscores, keep allowed chars
+        $scope.onCodeChange = function() {
+            var v = ($scope.templateFormData && $scope.templateFormData.code) ? String($scope.templateFormData.code) : '';
+            // Replace any whitespace with underscore
+            v = v.replace(/\s+/g, '_');
+            // Uppercase
+            v = v.toUpperCase();
+            // Strip invalid characters to underscores
+            v = v.replace(/[^A-Z0-9_-]/g, '_');
+            if ($scope.templateFormData) $scope.templateFormData.code = v;
         };
 
         // Save template

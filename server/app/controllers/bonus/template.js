@@ -12,29 +12,131 @@ exports.api = {};
  * Create bonus template
  */
 exports.api.create = async (req, res, next) => {
-    const form = formidable({ multiples: false });
-
-    form.parse(req, async (err, fields, files) => {
-        if (err) {
-            return next(badRequest('Form data parsing failed'));
-        }
-
+    // If JSON, handle directly
+    if (req.is && req.is('application/json')) {
         try {
-            const templateData = fields;
+            const templateData = req.body || {};
             templateData.createdBy = req.actor?.id;
 
-            // Validate required fields
-            if (!templateData.name || !templateData.calculationConfig.defaultShareAmount) {
-                throw badRequest('Missing required fields: name, defaultShareAmount');
-            }
+            console.log("templateData = ", templateData);
 
-            // Validate calculation formula if present
+
+            // Basic required fields
+            if (!templateData.name) {
+                throw badRequest('Missing required field: name');
+            }
+            if (!templateData.category) {
+                throw badRequest('Missing required field: category');
+            }
+            if (!templateData.periodicity) {
+                throw badRequest('Missing required field: periodicity');
+            }
+            const cfg = templateData.calculationConfig || {};
+            switch (templateData.category) {
+                case 'with_parts':
+                    if (cfg.defaultShareAmount === undefined || cfg.defaultShareAmount === null || isNaN(Number(cfg.defaultShareAmount))) {
+                        throw badRequest('Default share amount is required for with-parts category');
+                    }
+                    break;
+                case 'without_parts':
+                    if (cfg.rate === undefined || cfg.rate === null || isNaN(Number(cfg.rate))) {
+                        throw badRequest('Rate (TX) is required for without-parts category');
+                    }
+                    break;
+                case 'fixed_amount':
+                    if (cfg.fixedAmount === undefined || cfg.fixedAmount === null || isNaN(Number(cfg.fixedAmount))) {
+                        throw badRequest('Fixed amount is required for fixed amount category');
+                    }
+                    break;
+                case 'calculated':
+                    if (!cfg.formulaType) throw badRequest('Formula type is required for calculated category');
+                    if (cfg.formulaType === 'custom_formula') {
+                        if (!cfg.formula) throw badRequest('Formula is required for custom formula');
+                        if (!validateFormula(cfg.formula)) throw badRequest('Invalid formula syntax');
+                    } else if (cfg.formulaType === 'percentage') {
+                        if (!cfg.baseField) throw badRequest('Base field is required for percentage formula');
+                        if (cfg.percentage === undefined || cfg.percentage === null || isNaN(Number(cfg.percentage))) {
+                            throw badRequest('Percentage is required for percentage formula');
+                        }
+                    } else if (cfg.formulaType === 'fixed') {
+                        if (cfg.fixedAmount === undefined || cfg.fixedAmount === null || isNaN(Number(cfg.fixedAmount))) {
+                            throw badRequest('Fixed amount is required for fixed formula');
+                        }
+                    }
+                    break;
+            }
             if (templateData.calculationConfig?.formula) {
                 if (!validateFormula(templateData.calculationConfig.formula)) {
                     throw badRequest('Invalid formula syntax');
                 }
             }
-            console.log (templateData)
+            const template = await Template.create(templateData);
+            return res.status(201).json(template);
+        } catch (error) {
+            return next(error);
+        }
+    }
+
+    // Fallback: multipart/form-data
+    const form = formidable({ multiples: false });
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return next(badRequest('Form data parsing failed'));
+        }
+        try {
+            const templateData = fields;
+            templateData.createdBy = req.actor?.id;
+
+            // Normalize nested object if sent as JSON strings
+            if (typeof templateData.calculationConfig === 'string') {
+                try { templateData.calculationConfig = JSON.parse(templateData.calculationConfig); } catch(e) {}
+            }
+            const cfg = templateData.calculationConfig || {};
+
+            // Basic required fields
+            if (!templateData.name) throw badRequest('Missing required field: name');
+            if (!templateData.category) throw badRequest('Missing required field: category');
+            if (!templateData.periodicity) throw badRequest('Missing required field: periodicity');
+
+            // Category-specific validation
+            switch (templateData.category) {
+                case 'with_parts':
+                    if (cfg.defaultShareAmount === undefined || cfg.defaultShareAmount === null || isNaN(Number(cfg.defaultShareAmount))) {
+                        throw badRequest('Default share amount is required for with-parts category');
+                    }
+                    break;
+                case 'without_parts':
+                    if (cfg.rate === undefined || cfg.rate === null || isNaN(Number(cfg.rate))) {
+                        throw badRequest('Rate (TX) is required for without-parts category');
+                    }
+                    break;
+                case 'fixed_amount':
+                    if (cfg.fixedAmount === undefined || cfg.fixedAmount === null || isNaN(Number(cfg.fixedAmount))) {
+                        throw badRequest('Fixed amount is required for fixed amount category');
+                    }
+                    break;
+                case 'calculated':
+                    if (!cfg.formulaType) throw badRequest('Formula type is required for calculated category');
+                    if (cfg.formulaType === 'custom_formula') {
+                        if (!cfg.formula) throw badRequest('Formula is required for custom formula');
+                        if (!validateFormula(cfg.formula)) throw badRequest('Invalid formula syntax');
+                    } else if (cfg.formulaType === 'percentage') {
+                        if (!cfg.baseField) throw badRequest('Base field is required for percentage formula');
+                        if (cfg.percentage === undefined || cfg.percentage === null || isNaN(Number(cfg.percentage))) {
+                            throw badRequest('Percentage is required for percentage formula');
+                        }
+                    } else if (cfg.formulaType === 'fixed') {
+                        if (cfg.fixedAmount === undefined || cfg.fixedAmount === null || isNaN(Number(cfg.fixedAmount))) {
+                            throw badRequest('Fixed amount is required for fixed formula');
+                        }
+                    }
+                    break;
+            }
+            if (templateData.calculationConfig?.formula) {
+                if (!validateFormula(templateData.calculationConfig.formula)) {
+                    throw badRequest('Invalid formula syntax');
+                }
+            }
             const template = await Template.create(templateData);
             res.status(201).json(template);
         } catch (error) {
@@ -90,39 +192,44 @@ exports.api.getById = async (req, res, next) => {
  * Update bonus template
  */
 exports.api.update = async (req, res, next) => {
-    const form = formidable({ multiples: false });
-
-    form.parse(req, async (err, fields, files) => {
-        if (err) {
-            return next(badRequest('Form data parsing failed'));
-        }
-
+    // If JSON, handle directly
+    if (req.is && req.is('application/json')) {
         try {
             const { id } = req.params;
-            const updateData = fields;
+            const updateData = req.body || {};
             updateData.updatedAt = new Date();
-
-            // Prevent changing template code
-            if (updateData.code) {
-                delete updateData.code;
-            }
-
-            // Validate formula if being updated
+            if (updateData.code) delete updateData.code; // prevent code change
             if (updateData.calculationConfig?.formula) {
                 if (!validateFormula(updateData.calculationConfig.formula)) {
                     throw badRequest('Invalid formula syntax');
                 }
             }
+            const template = await Template.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+            if (!template) throw notFound('Bonus template not found');
+            return res.json(template);
+        } catch (error) {
+            return next(error);
+        }
+    }
 
-            const template = await Template.findByIdAndUpdate(id, updateData, {
-                new: true,
-                runValidators: true
-            });
-
-            if (!template) {
-                throw notFound('Bonus template not found');
+    // Fallback: multipart/form-data
+    const form = formidable({ multiples: false });
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return next(badRequest('Form data parsing failed'));
+        }
+        try {
+            const { id } = req.params;
+            const updateData = fields;
+            updateData.updatedAt = new Date();
+            if (updateData.code) delete updateData.code;
+            if (updateData.calculationConfig?.formula) {
+                if (!validateFormula(updateData.calculationConfig.formula)) {
+                    throw badRequest('Invalid formula syntax');
+                }
             }
-
+            const template = await Template.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+            if (!template) throw notFound('Bonus template not found');
             res.json(template);
         } catch (error) {
             next(error);

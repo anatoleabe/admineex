@@ -2,15 +2,68 @@
 const moment = require('moment');
 const { BonusTemplate } = require('../models/bonus/template');
 const { BonusInstance } = require('../models/bonus/instance');
-const { PersonnelSnapshot } = require('../models/bonus/PersonnelSnapshot');
+const { PersonnelSnapshot } = require('../models/bonus/personnelSnapshot');
 const { BonusAllocation } = require('../models/bonus/allocation');
-const { createPersonnelSnapshot, bulkCreateSnapshots} = require('./snapshotService');
+const { bulkCreateSnapshots} = require('./snapshotService');
 const {Personnel} = require("../models/personnel");
 const dictionary = require('../utils/dictionary');
 const vm = require('vm');
-const _= require("underscore");
 const fs = require('fs');
 const path  = require('path');
+
+// Cache loaders for dictionary JSON files
+const _dictCache = {};
+function loadJSONDict(relPath) {
+    const absPath = path.resolve(__dirname, relPath);
+    if (_dictCache[absPath]) return _dictCache[absPath];
+    try {
+        const data = JSON.parse(fs.readFileSync(absPath, 'utf8'));
+        _dictCache[absPath] = data;
+        return data;
+    } catch (e) {
+        console.error('Failed to load dictionary JSON:', absPath, e.message);
+        _dictCache[absPath] = null;
+        return null;
+    }
+}
+
+function getSBIFromSnapshot(snapshotData) {
+    // status '1' => fonctionnaire, use indices_salaire.json by index
+    // status '2' => non fonctionnaire, use echelons_salaire.json by id (category) and echelon (index)
+    const status = snapshotData?.status;
+    if (!status) return { sbi: 0, reason: 'missing_status' };
+
+    if (String(status) === '1') {
+        const indexVal = parseInt(snapshotData?.index, 10);
+        if (!Number.isFinite(indexVal)) return { sbi: 0, reason: 'invalid_index' };
+        const table = loadJSONDict('../../resources/dictionary/personnel/status/1/indices_salaire.json') || [];
+        const row = table.find(r => Number(r.index) === indexVal);
+        if (!row) return { sbi: 0, reason: 'index_not_found' };
+        return { sbi: Number(row.salary) || 0 };
+    }
+
+    if (String(status) === '2') {
+        const catId = String(snapshotData?.category || '').trim();
+        const echelon = parseInt(snapshotData?.index, 10);
+        if (!catId || !Number.isFinite(echelon)) return { sbi: 0, reason: 'invalid_category_or_echelon' };
+        const table = loadJSONDict('../../resources/dictionary/personnel/status/2/echelons_salaire.json') || [];
+        const row = table.find(r => String(r.id) === catId && Number(r.echelon) === echelon);
+        if (!row) return { sbi: 0, reason: 'echelon_not_found' };
+        return { sbi: Number(row.salary) || 0 };
+    }
+
+    return { sbi: 0, reason: 'unknown_status' };
+}
+
+function getTXFromRank(snapshotData) {
+    const rank = String(snapshotData?.rank || '').trim();
+    if (!rank) return { tx: 0, reason: 'missing_rank' };
+    const ranks = loadJSONDict('../../resources/dictionary/personnel/ranks.json') || [];
+    const row = ranks.find(r => String(r.id) === rank);
+    if (!row) return { tx: 0, reason: 'rank_not_found' };
+    const rate = Number(row.bonusRate);
+    return { tx: Number.isFinite(rate) ? rate : 0 };
+}
 
 /**
  * Main generation function for periodic bonuses
@@ -33,8 +86,10 @@ async function generateBonusesForPeriod(period) {
                 templateId: template._id,
                 referencePeriod,
                 status: 'draft',
-                shareAmount: template.calculationConfig.defaultShareAmount,
-                generationDate: new Date()
+                shareAmount: template.calculationConfig?.defaultShareAmount,
+                generationDate: new Date(),
+                taxName: template.taxConfig?.taxName,
+                taxPercentage: template.taxConfig?.taxPercentage
             }
             console.log(bonusInstanceItem)
             // Create new instance
@@ -62,8 +117,10 @@ async function generateBonusesForTemplate(templateId, referencePeriod) {
     const instance = await BonusInstance.create({
         templateId,
         referencePeriod: referencePeriod || formatPeriod(template.periodicity),
-        shareAmount: template.defaultShareAmount,
-        status: 'draft'
+        shareAmount: template.calculationConfig?.defaultShareAmount,
+        status: 'draft',
+        taxName: template.taxConfig?.taxName,
+        taxPercentage: template.taxConfig?.taxPercentage
     });
 
     // Generate allocations
@@ -107,15 +164,17 @@ async function generateAllocationsForInstance(instanceId) {
                     // Calculate inputs and amounts
                     const calculatedInputs = await calculateInputs(instance.templateId, snapshot.data, parts);
 
-                    // Calculate amount based on inputs (may be zero based on situation/sanctions)
+                    // Calculate amount based on inputs
                     const calculatedAmount = calculatedInputs.parts > 0 ?
                         await calculateAmount(instance, snapshot.data, calculatedInputs.parts) : 0;
 
-                    // Calculate tax information
+                    // Calculate tax information with rounding rules (FCFA integer)
                     const taxRate = instance.taxPercentage ? instance.taxPercentage / 100 : 0;
-                    const grossAmount = calculatedAmount; // Pre-tax amount
-                    const taxAmount = grossAmount * taxRate; // Amount deducted for tax
-                    const netAmount = grossAmount - taxAmount; // Amount after tax deduction
+                    // For sans part, brut should be rounded; for consistency, apply rounding to all categories
+                    const grossAmountRaw = calculatedAmount || 0;
+                    const grossAmount = Math.round(grossAmountRaw);
+                    const taxAmount = Math.round(grossAmount * taxRate);
+                    const netAmount = grossAmount - taxAmount;
 
                     // Create allocation
                     const allocationItem = {
@@ -124,9 +183,9 @@ async function generateAllocationsForInstance(instanceId) {
                         personnelSnapshotId: snapshot._id,
                         templateId: instance.templateId._id,
                         calculationInputs: calculatedInputs,
-                        calculatedAmount: calculatedAmount || 0,
-                        finalAmount: calculatedAmount || 0,
-                        // Add tax-related fields
+                        calculatedAmount: grossAmountRaw || 0,
+                        finalAmount: grossAmount || 0,
+                        // Tax-related fields
                         grossAmount: grossAmount || 0,
                         taxAmount: taxAmount || 0,
                         netAmount: netAmount || 0,
@@ -169,26 +228,38 @@ async function shouldGenerate(template, currentDate) {
 
     if (!lastInstance) return true; // First generation
 
-    const periodFormat = getPeriodFormat(template.periodicity);
-    const lastPeriod = moment(lastInstance.referencePeriod, periodFormat);
-
     // Calculate next expected generation date
     let nextGenerationDate;
     switch (template.periodicity) {
         case 'daily':
-            nextGenerationDate = lastPeriod.add(1, 'day');
+            nextGenerationDate = moment(lastInstance.referencePeriod, getPeriodFormat('daily')).add(1, 'day');
             break;
         case 'weekly':
-            nextGenerationDate = lastPeriod.add(1, 'week');
+            nextGenerationDate = moment(lastInstance.referencePeriod, getPeriodFormat('weekly')).add(1, 'week');
             break;
         case 'monthly':
-            nextGenerationDate = lastPeriod.add(1, 'month').startOf('month');
+            nextGenerationDate = moment(lastInstance.referencePeriod, getPeriodFormat('monthly')).add(1, 'month').startOf('month');
             break;
-        case 'quarterly':
-            nextGenerationDate = lastPeriod.add(3, 'months').startOf('quarter');
+        case 'quarterly': {
+            // Parse like YYYY-Qn to a date at quarter start
+            const match = /^(\d{4})-Q([1-4])$/.exec(lastInstance.referencePeriod);
+            const year = match ? parseInt(match[1], 10) : currentDate.year();
+            const q = match ? parseInt(match[2], 10) : Math.ceil((currentDate.month() + 1) / 3);
+            const startMonth = (q - 1) * 3; // 0,3,6,9
+            nextGenerationDate = moment({ year, month: startMonth, day: 1 }).add(3, 'months').startOf('quarter');
             break;
+        }
+        case 'semesterly': {
+            // Parse YYYY-Sn to a date at semester start
+            const match = /^(\d{4})-S([1-2])$/.exec(lastInstance.referencePeriod);
+            const year = match ? parseInt(match[1], 10) : currentDate.year();
+            const s = match ? parseInt(match[2], 10) : (currentDate.month() < 6 ? 1 : 2);
+            const startMonth = s === 1 ? 0 : 6;
+            nextGenerationDate = moment({ year, month: startMonth, day: 1 }).add(6, 'months');
+            break;
+        }
         case 'yearly':
-            nextGenerationDate = lastPeriod.add(1, 'year').startOf('year');
+            nextGenerationDate = moment(lastInstance.referencePeriod, getPeriodFormat('yearly')).add(1, 'year').startOf('year');
             break;
         default:
             return false;
@@ -393,10 +464,24 @@ async function calculateInputs(template, snapshotData, parts) {
         // Use concise comments based on the actual situation or sanction
         if (hasDisqualifyingSituation) {
             adjustedParts = 0;
-            comment = situationValue; // Just use the situation text, e.g. "Décédé", "Retraité"
+            comment = situationValue; // Just use the situation text
         } else if (hasSevereActiveSanctions) {
             adjustedParts = 0;
             comment = lastSanctionValue; // Use the actual sanction text
+        }
+
+        // Additional inputs specific to without_parts (remise sur salaire)
+        let sbi = undefined;
+        let txPercent = undefined;
+        if (template.category === 'without_parts') {
+            const { sbi: sbiVal } = getSBIFromSnapshot(snapshotData);
+            const { tx } = getTXFromRank(snapshotData);
+            sbi = sbiVal || 0;
+            txPercent = Number.isFinite(tx) ? Math.round(tx * 10000) / 100 : 0; // keep 2 decimals if needed
+            // For reporting missing SBI, annotate comment if zero and not disqualified
+            if (!hasDisqualifyingSituation && !hasSevereActiveSanctions && sbi === 0) {
+                comment = (comment ? comment + ' | ' : '') + 'SBI introuvable';
+            }
         }
 
         return {
@@ -410,7 +495,10 @@ async function calculateInputs(template, snapshotData, parts) {
             situationText: situationValue,
             sanctions: sanctions.map(s => s.sanction).join(','),
             sanctionText: lastSanctionValue,
-            comment: comment
+            comment: comment,
+            // extras for sans part
+            sbi: sbi,
+            txPercent: txPercent
         };
     } catch (error) {
         console.error('Error calculating inputs:', error);
@@ -428,11 +516,19 @@ function getBaseFieldValue(field, snapshotData) {
 
 function evaluateCustomFormula(template, snapshotData) {
     try {
-        const formula = template.calculationConfig.formula
-            .replace(/\b(base|salary)\b/, 'snapshotData.salary')
-            .replace(/\b(grade|category)\b/, match => `snapshotData.${match}`);
+        let formula = String(template.calculationConfig.formula || '0');
+        // Map common tokens to snapshotData
+        formula = formula
+            .replace(/\bbase\b/g, 'snapshotData.salary')
+            .replace(/\bsalary\b/g, 'snapshotData.salary')
+            .replace(/\bgrade\b/g, 'snapshotData.grade')
+            .replace(/\bcategory\b/g, 'snapshotData.category')
+            .replace(/\bparts\b/g, '1');
 
-        return safeEval(formula, { snapshotData });
+        const context = vm.createContext({ snapshotData, Math });
+        const script = new vm.Script(`Number(${formula})`);
+        const result = script.runInContext(context, { timeout: 100 });
+        return Number.isFinite(result) ? result : 0;
     } catch (e) {
         console.error(`Formula calculation failed: ${e.message}`);
         return 0;
@@ -445,6 +541,7 @@ function getPeriodFormat(periodicity) {
         weekly: 'YYYY-[W]WW',
         monthly: 'YYYY-MM',
         quarterly: 'YYYY-[Q]Q',
+        semesterly: 'YYYY-[S]S',
         yearly: 'YYYY'
     };
     return formats[periodicity] || 'YYYY-MM-DD';
@@ -483,6 +580,10 @@ function formatPeriod(periodicity, date = moment()) {
     switch (periodicity) {
         case 'monthly': return date.format('YYYY-MM');
         case 'quarterly': return `${date.year()}-Q${Math.ceil((date.month() + 1)/3)}`;
+        case 'semesterly': {
+            const semester = date.month() < 6 ? 1 : 2;
+            return `${date.year()}-S${semester}`;
+        }
         case 'yearly': return date.format('YYYY');
         default: return date.format('YYYY-MM-DD');
     }
@@ -517,25 +618,35 @@ async function calculateAmount(instance, snapshotData, parts) {
     const config = template.calculationConfig;
 
     switch (template.category) {
-        case 'fixed_amount':
-            return config.fixedAmount || 0;
-
-        case 'percentage':
-            const base = getBaseFieldValue(config.baseField, snapshotData);
-            return base * (config.percentage / 100);
-
-        case 'with_parts':
+        case 'with_parts': {
             const shareAmount = instance.shareAmount || 0;
             return shareAmount * parts;
-
-        case 'sans_parts': // Example for "Remise sur salaire"
-            const salary = snapshotData.salary || 0;
-            const rate = config.rate || 0;
-            return salary * 3 * rate;
-
-        case 'calculated':
-            return evaluateCustomFormula(template, snapshotData);
-
+        }
+        case 'without_parts': { // Remise sur salaire
+            const { sbi } = getSBIFromSnapshot(snapshotData);
+            const { tx } = getTXFromRank(snapshotData);
+            const salaryBase = Number(sbi) || 0;
+            const rate = Number(tx) || 0; // e.g., 0.45 for 45%
+            // R = SBI × 3 × TX
+            return salaryBase * 3 * rate;
+        }
+        case 'fixed_amount':
+            return config.fixedAmount || 0;
+        case 'calculated': {
+            // Decide by formulaType
+            switch (config.formulaType) {
+                case 'percentage': {
+                    const base = getBaseFieldValue(config.baseField || 'salary', snapshotData);
+                    return base * ((config.percentage || 0) / 100);
+                }
+                case 'fixed':
+                    return config.fixedAmount || 0;
+                case 'custom_formula':
+                    return evaluateCustomFormula(template, snapshotData);
+                default:
+                    return 0;
+            }
+        }
         default:
             return 0;
     }

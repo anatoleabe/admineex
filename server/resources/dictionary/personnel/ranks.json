@@ -3,60 +3,70 @@
         "id": "SG",
         "en": "Secrétaire Général",
         "fr": "Secrétaire Général",
-        "hierarchy": "10"
+        "hierarchy": "10",
+        "bonusRate": 0.5
     },
     {
         "id": "SGA",
         "en": "Secrétaire Général Adjoint",
         "fr": "Secrétaire Général Adjoint",
-        "hierarchy": "9"
+        "hierarchy": "9",
+        "bonusRate": 0.5
     },
     {
         "id": "DIR",
         "en": "Directeur",
         "fr": "Directeur",
-        "hierarchy": "8"
+        "hierarchy": "8",
+        "bonusRate": 0.45
     },
     {
         "id": "DIRA",
         "en": "Directeur Adjoint",
         "fr": "Directeur Adjoint",
-        "hierarchy": "7"
+        "hierarchy": "7",
+        "bonusRate": 0.4
     },
     {
         "id": "SD",
         "en": "Sous-Directeur",
         "fr": "Sous-Directeur",
-        "hierarchy": "6"
+        "hierarchy": "6",
+        "bonusRate": 0.35
     },
     {
         "id": "CS",
         "en": "Chef de Service",
         "fr": "Chef de Service",
-        "hierarchy": "5"
+        "hierarchy": "5",
+        "bonusRate": 0.3
     },
     {
         "id": "CSA",
         "en": "Chef Service-Adjoint",
         "fr": "Chef Service-Adjoint",
-        "hierarchy": "4"
+        "hierarchy": "4",
+        "bonusRate": 0.3
     },
     {
         "id": "CB",
         "en": "Chef de Bureau",
         "fr": "Chef de Bureau",
-        "hierarchy": "3"
+        "hierarchy": "3",
+        "bonusRate": 0.30
     },
     {
         "id": "CA",
         "en": "Cadre",
         "fr": "Cadre",
-        "hierarchy": "2"
+        "hierarchy": "2",
+        "bonusRate": 0.25
     },
     {
         "id": "AG",
         "en": "Agent",
         "fr": "Agent",
-        "hierarchy": "1"
+        "hierarchy": "1",
+        "bonusRate": 0.25
     }
 ]
