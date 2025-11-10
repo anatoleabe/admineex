@@ -60,8 +60,8 @@
                         </div>
                     </div>
 
-                    <!-- Parts/Shares -->
-                    <div class="col-md-4">
+                    <!-- Parts/Shares (hidden for sans part) -->
+                    <div class="col-md-4" ng-if="!selectedAllocation.isSansPart">
                         <div class="form-group">
                             <label class="font-weight-semibold">Parts/Shares:</label>
                             <div class="input-group">
@@ -78,17 +78,32 @@
                         </div>
                     </div>
 
-                    <!-- Final Amount -->
-                    <div class="col-md-4">
+                    <!-- Sans Part details: TX (%) and SBI -->
+                    <div class="col-md-4" ng-if="selectedAllocation.isSansPart">
+                        <div class="form-group mb-2">
+                            <label class="font-weight-semibold">TAUX (%)</label>
+                            <div class="form-control-plaintext bg-light rounded p-2 text-center">
+                                {{ (selectedAllocation.calculationInputs.txPercent || 0) | number:0 }}
+                            </div>
+                        </div>
+                        <div class="form-group mb-0">
+                            <label class="font-weight-semibold">SBI</label>
+                            <div class="form-control-plaintext bg-light rounded p-2 text-right">
+                                {{ (selectedAllocation.calculationInputs.sbi || 0) | number:0 }} FCFA
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Final Amount (editable always) -->
+                    <div class="col-md-4" ng-class="{'offset-md-4': selectedAllocation.isSansPart}">
                         <div class="form-group">
                             <label class="font-weight-semibold">Final Amount:</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="icon-coin-dollar"></i></span>
                                 </div>
-                                <div class="form-control form-control-lg text-right" >
-                                    {{selectedAllocation.finalAmount | number:0}}
-                                </div>
+                                <input type="number" class="form-control form-control-lg"
+                                       ng-model="selectedAllocation.finalAmount">
                                 <div class="input-group-append">
                                     <span class="input-group-text">FCFA</span>
                                 </div>
@@ -114,7 +129,7 @@
                                     'text-danger': selectedAllocation.finalAmount < selectedAllocation.calculatedAmount
                                 }">
                                     {{selectedAllocation.finalAmount - selectedAllocation.calculatedAmount | number:0}} FCFA
-                                    ({{((selectedAllocation.finalAmount - selectedAllocation.calculatedAmount) / selectedAllocation.calculatedAmount * 100) | number:1}}%)
+                                    ({{((selectedAllocation.finalAmount - selectedAllocation.calculatedAmount) / (selectedAllocation.calculatedAmount || 1) * 100) | number:1}}%)
                                 </span>
                             </div>
                             <div ng-if="selectedAllocation.finalAmount == selectedAllocation.calculatedAmount">
@@ -151,7 +166,7 @@
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Parts</th>
+                                <th ng-if="!selectedAllocation.isSansPart">Parts</th>
                                 <th>Amount</th>
                                 <th>Reason</th>
                             </tr>
@@ -159,8 +174,8 @@
                         <tbody>
                             <tr ng-repeat="entry in allocationHistory | orderBy:'-timestamp'">
                                 <td>{{entry.timestamp | date:'medium'}}</td>
-                                <td>{{entry.previousParts }}</td>
-                                <td>{{entry.previousAmount }} FCFA</td>
+                                <td ng-if="!selectedAllocation.isSansPart">{{entry.previousParts }}</td>
+                                <td>{{entry.previousAmount | number:0 }} FCFA</td>
                                 <td>{{entry.reason }}</td>
                             </tr>
                         </tbody>

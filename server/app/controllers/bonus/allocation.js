@@ -264,7 +264,12 @@ exports.api.exclude = async (req, res, next) => {
             }
 
             const { id } = req.params;
-            const { reason } = fields;
+            let { reason } = fields;
+            reason = (reason || '').trim();
+
+            if (!reason || reason.length < 3) {
+                return next(badRequest('Exclusion reason (min 3 chars) is required'));
+            }
 
             const allocation = await BonusAllocation.findById(id)
                 .populate('instanceId');
@@ -277,17 +282,36 @@ exports.api.exclude = async (req, res, next) => {
                 throw forbidden('Cannot modify allocations for approved or paid instances');
             }
 
+            // Prepare history entry
+            const historyEntry = {
+                timestamp: new Date(),
+                user: req.user && req.user.id ? req.user.id : null,
+                userName: req.user && req.user.name ? req.user.name : null,
+                reason: reason,
+                previousAmount: allocation.finalAmount,
+                previousParts: allocation.calculationInputs.parts,
+                previousComment: allocation.calculationInputs.comment,
+                action: 'exclude'
+            };
+
+            const newCalculationInputs = {
+                ...allocation.calculationInputs,
+                comment: reason, // mirror reason into comment for display/export
+                adjustmentFactors: {
+                    ...(allocation.calculationInputs.adjustmentFactors || {}),
+                    exclusionReason: reason
+                },
+                adjustmentHistory: [
+                    ...(allocation.calculationInputs.adjustmentHistory || []),
+                    historyEntry
+                ]
+            };
+
             const updatedAllocation = await BonusAllocation.findByIdAndUpdate(
                 id,
                 {
                     status: 'excluded',
-                    calculationInputs: {
-                        ...allocation.calculationInputs,
-                        adjustmentFactors: {
-                            ...(allocation.calculationInputs.adjustmentFactors || {}),
-                            exclusionReason: reason
-                        }
-                    },
+                    calculationInputs: newCalculationInputs,
                     updatedAt: new Date()
                 },
                 { new: true }

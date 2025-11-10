@@ -5,7 +5,6 @@
 angular.module('app')
 .controller('BonusInstanceWizardCtrl', ['$scope', '$http', '$stateParams', '$state', '$ocLazyLoad', 'SweetAlert', '$mdDialog', 'toastr', '$timeout',
 function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog, toastr, $timeout) {
-
     // Helper to ensure numeric pagination
     function toInt(val, fallback) {
         const n = parseInt(val, 10);
@@ -907,4 +906,48 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
 
     // Initialize when controller loads
     $scope.initialize();
+
+    // Helpers for Primes Sans Part (Remise sur salaire)
+    $scope.isSansPart = function() {
+        try { return $scope.instance && $scope.instance.templateId && $scope.instance.templateId.category === 'without_parts'; }
+        catch (e) { return false; }
+    };
+    $scope.getTxPercent = function(allocation) {
+        var v = allocation && allocation.calculationInputs && allocation.calculationInputs.txPercent;
+        if (v === 0 || v) return Math.round(Number(v));
+        return '';
+    };
+    $scope.getSbi = function(allocation) {
+        var sbi = allocation && allocation.calculationInputs && allocation.calculationInputs.sbi;
+        return Number(sbi || 0);
+    };
+    $scope.getIndiceCat = function(allocation){
+        try{
+            // Prefer stored display
+            var storedDisp = allocation && allocation.calculationInputs && allocation.calculationInputs.indiceCatDisplay;
+            if(storedDisp) return storedDisp;
+            var data = allocation && allocation.personnelSnapshotId && allocation.personnelSnapshotId.data;
+            if(!data) return '';
+            var status = String(data.status || '');
+            var idx = data.index != null ? String(data.index) : '';
+            if(status === '1'){
+                return idx || '';
+            }
+            if(status === '2'){
+                var cat = data.category != null ? String(data.category).trim() : '';
+                var code = '';
+                var asNum = parseInt(cat,10);
+                if(Number.isFinite(asNum)){
+                    var n = asNum - 6;
+                    code = (n >= 1 && n <= 12) ? ('CAT ' + n) : ('CAT ' + asNum);
+                } else {
+                    code = cat || '';
+                }
+                var echelon = idx || '';
+                if(code && echelon) return code + ' / ' + echelon;
+                return code || echelon || '';
+            }
+            return '';
+        }catch(e){ return ''; }
+    };
 }]);

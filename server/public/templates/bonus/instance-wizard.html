@@ -156,11 +156,13 @@
                                 <span class="font-weight-semibold">Total adjusted:</span>
                                 <span class="badge-warning badge-pill">{{totals.adjusted || 0}} person(s)</span>
                             </div>
-                            <div class="summary-item">
+                            <!-- Hide parts total for Sans Part -->
+                            <div class="summary-item" ng-if="!isSansPart()">
                                 <span class="font-weight-semibold">Total parts:</span>
                                 <span class="badge-secondary badge-pill">{{totals.parts || 0}} parts</span>
                             </div>
-                            <div class="summary-item">
+                            <!-- Hide Share Amount for Sans Part -->
+                            <div class="summary-item" ng-if="!isSansPart()">
                                 <span class="font-weight-semibold">Share Amount:</span>
                                 <span class="badge-info badge-pill">{{instance.shareAmount | number:0}} FCFA</span>
                             </div>
@@ -183,8 +185,9 @@
                                         ng-if="currentStep === 'completed' && instance.status !== 'approved' && instance.status !== 'paid'">
                                     <i class="mi-check-circle mr-1"></i> Approve Instance
                                 </button>
+                                <!-- Hide update share for Sans Part -->
                                 <button class="btn btn-warning btn-block mb-2" ng-click="updateShareAmount()"
-                                        ng-if="instance.status !== 'approved' && instance.status !== 'paid'">
+                                        ng-if="!isSansPart() && instance.status !== 'approved' && instance.status !== 'paid'">
                                     <i class="mi-attach-money mr-1"></i> Update Share Amount
                                 </button>
                                 <button class="btn btn-info btn-block mb-2" ng-click="updateTaxConfig()"
@@ -264,9 +267,11 @@
                                         <thead class="thead-light sticky-top" style="position: sticky; top: 0; z-index: 10;">
                                         <tr>
                                             <th width="20%">Employee</th>
+                                            <th width="10%">Indice/Cat</th>
                                             <th width="13%">Position</th>
                                             <th width="8%">Status</th>
-                                            <th width="8%" class="text-center">Parts</th>
+                                            <th width="13%" class="text-right">SBI</th>
+                                            <th width="8%" class="text-center">TAUX (%)</th>
                                             <th width="13%" class="text-right">Gross Amount</th>
                                             <th width="13%" class="text-right">Net Amount</th>
                                             <th width="25%" class="text-center">Actions</th>
@@ -283,6 +288,7 @@
                                                     </div>
                                                 </div>
                                             </td>
+                                            <td>{{ getIndiceCat(allocation) }}</td>
                                             <td>
                                                 {{allocation.beautifiedGrade ||
                                                   (allocation.personnelSnapshotId.data.position ? allocation.personnelSnapshotId.data.position.name : 'N/A')}}
@@ -294,7 +300,8 @@
                                                         'badge-warning': allocation.status === 'adjusted'
                                                     }">{{allocation.status | capitalize}}</span>
                                             </td>
-                                            <td class="text-center">{{allocation.calculationInputs.parts || 0}}</td>
+                                            <td class="text-right">{{ getSbi(allocation) | number:0 }} FCFA</td>
+                                            <td class="text-center">{{ getTxPercent(allocation) }}</td>
                                             <td class="text-right font-weight-semibold">{{allocation.grossAmount | number:0}} FCFA</td>
                                             <td class="text-right font-weight-semibold">{{allocation.netAmount | number:0}} FCFA</td>
                                             <td class="text-center">
@@ -315,7 +322,7 @@
                                             </td>
                                         </tr>
                                         <tr ng-if="!allocations.length">
-                                            <td colspan="7" class="text-center py-4">
+                                            <td colspan="9" class="text-center py-4">
                                                 <div class="empty-state">
                                                     <i class="icon-people mi-4x text-muted mb-3"></i>
                                                     <h4 class="font-weight-semibold">No allocations found</h4>
@@ -393,9 +400,11 @@
                                             <thead class="thead-light sticky-top" style="position: sticky; top: 0; z-index: 10;">
                                                 <tr>
                                                     <th width="20%">Employee</th>
+                                                    <th width="10%">Indice/Cat</th>
                                                     <th width="13%">Position</th>
                                                     <th width="7%">Status</th>
-                                                    <th width="7%" class="text-center">Parts</th>
+                                                    <th width="13%" class="text-right">SBI</th>
+                                                    <th width="8%" class="text-center">TAUX (%)</th>
                                                     <th width="13%" class="text-right">Gross Amount</th>
                                                     <th width="13%" class="text-right">Net Amount</th>
                                                     <th width="13%" class="text-right">Previous</th>
@@ -412,6 +421,7 @@
                                                             </div>
                                                         </div>
                                                     </td>
+                                                    <td>{{ getIndiceCat(allocation) }}</td>
                                                     <td>
                                                         {{allocation.beautifiedGrade ||
                                                         (allocation.personnelSnapshotId.data.position ? allocation.personnelSnapshotId.data.position.name : 'N/A')}}
@@ -423,7 +433,8 @@
                                                             'badge-warning': allocation.status === 'adjusted'
                                                         }">{{allocation.status | capitalize}}</span>
                                                     </td>
-                                                    <td class="text-center">{{allocation.calculationInputs.parts || 0}}</td>
+                                                    <td class="text-right">{{ getSbi(allocation) | number:0 }} FCFA</td>
+                                                    <td class="text-center">{{ getTxPercent(allocation) }}</td>
                                                     <td class="text-right font-weight-semibold">{{allocation.grossAmount | number:0}} FCFA</td>
                                                     <td class="text-right font-weight-semibold">{{allocation.netAmount | number:0}} FCFA</td>
                                                     <!-- Display previous amount from historical data -->
@@ -442,7 +453,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr ng-if="!allocations.length">
-                                                    <td colspan="7" class="text-center py-4">
+                                                    <td colspan="10" class="text-center py-4">
                                                         <div class="empty-state">
                                                             <i class="icon-people mi-4x text-muted mb-3"></i>
                                                             <h4 class="font-weight-semibold">No allocations found</h4>

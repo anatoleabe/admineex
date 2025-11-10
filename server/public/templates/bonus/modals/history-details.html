@@ -24,7 +24,7 @@
                         <h5 class="font-weight-semibold mb-0">
                             {{allocation.personnelId.name.text ||
                             allocation.personnelId.name.use ||
-                            (allocation.personnelId.name.family[0] + ' ' + selectedAllocation.personnelId.name.given[0])}}
+                            (allocation.personnelId.name.family[0] + ' ' + allocation.personnelId.name.given[0])}}
                         </h5>
 
                         <p class="text-muted mb-0">ID: {{allocation.personnelId.identifier}}</p>
@@ -59,9 +59,19 @@
                                         'badge-warning': allocation.status === 'adjusted'
                                     }">{{allocation.status | capitalize}}</span>
                                 </div>
-                                <div class="d-flex justify-content-between mb-2">
+                                <!-- Parts for with_parts -->
+                                <div class="d-flex justify-content-between mb-2" ng-if="!(allocation.templateId && allocation.templateId.category === 'without_parts')">
                                     <span class="text-muted">Parts/Shares:</span>
                                     <span class="font-weight-semibold">{{allocation.calculationInputs.parts || 0}}</span>
+                                </div>
+                                <!-- TX/SBI for without_parts -->
+                                <div class="d-flex justify-content-between mb-2" ng-if="allocation.templateId && allocation.templateId.category === 'without_parts'">
+                                    <span class="text-muted">TAUX (%):</span>
+                                    <span class="font-weight-semibold">{{ (allocation.calculationInputs.txPercent || 0) | number:0 }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-2" ng-if="allocation.templateId && allocation.templateId.category === 'without_parts'">
+                                    <span class="text-muted">SBI:</span>
+                                    <span class="font-weight-semibold">{{ (allocation.calculationInputs.sbi || 0) | number:0 }} FCFA</span>
                                 </div>
                                 <div class="d-flex justify-content-between">
                                     <span class="text-muted">Amount:</span>
@@ -81,9 +91,19 @@
                                         <span class="text-muted">Reference Period:</span>
                                         <span class="font-weight-semibold">{{historicalData.referencePeriod || 'N/A'}}</span>
                                     </div>
-                                    <div class="d-flex justify-content-between mb-2">
+                                    <!-- Parts for with_parts -->
+                                    <div class="d-flex justify-content-between mb-2" ng-if="!(allocation.templateId && allocation.templateId.category === 'without_parts')">
                                         <span class="text-muted">Parts/Shares:</span>
                                         <span class="font-weight-semibold">{{historicalData.parts || 0}}</span>
+                                    </div>
+                                    <!-- TX/SBI for without_parts -->
+                                    <div class="d-flex justify-content-between mb-2" ng-if="allocation.templateId && allocation.templateId.category === 'without_parts'">
+                                        <span class="text-muted">TAUX (%):</span>
+                                        <span class="font-weight-semibold">{{ (historicalData.calculationInputs && historicalData.calculationInputs.txPercent) || 0 | number:0 }}</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between mb-2" ng-if="allocation.templateId && allocation.templateId.category === 'without_parts'">
+                                        <span class="text-muted">SBI:</span>
+                                        <span class="font-weight-semibold">{{ (historicalData.calculationInputs && historicalData.calculationInputs.sbi) || 0 | number:0 }} FCFA</span>
                                     </div>
                                     <div class="d-flex justify-content-between">
                                         <span class="text-muted">Amount:</span>
@@ -133,7 +153,11 @@
                             <tr>
                                 <th>Period</th>
                                 <th>Status</th>
-                                <th>Parts</th>
+                                <!-- Parts column for with_parts -->
+                                <th ng-if="!(allocation.templateId && allocation.templateId.category === 'without_parts')">Parts</th>
+                                <!-- TX/SBI columns for without_parts -->
+                                <th ng-if="allocation.templateId && allocation.templateId.category === 'without_parts'">TX (%)</th>
+                                <th ng-if="allocation.templateId && allocation.templateId.category === 'without_parts'">SBI</th>
                                 <th>Amount</th>
                                 <th>Comments</th>
                             </tr>
@@ -152,7 +176,11 @@
                                         'badge-warning': allocation.status === 'adjusted'
                                     }">{{allocation.status | capitalize}}</span>
                                 </td>
-                                <td>{{allocation.calculationInputs.parts || 0}}</td>
+                                <!-- with_parts value -->
+                                <td ng-if="!(allocation.templateId && allocation.templateId.category === 'without_parts')">{{allocation.calculationInputs.parts || 0}}</td>
+                                <!-- without_parts values -->
+                                <td ng-if="allocation.templateId && allocation.templateId.category === 'without_parts'">{{ (allocation.calculationInputs.txPercent || 0) | number:0 }}</td>
+                                <td ng-if="allocation.templateId && allocation.templateId.category === 'without_parts'">{{ (allocation.calculationInputs.sbi || 0) | number:0 }} FCFA</td>
                                 <td class="font-weight-semibold">{{allocation.finalAmount | number:0}} FCFA</td>
                                 <td>{{allocation.calculationInputs.comment || 'N/A'}}</td>
                             </tr>
@@ -167,13 +195,17 @@
                                         'badge-warning': historicalData.status === 'adjusted'
                                     }">{{historicalData.status || 'Unknown'}}</span>
                                 </td>
-                                <td>{{historicalData.parts || 0}}</td>
+                                <!-- with_parts value -->
+                                <td ng-if="!(allocation.templateId && allocation.templateId.category === 'without_parts')">{{historicalData.parts || 0}}</td>
+                                <!-- without_parts values -->
+                                <td ng-if="allocation.templateId && allocation.templateId.category === 'without_parts'">{{ (historicalData.calculationInputs && historicalData.calculationInputs.txPercent) || 0 | number:0 }}</td>
+                                <td ng-if="allocation.templateId && allocation.templateId.category === 'without_parts'">{{ (historicalData.calculationInputs && historicalData.calculationInputs.sbi) || 0 | number:0 }} FCFA</td>
                                 <td class="font-weight-semibold">{{historicalData.amount | number:0}} FCFA</td>
                                 <td>{{historicalData.comments || 'N/A'}}</td>
                             </tr>
 
                             <tr ng-if="!historicalData">
-                                <td colspan="5" class="text-center py-3 text-muted">
+                                <td ng-attr-colspan="{{ (allocation.templateId && allocation.templateId.category === 'without_parts') ? 6 : 5 }}" class="text-center py-3 text-muted">
                                     <i class="icon-info mr-1"></i> No historical allocation data available
                                 </td>
                             </tr>

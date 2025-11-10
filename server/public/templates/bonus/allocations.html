@@ -66,6 +66,9 @@
               <th>Personnel</th>
               <th>Instance</th>
               <th>Status</th>
+              <th class="text-center">Parts</th>
+              <th class="text-center">TAUX (%)</th>
+              <th class="text-right">SBI</th>
               <th>Amount</th>
               <th>Created At</th>
               <th>Actions</th>
@@ -73,7 +76,7 @@
           </thead>
           <tbody>
             <tr ng-if="allocations.length === 0">
-              <td colspan="6" class="text-center">No allocations found matching your filters.</td>
+              <td colspan="9" class="text-center">No allocations found matching your filters.</td>
             </tr>
             <tr ng-repeat="allocation in allocations">
               <td>{{ getPersonnelDisplay(allocation.personnelId) }}</td>
@@ -87,6 +90,9 @@
                   'badge-secondary': allocation.status === 'cancelled'
                 }">{{allocation.status}}</span>
               </td>
+              <td class="text-center">{{allocation.calculationInputs.parts || 0}}</td>
+              <td class="text-center">{{ getTxPercent(allocation) }}</td>
+              <td class="text-right">{{ getSbi(allocation) | number:0 }} FCFA</td>
               <td>{{allocation.finalAmount | number:0}} FCFA</td>
               <td>{{allocation.createdAt | date:'yyyy-MM-dd'}}</td>
               <td>

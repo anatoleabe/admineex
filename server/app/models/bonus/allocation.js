@@ -33,7 +33,12 @@ const BonusAllocationSchema = new mongoose.Schema({
             newAmount: { type: Number },
             previousParts: { type: Number },
             newParts: { type: Number }
-        }]
+        }],
+        // Extras for sans-part templates
+        sbi: { type: Number },
+        txPercent: { type: Number },
+        index: { type: String },
+        indiceCatDisplay: { type: String }
     },
 
     // Calculation results

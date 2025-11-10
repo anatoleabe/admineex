@@ -176,7 +176,7 @@ exports.exportBonusToExcel = async (instance) => {
 
                 // Compute grade code using dictionary and extract position name
                 let gradeCode = '';
-                let indiceCat = '';
+                let indiceCat = allocation.calculationInputs?.indiceCatDisplay || '';
                 let fonctionLabel = allocation.personnelSnapshotId?.data?.position?.name || '';
                 const status = allocation.personnelSnapshotId?.data?.status || '';
                 const grade = allocation.personnelSnapshotId?.data?.grade || '';
@@ -189,13 +189,21 @@ exports.exportBonusToExcel = async (instance) => {
                     gradeCode = gradeTxt || String(grade);
                 }
 
-                // Build Indice/Cat display
-                if (String(status) === '1') {
-                    indiceCat = allocation.personnelSnapshotId?.data?.index || '';
-                } else if (String(status) === '2') {
-                    const cat = allocation.personnelSnapshotId?.data?.category || '';
-                    const ech = allocation.personnelSnapshotId?.data?.index || '';
-                    indiceCat = `Cat ${cat} / Echelon ${ech}`;
+                // Build Indice/Cat display (prefer stored value from calculationInputs)
+
+                if (!indiceCat) {
+                    if (String(status) === '1') {
+                        indiceCat = allocation.personnelSnapshotId?.data?.index || '';
+                    } else if (String(status) === '2') {
+                        const cat = allocation.personnelSnapshotId?.data?.category || '';
+                        const ech = allocation.personnelSnapshotId?.data?.index || '';
+                        // Map category ID to code using dictionary for consistency (e.g., CAT 1..12)
+                        const catId = parseInt(cat, 10);
+                        const catCode = Number.isFinite(catId)
+                            ? (dictionary.getValueFromJSON(`../../resources/dictionary/personnel/status/2/categories.json`, catId, 'code') || String(cat))
+                            : String(cat || '');
+                        indiceCat = `${catCode}${ech ? ' / ' + ech : ''}`;
+                    }
                 }
 
                 // TAUX (%) for without parts

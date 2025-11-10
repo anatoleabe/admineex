@@ -149,6 +149,17 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
         }
     };
 
+    // Extra helpers for Sans-Part columns
+    $scope.getTxPercent = function(allocation){
+        var v = allocation && allocation.calculationInputs && allocation.calculationInputs.txPercent;
+        if (v === 0 || v) return Math.round(Number(v));
+        return '';
+    };
+    $scope.getSbi = function(allocation){
+        var sbi = allocation && allocation.calculationInputs && allocation.calculationInputs.sbi;
+        return Number(sbi || 0);
+    };
+
     // Initialize
     loadInstances();
     $scope.loadAllocations();

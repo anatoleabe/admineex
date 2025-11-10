@@ -470,6 +470,29 @@ async function calculateInputs(template, snapshotData, parts) {
             comment = lastSanctionValue; // Use the actual sanction text
         }
 
+        // Pre-compute Index/Cat display
+        const statusStr = String(snapshotData.status || '');
+        const indexStr = (snapshotData.index !== undefined && snapshotData.index !== null) ? String(snapshotData.index) : '';
+        let indiceCatDisplay = '';
+        if (statusStr === '1') {
+            indiceCatDisplay = indexStr || '';
+        } else if (statusStr === '2') {
+            const catRaw = snapshotData.category;
+            // Try dictionary lookup; fallback to raw value
+            let catCode = '';
+            const catId = parseInt(catRaw, 10);
+            if (Number.isFinite(catId)) {
+                catCode = dictionary.getValueFromJSON(
+                    '../../resources/dictionary/personnel/status/2/categories.json',
+                    catId,
+                    'code'
+                ) || String(catRaw);
+            } else {
+                catCode = String(catRaw || '');
+            }
+            indiceCatDisplay = (catCode ? catCode : '') + (indexStr ? (' / ' + indexStr) : '');
+        }
+
         // Additional inputs specific to without_parts (remise sur salaire)
         let sbi = undefined;
         let txPercent = undefined;
@@ -498,7 +521,10 @@ async function calculateInputs(template, snapshotData, parts) {
             comment: comment,
             // extras for sans part
             sbi: sbi,
-            txPercent: txPercent
+            txPercent: txPercent,
+            // added: index and display for Indice/Cat
+            index: indexStr,
+            indiceCatDisplay: indiceCatDisplay
         };
     } catch (error) {
         console.error('Error calculating inputs:', error);

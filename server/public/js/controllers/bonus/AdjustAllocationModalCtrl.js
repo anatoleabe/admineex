@@ -9,19 +9,19 @@ function($scope, $http, toastr, $mdDialog, allocation) {
         finalAmount: allocation.finalAmount || allocation.calculatedAmount || 0,
         calculationInputs: {
             parts: allocation.calculationInputs?.parts || allocation.parts || 0,
-            comment: allocation.calculationInputs?.comment || ''
+            comment: allocation.calculationInputs?.comment || '',
+            // expose sans-part fields for display
+            txPercent: allocation.calculationInputs?.txPercent,
+            sbi: allocation.calculationInputs?.sbi
         },
-        shareAmount: allocation.instanceId.shareAmount || 0
+        shareAmount: (allocation.instanceId && allocation.instanceId.shareAmount) || 0,
+        isSansPart: (allocation.templateId && allocation.templateId.category === 'without_parts')
     };
 
-    // Function to update final amount based on parts
+    // Function to update final amount based on parts (only for with_parts)
     $scope.updateFinalAmount = function() {
-        // Calculate final amount by multiplying parts by share amount
-        $scope.selectedAllocation.finalAmount =
-            $scope.selectedAllocation.calculationInputs.parts * $scope.selectedAllocation.shareAmount;
-
-        // Ensure the final amount is a whole number
-        $scope.selectedAllocation.finalAmount = Math.round($scope.selectedAllocation.finalAmount);
+        if ($scope.selectedAllocation.isSansPart) return; // not applicable
+        $scope.selectedAllocation.finalAmount = Math.round(($scope.selectedAllocation.calculationInputs.parts || 0) * ($scope.selectedAllocation.shareAmount || 0));
     };
 
     // Load allocation history
@@ -30,7 +30,6 @@ function($scope, $http, toastr, $mdDialog, allocation) {
             .then(function(response) {
                 $scope.allocationHistory = response.data.history; // Updated to use the history array
                 $scope.currentAllocation = response.data.current; // Added to store the current allocation
-                console.log('Allocation history loaded', $scope.allocationHistory);
             })
             .catch(function(error) {
                 console.error('Error fetching allocation history', error);

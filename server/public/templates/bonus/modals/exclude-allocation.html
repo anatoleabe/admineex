@@ -4,7 +4,7 @@
 </div>
 
 <div class="modal-body">
-    <form>
+    <form novalidate>
         <div class="form-group">
             <label class="font-weight-semibold">Staff Information:</label>
             <div class="form-control-plaintext bg-light rounded p-2">
@@ -15,15 +15,17 @@
                     <div ng-if="!selectedAllocation.personnelId.photo"
                          class="rounded-circle mr-3 d-flex align-items-center justify-content-center bg-secondary text-white"
                          style="width:60px; height:60px; font-size:2rem;">
-                        {{ (selectedAllocation.personnelId.name.text && selectedAllocation.personnelId.name.text.charAt(0).toUpperCase())
-                        || (selectedAllocation.personnelId.name.family[0] && selectedAllocation.personnelId.name.family[0].charAt(0).toUpperCase())
+                        {{ (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.text && selectedAllocation.personnelId.name.text.charAt(0).toUpperCase())
+                        || (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.family && selectedAllocation.personnelId.name.family[0] && selectedAllocation.personnelId.name.family[0].charAt(0).toUpperCase())
+                        || (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.given && selectedAllocation.personnelId.name.given[0] && selectedAllocation.personnelId.name.given[0].charAt(0).toUpperCase())
                         || '?' }}
                     </div>
                     <div>
                         <h5 class="font-weight-semibold mb-0">
-                            {{selectedAllocation.personnelId.name.text ||
-                            selectedAllocation.personnelId.name.use ||
-                            (selectedAllocation.personnelId.name.family[0] + ' ' + selectedAllocation.personnelId.name.given[0])}}
+                            {{ (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.text)
+                            || (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.use)
+                            || (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.family && selectedAllocation.personnelId.name.given && selectedAllocation.personnelId.name.family[0] && selectedAllocation.personnelId.name.given[0] && (selectedAllocation.personnelId.name.family[0] + ' ' + selectedAllocation.personnelId.name.given[0]))
+                            || selectedAllocation.personnelId.identifier }}
                         </h5>
                         <small class="text-muted">ID: {{selectedAllocation.personnelId.identifier}}</small>
                     </div>
@@ -32,8 +34,23 @@
         </div>
         <div class="form-group">
             <label class="font-weight-semibold">Parts:</label>
-            <div class="form-control-plaintext bg-light rounded p-2">
+            <div class="form-control-plaintext bg-light rounded p-2" ng-if="!selectedAllocation.isSansPart">
                 {{selectedAllocation.calculationInputs.parts | number:0}}
+            </div>
+            <!-- Sans Part details -->
+            <div ng-if="selectedAllocation.isSansPart">
+                <div class="form-group mb-2">
+                    <label class="font-weight-semibold mb-0">TAUX (%)</label>
+                    <div class="form-control-plaintext bg-light rounded p-2 text-center">
+                        {{ (selectedAllocation.calculationInputs.txPercent || 0) | number:0 }}
+                    </div>
+                </div>
+                <div class="form-group mb-0">
+                    <label class="font-weight-semibold mb-0">SBI</label>
+                    <div class="form-control-plaintext bg-light rounded p-2 text-right">
+                        {{ (selectedAllocation.calculationInputs.sbi || 0) | number:0 }} FCFA
+                    </div>
+                </div>
             </div>
         </div>
         <div class="form-group">
@@ -45,16 +62,16 @@
 
         <div class="form-group">
             <label class="font-weight-semibold">Reason for Exclusion:</label>
-            <textarea class="form-control" rows="4" ng-model="selectedAllocation.calculationInputs.comment"
+            <textarea class="form-control" rows="4" ng-model="selectedAllocation.calculationInputs.comment" required
                       placeholder="Please provide a detailed reason for exclusion..."></textarea>
+            <small class="form-text text-muted">A brief reason is required (min 3 characters).</small>
         </div>
     </form>
 </div>
 
 <div class="modal-footer">
     <button type="button" class="btn btn-link text-muted" ng-click="cancel()">Cancel</button>
-    <button type="button" class="btn btn-danger" ng-click="saveExcludedAllocation()" ng-disabled="excluding">
+    <button type="button" class="btn btn-danger" ng-click="saveExcludedAllocation()" ng-disabled="excluding || !selectedAllocation.calculationInputs.comment || selectedAllocation.calculationInputs.comment.length < 3">
         <i class="icon-spinner2 spinner mr-2" ng-if="excluding"></i> Confirm Exclusion
     </button>
 </div>
-

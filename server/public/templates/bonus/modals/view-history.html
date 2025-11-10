@@ -53,9 +53,14 @@
                             <tr>
                                 <th>Date</th>
                                 <th>User</th>
-                                <th>Prev Parts</th>
+                                <!-- With parts -->
+                                <th ng-if="currentAllocation.templateId && currentAllocation.templateId.category !== 'without_parts'">Prev Parts</th>
+                                <!-- Sans part specific columns -->
+                                <th ng-if="currentAllocation.templateId && currentAllocation.templateId.category === 'without_parts'" class="text-center">TX (%)</th>
+                                <th ng-if="currentAllocation.templateId && currentAllocation.templateId.category === 'without_parts'" class="text-right">SBI</th>
                                 <th>Previous Amount</th>
-                                <th>New Parts</th>
+                                <!-- With parts -->
+                                <th ng-if="currentAllocation.templateId && currentAllocation.templateId.category !== 'without_parts'">New Parts</th>
                                 <th>New Amount</th>
                                 <th>Reason</th>
                             </tr>
@@ -64,9 +69,18 @@
                             <tr ng-repeat="entry in allocationHistory | orderBy:'-timestamp'">
                                 <td>{{entry.timestamp | date:'medium'}}</td>
                                 <td>{{entry.user}}</td>
-                                <td>{{entry.previousParts}}</td>
+                                <!-- With parts value -->
+                                <td ng-if="currentAllocation.templateId && currentAllocation.templateId.category !== 'without_parts'">{{entry.previousParts}}</td>
+                                <!-- Sans part fixed values from current allocation (for context) -->
+                                <td ng-if="currentAllocation.templateId && currentAllocation.templateId.category === 'without_parts'" class="text-center">
+                                    {{ (currentAllocation.calculationInputs && currentAllocation.calculationInputs.txPercent) || 0 | number:0 }}
+                                </td>
+                                <td ng-if="currentAllocation.templateId && currentAllocation.templateId.category === 'without_parts'" class="text-right">
+                                    {{ (currentAllocation.calculationInputs && currentAllocation.calculationInputs.sbi) || 0 | number:0 }} FCFA
+                                </td>
                                 <td>{{entry.previousAmount | number:0}} FCFA</td>
-                                <td>{{entry.newParts}}</td>
+                                <!-- With parts value -->
+                                <td ng-if="currentAllocation.templateId && currentAllocation.templateId.category !== 'without_parts'">{{entry.newParts}}</td>
                                 <td>{{entry.newAmount | number:0}} FCFA</td>
                                 <td>{{entry.reason}}</td>
                             </tr>
