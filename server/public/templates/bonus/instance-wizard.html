@@ -251,11 +251,15 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text bg-white border-right-0"><i class="icon-search4"></i></span>
                                                 </div>
-                                                <input type="text" class="form-control border-left-0" placeholder="Search by employee name..." ng-model="searchTerm">
+                                                <input type="text" class="form-control border-left-0" placeholder="Search by employee name..."
+                                                    ng-model="searchTerm"
+                                                    ng-model-options="{ debounce: 300 }"onStatusFilterChange
+                                                    ng-change="onSearchInputChange(searchTerm)">
+                                                <small class="text-muted" ng-if="(searchTerm||'').trim().length < 3 && (searchTerm||'').trim().length > 0">Type at least 3 characters to search</small>
                                             </div>
                                         </div>
                                         <div class="col-md-2 mt-2 mt-md-0">
-                                            <select class="form-control select2" ng-model="filterStatus">
+                                            <select class="form-control select2" ng-model="filterStatus" ng-change="onStatusFilterChange(filterStatus)">
                                                 <option value="all">All Statuses</option>
                                                 <option value="eligible">Eligible</option>
                                                 <option value="excluded">Excluded</option>
@@ -317,7 +321,11 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text bg-white border-right-0"><i class="icon-search4"></i></span>
                                                     </div>
-                                                    <input type="text" class="form-control border-left-0" placeholder="Search by employee name..." ng-model="searchTerm">
+                                                    <input type="text" class="form-control border-left-0" placeholder="Search by employee name..."
+                                                        ng-model="searchTerm"
+                                                        ng-model-options="{ debounce: 300 }"
+                                                        ng-change="onSearchInputChange(searchTerm)">
+                                                    <small class="text-muted" ng-if="(searchTerm||'').trim().length < 3 && (searchTerm||'').trim().length > 0">Type at least 3 characters to search</small>
                                                 </div>
                                             </div>
                                             <div class="col-md-2 mt-2 mt-md-0">

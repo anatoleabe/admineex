@@ -484,16 +484,13 @@ async function calculateInputs(template, snapshotData, parts) {
             const catRaw = snapshotData.category;
             // Try dictionary lookup; fallback to raw value
             let catCode = '';
-            const catId = parseInt(catRaw, 10);
-            if (Number.isFinite(catId)) {
-                catCode = dictionary.getValueFromJSON(
+            const catId = catRaw;
+            catCode = dictionary.getValueFromJSON(
                     '../../resources/dictionary/personnel/status/2/categories.json',
                     catId,
                     'code'
                 ) || String(catRaw);
-            } else {
-                catCode = String(catRaw || '');
-            }
+            
             indiceCatDisplay = (catCode ? catCode : '') + (indexStr ? (' / ' + indexStr) : '');
         }
 

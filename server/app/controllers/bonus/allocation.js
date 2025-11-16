@@ -469,7 +469,6 @@ exports.api.include = async (req, res, next) => {
             }
 
             const { id } = req.params;
-            console.log('Including allocation with ID:', id);
 
             const allocation = await BonusAllocation.findById(id)
                 .populate('instanceId');

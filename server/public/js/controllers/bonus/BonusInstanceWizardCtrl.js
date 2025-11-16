@@ -19,6 +19,19 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
             return null;
         }
     }
+
+    function trimSearch(term) {
+        return (term || '').trim();
+    }
+
+    function normalizeSearchTerm(value) {
+        const trimmed = trimSearch(value);
+        return trimmed.length >= 3 ? trimmed : '';
+    }
+
+    function getActiveSearchTerm() {
+        return normalizeSearchTerm($scope.searchTerm);
+    }
     function persistWizardStep(instanceId, step) {
         try {
             if (!$window.sessionStorage || !instanceId || !step) return;
@@ -75,6 +88,8 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
         });
     }
 
+    // (Reverted) Removed status=2 category dictionary preload; using numeric heuristic again
+
     function updateFilteredSubStructures() {
         const parent = $scope.structureFilter.structure;
         if (!parent || !structureDirectoryLoaded) {
@@ -96,7 +111,7 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
         return Boolean((s && s.identifier) || (sub && sub.identifier));
     };
     function filtersAreActive() {
-        const hasSearch = ($scope.searchTerm && $scope.searchTerm.trim());
+        const hasSearch = Boolean(getActiveSearchTerm());
         const hasStatus = ($scope.filterStatus && $scope.filterStatus !== 'all');
         return Boolean(hasSearch || hasStatus || hasStructureFilter());
     }
@@ -145,9 +160,22 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
             limit: requestedLimit,
             offset: requestedOffset,
             sortBy: 'createdAt:desc',
-            envelope: true,
-            search: ($scope.searchTerm || '').trim()
+            envelope: true
         };
+        const activeSearch = getActiveSearchTerm();
+        const trimmedSearch = trimSearch($scope.searchTerm);
+        if (activeSearch) {
+            params.search = activeSearch;
+        } else if (trimmedSearch.length === 0) {
+            params.search = '';
+        }
+        // Only send search when 3+ chars or when cleared via watcher you'll send empty and backend ignores
+        const rawSearch = ($scope.searchTerm || '').trim();
+        if (rawSearch.length >= 3) {
+            params.search = rawSearch;
+        } else if (rawSearch.length === 0) {
+            params.search = '';
+        }
         const normalizedStatus = ($scope.filterStatus || '').trim();
         if (normalizedStatus && normalizedStatus !== 'all') {
             params.status = normalizedStatus;
@@ -159,7 +187,8 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
             params.subStructureId = $scope.structureFilter.subStructure.identifier;
         }
 
-        return $http.get('/api/bonus/allocations', { params })
+    console.log('[Wizard] GET /api/bonus/allocations params:', angular.copy(params));
+    return $http.get('/api/bonus/allocations', { params })
             .then(function(response) {
                 if (response.data && response.data.items) {
                     $scope.allocations = response.data.items;
@@ -295,27 +324,29 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
     // Load historical personnel data
     $scope.loadHistoricalData = function() {
         $scope.loadingHistory = true;
-
-        $http.get('/api/bonus/instances/' + $scope.instanceId + '/historical-data')
+        // Return the promise so callers can chain (.then/.finally)
+        return $http.get('/api/bonus/instances/' + $scope.instanceId + '/historical-data')
             .then(function(response) {
                 $scope.historicalData = response.data.personnelData;
 
                 // Organize historical data by personnel ID for easier access
                 $scope.historicalDataByPersonnelId = {};
-                if ($scope.historicalData && $scope.historicalData.length) {
+                if (Array.isArray($scope.historicalData) && $scope.historicalData.length) {
                     $scope.historicalData.forEach(function(data) {
-                        if (data.personnelId) {
+                        if (data && data.personnelId) {
                             $scope.historicalDataByPersonnelId[data.personnelId] = data;
                         }
                     });
                 }
-
                 $scope.loadingHistory = false;
+                return $scope.historicalData;
             })
             .catch(function(error) {
                 console.error('Error loading historical data', error);
                 toastr.error('Could not load historical snapshot data');
                 $scope.loadingHistory = false;
+                // Propagate error so chained .finally still runs
+                throw error;
             });
     };
 
@@ -984,26 +1015,43 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
             });
     };
 
-    // Debounced search watcher
-    let searchDebouncePromise;
-    $scope.$watch('searchTerm', function(newVal, oldVal) {
-        if (!watchersReady || newVal === oldVal) return;
+    // Normalize search term safely (prevent ReferenceError and unify trimming)
+    function normalizeSearchTerm(val) {
+        return (val == null ? '' : String(val)).trim();
+    }
+
+    // Track last applied term to avoid redundant reloads
+    $scope._lastAppliedSearch = '';
+
+    // Explicit handler for template ng-change (mirrors watcher logic; helpful when select2 or other plugins alter events)
+    $scope.onSearchInputChange = function(st) {
+        console.log('Search input changed:', st);
+        if (!watchersReady) return;
+        const term = normalizeSearchTerm(st);
+        const last = $scope._lastAppliedSearch;
+        const shouldTrigger = (term.length === 0) || (term.length >= 3) || (last.length >= 3 && term.length < 3);
+        if (!shouldTrigger || term === last) return;
         if (searchDebouncePromise) {
             $timeout.cancel(searchDebouncePromise);
         }
+        $scope.searchTerm  = st;
+        
         searchDebouncePromise = $timeout(function() {
+            $scope._lastAppliedSearch = term;
             $scope.pagination.offset = 0;
             $scope.reloadPage();
             searchDebouncePromise = null;
         }, 300);
-    });
+    };
 
-    // Watch status filter to refetch from server
-    $scope.$watch('filterStatus', function(newVal, oldVal) {
-        if (!watchersReady || newVal === oldVal) return;
+    // Handle status filter change (call from template via ng-change)
+    $scope.onStatusFilterChange = function(newStatus) {
+        console.log('Status filter changed:', newStatus);
+        if (!watchersReady) return;
         $scope.pagination.offset = 0;
+        $scope.filterStatus = newStatus;
         $scope.reloadPage();
-    });
+    };
 
     $scope.onStructureFilterChange = function() {
         if (!$scope.structureFilter.structure) {
@@ -1060,7 +1108,6 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
     };
     $scope.getIndiceCat = function(allocation){
         try{
-            // Prefer stored display
             var storedDisp = allocation && allocation.calculationInputs && allocation.calculationInputs.indiceCatDisplay;
             if(storedDisp) return storedDisp;
             var data = allocation && allocation.personnelSnapshotId && allocation.personnelSnapshotId.data;
