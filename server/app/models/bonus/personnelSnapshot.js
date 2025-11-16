@@ -15,6 +15,21 @@ const PersonnelSnapshotSchema = new Schema({
             situation: { type: String },
             date: { type: Date }
         },
+        structure: {
+            id: { type: mongoose.Schema.Types.ObjectId, ref: 'Structure' },
+            identifier: { type: String },
+            code: { type: String },
+            name: { type: String }
+        },
+        subStructure: {
+            id: { type: mongoose.Schema.Types.ObjectId, ref: 'Structure' },
+            identifier: { type: String },
+            code: { type: String },
+            name: { type: String },
+            parentId: { type: mongoose.Schema.Types.ObjectId, ref: 'Structure' },
+            parentIdentifier: { type: String },
+            parentCode: { type: String }
+        },
         position: {
             id: { type: mongoose.Schema.Types.ObjectId, ref: 'Position' },
             code: { type: String },

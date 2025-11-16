@@ -542,57 +542,52 @@ exports.api.getAllocationStats = async (req, res, next) => {
  * Update wizard step (multi-step workflow)
  */
 exports.api.updateWizardStep = async (req, res, next) => {
-    const form = formidable({ multiples: false });
-    form.parse(req, async (err, fields, files) => {
-        if (err) {
-            return next(badRequest('Failed to parse form data'));
+    try {
+        const { id } = req.params;
+        // Accept JSON body or multipart (if any middleware populated req.fields)
+        const step = (req.body && req.body.step) || (req.fields && req.fields.step);
+
+        if (!step || !['adjust', 'confirm', 'export', 'completed'].includes(step)) {
+            return next(badRequest('Invalid step provided'));
         }
-        try {
-            const { id } = req.params;
-            const { step } = fields;
 
-            if (!step || !['adjust', 'confirm', 'export', 'completed'].includes(step)) {
-                throw badRequest('Invalid step provided');
-            }
-
-            const instance = await BonusInstance.findById(id);
-            if (!instance) {
-                throw notFound('Bonus instance not found');
-            }
-
-            // Prevent step updates to approved/paid instances
-            if (['approved', 'paid', 'cancelled'].includes(instance.status)) {
-                throw forbidden('Cannot modify an approved, paid or cancelled instance');
-            }
-
-            // Update the wizard step
-            instance.wizardStep = step;
-
-            // Update the instance status based on the wizard step
-            // Only change the status if it's currently in draft state or we're moving back to a previous step
-            if (instance.status === 'draft' || step === 'adjust') {
-                switch (step) {
-                    case 'adjust':
-                        instance.status = 'draft';
-                        break;
-                    case 'confirm':
-                    case 'export':
-                        instance.status = 'under_review';
-                        break;
-                    case 'completed':
-                        // When the wizard is completed, it's ready for approval but status remains under_review
-                        instance.status = 'under_review';
-                        break;
-                }
-            }
-
-            await instance.save();
-
-            res.json(instance);
-        } catch (error) {
-            next(error);
+        const instance = await BonusInstance.findById(id);
+        if (!instance) {
+            return next(notFound('Bonus instance not found'));
         }
-    });
+
+        if (['approved', 'paid', 'cancelled'].includes(instance.status)) {
+            return next(forbidden('Cannot modify an approved, paid or cancelled instance'));
+        }
+
+        instance.wizardStep = step;
+
+        if (instance.status === 'draft' || step === 'adjust') {
+            switch (step) {
+                case 'adjust':
+                    instance.status = 'draft';
+                    break;
+                case 'confirm':
+                case 'export':
+                    instance.status = 'under_review';
+                    break;
+                case 'completed':
+                    instance.status = 'under_review';
+                    break;
+            }
+        }
+
+        await instance.save();
+
+        // Re-fetch populated version so front-end retains template category
+        const populated = await BonusInstance.findById(id)
+            .populate('templateId', 'name code category')
+            .populate('createdBy', 'firstname lastname');
+
+        res.json(populated);
+    } catch (error) {
+        next(error);
+    }
 };
 
 /**
@@ -1169,12 +1164,11 @@ async function recalculateAllocationsWithTax(instance, newTaxPercentage, oldTaxP
 
                 // Update progress every 10 allocations or when reaching 100%
                 if (processedCount % 10 === 0 || processedCount === totalAllocations) {
-                    const progress = Math.floor((processedCount / totalAllocations) * 100);
                     await BonusInstance.findByIdAndUpdate(
                         instance._id,
                         {
                             $set: {
-                                'recalculationStatus.progress': progress,
+                                'recalculationStatus.progress': Math.floor((processedCount / totalAllocations) * 100),
                                 'recalculationStatus.processedAllocations': processedCount
                             }
                         }

@@ -36,6 +36,9 @@
                             'badge-danger': selectedAllocation.status === 'excluded',
                             'badge-warning': selectedAllocation.status === 'adjusted'
                         }">{{selectedAllocation.status | capitalize}}</span>
+                        <span class="badge badge-info mt-2 ml-2" ng-if="selectedAllocation.calculationInputs.subType === 'ift'">
+                            IFT &middot; IRPP exempt
+                        </span>
                     </div>
                 </div>
             </div>
@@ -91,6 +94,9 @@
                             <div class="form-control-plaintext bg-light rounded p-2 text-right">
                                 {{ (selectedAllocation.calculationInputs.sbi || 0) | number:0 }} FCFA
                             </div>
+                            <small class="text-muted d-block" ng-if="selectedAllocation.calculationInputs.subType === 'ift'">
+                                IFT allocations are paid without IRPP deduction.
+                            </small>
                         </div>
                     </div>
 

@@ -3,12 +3,102 @@
  * Handles the multi-step workflow for adjusting and reviewing bonus instances
  */
 angular.module('app')
-.controller('BonusInstanceWizardCtrl', ['$scope', '$http', '$stateParams', '$state', '$ocLazyLoad', 'SweetAlert', '$mdDialog', 'toastr', '$timeout',
-function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog, toastr, $timeout) {
+.controller('BonusInstanceWizardCtrl', ['$scope', '$http', '$stateParams', '$state', '$ocLazyLoad', 'SweetAlert', '$mdDialog', 'toastr', '$timeout', '$window', '$injector',
+function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog, toastr, $timeout, $window, $injector) {
     // Helper to ensure numeric pagination
     function toInt(val, fallback) {
         const n = parseInt(val, 10);
         return isNaN(n) ? (fallback !== undefined ? fallback : 0) : n;
+    }
+    const STEP_CACHE_PREFIX = 'bonusWizardStep:';
+    function getCachedWizardStep(instanceId) {
+        try {
+            if (!$window.sessionStorage || !instanceId) return null;
+            return $window.sessionStorage.getItem(STEP_CACHE_PREFIX + instanceId) || null;
+        } catch (e) {
+            return null;
+        }
+    }
+    function persistWizardStep(instanceId, step) {
+        try {
+            if (!$window.sessionStorage || !instanceId || !step) return;
+            $window.sessionStorage.setItem(STEP_CACHE_PREFIX + instanceId, step);
+        } catch (e) {
+            // Swallow storage errors (private browsing, etc.)
+        }
+    }
+
+    // New filtering state for structure / sub-structure
+    $scope.structureFilter = {
+        structure: null,
+        subStructure: null
+    };
+    $scope.availableStructures = [];
+    $scope.filteredSubStructures = [];
+    let structureDirectory = [];
+    let structureDirectoryLoaded = false;
+
+    function mapStructureNode(node) {
+        if (!node) return null;
+        const rawId = (node._id || node.id || '').toString().trim();
+        const rawCode = (node.code || '').toString().trim();
+        const identifier = rawId || rawCode;
+        if (!identifier) return null;
+        return {
+            identifier: identifier,
+            id: rawId || null,
+            code: rawCode || rawId || '',
+            name: node.name || node.en || node.fr || identifier,
+            rank: node.rank ? String(node.rank) : ''
+        };
+    }
+
+    function setStructureDirectory(nodes) {
+        const normalized = Array.isArray(nodes) ? nodes : [];
+        structureDirectory = normalized.map(mapStructureNode).filter(Boolean);
+        $scope.availableStructures = structureDirectory.filter(function(node) {
+            return node.rank === '2';
+        });
+        structureDirectoryLoaded = true;
+        updateFilteredSubStructures();
+    }
+
+    function loadStructureDirectory() {
+        $ocLazyLoad.load('js/services/StructureService.js').then(function() {
+            const Structure = $injector.get('Structure');
+            return Structure.minimalList();
+        }).then(function(response) {
+            const payload = response.data?.data || response.data || [];
+            setStructureDirectory(payload);
+        }).catch(function(err) {
+            console.error('Error loading structure filters', err);
+        });
+    }
+
+    function updateFilteredSubStructures() {
+        const parent = $scope.structureFilter.structure;
+        if (!parent || !structureDirectoryLoaded) {
+            $scope.filteredSubStructures = [];
+            return;
+        }
+        const parentCode = parent.code || parent.identifier;
+        $scope.filteredSubStructures = structureDirectory.filter(function(node) {
+            return node.rank === '3' &&
+                node.code &&
+                parentCode &&
+                node.code.indexOf(parentCode + '-') === 0;
+        });
+    }
+
+    const hasStructureFilter = function() {
+        const s = $scope.structureFilter.structure;
+        const sub = $scope.structureFilter.subStructure;
+        return Boolean((s && s.identifier) || (sub && sub.identifier));
+    };
+    function filtersAreActive() {
+        const hasSearch = ($scope.searchTerm && $scope.searchTerm.trim());
+        const hasStatus = ($scope.filterStatus && $scope.filterStatus !== 'all');
+        return Boolean(hasSearch || hasStatus || hasStructureFilter());
     }
 
     // Pagination state
@@ -17,6 +107,7 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
         offset: 0,
         total: 0
     };
+    let watchersReady = false;
 
     // Totals (sidebar) based on server stats
     $scope.totals = {
@@ -47,16 +138,25 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
         $scope.pagination.limit = toInt($scope.pagination.limit, 50);
         $scope.pagination.offset = toInt($scope.pagination.offset, 0);
 
+        const requestedLimit = toInt($scope.pagination.limit, 50);
+        const requestedOffset = toInt($scope.pagination.offset, 0);
         const params = {
             instanceId: $scope.instanceId,
-            limit: $scope.pagination.limit,
-            offset: $scope.pagination.offset,
+            limit: requestedLimit,
+            offset: requestedOffset,
             sortBy: 'createdAt:desc',
             envelope: true,
             search: ($scope.searchTerm || '').trim()
         };
-        if ($scope.filterStatus) {
-            params.status = $scope.filterStatus;
+        const normalizedStatus = ($scope.filterStatus || '').trim();
+        if (normalizedStatus && normalizedStatus !== 'all') {
+            params.status = normalizedStatus;
+        }
+        if ($scope.structureFilter.structure && $scope.structureFilter.structure.identifier) {
+            params.structureId = $scope.structureFilter.structure.identifier;
+        }
+        if ($scope.structureFilter.subStructure && $scope.structureFilter.subStructure.identifier) {
+            params.subStructureId = $scope.structureFilter.subStructure.identifier;
         }
 
         return $http.get('/api/bonus/allocations', { params })
@@ -67,20 +167,18 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
                     $scope.pagination.limit = toInt(response.data.limit, $scope.pagination.limit);
                     // Clamp offset if it overflows total
                     const maxOffset = Math.max(0, $scope.pagination.total - $scope.pagination.limit);
-                    $scope.pagination.offset = Math.min(toInt(response.data.offset, 0), maxOffset);
+                    const incomingOffset = toInt(response.data.offset, requestedOffset);
+                    $scope.pagination.offset = Math.min(incomingOffset, maxOffset);
 
-                    // Update sidebar totals with filtered stats when available
                     if (response.data.stats) {
                         setTotalsFromStats(response.data.stats);
                     } else {
-                        // Fallback to client calculation if stats missing
                         $scope.calculateTotals();
                     }
                     return response.data.stats;
                 } else {
                     $scope.allocations = response.data || [];
                     $scope.pagination.total = $scope.allocations.length;
-                    // Fallback to client totals for non-envelope responses
                     $scope.calculateTotals();
                     return null;
                 }
@@ -183,7 +281,7 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
 
     $scope.reloadPage = function() {
         $scope.loading = true;
-        var hasActiveFilters = ($scope.filterStatus && $scope.filterStatus.length) || ($scope.searchTerm && $scope.searchTerm.trim().length);
+        var hasActiveFilters = filtersAreActive();
         $scope.loadAllocationsPage()
             .then(function() {
                 // Only load global stats when no active filters
@@ -297,25 +395,36 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
 
     // Update the wizard step on the server
     $scope.updateWizardStep = function(step) {
+        if ($scope.updatingStep || $scope.stepTransitioning) {
+            return; // prevent double clicks
+        }
         $scope.updatingStep = true;
+        $scope.stepTransitioning = true;
 
         $http.post('/api/bonus/instances/' + $scope.instanceId + '/wizard-step', { step: step })
             .then(function(response) {
                 $scope.instance = response.data;
                 $scope.currentStep = step;
-                $scope.updatingStep = false;
-
+                persistWizardStep($scope.instanceId, step);
+                // Reload allocations after step change
+                return $scope.reloadPage();
+            })
+            .then(function() {
                 // Load historical data if moving to confirm or export step
                 if (step === 'confirm' || step === 'export') {
-                    $scope.loadHistoricalData();
+                    return $scope.loadHistoricalData();
                 }
-
+            })
+            .then(function(){
                 toastr.success('Moved to ' + step + ' step');
             })
             .catch(function(error) {
                 console.error('Error updating wizard step', error);
                 toastr.error('Could not update wizard step');
+            })
+            .finally(function() {
                 $scope.updatingStep = false;
+                $scope.stepTransitioning = false;
             });
     };
 
@@ -844,24 +953,27 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
             .then(function(response) {
                 $scope.instance = response.data;
                 $scope.currentStep = $scope.instance.wizardStep || 'adjust';
-                // Reset pagination on first load
+                persistWizardStep($scope.instanceId, $scope.currentStep);
                 $scope.pagination.offset = 0;
-                // Load first page of allocations
                 return $scope.loadAllocationsPage();
             })
             .then(function() {
-                // If no active filters, ensure sidebar shows global stats
-                var hasActiveFilters = ($scope.filterStatus && $scope.filterStatus.length) || ($scope.searchTerm && $scope.searchTerm.trim().length);
+                var hasActiveFilters = filtersAreActive();
                 if (!hasActiveFilters) {
                     return $scope.refreshGlobalStats();
                 }
             })
             .then(function() {
+                // Ensure historical data loaded once for previous column display
+                if (!$scope.historicalLoaded) {
+                    return $scope.loadHistoricalData().finally(function(){ $scope.historicalLoaded = true; });
+                }
+            })
+            .finally(function() {
                 $scope.loading = false;
                 $scope.kernel && ($scope.kernel.loading = 100);
-                // Load historical data if on the confirm step
-                if ($scope.currentStep === 'confirm' || $scope.currentStep === 'export') {
-                    $scope.loadHistoricalData();
+                if (!watchersReady) {
+                    watchersReady = true;
                 }
             })
             .catch(function(error) {
@@ -875,7 +987,7 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
     // Debounced search watcher
     let searchDebouncePromise;
     $scope.$watch('searchTerm', function(newVal, oldVal) {
-        if (newVal === oldVal && $scope.allocations) return;
+        if (!watchersReady || newVal === oldVal) return;
         if (searchDebouncePromise) {
             $timeout.cancel(searchDebouncePromise);
         }
@@ -888,19 +1000,44 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
 
     // Watch status filter to refetch from server
     $scope.$watch('filterStatus', function(newVal, oldVal) {
-        if (newVal === oldVal && $scope.allocations) return;
-        // Reset to first page when filter changes
+        if (!watchersReady || newVal === oldVal) return;
         $scope.pagination.offset = 0;
         $scope.reloadPage();
     });
 
+    $scope.onStructureFilterChange = function() {
+        if (!$scope.structureFilter.structure) {
+            $scope.structureFilter.structure = null;
+        }
+        $scope.structureFilter.subStructure = null;
+        updateFilteredSubStructures();
+        $scope.pagination.offset = 0;
+        $scope.reloadPage();
+    };
+
+    $scope.onSubStructureFilterChange = function() {
+        if (!$scope.structureFilter.subStructure) {
+            $scope.structureFilter.subStructure = null;
+        }
+        $scope.pagination.offset = 0;
+        $scope.reloadPage();
+    };
+
     // Initialize
     $scope.initialize = function() {
         $scope.instanceId = $stateParams.instanceId;
-        $scope.currentStep = 'adjust';
+        const cachedStep = getCachedWizardStep($scope.instanceId);
+        $scope.currentStep = cachedStep || 'adjust';
         $scope.loading = true;
+        $scope.stepTransitioning = false;
         $scope.historicalData = [];
         $scope.historicalDataByPersonnelId = {};
+        $scope.historicalLoaded = false;
+        $scope.structureFilter = { structure: null, subStructure: null };
+        $scope.availableStructures = [];
+        $scope.filteredSubStructures = [];
+        $scope.filterStatus = 'all';
+        loadStructureDirectory();
         $scope.loadInstanceData();
     };
 
@@ -949,5 +1086,10 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
             }
             return '';
         }catch(e){ return ''; }
+    };
+
+    $scope.isWithParts = function() {
+        try { return $scope.instance && $scope.instance.templateId && $scope.instance.templateId.category === 'with_parts'; }
+        catch (e) { return false; }
     };
 }]);

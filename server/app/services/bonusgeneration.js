@@ -147,6 +147,10 @@ async function generateAllocationsForInstance(instanceId) {
         const eligiblePersonnel = await findEligiblePersonnel(instance.templateId);
 
         // 3. Create allocations
+        const templateSubType = instance.templateId?.calculationConfig?.subType || null;
+        const isSansPartIFT = instance.templateId?.category === 'without_parts' && templateSubType === 'ift';
+        const effectiveTaxRate = isSansPartIFT ? 0 : (instance.taxPercentage ? instance.taxPercentage / 100 : 0);
+
         const allocations = await Promise.all(
             eligiblePersonnel.map(async (personnel) => {
                 try {
@@ -169,7 +173,7 @@ async function generateAllocationsForInstance(instanceId) {
                         await calculateAmount(instance, snapshot.data, calculatedInputs.parts) : 0;
 
                     // Calculate tax information with rounding rules (FCFA integer)
-                    const taxRate = instance.taxPercentage ? instance.taxPercentage / 100 : 0;
+                    const taxRate = effectiveTaxRate;
                     // For sans part, brut should be rounded; for consistency, apply rounding to all categories
                     const grossAmountRaw = calculatedAmount || 0;
                     const grossAmount = Math.round(grossAmountRaw);
@@ -496,7 +500,9 @@ async function calculateInputs(template, snapshotData, parts) {
         // Additional inputs specific to without_parts (remise sur salaire)
         let sbi = undefined;
         let txPercent = undefined;
+        let sansPartSubType = null;
         if (template.category === 'without_parts') {
+            sansPartSubType = template.calculationConfig?.subType || 'remise';
             const { sbi: sbiVal } = getSBIFromSnapshot(snapshotData);
             const { tx } = getTXFromRank(snapshotData);
             sbi = sbiVal || 0;
@@ -522,6 +528,7 @@ async function calculateInputs(template, snapshotData, parts) {
             // extras for sans part
             sbi: sbi,
             txPercent: txPercent,
+            subType: sansPartSubType,
             // added: index and display for Indice/Cat
             index: indexStr,
             indiceCatDisplay: indiceCatDisplay
@@ -653,6 +660,10 @@ async function calculateAmount(instance, snapshotData, parts) {
             const { tx } = getTXFromRank(snapshotData);
             const salaryBase = Number(sbi) || 0;
             const rate = Number(tx) || 0; // e.g., 0.45 for 45%
+            const subType = template.calculationConfig?.subType || 'remise';
+            if (subType === 'ift') {
+                return salaryBase * rate;
+            }
             // R = SBI × 3 × TX
             return salaryBase * 3 * rate;
         }

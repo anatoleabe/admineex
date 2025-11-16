@@ -12,7 +12,8 @@ function($scope, $http, toastr, $mdDialog, allocation) {
             comment: allocation.calculationInputs?.comment || '',
             // expose sans-part fields for display
             txPercent: allocation.calculationInputs?.txPercent,
-            sbi: allocation.calculationInputs?.sbi
+            sbi: allocation.calculationInputs?.sbi,
+            subType: allocation.calculationInputs?.subType
         },
         shareAmount: (allocation.instanceId && allocation.instanceId.shareAmount) || 0,
         isSansPart: (allocation.templateId && allocation.templateId.category === 'without_parts')

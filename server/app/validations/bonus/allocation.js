@@ -14,7 +14,9 @@ const getAllBonusAllocations = {
         envelope: Joi.alternatives().try(
             Joi.boolean(),
             Joi.string().valid('true', 'false', '1', '0')
-        ).default('false')
+        ).default('false'),
+        structureId: Joi.string().optional(),
+        subStructureId: Joi.string().optional()
     })
 };
 

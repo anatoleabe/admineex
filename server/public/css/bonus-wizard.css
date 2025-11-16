@@ -200,3 +200,30 @@
 [data-tooltip]:hover::after {
     opacity: 1;
 }
+
+/* Pagination footer layout */
+.wizard-pagination {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+    .wizard-pagination {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.wizard-pagination__controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.wizard-pagination__select {
+    width: auto;
+    min-width: 90px;
+}

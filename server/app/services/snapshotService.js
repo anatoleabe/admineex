@@ -5,6 +5,19 @@ const { Position } = require('../models/position');
 const { Structure } = require('../models/structure');
 const { Sanction } = require('../models/sanction');
 
+function shapeStructure(structure) {
+    if (!structure) return null;
+    const identifier = (structure._id || structure.id || '').toString();
+    const code = structure.code || identifier;
+    return {
+        id: structure._id || structure.id || null,
+        identifier: structure.identifier || identifier,
+        code: code,
+        name: structure.fr || structure.en || code,
+        rank: structure.rank ? String(structure.rank) : undefined
+    };
+}
+
 async function createPersonnelSnapshot(personnelId, snapshotDate = new Date()) {
     const personnel = await Personnel.findById(personnelId).lean();
 
@@ -30,6 +43,9 @@ async function createPersonnelSnapshot(personnelId, snapshotDate = new Date()) {
     };
 
     // If there's an affectation, get the position and structure details
+    let structureInfo = null;
+    let subStructureInfo = null;
+
     if (latestAffectation) {
         const position = await Position.findById(latestAffectation.positionId).lean();
 
@@ -40,14 +56,52 @@ async function createPersonnelSnapshot(personnelId, snapshotDate = new Date()) {
 
             // Get the structure information
             if (position.structureId) {
-                const structure = await Structure.findById(position.structureId).lean();
+                const subStructure = await Structure.findById(position.structureId).lean();
 
-                if (structure) {
-                    positionData.structure.id = structure._id;
-                    positionData.structure.name = structure.fr || structure.en;
-                    positionData.structure.code = structure.code;
+                if (subStructure) {
+                    positionData.structure.id = subStructure._id;
+                    positionData.structure.name = subStructure.fr || subStructure.en;
+                    positionData.structure.code = subStructure.code;
+
+                    subStructureInfo = shapeStructure(subStructure);
+                    if (subStructureInfo) {
+                        subStructureInfo.parentId = subStructure.fatherId || null;
+                        subStructureInfo.parentIdentifier = subStructure.fatherIdentifier || null;
+                        // Attempt to resolve parent structure document for richer metadata
+                        let parentStructure = null;
+                        if (subStructure.fatherId) {
+                            parentStructure = await Structure.findById(subStructure.fatherId).lean();
+                        } else if (subStructure.fatherIdentifier) {
+                            parentStructure = await Structure.findOne({ identifier: subStructure.fatherIdentifier }).lean();
+                        }
+                        const parentInfo = shapeStructure(parentStructure);
+                        if (parentInfo) {
+                            subStructureInfo.parentId = parentInfo.id || subStructureInfo.parentId;
+                            subStructureInfo.parentIdentifier = parentInfo.identifier || subStructureInfo.parentIdentifier;
+                            subStructureInfo.parentCode = parentInfo.code || subStructureInfo.parentCode;
+                        } else if (!subStructureInfo.parentCode && subStructureInfo.code && subStructureInfo.code.includes('-')) {
+                            subStructureInfo.parentCode = subStructureInfo.code.substring(0, subStructureInfo.code.lastIndexOf('-'));
+                        }
+                        structureInfo = parentInfo || shapeStructure(subStructure);
+                    }
                 }
             }
+        }
+    }
+
+    if (!structureInfo && subStructureInfo && (subStructureInfo.parentId || subStructureInfo.parentIdentifier || subStructureInfo.parentCode)) {
+        structureInfo = {
+            id: subStructureInfo.parentId || null,
+            identifier: subStructureInfo.parentIdentifier || subStructureInfo.parentCode || null,
+            code: subStructureInfo.parentCode || subStructureInfo.code,
+            name: subStructureInfo.parentCode || subStructureInfo.code
+        };
+    }
+
+    if (!structureInfo && positionData.structure && positionData.structure.id) {
+        const fallbackStructure = await Structure.findById(positionData.structure.id).lean();
+        if (fallbackStructure) {
+            structureInfo = shapeStructure(fallbackStructure);
         }
     }
 
@@ -98,6 +152,8 @@ async function createPersonnelSnapshot(personnelId, snapshotDate = new Date()) {
                 date: latestSituation.date,
             } : null,
             position: positionData,
+            structure: structureInfo || null,
+            subStructure: subStructureInfo || null,
             sanctions: sanctionsData
         }
     };

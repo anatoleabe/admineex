@@ -3,19 +3,120 @@ const mongoose = require('mongoose');
 const { BonusAllocation } = require('../../models/bonus/allocation');
 const { BonusInstance } = require('../../models/bonus/instance');
 const { Personnel } = require('../../models/personnel');
-//const { PersonnelSnapshot } = require('../../models/bonus/PersonnelSnapshot');
+const { PersonnelSnapshot } = require('../../models/bonus/personnelSnapshot');
 const { badRequest, notFound, forbidden } = require('../../utils/ApiError');
 const dictionary = require('../../utils/dictionary');
 
 // API methods
 exports.api = {};
 
+function createEmptyStats() {
+    return { eligible: 0, excluded: 0, adjusted: 0, totalParts: 0, totalAmount: 0, total: 0 };
+}
+
+function pickFirstValue(values) {
+    for (const value of values) {
+        if (value === undefined || value === null) continue;
+        const stringValue = String(value).trim();
+        if (stringValue.length) {
+            return stringValue;
+        }
+    }
+    return null;
+}
+
+function extractStructureInfoFromSnapshot(snapshot) {
+    const data = snapshot?.data || {};
+    const structureRef = data.structure || {};
+    const subStructureRef = data.subStructure || data.position?.structure || {};
+
+    const structureId = pickFirstValue([
+        structureRef.id,
+        structureRef.identifier,
+        structureRef.code,
+        subStructureRef.parentId,
+        subStructureRef.parentIdentifier,
+        subStructureRef.parentCode
+    ]);
+    const structureName = pickFirstValue([
+        structureRef.name,
+        structureRef.code,
+        subStructureRef.parentCode,
+        structureId
+    ]);
+
+    const subStructureId = pickFirstValue([
+        subStructureRef.id,
+        subStructureRef.identifier,
+        subStructureRef.code,
+        data.subStructureId,
+        data.subStructureCode
+    ]);
+    const subStructureName = pickFirstValue([
+        subStructureRef.name,
+        subStructureRef.code,
+        subStructureId
+    ]);
+
+    return {
+        structureId: structureId ? String(structureId) : null,
+        structureName: structureName || (structureId ? String(structureId) : ''),
+        subStructureId: subStructureId ? String(subStructureId) : null,
+        subStructureName: subStructureName || (subStructureId ? String(subStructureId) : '')
+    };
+}
+
+function buildStructureMetaFromSnapshots(snapshots) {
+    const structures = new Map();
+    snapshots.forEach(snapshot => {
+        const info = extractStructureInfoFromSnapshot(snapshot);
+        if (!info.structureId) return;
+        if (!structures.has(info.structureId)) {
+            structures.set(info.structureId, {
+                id: info.structureId,
+                name: info.structureName || info.structureId,
+                subStructures: new Map()
+            });
+        }
+        if (info.subStructureId) {
+            structures.get(info.structureId).subStructures.set(info.subStructureId, {
+                id: info.subStructureId,
+                name: info.subStructureName || info.subStructureId
+            });
+        }
+    });
+    return Array.from(structures.values()).map(structure => ({
+        id: structure.id,
+        name: structure.name,
+        subStructures: Array.from(structure.subStructures.values())
+    }));
+}
+
+function filterSnapshotIdsByStructure(snapshots, structureId, subStructureId) {
+    if ((!structureId || structureId === 'all') && (!subStructureId || subStructureId === 'all')) {
+        return snapshots.map(snapshot => snapshot._id);
+    }
+    const normalizedStructure = structureId ? String(structureId) : null;
+    const normalizedSubStructure = subStructureId ? String(subStructureId) : null;
+
+    return snapshots.filter(snapshot => {
+        const info = extractStructureInfoFromSnapshot(snapshot);
+        if (normalizedStructure && normalizedStructure !== 'all' && info.structureId !== normalizedStructure) {
+            return false;
+        }
+        if (normalizedSubStructure && normalizedSubStructure !== 'all' && info.subStructureId !== normalizedSubStructure) {
+            return false;
+        }
+        return true;
+    }).map(snapshot => snapshot._id);
+}
+
 /**
  * Get all bonus allocations
  */
 exports.api.getAll = async (req, res, next) => {
     try {
-        const { instanceId, personnelId, status, fromDate, toDate, limit = 100, sortBy = 'createdAt:desc', offset = 0, envelope = 'false', search = '' } = req.query;
+        const { instanceId, personnelId, status, fromDate, toDate, limit = 100, sortBy = 'createdAt:desc', offset = 0, envelope = 'false', search = '', structureId, subStructureId } = req.query;
 
         // Build a typed filter usable by both Mongoose queries and raw aggregations
         const filter = {};
@@ -67,7 +168,7 @@ exports.api.getAll = async (req, res, next) => {
                 // No matches; return empty response quickly if envelope requested
                 const wantsEnvelopeQuick = String(envelope).toLowerCase() === 'true' || envelope === '1';
                 if (wantsEnvelopeQuick) {
-                    return res.json({ items: [], total: 0, limit: Number(limit), offset: Number(offset), stats: { eligible: 0, excluded: 0, adjusted: 0, totalParts: 0, totalAmount: 0, total: 0 } });
+                    return res.json({ items: [], total: 0, limit: Number(limit), offset: Number(offset), stats: createEmptyStats(), structureMeta: [] });
                 } else {
                     return res.json([]);
                 }
@@ -79,7 +180,41 @@ exports.api.getAll = async (req, res, next) => {
         const [sortField, sortOrder] = sortBy.split(':');
         const sort = { [sortField]: sortOrder === 'desc' ? -1 : 1 };
 
-        // Always get paginated items
+        const wantsEnvelope = String(envelope).toLowerCase() === 'true' || envelope === '1';
+        const hasStructureFilters = (structureId && structureId !== 'all') || (subStructureId && subStructureId !== 'all');
+        const baseFilter = { ...filter };
+        let structureMeta = [];
+        if (wantsEnvelope || hasStructureFilters) {
+            const distinctSnapshotIdsRaw = await BonusAllocation.distinct('personnelSnapshotId', baseFilter);
+            const distinctSnapshotIds = distinctSnapshotIdsRaw.filter(Boolean);
+            if (!distinctSnapshotIds.length) {
+                if (!wantsEnvelope) {
+                    return res.json([]);
+                }
+                return res.json({ items: [], total: 0, limit: Number(limit), offset: Number(offset), stats: createEmptyStats(), structureMeta: [] });
+            }
+
+            const snapshotDocs = await PersonnelSnapshot.find({ _id: { $in: distinctSnapshotIds } })
+                .select('_id data')
+                .lean();
+
+            if (wantsEnvelope) {
+                structureMeta = buildStructureMetaFromSnapshots(snapshotDocs);
+            }
+
+            if (hasStructureFilters) {
+                const allowedSnapshotIds = filterSnapshotIdsByStructure(snapshotDocs, structureId, subStructureId);
+                if (!allowedSnapshotIds.length) {
+                    if (!wantsEnvelope) {
+                        return res.json([]);
+                    }
+                    return res.json({ items: [], total: 0, limit: Number(limit), offset: Number(offset), stats: createEmptyStats(), structureMeta });
+                }
+                filter.personnelSnapshotId = { $in: allowedSnapshotIds };
+            }
+        }
+
+        // Default path without structure filters (original logic)
         const items = await BonusAllocation.find(filter)
             .sort(sort)
             .skip(Number(offset))
@@ -110,13 +245,10 @@ exports.api.getAll = async (req, res, next) => {
             }
         }
 
-        // Fast path: default behavior returns array for backward compatibility
-        const wantsEnvelope = String(envelope).toLowerCase() === 'true' || envelope === '1';
         if (!wantsEnvelope) {
             return res.json(items);
         }
 
-        // Compute total count and stats across the full filtered set
         const [total, statAgg] = await Promise.all([
             BonusAllocation.countDocuments(filter),
             BonusAllocation.aggregate([
@@ -157,7 +289,8 @@ exports.api.getAll = async (req, res, next) => {
             total,
             limit: Number(limit),
             offset: Number(offset),
-            stats
+            stats,
+            structureMeta
         });
     } catch (error) {
         next(error);
