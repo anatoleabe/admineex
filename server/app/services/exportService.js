@@ -1,4 +1,5 @@
 const excel = require('exceljs');
+const { addDgtcfmBonusHeader } = require('../utils/excelHeader');
 const { BonusInstance } = require('../models/bonus/instance');
 const { Personnel } = require('../models/personnel');
 const { BonusAllocation } = require('../models/bonus/allocation');
@@ -52,7 +53,7 @@ exports.exportBonusToExcel = async (instance) => {
             }
         }
 
-        // 3. Create workbook
+    // 3. Create workbook
         const workbook = new excel.Workbook();
         const worksheet = workbook.addWorksheet('Bonus Allocations');
 
@@ -87,27 +88,53 @@ exports.exportBonusToExcel = async (instance) => {
         ];
 
         const chosenHeaders = isWithoutParts ? headersSansPart : headersWithParts;
-        worksheet.columns = chosenHeaders;
-
         const lastCol = colLetter(chosenHeaders.length);
 
-        // 4. Add title and section headers (MERGED CELLS)
-        worksheet.mergeCells(`A1:${lastCol}1`);
-        worksheet.getCell('A1').value = `ETAT DE REPARTITION D'${bonusInstance.templateId.name} ${bonusInstance.referencePeriod}`;
-        worksheet.getCell('A1').font = { bold: true, size: 14 };
-        worksheet.getCell('A1').alignment = { horizontal: 'center' };
+        // 4. Insert official DGTCFM header (will push data down)
+        // Try to load a coat of arms image if available
+        function tryLoadLogoBuffer() {
+            const candidates = [
+                path.resolve(__dirname, '../../public/img/coat_of_arms.jpeg'),
+                path.resolve(__dirname, '../../public/img/coat-of-arms.png'),
+                path.resolve(__dirname, '../../resources/img/coat_of_arms.png'),
+                path.resolve(__dirname, '../../resources/img/armoiries.png'),
+                path.resolve(__dirname, '../../resources/img/armoiries_cm.png')
+            ];
+            for (const p of candidates) {
+                try {
+                    if (fs.existsSync(p)) return fs.readFileSync(p);
+                } catch (e) { /* ignore */ }
+            }
+            return null;
+        }
+
+    const logoBuffer = tryLoadLogoBuffer();
+    addDgtcfmBonusHeader(worksheet, logoBuffer || undefined);
+
+        // After header insertion, base row offset is 33 rows
+        const baseRow = 33;
+
+    // Define columns after inserting header so our widths override header defaults,
+    // but DO NOT set 'header' here to avoid ExcelJS auto-creating row 1 headers.
+    worksheet.columns = chosenHeaders.map(h => ({ key: h.key, width: h.width }));
+
+        // Add title and section headers (MERGED CELLS), shifted by baseRow
+        worksheet.mergeCells(`A${1 + baseRow}:${lastCol}${1 + baseRow}`);
+        worksheet.getCell(`A${1 + baseRow}`).value = `ETAT DE REPARTITION D'${bonusInstance.templateId.name} ${bonusInstance.referencePeriod}`;
+        worksheet.getCell(`A${1 + baseRow}`).font = { bold: true, size: 14 };
+        worksheet.getCell(`A${1 + baseRow}`).alignment = { horizontal: 'center' };
 
         // Empty row
         worksheet.addRow([]);
 
-        // Section headers
-        worksheet.mergeCells(`B3:${lastCol}3`);
-        worksheet.getCell('B3').value = 'I: PAIEMENTS PAR VIREMENT';
-        worksheet.getCell('B3').font = { bold: true, size: 12 };
+        // Section headers (shifted)
+        worksheet.mergeCells(`B${3 + baseRow}:${lastCol}${3 + baseRow}`);
+        worksheet.getCell(`B${3 + baseRow}`).value = 'I: PAIEMENTS PAR VIREMENT';
+        worksheet.getCell(`B${3 + baseRow}`).font = { bold: true, size: 12 };
 
-        worksheet.mergeCells(`B4:${lastCol}4`);
-        worksheet.getCell('B4').value = 'a: Services centraux, agences comptables et autres services';
-        worksheet.getCell('B4').font = { italic: true };
+        worksheet.mergeCells(`B${4 + baseRow}:${lastCol}${4 + baseRow}`);
+        worksheet.getCell(`B${4 + baseRow}`).value = 'a: Services centraux, agences comptables et autres services';
+        worksheet.getCell(`B${4 + baseRow}`).font = { italic: true };
 
         worksheet.addRow([]); // Empty row before headers
 
@@ -124,7 +151,7 @@ exports.exportBonusToExcel = async (instance) => {
         });
 
         // Header row styling
-        const headerRow = worksheet.getRow(6);
+        const headerRow = worksheet.getRow(6 + baseRow);
         headerRow.values = chosenHeaders.map(h => h.header);
         headerRow.eachCell((cell) => {
             cell.font = { bold: true };
@@ -133,7 +160,7 @@ exports.exportBonusToExcel = async (instance) => {
             cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
         });
 
-        let currentRowNum = 7;
+        let currentRowNum = 7 + baseRow;
         let globalIndex = 1;
 
         let grandTotals = { parts: 0, brut: 0, tax: 0, net: 0 };
