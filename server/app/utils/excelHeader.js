@@ -23,7 +23,7 @@ function addDgtcfmBonusHeader(worksheet, logoBuffer) {
 
   // Insert 33 rows at the very top to push any existing data down
   // ExcelJS spliceRows: start index, delete count, ...rows
-  const rowsToInsert = 33;
+  const rowsToInsert = 30;
   const emptyRows = new Array(rowsToInsert).fill([]);
   worksheet.spliceRows(1, 0, ...emptyRows);
 
@@ -64,7 +64,7 @@ function addDgtcfmBonusHeader(worksheet, logoBuffer) {
       font: { size: 8, italic: true },
     });
     const row = worksheet.getRow(rowIndex);
-    if (row) row.height = 12;
+    if (row) row.height = 11;
   };
 
   const renderTextBlockWithSeparators = (startCol, endCol, lines, startRow, options = {}) => {
@@ -78,7 +78,7 @@ function addDgtcfmBonusHeader(worksheet, logoBuffer) {
       });
 
       const row = worksheet.getRow(currentRow);
-      if (row) row.height = 20;
+      if (row) row.height = 11;
 
       if (index < lines.length - 1) {
         addSeparatorRow(startCol, endCol, currentRow + 1);
@@ -97,7 +97,7 @@ function addDgtcfmBonusHeader(worksheet, logoBuffer) {
   ];
   renderTextBlockWithSeparators("A", "E", leftLines, 1, {
     alignment: { horizontal: "center", vertical: "middle", wrapText: true },
-    font: { bold: true },
+    font: { bold: false },
   });
 
   // CENTER BLOCK (F1:H10) - coat of arms image if provided
@@ -127,9 +127,9 @@ if (logoBuffer && Buffer.isBuffer(logoBuffer)) {
     // Limit height to avoid crowding; rows 1..12 are 18pt each
     // Place from visual row 0 to row 5 => Excel rows 1..6
     const startRow = 1;
-    const endRow = 6;
+    const endRow = 9;
 
-    // Use range string anchor in column 5 (E), rows 1..6
+    // Use range string anchor in column 6 (F), rows 1..8
     worksheet.addImage(imageId, `F${startRow}:F${endRow}`);
   } catch (e) {
     console.warn("Failed to add coat of arms image to Excel header:", e.message);
@@ -147,7 +147,7 @@ if (logoBuffer && Buffer.isBuffer(logoBuffer)) {
   ];
   renderTextBlockWithSeparators("I", "M", rightLines, 1, {
     alignment: { horizontal: "center", vertical: "middle", wrapText: true },
-    font: { bold: true },
+    font: { bold: false },
   });
 
   // DECISION TITLE (A14:M18) - bold, centered, size ~14
