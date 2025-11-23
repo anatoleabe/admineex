@@ -71,8 +71,75 @@ angular.module('app')
             approvalTypes: [
                 { value: 'sequential', label: 'Sequential' },
                 { value: 'parallel', label: 'Parallel' }
+            ],
+            ruleFields: [
+                { value: 'status', label: 'Statut' },
+                { value: 'category', label: 'Catégorie' },
+                { value: 'rank', label: 'Rang' },
+                { value: 'structure', label: 'Structure' },
+                { value: 'subStructure', label: 'Sous-structure' }
             ]
         };
+
+        // Dropdown data for rule values
+        $scope.ruleOptions = {
+            statuses: [],
+            ranks: [],
+            structures: [],
+            structuresMain: [],
+            subStructures: []
+        };
+        const subStructuresByParent = {};
+
+        function loadRuleOptions() {
+            // Statuses
+            $http.get('/resources/dictionary/personnel/status.json').then(res => {
+                const list = res.data || [];
+                $scope.ruleOptions.statuses = list.map(item => ({
+                    value: item.id,
+                    label: item.en || item.fr || item.id
+                }));
+            }).catch(() => {
+                $scope.ruleOptions.statuses = [];
+            });
+
+            // Ranks
+            $http.get('/resources/dictionary/personnel/ranks.json').then(res => {
+                const list = res.data || [];
+                $scope.ruleOptions.ranks = list.map(item => ({
+                    value: item.id,
+                    label: item.fr || item.en || item.id
+                }));
+            }).catch(() => {
+                $scope.ruleOptions.ranks = [];
+            });
+
+            // Structures (main + subs)
+            $http.get('/api/structures/minimalList').then(res => {
+                const data = res.data?.data || res.data || [];
+                const mains = [];
+                const subs = [];
+                data.forEach(s => {
+                    const option = { value: s.code, label: `${s.name || s.code} (${s.code})`, rank: String(s.rank) };
+                    if (String(s.rank) === '2') {
+                        mains.push(option);
+                    } else if (String(s.rank) === '3') {
+                        subs.push(option);
+                        const parentCode = s.code && s.code.includes('-') ? s.code.split('-')[0] : '';
+                        if (!subStructuresByParent[parentCode]) subStructuresByParent[parentCode] = [];
+                        subStructuresByParent[parentCode].push(option);
+                    }
+                });
+                $scope.ruleOptions.structures = mains;
+                $scope.ruleOptions.structuresMain = mains;
+                $scope.ruleOptions.subStructures = subs;
+            }).catch(() => {
+                $scope.ruleOptions.structures = [];
+                $scope.ruleOptions.structuresMain = [];
+                $scope.ruleOptions.subStructures = [];
+            });
+        }
+        loadRuleOptions();
 
         // Initialize template form data
         function initializeTemplateForm() {
@@ -215,6 +282,53 @@ angular.module('app')
             return found ? found.label : formulaType;
         };
 
+        function normalizeEligibilityRules(rules) {
+            return (rules || []).map(rule => {
+                const valueInput = Array.isArray(rule.value)
+                    ? rule.value.join(', ')
+                    : (rule.value || rule.value === 0 ? rule.value : '');
+                return {
+                    field: rule.field || $scope.constants.ruleFields[0].value,
+                    operator: rule.operator || 'equals',
+                    value: rule.value,
+                    valueInput: valueInput,
+                    valueList: Array.isArray(rule.value) ? rule.value : [],
+                    parentStructureCode: rule.parentStructureCode || '',
+                    description: rule.description || ''
+                };
+            });
+        }
+
+        function parseList(valueInput) {
+            if (valueInput === null || valueInput === undefined) return [];
+            return String(valueInput)
+                .split(',')
+                .map(v => v.trim())
+                .filter(Boolean);
+        }
+
+        function normalizeRuleForSave(rule) {
+            if (!rule) return null;
+            const isArrayOp = rule.operator === 'in' || rule.operator === 'not_in';
+            const parsedValue = isArrayOp
+                ? (rule.valueList && rule.valueList.length ? rule.valueList : parseList(rule.valueInput !== undefined ? rule.valueInput : rule.value))
+                : (rule.valueInput !== undefined ? rule.valueInput : rule.value);
+            return {
+                field: rule.field,
+                operator: rule.operator,
+                value: parsedValue,
+                parentStructureCode: rule.parentStructureCode || '',
+                description: rule.description || ''
+            };
+        }
+
+        $scope.getSubStructuresForRule = function(rule) {
+            if (!rule) return $scope.ruleOptions.subStructures;
+            const parent = rule.parentStructureCode || '';
+            if (parent && subStructuresByParent[parent]) return subStructuresByParent[parent];
+            return $scope.ruleOptions.subStructures;
+        };
+
         // View template details
         $scope.viewTemplate = function(template) {
             $scope.state.viewing = true;
@@ -234,8 +348,13 @@ angular.module('app')
             const cleaned = angular.copy(data);
 
             // Clean eligibility rules
-            if (cleaned.eligibilityRules && cleaned.eligibilityRules.length === 0) {
-                delete cleaned.eligibilityRules;
+            if (cleaned.eligibilityRules) {
+                cleaned.eligibilityRules = cleaned.eligibilityRules
+                    .map(normalizeRuleForSave)
+                    .filter(r => r && r.field && r.operator && r.value !== undefined && r.value !== null);
+                if (cleaned.eligibilityRules.length === 0) {
+                    delete cleaned.eligibilityRules;
+                }
             }
 
             // Clean approval workflow
@@ -319,20 +438,8 @@ angular.module('app')
                     } else if (Number(cfg.defaultShareAmount) < 0) {
                         errors.push('Default share amount cannot be negative');
                     }
-                    if (cfg.partsConfig) {
-                        if (cfg.partsConfig.defaultParts < 1) {
-                            errors.push('Default parts must be at least 1');
-                        }
-                        if (cfg.partsConfig.partRules) {
-                            cfg.partsConfig.partRules.forEach((rule, index) => {
-                                if (!rule.condition || !rule.condition.trim()) {
-                                    errors.push(`Part rule ${index + 1}: Condition is required`);
-                                }
-                                if (rule.parts < 0) {
-                                    errors.push(`Part rule ${index + 1}: Parts cannot be negative`);
-                                }
-                            });
-                        }
+                    if (cfg.partsConfig && cfg.partsConfig.defaultParts < 1) {
+                        errors.push('Default parts must be at least 1');
                     }
                     break;
                 case 'without_parts':
@@ -384,8 +491,18 @@ angular.module('app')
                     if (!rule.operator) {
                         errors.push(`Eligibility rule ${index + 1}: Operator is required`);
                     }
-                    if (rule.value === undefined || rule.value === null || (typeof rule.value === 'string' && !rule.value.trim())) {
+
+                    // Derive effective value same way we save it (handles valueList/valueInput)
+                    const normalized = normalizeRuleForSave(rule);
+                    const val = normalized ? normalized.value : undefined;
+                    const isArrayVal = Array.isArray(val);
+                    const isEmptyArray = isArrayVal && val.length === 0;
+                    const isEmptyString = typeof val === 'string' && !val.trim();
+                    if (val === undefined || val === null || isEmptyArray || isEmptyString) {
                         errors.push(`Eligibility rule ${index + 1}: Value is required`);
+                    } else {
+                        // Keep the normalized value in sync so server validation matches UI
+                        rule.value = val;
                     }
                 });
             }
@@ -487,7 +604,7 @@ angular.module('app')
                 partRules: []
             };
             $scope.templateFormData.approvalWorkflow = $scope.templateFormData.approvalWorkflow || { steps: [] };
-            $scope.templateFormData.eligibilityRules = $scope.templateFormData.eligibilityRules || [];
+            $scope.templateFormData.eligibilityRules = normalizeEligibilityRules($scope.templateFormData.eligibilityRules || []);
 
             $('#modal_basic').modal('show');
             $('a[href="#basic-info"]').tab('show');
@@ -506,9 +623,12 @@ angular.module('app')
                 $scope.templateFormData.eligibilityRules = [];
             }
             $scope.templateFormData.eligibilityRules.push({
-                field: '',
+                field: $scope.constants.ruleFields[0].value,
                 operator: 'equals',
+                valueInput: '',
+                valueList: [],
                 value: '',
+                parentStructureCode: '',
                 description: ''
             });
         };
@@ -526,43 +646,6 @@ angular.module('app')
                 const temp = $scope.templateFormData.eligibilityRules[index + 1];
                 $scope.templateFormData.eligibilityRules[index + 1] = $scope.templateFormData.eligibilityRules[index];
                 $scope.templateFormData.eligibilityRules[index] = temp;
-            }
-        };
-
-        // Helper functions for parts rules
-        $scope.addPartRule = function() {
-            if (!$scope.templateFormData.calculationConfig.partsConfig) {
-                $scope.templateFormData.calculationConfig.partsConfig = {
-                    defaultParts: 1,
-                    partRules: []
-                };
-            }
-            if (!$scope.templateFormData.calculationConfig.partsConfig.partRules) {
-                $scope.templateFormData.calculationConfig.partsConfig.partRules = [];
-            }
-            $scope.templateFormData.calculationConfig.partsConfig.partRules.push({
-                condition: '',
-                parts: 1
-            });
-        };
-
-        $scope.removePartRule = function(index) {
-            $scope.templateFormData.calculationConfig.partsConfig.partRules.splice(index, 1);
-        };
-
-        $scope.movePartRule = function(index, direction) {
-            if (!$scope.templateFormData.calculationConfig.partsConfig.partRules) return;
-
-            if (direction === 'up' && index > 0) {
-                const temp = $scope.templateFormData.calculationConfig.partsConfig.partRules[index - 1];
-                $scope.templateFormData.calculationConfig.partsConfig.partRules[index - 1] =
-                    $scope.templateFormData.calculationConfig.partsConfig.partRules[index];
-                $scope.templateFormData.calculationConfig.partsConfig.partRules[index] = temp;
-            } else if (direction === 'down' && index < $scope.templateFormData.calculationConfig.partsConfig.partRules.length - 1) {
-                const temp = $scope.templateFormData.calculationConfig.partsConfig.partRules[index + 1];
-                $scope.templateFormData.calculationConfig.partsConfig.partRules[index + 1] =
-                    $scope.templateFormData.calculationConfig.partsConfig.partRules[index];
-                $scope.templateFormData.calculationConfig.partsConfig.partRules[index] = temp;
             }
         };
 
