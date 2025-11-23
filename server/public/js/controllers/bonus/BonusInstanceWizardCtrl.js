@@ -459,8 +459,26 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
             });
     };
 
+    function setAllocationType(allocation) {
+        if (!allocation) return allocation;
+        var categoryFromAllocation = allocation.templateId && allocation.templateId.category;
+        var categoryFromInstance = $scope.instance && $scope.instance.templateId && $scope.instance.templateId.category;
+        var category = categoryFromAllocation || categoryFromInstance;
+        var isSansPart = !!(allocation.isSansPart === true ||
+            allocation.isWithParts === false ||
+            category === 'without_parts');
+        allocation.isSansPart = isSansPart;
+        allocation.isWithParts = !isSansPart;
+        // ensure template is propagated when missing on allocation
+        if (!allocation.templateId && $scope.instance && $scope.instance.templateId) {
+            allocation.templateId = $scope.instance.templateId;
+        }
+        return allocation;
+    }
+
     // Adjust allocation parts/amount
     $scope.adjustAllocation = function(allocation) {
+        setAllocationType(allocation);
         $ocLazyLoad.load('js/controllers/bonus/AdjustAllocationModalCtrl.js').then(function() {
             $mdDialog.show({
                 controller: 'AdjustAllocationModalCtrl',
@@ -523,6 +541,7 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
 
     // Exclude allocation
     $scope.excludeAllocation = function(allocation) {
+        setAllocationType(allocation);
         $ocLazyLoad.load('js/controllers/bonus/ExcludeAllocationModalCtrl.js').then(function() {
             $mdDialog.show({
                 controller: 'ExcludeAllocationModalCtrl',
@@ -545,6 +564,7 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
 
     // Include allocation
     $scope.includeAllocation = function(allocation) {
+        setAllocationType(allocation);
         $ocLazyLoad.load('js/controllers/bonus/IncludeAllocationModalCtrl.js').then(function() {
             $mdDialog.show({
                 controller: 'IncludeAllocationModalCtrl',
@@ -586,6 +606,10 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
             .then(function(response) {
                 $scope.allocationHistory = response.data.history; // Updated to use the history array
                 $scope.currentAllocation = response.data.current; // Added to store the current allocation
+                var current = $scope.currentAllocation;
+                setAllocationType(current);
+                $scope.isSansPart = current ? current.isSansPart : false;
+                $scope.isWithParts = current ? current.isWithParts : false;
 
                 console.log($scope.allocationHistory)
 
@@ -1136,6 +1160,7 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
     };
 
     $scope.isWithParts = function() {
+        console.log($scope.instance.templateId);
         try { return $scope.instance && $scope.instance.templateId && $scope.instance.templateId.category === 'with_parts'; }
         catch (e) { return false; }
     };

@@ -1,6 +1,16 @@
 angular.module('app')
 .controller('ExcludeAllocationModalCtrl', ['$scope', '$http', '$mdDialog', 'toastr', 'allocation', function($scope, $http, $mdDialog, toastr, allocation) {
+    function computeIsSansPart(data) {
+        if (!data) return false;
+        if (data.isSansPart === true) return true;
+        if (data.isWithParts === false) return true;
+        if (data.isWithParts === true) return false;
+        return !!(data.templateId && data.templateId.category === 'without_parts');
+    }
+
     // Initialize the form data
+    var isSansPart = computeIsSansPart(allocation);
+    var isWithParts = !isSansPart;
     $scope.selectedAllocation = {
         _id: allocation._id,
         personnelId: allocation.personnelId,
@@ -15,8 +25,10 @@ angular.module('app')
             sbi: allocation.calculationInputs?.sbi
         },
         // determine if the template is sans-part
-        isSansPart: (allocation.templateId && allocation.templateId.category === 'without_parts')
+        isSansPart: isSansPart,
+        isWithParts: isWithParts
     };
+    $scope.isWithParts = isWithParts;
 
     // Minimum length constant for reason text
     $scope.minReasonLength = 3;

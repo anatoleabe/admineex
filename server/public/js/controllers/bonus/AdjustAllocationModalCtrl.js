@@ -1,6 +1,16 @@
 angular.module('app').controller('AdjustAllocationModalCtrl', ['$scope', '$http', 'toastr', '$mdDialog', 'allocation',
 function($scope, $http, toastr, $mdDialog, allocation) {
+    function computeIsSansPart(data) {
+        if (!data) return false;
+        if (data.isSansPart === true) return true;
+        if (data.isWithParts === false) return true;
+        if (data.isWithParts === true) return false;
+        return !!(data.templateId && data.templateId.category === 'without_parts');
+    }
+
     // Initialize the form data
+    var isSansPart = computeIsSansPart(allocation);
+    var isWithParts = !isSansPart;
     $scope.selectedAllocation = {
         _id: allocation._id,
         personnelId: allocation.personnelId,
@@ -16,8 +26,10 @@ function($scope, $http, toastr, $mdDialog, allocation) {
             subType: allocation.calculationInputs?.subType
         },
         shareAmount: (allocation.instanceId && allocation.instanceId.shareAmount) || 0,
-        isSansPart: (allocation.templateId && allocation.templateId.category === 'without_parts')
+        isSansPart: isSansPart,
+        isWithParts: isWithParts
     };
+    $scope.isWithParts = isWithParts;
 
     // Function to update final amount based on parts (only for with_parts)
     $scope.updateFinalAmount = function() {

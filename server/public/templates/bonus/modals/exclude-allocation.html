@@ -5,66 +5,103 @@
 
 <div class="modal-body">
     <form novalidate>
-        <div class="form-group">
-            <label class="font-weight-semibold">Staff Information:</label>
-            <div class="form-control-plaintext bg-light rounded p-2">
-                <div class="d-flex align-items-center">
-                    <img ng-if="selectedAllocation.personnelId.photo"
-                         ng-src="{{selectedAllocation.personnelId.photo}}"
-                         class="rounded-circle mr-3" width="60" height="60" alt="">
-                    <div ng-if="!selectedAllocation.personnelId.photo"
-                         class="rounded-circle mr-3 d-flex align-items-center justify-content-center bg-secondary text-white"
-                         style="width:60px; height:60px; font-size:2rem;">
-                        {{ (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.text && selectedAllocation.personnelId.name.text.charAt(0).toUpperCase())
-                        || (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.family && selectedAllocation.personnelId.name.family[0] && selectedAllocation.personnelId.name.family[0].charAt(0).toUpperCase())
-                        || (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.given && selectedAllocation.personnelId.name.given[0] && selectedAllocation.personnelId.name.given[0].charAt(0).toUpperCase())
-                        || '?' }}
+        <div class="card border-left border-danger shadow-sm mb-3">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-start justify-content-between">
+                    <div class="d-flex align-items-center">
+                        <img ng-if="selectedAllocation.personnelId.photo"
+                             ng-src="{{selectedAllocation.personnelId.photo}}"
+                             class="rounded-circle mr-3" width="60" height="60" alt="">
+                        <div ng-if="!selectedAllocation.personnelId.photo"
+                             class="rounded-circle mr-3 d-flex align-items-center justify-content-center bg-secondary text-white"
+                             style="width:60px; height:60px; font-size:2rem;">
+                            {{ (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.text && selectedAllocation.personnelId.name.text.charAt(0).toUpperCase())
+                            || (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.family && selectedAllocation.personnelId.name.family[0] && selectedAllocation.personnelId.name.family[0].charAt(0).toUpperCase())
+                            || (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.given && selectedAllocation.personnelId.name.given[0] && selectedAllocation.personnelId.name.given[0].charAt(0).toUpperCase())
+                            || '?' }}
+                        </div>
+                        <div>
+                            <h5 class="font-weight-semibold mb-0">
+                                {{ (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.text)
+                                || (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.use)
+                                || (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.family && selectedAllocation.personnelId.name.given && selectedAllocation.personnelId.name.family[0] && selectedAllocation.personnelId.name.given[0] && (selectedAllocation.personnelId.name.family[0] + ' ' + selectedAllocation.personnelId.name.given[0]))
+                                || selectedAllocation.personnelId.identifier }}
+                            </h5>
+                            <small class="text-muted">ID: {{selectedAllocation.personnelId.identifier}}</small>
+                        </div>
                     </div>
-                    <div>
-                        <h5 class="font-weight-semibold mb-0">
-                            {{ (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.text)
-                            || (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.use)
-                            || (selectedAllocation.personnelId.name && selectedAllocation.personnelId.name.family && selectedAllocation.personnelId.name.given && selectedAllocation.personnelId.name.family[0] && selectedAllocation.personnelId.name.given[0] && (selectedAllocation.personnelId.name.family[0] + ' ' + selectedAllocation.personnelId.name.given[0]))
-                            || selectedAllocation.personnelId.identifier }}
-                        </h5>
-                        <small class="text-muted">ID: {{selectedAllocation.personnelId.identifier}}</small>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="font-weight-semibold">Parts:</label>
-            <div class="form-control-plaintext bg-light rounded p-2" ng-if="!selectedAllocation.isSansPart">
-                {{selectedAllocation.calculationInputs.parts | number:0}}
-            </div>
-            <!-- Sans Part details -->
-            <div ng-if="selectedAllocation.isSansPart">
-                <div class="form-group mb-2">
-                    <label class="font-weight-semibold mb-0">TAUX (%)</label>
-                    <div class="form-control-plaintext bg-light rounded p-2 text-center">
-                        {{ (selectedAllocation.calculationInputs.txPercent || 0) | number:0 }}
+                    <div class="text-right">
+                        <span class="badge badge-secondary">
+                            {{selectedAllocation.isWithParts ? 'Prime avec part' : 'Prime sans part'}}
+                        </span>
+                        <div class="text-muted small mt-1">
+                            Status:
+                            <span class="badge-pill" ng-class="{'badge-success': selectedAllocation.status==='eligible','badge-danger':selectedAllocation.status==='excluded','badge-warning':selectedAllocation.status==='adjusted'}">
+                                {{selectedAllocation.status | capitalize}}
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div class="form-group mb-0">
-                    <label class="font-weight-semibold mb-0">SBI</label>
-                    <div class="form-control-plaintext bg-light rounded p-2 text-right">
-                        {{ (selectedAllocation.calculationInputs.sbi || 0) | number:0 }} FCFA
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="font-weight-semibold">Original Amount:</label>
-            <div class="form-control-plaintext bg-light rounded p-2">
-                {{selectedAllocation.calculatedAmount | number:0}} FCFA
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="font-weight-semibold">Reason for Exclusion:</label>
-            <textarea class="form-control" rows="4" ng-model="selectedAllocation.calculationInputs.comment" required
-                      placeholder="Please provide a detailed reason for exclusion..."></textarea>
-            <small class="form-text text-muted">A brief reason is required (min 3 characters).</small>
+        <div class="card shadow-sm mb-3">
+            <div class="card-header bg-light">
+                <h6 class="mb-0 font-weight-semibold"><i class="icon-clipboard3 mr-2"></i>Allocation Details</h6>
+            </div>
+            <div class="card-body p-3">
+                <div class="row" ng-if="selectedAllocation.isWithParts">
+                    <div class="col-md-6">
+                        <label class="font-weight-semibold">Parts/Shares</label>
+                        <div class="form-control-plaintext bg-light rounded p-2">
+                            {{selectedAllocation.calculationInputs.parts | number:0}}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="font-weight-semibold">Calculated Amount</label>
+                        <div class="form-control-plaintext bg-light rounded p-2 text-right">
+                            {{selectedAllocation.calculatedAmount | number:0}} FCFA
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-if="!selectedAllocation.isWithParts">
+                    <div class="col-md-4">
+                        <label class="font-weight-semibold">TAUX (%)</label>
+                        <div class="form-control-plaintext bg-light rounded p-2 text-center">
+                            {{ (selectedAllocation.calculationInputs.txPercent || 0) | number:0 }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="font-weight-semibold">SBI</label>
+                        <div class="form-control-plaintext bg-light rounded p-2 text-right">
+                            {{ (selectedAllocation.calculationInputs.sbi || 0) | number:0 }} FCFA
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="font-weight-semibold">Calculated Amount</label>
+                        <div class="form-control-plaintext bg-light rounded p-2 text-right">
+                            {{selectedAllocation.calculatedAmount | number:0}} FCFA
+                        </div>
+                        <small class="text-muted d-block" ng-if="selectedAllocation.calculationInputs.subType === 'ift'">
+                            IFT allocations are paid without IRPP deduction.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-light">
+                <h6 class="mb-0 font-weight-semibold"><i class="icon-warning mr-2"></i>Reason for Exclusion</h6>
+            </div>
+            <div class="card-body p-3">
+                <div class="form-group mb-0">
+                    <textarea class="form-control" rows="4" ng-model="selectedAllocation.calculationInputs.comment" required
+                              placeholder="Please provide a detailed reason for exclusion..."></textarea>
+                    <small class="form-text text-muted">A brief reason is required (min 3 characters).</small>
+                </div>
+            </div>
         </div>
     </form>
 </div>

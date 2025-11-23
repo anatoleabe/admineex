@@ -3,10 +3,6 @@
 /**
  * Excel header utilities for DGTCFM bonus decision sheets.
  *
- * @module excelHeader
- */
-
-/**
  * Add the official MINFI / DGTCFM decision header to the top of the worksheet.
  * This inserts the header rows at the top (pushing existing data down), creates all merges,
  * applies fonts and alignment, and optionally places the Cameroon coat of arms image in the center block.
@@ -110,33 +106,31 @@ function addDgtcfmBonusHeader(worksheet, logoBuffer) {
     alignment: { horizontal: "center", vertical: "middle", wrapText: true },
   });
 
-const sizeOf = require("image-size");
+// image-size v2 CommonJS export exposes { imageSize }
+const { imageSize } = require("image-size");
 
 if (logoBuffer && Buffer.isBuffer(logoBuffer)) {
   const isJpeg = logoBuffer[0] === 0xff && logoBuffer[1] === 0xd8;
   const extension = isJpeg ? "jpeg" : "png";
 
   try {
-    // 1. Récupérer dimensions originales
-    const { width: origW, height: origH } = sizeOf(logoBuffer);
-
-    // 2. Définir une taille max dans le fichier Excel (en pixels)
-    const maxWidth = 220;   // à ajuster selon ton rendu
-    const maxHeight = 80;   // idem
-
-    // 3. Calculer l’échelle pour respecter le ratio
-    const scale = Math.min(maxWidth / origW, maxHeight / origH, 1);
-    const width = origW * scale;
-    const height = origH * scale;
+    const { width: origW, height: origH } = imageSize(logoBuffer);
+    if (!origW || !origH) throw new Error("Invalid image buffer");
 
     const imageId = worksheet.workbook.addImage({ buffer: logoBuffer, extension });
 
-    // 4. Ancrer en haut à droite et utiliser ext (width/height) → proportions conservées
-    worksheet.addImage(imageId, {
-      tl: { col: 5.1, row: 0.4 }, // position
-      ext: { width, height },     // taille en respectant le ratio
-      editAs: "oneCell",
-    });
+    // === Compute a bounding box in column 6 (F) that matches the image ratio ===
+    const colF = worksheet.getColumn(6); // Column F (index 6)
+    const excelWidthUnits = colF.width || 13; // set earlier
+    const colPx = Math.round(excelWidthUnits * 7); // ~7 px per width unit
+
+    // Limit height to avoid crowding; rows 1..12 are 18pt each
+    // Place from visual row 0 to row 5 => Excel rows 1..6
+    const startRow = 1;
+    const endRow = 6;
+
+    // Use range string anchor in column 5 (E), rows 1..6
+    worksheet.addImage(imageId, `F${startRow}:F${endRow}`);
   } catch (e) {
     console.warn("Failed to add coat of arms image to Excel header:", e.message);
   }
@@ -185,7 +179,7 @@ if (logoBuffer && Buffer.isBuffer(logoBuffer)) {
     " du Budget de l'Etat, des autres Entités Publiques pour l'exercice 2024;",
     "VU les états produits par les Services Centraux et Déconcentrés de la Direction Générale du Trésor, de la Coopération Financière et Monétaire ;",
   ];
-  mergeAndStyle("A19:M30", {
+  mergeAndStyle("A19:M26", {
     value: vuLines.join("\n"),
     alignment: { horizontal: "left", vertical: "top", wrapText: true },
     font: { bold: false },
@@ -193,7 +187,7 @@ if (logoBuffer && Buffer.isBuffer(logoBuffer)) {
 
   // DECIDE + ARTICLE 1
   // Row 31: DECIDE (A31:M31) - centered, bold
-  mergeAndStyle("A31:M31", {
+  mergeAndStyle("A27:M27", {
     value: "DECIDE",
     alignment: { horizontal: "center", vertical: "middle", wrapText: true },
     font: { bold: true },
@@ -203,7 +197,7 @@ if (logoBuffer && Buffer.isBuffer(logoBuffer)) {
     "Article 1er : Il est alloué aux personnels ci-après de la Direction Générale du Trésor, de la Coopération Financière et Monétaire, des",
     "Services centraux et déconcentrés, des remises sur les crédits de l'exercice budgétaire 2024",
   ];
-  mergeAndStyle("A32:M33", {
+  mergeAndStyle("A29:M30", {
     value: articleLines.join("\n"),
     alignment: { horizontal: "left", vertical: "top", wrapText: true },
     font: { bold: false },

@@ -1,11 +1,23 @@
 angular.module('app')
     .controller('IncludeAllocationModalCtrl', ['$scope', '$http', '$mdDialog', 'toastr', 'allocation', function($scope, $http, $mdDialog, toastr, allocation) {
+    function computeIsSansPart(data) {
+        if (!data) return false;
+        if (data.isSansPart === true) return true;
+        if (data.isWithParts === false) return true;
+        if (data.isWithParts === true) return false;
+        return !!(data.templateId && data.templateId.category === 'without_parts');
+    }
+
     $scope.selectedAllocation = allocation || {}; // Ensure allocation is initialized properly
     $scope.including = false;
 
     // Initialize modal data
     $scope.initialize = function() {
         $scope.selectedAllocation.comment = $scope.selectedAllocation.comment || ''; // Initialize comment field
+        var isSansPart = computeIsSansPart($scope.selectedAllocation);
+        $scope.selectedAllocation.isSansPart = isSansPart;
+        $scope.selectedAllocation.isWithParts = !isSansPart;
+        $scope.isWithParts = $scope.selectedAllocation.isWithParts;
     };
 
 
