@@ -1,6 +1,7 @@
 const excel = require('exceljs');
 const { addDgtcfmBonusHeader } = require('../utils/excelHeader');
 const { BonusInstance } = require('../models/bonus/instance');
+const { Structure } = require('../models/structure');
 const { Personnel } = require('../models/personnel');
 const { BonusAllocation } = require('../models/bonus/allocation');
 const { ApiError } = require('../utils/ApiError');
@@ -26,6 +27,17 @@ exports.exportBonusToExcel = async (instance) => {
         }
 
         const isWithoutParts = bonusInstance.templateId?.category === 'without_parts';
+
+        // Load canonical structures once (same source as structures.js minimal list) to drive hierarchy.
+        const rawStructures = await Structure.find({}).lean();
+        const structureByCode = {};
+        const structureById = {};
+        rawStructures.forEach(s => {
+            const id = (s._id || s.id || '').toString();
+            const code = (s.code || '').toString().trim();
+            structureById[id] = s;
+            if (code) structureByCode[code] = s;
+        });
 
         // 2. Get allocations with structure info from snapshots
         const allocations = await BonusAllocation.find({ instanceId: instance._id })
@@ -138,33 +150,82 @@ exports.exportBonusToExcel = async (instance) => {
 
         worksheet.addRow([]); // Empty row before headers
 
-        // 7. Group allocations by structure and number them by structure code
+        // === Structure hierarchy helpers (mirrors the structure/substructure loading used in BonusInstanceWizardCtrl.js) ===
+        const mapStructureNode = (node) => {
+            if (!node) return null;
+            const id = (node._id || node.id || '').toString().trim();
+            const code = (node.code || '').toString().trim();
+            const name = node.name || node.en || node.fr || code || 'STRUCTURE INCONNUE';
+            const rank = node.rank ? String(node.rank) : '';
+            return { id: id || code || name, code: code || '000', name, rank, key: id || code || name, parentId: node.fatherId || node.parentId || null };
+        };
+
+        const resolveStructureByCode = (code) => {
+            const official = structureByCode[(code || '').trim()];
+            return official ? mapStructureNode(official) : null;
+        };
+
+        const resolveStructureById = (id) => {
+            const official = structureById[id];
+            return official ? mapStructureNode(official) : null;
+        };
+
+        const unknownStructure = { id: 'undefined', code: '000', name: 'STRUCTURE INCONNUE', rank: '', key: 'undefined' };
+
+        // Derive main/sub structure using canonical list (rank 2/3) and code linkage (prefix before hyphen).
+        const getMainAndSubStructure = (rawStructure) => {
+            const rawCode = rawStructure?.code || '';
+            const candidate = resolveStructureByCode(rawCode) || mapStructureNode(rawStructure) || unknownStructure;
+            let sub = candidate;
+            if (!sub.rank && rawStructure?.parent) {
+                const parent = mapStructureNode(rawStructure.parent);
+                if (parent) sub.parentId = parent.id;
+            }
+
+            let main = sub;
+            if (sub.rank === '3') {
+                main = (sub.parentId && resolveStructureById(sub.parentId)) || resolveStructureByCode(sub.code.split('-')[0]) || unknownStructure;
+            } else if (sub.rank !== '2') {
+                const prefix = sub.code && sub.code.includes('-') ? sub.code.split('-')[0] : sub.code;
+                main = resolveStructureByCode(prefix) || sub;
+            }
+
+            // Enforce rank flags for clarity
+            main = main || unknownStructure;
+            sub = sub || unknownStructure;
+            return { main: { ...main, key: main.key || main.code || main.id }, sub: { ...sub, key: sub.key || sub.code || sub.id } };
+        };
+
+        const taxRate = (bonusInstance.taxPercentage || 5.28) / 100;
+
+        const codePriority = (code = '') => {
+            if (code === '238-1') return -1000; // requested first
+            if (code === '000') return 1000;    // unknown near the end
+            if (code === '001-100-1') return 1001; // detaché last
+            return 0;
+        };
+
+        // Build hierarchy main -> substructure -> allocations using canonical structures list
+        const hierarchy = {};
         allocations.forEach(allocation => {
-            const structure = allocation.personnelSnapshotId?.data?.position?.structure;
-            allocation.structureInfo = structure ? structure : { id: 'undefined', code: '000', name: 'STRUCTURE INCONNUE' };
+            const rawStructure = allocation.personnelSnapshotId?.data?.position?.structure;
+            const { main, sub } = getMainAndSubStructure(rawStructure);
+            allocation.structureInfo = sub; // keep leaf/sub info for traceability
+
+            const mainKey = main.key;
+            const subKey = sub.key;
+            if (!hierarchy[mainKey]) hierarchy[mainKey] = { main, substructures: {} };
+            if (!hierarchy[mainKey].substructures[subKey]) hierarchy[mainKey].substructures[subKey] = { sub, allocations: [] };
+            hierarchy[mainKey].substructures[subKey].allocations.push(allocation);
         });
-        const groupedAllocations = _.groupBy(allocations, a => a.structureInfo.id);
-        const structureIds = Object.keys(groupedAllocations).sort((a, b) => {
-            const codeA = groupedAllocations[a][0]?.structureInfo?.code || '999';
-            const codeB = groupedAllocations[b][0]?.structureInfo?.code || '999';
+
+        const orderedMainKeys = Object.keys(hierarchy).sort((a, b) => {
+            const codeA = hierarchy[a].main.code || '';
+            const codeB = hierarchy[b].main.code || '';
+            const priDiff = codePriority(codeA) - codePriority(codeB);
+            if (priDiff !== 0) return priDiff;
             return codeA.localeCompare(codeB);
         });
-
-        // Header row styling
-        const headerRow = worksheet.getRow(6 + baseRow);
-        headerRow.values = chosenHeaders.map(h => h.header);
-        headerRow.eachCell((cell) => {
-            cell.font = { bold: true };
-            cell.alignment = { horizontal: 'center' };
-            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } };
-            cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
-        });
-
-        let currentRowNum = 7 + baseRow;
-        let globalIndex = 1;
-
-        let grandTotals = { parts: 0, brut: 0, tax: 0, net: 0 };
-        let groupCount = 0;
 
         const ranksJson = loadRanks();
         function computeTxPercentFromSnapshot(snapshot) {
@@ -175,148 +236,345 @@ exports.exportBonusToExcel = async (instance) => {
             return Math.round(row.bonusRate * 100); // integer percent
         }
 
-        for (const structureId of structureIds) {
-            groupCount++;
-            const list = groupedAllocations[structureId] || [];
-            if (!list.length) continue;
-            const info = list[0].structureInfo;
+        // Compute totals upfront to build the summary table (main structures; same amounts as detailed section)
+        const summaryRowsData = [];
+        let summaryGrandTotals = { parts: 0, brut: 0, tax: 0, net: 0 };
+        let mainDisplayIndex = 0;
 
-            // Structure header row
-            worksheet.mergeCells(`A${currentRowNum}:${lastCol}${currentRowNum}`);
-            const structureCell = worksheet.getCell(`A${currentRowNum}`);
-            structureCell.value = `${groupCount}. ${info.name}${info.code ? ' - ' + info.code : ''}`;
+        const computeFinancials = (allocation) => {
+            const brut = Math.round(allocation.grossAmount || allocation.finalAmount || 0);
+            const tax = Math.round(allocation.taxAmount || ((allocation.grossAmount || 0) - (allocation.netAmount || 0)));
+            const net = Math.round(allocation.netAmount || ((allocation.grossAmount || 0) - tax));
+            return {
+                parts: allocation.calculationInputs?.parts || 0,
+                brut,
+                tax,
+                net
+            };
+        };
+
+        orderedMainKeys.forEach((mainKey) => {
+            mainDisplayIndex++;
+            const mainGroup = hierarchy[mainKey];
+            const subKeys = Object.keys(mainGroup.substructures).sort((a, b) => (mainGroup.substructures[a].sub.code || '').localeCompare(mainGroup.substructures[b].sub.code || ''));
+            let structureTotals = { parts: 0, brut: 0, tax: 0, net: 0 };
+            let subIndex = 0;
+
+            subKeys.forEach((subKey) => {
+                subIndex++;
+                const subGroup = mainGroup.substructures[subKey];
+                const subTotals = { parts: 0, brut: 0, tax: 0, net: 0 };
+                subGroup.allocations.forEach(allocation => {
+                    const fin = computeFinancials(allocation);
+                    subTotals.parts += fin.parts;
+                    subTotals.brut += fin.brut;
+                    subTotals.tax += fin.tax;
+                    subTotals.net += fin.net;
+                });
+                subGroup.totals = subTotals;
+                structureTotals.parts += subTotals.parts;
+                structureTotals.brut += subTotals.brut;
+                structureTotals.tax += subTotals.tax;
+                structureTotals.net += subTotals.net;
+            });
+
+            mainGroup.totals = structureTotals;
+            summaryRowsData.push({
+                label: `${mainGroup.main.name}${mainGroup.main.code ? ' - ' + mainGroup.main.code : ''}`,
+                brut: structureTotals.brut,
+                tax: structureTotals.tax,
+                net: structureTotals.net
+            });
+            summaryGrandTotals.parts += structureTotals.parts;
+            summaryGrandTotals.brut += structureTotals.brut;
+            summaryGrandTotals.tax += structureTotals.tax;
+            summaryGrandTotals.net += structureTotals.net;
+        });
+
+        // === Summary table ("tableau synoptique") ===
+        const summaryStartCol = 2; // Column B for readability
+        const summaryCols = {
+            label: colLetter(summaryStartCol),
+            brut: colLetter(summaryStartCol + 1),
+            tax: colLetter(summaryStartCol + 2),
+            net: colLetter(summaryStartCol + 3),
+        };
+        const summaryEndCol = summaryCols.net;
+
+        const summaryTitleRow = worksheet.addRow([]);
+        worksheet.mergeCells(`${summaryCols.label}${summaryTitleRow.number}:${summaryEndCol}${summaryTitleRow.number}`);
+        const summaryTitleCell = worksheet.getCell(`${summaryCols.label}${summaryTitleRow.number}`);
+        summaryTitleCell.value = "ETAT DE REPARTITION DES REMISES DU PREMIER TRIMESTRE 2024";
+        summaryTitleCell.font = { bold: true, size: 14 };
+        summaryTitleCell.alignment = { horizontal: 'center' };
+
+        const summarySubtitleRow = worksheet.addRow([]);
+        worksheet.mergeCells(`${summaryCols.label}${summarySubtitleRow.number}:${summaryEndCol}${summarySubtitleRow.number}`);
+        const summarySubtitleCell = worksheet.getCell(`${summaryCols.label}${summarySubtitleRow.number}`);
+        summarySubtitleCell.value = "TABLEAU SYNOPTIQUE";
+        summarySubtitleCell.font = { bold: true, size: 12 };
+        summarySubtitleCell.alignment = { horizontal: 'center' };
+
+        const summaryHeaderRow = worksheet.addRow([]);
+        summaryHeaderRow.getCell(summaryStartCol).value = "Structure";
+        summaryHeaderRow.getCell(summaryStartCol + 1).value = "MONTANT BRUT";
+        summaryHeaderRow.getCell(summaryStartCol + 2).value = `TAXES (${bonusInstance.taxPercentage || 5.28}%)`;
+        summaryHeaderRow.getCell(summaryStartCol + 3).value = "MONTANT NAP";
+        summaryHeaderRow.eachCell((cell) => {
+            cell.font = { bold: true };
+            cell.alignment = { horizontal: 'center' };
+            cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } };
+        });
+
+        const summaryDataStartRow = worksheet.lastRow.number + 1;
+        summaryRowsData.forEach(entry => {
+            const row = worksheet.addRow([]);
+            worksheet.getCell(`${summaryCols.label}${row.number}`).value = entry.label;
+
+            const brutCellRef = `${summaryCols.brut}${row.number}`;
+            worksheet.getCell(brutCellRef).value = entry.brut;
+            worksheet.getCell(brutCellRef).numFmt = '#,##0';
+
+            const taxCellRef = `${summaryCols.tax}${row.number}`;
+            worksheet.getCell(taxCellRef).value = { formula: `${brutCellRef}*${taxRate}`, result: entry.tax };
+            worksheet.getCell(taxCellRef).numFmt = '#,##0';
+
+            const netCellRef = `${summaryCols.net}${row.number}`;
+            worksheet.getCell(netCellRef).value = { formula: `${brutCellRef}-${taxCellRef}`, result: entry.net };
+            worksheet.getCell(netCellRef).numFmt = '#,##0';
+
+            row.eachCell((cell) => {
+                cell.alignment = { horizontal: (cell.address.startsWith(summaryCols.label) ? 'left' : 'right') };
+                cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+            });
+        });
+
+        const summaryTotalRow = worksheet.addRow([]);
+        worksheet.getCell(`${summaryCols.label}${summaryTotalRow.number}`).value = "TOTAL GENERAL";
+        worksheet.getCell(`${summaryCols.label}${summaryTotalRow.number}`).font = { bold: true };
+        worksheet.getCell(`${summaryCols.label}${summaryTotalRow.number}`).alignment = { horizontal: 'left' };
+        worksheet.getCell(`${summaryCols.label}${summaryTotalRow.number}`).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'double' }, right: { style: 'thin' } };
+        const brutSumRange = `${summaryCols.brut}${summaryDataStartRow}:${summaryCols.brut}${summaryTotalRow.number - 1}`;
+        const taxSumRange = `${summaryCols.tax}${summaryDataStartRow}:${summaryCols.tax}${summaryTotalRow.number - 1}`;
+        const netSumRange = `${summaryCols.net}${summaryDataStartRow}:${summaryCols.net}${summaryTotalRow.number - 1}`;
+        worksheet.getCell(`${summaryCols.brut}${summaryTotalRow.number}`).value = { formula: `SUM(${brutSumRange})`, result: summaryGrandTotals.brut };
+        worksheet.getCell(`${summaryCols.tax}${summaryTotalRow.number}`).value = { formula: `SUM(${taxSumRange})`, result: summaryGrandTotals.tax };
+        worksheet.getCell(`${summaryCols.net}${summaryTotalRow.number}`).value = { formula: `SUM(${netSumRange})`, result: summaryGrandTotals.net };
+        [summaryCols.brut, summaryCols.tax, summaryCols.net].forEach(col => {
+            const cellRef = `${col}${summaryTotalRow.number}`;
+            worksheet.getCell(cellRef).font = { bold: true };
+            worksheet.getCell(cellRef).numFmt = '#,##0';
+            worksheet.getCell(cellRef).alignment = { horizontal: 'right' };
+            worksheet.getCell(cellRef).border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'double' }, right: { style: 'thin' } };
+        });
+        worksheet.addRow([]); // spacing between summary and details
+
+        // === Detailed section: structures -> substructures -> allocations ===
+        const detailTitleRow = worksheet.addRow([]);
+        worksheet.mergeCells(`A${detailTitleRow.number}:${lastCol}${detailTitleRow.number}`);
+        const detailTitleCell = worksheet.getCell(`A${detailTitleRow.number}`);
+        detailTitleCell.value = `DETAIL PAR STRUCTURE ET SOUS-STRUCTURE - ${bonusInstance.referencePeriod}`;
+        detailTitleCell.font = { bold: true, size: 14 };
+        detailTitleCell.alignment = { horizontal: 'center' };
+
+        const sectionRow = worksheet.addRow([]);
+        worksheet.mergeCells(`B${sectionRow.number}:${lastCol}${sectionRow.number}`);
+        const sectionCell = worksheet.getCell(`B${sectionRow.number}`);
+        sectionCell.value = 'I: PAIEMENTS PAR VIREMENT';
+        sectionCell.font = { bold: true, size: 12 };
+
+        const subsectionRow = worksheet.addRow([]);
+        worksheet.mergeCells(`B${subsectionRow.number}:${lastCol}${subsectionRow.number}`);
+        const subsectionCell = worksheet.getCell(`B${subsectionRow.number}`);
+        subsectionCell.value = 'a: Services centraux, agences comptables et autres services';
+        subsectionCell.font = { italic: true };
+
+        worksheet.addRow([]); // Empty row before headers
+
+        // Header row styling
+        const headerRow = worksheet.addRow(chosenHeaders.map(h => h.header));
+        headerRow.eachCell((cell) => {
+            cell.font = { bold: true };
+            cell.alignment = { horizontal: 'center' };
+            cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFD3D3D3' } };
+            cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+        });
+
+        let globalIndex = 1;
+        let grandTotals = { parts: 0, brut: 0, tax: 0, net: 0 };
+        mainDisplayIndex = 0;
+
+        for (const mainKey of orderedMainKeys) {
+            mainDisplayIndex++;
+            const mainGroup = hierarchy[mainKey];
+            const subKeys = Object.keys(mainGroup.substructures).sort((a, b) => {
+                const codeA = mainGroup.substructures[a].sub.code || '';
+                const codeB = mainGroup.substructures[b].sub.code || '';
+                const priDiff = codePriority(codeA) - codePriority(codeB);
+                if (priDiff !== 0) return priDiff;
+                return codeA.localeCompare(codeB);
+            });
+
+            // Main structure header row (orange, left aligned)
+            const structureHeaderRow = worksheet.addRow([]);
+            worksheet.mergeCells(`A${structureHeaderRow.number}:${lastCol}${structureHeaderRow.number}`);
+            const structureCell = worksheet.getCell(`A${structureHeaderRow.number}`);
+            structureCell.value = `${mainDisplayIndex}. ${mainGroup.main.name}${mainGroup.main.code ? ' - ' + mainGroup.main.code : ''}`;
             structureCell.font = { color: { argb: 'FFFFFFFF' }, size: 14, bold: true };
-            structureCell.alignment = { vertical: 'middle', horizontal: 'center' };
+            structureCell.alignment = { vertical: 'middle', horizontal: 'left' };
             structureCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFE06B21' } };
             structureCell.border = { top: { style: 'thick', color: { argb: 'FF964714' } }, left: { style: 'thick', color: { argb: 'FF964714' } }, bottom: { style: 'thick', color: { argb: 'FF964714' } }, right: { style: 'thick', color: { argb: 'FF964714' } } };
-            currentRowNum++;
 
-            // Totals per structure
-            let subtotals = { parts: 0, brut: 0, tax: 0, net: 0 };
+            let subDisplayIndex = 0;
+            const structureRunningTotals = { parts: 0, brut: 0, tax: 0, net: 0 };
 
-            for (const allocation of list) {
-                // Format personnel name
-                if (allocation.personnelId?.name) {
-                    const name = allocation.personnelId.name;
-                    allocation.personnelId.formattedName = `${name.family?.join(' ')} ${name.given?.join(' ')}`.trim();
-                }
+            for (const subKey of subKeys) {
+                subDisplayIndex++;
+                const subGroup = mainGroup.substructures[subKey];
 
-                // Compute grade code using dictionary and extract position name
-                let gradeCode = '';
-                let indiceCat = allocation.calculationInputs?.indiceCatDisplay || '';
-                let fonctionLabel = allocation.personnelSnapshotId?.data?.position?.name || '';
-                const status = allocation.personnelSnapshotId?.data?.status || '';
-                const grade = allocation.personnelSnapshotId?.data?.grade || '';
-                if (status && grade) {
-                    const gradeTxt = dictionary.getValueFromJSON(
-                        `../../resources/dictionary/personnel/status/${status}/grades.json`,
-                        parseInt(grade, 10),
-                        'code'
-                    );
-                    gradeCode = gradeTxt || String(grade);
-                }
+                // Substructure header row (light gray)
+                const subHeaderRow = worksheet.addRow([]);
+                worksheet.mergeCells(`A${subHeaderRow.number}:${lastCol}${subHeaderRow.number}`);
+                const subCell = worksheet.getCell(`A${subHeaderRow.number}`);
+                subCell.value = `${mainDisplayIndex}.${subDisplayIndex} ${subGroup.sub.name}${subGroup.sub.code ? ' - ' + subGroup.sub.code : ''}`;
+                subCell.font = { bold: true, size: 12 };
+                subCell.alignment = { vertical: 'middle', horizontal: 'left' };
+                subCell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF0F0F0' } };
+                subCell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
 
-                // Build Indice/Cat display (prefer stored value from calculationInputs)
+                const subTotals = { parts: 0, brut: 0, tax: 0, net: 0 };
 
-                if (!indiceCat) {
-                    if (String(status) === '1') {
-                        indiceCat = allocation.personnelSnapshotId?.data?.index || '';
-                    } else if (String(status) === '2') {
-                        const cat = allocation.personnelSnapshotId?.data?.category || '';
-                        const ech = allocation.personnelSnapshotId?.data?.index || '';
-                        // Map category ID to code using dictionary for consistency (e.g., CAT 1..12)
-                        const catId = parseInt(cat, 10);
-                        const catCode = Number.isFinite(catId)
-                            ? (dictionary.getValueFromJSON(`../../resources/dictionary/personnel/status/2/categories.json`, catId, 'code') || String(cat))
-                            : String(cat || '');
-                        indiceCat = `${catCode}${ech ? ' / ' + ech : ''}`;
+                for (const allocation of subGroup.allocations) {
+                    // Format personnel name
+                    if (allocation.personnelId?.name) {
+                        const name = allocation.personnelId.name;
+                        allocation.personnelId.formattedName = `${name.family?.join(' ')} ${name.given?.join(' ')}`.trim();
                     }
-                }
 
-                // TAUX (%) for without parts
-                let tauxPercent = null;
-                if (isWithoutParts) {
-                    const fromInputs = allocation.calculationInputs?.txPercent;
-                    tauxPercent = Number.isFinite(fromInputs) ? Math.round(fromInputs) : computeTxPercentFromSnapshot(allocation.personnelSnapshotId);
-                }
-
-                // Use stored and already rounded values
-                const brut = Math.round(allocation.grossAmount || allocation.finalAmount || 0);
-                const tax = Math.round(allocation.taxAmount || ((allocation.grossAmount || 0) - (allocation.netAmount || 0)));
-                const net = Math.round(allocation.netAmount || ((allocation.grossAmount || 0) - (tax)));
-
-                // Subtotals
-                subtotals.parts += allocation.calculationInputs?.parts || 0;
-                subtotals.brut += brut;
-                subtotals.tax += tax;
-                subtotals.net += net;
-
-                // Row values
-                const rowValuesSansPart = [
-                    globalIndex++,
-                    allocation.personnelId?.formattedName || 'N/A',
-                    allocation.personnelId?.identifier || 'N/A',
-                    indiceCat,
-                    gradeCode,
-                    fonctionLabel,
-                    isFinite(tauxPercent) ? tauxPercent : '',
-                    brut,
-                    tax,
-                    net,
-                    '', // Emargement
-                    allocation.calculationInputs?.comment || ''
-                ];
-
-                const rowValuesWithParts = [
-                    globalIndex++,
-                    allocation.personnelId?.formattedName || 'N/A',
-                    allocation.personnelId?.identifier || 'N/A',
-                    `${gradeCode}${fonctionLabel ? ' / ' + fonctionLabel : ''}`,
-                    allocation.calculationInputs?.parts || 0,
-                    brut,
-                    tax,
-                    net,
-                    '',
-                    allocation.calculationInputs?.comment || '',
-                    ''
-                ];
-
-                const dataRow = worksheet.addRow(isWithoutParts ? rowValuesSansPart : rowValuesWithParts);
-                // Number formats
-                const colsForNumbers = isWithoutParts ? ['H','I','J'] : ['F','G','H'];
-                colsForNumbers.forEach(col => worksheet.getCell(`${col}${dataRow.number}`).numFmt = '#,##0');
-
-                // Style row border and excluded coloring
-                dataRow.eachCell((cell) => {
-                    cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
-                    if (allocation.status === 'excluded' || (allocation.calculationInputs?.parts || 0) === 0) {
-                        cell.font = { color: { argb: 'FFFF0000' } };
+                    // Compute grade code using dictionary and extract position name
+                    let gradeCode = '';
+                    let indiceCat = allocation.calculationInputs?.indiceCatDisplay || '';
+                    let fonctionLabel = allocation.personnelSnapshotId?.data?.position?.name || '';
+                    const status = allocation.personnelSnapshotId?.data?.status || '';
+                    const grade = allocation.personnelSnapshotId?.data?.grade || '';
+                    if (status && grade) {
+                        const gradeTxt = dictionary.getValueFromJSON(
+                            `../../resources/dictionary/personnel/status/${status}/grades.json`,
+                            parseInt(grade, 10),
+                            'code'
+                        );
+                        gradeCode = gradeTxt || String(grade);
                     }
+
+                    if (!indiceCat) {
+                        if (String(status) === '1') {
+                            indiceCat = allocation.personnelSnapshotId?.data?.index || '';
+                        } else if (String(status) === '2') {
+                            const cat = allocation.personnelSnapshotId?.data?.category || '';
+                            const ech = allocation.personnelSnapshotId?.data?.index || '';
+                            const catId = parseInt(cat, 10);
+                            const catCode = Number.isFinite(catId)
+                                ? (dictionary.getValueFromJSON(`../../resources/dictionary/personnel/status/2/categories.json`, catId, 'code') || String(cat))
+                                : String(cat || '');
+                            indiceCat = `${catCode}${ech ? ' / ' + ech : ''}`;
+                        }
+                    }
+
+                    // TAUX (%) for without parts
+                    let tauxPercent = null;
+                    if (isWithoutParts) {
+                        const fromInputs = allocation.calculationInputs?.txPercent;
+                        tauxPercent = Number.isFinite(fromInputs) ? Math.round(fromInputs) : computeTxPercentFromSnapshot(allocation.personnelSnapshotId);
+                    }
+
+                    const fin = computeFinancials(allocation);
+
+                    // Row values
+                    const rowValuesSansPart = [
+                        globalIndex++,
+                        allocation.personnelId?.formattedName || 'N/A',
+                        allocation.personnelId?.identifier || 'N/A',
+                        indiceCat,
+                        gradeCode,
+                        fonctionLabel,
+                        isFinite(tauxPercent) ? tauxPercent : '',
+                        fin.brut,
+                        fin.tax,
+                        fin.net,
+                        '', // Emargement
+                        allocation.calculationInputs?.comment || ''
+                    ];
+
+                    const rowValuesWithParts = [
+                        globalIndex++,
+                        allocation.personnelId?.formattedName || 'N/A',
+                        allocation.personnelId?.identifier || 'N/A',
+                        `${gradeCode}${fonctionLabel ? ' / ' + fonctionLabel : ''}`,
+                        fin.parts,
+                        fin.brut,
+                        fin.tax,
+                        fin.net,
+                        '',
+                        allocation.calculationInputs?.comment || '',
+                        ''
+                    ];
+
+                    const dataRow = worksheet.addRow(isWithoutParts ? rowValuesSansPart : rowValuesWithParts);
+                    const colsForNumbers = isWithoutParts ? ['H','I','J'] : ['F','G','H'];
+                    colsForNumbers.forEach(col => worksheet.getCell(`${col}${dataRow.number}`).numFmt = '#,##0');
+
+                    dataRow.eachCell((cell) => {
+                        cell.border = { top: { style: 'thin' }, left: { style: 'thin' }, bottom: { style: 'thin' }, right: { style: 'thin' } };
+                        if (allocation.status === 'excluded' || (allocation.calculationInputs?.parts || 0) === 0) {
+                            cell.font = { color: { argb: 'FFFF0000' } };
+                        }
+                    });
+
+                    subTotals.parts += fin.parts;
+                    subTotals.brut += fin.brut;
+                    subTotals.tax += fin.tax;
+                    subTotals.net += fin.net;
+                }
+
+                // Substructure subtotal row
+                const subtotalValues = isWithoutParts
+                    ? ['', '', '', '', '', 'SOUS-TOTAL', '', subTotals.brut, subTotals.tax, subTotals.net, '', '']
+                    : ['', '', '', 'SOUS-TOTAL', subTotals.parts, subTotals.brut, subTotals.tax, subTotals.net, '', '', ''];
+                const subtotalRow = worksheet.addRow(subtotalValues);
+                subtotalRow.eachCell((cell) => {
+                    cell.font = { bold: true };
+                    cell.border = { top: { style: 'thin' }, bottom: { style: 'double' } };
                 });
+                const subtotalCols = isWithoutParts ? ['H','I','J'] : ['E','F','G','H'];
+                subtotalCols.forEach(col => worksheet.getCell(`${col}${subtotalRow.number}`).numFmt = '#,##0');
 
-                currentRowNum++;
+                structureRunningTotals.parts += subTotals.parts;
+                structureRunningTotals.brut += subTotals.brut;
+                structureRunningTotals.tax += subTotals.tax;
+                structureRunningTotals.net += subTotals.net;
             }
 
-            // Subtotal row
-            const subtotalValues = isWithoutParts
-                ? ['', '', '', '', '', 'SOUS-TOTAL', '', subtotals.brut, subtotals.tax, subtotals.net, '', '']
-                : ['', '', '', 'SOUS-TOTAL', subtotals.parts, subtotals.brut, subtotals.tax, subtotals.net, '', '', ''];
-            const subtotalRow = worksheet.addRow(subtotalValues);
-            subtotalRow.eachCell((cell) => {
+            // Structure subtotal row
+            const structureSubtotalLabel = `SOUS TOTAL ${mainGroup.main.name}`;
+            const structureSubtotalValues = isWithoutParts
+                ? ['', '', '', '', '', structureSubtotalLabel, '', structureRunningTotals.brut, structureRunningTotals.tax, structureRunningTotals.net, '', '']
+                : ['', '', '', structureSubtotalLabel, structureRunningTotals.parts, structureRunningTotals.brut, structureRunningTotals.tax, structureRunningTotals.net, '', '', ''];
+            const structureSubtotalRow = worksheet.addRow(structureSubtotalValues);
+            structureSubtotalRow.eachCell((cell) => {
                 cell.font = { bold: true };
+                cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5F5F5' } };
                 cell.border = { top: { style: 'thin' }, bottom: { style: 'double' } };
             });
-            const subtotalCols = isWithoutParts ? ['H','I','J'] : ['E','F','G','H'];
-            subtotalCols.forEach(col => worksheet.getCell(`${col}${subtotalRow.number}`).numFmt = '#,##0');
-            currentRowNum++;
+            const structSubtotalCols = isWithoutParts ? ['H','I','J'] : ['E','F','G','H'];
+            structSubtotalCols.forEach(col => worksheet.getCell(`${col}${structureSubtotalRow.number}`).numFmt = '#,##0');
 
-            grandTotals.parts += subtotals.parts;
-            grandTotals.brut += subtotals.brut;
-            grandTotals.tax += subtotals.tax;
-            grandTotals.net += subtotals.net;
+            grandTotals.parts += structureRunningTotals.parts;
+            grandTotals.brut += structureRunningTotals.brut;
+            grandTotals.tax += structureRunningTotals.tax;
+            grandTotals.net += structureRunningTotals.net;
 
-            worksheet.addRow([]);
-            currentRowNum++;
+            worksheet.addRow([]); // spacing between structures
         }
 
         // Grand total
