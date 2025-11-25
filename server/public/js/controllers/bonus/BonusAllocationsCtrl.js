@@ -61,6 +61,35 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
         return date.toISOString().split('T')[0];
     }
 
+    function resolveInstance(allocation) {
+        if (!allocation) return null;
+        if (allocation.instanceId && allocation.instanceId._id) return allocation.instanceId;
+        if (allocation.instanceId) {
+            var found = ($scope.instances || []).find(function(inst) { return inst._id === allocation.instanceId; });
+            if (found) return found;
+        }
+        return null;
+    }
+
+    function normalizeAllocation(allocation) {
+        if (!allocation) return allocation;
+        var instance = resolveInstance(allocation);
+        if (instance) {
+            allocation.instanceId = instance;
+            if (!allocation.templateId && instance.templateId) {
+                allocation.templateId = instance.templateId;
+            }
+        }
+        allocation.calculationInputs = allocation.calculationInputs || {};
+        allocation._category = (allocation.templateId && allocation.templateId.category) || (allocation.instanceId && allocation.instanceId.templateId && allocation.instanceId.templateId.category) || null;
+        allocation._primeType = allocation._category === 'with_parts' ? 'With parts'
+            : allocation._category === 'without_parts' ? 'Without parts'
+            : allocation._category === 'fixed_amount' ? 'Fixed amount'
+            : allocation._category === 'calculated' ? 'Calculated'
+            : 'N/A';
+        return allocation;
+    }
+
     // Load allocations with filters
     $scope.loadAllocations = function() {
         $scope.loading = true;
@@ -85,10 +114,10 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
             .then(function(response) {
                 const data = response.data;
                 if (data && data.items) {
-                    $scope.allocations = data.items;
+                    $scope.allocations = data.items.map(normalizeAllocation);
                     $scope.pagination.total = data.total || data.items.length || 0;
                 } else {
-                    $scope.allocations = Array.isArray(data) ? data : [];
+                    $scope.allocations = Array.isArray(data) ? data.map(normalizeAllocation) : [];
                     $scope.pagination.total = $scope.allocations.length;
                 }
             })
@@ -153,12 +182,73 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
     $scope.getTxPercent = function(allocation){
         var v = allocation && allocation.calculationInputs && allocation.calculationInputs.txPercent;
         if (v === 0 || v) return Math.round(Number(v));
+        if (allocation && allocation._category === 'without_parts') {
+            var rate = allocation.calculationInputs.rate || allocation.calculationInputs.taxRate;
+            if (rate === 0 || rate) return Math.round(Number(rate));
+        }
         return '';
     };
     $scope.getSbi = function(allocation){
-        var sbi = allocation && allocation.calculationInputs && allocation.calculationInputs.sbi;
-        return Number(sbi || 0);
+        if (allocation && allocation._category === 'without_parts') {
+            var sbi = allocation.calculationInputs.sbi || allocation.calculationInputs.baseSalary;
+            return Number(sbi || 0);
+        }
+        if (allocation && allocation._category === 'with_parts') {
+            return Number(allocation.calculationInputs.shareAmount || allocation.instanceId.shareAmount || allocation.templateId.defaultShareAmount || 0);
+        }
+        return Number(allocation.calculationInputs.sbi || 0);
     };
+
+    // Helpers for display values in UI
+    function getCategory(allocation) {
+        try {
+            if (allocation && allocation.templateId && allocation.templateId.category) return allocation.templateId.category;
+            if (allocation && allocation.instanceId && allocation.instanceId.templateId && allocation.instanceId.templateId.category) {
+                return allocation.instanceId.templateId.category;
+            }
+        } catch (e) { /* ignore */ }
+        return null;
+    }
+
+    $scope.getPrimeType = function(allocation) {
+        return allocation && allocation._primeType ? allocation._primeType : 'N/A';
+    };
+
+    $scope.isWithoutParts = function(allocation) {
+        return allocation && allocation._category === 'without_parts';
+    };
+
+    $scope.isWithParts = function(allocation) {
+        return allocation && allocation._category === 'with_parts';
+    };
+
+    $scope.formatStatus = function(status) {
+        if (!status) return 'N/A';
+        return status.charAt(0).toUpperCase() + status.slice(1);
+    };
+
+    $scope.getBonusName = function(allocation) {
+        if (!allocation) return 'N/A';
+        if (allocation.templateId && allocation.templateId.name) return allocation.templateId.name;
+        if (allocation.instanceId && allocation.instanceId.templateId && allocation.instanceId.templateId.name) {
+            return allocation.instanceId.templateId.name;
+        }
+        return allocation.instanceId && allocation.instanceId.name ? allocation.instanceId.name : 'N/A';
+    };
+
+    $scope.formatInstanceLabel = function(instance) {
+        if (!instance) return 'N/A';
+        var bonusName = (instance.templateId && instance.templateId.name) || instance.name || 'Bonus';
+        var period = instance.referencePeriod || instance.reference || '';
+        return period ? (bonusName + ' • ' + period) : bonusName;
+    };
+
+    $scope.formatCyclePeriod = function(instance) {
+        if (!instance) return 'N/A';
+        return instance.referencePeriod || instance.reference || 'N/A';
+    };
+
+    $scope.getCategory = getCategory;
 
     // Initialize
     loadInstances();

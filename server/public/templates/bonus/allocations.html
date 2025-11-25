@@ -27,7 +27,7 @@
             <label>Payout Cycle</label>
             <select class="form-control" ng-model="filters.instanceId" ng-change="applyFilters()">
               <option value="">All Cycles</option>
-              <option ng-repeat="instance in instances" value="{{instance._id}}">{{instance.name || instance.referencePeriod}}</option>
+              <option ng-repeat="instance in instances" value="{{instance._id}}">{{formatInstanceLabel(instance)}}</option>
             </select>
           </div>
           <!-- Date range filters -->
@@ -64,14 +64,14 @@
           <thead>
             <tr>
               <th>Personnel</th>
-              <th>Cycle</th>
+              <th>Bonus / Cycle</th>
+              <th>Prime Type</th>
               <th>Status</th>
               <th class="text-center">Parts</th>
               <th class="text-center">TAUX (%)</th>
               <th class="text-right">SBI</th>
               <th>Amount</th>
               <th>Created At</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -79,25 +79,40 @@
               <td colspan="9" class="text-center">No allocations found matching your filters.</td>
             </tr>
             <tr ng-repeat="allocation in allocations">
-              <td>{{ getPersonnelDisplay(allocation.personnelId) }}</td>
-              <td>{{allocation.instanceId.referencePeriod}}</td>
               <td>
-                <span class="badge" ng-class="{
+                <div class="font-weight-semibold">{{ getPersonnelDisplay(allocation.personnelId) }}</div>
+                <div class="text-muted font-size-sm" ng-if="allocation.personnelId && allocation.personnelId.identifier">{{allocation.personnelId.identifier}}</div>
+              </td>
+              <td>
+                <div class="font-weight-semibold">{{ getBonusName(allocation) }}</div>
+                <div class="text-muted font-size-sm">{{ formatCyclePeriod(allocation.instanceId) }}</div>
+              </td>
+              <td>
+                <span  ng-class="{
+                  'badge-info': isWithParts(allocation),
+                  'badge-warning': isWithoutParts(allocation),
+                  'badge-light': !isWithParts(allocation) && !isWithoutParts(allocation)
+                }">{{ getPrimeType(allocation) }}</span>
+              </td>
+              <td>
+                <span ng-class="{
                   'badge-primary': allocation.status === 'eligible',
                   'badge-danger': allocation.status === 'excluded',
                   'badge-warning': allocation.status === 'adjusted',
                   'badge-success': allocation.status === 'paid',
                   'badge-secondary': allocation.status === 'cancelled'
-                }">{{allocation.status}}</span>
+                }">{{formatStatus(allocation.status)}}</span>
               </td>
-              <td class="text-center">{{allocation.calculationInputs.parts || 0}}</td>
-              <td class="text-center">{{ getTxPercent(allocation) }}</td>
-              <td class="text-right">{{ getSbi(allocation) | number:0 }} FCFA</td>
+              <td class="text-center">{{ allocation.calculationInputs.parts || (isWithParts(allocation) ? 0 : '—') }}</td>
+              <td class="text-center">
+                <span ng-if="isWithoutParts(allocation)">{{ getTxPercent(allocation) }}</span>
+                <span ng-if="!isWithoutParts(allocation)">{{ getTxPercent(allocation) }}</span>
+              </td>
+              <td class="text-right">
+                <span>{{ getSbi(allocation) | number:0 }} FCFA</span>
+              </td>
               <td>{{allocation.finalAmount | number:0}} FCFA</td>
               <td>{{allocation.createdAt | date:'yyyy-MM-dd'}}</td>
-              <td>
-                <!-- Actions would go here -->
-              </td>
             </tr>
           </tbody>
         </table>

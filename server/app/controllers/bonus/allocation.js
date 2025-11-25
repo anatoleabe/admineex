@@ -219,9 +219,16 @@ exports.api.getAll = async (req, res, next) => {
             .sort(sort)
             .skip(Number(offset))
             .limit(Number(limit))
-            .populate('instanceId', 'referencePeriod status shareAmount')
+            .populate({
+                path: 'instanceId',
+                select: 'referencePeriod status shareAmount templateId',
+                populate: {
+                    path: 'templateId',
+                    select: 'name code category'
+                }
+            })
             .populate('personnelId', 'identifier name')
-            .populate('templateId', 'name code')
+            .populate('templateId', 'name code category')
             .populate('personnelSnapshotId');
 
         // Beautify grades for page items
