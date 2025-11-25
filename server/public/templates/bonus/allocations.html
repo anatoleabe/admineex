@@ -1,5 +1,5 @@
 <div class="bonus-allocations-page">
-  <h3>Bonus Allocations</h3>
+  <h3>Distributions</h3>
   <div ng-controller="BonusAllocationsController">
     <!-- Filter controls -->
     <div class="card mb-3">
@@ -24,9 +24,9 @@
           </div>
           <!-- Instance filter -->
           <div class="col-md-3 mb-3">
-            <label>Bonus Instance</label>
+            <label>Payout Cycle</label>
             <select class="form-control" ng-model="filters.instanceId" ng-change="applyFilters()">
-              <option value="">All Instances</option>
+              <option value="">All Cycles</option>
               <option ng-repeat="instance in instances" value="{{instance._id}}">{{instance.name || instance.referencePeriod}}</option>
             </select>
           </div>
@@ -64,7 +64,7 @@
           <thead>
             <tr>
               <th>Personnel</th>
-              <th>Instance</th>
+              <th>Cycle</th>
               <th>Status</th>
               <th class="text-center">Parts</th>
               <th class="text-center">TAUX (%)</th>

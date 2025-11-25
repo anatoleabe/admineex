@@ -8,34 +8,43 @@ angular.module('app').controller('BonusManagementController', function($scope, $
   $scope.allocations = [];
   $scope.recentActivity = [];
 
+  // Normalize API responses that may return an array or a paginated shape
+  function unpackList(data) {
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.items)) return data.items;
+    return [];
+  }
+
   // Load dashboard data
   function loadDashboardData() {
     $http.get('/api/bonus/templates').then(function(response) {
-      $scope.templates = response.data;
+      $scope.templates = unpackList(response.data);
     });
 
     $http.get('/api/bonus/rules').then(function(response) {
-      $scope.rules = response.data;
+      $scope.rules = unpackList(response.data);
     });
 
     $http.get('/api/bonus/instances').then(function(response) {
-      $scope.instances = response.data.filter(instance => instance.status === 'active');
+      $scope.instances = unpackList(response.data);
     });
 
     $http.get('/api/bonus/allocations').then(function(response) {
-      $scope.allocations = response.data;
+      $scope.allocations = unpackList(response.data);
     });
 
     // Get recent activity (last 10 activities)
     $http.get('/api/bonus/activity').then(function(response) {
-      $scope.recentActivity = response.data.slice(0, 10);
+      var activity = unpackList(response.data);
+      $scope.recentActivity = activity.slice(0, 10);
+    }).catch(function() {
+      // If the endpoint is not available yet, keep the dashboard usable
+      $scope.recentActivity = [];
     });
   }
 
-  // Initialize the dashboard if we're on the main bonus state
-  if ($state.current.name === 'home.bonus') {
-    loadDashboardData();
-  }
+  // Initialize the dashboard
+  loadDashboardData();
 
   // Navigation helpers for sub-sections
   $scope.navigate = function(section) {

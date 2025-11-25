@@ -273,46 +273,51 @@ function buildNav(user, callback) {
 
     // Bonus Management Menu
     var bonusManagement = {
-        href: 'home.bonus.instances',
-        sref: 'home.bonus.instances',
+        href: 'home.bonus.dashboard',
+        sref: 'home.bonus',
         icon: 'card_giftcard',
         icomoon: 'icon-gift',
         label: gt.gettext('Bonus Management'),
         name: gt.gettext('Bonus Management'),
         items: [
             {
-                href: 'home.bonus.rules',
-                sref: 'home.bonus.rules',
-                label: gt.gettext('Rules'),
-                name: gt.gettext('Rules')
+                href: 'home.bonus.dashboard',
+                sref: 'home.bonus.dashboard',
+                label: gt.gettext('Dashboard'),
+                name: gt.gettext('Dashboard')
             },
             {
                 href: 'home.bonus.templates',
                 sref: 'home.bonus.templates',
-                label: gt.gettext('Templates'),
-                name: gt.gettext('Templates')
+                label: gt.gettext('Bonus Programs'),
+                name: gt.gettext('Bonus Programs')
+            },
+            {
+                href: 'home.bonus.rules',
+                sref: 'home.bonus.rules',
+                label: gt.gettext('Rules Library'),
+                name: gt.gettext('Rules Library')
             },
             {
                 href: 'home.bonus.instances',
                 sref: 'home.bonus.instances',
-                label: gt.gettext('Instances'),
-                name: gt.gettext('Instances')
+                label: gt.gettext('Payout Cycles'),
+                name: gt.gettext('Payout Cycles')
             },
             {
                 href: 'home.bonus.allocations',
                 sref: 'home.bonus.allocations',
-                label: gt.gettext('Allocations'),
-                name: gt.gettext('Allocations')
+                label: gt.gettext('Distributions'),
+                name: gt.gettext('Distributions')
             },
             {
                 href: 'home.bonus.reports',
                 sref: 'home.bonus.reports',
-                label: gt.gettext('Reports'),
-                name: gt.gettext('Reports')
+                label: gt.gettext('Reports & Exports'),
+                name: gt.gettext('Reports & Exports')
             }
         ]
     };
-
     //END DIAMA MENU
     // Build the nav
     nav.left[0].items.push(dashboard);

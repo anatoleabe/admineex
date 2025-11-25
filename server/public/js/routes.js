@@ -802,12 +802,19 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                 url: 'bonus',
                 templateUrl: 'templates/bonus/bonus.html',
                 access: {requiredAuthentication: true},
-                breadcrumbs: ['Bonus management']
+                breadcrumbs: ['Bonus management'],
+                // Let nested ui-view render default dashboard via child state definitions; no manual redirect needed
+                onEnter: ['$state', '$transition$', function ($state, $transition$) {
+                    if ($transition$.to().name === 'home.bonus') {
+                        $state.go('home.bonus.dashboard');
+                    }
+                }]
             })
             .state('home.bonus.dashboard', {
                 url: '',
                 templateUrl: 'templates/bonus/dashboard.html',
                 controller: 'BonusManagementController',
+                access: {requiredAuthentication: true},
                 resolve: {
                     loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load('js/controllers/bonus/BonusManagementCtrl.js');
@@ -825,7 +832,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                         return $ocLazyLoad.load('js/controllers/bonus/BonusTemplatesCtrl.js');
                     }]
                 },
-                breadcrumbs: ['Bonus management', 'Templates']
+                breadcrumbs: ['Bonus management', 'Bonus Programs']
             })
             .state('home.bonus.rules', {
                 url: '/rules',
@@ -849,7 +856,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                         return $ocLazyLoad.load('js/controllers/bonus/BonusInstancesCtrl.js');
                     }]
                 },
-                breadcrumbs: ['Bonus management', 'Instances']
+                breadcrumbs: ['Bonus management', 'Payout Cycles']
             })
             // Define parent state for instance details
             .state('home.bonus.instance', {
@@ -880,7 +887,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                         return $ocLazyLoad.load('js/controllers/bonus/BonusAllocationsCtrl.js');
                     }]
                 },
-                breadcrumbs: ['Bonus management', 'Allocations']
+                breadcrumbs: ['Bonus management', 'Distributions']
             })
             .state('home.bonus.reports', {
                 url: '/reports',
@@ -892,12 +899,9 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                         return $ocLazyLoad.load('js/controllers/bonus/BonusReportsCtrl.js');
                     }]
                 },
-                breadcrumbs: ['Bonus management', 'Reports']
+                breadcrumbs: ['Bonus management', 'Reports & Exports']
             })
-            .state('home.bonus.default', {
-                url: '',
-                template: '<div ui-view></div>'
-            });
+            ;
 
         $locationProvider.html5Mode(true);
         $httpProvider.interceptors.push('TokenInterceptor');
@@ -1131,9 +1135,10 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
             }
         }
 
-        if (nextState !== null && nextState.access !== null && nextState.access.requiredAuthentication && !$window.localStorage.token) {
-            $location.path("/signin");
-        }
+        // Robust auth guard: only check requiredAuthentication if access object exists
+        if (nextState && nextState.access && nextState.access.requiredAuthentication && !$window.localStorage.token) {
+             $location.path("/signin");
+         }
 
         if ($location.path().indexOf('installation') == -1) {
             $ocLazyLoad.load('js/services/InstallationService.js').then(function () {

@@ -14,10 +14,10 @@
             <!-- Basic card -->
             <div class="card">
                 <div class="card-header header-elements-inline">
-                    <h5 class="card-title">Bonus Instances</h5>
+                    <h5 class="card-title">Payout Cycles</h5>
                     <div class="header-elements">
                         <button type="button" class="btn btn-primary" ng-click="createInstance()">
-                            <i class="mi-add mr-2"></i> Create New Instance
+                            <i class="mi-add mr-2"></i> Create New Cycle
                         </button>
                         <div class="btn-group ml-2">
                             <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
@@ -39,7 +39,7 @@
                     </div>
                 </div>
 
-                <!-- Template stats cards -->
+                <!-- Program stats cards -->
                 <div class="card-body bg-light">
                     <div class="row">
                         <div class="col-md-3" ng-repeat="template in templateStats">
@@ -79,9 +79,9 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="form-group">
-                                <label>Template</label>
+                                <label>Program</label>
                                 <select class="form-control" ng-model="filters.templateId" ng-change="loadInstances()">
-                                    <option value="">All Templates</option>
+                                    <option value="">All Programs</option>
                                     <option ng-repeat="template in templates" value="{{template._id}}">{{template.name}}</option>
                                 </select>
                             </div>
@@ -92,13 +92,10 @@
                                 <select class="form-control" ng-model="filters.status" ng-change="loadInstances()">
                                     <option value="">All Statuses</option>
                                     <option value="draft">Draft</option>
-                                    <option value="pending_generation">Pending Generation</option>
-                                    <option value="generated">Generated</option>
                                     <option value="under_review">Under Review</option>
                                     <option value="approved">Approved</option>
                                     <option value="paid">Paid</option>
                                     <option value="cancelled">Cancelled</option>
-                                    <option value="auto_generated">Auto-Generated</option>
                                 </select>
                             </div>
                         </div>
@@ -132,7 +129,7 @@
                         <tr>
                             <th style="width: 5%;"></th> <!-- Checkbox column -->
                             <th>Name</th>
-                            <th>Template</th>
+                            <th>Program</th>
                             <th>Period</th>
                             <th>Status</th>
                             <th class="text-center">Allocations</th>
