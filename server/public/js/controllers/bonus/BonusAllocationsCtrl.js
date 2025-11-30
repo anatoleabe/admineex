@@ -1,4 +1,6 @@
 angular.module('app').controller('BonusAllocationsController', ['$scope', '$http', 'toastr', '$uibModal', '$mdDialog', '$state', '$timeout', function($scope, $http, toastr, $uibModal, $mdDialog, $state, $timeout) {
+    // Ensure kernel exists for this scope so views using kernel.loading work
+    $scope.kernel = $scope.kernel || { loading: 100 };
     $scope.allocations = [];
     $scope.loading = false;
     $scope.searchTerm = '';
@@ -93,6 +95,7 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
     // Load allocations with filters
     $scope.loadAllocations = function() {
         $scope.loading = true;
+        $scope.kernel.loading = 0;
         let queryParams = {
             limit: $scope.pagination.limit,
             offset: $scope.pagination.offset,
@@ -127,6 +130,7 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
             })
             .finally(function() {
                 $scope.loading = false;
+                $scope.kernel.loading = 100;
             });
     };
 

@@ -1,7 +1,192 @@
-<div class="bonus-reports-page">
-  <h3>Reports & Exports</h3>
-  <div ng-controller="BonusReportsController">
-    <!-- Reports and export options will go here -->
-    <p>Filter, view, and export bonus reports.</p>
+<div class="bonus-reports-page" ng-controller="BonusReportsController">
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+  <div class="d-flex justify-content-between align-items-center mb-3 no-print">
+    <h3 class="mb-0">Bonus Reports</h3>
+    <button class="btn btn-primary" ng-click="exportPdf()"><i class="icon-printer2 mr-1"></i> Export PDF</button>
+  </div>
+
+  <!-- Filters -->
+  <div class="card mb-3 no-print">
+    <div class="card-header bg-light">
+      <h6 class="mb-0">Filters</h6>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <label>Category</label>
+          <select class="form-control" ng-model="filters.category" ng-change="applyFilters()">
+            <option ng-repeat="option in categoryOptions" value="{{option.value}}">{{option.label}}</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label>Status</label>
+          <select class="form-control" ng-model="filters.status" ng-change="applyFilters()">
+            <option ng-repeat="option in statusOptions" value="{{option.value}}">{{option.label}}</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-3">
+          <label>From Date</label>
+          <input type="date" class="form-control" ng-model="filters.fromDate" ng-change="applyFilters()">
+        </div>
+        <div class="col-md-3 mb-3">
+          <label>To Date</label>
+          <input type="date" class="form-control" ng-model="filters.toDate" ng-change="applyFilters()">
+        </div>
+      </div>
+      <div class="row align-items-end">
+        <div class="col-md-6 mb-3">
+          <label>Personnel</label>
+          <input type="text" class="form-control" placeholder="Type to search personnel" ng-model="filters.searchPersonnel"
+                 uib-typeahead="person as getPersonnelLabel(person) for person in searchPersonnel($viewValue)"
+                 typeahead-on-select="onPersonnelSelected($item)" typeahead-editable="false"
+                 typeahead-template-url="personnel-typeahead-template">
+          <div class="text-muted mt-1" ng-if="filters.personnel">
+            Selected: {{getPersonnelLabel(filters.personnel)}}
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="d-flex align-items-center">
+            <button class="btn btn-secondary mr-2" ng-click="resetPersonnel()">Clear Personnel</button>
+            <button class="btn btn-outline-secondary" ng-click="resetFilters()"><i class="icon-reset mr-1"></i> Reset All</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Typeahead template for personnel display -->
+  <script type="text/ng-template" id="personnel-typeahead-template">
+    <a class="d-flex align-items-center">
+      <span class="font-weight-semibold mr-2">{{match.model.fname}}</span>
+      <span class="font-weight-semibold">{{getPersonnelLabel(match.model)}} - <span class="text-muted">{{match.model.identifier || 'N/A'}}</span></span>
+    </a>
+  </script>
+
+  <div class="text-center my-3" ng-if="loading">
+    <div class="spinner-border text-primary" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+  <div ng-if="!loading">
+    <div class="card mb-3">
+      <div class="card-body text-center">
+        <div class="h5 mb-2 font-weight-semibold">ETAT RECAPITULATIF ANNUEL DES AUTRES GAINS (PRIMES)</div>
+        <div class="mb-1">Exercice (période): {{getPeriodLabel()}}</div>
+        <div class="mb-1" ng-if="filters.personnel">Bénéficiaire: {{getPersonnelLabel(filters.personnel)}}</div>
+      </div>
+    </div>
+    <!-- With parts section -->
+    <div class="card mb-4">
+      <div class="card-header bg-light">
+        <h6 class="mb-0">Primes avec part</h6>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered mb-0">
+          <thead class="thead-light">
+            <tr>
+              <th width="30%">Libellé</th>
+              <th width="15%">Période</th>
+              <th width="10%">Status</th>
+              <th width="15%">Date de paiement</th>
+              <th width="10%" class="text-right">Montant brut</th>
+              <th width="10%" class="text-right">Retenues IR (5,28%)</th>
+              <th width="10%" class="text-right">NAP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="row in filteredRows.with_parts">
+              <td>{{row.label}}</td>
+              <td>{{row.period}}</td>
+              <td>{{row.status | uppercase}}</td>
+              <td>{{row.paymentDate | date:'yyyy-MM-dd'}}</td>
+              <td class="text-right">{{row.gross | number:0}}</td>
+              <td class="text-right">{{row.ir | number:0}}</td>
+              <td class="text-right">{{row.nap | number:0}}</td>
+            </tr>
+            <tr ng-if="!filteredRows.with_parts.length">
+              <td colspan="7" class="text-center text-muted py-3">Aucune prime avec part</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="">
+              <th colspan="4" class="text-right">TOTAL</th>
+              <th class="text-right">{{totals.with_parts.gross | number:0}}</th>
+              <th class="text-right">{{totals.with_parts.ir | number:0}}</th>
+              <th class="text-right">{{totals.with_parts.nap | number:0}}</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- Without parts section -->
+    <div class="card mb-4">
+      <div class="card-header bg-light">
+        <h6 class="mb-0">Primes sans part</h6>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-bordered mb-0">
+          <thead class="thead-light">
+            <tr>
+              <th width="30%">Libellé</th>
+              <th width="15%">Période</th>
+              <th width="10%">Status</th>
+              <th width="15%">Date de paiement</th>
+              <th width="10%" class="text-right">Montant brut</th>
+              <th width="10%" class="text-right">Retenues IR (5,28%)</th>
+              <th width="10%" class="text-right">NAP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="row in filteredRows.without_parts">
+              <td>{{row.label}}</td>
+              <td>{{row.period}}</td>
+              <td>{{row.status | uppercase}}</td>
+              <td>{{row.paymentDate | date:'yyyy-MM-dd'}}</td>
+              <td class="text-right">{{row.gross | number:0}}</td>
+              <td class="text-right">{{row.ir | number:0}}</td>
+              <td class="text-right">{{row.nap | number:0}}</td>
+            </tr>
+            <tr ng-if="!filteredRows.without_parts.length">
+              <td colspan="7" class="text-center text-muted py-3">Aucune prime sans part</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="">
+              <th colspan="4" class="text-right">TOTAL</th>
+              <th class="text-right">{{totals.without_parts.gross | number:0}}</th>
+              <th class="text-right">{{totals.without_parts.ir | number:0}}</th>
+              <th class="text-right">{{totals.without_parts.nap | number:0}}</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- Grand totals -->
+    <div class="card">
+      <div class="card-body bg-warning-100">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="font-weight-semibold">Total montant brut</div>
+            <div class="h5 mb-0">{{totals.all.gross | number:0}}</div>
+          </div>
+          <div class="col-md-4">
+            <div class="font-weight-semibold">Total retenues IR 5.28%</div>
+            <div class="h5 mb-0">{{totals.all.ir | number:0}}</div>
+          </div>
+          <div class="col-md-4">
+            <div class="font-weight-semibold">Total gains (NAP)</div>
+            <div class="h4 mb-0">{{totals.all.nap | number:0}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

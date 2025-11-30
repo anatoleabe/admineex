@@ -210,13 +210,15 @@ exports.api.getAll = async (req, res, next) => {
             .lean()
             .exec();
 
-        // Get allocation counts and total amounts for each instance
+        // Get allocation counts and total amounts/taxes for each instance
         const instances = await Promise.all(items.map(async (instance) => {
+            const instanceId = mongoose.Types.ObjectId(instance._id);
+
             // Calculate allocation stats using aggregation
             const stats = await BonusAllocation.aggregate([
                 {
                     $match: {
-                        instanceId: mongoose.Types.ObjectId(instance._id),
+                        instanceId: instanceId,
                         status: { $ne: 'cancelled' }
                     }
                 },
@@ -224,18 +226,49 @@ exports.api.getAll = async (req, res, next) => {
                     $group: {
                         _id: null,
                         count: { $sum: 1 },
-                        totalAmount: { $sum: "$finalAmount" }
+                        totalAmount: { $sum: { $ifNull: [ '$finalAmount', 0 ] } },
+                        totalTax: { $sum: { $ifNull: [ '$taxAmount', 0 ] } },
+                        totalNet: { $sum: { $ifNull: [ '$netAmount', 0 ] } }
                     }
                 }
             ]);
 
-            const allocStats = stats.length > 0 ? {
-                allocationsCount: stats[0].count,
-                totalAmount: stats[0].totalAmount || 0
-            } : {
-                allocationsCount: 0,
-                totalAmount: 0
-            };
+            let allocStats;
+            if (stats.length > 0) {
+                const s = stats[0];
+                const totalAmount = s.totalAmount || 0;
+                const totalTax = s.totalTax || 0;
+                let totalNet = s.totalNet || 0;
+
+                // Fallback: if totalNet missing but we have totalAmount and totalTax, derive it
+                if (!totalNet && totalAmount && totalTax) {
+                    totalNet = totalAmount - totalTax;
+                }
+
+                // Compute an effective tax rate (%), if we have positive totals
+                let effectiveTaxRate = null;
+                if (totalAmount > 0 && totalTax > 0) {
+                    effectiveTaxRate = (totalTax / totalAmount) * 100;
+                } else if (typeof instance.taxPercentage === 'number') {
+                    effectiveTaxRate = instance.taxPercentage;
+                }
+
+                allocStats = {
+                    allocationsCount: s.count,
+                    totalAmount,
+                    totalTax,
+                    totalNet,
+                    taxRate: effectiveTaxRate
+                };
+            } else {
+                allocStats = {
+                    allocationsCount: 0,
+                    totalAmount: 0,
+                    totalTax: 0,
+                    totalNet: 0,
+                    taxRate: typeof instance.taxPercentage === 'number' ? instance.taxPercentage : null
+                };
+            }
 
             return { ...instance, ...allocStats };
         }));

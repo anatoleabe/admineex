@@ -1,5 +1,7 @@
 angular.module('app')
     .controller('BonusTemplatesController', ['$scope', '$http', '$q', 'toastr', function($scope, $http, $q, toastr) {
+        // Ensure kernel exists for this scope so views using kernel.loading work
+        $scope.kernel = $scope.kernel || { loading: 100 };
         // State management
         $scope.state = {
             loading: false,
@@ -525,20 +527,21 @@ angular.module('app')
         // Load all templates
         function loadTemplates() {
             $scope.state.loading = true;
-            return $http.get('/api/bonus/templates')
+            $scope.kernel.loading = 0;
+            return $http.get('/api/bonus/templates', { params: { limit: 500, offset: 0, envelope: true } })
                 .then(function(response) {
-                    $scope.templates = response.data;
+                    var data = response.data;
+                    $scope.templates = (data && data.items) ? data.items : (Array.isArray(data) ? data : []);
                     computeStats();
                     $scope.applyFilters(true);
-                    return $q.resolve(response.data);
                 })
-                .catch(function(error) {
-                    console.error('Error loading templates:', error);
-                    toastr.error('Failed to load templates', 'Error');
-                    return $q.reject(error);
+                .catch(function(err) {
+                    toastr.error('Failed to load bonus programs');
+                    console.error('Error loading bonus templates:', err);
                 })
                 .finally(function() {
                     $scope.state.loading = false;
+                    $scope.kernel.loading = 100;
                 });
         }
 

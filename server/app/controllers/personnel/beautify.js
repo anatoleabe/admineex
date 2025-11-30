@@ -20,11 +20,10 @@ exports.beautify = (options, personnels, callback) => {
                         callback(err);
                     } else {
 
-                        let status = (personnels[a].status) ? personnels[a].status : "";
-                        let grade = (personnels[a].grade) ? personnels[a].grade : "";
-                        let rank = (personnels[a].rank) ? personnels[a].rank : "";
-                        let category = (personnels[a].category) ? personnels[a].category : "";
-
+                        let status = personnels[a].status ? String(personnels[a].status) : "";
+                        let grade = personnels[a].grade ? String(personnels[a].grade) : "";
+                        let rank = personnels[a].rank ? String(personnels[a].rank) : "";
+                        let category = personnels[a].category ? String(personnels[a].category) : "";
 
 
                         let highestLevelEducation = (personnels[a].qualifications) ? personnels[a].qualifications.highestLevelEducation : "";

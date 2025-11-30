@@ -1138,6 +1138,11 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
             uncategorized: 'Primes manuelles / Non catégorisées'
         };
 
+        const formatRate = (r) => (Number(r || 0) * 100).toFixed(2).replace(/\.00$/, '');
+        const defaultTaxRate = bonusAllocations[0]?.taxRate ||
+            (bonusAllocations[0]?.instanceId?.taxPercentage ? bonusAllocations[0].instanceId.taxPercentage / 100 : 0.0528);
+        const taxHeaderLabel = `Retenue (${formatRate(defaultTaxRate)}%)`;
+
         // --- Generate Official Header ---
         const generateOfficialHeader = () => {
             // Layout based on the provided example image
@@ -1299,13 +1304,37 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
         // --- Data Processing and Grouping ---
         let totalGross = 0, totalTax = 0, totalNet = 0;
         bonusAllocations.forEach(bonus => {
-            const grossAmount = bonus.calculatedAmount || 0;
-            const netAmount = bonus.finalAmount || 0;
+            const rate = (bonus.taxRate !== undefined && bonus.taxRate !== null)
+                ? Number(bonus.taxRate)
+                : (bonus.instanceId?.taxPercentage ? Number(bonus.instanceId.taxPercentage) / 100 : 0.0528);
+
+            const netAmount = Number(bonus.netAmount || bonus.finalAmount || 0);
+            const storedTax = Number(bonus.taxAmount || 0);
+            const storedGross = Number(bonus.grossAmount || bonus.calculatedAmount || 0);
+
+            // Derive gross using the best available source
+            let grossAmount = storedGross;
+            if (!grossAmount) {
+                if (storedTax) {
+                    grossAmount = netAmount + storedTax;
+                } else if (rate > 0 && rate < 1) {
+                    grossAmount = Math.round(netAmount / (1 - rate));
+                } else {
+                    grossAmount = netAmount;
+                }
+            }
+
+            // Derive tax similarly
+            let taxAmount = storedTax;
+            if (!taxAmount) {
+                taxAmount = Math.max(0, grossAmount - netAmount);
+            }
+
             totalGross += grossAmount;
-            totalTax += (grossAmount - netAmount);
+            totalTax += taxAmount;
             totalNet += netAmount;
             bonus.displayGross = grossAmount;
-            bonus.displayTax = grossAmount - netAmount;
+            bonus.displayTax = taxAmount;
             bonus.displayNet = netAmount;
         });
 
@@ -1325,7 +1354,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
         doc.moveDown(3);
 
         // --- Tables Section ---
-        const tableHeaders = ['Période', 'Type de Prime', 'Montant Brut', 'Retenue', 'Montant Net'];
+        const tableHeaders = ['Période', 'Type de Prime', 'Montant Brut', taxHeaderLabel, 'Montant Net'];
         const tableWidths = [100, 170, 80, 80, 80];
         const tableStartX = 50;
         const tableWidth = tableWidths.reduce((a, b) => a + b);
@@ -1418,6 +1447,23 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
                 currentY += 10;
             }
         });
+
+        // --- Grand Total row at end ---
+        currentY = checkNewPage(currentY, 25);
+        doc.rect(tableStartX, currentY, tableWidth, 25).fill(COLOR_TABLE_HEADER_BG);
+        doc.font(FONT_BOLD).fontSize(9).fillColor(COLOR_TEXT);
+        const grandTotalData = [
+            { text: 'TOTAL GENERAL', align: 'right', width: tableWidths.slice(0, 2).reduce((a, b) => a + b) },
+            { text: Math.round(totalGross).toLocaleString(), align: 'right', width: tableWidths[2] },
+            { text: Math.round(totalTax).toLocaleString(), align: 'right', width: tableWidths[3] },
+            { text: Math.round(totalNet).toLocaleString(), align: 'right', width: tableWidths[4] }
+        ];
+        let grandX = tableStartX;
+        grandTotalData.forEach(cell => {
+            doc.text(cell.text, grandX + 5, currentY + 8, { width: cell.width - 10, align: cell.align });
+            grandX += cell.width;
+        });
+        currentY += 25;
 
         // --- QR Code Generation ---
         const verificationUrl = `https://your-verification-url.com/verify?personnel=${encodeURIComponent(personnel.name?.text)}&date=${Date.now()}`;
