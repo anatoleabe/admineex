@@ -1122,13 +1122,14 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
         // --- Styling and Helpers ---
         const FONT_REGULAR = 'Helvetica';
         const FONT_BOLD = 'Helvetica-Bold';
-        const COLOR_PRIMARY = '#1A237E';
-        const COLOR_SECONDARY = '#5C6BC0';
-        const COLOR_TEXT = '#333333';
-        const COLOR_LIGHT_TEXT = '#666666';
-        const COLOR_HEADER_BG = '#F5F5F5';
-        const COLOR_TABLE_HEADER_BG = '#E8EAF6';
-        const COLOR_ROW_ALT = '#FAFAFA';
+        const COLOR_PRIMARY = '#1F2937';
+        const COLOR_SECONDARY = '#4B5563';
+        const COLOR_TEXT = '#111827';
+        const COLOR_LIGHT_TEXT = '#6B7280';
+        const COLOR_BORDER = '#E5E7EB';
+        const COLOR_HEADER_BG = '#F7F7F8';
+        const COLOR_TABLE_HEADER_BG = '#EFEFF2';
+        const COLOR_ROW_ALT = '#F9FAFB';
 
         const categoryLabels = {
             with_parts: 'Primes basées sur les parts',
@@ -1142,6 +1143,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
         const defaultTaxRate = bonusAllocations[0]?.taxRate ||
             (bonusAllocations[0]?.instanceId?.taxPercentage ? bonusAllocations[0].instanceId.taxPercentage / 100 : 0.0528);
         const taxHeaderLabel = `Retenue (${formatRate(defaultTaxRate)}%)`;
+        const formattedName = `${personnel.name?.family?.join(' ') || ''} ${personnel.name?.given?.join(' ') || ''}`.trim();
 
         // --- Generate Official Header ---
         const generateOfficialHeader = () => {
@@ -1166,8 +1168,8 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
             doc.text('---------------', leftColX, headerTextY + 4 * lineHeight, { width: colWidth, align: 'center' });
             doc.text('SECRETARIAT GENERAL', leftColX, headerTextY + 5 * lineHeight, { width: colWidth, align: 'center' });
             doc.text('---------------', leftColX, headerTextY + 6 * lineHeight, { width: colWidth, align: 'center' });
-            doc.text('DIRECTION GENERALE DU TRESOR, DE LA COOPERATION', leftColX, headerTextY + 7 * lineHeight, { width: colWidth, align: 'center' });
-            doc.text('FINANCIERE ET MONETAIRE', leftColX, headerTextY + 8 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('DIRECTION GENERALE DU TRESOR, DE LA', leftColX, headerTextY + 7 * lineHeight, { width: colWidth, align: 'center' });
+            doc.text('COOPERATION FINANCIERE ET MONETAIRE', leftColX, headerTextY + 8 * lineHeight, { width: colWidth, align: 'center' });
             doc.text('---------------', leftColX, headerTextY + 9 * lineHeight, { width: colWidth, align: 'center' });
             doc.text('DIRECTION DES AFFAIRES GENERALES', leftColX, headerTextY + 10 * lineHeight, { width: colWidth, align: 'center' });
             doc.text('---------------', leftColX, headerTextY + 11 * lineHeight, { width: colWidth, align: 'center' });
@@ -1189,7 +1191,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
 
             // Coat of arms in the center
             try {
-                const imgPath = __dirname + '/../../public/img/amoiriecmr.jpg';
+                const imgPath = __dirname + '/../../public/img/coat_of_arms.jpeg';
                 doc.image(imgPath, (pageWidth - logoSize) / 2, headerTextY + 3 * lineHeight, { width: logoSize });
             } catch (error) {
                 doc.rect((pageWidth - logoSize) / 2, headerTextY + 3 * lineHeight, logoSize, logoSize).stroke();
@@ -1200,7 +1202,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
             // Only add the official header on the first page
             if (doc.bufferedPageRange().count === 1) {
                 generateOfficialHeader();
-                doc.moveDown(4);
+                doc.moveDown(2);
             }
 
             doc.fillColor(COLOR_PRIMARY)
@@ -1209,13 +1211,12 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
                     align: 'center',
                     width: doc.page.width - doc.page.margins.left - doc.page.margins.right
                 });
-            const formattedName = `${personnel.name?.family?.join(' ') || ''} ${personnel.name?.given?.join(' ') || ''}`.trim();
             doc.fontSize(10).font(FONT_REGULAR).fillColor(COLOR_LIGHT_TEXT)
                 .text(formattedName, doc.page.margins.left, doc.y, {
                     align: 'center',
                     width: doc.page.width - doc.page.margins.left - doc.page.margins.right
                 });
-            doc.moveDown(2);
+            doc.moveDown(1);
 
         };
 
@@ -1289,17 +1290,56 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
         // --- Info Section ---
         const latestAllocation = bonusAllocations[0];
         const position = latestAllocation.personnelSnapshotId?.data?.position;
+        const infoLeftFields = [
+            { label: 'Matricule', value: personnel.identifier || 'N/A' },
+            { label: 'Poste', value: position?.name || 'N/A' },
+            { label: 'Structure', value: position?.structure?.name || 'N/A' }
+        ];
+        const rankLabel = latestAllocation.personnelSnapshotId?.data?.rank?.name
+            || latestAllocation.personnelSnapshotId?.data?.rank?.label
+            || latestAllocation.personnelSnapshotId?.data?.rank
+            || personnel.rank
+            || 'N/A';
+        const infoRightFields = [
+            {
+                label: 'Période du rapport',
+                value: `${moment(startDate).format('DD/MM/YYYY')} au ${moment(endDate).format('DD/MM/YYYY')}`
+            },
+            { label: 'Grade', value: rankLabel }
+        ];
 
-        doc.fontSize(10).font(FONT_BOLD).fillColor(COLOR_TEXT);
-        const infoTop = doc.y;
-        doc.text('Matricule:', 50, infoTop).text('Poste:', 50, infoTop + 15).text('Structure:', 50, infoTop + 30);
-        doc.font(FONT_REGULAR);
-        doc.text(personnel.identifier || 'N/A', 150, infoTop);
-        doc.text(position?.name || 'N/A', 150, infoTop + 15);
-        doc.text(position?.structure?.name || 'N/A', 150, infoTop + 30);
-        doc.font(FONT_BOLD).text('Période du rapport:', 300, infoTop);
-        doc.font(FONT_REGULAR).text(`${moment(startDate).format('DD/MM/YYYY')} au ${moment(endDate).format('DD/MM/YYYY')}`, 420, infoTop);
-        doc.moveDown(4);
+        const infoBoxX = doc.page.margins.left;
+        const infoBoxY = doc.y;
+        const infoBoxWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+        const infoRowHeight = 20;
+        const infoBoxHeight = Math.max(infoLeftFields.length, infoRightFields.length) * infoRowHeight + 22;
+
+        doc.save();
+        doc.roundedRect(infoBoxX, infoBoxY, infoBoxWidth, infoBoxHeight, 6).fillAndStroke(COLOR_HEADER_BG, COLOR_BORDER);
+        doc.moveTo(infoBoxX + infoBoxWidth / 2, infoBoxY + 10)
+            .lineTo(infoBoxX + infoBoxWidth / 2, infoBoxY + infoBoxHeight - 10)
+            .strokeColor(COLOR_BORDER)
+            .lineWidth(0.5)
+            .stroke();
+        doc.restore();
+
+        const drawInfoLines = (items, startX) => {
+            items.forEach((item, idx) => {
+                const labelY = infoBoxY + 11 + idx * infoRowHeight;
+                doc.font(FONT_BOLD).fontSize(8).fillColor(COLOR_SECONDARY)
+                    .text(`${item.label.toUpperCase()}: `, startX, labelY, {
+                        width: infoBoxWidth / 2 - 20,
+                        continued: true
+                    });
+                doc.font(FONT_REGULAR).fontSize(9).fillColor(COLOR_TEXT)
+                    .text(item.value, { width: infoBoxWidth / 2 - 20 });
+            });
+        };
+
+        drawInfoLines(infoLeftFields, infoBoxX + 12);
+        drawInfoLines(infoRightFields, infoBoxX + infoBoxWidth / 2 + 12);
+
+        doc.y = infoBoxY + infoBoxHeight + 14;
 
         // --- Data Processing and Grouping ---
         let totalGross = 0, totalTax = 0, totalNet = 0;
@@ -1339,35 +1379,69 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
         });
 
         const groupedBonuses = _.groupBy(bonusAllocations, bonus => bonus.templateId?.category || 'uncategorized');
+        const formatThousands = (value) => Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        const formatCurrency = (value) => `${formatThousands(value)} FCFA`;
+        const formatNumber = (value) => formatThousands(value);
 
         // --- Summary Section ---
+        doc.fontSize(10).font(FONT_BOLD).fillColor(COLOR_PRIMARY)
+            .text('Synthèse des montants', doc.page.margins.left, doc.y);
+        doc.moveDown(0.6);
+
+        const summaryData = [
+            { title: 'Montant brut total', value: formatCurrency(totalGross), hint: 'Avant retenues' },
+            { title: 'Total retenues', value: formatCurrency(totalTax), hint: 'Taxes et contributions' },
+            { title: 'Montant net total', value: formatCurrency(totalNet), hint: 'Après retenues' }
+        ];
+        const summarySpacing = 14;
+        const availableWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+        const summaryBoxWidth = (availableWidth - summarySpacing * (summaryData.length - 1)) / summaryData.length;
+        const summaryBoxHeight = 68;
         const summaryY = doc.y;
-        const summaryBoxWidth = 150, summaryBoxHeight = 50, summarySpacing = 20;
-        const drawSummaryBox = (x, y, title, value) => {
-            doc.rect(x, y, summaryBoxWidth, summaryBoxHeight).fill(COLOR_HEADER_BG);
-            doc.fillColor(COLOR_SECONDARY).font(FONT_BOLD).fontSize(10).text(title, x + 10, y + 10);
-            doc.fillColor(COLOR_TEXT).font(FONT_REGULAR).fontSize(12).text(`${Math.round(value).toLocaleString()} FCFA`, x + 10, y + 28);
-        };
-        drawSummaryBox(50, summaryY, 'MONTANT BRUT TOTAL', totalGross);
-        drawSummaryBox(50 + summaryBoxWidth + summarySpacing, summaryY, 'TOTAL RETENUES', totalTax);
-        drawSummaryBox(50 + 2 * (summaryBoxWidth + summarySpacing), summaryY, 'MONTANT NET TOTAL', totalNet);
-        doc.moveDown(3);
+
+        summaryData.forEach((item, index) => {
+            const x = doc.page.margins.left + index * (summaryBoxWidth + summarySpacing);
+            doc.save();
+            doc.roundedRect(x, summaryY, summaryBoxWidth, summaryBoxHeight, 6)
+                .fillAndStroke(COLOR_HEADER_BG, COLOR_BORDER);
+            doc.rect(x, summaryY, summaryBoxWidth, 4).fill(COLOR_SECONDARY);
+            doc.restore();
+
+            doc.font(FONT_BOLD).fontSize(8.5).fillColor(COLOR_SECONDARY)
+                .text(item.title.toUpperCase(), x + 10, summaryY + 10, { width: summaryBoxWidth - 20 });
+            doc.font(FONT_BOLD).fontSize(12).fillColor(COLOR_PRIMARY)
+                .text(item.value, x + 10, summaryY + 26, { width: summaryBoxWidth - 20 });
+            doc.font(FONT_REGULAR).fontSize(7.5).fillColor(COLOR_LIGHT_TEXT)
+                .text(item.hint, x + 10, summaryY + 46, { width: summaryBoxWidth - 20 });
+        });
+
+        doc.y = summaryY + summaryBoxHeight + 14;
+        doc.save();
+        doc.strokeColor(COLOR_BORDER).lineWidth(1)
+            .moveTo(doc.page.margins.left, doc.y)
+            .lineTo(doc.page.width - doc.page.margins.right, doc.y)
+            .stroke();
+        doc.restore();
+        doc.moveDown(1);
 
         // --- Tables Section ---
         const tableHeaders = ['Période', 'Type de Prime', 'Montant Brut', taxHeaderLabel, 'Montant Net'];
-        const tableWidths = [100, 170, 80, 80, 80];
-        const tableStartX = 50;
+        const tableWidths = [90, 160, 85, 80, 80];
+        const tableStartX = doc.page.margins.left;
         const tableWidth = tableWidths.reduce((a, b) => a + b);
+        const tableRowHeight = 24;
 
         const drawTableHeader = (y) => {
-            doc.rect(tableStartX, y, tableWidth, 25).fill(COLOR_TABLE_HEADER_BG);
-            doc.font(FONT_BOLD).fontSize(9).fillColor(COLOR_PRIMARY);
+            doc.save();
+            doc.rect(tableStartX, y, tableWidth, tableRowHeight).fillAndStroke(COLOR_TABLE_HEADER_BG, COLOR_BORDER);
+            doc.restore();
+            doc.font(FONT_BOLD).fontSize(8.5).fillColor(COLOR_PRIMARY);
             let currentX = tableStartX;
             tableHeaders.forEach((header, i) => {
-                doc.text(header, currentX + 5, y + 8, { width: tableWidths[i] - 10, align: 'center' });
+                doc.text(header, currentX + 6, y + 9, { width: tableWidths[i] - 12, align: 'center' });
                 currentX += tableWidths[i];
             });
-            return y + 25;
+            return y + tableRowHeight;
         };
 
         const checkNewPage = (y, requiredHeight) => {
@@ -1389,10 +1463,16 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
             const isLastCategory = index === categoriesToProcess.length - 1;
 
             // Check space for category header and table header
-            currentY = checkNewPage(currentY, 50);
-            doc.fontSize(12).font(FONT_BOLD).fillColor(COLOR_PRIMARY)
-                .text(categoryLabels[category], tableStartX, currentY, { underline: true });
-            currentY += 25;
+            currentY = checkNewPage(currentY, tableRowHeight + 30);
+            doc.fontSize(10).font(FONT_BOLD).fillColor(COLOR_PRIMARY)
+                .text(categoryLabels[category], tableStartX, currentY);
+            doc.save();
+            doc.strokeColor(COLOR_BORDER).lineWidth(1)
+                .moveTo(tableStartX, currentY + 14)
+                .lineTo(tableStartX + tableWidth, currentY + 14)
+                .stroke();
+            doc.restore();
+            currentY += 22;
 
             currentY = drawTableHeader(currentY);
 
@@ -1400,25 +1480,28 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
 
             groupedBonuses[category].forEach((bonus, i) => {
                 // Check space for one row
-                currentY = checkNewPage(currentY, 25);
+                currentY = checkNewPage(currentY, tableRowHeight);
                 const rowColor = i % 2 === 0 ? '#FFFFFF' : COLOR_ROW_ALT;
-                doc.rect(tableStartX, currentY, tableWidth, 25).fill(rowColor);
+                doc.save();
+                doc.rect(tableStartX, currentY, tableWidth, tableRowHeight).fill(rowColor);
+                doc.strokeColor(COLOR_BORDER).lineWidth(0.4).rect(tableStartX, currentY, tableWidth, tableRowHeight).stroke();
+                doc.restore();
                 doc.font(FONT_REGULAR).fontSize(8).fillColor(COLOR_TEXT);
 
                 const rowData = [
                     { text: bonus.instanceId?.referencePeriod || moment(bonus.createdAt).format('MMMM YYYY'), align: 'left' },
                     { text: bonus.templateId?.name || 'Bonus Manuel', align: 'left' },
-                    { text: Math.round(bonus.displayGross).toLocaleString(), align: 'right' },
-                    { text: Math.round(bonus.displayTax).toLocaleString(), align: 'right' },
-                    { text: Math.round(bonus.displayNet).toLocaleString(), align: 'right' }
+                    { text: formatNumber(bonus.displayGross), align: 'right' },
+                    { text: formatNumber(bonus.displayTax), align: 'right' },
+                    { text: formatNumber(bonus.displayNet), align: 'right' }
                 ];
 
                 let currentX = tableStartX;
                 rowData.forEach((cell, j) => {
-                    doc.text(cell.text, currentX + 5, currentY + 8, { width: tableWidths[j] - 10, align: cell.align });
+                    doc.text(cell.text, currentX + 6, currentY + 8, { width: tableWidths[j] - 12, align: cell.align });
                     currentX += tableWidths[j];
                 });
-                currentY += 25;
+                currentY += tableRowHeight;
 
                 categoryGross += bonus.displayGross;
                 categoryTax += bonus.displayTax;
@@ -1426,21 +1509,23 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
             });
 
             // Check space for subtotal row
-            currentY = checkNewPage(currentY, 20);
-            doc.rect(tableStartX, currentY, tableWidth, 20).fill(COLOR_HEADER_BG);
-            doc.font(FONT_BOLD).fontSize(8).fillColor(COLOR_TEXT);
+            currentY = checkNewPage(currentY, 22);
+            doc.save();
+            doc.rect(tableStartX, currentY, tableWidth, 22).fillAndStroke(COLOR_HEADER_BG, COLOR_BORDER);
+            doc.restore();
+            doc.font(FONT_BOLD).fontSize(8.5).fillColor(COLOR_PRIMARY);
             const subtotalData = [
                 { text: 'SOUS-TOTAL', align: 'right', width: tableWidths.slice(0, 2).reduce((a, b) => a + b) },
-                { text: Math.round(categoryGross).toLocaleString(), align: 'right', width: tableWidths[2] },
-                { text: Math.round(categoryTax).toLocaleString(), align: 'right', width: tableWidths[3] },
-                { text: Math.round(categoryNet).toLocaleString(), align: 'right', width: tableWidths[4] }
+                { text: formatNumber(categoryGross), align: 'right', width: tableWidths[2] },
+                { text: formatNumber(categoryTax), align: 'right', width: tableWidths[3] },
+                { text: formatNumber(categoryNet), align: 'right', width: tableWidths[4] }
             ];
             let subtotalX = tableStartX;
             subtotalData.forEach(cell => {
-                doc.text(cell.text, subtotalX + 5, currentY + 6, { width: cell.width - 10, align: cell.align });
+                doc.text(cell.text, subtotalX + 6, currentY + 6, { width: cell.width - 12, align: cell.align });
                 subtotalX += cell.width;
             });
-            currentY += 20;
+            currentY += 22;
 
             // Add space only if it's not the last category
             if (!isLastCategory) {
@@ -1449,25 +1534,34 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
         });
 
         // --- Grand Total row at end ---
-        currentY = checkNewPage(currentY, 25);
-        doc.rect(tableStartX, currentY, tableWidth, 25).fill(COLOR_TABLE_HEADER_BG);
-        doc.font(FONT_BOLD).fontSize(9).fillColor(COLOR_TEXT);
+        currentY = checkNewPage(currentY, tableRowHeight);
+        doc.save();
+        doc.rect(tableStartX, currentY, tableWidth, tableRowHeight).fillAndStroke(COLOR_TABLE_HEADER_BG, COLOR_BORDER);
+        doc.restore();
+        doc.font(FONT_BOLD).fontSize(9).fillColor(COLOR_PRIMARY);
         const grandTotalData = [
             { text: 'TOTAL GENERAL', align: 'right', width: tableWidths.slice(0, 2).reduce((a, b) => a + b) },
-            { text: Math.round(totalGross).toLocaleString(), align: 'right', width: tableWidths[2] },
-            { text: Math.round(totalTax).toLocaleString(), align: 'right', width: tableWidths[3] },
-            { text: Math.round(totalNet).toLocaleString(), align: 'right', width: tableWidths[4] }
+            { text: formatNumber(totalGross), align: 'right', width: tableWidths[2] },
+            { text: formatNumber(totalTax), align: 'right', width: tableWidths[3] },
+            { text: formatNumber(totalNet), align: 'right', width: tableWidths[4] }
         ];
         let grandX = tableStartX;
         grandTotalData.forEach(cell => {
-            doc.text(cell.text, grandX + 5, currentY + 8, { width: cell.width - 10, align: cell.align });
+            doc.text(cell.text, grandX + 6, currentY + 8, { width: cell.width - 12, align: cell.align });
             grandX += cell.width;
         });
-        currentY += 25;
+        currentY += tableRowHeight;
 
         // --- QR Code Generation ---
-        const verificationUrl = `https://your-verification-url.com/verify?personnel=${encodeURIComponent(personnel.name?.text)}&date=${Date.now()}`;
-        const qrImage = qr.imageSync(verificationUrl, { type: 'png' });
+        const qrSummary = [
+            `Personnel: ${formattedName || 'N/A'}`,
+            `Matricule: ${personnel.identifier || 'N/A'}`,
+            `Période: ${moment(startDate).format('DD/MM/YYYY')} au ${moment(endDate).format('DD/MM/YYYY')}`,
+            `Primes: ${bonusAllocations.length}`,
+            `Net total: ${formatCurrency(totalNet)}`,
+            `Brut total: ${formatCurrency(totalGross)}`
+        ].join(' | ');
+        const qrImage = qr.imageSync(qrSummary, { type: 'png' });
 
 
         // --- Finalization ---
