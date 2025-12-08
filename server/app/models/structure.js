@@ -9,6 +9,8 @@ var StructureSchema = new Schema({
     code: {type: String, required: true},
     en: {type: String, required: true},
     fr: {type: String, required: false},
+    hasIFT: { type: Boolean, default: false },
+    iftMode: { type: String, enum: ['all', 'restricted'], default: 'all' },
     fatherIdentifier: {type: String, required: false},
     fatherId: { type: ObjectId, required: false },
     rank: {type: String, required: false},

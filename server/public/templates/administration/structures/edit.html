@@ -73,6 +73,11 @@
                             </md-input-container>
                         </div>
                         <div layout="row">
+                            <md-checkbox ng-model="structure.hasIFT" aria-label="Structure éligible IFT">
+                                <span translate>Structure éligible IFT</span>
+                            </md-checkbox>
+                        </div>
+                        <div layout="row">
                             <md-input-container class="md-block" flex>
                                 <label translate>Region</label>
                                 <md-select name="regions" ng-model="structure.address[0].region" required >

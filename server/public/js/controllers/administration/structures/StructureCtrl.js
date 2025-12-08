@@ -10,6 +10,7 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
     $scope.addFather = false;
     var firstTime = true;
     $scope.structure = {
+        hasIFT: false,
         address: [{
                 country: "CMR",
                 region: undefined,

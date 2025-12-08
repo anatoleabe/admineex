@@ -15,7 +15,8 @@ const createBonusTemplate = {
             })
         ),
         calculationConfig: Joi.object({
-            formulaType: Joi.string().valid('fixed', 'percentage', 'custom_formula', 'parts_based').required(),
+            formulaType: Joi.string().valid('fixed', 'percentage', 'custom_formula', 'parts_based'),
+            subType: Joi.string().valid('remise', 'ift'),
             baseField: Joi.string().when('formulaType', {
                 is: Joi.valid('percentage', 'custom_formula', 'parts_based'),
                 then: Joi.string().required()
@@ -43,8 +44,31 @@ const createBonusTemplate = {
                         })
                     )
                 })
-            })
+            }),
+            defaultShareAmount: Joi.number(),
+            fixedAmount: Joi.number(),
+            percentage: Joi.number(),
+            rate: Joi.number()
         }).required(),
+        iftConfig: Joi.object({
+            useStructureFlag: Joi.boolean(),
+            includedStructureIds: Joi.array().items(Joi.string()),
+            excludedStructureIds: Joi.array().items(Joi.string()),
+            includePersonnelIds: Joi.array().items(Joi.string()),
+            excludePersonnelIds: Joi.array().items(Joi.string()),
+            restrictedModes: Joi.array().items(Joi.object({
+                subStructureCode: Joi.string().required(),
+                allowedFunctions: Joi.array().items(Joi.string()).default([])
+            })),
+            amountRules: Joi.array().items(Joi.object({
+                match: Joi.object({
+                    rankCode: Joi.string(),
+                    rankGroup: Joi.string(),
+                    functionCode: Joi.string()
+                }).default({}),
+                amount: Joi.number().required()
+            }))
+        }).optional(),
         approvalWorkflow: Joi.object({
             steps: Joi.array().items(
                 Joi.object({

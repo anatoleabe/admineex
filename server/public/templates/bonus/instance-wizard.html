@@ -291,7 +291,9 @@
                                   <!-- WITH PARTS TABLE (partial) -->
                                   <div ng-if="isWithParts()" ng-init="tableMode='adjust'" ng-include="'templates/bonus/partials/with-parts-table.html'"></div>
                                   <!-- WITHOUT PARTS TABLE (partial) -->
-                                  <div ng-if="isSansPart()" ng-init="tableMode='adjust'" ng-include="'templates/bonus/partials/without-parts-table.html'"></div>
+                                  <div ng-if="isSansPart() && !isIFT()" ng-init="tableMode='adjust'" ng-include="'templates/bonus/partials/without-parts-table.html'"></div>
+                                  <!-- IFT TABLE (partial) -->
+                                  <div ng-if="isIFT()" ng-init="tableMode='adjust'" ng-include="'templates/bonus/partials/ift-table.html'"></div>
                                 </div>
                             </div>
 
@@ -360,7 +362,10 @@
                                     <div ng-if="isWithParts()" ng-init="tableMode='confirm'" ng-include="'templates/bonus/partials/with-parts-table.html'"></div>
 
                                     <!-- WITHOUT PARTS CONFIRM TABLE (partial) -->
-                                    <div ng-if="isSansPart()" ng-init="tableMode='confirm'" ng-include="'templates/bonus/partials/without-parts-table.html'"></div>
+                                    <div ng-if="isSansPart() && !isIFT()" ng-init="tableMode='confirm'" ng-include="'templates/bonus/partials/without-parts-table.html'"></div>
+
+                                    <!-- IFT CONFIRM TABLE (partial) -->
+                                    <div ng-if="isIFT()" ng-init="tableMode='confirm'" ng-include="'templates/bonus/partials/ift-table.html'"></div>
 
                                     <!-- Pagination controls -->
                                     <div class="wizard-pagination mt-3 pt-3 border-top">

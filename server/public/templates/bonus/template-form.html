@@ -246,8 +246,51 @@
                             </div>
                             <div class="col-md-6" ng-if="templateFormData.calculationConfig.subType === 'ift'">
                                 <div class="alert alert-secondary mb-0">
-                                    IFT: IRPP not deducted. Calculation will be handled per policy.
+                                    IFT: IRPP not deducted. Configure amounts by rank/function below.
                                 </div>
+                            </div>
+                        </div>
+
+                        <!-- IFT amount rules editor -->
+                        <div class="mt-3" ng-if="templateFormData.category === 'without_parts' && templateFormData.calculationConfig.subType === 'ift'">
+                            <label class="d-flex align-items-center mb-1">
+                                <i class="icon-table2 mr-1"></i>Grille IFT (montant par rang)
+                                <i class="icon-help ml-1 text-muted" uib-tooltip="Montants forfaitaires par rang (codes du dictionnaire des rangs). IRPP non prélevé." tooltip-placement="right"></i>
+                            </label>
+                            <div class="table-responsive">
+                                <table class="table table-sm table-bordered mb-2">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th width="30%">Code rang</th>
+                                            <th width="20%" class="text-right">Montant (FCFA)</th>
+                                            <th width="8%" class="text-center">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="rule in templateFormData.iftConfig.amountRules track by $index">
+                                            <td>
+                                                <select class="form-control form-control-sm" ng-model="rule.match.rankCode">
+                                                    <option value="">(Tous rangs)</option>
+                                                    <option ng-repeat="r in ruleOptions.ranks" value="{{r.value}}">{{r.label}}</option>
+                                                    <option value="NON_NOMME">NON_NOMME (CA/AG)</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control form-control-sm text-right" ng-model="rule.amount" min="0" step="1" placeholder="0">
+                                            </td>
+                                            <td class="text-center align-middle">
+                                                <button type="button" class="btn btn-sm btn-outline-danger" ng-click="removeIftRule($index)"><i class="icon-trash"></i></button>
+                                            </td>
+                                        </tr>
+                                        <tr ng-if="!templateFormData.iftConfig.amountRules || !templateFormData.iftConfig.amountRules.length">
+                                            <td colspan="5" class="text-center text-muted py-3">Aucune règle définie</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" ng-click="resetIftDefaultRules()"><i class="icon-undo2 mr-1"></i>Restaurer la grille par défaut</button>
+                                <button type="button" class="btn btn-primary btn-sm" ng-click="addIftRule()"><i class="icon-plus22 mr-1"></i>Ajouter une règle</button>
                             </div>
                         </div>
 

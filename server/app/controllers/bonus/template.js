@@ -38,11 +38,29 @@ exports.api.create = async (req, res, next) => {
                         throw badRequest('Default share amount is required for with-parts category');
                     }
                     break;
-                case 'without_parts':
-                    if (cfg.rate === undefined || cfg.rate === null || isNaN(Number(cfg.rate))) {
-                        throw badRequest('Rate (TX) is required for without-parts category');
+                case 'without_parts': {
+                    const subType = cfg.subType || 'remise';
+                    if (subType === 'ift') {
+                        if (!templateData.iftConfig || !Array.isArray(templateData.iftConfig.amountRules) || templateData.iftConfig.amountRules.length === 0) {
+                            templateData.iftConfig = templateData.iftConfig || {};
+                            templateData.iftConfig.amountRules = [
+                                { match: { rankCode: 'NON_NOMME' }, amount: 60000 },
+                                { match: { rankCode: 'CA' }, amount: 60000 },
+                                { match: { rankCode: 'AG' }, amount: 60000 },
+                                { match: { rankCode: 'CB' }, amount: 225000 },
+                                { match: { rankCode: 'CS' }, amount: 270000 },
+                                { match: { rankCode: 'SD' }, amount: 300000 },
+                                { match: { rankCode: 'DIR' }, amount: 300000 }
+                            ];
+                        }
+                        // For IFT forfaitaire, rely on amountRules; no rate required
+                    } else {
+                        if (cfg.rate === undefined || cfg.rate === null || isNaN(Number(cfg.rate))) {
+                            throw badRequest('Rate (TX) is required for without-parts category');
+                        }
                     }
                     break;
+                }
                 case 'fixed_amount':
                     if (cfg.fixedAmount === undefined || cfg.fixedAmount === null || isNaN(Number(cfg.fixedAmount))) {
                         throw badRequest('Fixed amount is required for fixed amount category');
@@ -105,11 +123,17 @@ exports.api.create = async (req, res, next) => {
                         throw badRequest('Default share amount is required for with-parts category');
                     }
                     break;
-                case 'without_parts':
-                    if (cfg.rate === undefined || cfg.rate === null || isNaN(Number(cfg.rate))) {
-                        throw badRequest('Rate (TX) is required for without-parts category');
+                case 'without_parts': {
+                    const subType = cfg.subType || 'remise';
+                    if (subType === 'ift') {
+                        // For IFT forfaitaire, rely on amountRules; no rate required
+                    } else {
+                        if (cfg.rate === undefined || cfg.rate === null || isNaN(Number(cfg.rate))) {
+                            throw badRequest('Rate (TX) is required for without-parts category');
+                        }
                     }
                     break;
+                }
                 case 'fixed_amount':
                     if (cfg.fixedAmount === undefined || cfg.fixedAmount === null || isNaN(Number(cfg.fixedAmount))) {
                         throw badRequest('Fixed amount is required for fixed amount category');

@@ -1121,6 +1121,13 @@ function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog
         try { return $scope.instance && $scope.instance.templateId && $scope.instance.templateId.category === 'without_parts'; }
         catch (e) { return false; }
     };
+    $scope.isIFT = function() {
+        try {
+            console.log($scope.instance.templateId)
+            const tpl = $scope.instance && $scope.instance.templateId;
+            return tpl && tpl.category === 'without_parts' && (tpl.calculationConfig && tpl.calculationConfig.subType === 'ift');
+        } catch (e) { return false; }
+    };
     $scope.getTxPercent = function(allocation) {
         var v = allocation && allocation.calculationInputs && allocation.calculationInputs.txPercent;
         if (v === 0 || v) return Math.round(Number(v));

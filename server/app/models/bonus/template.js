@@ -39,6 +39,7 @@ const BonusTemplateSchema = new mongoose.Schema({
         subType: {
             type: String,
             enum: ['remise', 'ift'],
+            default: 'remise',
             required: function() { return this.category === 'without_parts'; }
         },
         baseField: { type: String }, // e.g., "salary", "grade_points"
@@ -56,6 +57,25 @@ const BonusTemplateSchema = new mongoose.Schema({
                 parts: { type: Number }
             }]
         }
+    },
+    iftConfig: {
+        useStructureFlag: { type: Boolean, default: true },
+        includedStructureIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Structure' }],
+        excludedStructureIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Structure' }],
+        includePersonnelIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Personnel' }],
+        excludePersonnelIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Personnel' }],
+        restrictedModes: [{
+            subStructureCode: { type: String },
+            allowedFunctions: [{ type: String }]
+        }],
+        amountRules: [{
+            match: {
+                rankCode: { type: String },
+                rankGroup: { type: String },
+                functionCode: { type: String }
+            },
+            amount: { type: Number, default: 0 }
+        }]
     },
     taxConfig: {
         taxName: { type: String, default: "Impôt sur le revenu" },

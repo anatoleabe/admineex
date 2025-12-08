@@ -6,6 +6,7 @@ const { PersonnelSnapshot } = require('../models/bonus/personnelSnapshot');
 const { BonusAllocation } = require('../models/bonus/allocation');
 const { bulkCreateSnapshots} = require('./snapshotService');
 const {Personnel} = require("../models/personnel");
+const { Structure } = require("../models/structure");
 const dictionary = require('../utils/dictionary');
 const vm = require('vm');
 const fs = require('fs');
@@ -26,6 +27,8 @@ function loadJSONDict(relPath) {
         return null;
     }
 }
+
+const normalizeId = (val) => val ? String(val) : null;
 
 function getSBIFromSnapshot(snapshotData) {
     // status '1' => fonctionnaire, use indices_salaire.json by index
@@ -144,17 +147,30 @@ async function generateAllocationsForInstance(instanceId) {
         await bulkCreateSnapshots(new Date());
 
         // 2. Find eligible personnel
-        const eligiblePersonnel = await findEligiblePersonnel(instance.templateId);
-
-        // 3. Create allocations
         const templateSubType = instance.templateId?.calculationConfig?.subType || null;
         const isSansPartIFT = instance.templateId?.category === 'without_parts' && templateSubType === 'ift';
+
+        let snapshotCache = {};
+        let eligiblePersonnel = [];
+        if (isSansPartIFT) {
+            const { eligibleIds, snapshotByPersonnel } = await findEligiblePersonnelForIFT(instance.templateId);
+            snapshotCache = snapshotByPersonnel || {};
+            if (!eligibleIds || eligibleIds.length === 0) {
+                return 0;
+            }
+            eligiblePersonnel = await Personnel.find({ _id: { $in: eligibleIds } });
+        } else {
+            eligiblePersonnel = await findEligiblePersonnel(instance.templateId);
+        }
+
+        // 3. Create allocations
         const effectiveTaxRate = isSansPartIFT ? 0 : (instance.taxPercentage ? instance.taxPercentage / 100 : 0);
 
         const allocations = await Promise.all(
             eligiblePersonnel.map(async (personnel) => {
                 try {
-                    const snapshot = await PersonnelSnapshot.findOne({ personnelId: personnel._id })
+                    const cachedSnapshot = snapshotCache[normalizeId(personnel._id)];
+                    const snapshot = cachedSnapshot || await PersonnelSnapshot.findOne({ personnelId: personnel._id })
                         .sort({ snapshotDate: -1 });
 
                     if (!snapshot) {
@@ -170,12 +186,18 @@ async function generateAllocationsForInstance(instanceId) {
 
                     // Calculate amount based on inputs
                     const calculatedAmount = calculatedInputs.parts > 0 ?
-                        await calculateAmount(instance, snapshot.data, calculatedInputs.parts) : 0;
+                        await calculateAmount(instance, snapshot.data, calculatedInputs) : 0;
+                    const amountValue = (calculatedAmount && typeof calculatedAmount === 'object')
+                        ? (calculatedAmount.amount || 0)
+                        : calculatedAmount;
+                    const amountDebug = (calculatedAmount && typeof calculatedAmount === 'object')
+                        ? calculatedAmount.debug
+                        : undefined;
 
                     // Calculate tax information with rounding rules (FCFA integer)
                     const taxRate = effectiveTaxRate;
                     // For sans part, brut should be rounded; for consistency, apply rounding to all categories
-                    const grossAmountRaw = calculatedAmount || 0;
+                    const grossAmountRaw = amountValue || 0;
                     const grossAmount = Math.round(grossAmountRaw);
                     const taxAmount = Math.round(grossAmount * taxRate);
                     const netAmount = grossAmount - taxAmount;
@@ -200,6 +222,7 @@ async function generateAllocationsForInstance(instanceId) {
                         situation: calculatedInputs.situation || {},
                         sanctionText: calculatedInputs.sanctionText || {},
                         sanctions: calculatedInputs.sanctions || [],
+                        calculationDebug: amountDebug
                     };
 
                     return BonusAllocation.create(allocationItem);
@@ -494,12 +517,36 @@ async function calculateInputs(template, snapshotData, parts) {
             indiceCatDisplay = (catCode ? catCode : '') + (indexStr ? (' / ' + indexStr) : '');
         }
 
+        const sansPartSubType = template.calculationConfig?.subType || 'remise';
+        if (template.category === 'without_parts' && sansPartSubType === 'ift') {
+            const disqualified = hasDisqualifyingSituation || hasSevereActiveSanctions;
+            const defaultParts = disqualified ? 0 : 1;
+            return {
+                baseSalary: snapshotData.salary,
+                category: snapshotData.category,
+                status: snapshotData.status,
+                grade: snapshotData.grade,
+                rank: snapshotData.rank,
+                rankCode: snapshotData.rank,
+                rankGroup: snapshotData.rankGroup,
+                functionCode: snapshotData.position?.code || snapshotData.position?.name,
+                structureCode: snapshotData.structure?.code,
+                subStructureCode: snapshotData.subStructure?.code,
+                parts: defaultParts,
+                situation: situationId,
+                situationText: situationValue,
+                sanctions: sanctions.map(s => s.sanction).join(','),
+                sanctionText: lastSanctionValue,
+                comment: comment,
+                subType: 'ift'
+            };
+        }
+
         // Additional inputs specific to without_parts (remise sur salaire)
         let sbi = undefined;
         let txPercent = undefined;
-        let sansPartSubType = null;
+        let subTypeForInputs = sansPartSubType;
         if (template.category === 'without_parts') {
-            sansPartSubType = template.calculationConfig?.subType || 'remise';
             const { sbi: sbiVal } = getSBIFromSnapshot(snapshotData);
             const { tx } = getTXFromRank(snapshotData);
             sbi = sbiVal || 0;
@@ -525,7 +572,7 @@ async function calculateInputs(template, snapshotData, parts) {
             // extras for sans part
             sbi: sbi,
             txPercent: txPercent,
-            subType: sansPartSubType,
+            subType: subTypeForInputs,
             // added: index and display for Indice/Cat
             index: indexStr,
             indiceCatDisplay: indiceCatDisplay
@@ -619,6 +666,110 @@ function formatPeriod(periodicity, date = moment()) {
     }
 }
 
+const DEFAULT_IFT_RULES = [
+    { match: { rankCode: 'NON_NOMME' }, amount: 60000 },
+    { match: { rankCode: 'CA' }, amount: 60000 },
+    { match: { rankCode: 'AG' }, amount: 60000 },
+    { match: { rankCode: 'CB' }, amount: 225000 },
+    { match: { rankCode: 'CS' }, amount: 270000 },
+    { match: { rankCode: 'SD' }, amount: 300000 },
+    { match: { rankCode: 'DIR' }, amount: 300000 }
+];
+
+function normalizeRankForIft(rankCodeRaw) {
+    const rank = (rankCodeRaw || '').toString().trim();
+    if (!rank) return rank;
+    // Map non-nommé aliases to NON_NOMME
+    if (['CA', 'AG', 'NON_NOMME'].includes(rank)) return rank === 'NON_NOMME' ? 'NON_NOMME' : 'CA';
+    return rank;
+}
+
+function isIFTStructure(structureDoc, subStructureDoc, template, functionCode) {
+    const cfg = template.iftConfig || {};
+    const useFlag = cfg.useStructureFlag !== false;
+    const includedIds = (cfg.includedStructureIds || []).map(normalizeId);
+    const excludedIds = new Set((cfg.excludedStructureIds || []).map(normalizeId));
+
+    const structureId = normalizeId(structureDoc?._id);
+    const subStructureId = normalizeId(subStructureDoc?._id);
+    const structureHasIFT = !!structureDoc?.hasIFT;
+    const subStructureHasIFT = !!subStructureDoc?.hasIFT;
+
+    if (useFlag && !(structureHasIFT || subStructureHasIFT)) {
+        return false;
+    }
+    if (includedIds.length > 0 && (!structureId || !includedIds.includes(structureId))) {
+        return false;
+    }
+    if (structureId && excludedIds.has(structureId)) {
+        return false;
+    }
+
+    if (subStructureHasIFT && subStructureDoc?.iftMode === 'restricted') {
+        const subCode = subStructureDoc.code || subStructureDoc.identifier || subStructureId;
+        const mode = (cfg.restrictedModes || []).find(r => r.subStructureCode === subCode);
+        if (mode) {
+            const allowed = mode.allowedFunctions || [];
+            if (!functionCode || !allowed.includes(functionCode)) return false;
+        }
+    }
+
+    return true;
+}
+
+async function findEligiblePersonnelForIFT(template) {
+    const baseEligiblePersonnel = await findEligiblePersonnel(template);
+    const baseIds = baseEligiblePersonnel.map(p => normalizeId(p._id)).filter(Boolean);
+    const cfg = template.iftConfig || {};
+    const includeIds = (cfg.includePersonnelIds || []).map(normalizeId).filter(Boolean);
+    const excludeIds = new Set((cfg.excludePersonnelIds || []).map(normalizeId));
+    const candidateIds = Array.from(new Set([...baseIds, ...includeIds])).filter(Boolean);
+
+    if (candidateIds.length === 0) {
+        return { eligibleIds: [], snapshotByPersonnel: {}, structureById: new Map() };
+    }
+
+    const snapshots = await PersonnelSnapshot.find({
+        personnelId: { $in: candidateIds }
+    }).sort({ snapshotDate: -1 }).lean();
+
+    const latestByPersonnel = {};
+    snapshots.forEach(snap => {
+        const id = normalizeId(snap.personnelId);
+        if (id && !latestByPersonnel[id]) {
+            latestByPersonnel[id] = snap;
+        }
+    });
+
+    const structureIds = new Set();
+    Object.values(latestByPersonnel).forEach(snap => {
+        const data = snap?.data || {};
+        if (data.structure?.id) structureIds.add(normalizeId(data.structure.id));
+        if (data.subStructure?.id) structureIds.add(normalizeId(data.subStructure.id));
+    });
+
+    const structureDocs = await Structure.find({ _id: { $in: Array.from(structureIds).filter(Boolean) } }).lean();
+    const structureById = new Map(structureDocs.map(doc => [normalizeId(doc._id), doc]));
+
+    const eligibleIds = [];
+    for (const id of candidateIds) {
+        if (excludeIds.has(id)) continue;
+        const snap = latestByPersonnel[id];
+        if (!snap) continue;
+        const data = snap.data || {};
+        const structureDoc = structureById.get(normalizeId(data.structure?.id));
+        const subStructureDoc = structureById.get(normalizeId(data.subStructure?.id));
+        const functionCode = data.position?.code || data.position?.name || data.functionCode;
+
+        if (!isIFTStructure(structureDoc, subStructureDoc, template, functionCode)) {
+            continue;
+        }
+        eligibleIds.push(id);
+    }
+
+    return { eligibleIds, snapshotByPersonnel: latestByPersonnel, structureById };
+}
+
 async function findEligiblePersonnel(template) {
     // Implement your eligibility logic based on template rules
     // This is a simplified version - expand with your actual rules
@@ -643,24 +794,51 @@ function buildEligibilityQuery(rules) {
  * @param {Object} parts - Agent part
  * @returns {number} - Calculated amount
  */
-async function calculateAmount(instance, snapshotData, parts) {
+async function calculateAmount(instance, snapshotData, partsOrInputs) {
     const template = instance.templateId;
     const config = template.calculationConfig;
+    const inputs = (partsOrInputs && typeof partsOrInputs === 'object') ? partsOrInputs : {};
+    const parts = typeof partsOrInputs === 'object'
+        ? (Number.isFinite(inputs.parts) ? Number(inputs.parts) : 0)
+        : (Number.isFinite(partsOrInputs) ? partsOrInputs : 0);
 
     switch (template.category) {
         case 'with_parts': {
             const shareAmount = instance.shareAmount || 0;
             return shareAmount * parts;
         }
-        case 'without_parts': { // Remise sur salaire
+        case 'without_parts': {
+            const subType = (template.calculationConfig?.subType || inputs.subType || 'remise');
+            if (subType === 'ift') {
+                const cfg = template.iftConfig || {};
+                const rules = (cfg.amountRules && cfg.amountRules.length ? cfg.amountRules : DEFAULT_IFT_RULES);
+                const rawRankCode = inputs.rankCode || snapshotData.rank || snapshotData.rankCode;
+                const rankCode = normalizeRankForIft(rawRankCode);
+                const rankGroup = inputs.rankGroup;
+                const functionCode = inputs.functionCode || snapshotData.position?.code || snapshotData.position?.name;
+                const matchRule = rules.find(r => {
+                    const m = r.match || {};
+                    return (!m.rankCode || m.rankCode === rankCode)
+                        && (!m.rankGroup || m.rankGroup === rankGroup)
+                        && (!m.functionCode || m.functionCode === functionCode);
+                });
+                const amount = matchRule ? Number(matchRule.amount) || 0 : 0;
+                if (!matchRule || amount === 0) {
+                    console.warn('[IFT] No amount rule matched or amount is zero', {
+                        personnelId: snapshotData.personnelId,
+                        rankCode: rawRankCode,
+                        normalizedRank: rankCode,
+                        functionCode,
+                        rankGroup,
+                        appliedRuleCount: rules.length
+                    });
+                }
+                return { amount, debug: { ruleMatched: matchRule || null } };
+            }
             const { sbi } = getSBIFromSnapshot(snapshotData);
             const { tx } = getTXFromRank(snapshotData);
             const salaryBase = Number(sbi) || 0;
             const rate = Number(tx) || 0; // e.g., 0.45 for 45%
-            const subType = template.calculationConfig?.subType || 'remise';
-            if (subType === 'ift') {
-                return salaryBase * rate;
-            }
             // R = SBI × 3 × TX
             return salaryBase * 3 * rate;
         }

@@ -156,6 +156,7 @@ angular.module('app')
                     formulaType: 'fixed',
                     baseField: '',
                     formula: '',
+                    subType: 'remise',
                     defaultShareAmount: 0,
                     fixedAmount: 0,
                     percentage: 0,
@@ -164,6 +165,17 @@ angular.module('app')
                         defaultParts: 1,
                         partRules: []
                     }
+                },
+                iftConfig: {
+                    amountRules: [
+                        { match: { rankCode: 'NON_NOMME' }, amount: 60000, description: 'Non nommé / CA / AG' },
+                        { match: { rankCode: 'CA' }, amount: 60000, description: 'Cadre' },
+                        { match: { rankCode: 'AG' }, amount: 60000, description: 'Agent' },
+                        { match: { rankCode: 'CB' }, amount: 225000, description: 'Chef de bureau' },
+                        { match: { rankCode: 'CS' }, amount: 270000, description: 'Chef de service' },
+                        { match: { rankCode: 'SD' }, amount: 300000, description: 'Sous-Directeur' },
+                        { match: { rankCode: 'DIR' }, amount: 300000, description: 'Directeur' }
+                    ]
                 },
                 approvalWorkflow: {
                     steps: []
@@ -348,6 +360,21 @@ angular.module('app')
         // Deep clean object before saving (remove empty arrays/objects)
         function cleanTemplateData(data) {
             const cleaned = angular.copy(data);
+            // Normalize IFT config defaults if missing
+            if (cleaned.category === 'without_parts' && cleaned.calculationConfig && cleaned.calculationConfig.subType === 'ift') {
+                cleaned.iftConfig = cleaned.iftConfig || {};
+                if (!Array.isArray(cleaned.iftConfig.amountRules) || cleaned.iftConfig.amountRules.length === 0) {
+                    cleaned.iftConfig.amountRules = [
+                        { match: { rankCode: 'NON_NOMME' }, amount: 60000, description: 'Non nommé / CA / AG' },
+                        { match: { rankCode: 'CA' }, amount: 60000, description: 'Cadre' },
+                        { match: { rankCode: 'AG' }, amount: 60000, description: 'Agent' },
+                        { match: { rankCode: 'CB' }, amount: 225000, description: 'Chef de bureau' },
+                        { match: { rankCode: 'CS' }, amount: 270000, description: 'Chef de service' },
+                        { match: { rankCode: 'SD' }, amount: 300000, description: 'Sous-Directeur' },
+                        { match: { rankCode: 'DIR' }, amount: 300000, description: 'Directeur' }
+                    ];
+                }
+            }
 
             // Clean eligibility rules
             if (cleaned.eligibilityRules) {
@@ -378,6 +405,10 @@ angular.module('app')
                 }
                 // Remove rate if not without_parts
                 if (cleaned.category !== 'without_parts' && cleaned.calculationConfig.rate !== undefined) {
+                    delete cleaned.calculationConfig.rate;
+                }
+                // For IFT subtype, drop rate and ensure subType set
+                if (cleaned.category === 'without_parts' && cleaned.calculationConfig.subType === 'ift') {
                     delete cleaned.calculationConfig.rate;
                 }
                 // For non-calculated, drop formula settings except fixed amount as applicable
@@ -445,10 +476,17 @@ angular.module('app')
                     }
                     break;
                 case 'without_parts':
-                    if (cfg.rate === null || cfg.rate === undefined || isNaN(cfg.rate)) {
-                        errors.push('Rate (TX) is required for without-parts category');
-                    } else if (Number(cfg.rate) < 0) {
-                        errors.push('Rate (TX) cannot be negative');
+                    if (cfg.subType === 'ift') {
+                        const rules = ($scope.templateFormData.iftConfig && $scope.templateFormData.iftConfig.amountRules) || [];
+                        if (!rules.length) {
+                            errors.push('IFT requires at least one amount rule');
+                        }
+                    } else {
+                        if (cfg.rate === null || cfg.rate === undefined || isNaN(cfg.rate)) {
+                            errors.push('Rate (TX) is required for without-parts category');
+                        } else if (Number(cfg.rate) < 0) {
+                            errors.push('Rate (TX) cannot be negative');
+                        }
                     }
                     break;
                 case 'fixed_amount':
@@ -602,10 +640,14 @@ angular.module('app')
 
             // Ensure nested objects exist
             $scope.templateFormData.calculationConfig = $scope.templateFormData.calculationConfig || {};
+            if (!$scope.templateFormData.calculationConfig.subType && $scope.templateFormData.category === 'without_parts') {
+                $scope.templateFormData.calculationConfig.subType = 'remise';
+            }
             $scope.templateFormData.calculationConfig.partsConfig = $scope.templateFormData.calculationConfig.partsConfig || {
                 defaultParts: 1,
                 partRules: []
             };
+            $scope.templateFormData.iftConfig = $scope.templateFormData.iftConfig || { amountRules: [] };
             $scope.templateFormData.approvalWorkflow = $scope.templateFormData.approvalWorkflow || { steps: [] };
             $scope.templateFormData.eligibilityRules = normalizeEligibilityRules($scope.templateFormData.eligibilityRules || []);
 
@@ -665,6 +707,35 @@ angular.module('app')
                 approvalType: 'sequential',
                 description: ''
             });
+        };
+
+        // IFT helpers
+        $scope.addIftRule = function() {
+            $scope.templateFormData.iftConfig = $scope.templateFormData.iftConfig || { amountRules: [] };
+            $scope.templateFormData.iftConfig.amountRules.push({
+                match: { rankCode: '' },
+                amount: 0,
+                description: ''
+            });
+        };
+
+        $scope.removeIftRule = function(index) {
+            if (!$scope.templateFormData.iftConfig || !$scope.templateFormData.iftConfig.amountRules) return;
+            $scope.templateFormData.iftConfig.amountRules.splice(index, 1);
+        };
+
+        $scope.resetIftDefaultRules = function() {
+            $scope.templateFormData.iftConfig = {
+                amountRules: [
+                    { match: { rankCode: 'NON_NOMME' }, amount: 60000, description: 'Non nommé / CA / AG' },
+                    { match: { rankCode: 'CA' }, amount: 60000, description: 'Cadre' },
+                    { match: { rankCode: 'AG' }, amount: 60000, description: 'Agent' },
+                    { match: { rankCode: 'CB' }, amount: 225000, description: 'Chef de bureau' },
+                    { match: { rankCode: 'CS' }, amount: 270000, description: 'Chef de service' },
+                    { match: { rankCode: 'SD' }, amount: 300000, description: 'Sous-Directeur' },
+                    { match: { rankCode: 'DIR' }, amount: 300000, description: 'Directeur' }
+                ]
+            };
         };
 
         $scope.removeApprovalStep = function(index) {
