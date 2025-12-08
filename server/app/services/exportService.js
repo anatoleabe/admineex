@@ -19,7 +19,7 @@ exports.exportBonusToExcel = async (instance) => {
     try {
         // 1. Get instance data
         const bonusInstance = await BonusInstance.findById(instance._id)
-            .populate('templateId', 'name code category')
+            .populate('templateId', 'name code category calculationConfig')
             .populate('createdBy', 'firstname lastname');
 
         if (!bonusInstance) {
@@ -27,6 +27,8 @@ exports.exportBonusToExcel = async (instance) => {
         }
 
         const isWithoutParts = bonusInstance.templateId?.category === 'without_parts';
+        const templateSubType = bonusInstance.templateId?.calculationConfig?.subType || null;
+        const isIFT = isWithoutParts && templateSubType === 'ift';
 
         // Load canonical structures once (same source as structures.js minimal list) to drive hierarchy.
         const rawStructures = await Structure.find({}).lean();
@@ -99,7 +101,18 @@ exports.exportBonusToExcel = async (instance) => {
             { header: 'Emargement', key: 'signature', width: 16 }
         ];
 
-        const chosenHeaders = isWithoutParts ? headersSansPart : headersWithParts;
+        const headersIFT = [
+            { header: "N° d'ordre", key: 'index', width: 8 },
+            { header: 'NOMS ET PRENOMS', key: 'name', width: 30 },
+            { header: 'MATRICULE', key: 'matricule', width: 18 },
+            { header: 'FONCTION', key: 'fonction', width: 24 },
+            { header: 'GRADE', key: 'grade', width: 18 },
+            { header: 'MONTANT BRUT (F CFA)', key: 'brut', width: 18 },
+            { header: 'EMARGEMENT', key: 'signature', width: 16 },
+            { header: 'OBSERVATIONS', key: 'obs', width: 24 }
+        ];
+
+        const chosenHeaders = isIFT ? headersIFT : isWithoutParts ? headersSansPart : headersWithParts;
         const lastCol = colLetter(chosenHeaders.length);
 
         // 4. Insert official DGTCFM header (will push data down)
@@ -196,7 +209,8 @@ exports.exportBonusToExcel = async (instance) => {
             return { main: { ...main, key: main.key || main.code || main.id }, sub: { ...sub, key: sub.key || sub.code || sub.id } };
         };
 
-        const taxRate = (bonusInstance.taxPercentage || 5.28) / 100;
+        const taxRate = isIFT ? 0 : ((bonusInstance.taxPercentage || 5.28) / 100);
+        const displayedTaxPercent = isIFT ? 0 : (bonusInstance.taxPercentage || 5.28);
 
         const codePriority = (code = '') => {
             if (code === '238-1') return -1000; // requested first
@@ -243,8 +257,9 @@ exports.exportBonusToExcel = async (instance) => {
 
         const computeFinancials = (allocation) => {
             const brut = Math.round(allocation.grossAmount || allocation.finalAmount || 0);
-            const tax = Math.round(allocation.taxAmount || ((allocation.grossAmount || 0) - (allocation.netAmount || 0)));
-            const net = Math.round(allocation.netAmount || ((allocation.grossAmount || 0) - tax));
+            const taxRaw = Math.round(allocation.taxAmount || ((allocation.grossAmount || 0) - (allocation.netAmount || 0)));
+            const tax = isIFT ? 0 : taxRaw;
+            const net = isIFT ? brut : Math.round(allocation.netAmount || ((allocation.grossAmount || 0) - tax));
             return {
                 parts: allocation.calculationInputs?.parts || 0,
                 brut,
@@ -318,7 +333,7 @@ exports.exportBonusToExcel = async (instance) => {
         const summaryHeaderRow = worksheet.addRow([]);
         summaryHeaderRow.getCell(summaryStartCol).value = "Structure";
         summaryHeaderRow.getCell(summaryStartCol + 1).value = "MONTANT BRUT";
-        summaryHeaderRow.getCell(summaryStartCol + 2).value = `TAXES (${bonusInstance.taxPercentage || 5.28}%)`;
+        summaryHeaderRow.getCell(summaryStartCol + 2).value = `TAXES (${displayedTaxPercent}%)`;
         summaryHeaderRow.getCell(summaryStartCol + 3).value = "MONTANT NAP";
         summaryHeaderRow.eachCell((cell) => {
             cell.font = { bold: true };
@@ -520,8 +535,19 @@ exports.exportBonusToExcel = async (instance) => {
                         ''
                     ];
 
-                    const dataRow = worksheet.addRow(isWithoutParts ? rowValuesSansPart : rowValuesWithParts);
-                    const colsForNumbers = isWithoutParts ? ['H','I','J'] : ['F','G','H'];
+                    const rowValuesIft = [
+                        globalIndex++,
+                        allocation.personnelId?.formattedName || 'N/A',
+                        allocation.personnelId?.identifier || 'N/A',
+                        fonctionLabel,
+                        gradeCode,
+                        fin.brut,
+                        '',
+                        allocation.calculationInputs?.comment || ''
+                    ];
+
+                    const dataRow = worksheet.addRow(isIFT ? rowValuesIft : (isWithoutParts ? rowValuesSansPart : rowValuesWithParts));
+                    const colsForNumbers = isIFT ? ['F'] : (isWithoutParts ? ['H','I','J'] : ['F','G','H']);
                     colsForNumbers.forEach(col => worksheet.getCell(`${col}${dataRow.number}`).numFmt = '#,##0');
 
                     dataRow.eachCell((cell) => {
@@ -538,15 +564,17 @@ exports.exportBonusToExcel = async (instance) => {
                 }
 
                 // Substructure subtotal row
-                const subtotalValues = isWithoutParts
-                    ? ['', '', '', '', '', 'SOUS-TOTAL', '', subTotals.brut, subTotals.tax, subTotals.net, '', '']
-                    : ['', '', '', 'SOUS-TOTAL', subTotals.parts, subTotals.brut, subTotals.tax, subTotals.net, '', '', ''];
+                const subtotalValues = isIFT
+                    ? ['', '', '', 'SOUS-TOTAL', '', subTotals.brut, '', '']
+                    : isWithoutParts
+                        ? ['', '', '', '', '', 'SOUS-TOTAL', '', subTotals.brut, subTotals.tax, subTotals.net, '', '']
+                        : ['', '', '', 'SOUS-TOTAL', subTotals.parts, subTotals.brut, subTotals.tax, subTotals.net, '', '', ''];
                 const subtotalRow = worksheet.addRow(subtotalValues);
                 subtotalRow.eachCell((cell) => {
                     cell.font = { bold: true };
                     cell.border = { top: { style: 'thin' }, bottom: { style: 'double' } };
                 });
-                const subtotalCols = isWithoutParts ? ['H','I','J'] : ['E','F','G','H'];
+                const subtotalCols = isIFT ? ['F'] : (isWithoutParts ? ['H','I','J'] : ['E','F','G','H']);
                 subtotalCols.forEach(col => worksheet.getCell(`${col}${subtotalRow.number}`).numFmt = '#,##0');
 
                 structureRunningTotals.parts += subTotals.parts;
@@ -557,16 +585,18 @@ exports.exportBonusToExcel = async (instance) => {
 
             // Structure subtotal row
             const structureSubtotalLabel = `SOUS TOTAL ${mainGroup.main.name}`;
-            const structureSubtotalValues = isWithoutParts
-                ? ['', '', '', '', '', structureSubtotalLabel, '', structureRunningTotals.brut, structureRunningTotals.tax, structureRunningTotals.net, '', '']
-                : ['', '', '', structureSubtotalLabel, structureRunningTotals.parts, structureRunningTotals.brut, structureRunningTotals.tax, structureRunningTotals.net, '', '', ''];
+            const structureSubtotalValues = isIFT
+                ? ['', '', '', structureSubtotalLabel, '', structureRunningTotals.brut, '', '']
+                : isWithoutParts
+                    ? ['', '', '', '', '', structureSubtotalLabel, '', structureRunningTotals.brut, structureRunningTotals.tax, structureRunningTotals.net, '', '']
+                    : ['', '', '', structureSubtotalLabel, structureRunningTotals.parts, structureRunningTotals.brut, structureRunningTotals.tax, structureRunningTotals.net, '', '', ''];
             const structureSubtotalRow = worksheet.addRow(structureSubtotalValues);
             structureSubtotalRow.eachCell((cell) => {
                 cell.font = { bold: true };
                 cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5F5F5' } };
                 cell.border = { top: { style: 'thin' }, bottom: { style: 'double' } };
             });
-            const structSubtotalCols = isWithoutParts ? ['H','I','J'] : ['E','F','G','H'];
+            const structSubtotalCols = isIFT ? ['F'] : (isWithoutParts ? ['H','I','J'] : ['E','F','G','H']);
             structSubtotalCols.forEach(col => worksheet.getCell(`${col}${structureSubtotalRow.number}`).numFmt = '#,##0');
 
             grandTotals.parts += structureRunningTotals.parts;
@@ -578,15 +608,17 @@ exports.exportBonusToExcel = async (instance) => {
         }
 
         // Grand total
-        const grandRowValues = isWithoutParts
-            ? ['', '', '', '', '', 'TOTAL GENERAL', '', grandTotals.brut, grandTotals.tax, grandTotals.net, '', '']
-            : ['', '', '', 'TOTAL GENERAL', grandTotals.parts, grandTotals.brut, grandTotals.tax, grandTotals.net, '', '', ''];
+        const grandRowValues = isIFT
+            ? ['', '', '', 'TOTAL GENERAL', '', grandTotals.brut, '', '']
+            : isWithoutParts
+                ? ['', '', '', '', '', 'TOTAL GENERAL', '', grandTotals.brut, grandTotals.tax, grandTotals.net, '', '']
+                : ['', '', '', 'TOTAL GENERAL', grandTotals.parts, grandTotals.brut, grandTotals.tax, grandTotals.net, '', '', ''];
         const grandTotalRow = worksheet.addRow(grandRowValues);
         grandTotalRow.eachCell((cell) => {
             cell.font = { bold: true, size: 12 };
             cell.border = { top: { style: 'thin' }, bottom: { style: 'double' } };
         });
-        const grandCols = isWithoutParts ? ['H','I','J'] : ['E','F','G','H'];
+        const grandCols = isIFT ? ['F'] : (isWithoutParts ? ['H','I','J'] : ['E','F','G','H']);
         grandCols.forEach(col => {
             worksheet.getCell(`${col}${grandTotalRow.number}`).numFmt = '#,##0';
             worksheet.getCell(`${col}${grandTotalRow.number}`).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEBEBEB' } };
