@@ -90,13 +90,6 @@ nconf.load(function (err, result) {
     }
 });
 
-// Catch 404
-app.use(notFoundHandler);
-// Error handler
-app.use(errorHandler);
-// Error handlers
-app.use(validationErrorHandler); // Handles validation errors
-
 
 async function main() {
     // this must be called BEFORE require('./app/log/log') and
@@ -129,13 +122,13 @@ async function main() {
     
     // Express 4 config
     app.use(helmet());
-    app.use(express.static(__dirname + '/public'));
     app.use(favicon(__dirname + '/public/img/logos/favicon.ico'));
     app.use(methodOverride());
     app.use(compression()); //use compression
+    app.use(express.static(__dirname + '/public'));
     // Body parsers for JSON and URL-encoded payloads (must be before routes)
-    app.use(express.json({ limit: '10mb' }));
-    app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+    //app.use(express.json({ limit: '10mb' }));
+    //app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
     // MongoDB
     require('./app/databases/mongodb');

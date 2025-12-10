@@ -149,9 +149,18 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
                         $scope.submit = function () {
                             $rootScope.kernel.loading = 0;
                             $scope.structure.en = $scope.structure.fr;
+                            // Ensure new IFT flags are always sent with safe defaults
+                            if ($scope.structure.hasIFT === undefined) {
+                                $scope.structure.hasIFT = false;
+                            }
+                            if (!$scope.structure.iftMode) {
+                                $scope.structure.iftMode = 'all';
+                            }
                             if ($scope.addFather && $scope.selected.structure) {
                                 $scope.structure.fatherId = JSON.parse($scope.selected.structure)._id;
                             }
+
+                            console.log($scope.structure);
 
                             Structure.upsert($scope.structure).then(function (response) {
                                 $rootScope.kernel.loading = 100;
