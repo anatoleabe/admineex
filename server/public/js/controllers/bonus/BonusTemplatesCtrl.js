@@ -1,5 +1,5 @@
 angular.module('app')
-    .controller('BonusTemplatesController', ['$scope', '$http', '$q', 'toastr', function($scope, $http, $q, toastr) {
+    .controller('BonusTemplatesController', ['$scope', '$http', '$q', '$timeout', '$ocLazyLoad', '$injector', 'toastr', function($scope, $http, $q, $timeout, $ocLazyLoad, $injector, toastr) {
         // Ensure kernel exists for this scope so views using kernel.loading work
         $scope.kernel = $scope.kernel || { loading: 100 };
         // State management
@@ -92,6 +92,67 @@ angular.module('app')
             subStructures: []
         };
         const subStructuresByParent = {};
+        $scope.iftStructureOptions = [];
+        $scope.iftSelectedStructures = [];
+        $scope.iftSelectedPersonnel = [];
+        $scope.selectedIftStructureId = '';
+        $scope.iftPersonnelSearch = '';
+        let iftPersonnelSearchTimeout = null;
+
+        function setStructureOptions(data) {
+            $scope.ruleOptions.structures = [];
+            $scope.ruleOptions.structuresMain = [];
+            $scope.ruleOptions.subStructures = [];
+            Object.keys(subStructuresByParent).forEach(k => delete subStructuresByParent[k]);
+            const mains = [];
+            const subs = [];
+            const allStructureOptions = [];
+            data.forEach(s => {
+                const option = { value: s.code, label: `${s.name || s.code} (${s.code})`, rank: String(s.rank) };
+                const name = s.name || s.fr || s.en || s.code;
+                const optionWithId = {
+                    id: s._id || s.id || s.code,
+                    code: s.code,
+                    label: `${name || s.code} (${s.code})`,
+                    name: name
+                };
+                if (String(s.rank) === '2') {
+                    mains.push(option);
+                } else if (String(s.rank) === '3') {
+                    subs.push(option);
+                    const parentCode = s.code && s.code.includes('-') ? s.code.split('-')[0] : '';
+                    if (!subStructuresByParent[parentCode]) subStructuresByParent[parentCode] = [];
+                    subStructuresByParent[parentCode].push(option);
+                }
+                if (optionWithId.id) {
+                    allStructureOptions.push(optionWithId);
+                }
+            });
+            $scope.ruleOptions.structures = mains;
+            $scope.ruleOptions.structuresMain = mains;
+            $scope.ruleOptions.subStructures = subs;
+            $scope.iftStructureOptions = allStructureOptions;
+            hydrateIftSelectionsFromTemplate();
+        }
+
+        function loadStructures() {
+            return $ocLazyLoad.load('js/services/StructureService.js')
+                .then(() => {
+                    const Structure = $injector.get('Structure');
+                    return Structure.minimalList();
+                })
+                .catch(() => $http.get('/api/structures/minimal/-1'))
+                .then(res => {
+                    const data = res.data?.data || res.data || [];
+                    setStructureOptions(data);
+                })
+                .catch(() => {
+                    $scope.ruleOptions.structures = [];
+                    $scope.ruleOptions.structuresMain = [];
+                    $scope.ruleOptions.subStructures = [];
+                    $scope.iftStructureOptions = [];
+                });
+        }
 
         function loadRuleOptions() {
             // Statuses
@@ -117,29 +178,7 @@ angular.module('app')
             });
 
             // Structures (main + subs)
-            $http.get('/api/structures/minimalList').then(res => {
-                const data = res.data?.data || res.data || [];
-                const mains = [];
-                const subs = [];
-                data.forEach(s => {
-                    const option = { value: s.code, label: `${s.name || s.code} (${s.code})`, rank: String(s.rank) };
-                    if (String(s.rank) === '2') {
-                        mains.push(option);
-                    } else if (String(s.rank) === '3') {
-                        subs.push(option);
-                        const parentCode = s.code && s.code.includes('-') ? s.code.split('-')[0] : '';
-                        if (!subStructuresByParent[parentCode]) subStructuresByParent[parentCode] = [];
-                        subStructuresByParent[parentCode].push(option);
-                    }
-                });
-                $scope.ruleOptions.structures = mains;
-                $scope.ruleOptions.structuresMain = mains;
-                $scope.ruleOptions.subStructures = subs;
-            }).catch(() => {
-                $scope.ruleOptions.structures = [];
-                $scope.ruleOptions.structuresMain = [];
-                $scope.ruleOptions.subStructures = [];
-            });
+            loadStructures();
         }
         loadRuleOptions();
 
@@ -175,7 +214,9 @@ angular.module('app')
                         { match: { rankCode: 'CS' }, amount: 270000, description: 'Chef de service' },
                         { match: { rankCode: 'SD' }, amount: 300000, description: 'Sous-Directeur' },
                         { match: { rankCode: 'DIR' }, amount: 300000, description: 'Directeur' }
-                    ]
+                    ],
+                    includedStructureIds: [],
+                    includePersonnelIds: []
                 },
                 approvalWorkflow: {
                     steps: []
@@ -183,6 +224,10 @@ angular.module('app')
                 documentation: '',
                 isActive: true
             };
+            $scope.iftSelectedStructures = [];
+            $scope.iftSelectedPersonnel = [];
+            $scope.selectedIftStructureId = '';
+            $scope.iftPersonnelSearch = '';
         }
 
         function computeStats() {
@@ -343,6 +388,148 @@ angular.module('app')
             return $scope.ruleOptions.subStructures;
         };
 
+        function ensureIftConfig() {
+            if (!$scope.templateFormData) return;
+            $scope.templateFormData.iftConfig = $scope.templateFormData.iftConfig || { amountRules: [] };
+            $scope.templateFormData.iftConfig.includedStructureIds = Array.isArray($scope.templateFormData.iftConfig.includedStructureIds)
+                ? $scope.templateFormData.iftConfig.includedStructureIds
+                : [];
+            $scope.templateFormData.iftConfig.includePersonnelIds = Array.isArray($scope.templateFormData.iftConfig.includePersonnelIds)
+                ? $scope.templateFormData.iftConfig.includePersonnelIds
+                : [];
+        }
+
+        function formatPersonnelLabel(person) {
+            if (!person) return '';
+            const displayName = person.fname || person.name?.given?.[0] || person.name?.text || person.name || '';
+            const identifier = person.identifier || person.matricule || '';
+            return [displayName || 'Personnel', identifier].filter(Boolean).join(' • ');
+        }
+
+        function normalizePersonnelSelection(person, fallbackId) {
+            const id = person?._id || person?.id || fallbackId;
+            const label = formatPersonnelLabel(person) || (fallbackId || '');
+            const name = person?.fname || person?.name?.given?.[0] || person?.name?.text || person?.name || label || 'Personnel';
+            const identifier = person?.identifier || person?.matricule || '';
+            return { id, label, name, identifier: identifier || id };
+        }
+        $scope.getIftPersonnelLabel = formatPersonnelLabel;
+
+        function fetchPersonnelByIds(ids) {
+            if (!ids || !ids.length) {
+                $scope.iftSelectedPersonnel = [];
+                return;
+            }
+            const promises = ids.map(id => $http.get('/api/personnel/read/' + id + '/true')
+                .then(res => ({ id, person: res.data }))
+                .catch(() => ({ id, person: null })));
+            $q.all(promises).then(results => {
+                const hydrated = [];
+                results.forEach(({ id, person }) => {
+                    if (hydrated.find(p => p.id === id)) return;
+                    hydrated.push(normalizePersonnelSelection(person, id));
+                });
+                $scope.iftSelectedPersonnel = hydrated;
+            });
+        }
+
+        function hydrateIftSelectionsFromTemplate() {
+            if (!$scope.templateFormData || !$scope.templateFormData.iftConfig) return;
+            ensureIftConfig();
+            const cfg = $scope.templateFormData.iftConfig;
+            const structureIds = Array.from(new Set(cfg.includedStructureIds || []));
+            $scope.iftSelectedStructures = structureIds.map(id => {
+                const found = ($scope.iftStructureOptions || []).find(opt => opt.id === id || opt.code === id);
+                return found ? { id: found.id, label: found.label, code: found.code, name: found.label } : { id, label: id, code: id, name: id };
+            });
+            const personnelIds = Array.from(new Set(cfg.includePersonnelIds || []));
+            if (personnelIds.length) {
+                fetchPersonnelByIds(personnelIds);
+            } else {
+                $scope.iftSelectedPersonnel = [];
+            }
+        }
+
+        function normalizeStructureId(val) {
+            if (!val) return '';
+            if (typeof val === 'object') {
+                return val.id || val.code || val.value || '';
+            }
+            return val;
+        }
+
+        $scope.addIftStructure = function(optionOrId) {
+            const id = normalizeStructureId(optionOrId || $scope.selectedIftStructureId);
+            if (!id) return;
+            ensureIftConfig();
+            const cfg = $scope.templateFormData.iftConfig;
+            if (!cfg.includedStructureIds.includes(id)) {
+                cfg.includedStructureIds.push(id);
+            }
+            if (!$scope.iftSelectedStructures.some(s => s.id === id)) {
+                const found = ($scope.iftStructureOptions || []).find(opt => opt.id === id || opt.code === id);
+                $scope.iftSelectedStructures.push(found ? { id: found.id, label: found.label, code: found.code, name: found.label } : { id, label: id, code: id, name: id });
+            }
+            $scope.selectedIftStructureId = '';
+        };
+
+        $scope.removeIftStructure = function(id) {
+            ensureIftConfig();
+            const cfg = $scope.templateFormData.iftConfig;
+            cfg.includedStructureIds = (cfg.includedStructureIds || []).filter(structId => structId !== id);
+            $scope.iftSelectedStructures = ($scope.iftSelectedStructures || []).filter(s => s.id !== id);
+        };
+
+        $scope.searchIftPersonnel = function(query) {
+            if (iftPersonnelSearchTimeout) {
+                $timeout.cancel(iftPersonnelSearchTimeout);
+                iftPersonnelSearchTimeout = null;
+            }
+            if (!query || !query.trim()) {
+                return $q.when([]);
+            }
+            const deferred = $q.defer();
+            iftPersonnelSearchTimeout = $timeout(() => {
+                $http.get('/api/personnel/search/' + encodeURIComponent(query.trim()))
+                    .then(response => deferred.resolve(response.data || []))
+                    .catch(() => deferred.resolve([]));
+            }, 350);
+            return deferred.promise;
+        };
+
+        $scope.searchIftStructures = function(query) {
+            const term = (query || '').toLowerCase().trim();
+            const list = $scope.iftStructureOptions || [];
+            if (!term) return $q.when(list.slice(0, 50));
+            const filtered = list.filter(opt =>
+                (opt.label && opt.label.toLowerCase().includes(term)) ||
+                (opt.code && opt.code.toLowerCase().includes(term))
+            );
+            return $q.when(filtered.slice(0, 50));
+        };
+
+        $scope.onIftPersonnelSelected = function(person) {
+            if (!person) return;
+            ensureIftConfig();
+            const cfg = $scope.templateFormData.iftConfig;
+            const id = person._id || person.id;
+            if (!id) return;
+            if (!cfg.includePersonnelIds.includes(id)) {
+                cfg.includePersonnelIds.push(id);
+            }
+            if (!$scope.iftSelectedPersonnel.some(p => p.id === id)) {
+                $scope.iftSelectedPersonnel.push(normalizePersonnelSelection(person, id));
+            }
+            $scope.iftPersonnelSearch = '';
+        };
+
+        $scope.removeIftPersonnel = function(id) {
+            ensureIftConfig();
+            const cfg = $scope.templateFormData.iftConfig;
+            cfg.includePersonnelIds = (cfg.includePersonnelIds || []).filter(pid => pid !== id);
+            $scope.iftSelectedPersonnel = ($scope.iftSelectedPersonnel || []).filter(p => p.id !== id);
+        };
+
         // View template details
         $scope.viewTemplate = function(template) {
             $scope.state.viewing = true;
@@ -373,6 +560,17 @@ angular.module('app')
                         { match: { rankCode: 'SD' }, amount: 300000, description: 'Sous-Directeur' },
                         { match: { rankCode: 'DIR' }, amount: 300000, description: 'Directeur' }
                     ];
+                }
+            }
+
+            if (cleaned.iftConfig) {
+                if (Array.isArray(cleaned.iftConfig.includedStructureIds)) {
+                    cleaned.iftConfig.includedStructureIds = Array.from(new Set(cleaned.iftConfig.includedStructureIds.filter(Boolean)));
+                    if (cleaned.iftConfig.includedStructureIds.length === 0) delete cleaned.iftConfig.includedStructureIds;
+                }
+                if (Array.isArray(cleaned.iftConfig.includePersonnelIds)) {
+                    cleaned.iftConfig.includePersonnelIds = Array.from(new Set(cleaned.iftConfig.includePersonnelIds.filter(Boolean)));
+                    if (cleaned.iftConfig.includePersonnelIds.length === 0) delete cleaned.iftConfig.includePersonnelIds;
                 }
             }
 
@@ -637,6 +835,8 @@ angular.module('app')
         $scope.editTemplate = function(template) {
             $scope.editingTemplate = template;
             $scope.templateFormData = angular.copy(template);
+            $scope.selectedIftStructureId = '';
+            $scope.iftPersonnelSearch = '';
 
             // Ensure nested objects exist
             $scope.templateFormData.calculationConfig = $scope.templateFormData.calculationConfig || {};
@@ -648,6 +848,8 @@ angular.module('app')
                 partRules: []
             };
             $scope.templateFormData.iftConfig = $scope.templateFormData.iftConfig || { amountRules: [] };
+            ensureIftConfig();
+            hydrateIftSelectionsFromTemplate();
             $scope.templateFormData.approvalWorkflow = $scope.templateFormData.approvalWorkflow || { steps: [] };
             $scope.templateFormData.eligibilityRules = normalizeEligibilityRules($scope.templateFormData.eligibilityRules || []);
 
@@ -725,17 +927,16 @@ angular.module('app')
         };
 
         $scope.resetIftDefaultRules = function() {
-            $scope.templateFormData.iftConfig = {
-                amountRules: [
-                    { match: { rankCode: 'NON_NOMME' }, amount: 60000, description: 'Non nommé / CA / AG' },
-                    { match: { rankCode: 'CA' }, amount: 60000, description: 'Cadre' },
-                    { match: { rankCode: 'AG' }, amount: 60000, description: 'Agent' },
-                    { match: { rankCode: 'CB' }, amount: 225000, description: 'Chef de bureau' },
-                    { match: { rankCode: 'CS' }, amount: 270000, description: 'Chef de service' },
-                    { match: { rankCode: 'SD' }, amount: 300000, description: 'Sous-Directeur' },
-                    { match: { rankCode: 'DIR' }, amount: 300000, description: 'Directeur' }
-                ]
-            };
+            ensureIftConfig();
+            $scope.templateFormData.iftConfig.amountRules = [
+                { match: { rankCode: 'NON_NOMME' }, amount: 60000, description: 'Non nommé / CA / AG' },
+                { match: { rankCode: 'CA' }, amount: 60000, description: 'Cadre' },
+                { match: { rankCode: 'AG' }, amount: 60000, description: 'Agent' },
+                { match: { rankCode: 'CB' }, amount: 225000, description: 'Chef de bureau' },
+                { match: { rankCode: 'CS' }, amount: 270000, description: 'Chef de service' },
+                { match: { rankCode: 'SD' }, amount: 300000, description: 'Sous-Directeur' },
+                { match: { rankCode: 'DIR' }, amount: 300000, description: 'Directeur' }
+            ];
         };
 
         $scope.removeApprovalStep = function(index) {

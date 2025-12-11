@@ -17,6 +17,7 @@ exports.api.create = async (req, res, next) => {
         try {
             const templateData = req.body || {};
             templateData.createdBy = req.actor?.id;
+            normalizeIftConfigPayload(templateData.iftConfig);
 
             console.log("templateData = ", templateData);
 
@@ -104,6 +105,7 @@ exports.api.create = async (req, res, next) => {
         try {
             const templateData = fields;
             templateData.createdBy = req.actor?.id;
+            normalizeIftConfigPayload(templateData.iftConfig);
 
             // Normalize nested object if sent as JSON strings
             if (typeof templateData.calculationConfig === 'string') {
@@ -222,6 +224,7 @@ exports.api.update = async (req, res, next) => {
             const { id } = req.params;
             const updateData = req.body || {};
             updateData.updatedAt = new Date();
+            normalizeIftConfigPayload(updateData.iftConfig);
             if (updateData.code) delete updateData.code; // prevent code change
             if (updateData.calculationConfig?.formula) {
                 if (!validateFormula(updateData.calculationConfig.formula)) {
@@ -246,6 +249,7 @@ exports.api.update = async (req, res, next) => {
             const { id } = req.params;
             const updateData = fields;
             updateData.updatedAt = new Date();
+            normalizeIftConfigPayload(updateData.iftConfig);
             if (updateData.code) delete updateData.code;
             if (updateData.calculationConfig?.formula) {
                 if (!validateFormula(updateData.calculationConfig.formula)) {
@@ -517,6 +521,19 @@ exports.api.export = async (req, res, next) => {
 
 
 // Helper functions
+function normalizeIftConfigPayload(iftConfig) {
+    if (!iftConfig || typeof iftConfig !== 'object') return;
+    if (Array.isArray(iftConfig.includedStructureIds)) {
+        iftConfig.includedStructureIds = Array.from(new Set(iftConfig.includedStructureIds.filter(Boolean)));
+    }
+    if (Array.isArray(iftConfig.includePersonnelIds)) {
+        iftConfig.includePersonnelIds = Array.from(new Set(iftConfig.includePersonnelIds.filter(Boolean)));
+    }
+    if (Array.isArray(iftConfig.excludePersonnelIds)) {
+        iftConfig.excludePersonnelIds = Array.from(new Set(iftConfig.excludePersonnelIds.filter(Boolean)));
+    }
+}
+
 function validateFormula(formula) {
     // Implement actual formula validation logic
     try {

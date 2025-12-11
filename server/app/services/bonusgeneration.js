@@ -688,20 +688,22 @@ function isIFTStructure(structureDoc, subStructureDoc, template, functionCode) {
     const cfg = template.iftConfig || {};
     const useFlag = cfg.useStructureFlag !== false;
     const includedIds = (cfg.includedStructureIds || []).map(normalizeId);
+    const includedSet = new Set(includedIds);
     const excludedIds = new Set((cfg.excludedStructureIds || []).map(normalizeId));
 
     const structureId = normalizeId(structureDoc?._id);
     const subStructureId = normalizeId(subStructureDoc?._id);
     const structureHasIFT = !!structureDoc?.hasIFT;
     const subStructureHasIFT = !!subStructureDoc?.hasIFT;
+    const isExplicitIncluded = includedSet.size > 0 && (includedSet.has(structureId) || includedSet.has(subStructureId));
 
-    if (useFlag && !(structureHasIFT || subStructureHasIFT)) {
+    if ((structureId && excludedIds.has(structureId)) || (subStructureId && excludedIds.has(subStructureId))) {
         return false;
     }
-    if (includedIds.length > 0 && (!structureId || !includedIds.includes(structureId))) {
+    if (!isExplicitIncluded && useFlag && !(structureHasIFT || subStructureHasIFT)) {
         return false;
     }
-    if (structureId && excludedIds.has(structureId)) {
+    if (includedIds.length > 0 && !isExplicitIncluded) {
         return false;
     }
 
@@ -722,15 +724,33 @@ async function findEligiblePersonnelForIFT(template) {
     const baseIds = baseEligiblePersonnel.map(p => normalizeId(p._id)).filter(Boolean);
     const cfg = template.iftConfig || {};
     const includeIds = (cfg.includePersonnelIds || []).map(normalizeId).filter(Boolean);
+    const includeIdSet = new Set(includeIds);
     const excludeIds = new Set((cfg.excludePersonnelIds || []).map(normalizeId));
-    const candidateIds = Array.from(new Set([...baseIds, ...includeIds])).filter(Boolean);
+    const includeStructureIds = (cfg.includedStructureIds || []).map(normalizeId).filter(Boolean);
+    const includeStructureSet = new Set(includeStructureIds);
+    const candidateIdSet = new Set([...baseIds, ...includeIds].filter(Boolean));
 
-    if (candidateIds.length === 0) {
+    if (candidateIdSet.size === 0 && includeStructureIds.length === 0) {
+        return { eligibleIds: [], snapshotByPersonnel: {}, structureById: new Map() };
+    }
+
+    const snapshotConditions = [];
+    if (candidateIdSet.size > 0) {
+        snapshotConditions.push({ personnelId: { $in: Array.from(candidateIdSet) } });
+    }
+    if (includeStructureIds.length > 0) {
+        snapshotConditions.push({ 'data.structure.id': { $in: includeStructureIds } });
+        snapshotConditions.push({ 'data.subStructure.id': { $in: includeStructureIds } });
+        snapshotConditions.push({ 'data.structure.identifier': { $in: includeStructureIds } });
+        snapshotConditions.push({ 'data.subStructure.identifier': { $in: includeStructureIds } });
+    }
+
+    if (!snapshotConditions.length) {
         return { eligibleIds: [], snapshotByPersonnel: {}, structureById: new Map() };
     }
 
     const snapshots = await PersonnelSnapshot.find({
-        personnelId: { $in: candidateIds }
+        $or: snapshotConditions
     }).sort({ snapshotDate: -1 }).lean();
 
     const latestByPersonnel = {};
@@ -738,6 +758,12 @@ async function findEligiblePersonnelForIFT(template) {
         const id = normalizeId(snap.personnelId);
         if (id && !latestByPersonnel[id]) {
             latestByPersonnel[id] = snap;
+        }
+        const data = snap?.data || {};
+        const structureId = normalizeId(data.structure?.id) || normalizeId(data.structure?.identifier);
+        const subStructureId = normalizeId(data.subStructure?.id) || normalizeId(data.subStructure?.identifier);
+        if (id && (includeStructureSet.has(structureId) || includeStructureSet.has(subStructureId))) {
+            candidateIdSet.add(id);
         }
     });
 
@@ -752,7 +778,7 @@ async function findEligiblePersonnelForIFT(template) {
     const structureById = new Map(structureDocs.map(doc => [normalizeId(doc._id), doc]));
 
     const eligibleIds = [];
-    for (const id of candidateIds) {
+    for (const id of candidateIdSet) {
         if (excludeIds.has(id)) continue;
         const snap = latestByPersonnel[id];
         if (!snap) continue;
@@ -761,7 +787,11 @@ async function findEligiblePersonnelForIFT(template) {
         const subStructureDoc = structureById.get(normalizeId(data.subStructure?.id));
         const functionCode = data.position?.code || data.position?.name || data.functionCode;
 
-        if (!isIFTStructure(structureDoc, subStructureDoc, template, functionCode)) {
+        const structureIsExplicit = includeStructureSet.has(normalizeId(data.structure?.id) || normalizeId(data.structure?.identifier))
+            || includeStructureSet.has(normalizeId(data.subStructure?.id) || normalizeId(data.subStructure?.identifier));
+        const passStructure = structureIsExplicit || includeIdSet.has(id) || isIFTStructure(structureDoc, subStructureDoc, template, functionCode);
+
+        if (!passStructure) {
             continue;
         }
         eligibleIds.push(id);

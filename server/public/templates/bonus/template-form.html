@@ -292,6 +292,81 @@
                                 <button type="button" class="btn btn-outline-secondary btn-sm" ng-click="resetIftDefaultRules()"><i class="icon-undo2 mr-1"></i>Restaurer la grille par défaut</button>
                                 <button type="button" class="btn btn-primary btn-sm" ng-click="addIftRule()"><i class="icon-plus22 mr-1"></i>Ajouter une règle</button>
                             </div>
+                            <div class="row mt-3">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-1">
+                                        <label class="d-flex align-items-center">
+                                            <i class="icon-office mr-1"></i>Structures à inclure
+                                            <i class="icon-help ml-1 text-muted" uib-tooltip="Ajoutez des structures même si elles n'ont pas le flag IFT." tooltip-placement="right"></i>
+                                        </label>
+                                        <input type="text"
+                                               class="form-control form-control-sm mb-2"
+                                               placeholder="Rechercher une structure ou sous-structure"
+                                               ng-model="selectedIftStructureId"
+                                               uib-typeahead="structure as structure.label for structure in searchIftStructures($viewValue)"
+                                               typeahead-editable="false"
+                                               typeahead-min-length="0"
+                                               typeahead-on-select="addIftStructure($item)">
+                                        <div class="mb-2">
+                                            <small class="text-muted">Ou parcourir la liste :</small>
+                                            <select class="form-control form-control-sm"
+                                                    size="6"
+                                                    ng-model="selectedIftStructureId"
+                                                    ng-options="s.id as s.label for s in iftStructureOptions"
+                                                    ng-change="addIftStructure(selectedIftStructureId)">
+                                                <option value="">Choisir...</option>
+                                            </select>
+                                        </div>
+                                        <button type="button" class="btn btn-primary btn-sm mb-2" ng-click="addIftStructure()" ng-disabled="!selectedIftStructureId"><i class="icon-plus22 mr-1"></i>Ajouter</button>
+                                        <div class="border rounded" ng-if="iftSelectedStructures.length">
+                                            <div class="list-group list-group-flush">
+                                                <div class="list-group-item py-2 d-flex justify-content-between align-items-center"
+                                                     ng-repeat="structure in iftSelectedStructures track by structure.id">
+                                                    <div>
+                                                        <div class="font-weight-semibold">{{structure.name || structure.label}}</div>
+                                                        <small class="text-muted">{{structure.code || structure.id}}</small>
+                                                    </div>
+                                                    <a href="" class="text-danger" ng-click="removeIftStructure(structure.id); $event.preventDefault();">
+                                                        <i class="icon-cross2"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="text-muted" ng-if="!iftSelectedStructures.length">Aucune structure ciblée</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-1">
+                                        <label class="d-flex align-items-center">
+                                            <i class="icon-user-check mr-1"></i>Personnel à inclure
+                                            <i class="icon-help ml-1 text-muted" uib-tooltip="Recherche par nom ou matricule; les doublons sont ignorés." tooltip-placement="right"></i>
+                                        </label>
+                                        <input type="text"
+                                               class="form-control form-control-sm mb-2"
+                                               placeholder="Rechercher un agent"
+                                               ng-model="iftPersonnelSearch"
+                                               uib-typeahead="person as getIftPersonnelLabel(person) for person in searchIftPersonnel($viewValue)"
+                                               typeahead-editable="false"
+                                               typeahead-min-length="2"
+                                               typeahead-on-select="onIftPersonnelSelected($item)">
+                                        <div class="border rounded" ng-if="iftSelectedPersonnel.length">
+                                            <div class="list-group list-group-flush">
+                                                <div class="list-group-item py-2 d-flex justify-content-between align-items-center"
+                                                     ng-repeat="person in iftSelectedPersonnel track by person.id">
+                                                    <div>
+                                                        <div class="font-weight-semibold">{{person.name || person.label}}</div>
+                                                        <small class="text-muted">{{person.identifier || person.id}}</small>
+                                                    </div>
+                                                    <a href="" class="text-danger" ng-click="removeIftPersonnel(person.id); $event.preventDefault();">
+                                                        <i class="icon-cross2"></i>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="text-muted" ng-if="!iftSelectedPersonnel.length">Aucun personnel ciblé</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                     </div>

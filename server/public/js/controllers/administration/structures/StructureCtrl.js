@@ -160,8 +160,6 @@ angular.module('StructureCtrl', []).controller('StructureController', function (
                                 $scope.structure.fatherId = JSON.parse($scope.selected.structure)._id;
                             }
 
-                            console.log($scope.structure);
-
                             Structure.upsert($scope.structure).then(function (response) {
                                 $rootScope.kernel.loading = 100;
                                 $state.go('home.administration.structures');

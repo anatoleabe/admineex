@@ -30,6 +30,7 @@ exports.api.upsert = function (req, res) {
                 audit.logEvent('[formidable]', 'Structures', 'Upsert', "", "", 'failed', "Formidable attempted to parse structure fields");
                 return res.status(500).send(err);
             } else {
+
                 exports.upsert(fields, function (err) {
                     if (err) {
                         log.error(err);
