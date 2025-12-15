@@ -34,6 +34,9 @@ const BonusAllocationSchema = new mongoose.Schema({
             previousParts: { type: Number },
             newParts: { type: Number }
         }],
+        migrationSource: { type: String },
+        migrationFile: { type: String },
+        migrationRow: { type: Number },
         // Extras for sans-part templates
         sbi: { type: Number },
         txPercent: { type: Number },

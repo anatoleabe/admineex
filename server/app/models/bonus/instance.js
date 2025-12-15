@@ -51,6 +51,8 @@ let BonusInstanceSchema = new mongoose.Schema({
     generationDate: { type: Date },
     approvalDate: { type: Date },
     paymentDate: { type: Date },
+    source: { type: String, default: 'excel_migration' },
+    originalFilePath: { type: String },
     customOverrides: { type: mongoose.Schema.Types.Mixed }, // Allows temporary rule modifications
     notes: { type: String },
     // Export history tracking

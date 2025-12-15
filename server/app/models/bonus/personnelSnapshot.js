@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const PersonnelSnapshotSchema = new Schema({
     personnelId: { type: mongoose.Schema.Types.ObjectId, ref: 'Personnel', required: true },
     snapshotDate: { type: Date, required: true },
+    referencePeriod: { type: String },
     data: {
         grade: { type: String },
         category: { type: String },
@@ -52,6 +53,7 @@ const PersonnelSnapshotSchema = new Schema({
 
 // Index for quick retrieval
 PersonnelSnapshotSchema.index({ personnelId: 1, snapshotDate: 1 });
+PersonnelSnapshotSchema.index({ personnelId: 1, referencePeriod: 1 }, { unique: true, sparse: true });
 
 // Fix: check if model already exists
 const PersonnelSnapshot = mongoose.models.PersonnelSnapshot || mongoose.model('PersonnelSnapshot', PersonnelSnapshotSchema);

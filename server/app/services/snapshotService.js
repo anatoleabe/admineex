@@ -18,7 +18,7 @@ function shapeStructure(structure) {
     };
 }
 
-async function createPersonnelSnapshot(personnelId, snapshotDate = new Date()) {
+async function createPersonnelSnapshot(personnelId, snapshotDate = new Date(), referencePeriod = null) {
     const personnel = await Personnel.findById(personnelId).lean();
 
     if (!personnel) {
@@ -140,6 +140,7 @@ async function createPersonnelSnapshot(personnelId, snapshotDate = new Date()) {
     const snapshotData = {
         personnelId,
         snapshotDate,
+        referencePeriod: referencePeriod || null,
         data: {
             grade: personnel.grade,
             category: personnel.category,

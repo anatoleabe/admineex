@@ -90,6 +90,7 @@ const BonusTemplateSchema = new mongoose.Schema({
     },
     documentation: { type: String }, // Markdown formatted instructions
     isActive: { type: Boolean, default: true },
+    isHistoricalTemplate: { type: Boolean, default: false },
     deactivatedAt: { type: Date }, // Track when the template was deactivated
     deactivatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Track who deactivated the template
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
