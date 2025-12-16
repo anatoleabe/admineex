@@ -1142,9 +1142,12 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
         }
 
         // --- PDF Generation Setup ---
+        const FIRST_PAGE_MARGINS = { top: 180, bottom: 40, left: 50, right: 50 };
+        const OTHER_PAGE_MARGINS = { top: 40, bottom: 40, left: 50, right: 50 };
+
         const doc = new PDFDocument({
             size: 'A4',
-            margins: { top: 180, bottom: 40, left: 50, right: 50 }, // Increased top margin to accommodate header
+            margins: FIRST_PAGE_MARGINS, // first page keeps room for the official header
             bufferPages: true
         });
 
@@ -1484,7 +1487,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
 
         // --- Tables Section ---
         const tableHeaders = ['Période', 'Type de Prime', 'Montant Brut', taxHeaderLabel, 'Montant Net'];
-        const tableWidths = [70, 160, 80, 80, 80];
+        const tableWidths = [70, 190, 80, 80, 80];
         const tableStartX = doc.page.margins.left;
         const tableWidth = tableWidths.reduce((a, b) => a + b);
         const tableRowHeight = 24;
@@ -1504,7 +1507,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
 
         const checkNewPage = (y, requiredHeight) => {
             if (y + requiredHeight > doc.page.height - doc.page.margins.bottom) {
-                doc.addPage();
+                doc.addPage({ margins: OTHER_PAGE_MARGINS });
                 generateHeader(doc);
                 return drawTableHeader(doc.y);
             }

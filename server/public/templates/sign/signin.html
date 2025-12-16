@@ -1,48 +1,76 @@
-<div class="bg-slate-800" style="height: 100%">
+<div class="admx-auth">
+    <div class="admx-auth__bg" aria-hidden="true"></div>
+
     <div class="loading-general" layout="row" layout-sm="column" layout-align="space-around" ng-if="loading">
         <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
     </div>
 
-    <div layout="column" layout-align="center center" style="min-height: 100vh; background: #f5f7fa;">
-        <md-card class="md-whiteframe-z2" style="margin-top: 40px; max-width: 400px; width: 100%;">
-            <md-card-content>
-                <div style="text-align:center; margin-bottom: 16px; position: relative;">
-                    <img ng-src="{{kernel.logo.apps}}" alt="Logo" style="width: 120px; margin-bottom: 8px;" />
-                    <h3 class="md-title" style="margin-bottom: 0;">Welcome to {{kernel.title}}</h3>
-                    <p class="md-subhead" style="color: #666; margin-top: 4px;" translate>Add your credentials to login to your account</p>
-                    <md-button class="md-icon-button" ng-click="toggleDarkMode()" aria-label="Toggle dark mode" style="position: absolute; top: 0; right: 0;">
-                        <md-icon md-svg-icon="{{darkMode ? 'brightness_7' : 'brightness_4'}}"></md-icon>
-                    </md-button>
+    <div class="admx-auth__topbar">
+        <md-button class="admx-auth__back" ui-sref="welcome" aria-label="Back to welcome">
+            <i class="icon-arrow-left52" style="margin-right: 8px;"></i>
+            <span translate>Back</span>
+        </md-button>
+    </div>
+
+    <div class="admx-auth__wrap" layout="column" layout-align="center center">
+        <div class="admx-auth__shell" layout="row" layout-align="center start">
+            <div class="admx-auth__brand" flex="60" flex-xs="100">
+                <img class="admx-auth__logo" ng-src="{{kernel.logo.apps}}" alt="Admineex logo">
+
+                <div class="admx-auth__title" translate>Sign in</div>
+                <div class="admx-auth__subtitle" translate>
+                    Use your credentials to access your workspace securely.
                 </div>
-                <form ng-submit="signin();" name="signinForm" novalidate autocomplete="off">
-                    <md-input-container class="md-block">
-                        <label translate>Email</label>
-                        <input type="email" ng-model="email" name="email" required autocomplete="off">
-                    </md-input-container>
-                    <md-input-container class="md-block" style="position:relative;">
-                        <label translate>Password</label>
-                        <input type="password" ng-model="password" name="password" required autocomplete="off" ng-attr-id="signin-password">
-                        <md-button class="md-icon-button" type="button" ng-click="showPassword = !showPassword" aria-label="Show password" style="position: absolute; right: 0; top: 0;">
-                            <md-icon md-svg-icon="{{showPassword ? 'visibility_off' : 'visibility'}}"></md-icon>
+
+                <div class="admx-auth__meta">
+                    <span class="admx-auth__dot" aria-hidden="true"></span>
+                    <span>{{kernel.version}}</span>
+                    <span aria-hidden="true">•</span>
+                    <span>{{kernel.title}}</span>
+                </div>
+            </div>
+
+            <md-card class="admx-auth__card md-whiteframe-z2" flex="40" flex-xs="100">
+                <md-card-content>
+                    <div class="admx-auth__card-title" translate>Welcome back</div>
+                    <div class="admx-auth__card-text" translate>Add your credentials to login to your account</div>
+
+                    <form ng-submit="signin();" name="signinForm" novalidate autocomplete="off">
+                        <div class="admx-auth__field">
+                            <md-input-container class="md-block">
+                                <label translate>Email</label>
+                                <input type="email" ng-model="email" name="email" required autocomplete="off">
+                            </md-input-container>
+                        </div>
+
+                        <div class="admx-auth__field admx-auth__pw">
+                            <md-input-container class="md-block">
+                                <label translate>Password</label>
+                                <input ng-attr-type="{{showPassword ? 'text' : 'password'}}" ng-model="password" name="password" required autocomplete="off" ng-attr-id="signin-password">
+                            </md-input-container>
+                            <md-button class="admx-auth__pw-toggle" type="button" ng-click="showPassword = !showPassword" aria-label="Toggle password visibility">
+                                <i class="{{showPassword ? 'icon-eye-blocked' : 'icon-eye'}}"></i>
+                            </md-button>
+                        </div>
+
+                        <div class="admx-auth__row" layout="row" layout-align="space-between center">
+                            <md-checkbox ng-model="rememberme" aria-label="Remember me" style="margin:0;">
+                                <span translate>Remember me</span>
+                            </md-checkbox>
+                            <a class="admx-auth__link" ui-sref="recovery.lost" translate>Forgot password?</a>
+                        </div>
+
+                        <md-button class="md-raised md-primary admx-auth__cta" type="submit" ng-disabled="loading || !signinForm.$valid" translate>
+                            Sign in
                         </md-button>
-                    </md-input-container>
-                    <div layout="row" layout-align="space-between center" style="margin-bottom: 8px;">
-                        <md-checkbox ng-model="rememberme" aria-label="Remember me" style="margin:0;">
-                            <span translate>Remember me</span>
-                        </md-checkbox>
-                        <a ui-sref="recovery.lost" style="font-size: 13px; color: #1976d2; text-decoration: none;" translate>Forgot password?</a>
-                    </div>
-                    <md-button class="md-raised md-primary" type="submit" style="width:100%; margin-bottom: 8px;" ng-disabled="loading || !signinForm.$valid" translate>Sign in <md-icon md-svg-icon="icon-circle-right2"></md-icon></md-button>
-                    <div style="text-align:center; color:#888; font-size:13px; margin: 8px 0;">
-                        <span translate>Don't have an account?</span>
-                    </div>
-                    <md-button class="md-raised" style="width:100%; background:#fff; color:#1976d2; border:1px solid #1976d2;" href="#" translate>Sign up</md-button>
-                    <div style="text-align:center; color:#aaa; font-size:12px; margin-top: 12px;">
-                        <span translate>By continuing, you're confirming that you've read our <a href="#" translate>Terms &amp; Conditions</a> and <a href="#" translate>Cookie Policy</a></span>
-                    </div>
-                </form>
-            </md-card-content>
-        </md-card>
+
+                        <div class="admx-auth__help">
+                            <span translate>Need help?</span>
+                            <span translate>Contact your administrator.</span>
+                        </div>
+                    </form>
+                </md-card-content>
+            </md-card>
+        </div>
     </div>
 </div>
-

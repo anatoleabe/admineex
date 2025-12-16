@@ -1,0 +1,189 @@
+.admx-auth {
+    min-height: 100vh;
+    position: relative;
+    background: radial-gradient(1000px 800px at 20% 15%, rgba(207, 105, 53, 0.18), rgba(207, 105, 53, 0) 55%),
+        radial-gradient(900px 700px at 85% 10%, rgba(51, 65, 85, 0.35), rgba(51, 65, 85, 0) 55%),
+        linear-gradient(140deg, #0f172a 0%, #111827 45%, #0b1220 100%);
+    overflow: hidden;
+}
+
+.admx-auth__bg {
+    position: absolute;
+    inset: 0;
+    background: url("../global_assets/images/login_cover.jpg") center/cover no-repeat;
+    opacity: 0.12;
+}
+
+.admx-auth__bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(2, 6, 23, 0.55), rgba(2, 6, 23, 0.88));
+}
+
+.admx-auth__topbar {
+    position: relative;
+    z-index: 1;
+    padding: 18px 16px 0;
+}
+
+.admx-auth__back.md-button {
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.92);
+    min-height: 36px;
+    line-height: 36px;
+    padding: 0 12px;
+    text-transform: none;
+    font-weight: 600;
+}
+
+.admx-auth__wrap {
+    position: relative;
+    z-index: 1;
+    min-height: calc(100vh - 64px);
+    padding: 18px 16px 40px;
+}
+
+.admx-auth__shell {
+    width: 100%;
+    max-width: 980px;
+    gap: 22px;
+}
+
+.admx-auth__brand {
+    padding: 10px 6px;
+    color: #e5e7eb;
+}
+
+.admx-auth__logo {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.06);
+    padding: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.admx-auth__title {
+    margin: 18px 0 6px;
+    font-weight: 750;
+    letter-spacing: 0.2px;
+    line-height: 1.15;
+    font-size: 30px;
+    color: #ffffff;
+}
+
+.admx-auth__subtitle {
+    margin: 0 0 16px;
+    font-size: 14px;
+    line-height: 1.65;
+    color: rgba(229, 231, 235, 0.86);
+    max-width: 54ch;
+}
+
+.admx-auth__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    color: rgba(229, 231, 235, 0.88);
+    font-size: 12px;
+}
+
+.admx-auth__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(207, 105, 53, 0.95);
+    box-shadow: 0 0 0 4px rgba(207, 105, 53, 0.15);
+}
+
+.admx-auth__card.md-whiteframe-z2 {
+    border-radius: 18px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.admx-auth__card md-card-content {
+    padding: 22px 20px 18px;
+}
+
+.admx-auth__card-title {
+    margin: 0 0 4px;
+    color: #0f172a;
+    font-size: 18px;
+    font-weight: 750;
+}
+
+.admx-auth__card-text {
+    margin: 0 0 14px;
+    color: rgba(15, 23, 42, 0.72);
+    line-height: 1.55;
+    font-size: 14px;
+}
+
+.admx-auth__field md-input-container.md-block {
+    margin: 18px 0 2px;
+}
+
+.admx-auth__field input {
+    border-radius: 12px;
+}
+
+.admx-auth__pw {
+    position: relative;
+}
+
+.admx-auth__pw-toggle.md-button {
+    position: absolute;
+    right: 4px;
+    top: 26px;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    margin: 0;
+    background: rgba(15, 23, 42, 0.06);
+    color: rgba(15, 23, 42, 0.72);
+}
+
+.admx-auth__row {
+    margin-top: 10px;
+}
+
+.admx-auth__link {
+    font-size: 13px;
+    color: #b95c2c;
+    text-decoration: none;
+    font-weight: 650;
+}
+
+.admx-auth__cta.md-button {
+    width: 100%;
+    min-height: 44px;
+    border-radius: 12px;
+    font-weight: 750;
+    letter-spacing: 0.2px;
+    margin-top: 10px;
+}
+
+.admx-auth__help {
+    margin-top: 14px;
+    font-size: 12px;
+    color: rgba(15, 23, 42, 0.62);
+    text-align: center;
+}
+
+@media (max-width: 920px) {
+    .admx-auth__shell {
+        flex-direction: column;
+        max-width: 560px;
+    }
+}
+

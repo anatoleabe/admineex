@@ -54,6 +54,20 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                         return $ocLazyLoad.load('js/controllers/sign/SigninCtrl.js');
                     }]
             }
+        }).state('welcome', {
+            url: '/welcome',
+            views: {
+                'content': {
+                    templateUrl: 'templates/welcome/welcome.html',
+                    controller: 'WelcomeController'
+                }
+            },
+            access: {requiredAuthentication: false},
+            resolve: {
+                loadMyCtrl: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('js/controllers/welcome/WelcomeCtrl.js');
+                    }]
+            }
         }).state('recovery', {
             abstract: true,
             url: '/recovery',
@@ -1137,7 +1151,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
 
         // Robust auth guard: only check requiredAuthentication if access object exists
         if (nextState && nextState.access && nextState.access.requiredAuthentication && !$window.localStorage.token) {
-             $location.path("/signin");
+             $location.path("/welcome");
          }
 
         if ($location.path().indexOf('installation') == -1) {
@@ -1150,7 +1164,7 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
                     }
                 }).catch(function (response) {
                     console.log(response);
-                    $location.path("/signin");
+                    $location.path("/welcome");
                 });
             });
         }
