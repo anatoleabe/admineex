@@ -1458,7 +1458,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
 
         // --- Tables Section ---
         const tableHeaders = ['Période', 'Type de Prime', 'Montant Brut', taxHeaderLabel, 'Montant Net'];
-        const tableWidths = [90, 160, 85, 80, 80];
+        const tableWidths = [70, 160, 80, 80, 80];
         const tableStartX = doc.page.margins.left;
         const tableWidth = tableWidths.reduce((a, b) => a + b);
         const tableRowHeight = 24;
@@ -1518,7 +1518,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
                 doc.rect(tableStartX, currentY, tableWidth, tableRowHeight).fill(rowColor);
                 doc.strokeColor(COLOR_BORDER).lineWidth(0.4).rect(tableStartX, currentY, tableWidth, tableRowHeight).stroke();
                 doc.restore();
-                doc.font(FONT_REGULAR).fontSize(8).fillColor(COLOR_TEXT);
+                doc.font(FONT_REGULAR).fontSize(7).fillColor(COLOR_TEXT);
 
                 const rowData = [
                     { text: bonus.instanceId?.referencePeriod || moment(bonus.createdAt).format('MMMM YYYY'), align: 'left' },
