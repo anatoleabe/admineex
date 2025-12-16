@@ -1182,7 +1182,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
             // Layout based on the provided example image
             const pageWidth = doc.page.width;
             const logoSize = 80;
-            const logoY = doc.page.margins.top - 180;
+            const logoY = 0;
             const logoX = (pageWidth - logoSize) / 2;
             const colWidth = 400;
             const leftColX = -60;
@@ -1235,25 +1235,25 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
             if (doc.bufferedPageRange().count === 1) {
                 generateOfficialHeader();
                 doc.moveDown(2);
-            }
 
-            doc.fillColor(COLOR_PRIMARY)
-                .fontSize(16).font(FONT_BOLD)
-                .text('HISTORIQUE DES PRIMES ET GRATIFICATIONS', doc.page.margins.left, doc.y, {
-                    align: 'center',
-                    width: doc.page.width - doc.page.margins.left - doc.page.margins.right
-                });
-            doc.fontSize(10).font(FONT_REGULAR).fillColor(COLOR_LIGHT_TEXT)
-                .text(formattedName, doc.page.margins.left, doc.y, {
-                    align: 'center',
-                    width: doc.page.width - doc.page.margins.left - doc.page.margins.right
-                });
-            doc.moveDown(1);
+                doc.fillColor(COLOR_PRIMARY)
+                    .fontSize(16).font(FONT_BOLD)
+                    .text('HISTORIQUE DES PRIMES ET GRATIFICATIONS', doc.page.margins.left, doc.y, {
+                        align: 'center',
+                        width: doc.page.width - doc.page.margins.left - doc.page.margins.right
+                    });
+                doc.fontSize(10).font(FONT_REGULAR).fillColor(COLOR_LIGHT_TEXT)
+                    .text(formattedName, doc.page.margins.left, doc.y, {
+                        align: 'center',
+                        width: doc.page.width - doc.page.margins.left - doc.page.margins.right
+                    });
+                doc.moveDown(1);
+            }
 
         };
 
         // Adjust the footer generation to ensure no blank spaces are added unexpectedly
-        const generateFooter = (qrImage) => {
+        const generateFooter = () => {
             const pageCount = doc.bufferedPageRange().count;
 
             // Store current page to restore it later
@@ -1263,8 +1263,8 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
                 doc.switchToPage(i);
 
                 // Ensure footer does not trigger a new page
-                const footerY = doc.page.height - doc.page.margins.bottom - 20; // Adjusted position
-                if (footerY > doc.page.height - 30) {
+                const footerY = doc.page.height - doc.page.margins.bottom - 30; // Adjusted position
+                if (footerY > doc.page.height - 20) {
                     continue; // Skip adding footer if it exceeds the page height
                 }
 
@@ -1273,22 +1273,12 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
                 doc.fontSize(8).fillColor(COLOR_LIGHT_TEXT)
                     .text(footerText,
                         doc.page.margins.left,
-                        footerY,
+                        footerY + 15,
                         {
                             align: 'center',
                             width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
                             lineBreak: false
                         });
-
-                // Add QR code if provided
-                if (qrImage) {
-                    const qrSize = 50;
-                    const qrX = doc.page.width - doc.page.margins.right - qrSize;
-                    const qrY = footerY - qrSize - 10; // Adjusted position
-                    if (qrY > doc.page.margins.top) {
-                        doc.image(qrImage, qrX, qrY, { width: qrSize, height: qrSize });
-                    }
-                }
             }
 
             // Restore the page we were on
@@ -1318,60 +1308,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
 
         // --- PDF Content ---
         generateHeader(doc);
-
-        // --- Info Section ---
-        const latestAllocation = bonusAllocations[0];
-        const position = latestAllocation.personnelSnapshotId?.data?.position;
-        const infoLeftFields = [
-            { label: 'Matricule', value: personnel.identifier || 'N/A' },
-            { label: 'Poste', value: position?.name || 'N/A' },
-            { label: 'Structure', value: position?.structure?.name || 'N/A' }
-        ];
-        const rankLabel = latestAllocation.personnelSnapshotId?.data?.rank?.name
-            || latestAllocation.personnelSnapshotId?.data?.rank?.label
-            || latestAllocation.personnelSnapshotId?.data?.rank
-            || personnel.rank
-            || 'N/A';
-        const infoRightFields = [
-            {
-                label: 'Période du rapport',
-                value: `${moment(startDate).format('DD/MM/YYYY')} au ${moment(endDate).format('DD/MM/YYYY')}`
-            },
-            { label: 'Grade', value: rankLabel }
-        ];
-
-        const infoBoxX = doc.page.margins.left;
-        const infoBoxY = doc.y;
-        const infoBoxWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
-        const infoRowHeight = 20;
-        const infoBoxHeight = Math.max(infoLeftFields.length, infoRightFields.length) * infoRowHeight + 22;
-
-        doc.save();
-        doc.roundedRect(infoBoxX, infoBoxY, infoBoxWidth, infoBoxHeight, 6).fillAndStroke(COLOR_HEADER_BG, COLOR_BORDER);
-        doc.moveTo(infoBoxX + infoBoxWidth / 2, infoBoxY + 10)
-            .lineTo(infoBoxX + infoBoxWidth / 2, infoBoxY + infoBoxHeight - 10)
-            .strokeColor(COLOR_BORDER)
-            .lineWidth(0.5)
-            .stroke();
-        doc.restore();
-
-        const drawInfoLines = (items, startX) => {
-            items.forEach((item, idx) => {
-                const labelY = infoBoxY + 11 + idx * infoRowHeight;
-                doc.font(FONT_BOLD).fontSize(8).fillColor(COLOR_SECONDARY)
-                    .text(`${item.label.toUpperCase()}: `, startX, labelY, {
-                        width: infoBoxWidth / 2 - 20,
-                        continued: true
-                    });
-                doc.font(FONT_REGULAR).fontSize(9).fillColor(COLOR_TEXT)
-                    .text(item.value, { width: infoBoxWidth / 2 - 20 });
-            });
-        };
-
-        drawInfoLines(infoLeftFields, infoBoxX + 12);
-        drawInfoLines(infoRightFields, infoBoxX + infoBoxWidth / 2 + 12);
-
-        doc.y = infoBoxY + infoBoxHeight + 14;
+        //removeBlankSpaces(doc);
 
         // --- Data Processing and Grouping ---
         let totalGross = 0, totalTax = 0, totalNet = 0;
@@ -1414,6 +1351,95 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
         const formatThousands = (value) => Math.round(value).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
         const formatCurrency = (value) => `${formatThousands(value)} FCFA`;
         const formatNumber = (value) => formatThousands(value);
+
+        // --- QR Code Generation (displayed in Info section) ---
+        const qrSummary = [
+            `Personnel: ${formattedName || 'N/A'}`,
+            `Matricule: ${personnel.identifier || 'N/A'}`,
+            `Période: ${moment(startDate).format('DD/MM/YYYY')} au ${moment(endDate).format('DD/MM/YYYY')}`,
+            `Primes: ${bonusAllocations.length}`,
+            `Net total: ${formatCurrency(totalNet)}`,
+            `Brut total: ${formatCurrency(totalGross)}`
+        ].join(' | ');
+        const qrImage = qr.imageSync(qrSummary, { type: 'png' });
+
+        // --- Info Section ---
+        const latestAllocation = bonusAllocations[0];
+        const position = latestAllocation.personnelSnapshotId?.data?.position;
+        const infoLeftFields = [
+            { label: 'Matricule', value: personnel.identifier || 'N/A' },
+            { label: 'Poste', value: position?.name || 'N/A' },
+            { label: 'Structure', value: position?.structure?.name || 'N/A' }
+        ];
+        const rankLabel = latestAllocation.personnelSnapshotId?.data?.rank?.name
+            || latestAllocation.personnelSnapshotId?.data?.rank?.label
+            || latestAllocation.personnelSnapshotId?.data?.rank
+            || personnel.rank
+            || 'N/A';
+        const infoRightFields = [
+            {
+                label: 'Période du rapport',
+                value: `${moment(startDate).format('DD/MM/YYYY')} au ${moment(endDate).format('DD/MM/YYYY')}`
+            },
+            { label: 'Grade', value: rankLabel },
+            { type: 'qr', value: qrImage }
+        ];
+
+        const infoBoxX = doc.page.margins.left;
+        const infoBoxY = doc.y;
+        const infoBoxWidth = doc.page.width - doc.page.margins.left - doc.page.margins.right;
+        const infoRowHeight = 20;
+        const qrSize = 45;
+        const calcInfoColumnHeight = (items) => items.reduce((sum, item) => {
+            if (item?.type === 'qr') return sum + (qrSize + 5);
+            return sum + infoRowHeight;
+        }, 0);
+        const infoContentHeight = Math.max(calcInfoColumnHeight(infoLeftFields), calcInfoColumnHeight(infoRightFields));
+        const infoBoxHeight = infoContentHeight ;
+
+        doc.save();
+        doc.roundedRect(infoBoxX, infoBoxY, infoBoxWidth, infoBoxHeight, 6).fillAndStroke(COLOR_HEADER_BG, COLOR_BORDER);
+        doc.moveTo(infoBoxX + infoBoxWidth / 2, infoBoxY + 10)
+            .lineTo(infoBoxX + infoBoxWidth / 2, infoBoxY + infoBoxHeight - 10)
+            .strokeColor(COLOR_BORDER)
+            .lineWidth(0.5)
+            .stroke();
+        doc.restore();
+
+        const drawInfoLines = (items, startX) => {
+            const colInnerWidth = infoBoxWidth / 2 - 20;
+            let yOffset = 0;
+            items.forEach((item) => {
+                const labelY = infoBoxY + 11 + yOffset;
+                if (item?.type === 'qr') {
+                    doc.font(FONT_BOLD).fontSize(8).fillColor(COLOR_SECONDARY)
+                        .text(`${(item.label || 'QR Code').toUpperCase()}: `, startX, labelY, {
+                            width: colInnerWidth
+                        });
+                    const qrX = startX + (colInnerWidth - qrSize);
+                    const qrY = labelY + 10;
+                    if (item.value) {
+                        doc.image(item.value, 457.28, 240.72, { width: qrSize, height: qrSize });
+                    }
+                    yOffset += qrSize + 14;
+                    return;
+                }
+
+                doc.font(FONT_BOLD).fontSize(8).fillColor(COLOR_SECONDARY)
+                    .text(`${item.label.toUpperCase()}: `, startX, labelY, {
+                        width: colInnerWidth,
+                        continued: true
+                    });
+                doc.font(FONT_REGULAR).fontSize(9).fillColor(COLOR_TEXT)
+                    .text(item.value, { width: colInnerWidth });
+                yOffset += infoRowHeight;
+            });
+        };
+
+        drawInfoLines(infoLeftFields, infoBoxX + 12);
+        drawInfoLines(infoRightFields, infoBoxX + infoBoxWidth / 2 + 12);
+
+        doc.y = infoBoxY + infoBoxHeight + 14;
 
         // --- Summary Section ---
         doc.fontSize(10).font(FONT_BOLD).fillColor(COLOR_PRIMARY)
@@ -1584,20 +1610,8 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
         });
         currentY += tableRowHeight;
 
-        // --- QR Code Generation ---
-        const qrSummary = [
-            `Personnel: ${formattedName || 'N/A'}`,
-            `Matricule: ${personnel.identifier || 'N/A'}`,
-            `Période: ${moment(startDate).format('DD/MM/YYYY')} au ${moment(endDate).format('DD/MM/YYYY')}`,
-            `Primes: ${bonusAllocations.length}`,
-            `Net total: ${formatCurrency(totalNet)}`,
-            `Brut total: ${formatCurrency(totalGross)}`
-        ].join(' | ');
-        const qrImage = qr.imageSync(qrSummary, { type: 'png' });
-
-
         // --- Finalization ---
-        generateFooter(qrImage);
+        generateFooter();
         doc.end();
 
         return new Promise((resolve, reject) => {
