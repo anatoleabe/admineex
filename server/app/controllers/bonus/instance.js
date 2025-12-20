@@ -131,12 +131,14 @@ exports.api.create = async (req, res, next) => {
 
 exports.api.generate = async (req, res, next) => {
     try {
-        // 1. First create snapshots
-        await bulkCreateSnapshots(new Date());
-
-        // 2. Then proceed with bonus generation
+        // 1. Load instance first to scope snapshots to its referencePeriod
         const instance = await BonusInstance.findById(req.params.id);
         // ... rest of your generation logic
+        if (instance) {
+            await bulkCreateSnapshots(new Date(), instance.referencePeriod);
+        } else {
+            await bulkCreateSnapshots(new Date());
+        }
 
         res.json({ success: true });
     } catch (error) {

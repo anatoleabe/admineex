@@ -1,97 +1,129 @@
-<!-- Main navbar -->
-<div class="navbar navbar-expand-md navbar-dark">
-    <div class="navbar-brand">
-        <a href="../full/index.html" class="d-inline-block">
-            <!--<img src="global_assets/images/logo_light.png" alt="">-->
-            <img src="img/logos/logo-light.png" alt="">
-            <!--<img src="{{kernel.logo.app}}" alt="">-->
-        </a>
-    </div>
-
-    <div class="d-md-none">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
-            <i class="icon-tree5"></i>
-        </button>
-        <button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
+<header class="admx-topbar">
+    <div class="admx-topbar__inner">
+        <button class="admx-iconbtn" type="button" ng-click="toggleSidebar()" aria-label="Toggle sidebar">
             <i class="icon-paragraph-justify3"></i>
         </button>
-    </div>
 
-    <div class="collapse navbar-collapse" id="navbar-mobile">
-        <ul class="navbar-nav">
-            <li class="nav-item">
-                <a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block">
-                    <i class="icon-paragraph-justify3"></i>
+        <a class="admx-topbar__brand" ui-sref="home.dashboard.main" ng-click="closeAllOverlays()">
+            <img class="admx-topbar__logo" ng-src="{{kernel.logo.dark}}" alt="Admineex">
+            <div class="admx-topbar__title">{{kernel.title}}</div>
+        </a>
+
+        <div class="admx-topbar__search admx-dropdown" ng-class="{'is-open': isDropdownOpen('search')}">
+            <input class="admx-topbar__search-input" type="text" ng-model="shell.search.q" ng-focus="shell.dropdown='search'" placeholder="Search…" autocomplete="off">
+            <button class="admx-topbar__search-clear" type="button" ng-if="shell.search.q" ng-click="clearSearch()" aria-label="Clear search">
+                <i class="icon-cross2"></i>
+            </button>
+
+            <div class="admx-search-results" ng-if="shell.search.q">
+                <div class="admx-menu__title" translate>Search</div>
+                <a class="admx-menu__item" ng-repeat="hit in searchResults()" ng-click="goTo(hit.href)">
+                    <span class="admx-menu__item-icon"><i class="{{hit.icon || 'icon-search4'}}"></i></span>
+                    <span class="admx-menu__item-text">
+                        <div class="admx-menu__item-name">{{hit.name}}</div>
+                        <div class="admx-menu__item-sub" ng-if="hit.parent">{{hit.parent}}</div>
+                    </span>
                 </a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto" >
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a href="#" class="navbar-nav-link">
-                        <!--                        Text link-->
-                    </a>
-                </li>
-
-                <li class="nav-item dropdown">
-                    <a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
-                        <i class="icon-bell2"></i>
-                        <span class="d-md-none ml-2">Notifications</span>
-                        <span class="badge badge-mark border-white ml-auto ml-md-0"></span>
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-right dropdown-content wmin-md-350">
-                        <div class="dropdown-content-header">
-                            <span class="font-weight-semibold">Messages</span>
-                            <a href="#" class="text-default"><i class="icon-compose"></i></a>
-                        </div>
-
-                        <div class="dropdown-content-body dropdown-scrollable">
-                            <md-list class="md-dense" style="padding: 0;">
-                                <div ng-repeat="notification in notifications">
-                                    <md-list-item class="md-3-line md-long-text"  style="padding: 0;margin: 0;" ng-click="read(notification);" ng-class="{'read': notification.read}">
-                                        <!--<img ng-src="../img/notifications/{{notification.type}}.png" class="md-avatar" alt="{{notification.type}}">-->
-                                        <md-icon aria-label="" class="material-icons">notifications</md-icon>
-                                        <div class="md-list-item-text" style="padding: 0;">
-                                            <h3>
-                                                {{ notification.author}} <span class="md-caption" style="color:#CF6935;right: 16px;position: absolute;">{{ notification.created | smartDatetime}}</span>
-                                            </h3>
-                                            <p>{{ notification.abstract}}</p>
-                                        </div>
-                                    </md-list-item>
-                                    <md-divider ng-if="!$last"></md-divider>
-                                </div>
-                            </md-list>
-                        </div>
-
-                        <div class="dropdown-content-footer justify-content-center p-0">
-                            <a href="#" class="bg-light text-grey w-100 py-2" data-popup="tooltip" title="Load more"><i class="icon-menu7 d-block top-0"></i></a>
-                        </div>
-                    </div>
-
-                </li>
-
-                <li class="nav-item dropdown dropdown-user">
-                    <a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
-                        <div class="avatar" ng-style="{'background-color': account.avatar}">
-                            {{account.firstname.substr(0, 1).toUpperCase()}}
-                        </div>
-                        <span>{{account.firstname}} {{account.lastname}}</span>
-                    </a>
-
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a ui-sref="home.profile.main" class="dropdown-item"><i class="icon-user-plus"></i> My profile</a>
-                        <div class="dropdown-divider"></div>
-                        <a ui-sref="home.settings.main" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a>
-                        <a ng-click="go('#');" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
-                    </div>
-                </li>
-            </ul>
-
-            <div class="loading-general" layout="row" layout-sm="column" layout-align="space-around" ng-if="kernel.loading < 100">
-                <md-progress-circular md-mode="{'determinate': kernel.loading > 0 && kernel.loading < 100, 'indeterminate': kernel.loading === 0 || kernel.loading === 100" md-diameter="30" class="md-accent" value="{{kernel.loading}}"></md-progress-circular>
+                <div class="admx-menu__item" ng-if="searchResults().length === 0" style="cursor: default;">
+                    <span class="admx-menu__item-text">
+                        <div class="admx-menu__item-name" translate>No results</div>
+                        <div class="admx-menu__item-sub" translate>Try a different keyword.</div>
+                    </span>
+                </div>
             </div>
-        </ul>
-    </div>
-</div>
+        </div>
 
+        <div class="admx-topbar__spacer"></div>
+
+        <div class="admx-dropdown" ng-class="{'is-open': isDropdownOpen('quick')}" ng-if="quickActions().length > 0">
+            <button class="admx-iconbtn" type="button" ng-click="toggleDropdown('quick')" aria-label="Quick actions">
+                <i class="icon-plus2"></i>
+            </button>
+            <div class="admx-menu">
+                <div class="admx-menu__title" translate>Quick new</div>
+                <a class="admx-menu__item" ng-repeat="action in quickActions()" ng-click="goTo(action.href)">
+                    <span class="admx-menu__item-icon"><i class="{{action.icon || 'icon-plus2'}}"></i></span>
+                    <span class="admx-menu__item-text">
+                        <div class="admx-menu__item-name">{{action.name}}</div>
+                        <div class="admx-menu__item-sub" ng-if="action.parent">{{action.parent}}</div>
+                    </span>
+                </a>
+            </div>
+        </div>
+
+        <div class="admx-dropdown" ng-class="{'is-open': isDropdownOpen('lang')}">
+            <button class="admx-iconbtn" type="button" ng-click="toggleDropdown('lang')" aria-label="Language">
+                <span style="font-weight: 750; font-size: 12px;">{{currentLanguage() | uppercase}}</span>
+            </button>
+            <div class="admx-menu" style="width: 220px;">
+                <div class="admx-menu__title" translate>Language</div>
+                <a class="admx-menu__item" ng-repeat="lang in languages" ng-click="setLanguage(lang.code)">
+                    <span class="admx-menu__item-icon"><i class="icon-earth"></i></span>
+                    <span class="admx-menu__item-text">
+                        <div class="admx-menu__item-name">{{lang.label}}</div>
+                        <div class="admx-menu__item-sub">{{lang.code}}</div>
+                    </span>
+                </a>
+            </div>
+        </div>
+
+        <div class="admx-dropdown" ng-class="{'is-open': isDropdownOpen('notifications')}">
+            <button class="admx-iconbtn" type="button" ng-click="toggleDropdown('notifications')" aria-label="Notifications">
+                <i class="icon-bell2"></i>
+            </button>
+            <div class="admx-menu" style="width: 360px;">
+                <div class="admx-menu__title" translate>Notifications</div>
+                <div class="admx-menu__item" ng-repeat="notification in notifications | limitTo: 8" ng-click="read(notification)">
+                    <span class="admx-menu__item-icon"><i class="icon-bell2"></i></span>
+                    <span class="admx-menu__item-text">
+                        <div class="admx-menu__item-name">{{notification.author}}</div>
+                        <div class="admx-menu__item-sub">{{notification.abstract}}</div>
+                    </span>
+                </div>
+                <div class="admx-menu__item" ng-if="!notifications || notifications.length === 0" style="cursor: default;">
+                    <span class="admx-menu__item-text">
+                        <div class="admx-menu__item-name" translate>Nothing to report!</div>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="admx-dropdown" ng-class="{'is-open': isDropdownOpen('user')}">
+            <button class="admx-iconbtn" type="button" ng-click="toggleDropdown('user')" aria-label="User menu" style="padding: 0 10px; gap: 10px;">
+                <span class="avatar" ng-style="{'background-color': account.avatar}">
+                    {{(account.firstname || '?').substr(0, 1).toUpperCase()}}
+                </span>
+                <span style="font-weight: 700; max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    {{account.firstname}} {{account.lastname}}
+                </span>
+            </button>
+            <div class="admx-menu" style="width: 260px;">
+                <div class="admx-menu__title">{{account.email}}</div>
+                <a class="admx-menu__item" ng-click="goTo('home.profile.main')">
+                    <span class="admx-menu__item-icon"><i class="icon-user-plus"></i></span>
+                    <span class="admx-menu__item-text">
+                        <div class="admx-menu__item-name" translate>My profile</div>
+                    </span>
+                </a>
+                <a class="admx-menu__item" ng-click="goTo('home.settings.main')">
+                    <span class="admx-menu__item-icon"><i class="icon-cog5"></i></span>
+                    <span class="admx-menu__item-text">
+                        <div class="admx-menu__item-name" translate>Account settings</div>
+                    </span>
+                </a>
+                <a class="admx-menu__item" ng-click="signout()">
+                    <span class="admx-menu__item-icon"><i class="icon-switch2"></i></span>
+                    <span class="admx-menu__item-text">
+                        <div class="admx-menu__item-name" translate>Sign out</div>
+                    </span>
+                </a>
+            </div>
+        </div>
+
+        <div class="loading-general" layout="row" layout-sm="column" layout-align="space-around" ng-if="kernel.loading < 100">
+            <md-progress-circular md-mode="{'determinate': kernel.loading > 0 && kernel.loading < 100, 'indeterminate': kernel.loading === 0 || kernel.loading === 100" md-diameter="30" class="md-accent" value="{{kernel.loading}}"></md-progress-circular>
+        </div>
+    </div>
+
+    <div class="admx-topbar__scrim" ng-if="shell.dropdown" ng-click="closeAllOverlays()"></div>
+</header>

@@ -1,5 +1,5 @@
 const { Personnel } = require('../models/personnel');
-const { PersonnelSnapshot } = require('../models/bonus/PersonnelSnapshot');
+const { PersonnelSnapshot } = require('../models/bonus/personnelSnapshot');
 const { Affectation } = require('../models/affectation');
 const { Position } = require('../models/position');
 const { Structure } = require('../models/structure');
@@ -19,6 +19,7 @@ function shapeStructure(structure) {
 }
 
 async function createPersonnelSnapshot(personnelId, snapshotDate = new Date(), referencePeriod = null) {
+    const normalizedReferencePeriod = (referencePeriod && String(referencePeriod).trim()) ? String(referencePeriod).trim() : undefined;
     const personnel = await Personnel.findById(personnelId).lean();
 
     if (!personnel) {
@@ -140,7 +141,6 @@ async function createPersonnelSnapshot(personnelId, snapshotDate = new Date(), r
     const snapshotData = {
         personnelId,
         snapshotDate,
-        referencePeriod: referencePeriod || null,
         data: {
             grade: personnel.grade,
             category: personnel.category,
@@ -159,15 +159,27 @@ async function createPersonnelSnapshot(personnelId, snapshotDate = new Date(), r
         }
     };
 
+    if (normalizedReferencePeriod) {
+        snapshotData.referencePeriod = normalizedReferencePeriod;
+        return PersonnelSnapshot.findOneAndUpdate(
+            { personnelId, referencePeriod: normalizedReferencePeriod },
+            { $set: snapshotData },
+            { upsert: true, new: true, setDefaultsOnInsert: true }
+        );
+    }
+
+    // IMPORTANT: do not store `referencePeriod: null` because the unique sparse index
+    // `{ personnelId: 1, referencePeriod: 1 }` would treat `null` as a value and can
+    // trigger E11000 on repeated snapshot runs.
     return PersonnelSnapshot.create(snapshotData);
 }
 
-async function bulkCreateSnapshots(snapshotDate = new Date()) {
+async function bulkCreateSnapshots(snapshotDate = new Date(), referencePeriod) {
     const allPersonnel = await Personnel.find({}).select('_id').lean();
 
     return Promise.all(
         allPersonnel.map(person =>
-            createPersonnelSnapshot(person._id, snapshotDate)
+            createPersonnelSnapshot(person._id, snapshotDate, referencePeriod)
         )
     );
 }

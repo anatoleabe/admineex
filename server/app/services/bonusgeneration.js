@@ -143,8 +143,8 @@ async function generateAllocationsForInstance(instanceId) {
         const instance = await BonusInstance.findById(instanceId).populate('templateId');
         if (!instance) throw new Error('Instance not found');
 
-        // 1. Ensure we have fresh snapshots
-        await bulkCreateSnapshots(new Date());
+        // 1. Ensure we have fresh snapshots for this referencePeriod (idempotent)
+        await bulkCreateSnapshots(new Date(), instance.referencePeriod);
 
         // 2. Find eligible personnel
         const templateSubType = instance.templateId?.calculationConfig?.subType || null;
@@ -170,8 +170,9 @@ async function generateAllocationsForInstance(instanceId) {
             eligiblePersonnel.map(async (personnel) => {
                 try {
                     const cachedSnapshot = snapshotCache[normalizeId(personnel._id)];
-                    const snapshot = cachedSnapshot || await PersonnelSnapshot.findOne({ personnelId: personnel._id })
-                        .sort({ snapshotDate: -1 });
+                    const snapshot = cachedSnapshot
+                        || await PersonnelSnapshot.findOne({ personnelId: personnel._id, referencePeriod: instance.referencePeriod })
+                        || await PersonnelSnapshot.findOne({ personnelId: personnel._id }).sort({ snapshotDate: -1 });
 
                     if (!snapshot) {
                         console.warn(`No snapshot found for personnel ID: ${personnel._id}`);

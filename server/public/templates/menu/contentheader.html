@@ -1,38 +1,27 @@
+<div class="admx-contentheader">
+    <div class="admx-contentheader__inner">
+        <div class="admx-breadcrumb">
+            <a class="admx-breadcrumb__item" ui-sref="home.dashboard.main">
+                <i class="icon-home2"></i>
+                <span translate>Home</span>
+            </a>
 
-<!-- Page header -->
-<div class="page-header page-header-light">
-    <div class="breadcrumb-line breadcrumb-line-light header-elements-md-inline">
-        <div class="d-flex">
-            <div class="breadcrumb">
-                <a href="index.html" class="breadcrumb-item" ><i class="icon-home2 mr-2"></i> <span translate> Home </span></a>
-                <a href="#" ng-repeat="breadcrumb in kernel.breadcrumbs" class="breadcrumb-item" ng-if="!$last">{{breadcrumb| translate}}</a> 
-                <span class="breadcrumb-item active" ng-repeat="breadcrumb in kernel.breadcrumbs"  ng-if="$last">{{breadcrumb| translate}}</span>
-            </div>
+            <span class="admx-breadcrumb__sep" ng-if="kernel.breadcrumbs && kernel.breadcrumbs.length" aria-hidden="true">/</span>
 
-            <a href="#" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+            <span class="admx-breadcrumb__item" ng-repeat="breadcrumb in kernel.breadcrumbs" ng-if="!$last">
+                {{breadcrumb | translate}}
+                <span class="admx-breadcrumb__sep" aria-hidden="true">/</span>
+            </span>
+
+            <span class="admx-breadcrumb__current" ng-repeat="breadcrumb in kernel.breadcrumbs" ng-if="$last">
+                {{breadcrumb | translate}}
+            </span>
         </div>
 
-        <!--        <div class="header-elements d-none">
-                    <div class="breadcrumb justify-content-center">
-                        <a href="#" class="breadcrumb-elements-item">
-                            Link
-                        </a>
-        
-                        <div class="breadcrumb-elements-item dropdown p-0">
-                            <a href="#" class="breadcrumb-elements-item dropdown-toggle" data-toggle="dropdown">
-                                Dropdown
-                            </a>
-        
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a href="#" class="dropdown-item">Action</a>
-                                <a href="#" class="dropdown-item">Another action</a>
-                                <a href="#" class="dropdown-item">One more action</a>
-                                <div class="dropdown-divider"></div>
-                                <a href="#" class="dropdown-item">Separate action</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>-->
+        <div class="admx-contentheader__title" ng-if="kernel.breadcrumbs && kernel.breadcrumbs.length">
+            {{kernel.breadcrumbs[kernel.breadcrumbs.length - 1] | translate}}
+        </div>
+
+        <div class="admx-contentheader__meta"></div>
     </div>
 </div>
-<!--/page header--> 

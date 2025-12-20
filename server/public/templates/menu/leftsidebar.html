@@ -1,66 +1,70 @@
-<!-- Main sidebar -->
-<div class="sidebar sidebar-dark sidebar-main sidebar-expand-md" style="height: 100%;">
+<div class="admx-sidebar-backdrop" ng-click="closeSidebar()"></div>
 
-    <!-- Sidebar mobile toggler -->
-    <div class="sidebar-mobile-toggler text-center">
-        <a href="#" class="sidebar-mobile-main-toggle">
-            <i class="icon-arrow-left8"></i>
-        </a>
-        Navigation
-        <a href="#" class="sidebar-mobile-expand">
-            <i class="icon-screen-full"></i>
-            <i class="icon-screen-normal"></i>
-        </a>
-    </div>
-    <!-- /sidebar mobile toggler -->
+<aside class="admx-sidebar" aria-label="Sidebar navigation">
+    <div class="admx-sidebar__inner">
+        <div class="admx-sidebar__profile">
+            <div class="avatar" ng-style="{'background-color': account.avatar}">
+                {{(account.firstname || '?').substr(0, 1).toUpperCase()}}
+            </div>
+            <div class="admx-sidebar__profile-text">
+                <div class="admx-sidebar__profile-name">{{account.firstname}} {{account.lastname}}</div>
+                <div class="admx-sidebar__profile-email">{{account.email}}</div>
+            </div>
+            <div class="admx-sidebar__version" title="{{kernel.version}}">
+                <span class="admx-pill">{{kernel.version}}</span>
+            </div>
+        </div>
 
+        <nav aria-label="Main navigation">
+            <div ng-repeat="n in nav">
+                <div class="admx-nav__header" ng-if="n.header != '' && n.items.length > 0">{{n.header}}</div>
 
-    <!-- Sidebar content -->
-    <div class="sidebar-content">
+                <div ng-repeat="item in n.items">
+                    <a class="admx-nav__link" ng-if="!item.items || item.items.length === 0" ui-sref="{{item.href}}" ui-sref-active="is-active" ng-click="onNavClick()">
+                        <span class="admx-nav__icon"><i class="{{item.icomoon}}"></i></span>
+                        <span class="admx-nav__label">{{item.name}}</span>
+                    </a>
 
-        <!-- User menu -->
-        <div class="sidebar-user">
-            <div class="card-body">
-                <div class="media">
-                    <div class="avatar" ng-style="{'background-color': account.avatar}">
-                        {{account.firstname.substr(0, 1).toUpperCase()}}
-                    </div>
-                    <div class="media-body">
-                        <div class="media-title font-weight-semibold">{{account.firstname}} {{account.lastname}}</div>
-                        <div class="font-size-xs opacity-50">
-                            {{account.email}}
+                    <div ng-if="item.items && item.items.length > 0">
+                        <a class="admx-nav__link admx-nav__link--parent" ng-if="item.href" ui-sref="{{item.href}}" ng-click="onNavClick()" ng-class="{'is-active': isSubmenuOpen(item)}">
+                            <span class="admx-nav__icon"><i class="{{item.icomoon}}"></i></span>
+                            <span class="admx-nav__label">{{item.name}}</span>
+                            <button class="admx-nav__caret" type="button" ng-click="toggleSubmenu(item, $event)" aria-label="Toggle submenu">
+                                <i class="icon-chevron-down" ng-if="!isSubmenuOpen(item)"></i>
+                                <i class="icon-chevron-up" ng-if="isSubmenuOpen(item)"></i>
+                            </button>
+                        </a>
+
+                        <div class="admx-nav__link admx-nav__link--parent" ng-if="!item.href" ng-class="{'is-active': isSubmenuOpen(item)}">
+                            <span class="admx-nav__icon"><i class="{{item.icomoon}}"></i></span>
+                            <span class="admx-nav__label">{{item.name}}</span>
+                            <button class="admx-nav__caret" type="button" ng-click="toggleSubmenu(item, $event)" aria-label="Toggle submenu">
+                                <i class="icon-chevron-down" ng-if="!isSubmenuOpen(item)"></i>
+                                <i class="icon-chevron-up" ng-if="isSubmenuOpen(item)"></i>
+                            </button>
                         </div>
-                    </div>
 
-                    <div class="ml-3 align-self-center">
-                        <a href="#" class="text-white"><i class="icon-cog3"></i></a>
+                        <div class="admx-nav__children" ng-if="isSubmenuOpen(item)">
+                            <a class="admx-nav__child" ng-repeat="subItem in item.items" ui-sref="{{subItem.href}}" ui-sref-active="is-active" ng-click="onNavClick()">
+                                {{subItem.name}}
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
+        </nav>
+
+        <div class="admx-sidebar__footer">
+            <button class="admx-sidebar__collapse" type="button" ng-click="toggleSidebarCollapse()">
+                <i class="icon-drag-left-right"></i>
+                <span translate>Collapse</span>
+            </button>
+            <div class="admx-sidebar__brand">
+                <span>©</span>
+                <span>Codabe</span>
+                <span aria-hidden="true">•</span>
+                <span>{{kernel.title}}</span>
+            </div>
         </div>
-        <!-- /user menu -->
-
-
-        <!-- Main navigation -->
-        <div class="card card-sidebar-mobile">
-            <ul class="nav nav-sidebar" data-nav-type="accordion">
-                <!-- Main -->
-                <div class="nav nav-sidebar" ng-repeat="n in nav" >
-                    <li class="nav-item-header" ng-if="n.header != '' && n.items.length > 0"><div class="text-uppercase font-size-xs line-height-xs" >{{n.header}}</div> <i class="icon-menu" title="{{n.header}}"></i></li>
-                    <li  class="nav-item " ng-class='(item.items && item.items.length > 0) ? "nav-item-submenu" : ""' ui-sref="{{item.sref}}" ui-sref-active='nav-item-expanded nav-item-open' ng-repeat="item in n.items">
-                        <a ui-sref="{{item.href}}" class="nav-link"><i class="{{item.icomoon}}"></i><span>{{item.name}}</span></a>
-                        <ul class="nav nav-group-sub" data-submenu-title="Layouts" ng-if="item.items && item.items.length > 0" >
-                            <li class="nav-item" ng-repeat="subItem in item.items"><a ui-sref="{{subItem.href}}" class="nav-link " ui-sref-active='active'>{{subItem.name}}</a></li>
-
-                        </ul>
-                    </li>
-                </div>
-            </ul>
-        </div>
-        <!-- /main navigation -->
-
     </div>
-    <!-- /sidebar content -->
-
-</div>
-<!-- /main Left sidebar -->
+</aside>
