@@ -6,6 +6,7 @@ const { Personnel } = require('../../models/personnel');
 const { PersonnelSnapshot } = require('../../models/bonus/personnelSnapshot');
 const { badRequest, notFound, forbidden } = require('../../utils/ApiError');
 const dictionary = require('../../utils/dictionary');
+const { getActorStructureTokens, isSnapshotInStructures } = require('../../utils/structureScope');
 
 // API methods
 exports.api = {};
@@ -111,12 +112,34 @@ function filterSnapshotIdsByStructure(snapshots, structureId, subStructureId) {
     }).map(snapshot => snapshot._id);
 }
 
+function emptyAllocationEnvelope(limit, offset, wantsEnvelope) {
+    if (!wantsEnvelope) return [];
+    return { items: [], total: 0, limit: Number(limit), offset: Number(offset), stats: createEmptyStats(), structureMeta: [] };
+}
+
+async function ensureAllocationInActorScope(req, allocation) {
+    if (!req || !req.actor || String(req.actor.role) !== '2') return;
+    const tokens = getActorStructureTokens(req.actor);
+    if (!tokens.size) {
+        throw forbidden('Forbidden');
+    }
+    const snapshot = allocation && allocation.personnelSnapshotId && allocation.personnelSnapshotId.data
+        ? allocation.personnelSnapshotId
+        : null;
+    if (!snapshot || !isSnapshotInStructures(snapshot, tokens)) {
+        throw forbidden('Forbidden');
+    }
+}
+
 /**
  * Get all bonus allocations
  */
 exports.api.getAll = async (req, res, next) => {
     try {
         const { instanceId, personnelId, status, fromDate, toDate, limit = 100, sortBy = 'createdAt:desc', offset = 0, envelope = 'false', search = '', structureId, subStructureId } = req.query;
+        const actorRole = req.actor && req.actor.role ? String(req.actor.role) : '';
+        const mustScopeToActorStructures = actorRole === '2';
+        const actorStructureTokens = mustScopeToActorStructures ? getActorStructureTokens(req.actor) : null;
 
         // Build a typed filter usable by both Mongoose queries and raw aggregations
         const filter = {};
@@ -184,33 +207,53 @@ exports.api.getAll = async (req, res, next) => {
         const hasStructureFilters = (structureId && structureId !== 'all') || (subStructureId && subStructureId !== 'all');
         const baseFilter = { ...filter };
         let structureMeta = [];
-        if (wantsEnvelope || hasStructureFilters) {
+        if (mustScopeToActorStructures && (!actorStructureTokens || !actorStructureTokens.size)) {
+            return res.json(emptyAllocationEnvelope(limit, offset, wantsEnvelope));
+        }
+
+        if (wantsEnvelope || hasStructureFilters || mustScopeToActorStructures) {
             const distinctSnapshotIdsRaw = await BonusAllocation.distinct('personnelSnapshotId', baseFilter);
             const distinctSnapshotIds = distinctSnapshotIdsRaw.filter(Boolean);
             if (!distinctSnapshotIds.length) {
-                if (!wantsEnvelope) {
-                    return res.json([]);
-                }
-                return res.json({ items: [], total: 0, limit: Number(limit), offset: Number(offset), stats: createEmptyStats(), structureMeta: [] });
+                return res.json(emptyAllocationEnvelope(limit, offset, wantsEnvelope));
             }
 
-            const snapshotDocs = await PersonnelSnapshot.find({ _id: { $in: distinctSnapshotIds } })
+            let snapshotDocs = await PersonnelSnapshot.find({ _id: { $in: distinctSnapshotIds } })
                 .select('_id data')
                 .lean();
+
+            if (mustScopeToActorStructures) {
+                snapshotDocs = snapshotDocs.filter(snapshot => isSnapshotInStructures(snapshot, actorStructureTokens));
+                if (!snapshotDocs.length) {
+                    return res.json(emptyAllocationEnvelope(limit, offset, wantsEnvelope));
+                }
+            }
 
             if (wantsEnvelope) {
                 structureMeta = buildStructureMetaFromSnapshots(snapshotDocs);
             }
 
+            let allowedSnapshotIds = null;
             if (hasStructureFilters) {
-                const allowedSnapshotIds = filterSnapshotIdsByStructure(snapshotDocs, structureId, subStructureId);
+                allowedSnapshotIds = filterSnapshotIdsByStructure(snapshotDocs, structureId, subStructureId);
                 if (!allowedSnapshotIds.length) {
-                    if (!wantsEnvelope) {
-                        return res.json([]);
-                    }
-                    return res.json({ items: [], total: 0, limit: Number(limit), offset: Number(offset), stats: createEmptyStats(), structureMeta });
+                    return res.json(emptyAllocationEnvelope(limit, offset, wantsEnvelope));
                 }
-                filter.personnelSnapshotId = { $in: allowedSnapshotIds };
+            }
+
+            if (mustScopeToActorStructures || hasStructureFilters) {
+                const baseAllowed = snapshotDocs.map(s => s._id);
+                const allowedSet = new Set(baseAllowed.map(id => id.toString()));
+                if (allowedSnapshotIds) {
+                    const filterSet = new Set(allowedSnapshotIds.map(id => id.toString()));
+                    for (const id of Array.from(allowedSet)) {
+                        if (!filterSet.has(id)) allowedSet.delete(id);
+                    }
+                }
+                if (!allowedSet.size) {
+                    return res.json(emptyAllocationEnvelope(limit, offset, wantsEnvelope));
+                }
+                filter.personnelSnapshotId = { $in: Array.from(allowedSet) };
             }
         }
 
@@ -320,6 +363,7 @@ exports.api.getById = async (req, res, next) => {
             throw notFound('Bonus allocation not found');
         }
 
+        await ensureAllocationInActorScope(req, allocation);
         res.json(allocation);
     } catch (error) {
         next(error);
@@ -520,12 +564,14 @@ exports.api.getHistory = async (req, res, next) => {
                 path: 'calculationInputs.adjustmentHistory.user',
                 select: 'firstname lastname'
             })
-            .populate('personnelId');
+            .populate('personnelId')
+            .populate('personnelSnapshotId');
 
         if (!currentAllocation) {
             throw notFound('Bonus allocation not found');
         }
 
+        await ensureAllocationInActorScope(req, currentAllocation);
         // Process history to include full user names
         const history = currentAllocation.calculationInputs.adjustmentHistory.map(entry => ({
             timestamp: entry.timestamp,

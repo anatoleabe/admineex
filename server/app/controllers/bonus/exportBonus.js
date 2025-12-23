@@ -1,5 +1,8 @@
 const { exportPersonnelBonusToPdf } = require('../../services/exportService');
 const httpStatus = require('http-status');
+const { PersonnelSnapshot } = require('../../models/bonus/personnelSnapshot');
+const { getActorStructureTokens, isSnapshotInStructures } = require('../../utils/structureScope');
+const { forbidden } = require('../../utils/ApiError');
 
 /**
  * Export bonus history for a personnel to PDF
@@ -20,6 +23,20 @@ exports.exportPersonnelBonusHistory = async (req, res) => {
             });
         }
 
+        if (req.actor && String(req.actor.role) === '2') {
+            const tokens = getActorStructureTokens(req.actor);
+            if (!tokens.size) {
+                throw forbidden('Forbidden');
+            }
+            const latestSnapshot = await PersonnelSnapshot.findOne({ personnelId })
+                .sort({ snapshotDate: -1 })
+                .select('_id data')
+                .lean();
+            if (!latestSnapshot || !isSnapshotInStructures(latestSnapshot, tokens)) {
+                throw forbidden('Forbidden');
+            }
+        }
+
         // If format is excel, handle differently
         if (format === 'excel') {
             // Not implemented yet
@@ -29,7 +46,7 @@ exports.exportPersonnelBonusHistory = async (req, res) => {
         }
 
         // Call the export service to generate the PDF - using exportBonusPersonnelPDF instead of exportPersonnelBonusToPdf
-        const pdfBuffer = await exportPersonnelBonusToPdf(personnelId, fromDate, toDate);
+        const pdfBuffer = await exportPersonnelBonusToPdf(personnelId, fromDate, toDate, { actor: req.actor });
 
         // Set the appropriate headers for PDF download
         const filename = `bonus_history_${personnelId}_${new Date().toISOString().split('T')[0]}.pdf`;

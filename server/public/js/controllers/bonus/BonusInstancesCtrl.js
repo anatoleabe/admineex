@@ -1,4 +1,16 @@
-angular.module('app').controller('BonusInstancesController', ['$scope', '$http', 'toastr', '$uibModal', '$ocLazyLoad', '$mdDialog', '$state', function($scope, $http, toastr, $uibModal, $ocLazyLoad, $mdDialog, $state) {
+angular.module('app').controller('BonusInstancesController', ['$scope', '$rootScope', '$http', 'toastr', '$uibModal', '$ocLazyLoad', '$mdDialog', '$state', function($scope, $rootScope, $http, toastr, $uibModal, $ocLazyLoad, $mdDialog, $state) {
+        const role = ($rootScope.account && $rootScope.account.role) ? String($rootScope.account.role) : '';
+        $scope.permissions = {
+            canCreateCycle: role === '1' || role === '3',
+            canManageCycle: role === '1' || role === '3' || role === '4',
+            canApproveInstance: role === '1',
+            canGeneratePayments: role === '1',
+            canCancelInstance: role === '1',
+            canNotify: role === '1' || role === '3' || role === '4',
+            canGenerateForTemplate: role === '1' || role === '3',
+            canBulkActions: role === '1',
+            canExport: role === '1' || role === '2' || role === '3' || role === '4'
+        };
         $scope.instances = [];
         $scope.loading = false;
         $scope.filters = {
@@ -92,6 +104,10 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
 
         // Actions
         $scope.approve = function(instance) {
+            if (!$scope.permissions.canApproveInstance) {
+                toastr.error('Not authorized');
+                return;
+            }
             $http.post('/api/bonus/instances/' + instance._id + '/approve')
                 .then(function(response) {
                     toastr.success('Instance approved successfully');
@@ -117,6 +133,10 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
         };
 
         $scope.generatePayments = function(instance) {
+            if (!$scope.permissions.canGeneratePayments) {
+                toastr.error('Not authorized');
+                return;
+            }
             $http.post('/api/bonus/instances/' + instance._id + '/generate-payments')
                 .then(function(response) {
                     toastr.success('Payments generated successfully');
@@ -132,6 +152,10 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
         };
 
         $scope.notify = function(instance) {
+            if (!$scope.permissions.canNotify) {
+                toastr.error('Not authorized');
+                return;
+            }
             $http.post('/api/bonus/instances/' + instance._id + '/notify')
                 .then(function(response) {
                     toastr.success('Notifications sent successfully');
@@ -224,11 +248,126 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
 
         // Remove the separate export functions and use the unified function instead
         $scope.exportExcel = function(instance) {
+            if (!$scope.permissions.canExport) {
+                toastr.error('Not authorized');
+                return;
+            }
             $scope.exportDocument(instance);
+        };
+
+        $scope.exportPDF = function(instance) {
+            if (!$scope.permissions.canExport) {
+                toastr.error('Not authorized');
+                return;
+            }
+            if (!instance || !instance._id) return;
+            window.location.href = '/api/bonus/instances/' + instance._id + '/export?format=pdf';
+        };
+
+        $scope.cancelInstance = function(instance) {
+            if (!$scope.permissions.canCancelInstance) {
+                toastr.error('Not authorized');
+                return;
+            }
+            if (!instance || !instance._id) return;
+            if (!confirm('Cancel this instance?')) return;
+            $http.post('/api/bonus/instances/' + instance._id + '/cancel')
+                .then(function() {
+                    toastr.success('Instance cancelled');
+                    $scope.loadInstances();
+                })
+                .catch(function() {
+                    toastr.error('Failed to cancel instance');
+                });
+        };
+
+        function getSelectedInstances() {
+            return ($scope.instances || []).filter(function(inst) { return !!inst.selected; });
+        }
+
+        $scope.bulkApprove = function() {
+            if (!$scope.permissions.canBulkActions) {
+                toastr.error('Not authorized');
+                return;
+            }
+            const selected = getSelectedInstances();
+            if (!selected.length) {
+                toastr.info('No instances selected');
+                return;
+            }
+            Promise.all(selected.map(function(inst) {
+                return $http.post('/api/bonus/instances/' + inst._id + '/approve');
+            })).then(function() {
+                toastr.success('Selected instances approved');
+                $scope.loadInstances();
+            }).catch(function() {
+                toastr.error('Failed to approve one or more instances');
+            });
+        };
+
+        $scope.bulkGeneratePayments = function() {
+            if (!$scope.permissions.canBulkActions) {
+                toastr.error('Not authorized');
+                return;
+            }
+            const selected = getSelectedInstances().filter(function(inst) { return inst.status === 'approved'; });
+            if (!selected.length) {
+                toastr.info('No approved instances selected');
+                return;
+            }
+            Promise.all(selected.map(function(inst) {
+                return $http.post('/api/bonus/instances/' + inst._id + '/generate-payments');
+            })).then(function() {
+                toastr.success('Payments generated for selected instances');
+                $scope.loadInstances();
+            }).catch(function() {
+                toastr.error('Failed to generate payments for one or more instances');
+            });
+        };
+
+        $scope.bulkExport = function() {
+            if (!$scope.permissions.canBulkActions) {
+                toastr.error('Not authorized');
+                return;
+            }
+            const selected = getSelectedInstances();
+            if (!selected.length) {
+                toastr.info('No instances selected');
+                return;
+            }
+            // Browser popup/download behavior is inconsistent; trigger one export at a time.
+            $scope.exportExcel(selected[0]);
+            if (selected.length > 1) {
+                toastr.info('Export started for the first selected instance.');
+            }
+        };
+
+        $scope.generateForTemplate = function(template) {
+            if (!$scope.permissions.canGenerateForTemplate) {
+                toastr.error('Not authorized');
+                return;
+            }
+            if (!template || !template._id) return;
+            const now = new Date();
+            const defaultPeriod = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+            const referencePeriod = prompt('Reference period (YYYY-MM):', defaultPeriod);
+            if (!referencePeriod) return;
+            $http.post('/api/bonus/generation/template', { templateId: template._id, referencePeriod: referencePeriod })
+                .then(function() {
+                    toastr.success('Generation triggered');
+                    $scope.loadInstances();
+                })
+                .catch(function() {
+                    toastr.error('Failed to trigger generation');
+                });
         };
 
         // Instance Form handling
         $scope.createInstance = function() {
+            if (!$scope.permissions.canCreateCycle) {
+                toastr.error('Not authorized');
+                return;
+            }
             $ocLazyLoad.load('js/controllers/bonus/CreateInstanceCtrl.js').then(function() {
                 $mdDialog.show({
                     controller: 'CreateInstanceController',
@@ -249,6 +388,10 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$http',
 
         // Open the multi-step wizard for managing a bonus instance
         $scope.openWizard = function(instance) {
+            if (!$scope.permissions.canManageCycle) {
+                toastr.error('Not authorized');
+                return;
+            }
             $state.go('home.bonus.instance.wizard', {instanceId: instance._id});
         };
 

@@ -26,7 +26,7 @@
           <small class="text-muted">Inactive</small>
         </div>
       </div>
-      <button class="btn btn-primary" ng-click="openTemplateForm()">
+      <button class="btn btn-primary" ng-if="permissions.canManageTemplates" ng-click="openTemplateForm()">
         <i class="icon-plus22 mr-1"></i> New Program
       </button>
     </div>
@@ -134,9 +134,9 @@
               </button>
               <div class="dropdown-menu dropdown-menu-right">
                 <a class="dropdown-item" href="javascript:void(0)" ng-click="viewTemplate(template)"><i class="icon-eye mr-2"></i> View</a>
-                <a class="dropdown-item" href="javascript:void(0)" ng-click="editTemplate(template)"><i class="icon-pencil7 mr-2"></i> Edit</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item text-danger" href="javascript:void(0)" ng-click="confirmDelete(template)"><i class="icon-trash mr-2"></i> Delete</a>
+                <a class="dropdown-item" ng-if="permissions.canManageTemplates" href="javascript:void(0)" ng-click="editTemplate(template)"><i class="icon-pencil7 mr-2"></i> Edit</a>
+                <div class="dropdown-divider" ng-if="permissions.canManageTemplates"></div>
+                <a class="dropdown-item text-danger" ng-if="permissions.canManageTemplates" href="javascript:void(0)" ng-click="confirmDelete(template)"><i class="icon-trash mr-2"></i> Delete</a>
               </div>
             </div>
           </td>
@@ -177,13 +177,13 @@
         </div>
         <div class="card-footer d-flex justify-content-between align-items-center">
           <label class="mb-0 small d-inline-flex align-items-center" title="Toggle active">
-            <input type="checkbox" ng-checked="template.isActive" ng-disabled="state.saving" ng-change="toggleActive(template)" ng-model="template.isActive">
+            <input type="checkbox" ng-checked="template.isActive" ng-disabled="state.saving || !permissions.canManageTemplates" ng-change="toggleActive(template)" ng-model="template.isActive">
             <span class="ml-2">{{template.isActive ? 'Active' : 'Inactive'}}</span>
           </label>
           <div class="btn-group btn-group-sm">
             <button class="btn btn-outline-info" ng-click="viewTemplate(template)" title="View"><i class="icon-eye"></i></button>
-            <button class="btn btn-outline-primary" ng-click="editTemplate(template)" title="Edit"><i class="icon-pencil7"></i></button>
-            <button class="btn btn-outline-danger" ng-click="confirmDelete(template)" title="Delete"><i class="icon-trash"></i></button>
+            <button class="btn btn-outline-primary" ng-if="permissions.canManageTemplates" ng-click="editTemplate(template)" title="Edit"><i class="icon-pencil7"></i></button>
+            <button class="btn btn-outline-danger" ng-if="permissions.canManageTemplates" ng-click="confirmDelete(template)" title="Delete"><i class="icon-trash"></i></button>
           </div>
         </div>
       </div>

@@ -1,7 +1,11 @@
 angular.module('app')
-    .controller('BonusTemplatesController', ['$scope', '$http', '$q', '$timeout', '$ocLazyLoad', '$injector', 'toastr', function($scope, $http, $q, $timeout, $ocLazyLoad, $injector, toastr) {
+    .controller('BonusTemplatesController', ['$scope', '$rootScope', '$http', '$q', '$timeout', '$ocLazyLoad', '$injector', 'toastr', function($scope, $rootScope, $http, $q, $timeout, $ocLazyLoad, $injector, toastr) {
         // Ensure kernel exists for this scope so views using kernel.loading work
         $scope.kernel = $scope.kernel || { loading: 100 };
+        const role = ($rootScope.account && $rootScope.account.role) ? String($rootScope.account.role) : '';
+        $scope.permissions = {
+            canManageTemplates: role === '1'
+        };
         // State management
         $scope.state = {
             loading: false,
@@ -783,6 +787,11 @@ angular.module('app')
 
         // Toggle active status
         $scope.toggleActive = function(template) {
+            if (!$scope.permissions.canManageTemplates) {
+                toastr.error('Not authorized');
+                template.isActive = !template.isActive;
+                return;
+            }
             const updated = { isActive: !!template.isActive };
             $scope.state.saving = true;
             $http.put('/api/bonus/templates/' + template._id, updated)
@@ -825,6 +834,10 @@ angular.module('app')
 
         // Open create form
         $scope.openTemplateForm = function() {
+            if (!$scope.permissions.canManageTemplates) {
+                toastr.error('Not authorized');
+                return;
+            }
             $scope.editingTemplate = null;
             initializeTemplateForm();
             $('#modal_basic').modal('show');
@@ -833,6 +846,10 @@ angular.module('app')
 
         // Edit template
         $scope.editTemplate = function(template) {
+            if (!$scope.permissions.canManageTemplates) {
+                toastr.error('Not authorized');
+                return;
+            }
             $scope.editingTemplate = template;
             $scope.templateFormData = angular.copy(template);
             $scope.selectedIftStructureId = '';
@@ -971,6 +988,10 @@ angular.module('app')
 
         // Save template
         $scope.saveTemplate = function() {
+            if (!$scope.permissions.canManageTemplates) {
+                toastr.error('Not authorized');
+                return;
+            }
             const validationErrors = validateTemplate($scope.templateFormData);
             if (validationErrors) {
                 validationErrors.forEach(error => toastr.warning(error, 'Validation Error'));
@@ -1001,6 +1022,10 @@ angular.module('app')
 
         // Delete template
         $scope.confirmDelete = function(template) {
+            if (!$scope.permissions.canManageTemplates) {
+                toastr.error('Not authorized');
+                return;
+            }
             if (!confirm('Are you sure you want to delete this template? This action cannot be undone.')) {
                 return;
             }

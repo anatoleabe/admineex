@@ -8,7 +8,7 @@ exports.handleExcelExport = async (req, res) => {
             return res.status(404).json({ message: 'Instance not found' });
         }
 
-        const workbook = await exportBonusToExcel(instance);
+        const workbook = await exportBonusToExcel(instance, { actor: req.actor });
 
         // Set headers for Excel download
         res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

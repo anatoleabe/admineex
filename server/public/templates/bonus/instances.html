@@ -16,10 +16,10 @@
                 <div class="card-header header-elements-inline">
                     <h5 class="card-title">Payout Cycles</h5>
                     <div class="header-elements">
-                        <button type="button" class="btn btn-primary" ng-click="createInstance()">
+                        <button type="button" class="btn btn-primary" ng-if="permissions.canCreateCycle" ng-click="createInstance()">
                             <i class="mi-add mr-2"></i> Create New Cycle
                         </button>
-                        <div class="btn-group ml-2">
+                        <div class="btn-group ml-2" ng-if="permissions.canBulkActions">
                             <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
                                 <i class="mi-playlist-add mr-2"></i> Bulk Actions
                             </button>
@@ -65,7 +65,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-2">
-                                    <button class="btn btn-sm btn-light" ng-click="generateForTemplate(template)">
+                                    <button class="btn btn-sm btn-light" ng-if="permissions.canGenerateForTemplate" ng-click="generateForTemplate(template)">
                                         <i class="mi-bolt mr-1"></i> Generate Now
                                     </button>
                                 </div>
@@ -140,7 +140,7 @@
                         <tbody>
                         <tr ng-repeat="instance in instances" class="align-middle">
                             <td>
-                                <input type="checkbox" class="form-check-input" ng-model="instance.selected">
+                                <input type="checkbox" class="form-check-input" ng-if="permissions.canBulkActions" ng-model="instance.selected">
                             </td>
                             <td>
                                 <a ui-sref="bonus.instance.details({id: instance._id})" class="text-blue font-weight-semibold">
@@ -184,14 +184,14 @@
                                         <a class="dropdown-item" ng-click="viewDetails(instance)">
                                             <i class="mi-visibility mr-2"></i> View Details
                                         </a>
-                                        <a class="dropdown-item" ng-if="instance.status === 'generated' || instance.status === 'under_review'" ng-click="approve(instance)">
+                                        <a class="dropdown-item" ng-if="permissions.canApproveInstance && (instance.status === 'generated' || instance.status === 'under_review')" ng-click="approve(instance)">
                                             <i class="mi-check-circle mr-2"></i> Approve
                                         </a>
-                                        <a class="dropdown-item" ng-if="instance.status === 'approved'" ng-click="generatePayments(instance)">
+                                        <a class="dropdown-item" ng-if="permissions.canGeneratePayments && instance.status === 'approved'" ng-click="generatePayments(instance)">
                                             <i class="mi-payment mr-2"></i> Generate Payments
                                         </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" ng-click="openWizard(instance)" ng-if="instance.status !== 'cancelled'">
+                                        <div class="dropdown-divider" ng-if="permissions.canManageCycle || permissions.canNotify || permissions.canCancelInstance"></div>
+                                        <a class="dropdown-item" ng-click="openWizard(instance)" ng-if="permissions.canManageCycle && instance.status !== 'cancelled'">
                                             <i class="mi-assignment mr-2"></i> Manage in Wizard
                                         </a>
                                         <a class="dropdown-item" ng-click="exportExcel(instance)">
@@ -200,11 +200,11 @@
                                         <a class="dropdown-item" ng-click="exportPDF(instance)">
                                             <i class="mi-picture-as-pdf mr-2"></i> Export PDF
                                         </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" ng-click="notify(instance)">
+                                        <div class="dropdown-divider" ng-if="permissions.canNotify || permissions.canCancelInstance"></div>
+                                        <a class="dropdown-item" ng-if="permissions.canNotify" ng-click="notify(instance)">
                                             <i class="mi-notifications mr-2"></i> Send Notifications
                                         </a>
-                                        <a class="dropdown-item text-danger" ng-click="cancelInstance(instance)">
+                                        <a class="dropdown-item text-danger" ng-if="permissions.canCancelInstance" ng-click="cancelInstance(instance)">
                                             <i class="mi-delete mr-2"></i> Cancel Instance
                                         </a>
                                     </div>

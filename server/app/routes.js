@@ -1096,7 +1096,7 @@ let routes = [
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, function(req, res, next) {
             next();
         }, controllers.bonus.export.exportPersonnelBonusHistory],
-        access: [1, 2, 3, 4, 5] // Allow all user roles to access this route
+        access: [1, 2, 3, 4] // Allow configured bonus roles to access this route
     },
 
     // FRONTEND ROUTES ========================================================
@@ -1122,7 +1122,7 @@ let routes = [
         path: '/api/personnel/:personnelId/bonus/export/:fromDate?/:toDate?',
         httpMethod: 'GET',
         middleware: [jwt({secret: secret}), tokenManager.verifyToken, controllers.bonus.export.exportPersonnelBonusHistory],
-        access: [1, 2, 3, 4, 5] // Allow all authorized users to access
+        access: [1, 2, 3, 4] // Allow configured bonus roles to access
     },
 
 ];
@@ -1187,7 +1187,8 @@ function ensureAuthorized(req, res, next) {
                             req.actor = {
                                 id: user._id,
                                 role: user.role,
-                                language: user.language
+                                language: user.language,
+                                structures: user.structures || []
                             };
                             if (user.role == "3") {
                                 req.actor.regions = user.regions;

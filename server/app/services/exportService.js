@@ -14,8 +14,17 @@ const mongoose = require('mongoose');
 const qr = require('qr-image');
 const fs = require('fs');
 const path = require('path');
+const { getActorStructureTokens, isSnapshotInStructures } = require('../utils/structureScope');
 
-exports.exportBonusToExcel = async (instance) => {
+function resolveScopedStructureTokens(options) {
+    const actor = options && options.actor ? options.actor : null;
+    const explicit = options && options.allowedStructureTokens ? options.allowedStructureTokens : null;
+    if (explicit && explicit.size) return explicit;
+    if (actor && String(actor.role) === '2') return getActorStructureTokens(actor);
+    return null;
+}
+
+exports.exportBonusToExcel = async (instance, options = {}) => {
     try {
         // 1. Get instance data
         const bonusInstance = await BonusInstance.findById(instance._id)
@@ -42,9 +51,14 @@ exports.exportBonusToExcel = async (instance) => {
         });
 
         // 2. Get allocations with structure info from snapshots
-        const allocations = await BonusAllocation.find({ instanceId: instance._id })
+        let allocations = await BonusAllocation.find({ instanceId: instance._id })
             .populate('personnelId', 'identifier name')
             .populate('personnelSnapshotId');
+
+        const scopeTokens = resolveScopedStructureTokens(options);
+        if (scopeTokens && scopeTokens.size) {
+            allocations = allocations.filter(allocation => allocation && allocation.personnelSnapshotId && isSnapshotInStructures(allocation.personnelSnapshotId, scopeTokens));
+        }
 
         // Helper to convert column index (1-based) to Excel letter
         function colLetter(n) {
@@ -640,7 +654,7 @@ exports.exportBonusToExcel = async (instance) => {
  * @param {Object} instance - The bonus instance to export
  * @returns {Promise<Buffer>} - A buffer containing the PDF data
  */
-exports.exportBonusToPdf = async (instance) => {
+exports.exportBonusToPdf = async (instance, options = {}) => {
     try {
         // 1. Get instance data with populated references
         const bonusInstance = await BonusInstance.findById(instance._id)
@@ -652,9 +666,14 @@ exports.exportBonusToPdf = async (instance) => {
         }
 
         // 2. Get allocations with structure info from snapshots (same logic as Excel)
-        const allocations = await BonusAllocation.find({ instanceId: instance._id })
+        let allocations = await BonusAllocation.find({ instanceId: instance._id })
             .populate('personnelId', 'identifier name')
             .populate('personnelSnapshotId');
+
+        const scopeTokens = resolveScopedStructureTokens(options);
+        if (scopeTokens && scopeTokens.size) {
+            allocations = allocations.filter(allocation => allocation && allocation.personnelSnapshotId && isSnapshotInStructures(allocation.personnelSnapshotId, scopeTokens));
+        }
 
         // 3. Use PDF generation library (PDFKit) with landscape orientation
         const PDFDocument = require('pdfkit');
@@ -1112,7 +1131,7 @@ exports.exportBonusToPdf = async (instance) => {
  * @param {Date} toDate - End date for filtering bonuses
  * @returns {Promise<Buffer>} - A buffer containing the PDF data
  */
-exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
+exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, options = {}) => {
     try {
         // --- Data Fetching ---
         if (!mongoose.Types.ObjectId.isValid(personnelId)) {
@@ -1127,7 +1146,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
         const startDate = fromDate ? new Date(fromDate) : new Date(new Date().getFullYear() - 3, 0, 1);
         const endDate = toDate ? new Date(toDate) : new Date();
 
-        const bonusAllocations = await BonusAllocation.find({
+        let bonusAllocations = await BonusAllocation.find({
             personnelId: personnelId,
             status: { $ne: 'excluded' },
             createdAt: { $gte: startDate, $lte: endDate }
@@ -1136,6 +1155,11 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate) => {
             .populate('templateId', 'name category') // Ensure category is populated
             .populate('personnelSnapshotId') // Populate snapshot
             .sort({ createdAt: -1 });
+
+        const scopeTokens = resolveScopedStructureTokens(options);
+        if (scopeTokens && scopeTokens.size) {
+            bonusAllocations = bonusAllocations.filter(allocation => allocation && allocation.personnelSnapshotId && isSnapshotInStructures(allocation.personnelSnapshotId, scopeTokens));
+        }
 
         if (!bonusAllocations || bonusAllocations.length === 0) {
             throw new ApiError('No bonus data found for the selected period', httpStatus.NOT_FOUND);

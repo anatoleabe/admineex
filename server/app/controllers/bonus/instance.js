@@ -6,14 +6,59 @@ const { BonusAllocation } = require('../../models/bonus/allocation');
 const { badRequest, notFound, forbidden } = require('../../utils/ApiError');
 const { generatePaymentFile } = require('../../services/bonusService');
 const { sendNotification } = require('../../services/notificationService');
-const { exportBonusToExcel } = require('../../services/exportService');
 const formidable = require('formidable');
 const { bulkCreateSnapshots } = require('../../services/snapshotService');
 const exportService = require('../../services/exportService');
 const fs = require('fs');
+const { getActorStructureTokens } = require('../../utils/structureScope');
 
 // API methods
 exports.api = {};
+
+function buildSnapshotScopeMatch(allowedObjectIds, allowedTokens) {
+    const or = [];
+    if (allowedObjectIds && allowedObjectIds.length) {
+        or.push({ 'snapshot.data.structure.id': { $in: allowedObjectIds } });
+        or.push({ 'snapshot.data.subStructure.parentId': { $in: allowedObjectIds } });
+        or.push({ 'snapshot.data.subStructure.id': { $in: allowedObjectIds } });
+        or.push({ 'snapshot.data.position.structure.id': { $in: allowedObjectIds } });
+    }
+    if (allowedTokens && allowedTokens.length) {
+        or.push({ 'snapshot.data.structure.identifier': { $in: allowedTokens } });
+        or.push({ 'snapshot.data.structure.code': { $in: allowedTokens } });
+        or.push({ 'snapshot.data.subStructure.parentIdentifier': { $in: allowedTokens } });
+        or.push({ 'snapshot.data.subStructure.parentCode': { $in: allowedTokens } });
+        or.push({ 'snapshot.data.subStructure.identifier': { $in: allowedTokens } });
+        or.push({ 'snapshot.data.subStructure.code': { $in: allowedTokens } });
+        or.push({ 'snapshot.data.position.structure.code': { $in: allowedTokens } });
+    }
+    return or.length ? { $or: or } : null;
+}
+
+async function ensureInstanceInActorScope(req, instanceId) {
+    if (!req || !req.actor || String(req.actor.role) !== '2') return;
+    const tokensSet = getActorStructureTokens(req.actor);
+    if (!tokensSet.size) throw forbidden('Forbidden');
+    if (!mongoose.Types.ObjectId.isValid(instanceId)) throw badRequest('Invalid instance ID');
+
+    const tokens = Array.from(tokensSet);
+    const allowedObjectIds = tokens
+        .filter(token => mongoose.Types.ObjectId.isValid(token))
+        .map(token => new mongoose.Types.ObjectId(token));
+
+    const scopeMatch = buildSnapshotScopeMatch(allowedObjectIds, tokens);
+    if (!scopeMatch) throw forbidden('Forbidden');
+
+    const matches = await BonusAllocation.aggregate([
+        { $match: { instanceId: new mongoose.Types.ObjectId(instanceId) } },
+        { $lookup: { from: 'personnelsnapshots', localField: 'personnelSnapshotId', foreignField: '_id', as: 'snapshot' } },
+        { $unwind: '$snapshot' },
+        { $match: scopeMatch },
+        { $limit: 1 }
+    ]);
+
+    if (!matches.length) throw forbidden('Forbidden');
+}
 
 /**
  * Record an export event in the instance history
@@ -176,6 +221,10 @@ exports.api.search = async (req, res, next) => {
  */
 exports.api.getAll = async (req, res, next) => {
     try {
+        const actorRole = req.actor && req.actor.role ? String(req.actor.role) : '';
+        const mustScopeToActorStructures = actorRole === '2';
+        const actorStructureTokens = mustScopeToActorStructures ? getActorStructureTokens(req.actor) : null;
+
         const {
             status,
             templateId,
@@ -199,6 +248,51 @@ exports.api.getAll = async (req, res, next) => {
         const [sortField, sortOrder] = sortBy.split(':');
         const sort = { [sortField]: sortOrder === 'desc' ? -1 : 1 };
 
+        if (mustScopeToActorStructures && (!actorStructureTokens || !actorStructureTokens.size)) {
+            return res.json({ items: [], total: 0, limit: Number(limit), offset: Number(offset) });
+        }
+
+        // For structure managers, scope instances to their structures by precomputing allowed instance ids.
+        let scopedInstanceIds = null;
+        let scopedStatsByInstanceId = null;
+        if (mustScopeToActorStructures) {
+            const candidateIdsDocs = await BonusInstance.find(filter).select('_id').lean();
+            const candidateIds = candidateIdsDocs.map(doc => doc._id).filter(Boolean);
+            if (!candidateIds.length) {
+                return res.json({ items: [], total: 0, limit: Number(limit), offset: Number(offset) });
+            }
+
+            const tokens = Array.from(actorStructureTokens);
+            const allowedObjectIds = tokens
+                .filter(token => mongoose.Types.ObjectId.isValid(token))
+                .map(token => new mongoose.Types.ObjectId(token));
+            const scopeMatch = buildSnapshotScopeMatch(allowedObjectIds, tokens);
+            if (!scopeMatch) {
+                return res.json({ items: [], total: 0, limit: Number(limit), offset: Number(offset) });
+            }
+
+            const statsAgg = await BonusAllocation.aggregate([
+                { $match: { instanceId: { $in: candidateIds }, status: { $ne: 'cancelled' } } },
+                { $lookup: { from: 'personnelsnapshots', localField: 'personnelSnapshotId', foreignField: '_id', as: 'snapshot' } },
+                { $unwind: '$snapshot' },
+                { $match: scopeMatch },
+                {
+                    $group: {
+                        _id: '$instanceId',
+                        count: { $sum: 1 },
+                        totalAmount: { $sum: { $ifNull: [ '$finalAmount', 0 ] } },
+                        totalTax: { $sum: { $ifNull: [ '$taxAmount', 0 ] } },
+                        totalNet: { $sum: { $ifNull: [ '$netAmount', 0 ] } },
+                        totalParts: { $sum: { $ifNull: [ '$calculationInputs.parts', 0 ] } }
+                    }
+                }
+            ]);
+
+            scopedInstanceIds = statsAgg.map(row => row._id);
+            scopedStatsByInstanceId = new Map(statsAgg.map(row => [String(row._id), row]));
+            filter._id = { $in: scopedInstanceIds.length ? scopedInstanceIds : [new mongoose.Types.ObjectId('000000000000000000000000')] };
+        }
+
         // Get total count for pagination
         const total = await BonusInstance.countDocuments(filter);
 
@@ -214,49 +308,49 @@ exports.api.getAll = async (req, res, next) => {
 
         // Get allocation counts and total amounts/taxes for each instance
         const instances = await Promise.all(items.map(async (instance) => {
-            const instanceId = mongoose.Types.ObjectId(instance._id);
-
-            // Calculate allocation stats using aggregation
-            const stats = await BonusAllocation.aggregate([
-                {
-                    $match: {
-                        instanceId: instanceId,
-                        status: { $ne: 'cancelled' }
+            let row = null;
+            if (mustScopeToActorStructures && scopedStatsByInstanceId) {
+                row = scopedStatsByInstanceId.get(String(instance._id)) || null;
+            } else {
+                const instanceId = mongoose.Types.ObjectId(instance._id);
+                const stats = await BonusAllocation.aggregate([
+                    {
+                        $match: {
+                            instanceId: instanceId,
+                            status: { $ne: 'cancelled' }
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            count: { $sum: 1 },
+                            totalAmount: { $sum: { $ifNull: [ '$finalAmount', 0 ] } },
+                            totalTax: { $sum: { $ifNull: [ '$taxAmount', 0 ] } },
+                            totalNet: { $sum: { $ifNull: [ '$netAmount', 0 ] } },
+                            totalParts: { $sum: { $ifNull: [ '$calculationInputs.parts', 0 ] } }
+                        }
                     }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        count: { $sum: 1 },
-                        totalAmount: { $sum: { $ifNull: [ '$finalAmount', 0 ] } },
-                        totalTax: { $sum: { $ifNull: [ '$taxAmount', 0 ] } },
-                        totalNet: { $sum: { $ifNull: [ '$netAmount', 0 ] } }
-                    }
-                }
-            ]);
+                ]);
+                row = stats.length ? stats[0] : null;
+            }
 
             let allocStats;
-            if (stats.length > 0) {
-                const s = stats[0];
-                const totalAmount = s.totalAmount || 0;
-                const totalTax = s.totalTax || 0;
-                let totalNet = s.totalNet || 0;
-
-                // Fallback: if totalNet missing but we have totalAmount and totalTax, derive it
+            if (row) {
+                const totalAmount = row.totalAmount || 0;
+                const totalTax = row.totalTax || 0;
+                let totalNet = row.totalNet || 0;
                 if (!totalNet && totalAmount && totalTax) {
                     totalNet = totalAmount - totalTax;
                 }
-
-                // Compute an effective tax rate (%), if we have positive totals
                 let effectiveTaxRate = null;
                 if (totalAmount > 0 && totalTax > 0) {
                     effectiveTaxRate = (totalTax / totalAmount) * 100;
                 } else if (typeof instance.taxPercentage === 'number') {
                     effectiveTaxRate = instance.taxPercentage;
                 }
-
                 allocStats = {
-                    allocationsCount: s.count,
+                    allocationsCount: row.count || 0,
+                    totalParts: row.totalParts || 0,
                     totalAmount,
                     totalTax,
                     totalNet,
@@ -265,6 +359,7 @@ exports.api.getAll = async (req, res, next) => {
             } else {
                 allocStats = {
                     allocationsCount: 0,
+                    totalParts: 0,
                     totalAmount: 0,
                     totalTax: 0,
                     totalNet: 0,
@@ -291,6 +386,7 @@ exports.api.getAll = async (req, res, next) => {
  */
 exports.api.getById = async (req, res, next) => {
     try {
+        await ensureInstanceInActorScope(req, req.params.id);
         const instance = await BonusInstance.findById(req.params.id)
             .populate('templateId')
             .populate('createdBy', 'firstname lastname');
@@ -459,6 +555,7 @@ exports.api.generatePayments = async (req, res, next) => {
  */
 exports.api.export = async (req, res, next) => {
     try {
+        await ensureInstanceInActorScope(req, req.params.id);
         const instance = await BonusInstance.findById(req.params.id)
             .populate('templateId')
             .populate('createdBy', 'firstname lastname');
@@ -472,7 +569,7 @@ exports.api.export = async (req, res, next) => {
 
         if (format === 'pdf') {
             // PDF Export
-            const pdfBuffer = await exportService.exportBonusToPdf(instance);
+            const pdfBuffer = await exportService.exportBonusToPdf(instance, { actor: req.actor });
 
             res.setHeader('Content-Type', 'application/pdf');
             const filename = `bonus-export-${instance.referencePeriod || 'all'}.pdf`;
@@ -481,7 +578,7 @@ exports.api.export = async (req, res, next) => {
             res.send(pdfBuffer);
         } else {
             // Excel Export (default)
-            const workbook = await exportService.exportBonusToExcel(instance);
+            const workbook = await exportService.exportBonusToExcel(instance, { actor: req.actor });
 
             res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             const filename = `bonus-export-${instance.referencePeriod || 'all'}.xlsx`;
@@ -537,6 +634,7 @@ exports.api.getAllocationStats = async (req, res, next) => {
             throw badRequest('Invalid instance ID');
         }
 
+        await ensureInstanceInActorScope(req, id);
         // Get the instance
         const instance = await BonusInstance.findById(id);
         if (!instance) {

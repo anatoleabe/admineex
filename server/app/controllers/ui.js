@@ -293,12 +293,6 @@ function buildNav(user, callback) {
                 name: gt.gettext('Bonus Programs')
             },
             {
-                href: 'home.bonus.rules',
-                sref: 'home.bonus.rules',
-                label: gt.gettext('Rules Library'),
-                name: gt.gettext('Rules Library')
-            },
-            {
                 href: 'home.bonus.instances',
                 sref: 'home.bonus.instances',
                 label: gt.gettext('Payout Cycles'),

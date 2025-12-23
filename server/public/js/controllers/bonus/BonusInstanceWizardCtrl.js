@@ -3,8 +3,23 @@
  * Handles the multi-step workflow for adjusting and reviewing bonus instances
  */
 angular.module('app')
-.controller('BonusInstanceWizardCtrl', ['$scope', '$http', '$stateParams', '$state', '$ocLazyLoad', 'SweetAlert', '$mdDialog', 'toastr', '$timeout', '$window', '$injector',
-function($scope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog, toastr, $timeout, $window, $injector) {
+.controller('BonusInstanceWizardCtrl', ['$scope', '$rootScope', '$http', '$stateParams', '$state', '$ocLazyLoad', 'SweetAlert', '$mdDialog', 'toastr', '$timeout', '$window', '$injector',
+function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog, toastr, $timeout, $window, $injector) {
+    const role = ($rootScope.account && $rootScope.account.role) ? String($rootScope.account.role) : '';
+    $scope.permissions = {
+        canAccessWizard: role === '1' || role === '3' || role === '4',
+        canModifyPersonnelBonus: role === '1' || role === '3' ,
+        canApproveInstance: role === '1',
+        canUpdateShareAmount: role === '1',
+        canUpdateTaxConfig: role === '1',
+        canExport: role === '1' || role === '2' || role === '3' || role === '4'
+    };
+
+    if (!$scope.permissions.canAccessWizard) {
+        toastr.error('Not authorized');
+        $state.go('home.bonus.instances');
+        return;
+    }
     // Helper to ensure numeric pagination
     function toInt(val, fallback) {
         const n = parseInt(val, 10);

@@ -31,9 +31,9 @@
         </td>
         <td class="text-center">
           <div class="btn-group">
-            <button class="btn btn-icon btn-primary" ng-if="tableMode==='adjust' && allocation.status!=='excluded'" ng-click="adjustAllocation(allocation)"><i class="mi-edit"></i></button>
-            <button class="btn btn-icon btn-danger" ng-if="tableMode==='adjust' && allocation.status!=='excluded'" ng-click="excludeAllocation(allocation)"><i class="mi-not-interested"></i></button>
-            <button class="btn btn-icon btn-success" ng-if="tableMode==='adjust' && allocation.status==='excluded'" ng-click="includeAllocation(allocation)"><i class="mi-check"></i></button>
+            <button class="btn btn-icon btn-primary" ng-if="permissions.canModifyPersonnelBonus && tableMode==='adjust' && allocation.status!=='excluded'" ng-click="adjustAllocation(allocation)"><i class="mi-edit"></i></button>
+            <button class="btn btn-icon btn-danger" ng-if="permissions.canModifyPersonnelBonus && tableMode==='adjust' && allocation.status!=='excluded'" ng-click="excludeAllocation(allocation)"><i class="mi-not-interested"></i></button>
+            <button class="btn btn-icon btn-success" ng-if="permissions.canModifyPersonnelBonus && tableMode==='adjust' && allocation.status==='excluded'" ng-click="includeAllocation(allocation)"><i class="mi-check"></i></button>
             <button class="btn btn-icon btn-info" ng-click="openViewHistory(allocation)"><i class="mi-history"></i></button>
           </div>
         </td>
@@ -42,4 +42,3 @@
     </tbody>
   </table>
 </div>
-
