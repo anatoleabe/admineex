@@ -408,6 +408,92 @@ const JobDefinition = async (job, done) => {
         });
     };
 
+    const normalizeCode = (code) => {
+        if (code === undefined || code === null) return null;
+        const value = String(code).trim();
+        return value ? value.toUpperCase() : null;
+    };
+
+    const normalizeName = (name) => {
+        if (name === undefined || name === null) return null;
+        const value = String(name).trim();
+        return value ? value.toUpperCase() : null;
+    };
+
+    const cloneStructures = (items) => items.map((s) => ({
+        ...s,
+        children: Array.isArray(s.children) ? s.children.map((c) => ({ ...c })) : []
+    }));
+
+    const buildStructureMaps = (items) => {
+        const parentsById = new Map();
+        const parentsByCode = new Map();
+        const parentsByName = new Map();
+        const childrenById = new Map();
+        const childrenByCode = new Map();
+        const childrenByName = new Map();
+        items.forEach((s) => {
+            if (!s) return;
+            if (s._id) parentsById.set(String(s._id), s);
+            const parentCode = normalizeCode(s.code);
+            if (parentCode) parentsByCode.set(parentCode, s);
+            const parentName = normalizeName(s.name);
+            if (parentName) parentsByName.set(parentName, s);
+            (s.children || []).forEach((c) => {
+                if (!c) return;
+                if (c._id) childrenById.set(String(c._id), c);
+                const childCode = normalizeCode(c.code);
+                if (childCode) childrenByCode.set(childCode, c);
+                const childName = normalizeName(c.name || c.fr || c.en);
+                if (childName) childrenByName.set(childName, c);
+            });
+        });
+        return { parentsById, parentsByCode, parentsByName, childrenById, childrenByCode, childrenByName };
+    };
+
+    const resolvePersonnelStructure = (person) => {
+        const sub = (person && person.affectation && person.affectation.structure) ? person.affectation.structure : null;
+        const parent = (sub && sub.father) ? sub.father : null;
+
+        const positionCode = (person && person.affectation && person.affectation.position && person.affectation.position.code)
+            ? person.affectation.position.code
+            : (person && person.affectation && person.affectation.positionCode ? person.affectation.positionCode : null);
+        const codeFromPosition = positionCode ? positionCode.split('P')[0] : null;
+
+        const subId = (sub && sub._id) ? String(sub._id) : null;
+        const subCode = normalizeCode((sub && sub.code) ? sub.code : codeFromPosition);
+        const subName = (sub && (sub.name || sub.fr || sub.en)) ? (sub.name || sub.fr || sub.en) : null;
+
+        const parentId = (parent && parent._id) ? String(parent._id) : null;
+        const parentCode = normalizeCode((parent && parent.code) ? parent.code : (subCode && subCode.includes('-') ? subCode.split('-')[0] : null));
+        const parentName = (parent && (parent.name || parent.fr || parent.en)) ? (parent.name || parent.fr || parent.en) : null;
+
+        return {
+            parentId,
+            parentCode,
+            parentName,
+            subId,
+            subCode,
+            subName
+        };
+    };
+
+    const ensureSelfChild = (parent) => {
+        if (!parent.children) parent.children = [];
+        const parentId = parent._id ? String(parent._id) : null;
+        let existing = parentId ? parent.children.find((c) => String(c._id) === parentId) : null;
+        if (!existing) {
+            existing = {
+                _id: parent._id,
+                code: parent.code,
+                fr: parent.fr || parent.name || parent.en || parent.code,
+                name: parent.name || parent.fr || parent.en || parent.code
+            };
+            parent.children.unshift(existing);
+        }
+        return existing;
+    };
+
     const checkJobStillExists = async () => {
         const jobInDb = await mongoose.connection.collection('agendaJobs').find({ _id: new ObjectId(jobId) }).toArray();
         return jobInDb.length > 0;
@@ -525,28 +611,105 @@ const JobDefinition = async (job, done) => {
 
             const personnels = await getPersonnelList(personnelOptions);
             //job.attrs.data.staffsCount = job.attrs.data.staffsCount + personnels.length;
-            const grouped = filters.staffOnly === false || filters.staffOnly === "false"
-                ? { "undefined": personnels }
-                : _.groupBy(personnels, p => p?.affectation?.structure?._id || "undefined");
-
-            for (const s of structures) {
-                if (s.children) {
-                    for (const c of s.children) {
-                        c.personnels = grouped[c._id];
-                    }
-                }
-            }
-
-            if (grouped["undefined"]) {
-                structures.push({
+            let structuresForExport;
+            if (filters.staffOnly === false || filters.staffOnly === "false") {
+                structuresForExport = [{
                     code: "000",
                     name: "STRUCTURE INCONNUE",
                     children: [{
                         code: "000 - 0",
                         fr: "Inconnue",
-                        personnels: grouped["undefined"]
+                        personnels: personnels
                     }]
-                });
+                }];
+            } else {
+                structuresForExport = cloneStructures(structures);
+                const maps = buildStructureMaps(structuresForExport);
+                const unknown = [];
+
+                const findOrCreateParent = ({ parentId, parentCode, parentName }) => {
+                    let parent = (parentId && maps.parentsById.get(parentId))
+                        || (parentCode && maps.parentsByCode.get(parentCode))
+                        || (parentName && maps.parentsByName.get(normalizeName(parentName)));
+
+                    if (!parent) {
+                        const syntheticId = parentId || parentCode || normalizeName(parentName) || keyGenerator.generateKey();
+                        parent = {
+                            _id: syntheticId,
+                            code: parentCode || "000",
+                            name: parentName || "STRUCTURE INCONNUE",
+                            children: []
+                        };
+                        structuresForExport.push(parent);
+                        maps.parentsById.set(String(parent._id), parent);
+                        if (parent.code) maps.parentsByCode.set(normalizeCode(parent.code), parent);
+                        if (parent.name) maps.parentsByName.set(normalizeName(parent.name), parent);
+                    }
+                    return parent;
+                };
+
+                const findOrCreateChild = (parent, { subId, subCode, subName }) => {
+                    const parentChildren = Array.isArray(parent.children) ? parent.children : [];
+                    const normalizedSubCode = subCode ? normalizeCode(subCode) : null;
+                    const normalizedSubName = subName ? normalizeName(subName) : null;
+
+                    let child = (subId && parentChildren.find((c) => c && c._id && String(c._id) === String(subId)))
+                        || (normalizedSubCode && parentChildren.find((c) => normalizeCode(c && c.code) === normalizedSubCode))
+                        || (normalizedSubName && parentChildren.find((c) => normalizeName((c && (c.name || c.fr || c.en)) || null) === normalizedSubName));
+
+                    if (!child) {
+                        const globalCandidate = (subId && maps.childrenById.get(subId))
+                            || (normalizedSubCode && maps.childrenByCode.get(normalizedSubCode))
+                            || (normalizedSubName && maps.childrenByName.get(normalizedSubName));
+
+                        if (globalCandidate && parentChildren.includes(globalCandidate)) {
+                            child = globalCandidate;
+                        }
+                    }
+
+                    if (!child) {
+                        const syntheticId = subId || subCode || normalizeName(subName) || keyGenerator.generateKey();
+                        child = {
+                            _id: syntheticId,
+                            code: subCode || "000 - 0",
+                            fr: subName || "Inconnue",
+                            name: subName || "Inconnue",
+                            personnels: []
+                        };
+                        if (!parent.children) parent.children = [];
+                        parent.children.push(child);
+                        maps.childrenById.set(String(child._id), child);
+                        if (child.code) maps.childrenByCode.set(normalizeCode(child.code), child);
+                        const childDisplayName = child.name || child.fr || child.en || null;
+                        if (childDisplayName) maps.childrenByName.set(normalizeName(childDisplayName), child);
+                    }
+                    if (!child.personnels) child.personnels = [];
+                    return child;
+                };
+
+                for (const person of personnels) {
+                    const { parentId, parentCode, parentName, subId, subCode, subName } = resolvePersonnelStructure(person);
+                    if (!subId && !subCode && !subName) {
+                        unknown.push(person);
+                        continue;
+                    }
+
+                    const parent = findOrCreateParent({ parentId, parentCode, parentName });
+                    const child = findOrCreateChild(parent, { subId, subCode, subName });
+                    child.personnels.push(person);
+                }
+
+                if (unknown.length) {
+                    structuresForExport.push({
+                        code: "000",
+                        name: "STRUCTURE INCONNUE",
+                        children: [{
+                            code: "000 - 0",
+                            fr: "Inconnue",
+                            personnels: unknown
+                        }]
+                    });
+                }
             }
 
             progress.emit('jobProgress', {
@@ -560,7 +723,7 @@ const JobDefinition = async (job, done) => {
                 elapsedTimeMs: performance.now() - startTime
             });
 
-            exportOptions.data = structures;
+            exportOptions.data = structuresForExport;
             const summary = await exports.exportToXLSX(exportOptions);
             exportSummariesArray.push(summary);
 
