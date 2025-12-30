@@ -40,8 +40,7 @@ exports.api.read = function (req, res) {
 
 exports.api.update = function (req, res) {
     if (req.actor) {
-        var form = new formidable.IncomingForm();
-        form.parse(req, function (err, fields, files) {
+        function onParsed(err, fields, files) {
             if (err) {
                 log.error(err);
                 audit.logEvent('[formidable]', 'Configuration', 'Update', "", "", 'failed', "Formidable attempted to parse configuration fields");
@@ -58,7 +57,14 @@ exports.api.update = function (req, res) {
                     }
                 });
             }
-        });
+        }
+
+        if (req.body && Object.keys(req.body).length > 0) {
+            return onParsed(null, req.body, null);
+        }
+
+        var form = new formidable.IncomingForm();
+        form.parse(req, onParsed);
     } else {
         audit.logEvent('[anonymous]', 'Configuration', 'Update', '', '', 'failed', 'The actor was not authenticated');
         return res.send(401);

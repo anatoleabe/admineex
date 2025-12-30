@@ -71,6 +71,17 @@ exports.upsert = function (fields, callback) {
 
 exports.api.upsert = function (req, res) {
     if (req.actor) {
+        if (req.body && Object.keys(req.body).length > 0) {
+            return exports.upsert(req.body, function (err) {
+                if (err) {
+                    log.error(err);
+                    return res.status(500).send(err);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
+        }
+
         var form = new formidable.IncomingForm();
         form.parse(req, function (err, fields, files) {
             if (err) {
@@ -96,6 +107,80 @@ exports.api.upsert = function (req, res) {
 
 exports.api.affectToPosition = function (req, res) {
     if (req.actor) {
+        function affectToPositionFromFields(fields) {
+            var projection = {
+                _id: 1,
+                code: 1
+            };
+            Position.findOne({_id: fields.positionId}, projection, function (err, result) {
+                if (err) {
+                    log.error(err);
+                    return res.status(500).send(err);
+                } else {
+                    // Parse received fields
+                    var affectationFields = {
+                        positionId: fields.positionId,
+                        oldPositionId: null,
+                        positionCode: result.code,
+                        personnelId: fields.occupiedBy,
+                        date: fields.startDate,
+                        lastModified: new Date(),
+                        creation: new Date(),
+                        actor: req.actor.id,
+                        numAct: fields.numAct,
+                        signatureDate: fields.signatureDate,
+                        startDate: fields.startDate,
+                        mouvement: fields.mouvement,
+                        nature: fields.nature,
+                        rank: fields.rank,
+                        endDate: (fields.isCurrent && fields.isCurrent == "true") ? null : fields.endDate,
+                    };
+                    var filter = {
+                        personnelId: fields.occupiedBy,
+                        positionId: fields.positionId,
+                    };
+                    Affectation.findOne({personnelId: fields.occupiedBy}).sort({lastModified: -1}).lean().exec(function (err, lastAffectation) {
+                        if (err) {
+                            log.error(err);
+                            audit.logEvent('[mongodb]', 'Position', 'affectToPosition', "", "", 'failed', "Mongodb attempted to find old affectation.");
+                            return res.status(500).send(err);
+                        } else {
+                            if (lastAffectation) {
+                                filter.oldPositionId = lastAffectation.positionId;
+                                affectationFields.oldPositionId = lastAffectation.positionId;
+                            }
+
+                            Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, sort: {'lastModified': -1}, new : true}, function (err, result) {
+                                if (err) {
+                                    log.error(err);
+                                    audit.logEvent('[mongodb]', 'Position', 'affectToPosition', "", "", 'failed', "Mongodb attempted to affect to  a Position");
+                                    return res.status(500).send(err);
+                                } else {
+                                    controllers.personnel.read({_id: affectationFields.personnelId}, function (err, perso) {
+                                        if (err) {
+                                            log.error(err);
+                                            return res.status(500).send(err);
+                                        } else {
+                                            if (perso) {
+                                                res.sendStatus(200);
+                                                audit.logEvent(req.actor.id, 'Poste', 'Changement de poste', 'Nouveau code poste', affectationFields.positionCode, 'succeed', 'Affectation de ' + perso.name.family[0] + ' ' + perso.name.given[0] + ' au poste de code: ' + affectationFields.positionCode);
+                                            } else {
+                                                res.sendStatus(200);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        }
+
+        if (req.body && Object.keys(req.body).length > 0) {
+            return affectToPositionFromFields(req.body);
+        }
+
         var form = new formidable.IncomingForm();
         form.parse(req, function (err, fields, files) {
             if (err) {
@@ -103,105 +188,7 @@ exports.api.affectToPosition = function (req, res) {
                 audit.logEvent('[formidable]', 'Positions', 'affectation', "", "", 'failed', "Formidable attempted to parse affectation fields");
                 return res.status(500).send(err);
             } else {
-                var projection = {
-                    _id: 1,
-                    code: 1
-                };
-                Position.findOne({_id: fields.positionId}, projection, function (err, result) {
-                    if (err) {
-                        log.error(err);
-                        return res.status(500).send(err);
-                    } else {
-                        // Parse received fields
-                        var affectationFields = {
-                            positionId: fields.positionId,
-                            oldPositionId: null,
-                            positionCode: result.code,
-                            personnelId: fields.occupiedBy,
-                            date: fields.startDate,
-                            lastModified: new Date(),
-                            creation: new Date(),
-                            actor: req.actor.id,
-                            numAct: fields.numAct,
-                            signatureDate: fields.signatureDate,
-                            startDate: fields.startDate,
-                            mouvement: fields.mouvement,
-                            nature: fields.nature,
-                            rank: fields.rank,
-                            endDate: (fields.isCurrent && fields.isCurrent == "true") ? null : fields.endDate,
-                        };
-                        var filter = {
-                            personnelId: fields.occupiedBy,
-                            positionId: fields.positionId,
-                        };
-                        Affectation.findOne({personnelId: fields.occupiedBy}).sort({lastModified: -1}).lean().exec(function (err, lastAffectation) {
-                            if (err) {
-                                log.error(err);
-                                audit.logEvent('[mongodb]', 'Position', 'affectToPosition', "", "", 'failed', "Mongodb attempted to find old affectation.");
-                                return res.status(500).send(err);
-                            } else {
-                                if (lastAffectation) {
-                                    filter.oldPositionId = lastAffectation.positionId;
-                                    affectationFields.oldPositionId = lastAffectation.positionId;
-                                }
-
-                                Affectation.findOneAndUpdate(filter, affectationFields, {setDefaultsOnInsert: true, upsert: true, sort: {'lastModified': -1}, new : true}, function (err, result) {
-                                    if (err) {
-                                        log.error(err);
-                                        audit.logEvent('[mongodb]', 'Position', 'affectToPosition', "", "", 'failed', "Mongodb attempted to affect to  a Position");
-                                        return res.status(500).send(err);
-                                    } else {
-                                        controllers.personnel.read({_id: affectationFields.personnelId}, function (err, perso) {
-                                            if (err) {
-                                                log.error(err);
-                                                return res.status(500).send(err);
-                                            } else {
-                                                if (perso) {
-
-//                                                    var history = {
-//                                                        numAct: fields.numAct,
-//                                                        positionId: new ObjectID(fields.positionId),
-//                                                        isCurrent: fields.isCurrent,
-//                                                        signatureDate: fields.signatureDate,
-//                                                        startDate: fields.startDate,
-//                                                        endDate: (fields.isCurrent && fields.isCurrent == "true") ? null : fields.endDate,
-//                                                        mouvement: fields.mouvement,
-//                                                        nature: fields.nature
-//                                                    };
-//                                                    if (!perso.history) {
-//                                                        perso.history = {positions: []};
-//                                                    } else if (perso.history && !perso.history.positions) {
-//                                                        perso.history.positions = [];
-//                                                    } else if (perso.history && util.isArray(perso.history.positions) && perso.history.positions.length > 0) {
-//                                                        for (var i in perso.history.positions) {
-//                                                            perso.history.positions[i].isCurrent = false;
-//                                                        }
-//                                                    } else {
-//                                                        perso.history.positions = [];
-//                                                    }
-//                                                    perso.history.positions.push(history);
-//
-//                                                    controllers.personnel.upsert(perso, function (err, structure) {
-//                                                        if (err) {
-//                                                            log.error(err);
-//                                                        } else {
-//                                                            res.sendStatus(200);
-//                                                            audit.logEvent(req.actor.id, 'Poste', 'Changement de poste', 'Nouveau code poste', affectationFields.positionCode, 'succeed', 'Affectation de '+perso.name.family[0]+' '+perso.name.given[0]+ ' au poste de code: '+affectationFields.positionCode);
-//                                                        }
-//                                                    });
-                                                    res.sendStatus(200);
-                                                    audit.logEvent(req.actor.id, 'Poste', 'Changement de poste', 'Nouveau code poste', affectationFields.positionCode, 'succeed', 'Affectation de ' + perso.name.family[0] + ' ' + perso.name.given[0] + ' au poste de code: ' + affectationFields.positionCode);
-                                                } else {
-                                                    res.sendStatus(200);
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    }
-                });
+                affectToPositionFromFields(fields);
             }
         });
     } else {

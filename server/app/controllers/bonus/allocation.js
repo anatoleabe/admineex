@@ -5,11 +5,23 @@ const { BonusInstance } = require('../../models/bonus/instance');
 const { Personnel } = require('../../models/personnel');
 const { PersonnelSnapshot } = require('../../models/bonus/personnelSnapshot');
 const { badRequest, notFound, forbidden } = require('../../utils/ApiError');
+const audit = require('../../utils/audit-log');
 const dictionary = require('../../utils/dictionary');
 const { getActorStructureTokens, isSnapshotInStructures } = require('../../utils/structureScope');
 
 // API methods
 exports.api = {};
+
+function getActorId(req) {
+    if (req && req.actor && req.actor.id) return req.actor.id;
+    if (req && req.user && req.user.id) return req.user.id;
+    if (req && req.user && req.user._id) return req.user._id;
+    return '[anonymous]';
+}
+
+function auditEvent(req, action, label, object, status, description) {
+    audit.logEvent(getActorId(req), 'bonus/allocation', action, label, object, status, description);
+}
 
 function createEmptyStats() {
     return { eligible: 0, excluded: 0, adjusted: 0, totalParts: 0, totalAmount: 0, total: 0 };
@@ -376,13 +388,8 @@ exports.api.getById = async (req, res, next) => {
 const formidable = require('formidable');
 
 exports.api.adjust = async (req, res, next) => {
-    try {
-        const form = formidable({ multiples: false });
-        form.parse(req, async (err, fields) => {
-            if (err) {
-                return next(badRequest('Invalid form data'));
-            }
-
+    const handleFields = async (fields) => {
+        try {
             const { id } = req.params;
             const { amount, parts, reason } = fields;
 
@@ -408,14 +415,18 @@ exports.api.adjust = async (req, res, next) => {
                 allocation.calculationInputs.adjustmentHistory = [];
             }
 
+            const previousAmount = allocation.finalAmount;
+            const previousParts = allocation.calculationInputs.parts;
+            const previousComment = allocation.calculationInputs.comment;
+
             allocation.calculationInputs.adjustmentHistory.push({
                 timestamp: new Date(),
                 user: req.user.id, // Assuming req.user contains authenticated user info
                 userName: req.user.name, // Assuming req.user contains authenticated user info
                 reason,
-                previousAmount: allocation.finalAmount,
-                previousParts: allocation.calculationInputs.parts,
-                previousComment: allocation.calculationInputs.comment,
+                previousAmount: previousAmount,
+                previousParts: previousParts,
+                previousComment: previousComment,
                 newAmount: amount,
                 newParts: parts
             });
@@ -429,7 +440,33 @@ exports.api.adjust = async (req, res, next) => {
 
             await allocation.save();
 
+            auditEvent(
+                req,
+                'adjust',
+                'BonusAllocation',
+                allocation._id,
+                'succeed',
+                `Adjusted allocation. instanceId=${allocation.instanceId && allocation.instanceId._id ? allocation.instanceId._id : allocation.instanceId}; previousAmount=${previousAmount}; previousParts=${previousParts}; newAmount=${amount}; newParts=${parts}; reason=${reason}`
+            );
+
             res.json(allocation);
+        } catch (error) {
+            auditEvent(req, 'adjust', 'BonusAllocation', req.params.id, 'failed', error && error.message ? error.message : String(error));
+            next(error);
+        }
+    };
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return handleFields(req.body);
+    }
+
+    try {
+        const form = formidable({ multiples: false });
+        form.parse(req, async (err, fields) => {
+            if (err) {
+                return next(badRequest('Invalid form data'));
+            }
+            return handleFields(fields);
         });
     } catch (error) {
         next(error);
@@ -440,13 +477,8 @@ exports.api.adjust = async (req, res, next) => {
  * Exclude bonus allocation
  */
 exports.api.exclude = async (req, res, next) => {
-    try {
-        const form = formidable({ multiples: false });
-        form.parse(req, async (err, fields) => {
-            if (err) {
-                return next(badRequest('Invalid form data'));
-            }
-
+    const handleFields = async (fields) => {
+        try {
             const { id } = req.params;
             let { reason } = fields;
             reason = (reason || '').trim();
@@ -501,7 +533,25 @@ exports.api.exclude = async (req, res, next) => {
                 { new: true }
             );
 
+            auditEvent(req, 'exclude', 'BonusAllocation', id, 'succeed', `Excluded allocation. reason=${reason}`);
             res.json(updatedAllocation);
+        } catch (error) {
+            auditEvent(req, 'exclude', 'BonusAllocation', req.params.id, 'failed', error && error.message ? error.message : String(error));
+            next(error);
+        }
+    };
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return handleFields(req.body);
+    }
+
+    try {
+        const form = formidable({ multiples: false });
+        form.parse(req, async (err, fields) => {
+            if (err) {
+                return next(badRequest('Invalid form data'));
+            }
+            return handleFields(fields);
         });
     } catch (error) {
         next(error);
@@ -512,13 +562,8 @@ exports.api.exclude = async (req, res, next) => {
  * Include bonus allocation
  */
 exports.api.include = async (req, res, next) => {
-    try {
-        const form = formidable({ multiples: false });
-        form.parse(req, async (err, fields) => {
-            if (err) {
-                return next(badRequest('Invalid form data'));
-            }
-
+    const handleFields = async (fields) => {
+        try {
             const { id } = req.params;
 
             const allocation = await BonusAllocation.findById(id)
@@ -545,7 +590,25 @@ exports.api.include = async (req, res, next) => {
                 { new: true }
             );
 
+            auditEvent(req, 'include', 'BonusAllocation', id, 'succeed', 'Included allocation back to eligible');
             res.json(updatedAllocation);
+        } catch (error) {
+            auditEvent(req, 'include', 'BonusAllocation', req.params.id, 'failed', error && error.message ? error.message : String(error));
+            next(error);
+        }
+    };
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return handleFields(req.body);
+    }
+
+    try {
+        const form = formidable({ multiples: false });
+        form.parse(req, async (err, fields) => {
+            if (err) {
+                return next(badRequest('Invalid form data'));
+            }
+            return handleFields(fields);
         });
     } catch (error) {
         next(error);

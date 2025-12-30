@@ -107,8 +107,7 @@ exports.api.upsert = function (req, res) {
 
 
     if (req.actor) {
-        var form = new formidable.IncomingForm();
-        form.parse(req, function (err, fields, files) {
+        function onParsed(err, fields, files) {
             if (err) {
                 log.error(err);
                 audit.logEvent('[formidable]', 'Sanction', 'Upsert', "", "", 'failed', "Formidable attempted to parse sanction fields");
@@ -124,7 +123,14 @@ exports.api.upsert = function (req, res) {
                     }
                 });
             }
-        });
+        }
+
+        if (req.body && Object.keys(req.body).length > 0) {
+            return onParsed(null, req.body, null);
+        }
+
+        var form = new formidable.IncomingForm();
+        form.parse(req, onParsed);
     } else {
         audit.logEvent('[anonymous]', 'Sanction', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
         return res.sendStatus(401);
@@ -797,4 +803,3 @@ function buildXLSX2(options, callback) {
         callback(null, tmpFile);
     });
 }
-

@@ -4,6 +4,7 @@ const { BonusInstance } = require('../../models/bonus/instance');
 const { BonusTemplate } = require('../../models/bonus/template');
 const { BonusAllocation } = require('../../models/bonus/allocation');
 const { badRequest, notFound, forbidden } = require('../../utils/ApiError');
+const audit = require('../../utils/audit-log');
 const { generatePaymentFile } = require('../../services/bonusService');
 const { sendNotification } = require('../../services/notificationService');
 const formidable = require('formidable');
@@ -14,6 +15,17 @@ const { getActorStructureTokens } = require('../../utils/structureScope');
 
 // API methods
 exports.api = {};
+
+function getActorId(req) {
+    if (req && req.actor && req.actor.id) return req.actor.id;
+    if (req && req.user && req.user.id) return req.user.id;
+    if (req && req.user && req.user._id) return req.user._id;
+    return '[anonymous]';
+}
+
+function auditEvent(req, action, label, object, status, description) {
+    audit.logEvent(getActorId(req), 'bonus/instance', action, label, object, status, description);
+}
 
 function buildSnapshotScopeMatch(allowedObjectIds, allowedTokens) {
     const or = [];
@@ -64,12 +76,7 @@ async function ensureInstanceInActorScope(req, instanceId) {
  * Record an export event in the instance history
  */
 exports.api.recordExport = async (req, res, next) => {
-    const form = formidable({ multiples: false });
-    form.parse(req, async (err, fields, files) => {
-        if (err) {
-            return next(badRequest('Failed to parse form data'));
-        }
-
+    const handleFields = async (fields) => {
         try {
             const instanceId = req.params.id;
             const { type, user, userId, fileSize } = fields;
@@ -108,6 +115,8 @@ exports.api.recordExport = async (req, res, next) => {
             // Save the instance with the new export record
             await instance.save();
 
+            auditEvent(req, 'record_export', 'BonusInstance', instanceId, 'succeed', `Recorded export. type=${type}; fileSize=${fileSize}`);
+
             // Return the updated instance with exports
             return res.json({
                 message: 'Export recorded successfully',
@@ -115,8 +124,21 @@ exports.api.recordExport = async (req, res, next) => {
             });
         } catch (error) {
             console.error('Error recording export:', error);
+            auditEvent(req, 'record_export', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
             return next(error);
         }
+    };
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return handleFields(req.body);
+    }
+
+    const form = formidable({ multiples: false });
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return next(badRequest('Failed to parse form data'));
+        }
+        return handleFields(fields);
     });
 };
 
@@ -124,13 +146,7 @@ exports.api.recordExport = async (req, res, next) => {
  * Create a bonus instance
  */
 exports.api.create = async (req, res, next) => {
-    const form = formidable({ multiples: false });
-
-    form.parse(req, async (err, fields, files) => {
-        if (err) {
-            return next(badRequest('Failed to parse form data'));
-        }
-
+    const handleFields = async (fields) => {
         try {
             console.log(fields);
             const { templateId, referencePeriod, notes, shareAmount } = fields;
@@ -167,10 +183,24 @@ exports.api.create = async (req, res, next) => {
                 status: 'draft'
             });
 
+            auditEvent(req, 'create', 'BonusInstance', instance._id, 'succeed', `Created bonus instance. templateId=${templateId}; referencePeriod=${referencePeriod}`);
             res.status(201).json(instance);
         } catch (error) {
+            auditEvent(req, 'create', 'BonusInstance', '', 'failed', error && error.message ? error.message : String(error));
             next(error);
         }
+    };
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return handleFields(req.body);
+    }
+
+    const form = formidable({ multiples: false });
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return next(badRequest('Failed to parse form data'));
+        }
+        return handleFields(fields);
     });
 };
 
@@ -185,8 +215,10 @@ exports.api.generate = async (req, res, next) => {
             await bulkCreateSnapshots(new Date());
         }
 
+        auditEvent(req, 'generate', 'BonusInstance', req.params.id, 'succeed', 'Triggered bonus generation / snapshot creation');
         res.json({ success: true });
     } catch (error) {
+        auditEvent(req, 'generate', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -429,8 +461,10 @@ exports.api.update = async (req, res, next) => {
             { new: true }
         );
 
+        auditEvent(req, 'update', 'BonusInstance', id, 'succeed', 'Updated bonus instance (notes/customOverrides)');
         res.json(updatedInstance);
     } catch (error) {
+        auditEvent(req, 'update', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -454,8 +488,10 @@ exports.api.approve = async (req, res, next) => {
             throw notFound('Bonus instance not found');
         }
 
+        auditEvent(req, 'approve', 'BonusInstance', req.params.id, 'succeed', 'Approved bonus instance');
         res.json(instance);
     } catch (error) {
+        auditEvent(req, 'approve', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -481,8 +517,10 @@ exports.api.reject = async (req, res, next) => {
             throw notFound('Bonus instance not found');
         }
 
+        auditEvent(req, 'reject', 'BonusInstance', req.params.id, 'succeed', `Rejected bonus instance. reason=${reason || ''}`);
         res.json(instance);
     } catch (error) {
+        auditEvent(req, 'reject', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -508,8 +546,10 @@ exports.api.cancel = async (req, res, next) => {
             throw notFound('Bonus instance not found');
         }
 
+        auditEvent(req, 'cancel', 'BonusInstance', req.params.id, 'succeed', `Cancelled bonus instance. reason=${reason || ''}`);
         res.json(instance);
     } catch (error) {
+        auditEvent(req, 'cancel', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -541,11 +581,13 @@ exports.api.generatePayments = async (req, res, next) => {
             { new: true }
         );
 
+        auditEvent(req, 'generate_payments', 'BonusInstance', req.params.id, 'succeed', 'Generated payment file and marked instance as paid');
         res.json({
             instance: updatedInstance,
             paymentFile
         });
     } catch (error) {
+        auditEvent(req, 'generate_payments', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -571,6 +613,7 @@ exports.api.export = async (req, res, next) => {
             // PDF Export
             const pdfBuffer = await exportService.exportBonusToPdf(instance, { actor: req.actor });
 
+            auditEvent(req, 'export_pdf', 'BonusInstance', req.params.id, 'succeed', `Exported instance to PDF. referencePeriod=${instance.referencePeriod || ''}`);
             res.setHeader('Content-Type', 'application/pdf');
             const filename = `bonus-export-${instance.referencePeriod || 'all'}.pdf`;
             res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
@@ -580,6 +623,7 @@ exports.api.export = async (req, res, next) => {
             // Excel Export (default)
             const workbook = await exportService.exportBonusToExcel(instance, { actor: req.actor });
 
+            auditEvent(req, 'export_excel', 'BonusInstance', req.params.id, 'succeed', `Exported instance to Excel. referencePeriod=${instance.referencePeriod || ''}`);
             res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             const filename = `bonus-export-${instance.referencePeriod || 'all'}.xlsx`;
             res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
@@ -589,6 +633,7 @@ exports.api.export = async (req, res, next) => {
         }
     } catch (error) {
         console.error('Export error:', error);
+        auditEvent(req, 'export', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -612,12 +657,14 @@ exports.api.notify = async (req, res, next) => {
             status: instance.status
         });
 
+        auditEvent(req, 'notify', 'BonusInstance', req.params.id, 'succeed', `Sent notifications for instance. status=${instance.status}`);
         res.json({
             success: true,
             instance,
             notificationResults
         });
     } catch (error) {
+        auditEvent(req, 'notify', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -689,6 +736,9 @@ exports.api.updateWizardStep = async (req, res, next) => {
             return next(notFound('Bonus instance not found'));
         }
 
+        const previousWizardStep = instance.wizardStep;
+        const previousStatus = instance.status;
+
         if (['approved', 'paid', 'cancelled'].includes(instance.status)) {
             return next(forbidden('Cannot modify an approved, paid or cancelled instance'));
         }
@@ -717,8 +767,10 @@ exports.api.updateWizardStep = async (req, res, next) => {
             .populate('templateId', 'name code category')
             .populate('createdBy', 'firstname lastname');
 
+        auditEvent(req, 'update_wizard_step', 'BonusInstance', id, 'succeed', `Wizard step updated. from=${previousWizardStep || ''} to=${step}; status ${previousStatus} -> ${instance.status}`);
         res.json(populated);
     } catch (error) {
+        auditEvent(req, 'update_wizard_step', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -820,11 +872,7 @@ exports.api.getInstanceSnapshots = async (req, res, next) => {
  * Update share amount and recalculate allocations
  */
 exports.api.updateShareAmount = async (req, res, next) => {
-    const form = formidable({ multiples: false });
-    form.parse(req, async (err, fields, files) => {
-        if (err) {
-            return next(badRequest('Failed to parse form data'));
-        }
+    const handleFields = async (fields) => {
         try {
             const instanceId = req.params.id;
             const { newShareAmount, reason } = fields;
@@ -885,6 +933,8 @@ exports.api.updateShareAmount = async (req, res, next) => {
             // Save the instance first to update the status
             await instance.save();
 
+            auditEvent(req, 'update_share_amount', 'BonusInstance', instanceId, 'succeed', `Share amount updated. previous=${previousShareAmount}; new=${parsedShareAmount}; reason=${reason}`);
+
             // Start the recalculation process asynchronously
             recalculateAllocations(instance, parsedShareAmount, previousShareAmount)
                 .catch(err => {
@@ -903,8 +953,21 @@ exports.api.updateShareAmount = async (req, res, next) => {
 
             res.status(200).json(instance);
         } catch (err) {
+            auditEvent(req, 'update_share_amount', 'BonusInstance', req.params.id, 'failed', err && err.message ? err.message : String(err));
             next(err);
         }
+    };
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return handleFields(req.body);
+    }
+
+    const form = formidable({ multiples: false });
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return next(badRequest('Failed to parse form data'));
+        }
+        return handleFields(fields);
     });
 };
 
@@ -1097,11 +1160,7 @@ async function recalculateAllocations(instance, newShareAmount, oldShareAmount) 
  * Update tax configuration and recalculate allocations
  */
 exports.api.updateTaxConfig = async (req, res, next) => {
-    const form = formidable({ multiples: false });
-    form.parse(req, async (err, fields, files) => {
-        if (err) {
-            return next(badRequest('Failed to parse form data'));
-        }
+    const handleFields = async (fields) => {
         try {
             const instanceId = req.params.id;
             const { taxName, taxPercentage, reason } = fields;
@@ -1170,6 +1229,8 @@ exports.api.updateTaxConfig = async (req, res, next) => {
             // Save the instance first to update the status
             await instance.save();
 
+            auditEvent(req, 'update_tax_config', 'BonusInstance', instanceId, 'succeed', `Tax config updated. previousName=${previousTaxName || ''}; previousPercentage=${previousTaxPercentage}; newName=${taxName}; newPercentage=${parsedTaxPercentage}; reason=${reason}`);
+
             // Start the recalculation process asynchronously to apply tax deduction to final amounts
             recalculateAllocationsWithTax(instance, parsedTaxPercentage, previousTaxPercentage)
                 .catch(err => {
@@ -1188,8 +1249,21 @@ exports.api.updateTaxConfig = async (req, res, next) => {
 
             res.status(200).json(instance);
         } catch (err) {
+            auditEvent(req, 'update_tax_config', 'BonusInstance', req.params.id, 'failed', err && err.message ? err.message : String(err));
             next(err);
         }
+    };
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return handleFields(req.body);
+    }
+
+    const form = formidable({ multiples: false });
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return next(badRequest('Failed to parse form data'));
+        }
+        return handleFields(fields);
     });
 };
 

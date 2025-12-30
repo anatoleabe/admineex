@@ -18,6 +18,21 @@ var controllers = {
 
 exports.api.upsert = function (req, res) {
     if (req.actor) {
+        function upsertFromFields(fields) {
+            exports.upsert({actor: req.actor}, fields, function (err) {
+                if (err) {
+                    log.error(err);
+                    return res.status(500).send(err);
+                } else {
+                    res.sendStatus(200);
+                }
+            });
+        }
+
+        if (req.body && Object.keys(req.body).length > 0) {
+            return upsertFromFields(req.body);
+        }
+
         var form = new formidable.IncomingForm();
         form.parse(req, function (err, fields, files) {
             if (err) {
@@ -25,14 +40,7 @@ exports.api.upsert = function (req, res) {
                 audit.logEvent('[formidable]', 'Projects', 'Upsert', "", "", 'failed', "Formidable attempted to parse project fields");
                 return res.status(500).send(err);
             } else {
-                exports.upsert({actor: req.actor}, fields, function (err) {
-                    if (err) {
-                        log.error(err);
-                        return res.status(500).send(err);
-                    } else {
-                        res.sendStatus(200);
-                    }
-                });
+                upsertFromFields(fields);
             }
         });
     } else {

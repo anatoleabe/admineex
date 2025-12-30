@@ -4,30 +4,50 @@ const { BonusTemplate } = require('../../models/bonus/template');
 const { BonusInstance } = require('../../models/bonus/instance');
 const { generateBonusesForPeriod, generateBonusesForTemplate } = require('../../services/bonusgeneration');
 const formidable = require('formidable');
+const audit = require('../../utils/audit-log');
 const { badRequest} = require('../../utils/ApiError');
 
 exports.api = {};
+
+function getActorId(req) {
+    if (req && req.actor && req.actor.id) return req.actor.id;
+    if (req && req.user && req.user.id) return req.user.id;
+    if (req && req.user && req.user._id) return req.user._id;
+    return '[anonymous]';
+}
+
+function auditEvent(req, action, label, object, status, description) {
+    audit.logEvent(getActorId(req), 'bonus/generation', action, label, object, status, description);
+}
 
 /**
  * Manually trigger periodic bonus generation
  */
 exports.api.generatePeriodicBonuses = async (req, res, next) => {
-    const form = formidable({ multiples: true });
-
-    form.parse(req, async (err, fields, files) => {
-        if (err) return next(badRequest('Form parsing failed'));
-
+    const handleFields = async (fields) => {
         try {
             const { period } = fields;// Optional: 'monthly', 'quarterly', etc.
             
             console.log(fields)
 
             const result = await generateBonusesForPeriod(period);
+            auditEvent(req, 'generate_periodic', 'Bonus', '', 'succeed', `Triggered periodic bonus generation. period=${period || ''}`);
             res.json({ success: true, ...result });
         } catch (error) {
             console.error('Periodic bonus generation failed:', error);
+            auditEvent(req, 'generate_periodic', 'Bonus', '', 'failed', error && error.message ? error.message : String(error));
             next(error);
         }
+    };
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return handleFields(req.body);
+    }
+
+    const form = formidable({ multiples: true });
+    form.parse(req, async (err, fields, files) => {
+        if (err) return next(badRequest('Form parsing failed'));
+        return handleFields(fields);
     });
 };
 
@@ -57,9 +77,11 @@ exports.api.generateTemplateBonuses = async (req, res, next) => {
         }
 
         const result = await generateBonusesForTemplate(templateId, referencePeriod);
+        auditEvent(req, 'generate_template', 'BonusTemplate', templateId, 'succeed', `Generated bonuses for template. referencePeriod=${referencePeriod}`);
         res.status(201).json(result);
     } catch (error) {
         console.error('Template bonus generation failed:', error);
+        auditEvent(req, 'generate_template', 'BonusTemplate', (req.body && req.body.templateId) || '', 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };

@@ -3,6 +3,14 @@ const httpStatus = require('http-status');
 const { PersonnelSnapshot } = require('../../models/bonus/personnelSnapshot');
 const { getActorStructureTokens, isSnapshotInStructures } = require('../../utils/structureScope');
 const { forbidden } = require('../../utils/ApiError');
+const audit = require('../../utils/audit-log');
+
+function getActorId(req) {
+    if (req && req.actor && req.actor.id) return req.actor.id;
+    if (req && req.user && req.user.id) return req.user.id;
+    if (req && req.user && req.user._id) return req.user._id;
+    return '[anonymous]';
+}
 
 /**
  * Export bonus history for a personnel to PDF
@@ -57,11 +65,13 @@ exports.exportPersonnelBonusHistory = async (req, res) => {
             'Content-Length': pdfBuffer.length
         });
 
+        audit.logEvent(getActorId(req), 'bonus/exportBonus', 'export_pdf', 'PersonnelBonusHistory', personnelId, 'succeed', `Exported personnel bonus history. from=${fromDate || ''}; to=${toDate || ''}`);
         // Send the PDF buffer
         res.send(pdfBuffer);
 
     } catch (error) {
         console.error('Error exporting bonus history to PDF:', error);
+        audit.logEvent(getActorId(req), 'bonus/exportBonus', 'export_pdf', 'PersonnelBonusHistory', (req.query && req.query.personnelId) || (req.params && req.params.personnelId) || '', 'failed', error && error.message ? error.message : String(error));
         res.status(500).json({
             message: error.message || 'Failed to export bonus history to PDF'
         });

@@ -3,10 +3,22 @@ const mongoose = require('mongoose');
 const { BonusRule } = require('../../models/bonus/rule');
 const { BonusTemplate } = require('../../models/bonus/template');
 const { badRequest, notFound } = require('../../utils/ApiError');
+const audit = require('../../utils/audit-log');
 const { safeEval } = require('../../utils/safeEval'); // For testing rules safely
 
 // API methods
 exports.api = {};
+
+function getActorId(req) {
+    if (req && req.actor && req.actor.id) return req.actor.id;
+    if (req && req.user && req.user.id) return req.user.id;
+    if (req && req.user && req.user._id) return req.user._id;
+    return '[anonymous]';
+}
+
+function auditEvent(req, action, label, object, status, description) {
+    audit.logEvent(getActorId(req), 'bonus/rule', action, label, object, status, description);
+}
 
 /**
  * Create a bonus rule
@@ -36,8 +48,10 @@ exports.api.create = async (req, res, next) => {
             createdBy: req.user.id
         });
 
+        auditEvent(req, 'create', 'BonusRule', rule._id, 'succeed', `Created bonus rule. name=${name || ''}`);
         res.status(httpStatus.CREATED).json(rule);
     } catch (error) {
+        auditEvent(req, 'create', 'BonusRule', '', 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -123,8 +137,10 @@ exports.api.update = async (req, res, next) => {
             throw notFound('Bonus rule not found');
         }
 
+        auditEvent(req, 'update', 'BonusRule', id, 'succeed', `Updated bonus rule. name=${name || ''}`);
         res.json(updatedRule);
     } catch (error) {
+        auditEvent(req, 'update', 'BonusRule', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -144,8 +160,10 @@ exports.api.delete = async (req, res, next) => {
             throw notFound('Bonus rule not found');
         }
 
+        auditEvent(req, 'delete', 'BonusRule', req.params.id, 'succeed', 'Soft-deleted bonus rule');
         res.status(httpStatus.NO_CONTENT).send();
     } catch (error) {
+        auditEvent(req, 'delete', 'BonusRule', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -165,8 +183,10 @@ exports.api.activate = async (req, res, next) => {
             throw notFound('Bonus rule not found');
         }
 
+        auditEvent(req, 'activate', 'BonusRule', req.params.id, 'succeed', 'Activated bonus rule');
         res.json(rule);
     } catch (error) {
+        auditEvent(req, 'activate', 'BonusRule', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };

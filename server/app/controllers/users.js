@@ -15,6 +15,116 @@ var controllers     = {
 exports.api.create = function(req, res) {
     var server = controllers.configuration.getConf().server;
     if(req.actor){
+        function createFromFields(fields) {
+            var address = fields.address;
+            var email = fields.email || '';
+            var firstname = fields.firstname || '';
+            var lastname = fields.lastname || '';
+            var password = fields.password || '';
+            var passwordConfirmation = fields.passwordConfirmation || '';
+            var language = fields.language || '';
+            var role = fields.role || '';
+            var regions = fields.regions || '';
+            var structures = fields.structures || '';
+
+            if (email === '' || firstname === '' || lastname === '' || role === '' || password !== passwordConfirmation) {
+                audit.logEvent(req.actor.id, 'Users', 'Create', '', '', 'failed',
+                               'The actor could not create a user account because one or more params of the request was not correct');
+                return res.sendStatus(400);
+            } else {
+                var user = new User();
+                user.email = email;
+                user.firstname = firstname;
+                user.lastname = lastname;
+                user.password = password;
+                user.role = role;
+
+                if(regions !== ''){
+                    user.regions = regions;
+                }
+
+                if(structures !== ''){
+                    user.structures = structures;
+                }
+
+                if(language !== ''){
+                    user.language = language;
+                }
+
+                if (address !== undefined && address !== ''){
+                    user.address=address;
+                };
+
+                // TODO: If the actor wants to send a password link to the new user
+                if(user.sendPassword){
+                    crypto.randomBytes(20, function(err, bufPassword) {
+                        if (err) {
+                            log.error(err);
+                            return res.status(500).send(err);
+                        } else {
+                            var tmpPassword = bufPassword.toString('hex');
+                            user.password = tmpPassword;
+
+                            //Create a token
+                            crypto.randomBytes(20, function(err, buf) {
+                                if (err) {
+                                    log.error(err);
+                                    return res.status(500).send(err);
+                                } else {
+                                    var myToken = buf.toString('hex');
+                                    user.resetPasswordToken = myToken;
+                                    user.activationToken = "1";
+                                    user.save(function(err) {
+                                        if (err) {
+                                            log.error(err);
+                                            audit.logEvent('[mongodb]', 'Users', 'Create', "email", email, 'failed',
+                                                           "Mongodb attempted to save the new user");
+                                            return res.status(500).send(err);
+                                        } else {
+                                            var rep = [
+                                                ['[name]', user.firstname + " " + user.lastname],
+                                                ['[link]', server.name + "/signup/" + myToken]
+                                            ];
+
+                                            mail.sendMail({
+                                                to: user.email,
+                                                subject: 'Activation',
+                                                template: 'activation',
+                                                language: user.language,
+                                                holes: rep
+                                            }, function(err){
+                                                if (err) {
+                                                    log.error(err);
+                                                    return res.status(500).send(err);
+                                                } else {
+                                                    return res.sendStatus(200);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    user.activationToken = "0";
+                    user.save(function(err) {
+                        if (err) {
+                            log.error(err);
+                            audit.logEvent('[mongodb]', 'Users', 'Create', "email", email, 'failed', "Mongodb attempted to save the new user");
+                            return res.status(500).send(err);
+                        } else {
+                            return res.sendStatus(200);
+                        }
+                    });
+                }
+            }
+        }
+
+        if (req.body && Object.keys(req.body).length > 0) {
+            return createFromFields(req.body);
+        }
+
         var form = new formidable.IncomingForm();
         form.parse(req, function(err, fields, files) {
             if(err){
@@ -22,110 +132,7 @@ exports.api.create = function(req, res) {
                 audit.logEvent('[formidable]', 'Users', 'Create', "", "", 'failed', "Formidable attempted to parse user fields");
                 return res.status(500).send(err);
             } else {
-                var address = fields.address;
-                var email = fields.email || '';
-                var firstname = fields.firstname || '';
-                var lastname = fields.lastname || '';
-                var password = fields.password || '';
-                var passwordConfirmation = fields.passwordConfirmation || '';
-                var language = fields.language || '';
-                var role = fields.role || '';
-                var regions = fields.regions || '';
-                var structures = fields.structures || '';
-                
-
-                if (email === '' || firstname === '' || lastname === '' || role === '' || password !== passwordConfirmation) {
-                    audit.logEvent(req.actor.id, 'Users', 'Create', '', '', 'failed',
-                                   'The actor could not create a user account because one or more params of the request was not correct');
-                    return res.sendStatus(400);
-                } else {
-                    var user = new User();
-                    user.email = email;
-                    user.firstname = firstname;
-                    user.lastname = lastname;
-                    user.password = password;
-                    user.role = role;
-
-                    if(regions !== ''){
-                        user.regions = regions;
-                    }
-
-                    if(structures !== ''){
-                        user.structures = structures;
-                    }
-
-                    if(language !== ''){
-                        user.language = language;
-                    }
-
-                    if (address !== undefined && address !== ''){
-                        user.address=address;
-                    };
-
-                    // TODO: If the actor wants to send a password link to the new user
-                    if(user.sendPassword){
-                        crypto.randomBytes(20, function(err, bufPassword) {
-                            if (err) {
-                                log.error(err);
-                                return res.status(500).send(err);
-                            } else {
-                                var tmpPassword = bufPassword.toString('hex');
-                                user.password = tmpPassword;
-
-                                //Create a token
-                                crypto.randomBytes(20, function(err, buf) {
-                                    if (err) {
-                                        log.error(err);
-                                        return res.status(500).send(err);
-                                    } else {
-                                        var myToken = buf.toString('hex');
-                                        user.resetPasswordToken = myToken;
-                                        user.activationToken = "1";
-                                        user.save(function(err) {
-                                            if (err) {
-                                                log.error(err);
-                                                audit.logEvent('[mongodb]', 'Users', 'Create', "email", email, 'failed',
-                                                               "Mongodb attempted to save the new user");
-                                                return res.status(500).send(err);
-                                            } else {
-                                                var rep = [
-                                                    ['[name]', user.firstname + " " + user.lastname],
-                                                    ['[link]', server.name + "/signup/" + myToken]
-                                                ];
-
-                                                mail.sendMail({
-                                                    to: user.email,
-                                                    subject: 'Activation',
-                                                    template: 'activation',
-                                                    language: user.language,
-                                                    holes: rep
-                                                }, function(err){
-                                                    if (err) {
-                                                        log.error(err);
-                                                        return res.status(500).send(err);
-                                                    } else {
-                                                        return res.sendStatus(200);
-                                                    }
-                                                });
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    } else {
-                        user.activationToken = "0";
-                        user.save(function(err) {
-                            if (err) {
-                                log.error(err);
-                                audit.logEvent('[mongodb]', 'Users', 'Create', "email", email, 'failed', "Mongodb attempted to save the new user");
-                                return res.status(500).send(err);
-                            } else {
-                                return res.sendStatus(200);
-                            }
-                        });
-                    }
-                }
+                createFromFields(fields);
             }
         });
     } else {
@@ -252,8 +259,7 @@ exports.api.update = function(req, res) {
                     if (user === null) {
                         return res.sendStatus(401);
                     } else {
-                        var form = new formidable.IncomingForm();
-                        form.parse(req, function(err, fields, files) {
+                        var onParsed = function(err, fields, files) {
                             if(err){
                                 log.error(err);
                                 audit.logEvent('[formidable]', 'Users', 'Update', "", "", 'failed', "Formidable attempted to parse user fields");
@@ -398,7 +404,14 @@ exports.api.update = function(req, res) {
                                     });
                                 }
                             }
-                        });
+                        };
+
+                        if (req.body && Object.keys(req.body).length > 0) {
+                            return onParsed(null, req.body, null);
+                        }
+
+                        var form = new formidable.IncomingForm();
+                        form.parse(req, onParsed);
                     }
                 }
             });
@@ -494,71 +507,88 @@ exports.api.delete = function(req, res) {
 
 exports.api.sendPassword = function(req, res) {
     var server = controllers.configuration.getConf().server;
-    var form = new formidable.IncomingForm();
-    form.parse(req, function(err, fields, files) {
+
+    function handleFields(fields) {
         var userID = fields.userID || '';
         if (userID === '') {
             audit.logEvent('[anonymous]', 'Users', 'Send password', '', '', 'failed',
                            'The actor tried to send an email to the user to reset password in but one or more params of the request was not defined');
             return res.sendStatus(400);
-        } else {
-            User.findOne({_id: userID}, function (err, user) {
+        }
+
+        User.findOne({_id: userID}, function (err, user) {
+            if (err) {
+                log.error(err);
+                audit.logEvent('[mongodb]', 'Users', 'Send password', 'userID', userID, 'failed', 'Mongodb attempted to find the userID');
+                return res.status(500).send(err);
+            }
+
+            if (user === null) {
+                audit.logEvent('[anonymous]', 'Users', 'Send password', 'userID', userID, 'failed',
+                               'The actor tried to send an email to reset password but the userID does not exist');
+                return res.sendStatus(403);
+            }
+
+            //Create a token
+            crypto.randomBytes(20, function(err, buf) {
                 if (err) {
                     log.error(err);
-                    audit.logEvent('[mongodb]', 'Users', 'Send password', 'userID', userID, 'failed', 'Mongodb attempted to find the userID');
                     return res.status(500).send(err);
-                } else {
-                    if (user === null) {
-                        audit.logEvent('[anonymous]', 'Users', 'Send password', 'used email', email, 'failed',
-                                       'The actor tried to send an email to reset password but the userID does not exist');
-                        return res.sendStatus(403);
-                    } else {
-                        //Create a token
-                        crypto.randomBytes(20, function(err, buf) {
-                            if (err) {
-                                log.error(err);
-                                return res.status(500).send(err);
-                            } else {
-                                var token = buf.toString('hex');
-                                user.resetPasswordToken = token;
-                                user.resetPasswordExpires = Date.now() + 3600000;
-                                user.save(function(err) {
-                                    if (err) {
-                                        log.error(err);
-                                        audit.logEvent('[mongodb]', 'Users', 'Send password', "userID", user._id, 'failed',
-                                                       "Mongodb attempted to save the modified user");
-                                        return res.status(500).send(err);
-                                    } else {
-                                        var subject = 'New password';
-                                        if(user.language === 'FR'){
-                                            subject = "Nouveau mot de passe";
-                                        }
-
-                                        var rep = [['[name]', user.firstname + " " + user.lastname], ['[link]', server.name + "/recovery/reset/" + token]];
-
-                                        //Send an email with a link containing the key
-                                        mail.sendMail({
-                                            to: user.email,
-                                            subject: subject,
-                                            template: 'reset',
-                                            language: user.language,
-                                            holes: rep
-                                        }, function(err){
-                                            if (err) {
-                                                log.error(err);
-                                                return res.status(500).send(err);
-                                            } else {
-                                                return res.sendStatus(200);
-                                            }
-                                        });
-                                    }
-                                });
-                            }
-                        });
-                    }
                 }
+
+                var token = buf.toString('hex');
+                user.resetPasswordToken = token;
+                user.resetPasswordExpires = Date.now() + 3600000;
+                user.save(function(err) {
+                    if (err) {
+                        log.error(err);
+                        audit.logEvent('[mongodb]', 'Users', 'Send password', "userID", user._id, 'failed',
+                                       "Mongodb attempted to save the modified user");
+                        return res.status(500).send(err);
+                    }
+
+                    var subject = 'New password';
+                    if(user.language === 'FR'){
+                        subject = "Nouveau mot de passe";
+                    }
+
+                    var rep = [
+                        ['[name]', user.firstname + " " + user.lastname],
+                        ['[link]', server.name + "/recovery/reset/" + token]
+                    ];
+
+                    //Send an email with a link containing the key
+                    mail.sendMail({
+                        to: user.email,
+                        subject: subject,
+                        template: 'reset',
+                        language: user.language,
+                        holes: rep
+                    }, function(err){
+                        if (err) {
+                            log.error(err);
+                            return res.status(500).send(err);
+                        } else {
+                            return res.sendStatus(200);
+                        }
+                    });
+                });
             });
+        });
+    }
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return handleFields(req.body);
+    }
+
+    var form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, files) {
+        if (err) {
+            log.error(err);
+            audit.logEvent('[formidable]', 'Users', 'Send password', "", "", 'failed', "Formidable attempted to parse fields");
+            return res.status(500).send(err);
         }
+        return handleFields(fields);
     });
 };
 
@@ -630,5 +660,3 @@ exports.getUsersByRole = function(r, callback){
         });
     }
 };
-
-

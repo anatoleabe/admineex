@@ -1,11 +1,23 @@
 const Template = require('../../models/bonus/template').BonusTemplate;
 const BonusRule = require('../../models/bonus/rule').BonusRule;
 const { badRequest, notFound } = require('../../utils/ApiError');
+const audit = require('../../utils/audit-log');
 const httpStatus = require('http-status');
 const formidable = require('formidable');
 
 // API
 exports.api = {};
+
+function getActorId(req) {
+    if (req && req.actor && req.actor.id) return req.actor.id;
+    if (req && req.user && req.user.id) return req.user.id;
+    if (req && req.user && req.user._id) return req.user._id;
+    return '[anonymous]';
+}
+
+function auditEvent(req, action, label, object, status, description) {
+    audit.logEvent(getActorId(req), 'bonus/template', action, label, object, status, description);
+}
 
 
 /**
@@ -13,7 +25,7 @@ exports.api = {};
  */
 exports.api.create = async (req, res, next) => {
     // If JSON, handle directly
-    if (req.is && req.is('application/json')) {
+    if ((req.is && req.is('application/json')) || (req.body && Object.keys(req.body).length > 0)) {
         try {
             const templateData = req.body || {};
             templateData.createdBy = req.actor?.id;
@@ -90,8 +102,10 @@ exports.api.create = async (req, res, next) => {
                 }
             }
             const template = await Template.create(templateData);
+            auditEvent(req, 'create', 'BonusTemplate', template._id, 'succeed', `Created bonus template. name=${templateData.name || ''}; code=${templateData.code || ''}`);
             return res.status(201).json(template);
         } catch (error) {
+            auditEvent(req, 'create', 'BonusTemplate', '', 'failed', error && error.message ? error.message : String(error));
             return next(error);
         }
     }
@@ -164,8 +178,10 @@ exports.api.create = async (req, res, next) => {
                 }
             }
             const template = await Template.create(templateData);
+            auditEvent(req, 'create', 'BonusTemplate', template._id, 'succeed', `Created bonus template (multipart). name=${templateData.name || ''}; code=${templateData.code || ''}`);
             res.status(201).json(template);
         } catch (error) {
+            auditEvent(req, 'create', 'BonusTemplate', '', 'failed', error && error.message ? error.message : String(error));
             next(error);
         }
     });
@@ -219,7 +235,7 @@ exports.api.getById = async (req, res, next) => {
  */
 exports.api.update = async (req, res, next) => {
     // If JSON, handle directly
-    if (req.is && req.is('application/json')) {
+    if ((req.is && req.is('application/json')) || (req.body && Object.keys(req.body).length > 0)) {
         try {
             const { id } = req.params;
             const updateData = req.body || {};
@@ -233,8 +249,10 @@ exports.api.update = async (req, res, next) => {
             }
             const template = await Template.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
             if (!template) throw notFound('Bonus template not found');
+            auditEvent(req, 'update', 'BonusTemplate', id, 'succeed', `Updated bonus template. code=${template.code || ''}`);
             return res.json(template);
         } catch (error) {
+            auditEvent(req, 'update', 'BonusTemplate', req.params.id, 'failed', error && error.message ? error.message : String(error));
             return next(error);
         }
     }
@@ -258,8 +276,10 @@ exports.api.update = async (req, res, next) => {
             }
             const template = await Template.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
             if (!template) throw notFound('Bonus template not found');
+            auditEvent(req, 'update', 'BonusTemplate', id, 'succeed', `Updated bonus template (multipart). code=${template.code || ''}`);
             res.json(template);
         } catch (error) {
+            auditEvent(req, 'update', 'BonusTemplate', req.params.id, 'failed', error && error.message ? error.message : String(error));
             next(error);
         }
     });
@@ -280,8 +300,10 @@ exports.api.delete = async (req, res, next) => {
             throw notFound('Bonus template not found');
         }
 
+        auditEvent(req, 'deactivate', 'BonusTemplate', req.params.id, 'succeed', 'Deactivated bonus template');
         res.status(httpStatus.NO_CONTENT).send();
     } catch (error) {
+        auditEvent(req, 'deactivate', 'BonusTemplate', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 }
@@ -301,8 +323,10 @@ exports.api.activate = async (req, res, next) => {
             throw notFound('Bonus template not found');
         }
 
+        auditEvent(req, 'activate', 'BonusTemplate', req.params.id, 'succeed', 'Activated bonus template');
         res.json(template);
     } catch (error) {
+        auditEvent(req, 'activate', 'BonusTemplate', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 }
@@ -327,8 +351,10 @@ exports.api.clone = async (req, res, next) => {
         cloneData.updatedAt = new Date();
 
         const newTemplate = await Template.create(cloneData);
+        auditEvent(req, 'clone', 'BonusTemplate', newTemplate._id, 'succeed', `Cloned bonus template from ${req.params.id}`);
         res.status(httpStatus.CREATED).json(newTemplate);
     } catch (error) {
+        auditEvent(req, 'clone', 'BonusTemplate', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 }
@@ -491,8 +517,10 @@ exports.api.bulkActivate = async (req, res, next) => {
             { isActive: true, activatedAt: new Date(), activatedBy: req.user.id }
         );
 
+        auditEvent(req, 'bulk_activate', 'BonusTemplate', ids && ids.length ? ids.join(',') : '', 'succeed', `Bulk activated templates. count=${ids ? ids.length : 0}`);
         res.json({ updatedCount: result.nModified });
     } catch (error) {
+        auditEvent(req, 'bulk_activate', 'BonusTemplate', '', 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
@@ -513,8 +541,10 @@ exports.api.export = async (req, res, next) => {
             isActive: template.isActive
         }));
 
+        auditEvent(req, 'export', 'BonusTemplate', '', 'succeed', `Exported bonus templates. count=${templates.length}`);
         res.attachment('bonus_templates.csv').send(csv);
     } catch (error) {
+        auditEvent(req, 'export', 'BonusTemplate', '', 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };

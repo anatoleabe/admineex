@@ -27,8 +27,7 @@ var controllers = {
 
 exports.api.upsert = function (req, res) {
     if (req.actor) {
-        var form = new formidable.IncomingForm();
-        form.parse(req, function (err, fields, files) {
+        function onParsed(err, fields, files) {
             if (err) {
                 log.error(err);
                 audit.logEvent('[formidable]', 'Documents', 'Upsert', "", "", 'failed', "Formidable attempted to parse document fields");
@@ -65,7 +64,14 @@ exports.api.upsert = function (req, res) {
                     save(req, res, fields);
                 }
             }
-        });
+        }
+
+        if (req.body && Object.keys(req.body).length > 0) {
+            return onParsed(null, req.body, null);
+        }
+
+        var form = new formidable.IncomingForm();
+        form.parse(req, onParsed);
     } else {
         audit.logEvent('[anonymous]', 'Documents', 'Upsert', '', '', 'failed', 'The actor was not authenticated');
         return res.sendStatus(401);

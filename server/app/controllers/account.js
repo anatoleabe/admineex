@@ -19,8 +19,7 @@ exports.api = {};
 
 exports.api.lostPassword = function(req, res) {
     var server = controllers.configuration.getConf().server;
-    var form = new formidable.IncomingForm();
-    form.parse(req, function(err, fields, files) {
+    function onParsed(err, fields, files) {
         var email = fields.email || '';
         if (email === '') {
             audit.logEvent('[anonymous]', 'Account', 'Lost password', '', '', 'failed',
@@ -92,12 +91,18 @@ exports.api.lostPassword = function(req, res) {
                 }
             });
         }
-    });
+    }
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return onParsed(null, req.body, null);
+    }
+
+    var form = new formidable.IncomingForm();
+    form.parse(req, onParsed);
 };
 
 exports.api.resetPassword = function(req, res) {
-    var form = new formidable.IncomingForm();
-    form.parse(req, function(err, fields, files) {
+    function onParsed(err, fields, files) {
         var token = fields.token || '';
         var password = fields.newPassword || '';
         var passwordConfirmation = fields.newPasswordConfirmation || '';
@@ -158,7 +163,14 @@ exports.api.resetPassword = function(req, res) {
                 });
             }
         }
-    });
+    }
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return onParsed(null, req.body, null);
+    }
+
+    var form = new formidable.IncomingForm();
+    form.parse(req, onParsed);
 };
 
 exports.api.signin = function(req, res) {
@@ -233,8 +245,7 @@ exports.api.signin = function(req, res) {
 
 exports.api.signup = function(req, res) {
     var server = controllers.configuration.getConf().server;
-    var form = new formidable.IncomingForm();
-    form.parse(req, function(err, fields, files) {
+    function onParsed(err, fields, files) {
         if(err){
             log.error(err);
             audit.logEvent('[formidable]', 'Account', 'Sign up', "", "", 'failed', "Formidable attempted to parse report fields");
@@ -367,7 +378,14 @@ exports.api.signup = function(req, res) {
                 }
             }
         }
-    });
+    }
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return onParsed(null, req.body, null);
+    }
+
+    var form = new formidable.IncomingForm();
+    form.parse(req, onParsed);
 };
 
 exports.api.signout = function(req, res) {
@@ -385,8 +403,7 @@ exports.api.signout = function(req, res) {
 
 exports.api.changePassword = function(req, res) {
     if(req.actor){
-        var form = new formidable.IncomingForm();
-        form.parse(req, function(err, fields, files) {
+        function onParsed(err, fields, files) {
             var oldPassword = fields.oldPassword || '';
             var newPassword = fields.newPassword || '';
             var newPasswordConfirmation = fields.newPasswordConfirmation || '';
@@ -447,7 +464,14 @@ exports.api.changePassword = function(req, res) {
                     });
                 }
             }
-        });
+        }
+
+        if (req.body && Object.keys(req.body).length > 0) {
+            return onParsed(null, req.body, null);
+        }
+
+        var form = new formidable.IncomingForm();
+        form.parse(req, onParsed);
     } else {
         audit.logEvent('[anonymous]', 'Account', '', '', '', 'failed', 'The user was not authenticated');
         return res.send(401);
@@ -490,8 +514,7 @@ exports.api.profile = function(req, res){
 // TODO: simplify this function -> see user.js -> update
 exports.api.update = function(req, res) {
     if(req.actor){
-        var form = new formidable.IncomingForm();
-        form.parse(req, function(err, fields, files) {
+        function onParsed(err, fields, files) {
             var avatar = fields.avatar;
             var firstname = fields.firstname;
             var lastname = fields.lastname;
@@ -637,9 +660,15 @@ exports.api.update = function(req, res) {
                     }
                 }
             });
-        });
+        }
+
+        if (req.body && Object.keys(req.body).length > 0) {
+            return onParsed(null, req.body, null);
+        }
+
+        var form = new formidable.IncomingForm();
+        form.parse(req, onParsed);
     } else {
         return res.send(401);
     }
 };
-

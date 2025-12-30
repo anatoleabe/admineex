@@ -211,8 +211,7 @@ exports.api.structures = function (req, res) {
 
 exports.api.table = function (req, res) {
     if (req.actor) {
-        let form = new formidable.IncomingForm();
-        form.parse(req, function (err, fields, files) {
+        function onParsed(err, fields, files) {
             if (err) {
                 log.error(err);
                 audit.logEvent('[formidable]', 'Export', 'Card', "", "", 'failed', "Formidable attempted to parse export card fields");
@@ -241,7 +240,14 @@ exports.api.table = function (req, res) {
                     }
                 });
             }
-        });
+        }
+
+        if (req.body && Object.keys(req.body).length > 0) {
+            return onParsed(null, req.body, null);
+        }
+
+        let form = new formidable.IncomingForm();
+        form.parse(req, onParsed);
     } else {
         audit.logEvent('[anonymous]', 'Export', 'Card', '', '', 'failed', 'The user was not authenticated');
         return res.sendStatus(401);
@@ -389,4 +395,3 @@ function buildXLSX(options, callback) {
         callback(null, tmpFile);
     });
 }
-

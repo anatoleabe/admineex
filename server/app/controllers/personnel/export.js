@@ -184,8 +184,7 @@ exports.exportAPI = function (req, res) {
 exports.createExportAPI = function (req, res) {
     if (req.actor) {
         try {
-            const form = new formidable.IncomingForm();
-            form.parse(req, function (err, fields) {
+            function onParsed(err, fields) {
                 if (err) {
                     log.error("Formidable error during createPersonnelExportAPI:", err);
                     return res.status(500).send(err);
@@ -208,7 +207,14 @@ exports.createExportAPI = function (req, res) {
                     audit.logEvent(req.actor.id,"Personnel","createExport","","","succeed",auditMessage);
                     return res.sendStatus(200);
                 }
-            });
+            }
+
+            if (req.body && Object.keys(req.body).length > 0) {
+                return onParsed(null, req.body);
+            }
+
+            const form = new formidable.IncomingForm();
+            form.parse(req, onParsed);
         } catch (error) {
             log.error("Error during personnel export creation:", error);
             audit.logEvent( req.actor.id, "Personnel", "createExport", "", "", "failed", "Operation failed while trying to initiate personnel export job" );
@@ -223,8 +229,7 @@ exports.createExportAPI = function (req, res) {
 exports.listAPI = async function (req, res) {
     if (req.actor) {
         try {
-            var form = new formidable.IncomingForm();
-            form.parse(req, async function (err, fields, files) {
+            async function onParsed(err, fields, files) {
                 if(err){
                     log.error("Formidable attempted to parse create export.",err);
                     return res.status(500).send(err);
@@ -253,7 +258,14 @@ exports.listAPI = async function (req, res) {
                     // Process and return the paginated job list
                     return res.json(jobs);
                 }
-            });
+            }
+
+            if (req.body && Object.keys(req.body).length > 0) {
+                return onParsed(null, req.body, null);
+            }
+
+            var form = new formidable.IncomingForm();
+            form.parse(req, onParsed);
         } catch (error) {
             console.log(error)
             log.error('Mongodb attempted to retrieve exports list from DB.',error);
@@ -674,8 +686,7 @@ exports.downloadExportAPI = async function(req, res) {
 exports.deleteExportAPI = async function(req, res) {
     if (req.actor) {
         try{
-            var form = new formidable.IncomingForm();
-            form.parse(req, async function (err, fields, files) {
+            async function onParsed(err, fields, files) {
                 if(err){
                     log.error("Formidable attempted to parse deleteExport fields",err);
                     return res.status(500).send(err);
@@ -701,7 +712,14 @@ exports.deleteExportAPI = async function(req, res) {
                         res.status(400).send({code: "invalid_request_param", message: "Missing job id in request parameters"});
                     }
                 }
-            })
+            }
+
+            if (req.body && Object.keys(req.body).length > 0) {
+                return onParsed(null, req.body, null);
+            }
+
+            var form = new formidable.IncomingForm();
+            form.parse(req, onParsed);
         } catch (err) {
             log.error('Error in deleteExport:', err);
             audit.logEvent(req.actor.id, "Export", "deleteExport", "", "", "failed", "An error occured while deleting an export job");

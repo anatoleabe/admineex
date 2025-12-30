@@ -25,6 +25,21 @@ const controllersPersonnelsList = require("./list");
 
 exports.upsertAPI = function (req, res) {
     if (req.actor) {
+        if (req.body && Object.keys(req.body).length > 0) {
+            return controllersPersonnelIndex.upsert(req.body, function (err, result) {
+                if (err) {
+                    log.error(err);
+                    audit.logEvent(req.actor.id, 'Personnel', 'Upsert', "", "", 'failed', "Failed to upsert personnel");
+                    return res.status(500).send(err);
+                } else {
+                    let action = req.body._id ? 'Update' : 'Create';
+                    let description = `The user has ${action.toLowerCase()}d the profile of ${req.body.name.family} ${result.name.given}. Mat: ${req.body.identifier}`;
+                    audit.logEvent(req.actor.id, 'Personnel', action, "Profile", result._id, 'succeed', description);
+                    res.sendStatus(200);
+                }
+            });
+        }
+
         let form = new formidable.IncomingForm();
         form.parse(req, function (err, fields, files) {
             if (err) {
@@ -763,7 +778,6 @@ exports.followUpSheetAPI = function (req, res) {
         return res.send(401);
     }
 }
-
 
 
 

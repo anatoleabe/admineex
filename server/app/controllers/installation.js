@@ -48,8 +48,7 @@ function status() {
 ;
 
 exports.api.update = function (req, res) {
-    var form = new formidable.IncomingForm();
-    form.parse(req, function (err, fields, files) {
+    function onParsed(err, fields, files) {
         if (err) {
             log.error(err);
             audit.logEvent('[formidable]', 'Installation', 'Update', "", "", 'failed', "Formidable attempted to parse installation fields");
@@ -78,12 +77,18 @@ exports.api.update = function (req, res) {
                 }
             });
         }
-    });
+    }
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return onParsed(null, req.body, null);
+    }
+
+    var form = new formidable.IncomingForm();
+    form.parse(req, onParsed);
 };
 
 exports.api.admin = function (req, res) {
-    var form = new formidable.IncomingForm();
-    form.parse(req, function (err, fields) {
+    function onParsed(err, fields) {
         var role = '1';
         User.findOne({
             role: role
@@ -122,5 +127,12 @@ exports.api.admin = function (req, res) {
                 }
             }
         });
-    });
+    }
+
+    if (req.body && Object.keys(req.body).length > 0) {
+        return onParsed(null, req.body);
+    }
+
+    var form = new formidable.IncomingForm();
+    form.parse(req, onParsed);
 };
