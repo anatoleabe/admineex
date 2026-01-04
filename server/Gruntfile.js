@@ -18,6 +18,8 @@ module.exports = function(grunt) {
                         'public/js/controllers/staffs/*.js',
                         'public/js/controllers/staffprocrastinate/*.js',
                         'public/js/controllers/staffprocrastinate/**/*.js',
+                        'public/js/controllers/bonus/*.js',
+                        'public/js/controllers/bonus/**/*.js',
                         'public/js/controllers/administration/*.js',
                         'public/js/controllers/administration/**/*.js',
                         'public/js/controllers/monitor/*.js',

@@ -147,7 +147,7 @@ angular.module('app')
                 })
                 .catch(() => $http.get('/api/structures/minimal/-1'))
                 .then(res => {
-                    const data = res.data?.data || res.data || [];
+                    const data = (res.data && res.data.data) || res.data || [];
                     setStructureOptions(data);
                 })
                 .catch(() => {
@@ -405,16 +405,25 @@ angular.module('app')
 
         function formatPersonnelLabel(person) {
             if (!person) return '';
-            const displayName = person.fname || person.name?.given?.[0] || person.name?.text || person.name || '';
+            const displayName = person.fname ||
+                (person.name && person.name.given && person.name.given[0]) ||
+                (person.name && person.name.text) ||
+                person.name ||
+                '';
             const identifier = person.identifier || person.matricule || '';
             return [displayName || 'Personnel', identifier].filter(Boolean).join(' • ');
         }
 
         function normalizePersonnelSelection(person, fallbackId) {
-            const id = person?._id || person?.id || fallbackId;
+            const id = (person && (person._id || person.id)) || fallbackId;
             const label = formatPersonnelLabel(person) || (fallbackId || '');
-            const name = person?.fname || person?.name?.given?.[0] || person?.name?.text || person?.name || label || 'Personnel';
-            const identifier = person?.identifier || person?.matricule || '';
+            const name = (person && person.fname) ||
+                (person && person.name && person.name.given && person.name.given[0]) ||
+                (person && person.name && person.name.text) ||
+                (person && person.name) ||
+                label ||
+                'Personnel';
+            const identifier = (person && (person.identifier || person.matricule)) || '';
             return { id, label, name, identifier: identifier || id };
         }
         $scope.getIftPersonnelLabel = formatPersonnelLabel;

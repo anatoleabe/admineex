@@ -96,7 +96,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
             const Structure = $injector.get('Structure');
             return Structure.minimalList();
         }).then(function(response) {
-            const payload = response.data?.data || response.data || [];
+            const payload = (response.data && response.data.data) || response.data || [];
             setStructureDirectory(payload);
         }).catch(function(err) {
             console.error('Error loading structure filters', err);
@@ -275,13 +275,13 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                 if (allocation.status === 'eligible') {
                     $scope.totals.eligible++;
                     $scope.totals.amount += allocation.finalAmount || 0;
-                    $scope.totals.parts += allocation.calculationInputs?.parts || 0;
+                    $scope.totals.parts += (allocation.calculationInputs && allocation.calculationInputs.parts) || 0;
                 } else if (allocation.status === 'excluded') {
                     $scope.totals.excluded++;
                 } else if (allocation.status === 'adjusted') {
                     $scope.totals.adjusted++;
                     $scope.totals.amount += allocation.finalAmount || 0;
-                    $scope.totals.parts += allocation.calculationInputs?.parts || 0;
+                    $scope.totals.parts += (allocation.calculationInputs && allocation.calculationInputs.parts) || 0;
                 }
             });
         }
@@ -549,7 +549,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
             })
             .catch(function(error) {
                 console.error('Error adjusting allocation', error);
-                toastr.error(error.data?.message || 'Could not adjust allocation');
+                toastr.error((error.data && error.data.message) || 'Could not adjust allocation');
                 $scope.adjusting = false;
             });
     };
@@ -842,7 +842,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
             })
             .catch(function(error) {
                 console.error('Error approving instance', error);
-                toastr.error('Could not approve instance: ' + (error.data?.message || 'Unknown error'));
+                toastr.error('Could not approve instance: ' + ((error.data && error.data.message) || 'Unknown error'));
             });
     };
 
@@ -887,7 +887,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                     })
                     .catch(function(error) {
                         console.error('Error updating share amount', error);
-                        toastr.error('Could not update share amount: ' + (error.data?.message || 'Unknown error'));
+                        toastr.error('Could not update share amount: ' + ((error.data && error.data.message) || 'Unknown error'));
                         $scope.updating = false;
                     });
                 };
@@ -958,7 +958,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                     })
                     .catch(function(error) {
                         console.error('Error updating tax configuration', error);
-                        toastr.error('Could not update tax configuration: ' + (error.data?.message || 'Unknown error'));
+                        toastr.error('Could not update tax configuration: ' + ((error.data && error.data.message) || 'Unknown error'));
                         $scope.updating = false;
                     });
                 };

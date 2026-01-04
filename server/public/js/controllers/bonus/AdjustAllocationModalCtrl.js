@@ -18,12 +18,12 @@ function($scope, $http, toastr, $mdDialog, allocation) {
         calculatedAmount: allocation.calculatedAmount || 0,
         finalAmount: allocation.finalAmount || allocation.calculatedAmount || 0,
         calculationInputs: {
-            parts: allocation.calculationInputs?.parts || allocation.parts || 0,
-            comment: allocation.calculationInputs?.comment || '',
+            parts: (allocation.calculationInputs && allocation.calculationInputs.parts) || allocation.parts || 0,
+            comment: (allocation.calculationInputs && allocation.calculationInputs.comment) || '',
             // expose sans-part fields for display
-            txPercent: allocation.calculationInputs?.txPercent,
-            sbi: allocation.calculationInputs?.sbi,
-            subType: allocation.calculationInputs?.subType
+            txPercent: allocation.calculationInputs && allocation.calculationInputs.txPercent,
+            sbi: allocation.calculationInputs && allocation.calculationInputs.sbi,
+            subType: allocation.calculationInputs && allocation.calculationInputs.subType
         },
         shareAmount: (allocation.instanceId && allocation.instanceId.shareAmount) || 0,
         isSansPart: isSansPart,
@@ -74,7 +74,7 @@ function($scope, $http, toastr, $mdDialog, allocation) {
             })
             .catch(function(error) {
                 console.error('Error adjusting allocation', error);
-                toastr.error(error.data?.message || 'Could not adjust allocation');
+                toastr.error((error.data && error.data.message) || 'Could not adjust allocation');
                 $scope.adjusting = false;
             });
     };

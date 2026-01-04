@@ -18,11 +18,11 @@ angular.module('app')
         calculatedAmount: allocation.calculatedAmount || 0,
         finalAmount: allocation.finalAmount || allocation.calculatedAmount || 0,
         calculationInputs: {
-            parts: allocation.calculationInputs?.parts || allocation.parts || 0,
-            comment: allocation.calculationInputs?.comment || '',
+            parts: (allocation.calculationInputs && allocation.calculationInputs.parts) || allocation.parts || 0,
+            comment: (allocation.calculationInputs && allocation.calculationInputs.comment) || '',
             // expose sans-part fields for display if present
-            txPercent: allocation.calculationInputs?.txPercent,
-            sbi: allocation.calculationInputs?.sbi
+            txPercent: allocation.calculationInputs && allocation.calculationInputs.txPercent,
+            sbi: allocation.calculationInputs && allocation.calculationInputs.sbi
         },
         // determine if the template is sans-part
         isSansPart: isSansPart,

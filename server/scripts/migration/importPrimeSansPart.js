@@ -16,6 +16,12 @@ async function main() {
     const status = args.status || 'validated';
     const dryRun = !!args.dryRun;
     const periodicity = args.periodicity || 'quarterly';
+    const personnelCorrectionsFileArg =
+        args.personnelCorrectionsFile ||
+        args.correctionsFile ||
+        args.missingPersonnelMapFile ||
+        args.matchFile ||
+        null;
 
     if (!file || !referencePeriod || !templateCode || !templateName) {
         throw new Error('Missing required args: --file, --referencePeriod, --templateCode, --templateName are required');
@@ -40,6 +46,32 @@ async function main() {
         filePath: path.resolve(file)
     });
 
+    let personnelCorrectionsFile = personnelCorrectionsFileArg;
+    if (!personnelCorrectionsFile) {
+        const importFileDir = path.dirname(path.resolve(file));
+        const candidates = [
+            path.resolve(__dirname, 'missing-personnel-PRIME_ALL_BON.xlsx'),
+            path.resolve(__dirname, 'missing-personnel-PRIME_ALL_BON.csv'),
+            path.resolve(importFileDir, 'missing-personnel-PRIME_ALL_BON.xlsx'),
+            path.resolve(importFileDir, 'missing-personnel-PRIME_ALL_BON.csv'),
+            path.resolve(process.cwd(), 'scripts/migration/missing-personnel-PRIME_ALL_BON.xlsx'),
+            path.resolve(process.cwd(), 'scripts/migration/missing-personnel-PRIME_ALL_BON.csv'),
+            path.resolve(process.cwd(), 'missing-personnel-PRIME_ALL_BON.xlsx'),
+            path.resolve(process.cwd(), 'missing-personnel-PRIME_ALL_BON.csv')
+        ];
+        for (const candidate of candidates) {
+            if (fs.existsSync(candidate)) {
+                personnelCorrectionsFile = candidate;
+                break;
+            }
+        }
+    }
+    if (personnelCorrectionsFile) {
+        console.log(`[PrimeSansPart] Using personnel corrections file ${personnelCorrectionsFile}`);
+    } else {
+        console.log('[PrimeSansPart] No personnel corrections file found (missing-personnel-PRIME_ALL_BON.*), proceeding without corrections');
+    }
+
     const summary = await importAllocations(rows, {
         template,
         instance,
@@ -48,10 +80,11 @@ async function main() {
         isIFT: false,
         isWithParts: false,
         useProvidedTaxNet: true,
+        personnelCorrectionsFile,
         dryRun
     });
 
-    console.log(`[PrimeSansPart] Done. created=${summary.created} skippedExisting=${summary.skippedExisting} missingPersonnel=${summary.missingPersonnel} invalidRows=${summary.invalidRows} dryRun=${dryRun}`);
+    console.log(`[PrimeSansPart] Done. created=${summary.created} skippedExisting=${summary.skippedExisting} correctedPersonnel=${summary.correctedPersonnel || 0} missingPersonnel=${summary.missingPersonnel} invalidRows=${summary.invalidRows} dryRun=${dryRun}`);
     if (summary.missingDetails && summary.missingDetails.length) {
         const safeCode = (templateCode || 'template').replace(/[^A-Za-z0-9_-]/g, '_');
         const safeRef = (referencePeriod || 'ref').replace(/[^A-Za-z0-9_-]/g, '_');
