@@ -1,5 +1,5 @@
-angular.module('app').controller('BonusManagementController', function($scope, $http, $state) {
-  $scope.title = 'Bonus Management';
+angular.module('app').controller('BonusManagementController', function($scope, $http, $state, gettextCatalog) {
+  $scope.title = gettextCatalog.getString('Bonus Management');
 
   // Initialize data containers
   $scope.templates = [];

@@ -1,5 +1,8 @@
 angular.module('app')
-    .controller('IncludeAllocationModalCtrl', ['$scope', '$http', '$mdDialog', 'toastr', 'allocation', function($scope, $http, $mdDialog, toastr, allocation) {
+    .controller('IncludeAllocationModalCtrl', ['$scope', '$http', '$mdDialog', 'toastr', 'allocation', 'gettextCatalog', function($scope, $http, $mdDialog, toastr, allocation, gettextCatalog) {
+    function t(msgid) {
+        return gettextCatalog.getString(msgid);
+    }
     function computeIsSansPart(data) {
         if (!data) return false;
         if (data.isSansPart === true) return true;
@@ -38,11 +41,11 @@ angular.module('app')
             })
                 .then(function(response) {
                     $mdDialog.hide(response.data);
-                    toastr.success('Allocation included');
+                    toastr.success(t('Allocation included'));
                 })
                 .catch(function(error) {
                     console.error('Error including allocation', error);
-                    toastr.error('Could not including allocation');
+                    toastr.error(t('Could not including allocation'));
                     $scope.including = false;
                 });
         };

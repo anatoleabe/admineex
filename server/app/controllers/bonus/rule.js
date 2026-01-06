@@ -4,10 +4,16 @@ const { BonusRule } = require('../../models/bonus/rule');
 const { BonusTemplate } = require('../../models/bonus/template');
 const { badRequest, notFound } = require('../../utils/ApiError');
 const audit = require('../../utils/audit-log');
+const dictionary = require('../../utils/dictionary');
 const { safeEval } = require('../../utils/safeEval'); // For testing rules safely
 
 // API methods
 exports.api = {};
+
+function t(req, msgid) {
+    const language = (req && req.actor && req.actor.language) || (req && req.user && req.user.language) || '';
+    return dictionary.translator(language).gettext(msgid);
+}
 
 function getActorId(req) {
     if (req && req.actor && req.actor.id) return req.actor.id;
@@ -33,7 +39,7 @@ exports.api.create = async (req, res, next) => {
                 _id: { $in: appliesToTemplates }
             });
             if (templatesExist !== appliesToTemplates.length) {
-                throw badRequest('One or more bonus templates not found');
+                throw badRequest(t(req, 'One or more bonus templates not found'));
             }
         }
 
@@ -92,7 +98,7 @@ exports.api.getById = async (req, res, next) => {
             .populate('createdBy', 'firstname lastname');
 
         if (!rule) {
-            throw notFound('Bonus rule not found');
+            throw notFound(t(req, 'Bonus rule not found'));
         }
 
         res.json(rule);
@@ -115,7 +121,7 @@ exports.api.update = async (req, res, next) => {
                 _id: { $in: appliesToTemplates }
             });
             if (templatesExist !== appliesToTemplates.length) {
-                throw badRequest('One or more bonus templates not found');
+                throw badRequest(t(req, 'One or more bonus templates not found'));
             }
         }
 
@@ -134,7 +140,7 @@ exports.api.update = async (req, res, next) => {
         );
 
         if (!updatedRule) {
-            throw notFound('Bonus rule not found');
+            throw notFound(t(req, 'Bonus rule not found'));
         }
 
         auditEvent(req, 'update', 'BonusRule', id, 'succeed', `Updated bonus rule. name=${name || ''}`);
@@ -157,7 +163,7 @@ exports.api.delete = async (req, res, next) => {
         );
 
         if (!rule) {
-            throw notFound('Bonus rule not found');
+            throw notFound(t(req, 'Bonus rule not found'));
         }
 
         auditEvent(req, 'delete', 'BonusRule', req.params.id, 'succeed', 'Soft-deleted bonus rule');
@@ -180,7 +186,7 @@ exports.api.activate = async (req, res, next) => {
         );
 
         if (!rule) {
-            throw notFound('Bonus rule not found');
+            throw notFound(t(req, 'Bonus rule not found'));
         }
 
         auditEvent(req, 'activate', 'BonusRule', req.params.id, 'succeed', 'Activated bonus rule');
@@ -202,14 +208,14 @@ exports.api.validate = async (req, res, next) => {
         try {
             safeEval(condition, {});
         } catch (error) {
-            throw badRequest(`Condition syntax error: ${error.message}`);
+            throw badRequest(t(req, 'Condition syntax error: ') + error.message);
         }
 
         // Test action syntax
         try {
             safeEval(action, {});
         } catch (error) {
-            throw badRequest(`Action syntax error: ${error.message}`);
+            throw badRequest(t(req, 'Action syntax error: ') + error.message);
         }
 
         res.json({ valid: true });
@@ -227,7 +233,7 @@ exports.api.test = async (req, res, next) => {
 
         // Validate inputs
         if (!condition || !action || !testData) {
-            throw badRequest('Condition, action and testData are required');
+            throw badRequest(t(req, 'Condition, action and testData are required'));
         }
 
         // Create safe context
@@ -248,11 +254,11 @@ exports.api.test = async (req, res, next) => {
         try {
             conditionResult = safeEval(condition, context);
         } catch (error) {
-            throw badRequest(`Condition evaluation error: ${error.message}`);
+            throw badRequest(t(req, 'Condition evaluation error: ') + error.message);
         }
 
         if (typeof conditionResult !== 'boolean') {
-            throw badRequest('Condition must evaluate to a boolean value');
+            throw badRequest(t(req, 'Condition must evaluate to a boolean value'));
         }
 
         // Test action if condition is true
@@ -261,7 +267,7 @@ exports.api.test = async (req, res, next) => {
             try {
                 actionResult = safeEval(action, context);
             } catch (error) {
-                throw badRequest(`Action evaluation error: ${error.message}`);
+                throw badRequest(t(req, 'Action evaluation error: ') + error.message);
             }
         }
 

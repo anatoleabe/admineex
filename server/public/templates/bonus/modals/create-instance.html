@@ -3,7 +3,7 @@
 <div class="modal-header bg-primary text-white">
     <h5 class="modal-title d-flex align-items-center">
         <i class="icon-file-plus mr-2"></i>
-        <span>Create Bonus Instance</span>
+        <span translate>Create Bonus Instance</span>
     </h5>
     <button type="button" class="close text-white" ng-click="closeInstanceForm()" aria-label="Close">
         <span aria-hidden="true">&times;</span>
@@ -16,14 +16,14 @@
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-light">
                 <h6 class="mb-0 font-weight-semibold">
-                    <i class="icon-template mr-2"></i>Template Configuration
+                    <i class="icon-template mr-2"></i><span translate>Template Configuration</span>
                 </h6>
             </div>
             <div class="card-body">
                 <div class="form-group">
                     <label class="d-flex align-items-center">
                         <i class="icon-stack2 mr-1 text-muted"></i>
-                        Bonus Template
+                        <span translate>Bonus Template</span>
                         <span class="text-danger ml-1">*</span>
                     </label>
                     <select class="form-control select2"
@@ -32,7 +32,7 @@
                             ng-model="instance.templateId"
                             required
                             ng-change="onTemplateChange()">
-                        <option value="">Select a template</option>
+                        <option value="" translate>Select a template</option>
                         <option ng-repeat="template in templates | filter:{isActive:true}"
                                 value="{{template._id}}"
                                 data-periodicity="{{template.periodicity}}">
@@ -126,11 +126,11 @@
                     <div class="border rounded p-3 bg-light">
                         <div class="row">
                             <div class="col-md-6">
-                                <label class="small text-muted">Default Share</label>
+                                <label class="small text-muted" translate>Default Share</label>
                                 <div>{{selectedTemplate.calculationConfig.defaultShareAmount | currency}}</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="small text-muted">Formula Type</label>
+                                <label class="small text-muted" translate>Formula Type</label>
                                 <div>{{getFormulaTypeLabel(selectedTemplate.calculationConfig.formulaType)}}</div>
                             </div>
                         </div>
@@ -142,12 +142,12 @@
 
     <div class="modal-footer bg-light">
         <button type="button" class="btn btn-light" ng-click="closeInstanceForm()">
-            <i class="icon-cross mr-1"></i> Cancel
+            <i class="icon-cross mr-1"></i> <span translate>Cancel</span>
         </button>
         <button type="submit" class="btn btn-primary" ng-disabled="instanceForm.$invalid || processing">
             <i class="icon-check mr-1"></i>
-            <span ng-if="!processing">Create Instance</span>
-            <span ng-if="processing">Processing...</span>
+            <span ng-if="!processing" translate>Create Instance</span>
+            <span ng-if="processing" translate>Processing...</span>
         </button>
     </div>
 </form>
@@ -183,7 +183,6 @@
         border-radius: 4px;
     }
 </style>
-
 
 
 

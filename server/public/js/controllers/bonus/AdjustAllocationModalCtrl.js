@@ -1,5 +1,8 @@
-angular.module('app').controller('AdjustAllocationModalCtrl', ['$scope', '$http', 'toastr', '$mdDialog', 'allocation',
-function($scope, $http, toastr, $mdDialog, allocation) {
+angular.module('app').controller('AdjustAllocationModalCtrl', ['$scope', '$http', 'toastr', '$mdDialog', 'allocation', 'gettextCatalog',
+function($scope, $http, toastr, $mdDialog, allocation, gettextCatalog) {
+    function t(msgid) {
+        return gettextCatalog.getString(msgid);
+    }
     function computeIsSansPart(data) {
         if (!data) return false;
         if (data.isSansPart === true) return true;
@@ -46,7 +49,7 @@ function($scope, $http, toastr, $mdDialog, allocation) {
             })
             .catch(function(error) {
                 console.error('Error fetching allocation history', error);
-                toastr.error('Could not fetch allocation history');
+                toastr.error(t('Could not fetch allocation history'));
                 $scope.allocationHistory = [];
             });
     };
@@ -54,7 +57,7 @@ function($scope, $http, toastr, $mdDialog, allocation) {
     // Save the adjusted allocation
     $scope.save = function() {
         if (!$scope.selectedAllocation.calculationInputs.comment) {
-            toastr.error('Adjustment reason is required');
+            toastr.error(t('Adjustment reason is required'));
             return;
         }
 
@@ -74,7 +77,7 @@ function($scope, $http, toastr, $mdDialog, allocation) {
             })
             .catch(function(error) {
                 console.error('Error adjusting allocation', error);
-                toastr.error((error.data && error.data.message) || 'Could not adjust allocation');
+                toastr.error((error.data && error.data.message) || t('Could not adjust allocation'));
                 $scope.adjusting = false;
             });
     };

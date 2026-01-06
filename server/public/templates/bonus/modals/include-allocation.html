@@ -3,7 +3,7 @@
         <form name="includeAllocationForm" ng-submit="save()" novalidate>
             <md-toolbar class="md-primary">
                 <div class="md-toolbar-tools">
-                    <h2>Include Allocation</h2>
+                    <h2 translate>Include Allocation</h2>
                     <span flex></span>
                     <md-button class="md-icon-button" ng-click="cancel()" aria-label="Close dialog">
                         <md-icon>close</md-icon>
@@ -13,32 +13,30 @@
 
             <md-dialog-content>
                 <div class="md-dialog-content">
-                    <p class="md-body-1">Provide details for the allocation inclusion.</p>
+                    <p class="md-body-1" translate>Provide details for the allocation inclusion.</p>
 
                     <md-input-container class="md-block" md-no-float>
-                        <label>Comment</label>
+                        <label translate>Comment</label>
                         <textarea ng-model="selectedAllocation.comment"
                                   rows="3"
                                   md-maxlength="500"
                                   md-select-on-focus
                                   required></textarea>
                         <div ng-messages="includeAllocationForm.comment.$error" ng-if="includeAllocationForm.comment.$touched">
-                            <div ng-message="required">Comment is required</div>
-                            <div ng-message="md-maxlength">Comment must be less than 500 characters</div>
+                            <div ng-message="required" translate>Comment is required</div>
+                            <div ng-message="md-maxlength" translate>Comment must be less than 500 characters</div>
                         </div>
                     </md-input-container>
                 </div>
             </md-dialog-content>
 
             <md-dialog-actions layout="row" layout-align="end center">
-                <md-button ng-click="cancel()">
-                    Cancel
-                </md-button>
+                <md-button ng-click="cancel()" translate>Cancel</md-button>
                 <md-button type="submit"
                            class="md-primary md-raised"
                            ng-disabled="includeAllocationForm.$invalid || including">
-                    <span ng-if="!including">Save</span>
-                    <span ng-if="including">Saving...</span>
+                    <span ng-if="!including" translate>Save</span>
+                    <span ng-if="including" translate>Saving...</span>
                 </md-button>
             </md-dialog-actions>
         </form>

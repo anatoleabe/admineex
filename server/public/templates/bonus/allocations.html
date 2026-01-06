@@ -1,49 +1,49 @@
 <div class="bonus-allocations-page">
-  <h3>Distributions</h3>
+  <h3 translate>Distributions</h3>
   <div ng-controller="BonusAllocationsController">
     <!-- Filter controls -->
     <div class="card mb-3">
       <div class="card-header bg-light">
-        <h6 class="mb-0">Filters</h6>
+        <h6 class="mb-0" translate>Filters</h6>
       </div>
       <div class="card-body">
           <div class="row mb-12">
               <!-- Search by employee -->
             <div class="col-md-3 mb-3">
-                <label>Search by employee</label>
+                <label translate>Search by employee</label>
                 <input type="text" class="form-control" placeholder="Name or identifier" ng-model="searchTerm">
             </div>
           </div>
         <div class="row">
           <!-- Status filter -->
           <div class="col-md-3 mb-3">
-            <label>Status</label>
+            <label translate>Status</label>
             <select class="form-control" ng-model="filters.status" ng-change="applyFilters()">
               <option ng-repeat="option in statusOptions" value="{{option.value}}">{{option.label}}</option>
             </select>
           </div>
           <!-- Instance filter -->
           <div class="col-md-3 mb-3">
-            <label>Payout Cycle</label>
+            <label translate>Payout Cycle</label>
             <select class="form-control" ng-model="filters.instanceId" ng-change="applyFilters()">
-              <option value="">All Cycles</option>
+              <option value="" translate>All Cycles</option>
               <option ng-repeat="instance in instances" value="{{instance._id}}">{{formatInstanceLabel(instance)}}</option>
             </select>
           </div>
           <!-- Date range filters -->
           <div class="col-md-3 mb-3">
-            <label>From Date</label>
+            <label translate>From Date</label>
             <input type="date" class="form-control" ng-model="filters.fromDate" ng-change="applyFilters()">
           </div>
           <div class="col-md-3 mb-3">
-            <label>To Date</label>
+            <label translate>To Date</label>
             <input type="date" class="form-control" ng-model="filters.toDate" ng-change="applyFilters()">
           </div>
         </div>
         <div class="row">
           <div class="col-12">
             <button class="btn btn-secondary" ng-click="resetFilters()">
-              <i class="icon-reset mr-1"></i> Reset Filters
+              <i class="icon-reset mr-1"></i> <span translate>Reset Filters</span>
             </button>
           </div>
         </div>
@@ -53,7 +53,7 @@
     <!-- Loading indicator -->
     <div class="text-center" ng-if="loading">
       <div class="spinner-border text-primary" role="status">
-        <span class="sr-only">Loading...</span>
+        <span class="sr-only" translate>Loading...</span>
       </div>
     </div>
 
@@ -63,20 +63,20 @@
         <table class="table table-striped table-hover">
           <thead>
             <tr>
-              <th>Personnel</th>
-              <th>Bonus / Cycle</th>
-              <th>Prime Type</th>
-              <th>Status</th>
-              <th class="text-center">Parts</th>
-              <th class="text-center">TAUX (%)</th>
-              <th class="text-right">SBI</th>
-              <th>Amount</th>
-              <th>Created At</th>
+              <th translate>Personnel</th>
+              <th translate>Bonus / Cycle</th>
+              <th translate>Prime Type</th>
+              <th translate>Status</th>
+              <th class="text-center" translate>Parts</th>
+              <th class="text-center" translate>TAUX (%)</th>
+              <th class="text-right" translate>SBI</th>
+              <th translate>Amount</th>
+              <th translate>Created At</th>
             </tr>
           </thead>
           <tbody>
             <tr ng-if="allocations.length === 0">
-              <td colspan="9" class="text-center">No allocations found matching your filters.</td>
+              <td colspan="9" class="text-center" translate>No allocations found matching your filters.</td>
             </tr>
             <tr ng-repeat="allocation in allocations">
               <td>
@@ -119,15 +119,15 @@
       </div>
       <!-- Pagination controls -->
       <div class="card-footer d-flex justify-content-between align-items-center">
-        <div>
+        <div translate>
           Showing {{pagination.offset + 1}} to {{Math.min(pagination.offset + pagination.limit, pagination.total)}} of {{pagination.total}} entries
         </div>
         <div>
           <button class="btn btn-sm btn-outline-primary mr-1" ng-click="prevPage()" ng-disabled="pagination.offset === 0">
-            <i class="icon-arrow-left8"></i> Previous
+            <i class="icon-arrow-left8"></i> <span translate>Previous</span>
           </button>
           <button class="btn btn-sm btn-outline-primary" ng-click="nextPage()" ng-disabled="pagination.offset + pagination.limit >= pagination.total">
-            Next <i class="icon-arrow-right8"></i>
+            <span translate>Next</span> <i class="icon-arrow-right8"></i>
           </button>
         </div>
       </div>

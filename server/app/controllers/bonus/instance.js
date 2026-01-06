@@ -5,6 +5,7 @@ const { BonusTemplate } = require('../../models/bonus/template');
 const { BonusAllocation } = require('../../models/bonus/allocation');
 const { badRequest, notFound, forbidden } = require('../../utils/ApiError');
 const audit = require('../../utils/audit-log');
+const dictionary = require('../../utils/dictionary');
 const { generatePaymentFile } = require('../../services/bonusService');
 const { sendNotification } = require('../../services/notificationService');
 const formidable = require('formidable');
@@ -15,6 +16,11 @@ const { getActorStructureTokens } = require('../../utils/structureScope');
 
 // API methods
 exports.api = {};
+
+function t(req, msgid) {
+    const language = (req && req.actor && req.actor.language) || (req && req.user && req.user.language) || '';
+    return dictionary.translator(language).gettext(msgid);
+}
 
 function getActorId(req) {
     if (req && req.actor && req.actor.id) return req.actor.id;
@@ -50,8 +56,8 @@ function buildSnapshotScopeMatch(allowedObjectIds, allowedTokens) {
 async function ensureInstanceInActorScope(req, instanceId) {
     if (!req || !req.actor || String(req.actor.role) !== '2') return;
     const tokensSet = getActorStructureTokens(req.actor);
-    if (!tokensSet.size) throw forbidden('Forbidden');
-    if (!mongoose.Types.ObjectId.isValid(instanceId)) throw badRequest('Invalid instance ID');
+    if (!tokensSet.size) throw forbidden(t(req, 'Forbidden'));
+    if (!mongoose.Types.ObjectId.isValid(instanceId)) throw badRequest(t(req, 'Invalid instance ID'));
 
     const tokens = Array.from(tokensSet);
     const allowedObjectIds = tokens
@@ -59,7 +65,7 @@ async function ensureInstanceInActorScope(req, instanceId) {
         .map(token => new mongoose.Types.ObjectId(token));
 
     const scopeMatch = buildSnapshotScopeMatch(allowedObjectIds, tokens);
-    if (!scopeMatch) throw forbidden('Forbidden');
+    if (!scopeMatch) throw forbidden(t(req, 'Forbidden'));
 
     const matches = await BonusAllocation.aggregate([
         { $match: { instanceId: new mongoose.Types.ObjectId(instanceId) } },
@@ -69,7 +75,7 @@ async function ensureInstanceInActorScope(req, instanceId) {
         { $limit: 1 }
     ]);
 
-    if (!matches.length) throw forbidden('Forbidden');
+    if (!matches.length) throw forbidden(t(req, 'Forbidden'));
 }
 
 /**
@@ -83,13 +89,13 @@ exports.api.recordExport = async (req, res, next) => {
 
             // Validate required fields
             if (!type || !['Excel', 'PDF'].includes(type)) {
-                return next(badRequest('Invalid export type. Must be "Excel" or "PDF".'));
+                return next(badRequest(t(req, 'Invalid export type. Must be "Excel" or "PDF".')));
             }
 
             // Find the instance
             const instance = await BonusInstance.findById(instanceId);
             if (!instance) {
-                return next(notFound('Bonus instance not found'));
+                return next(notFound(t(req, 'Bonus instance not found')));
             }
 
             // Add export record to the instance
@@ -119,7 +125,7 @@ exports.api.recordExport = async (req, res, next) => {
 
             // Return the updated instance with exports
             return res.json({
-                message: 'Export recorded successfully',
+                message: t(req, 'Export recorded successfully'),
                 exports: instance.exports
             });
         } catch (error) {
@@ -136,7 +142,7 @@ exports.api.recordExport = async (req, res, next) => {
     const form = formidable({ multiples: false });
     form.parse(req, async (err, fields, files) => {
         if (err) {
-            return next(badRequest('Failed to parse form data'));
+            return next(badRequest(t(req, 'Failed to parse form data')));
         }
         return handleFields(fields);
     });
@@ -152,22 +158,22 @@ exports.api.create = async (req, res, next) => {
             const { templateId, referencePeriod, notes, shareAmount } = fields;
 
             if (!templateId || !referencePeriod) {
-                throw badRequest('templateId and referencePeriod are required');
+                throw badRequest(t(req, 'templateId and referencePeriod are required'));
             }
 
             // Verify template exists and is active
             const template = await BonusTemplate.findById(templateId);
             if (!template) {
-                throw notFound('Bonus template not found');
+                throw notFound(t(req, 'Bonus template not found'));
             }
             if (!template.isActive) {
-                throw badRequest('Cannot create instance from inactive template');
+                throw badRequest(t(req, 'Cannot create instance from inactive template'));
             }
 
             // Check for existing instance for this period
             const existingInstance = await BonusInstance.findOne({ templateId, referencePeriod });
             if (existingInstance) {
-                throw badRequest('Bonus instance already exists for this period');
+                throw badRequest(t(req, 'Bonus instance already exists for this period'));
             }
 
             // Create and return the new bonus instance
@@ -198,7 +204,7 @@ exports.api.create = async (req, res, next) => {
     const form = formidable({ multiples: false });
     form.parse(req, async (err, fields, files) => {
         if (err) {
-            return next(badRequest('Failed to parse form data'));
+            return next(badRequest(t(req, 'Failed to parse form data')));
         }
         return handleFields(fields);
     });
@@ -424,7 +430,7 @@ exports.api.getById = async (req, res, next) => {
             .populate('createdBy', 'firstname lastname');
 
         if (!instance) {
-            throw notFound('Bonus instance not found');
+            throw notFound(t(req, 'Bonus instance not found'));
         }
 
         res.json(instance);
@@ -443,12 +449,12 @@ exports.api.update = async (req, res, next) => {
 
         const instance = await BonusInstance.findById(id);
         if (!instance) {
-            throw notFound('Bonus instance not found');
+            throw notFound(t(req, 'Bonus instance not found'));
         }
 
         // Prevent updates to approved/paid instances
         if (['approved', 'paid'].includes(instance.status)) {
-            throw forbidden('Cannot modify an approved or paid instance');
+            throw forbidden(t(req, 'Cannot modify an approved or paid instance'));
         }
 
         const updatedInstance = await BonusInstance.findByIdAndUpdate(
@@ -485,7 +491,7 @@ exports.api.approve = async (req, res, next) => {
         );
 
         if (!instance) {
-            throw notFound('Bonus instance not found');
+            throw notFound(t(req, 'Bonus instance not found'));
         }
 
         auditEvent(req, 'approve', 'BonusInstance', req.params.id, 'succeed', 'Approved bonus instance');
@@ -514,7 +520,7 @@ exports.api.reject = async (req, res, next) => {
         );
 
         if (!instance) {
-            throw notFound('Bonus instance not found');
+            throw notFound(t(req, 'Bonus instance not found'));
         }
 
         auditEvent(req, 'reject', 'BonusInstance', req.params.id, 'succeed', `Rejected bonus instance. reason=${reason || ''}`);
@@ -543,7 +549,7 @@ exports.api.cancel = async (req, res, next) => {
         );
 
         if (!instance) {
-            throw notFound('Bonus instance not found');
+            throw notFound(t(req, 'Bonus instance not found'));
         }
 
         auditEvent(req, 'cancel', 'BonusInstance', req.params.id, 'succeed', `Cancelled bonus instance. reason=${reason || ''}`);
@@ -563,10 +569,10 @@ exports.api.generatePayments = async (req, res, next) => {
             .populate('templateId');
 
         if (!instance) {
-            throw notFound('Bonus instance not found');
+            throw notFound(t(req, 'Bonus instance not found'));
         }
         if (instance.status !== 'approved') {
-            throw badRequest('Only approved instances can generate payment files');
+            throw badRequest(t(req, 'Only approved instances can generate payment files'));
         }
 
         const paymentFile = await generatePaymentFile(instance);
@@ -603,7 +609,7 @@ exports.api.export = async (req, res, next) => {
             .populate('createdBy', 'firstname lastname');
 
         if (!instance) {
-            throw notFound('Bonus instance not found');
+            throw notFound(t(req, 'Bonus instance not found'));
         }
 
         // Get the requested format from the query parameter (default to Excel)
@@ -647,7 +653,7 @@ exports.api.notify = async (req, res, next) => {
             .populate('templateId');
 
         if (!instance) {
-            throw notFound('Bonus instance not found');
+            throw notFound(t(req, 'Bonus instance not found'));
         }
 
         const notificationResults = await sendNotification({
@@ -678,14 +684,14 @@ exports.api.getAllocationStats = async (req, res, next) => {
         const { id } = req.params;
 
         if (!mongoose.Types.ObjectId.isValid(id)) {
-            throw badRequest('Invalid instance ID');
+            throw badRequest(t(req, 'Invalid instance ID'));
         }
 
         await ensureInstanceInActorScope(req, id);
         // Get the instance
         const instance = await BonusInstance.findById(id);
         if (!instance) {
-            throw notFound('Bonus instance not found');
+            throw notFound(t(req, 'Bonus instance not found'));
         }
 
         // Calculate allocation stats
@@ -728,19 +734,19 @@ exports.api.updateWizardStep = async (req, res, next) => {
         const step = (req.body && req.body.step) || (req.fields && req.fields.step);
 
         if (!step || !['adjust', 'confirm', 'export', 'completed'].includes(step)) {
-            return next(badRequest('Invalid step provided'));
+            return next(badRequest(t(req, 'Invalid step provided')));
         }
 
         const instance = await BonusInstance.findById(id);
         if (!instance) {
-            return next(notFound('Bonus instance not found'));
+            return next(notFound(t(req, 'Bonus instance not found')));
         }
 
         const previousWizardStep = instance.wizardStep;
         const previousStatus = instance.status;
 
         if (['approved', 'paid', 'cancelled'].includes(instance.status)) {
-            return next(forbidden('Cannot modify an approved, paid or cancelled instance'));
+            return next(forbidden(t(req, 'Cannot modify an approved, paid or cancelled instance')));
         }
 
         instance.wizardStep = step;
@@ -784,7 +790,7 @@ exports.api.getHistoricalData = async (req, res, next) => {
 
         const instance = await BonusInstance.findById(id);
         if (!instance) {
-            throw notFound('Bonus instance not found');
+            throw notFound(t(req, 'Bonus instance not found'));
         }
 
         // Find all allocations for this instance with their snapshot data
@@ -839,7 +845,7 @@ exports.api.getInstanceSnapshots = async (req, res, next) => {
 
         const instance = await BonusInstance.findById(id);
         if (!instance) {
-            throw notFound('Bonus instance not found');
+            throw notFound(t(req, 'Bonus instance not found'));
         }
 
         // Find all allocations for this instance to get the snapshot IDs
@@ -880,22 +886,22 @@ exports.api.updateShareAmount = async (req, res, next) => {
             const parsedShareAmount = Number(newShareAmount);
 
             if (!parsedShareAmount || typeof parsedShareAmount !== 'number' || parsedShareAmount <= 0) {
-                return next(badRequest('Valid newShareAmount is required'));
+                return next(badRequest(t(req, 'Valid newShareAmount is required')));
             }
 
             if (!reason) {
-                return next(badRequest('Reason for share amount change is required'));
+                return next(badRequest(t(req, 'Reason for share amount change is required')));
             }
 
             // Find the instance
             const instance = await BonusInstance.findById(instanceId);
             if (!instance) {
-                return next(notFound('Bonus instance not found'));
+                return next(notFound(t(req, 'Bonus instance not found')));
             }
 
             // Check if the instance can be modified
             if (['approved', 'paid', 'cancelled'].includes(instance.status)) {
-                return next(forbidden('Cannot update share amount for instances with status: ' + instance.status));
+                return next(forbidden(t(req, 'Cannot update share amount for instances with status: ') + instance.status));
             }
 
             // Store the previous amount for history
@@ -965,7 +971,7 @@ exports.api.updateShareAmount = async (req, res, next) => {
     const form = formidable({ multiples: false });
     form.parse(req, async (err, fields, files) => {
         if (err) {
-            return next(badRequest('Failed to parse form data'));
+            return next(badRequest(t(req, 'Failed to parse form data')));
         }
         return handleFields(fields);
     });
@@ -1168,26 +1174,26 @@ exports.api.updateTaxConfig = async (req, res, next) => {
             const parsedTaxPercentage = Number(taxPercentage);
 
             if (typeof taxName !== 'string' || !taxName.trim()) {
-                return next(badRequest('Valid taxName is required'));
+                return next(badRequest(t(req, 'Valid taxName is required')));
             }
 
             if (!parsedTaxPercentage || typeof parsedTaxPercentage !== 'number' || parsedTaxPercentage < 0 || parsedTaxPercentage > 100) {
-                return next(badRequest('Valid taxPercentage is required (0-100)'));
+                return next(badRequest(t(req, 'Valid taxPercentage is required (0-100)')));
             }
 
             if (!reason) {
-                return next(badRequest('Reason for tax configuration change is required'));
+                return next(badRequest(t(req, 'Reason for tax configuration change is required')));
             }
 
             // Find the instance
             const instance = await BonusInstance.findById(instanceId);
             if (!instance) {
-                return next(notFound('Bonus instance not found'));
+                return next(notFound(t(req, 'Bonus instance not found')));
             }
 
             // Check if the instance can be modified
             if (['approved', 'paid', 'cancelled'].includes(instance.status)) {
-                return next(forbidden('Cannot update tax configuration for instances with status: ' + instance.status));
+                return next(forbidden(t(req, 'Cannot update tax configuration for instances with status: ') + instance.status));
             }
 
             // Store the previous values for history
@@ -1261,7 +1267,7 @@ exports.api.updateTaxConfig = async (req, res, next) => {
     const form = formidable({ multiples: false });
     form.parse(req, async (err, fields, files) => {
         if (err) {
-            return next(badRequest('Failed to parse form data'));
+            return next(badRequest(t(req, 'Failed to parse form data')));
         }
         return handleFields(fields);
     });

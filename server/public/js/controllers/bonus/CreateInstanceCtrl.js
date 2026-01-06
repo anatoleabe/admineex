@@ -1,4 +1,7 @@
-angular.module('CreateInstanceCtrl', []).controller('CreateInstanceController', function ($scope, $http, $mdDialog, toastr, templates) {
+angular.module('CreateInstanceCtrl', []).controller('CreateInstanceController', function ($scope, $http, $mdDialog, toastr, templates, gettextCatalog) {
+    function t(msgid) {
+        return gettextCatalog.getString(msgid);
+    }
     $scope.templates = templates;
     $scope.instance = {
         templateId: '',
@@ -8,7 +11,7 @@ angular.module('CreateInstanceCtrl', []).controller('CreateInstanceController', 
 
     $scope.save = function() {
         if (!$scope.instance.templateId || !$scope.instance.referencePeriod) {
-            toastr.error('Please fill in all required fields');
+            toastr.error(t('Please fill in all required fields'));
             return;
         }
 
@@ -17,7 +20,7 @@ angular.module('CreateInstanceCtrl', []).controller('CreateInstanceController', 
                 $mdDialog.hide(response.data);
             })
             .catch(function(error) {
-                toastr.error('Failed to create bonus instance');
+                toastr.error(t('Failed to create bonus instance'));
             });
     };
 

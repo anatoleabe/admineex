@@ -12,6 +12,11 @@ const { getActorStructureTokens, isSnapshotInStructures } = require('../../utils
 // API methods
 exports.api = {};
 
+function t(req, msgid) {
+    const language = (req && req.actor && req.actor.language) || (req && req.user && req.user.language) || '';
+    return dictionary.translator(language).gettext(msgid);
+}
+
 function getActorId(req) {
     if (req && req.actor && req.actor.id) return req.actor.id;
     if (req && req.user && req.user.id) return req.user.id;
@@ -133,13 +138,13 @@ async function ensureAllocationInActorScope(req, allocation) {
     if (!req || !req.actor || String(req.actor.role) !== '2') return;
     const tokens = getActorStructureTokens(req.actor);
     if (!tokens.size) {
-        throw forbidden('Forbidden');
+        throw forbidden(t(req, 'Forbidden'));
     }
     const snapshot = allocation && allocation.personnelSnapshotId && allocation.personnelSnapshotId.data
         ? allocation.personnelSnapshotId
         : null;
     if (!snapshot || !isSnapshotInStructures(snapshot, tokens)) {
-        throw forbidden('Forbidden');
+        throw forbidden(t(req, 'Forbidden'));
     }
 }
 
@@ -372,7 +377,7 @@ exports.api.getById = async (req, res, next) => {
             .populate('previousVersion');
 
         if (!allocation) {
-            throw notFound('Bonus allocation not found');
+            throw notFound(t(req, 'Bonus allocation not found'));
         }
 
         await ensureAllocationInActorScope(req, allocation);
@@ -395,19 +400,19 @@ exports.api.adjust = async (req, res, next) => {
 
             // Require a reason for the adjustment for better history tracking
             if (!reason) {
-                throw badRequest('Adjustment reason is required');
+                throw badRequest(t(req, 'Adjustment reason is required'));
             }
 
             const allocation = await BonusAllocation.findById(id)
                 .populate('instanceId');
 
             if (!allocation) {
-                throw notFound('Bonus allocation not found');
+                throw notFound(t(req, 'Bonus allocation not found'));
             }
 
             // Check if instance allows modifications
             if (['approved', 'paid'].includes(allocation.instanceId.status)) {
-                throw forbidden('Cannot modify allocations for approved or paid instances');
+                throw forbidden(t(req, 'Cannot modify allocations for approved or paid instances'));
             }
 
             // Push current state into history
@@ -464,7 +469,7 @@ exports.api.adjust = async (req, res, next) => {
         const form = formidable({ multiples: false });
         form.parse(req, async (err, fields) => {
             if (err) {
-                return next(badRequest('Invalid form data'));
+                return next(badRequest(t(req, 'Invalid form data')));
             }
             return handleFields(fields);
         });
@@ -484,18 +489,18 @@ exports.api.exclude = async (req, res, next) => {
             reason = (reason || '').trim();
 
             if (!reason || reason.length < 3) {
-                return next(badRequest('Exclusion reason (min 3 chars) is required'));
+                return next(badRequest(t(req, 'Exclusion reason (min 3 chars) is required')));
             }
 
             const allocation = await BonusAllocation.findById(id)
                 .populate('instanceId');
 
             if (!allocation) {
-                throw notFound('Bonus allocation not found');
+                throw notFound(t(req, 'Bonus allocation not found'));
             }
 
             if (['approved', 'paid'].includes(allocation.instanceId.status)) {
-                throw forbidden('Cannot modify allocations for approved or paid instances');
+                throw forbidden(t(req, 'Cannot modify allocations for approved or paid instances'));
             }
 
             // Prepare history entry
@@ -549,7 +554,7 @@ exports.api.exclude = async (req, res, next) => {
         const form = formidable({ multiples: false });
         form.parse(req, async (err, fields) => {
             if (err) {
-                return next(badRequest('Invalid form data'));
+                return next(badRequest(t(req, 'Invalid form data')));
             }
             return handleFields(fields);
         });
@@ -570,11 +575,11 @@ exports.api.include = async (req, res, next) => {
                 .populate('instanceId');
 
             if (!allocation) {
-                throw notFound('Bonus allocation not found');
+                throw notFound(t(req, 'Bonus allocation not found'));
             }
 
             if (['approved', 'paid'].includes(allocation.instanceId.status)) {
-                throw forbidden('Cannot modify allocations for approved or paid instances');
+                throw forbidden(t(req, 'Cannot modify allocations for approved or paid instances'));
             }
 
             const updatedAllocation = await BonusAllocation.findByIdAndUpdate(
@@ -606,7 +611,7 @@ exports.api.include = async (req, res, next) => {
         const form = formidable({ multiples: false });
         form.parse(req, async (err, fields) => {
             if (err) {
-                return next(badRequest('Invalid form data'));
+                return next(badRequest(t(req, 'Invalid form data')));
             }
             return handleFields(fields);
         });
@@ -631,7 +636,7 @@ exports.api.getHistory = async (req, res, next) => {
             .populate('personnelSnapshotId');
 
         if (!currentAllocation) {
-            throw notFound('Bonus allocation not found');
+            throw notFound(t(req, 'Bonus allocation not found'));
         }
 
         await ensureAllocationInActorScope(req, currentAllocation);

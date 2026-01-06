@@ -3,8 +3,11 @@
  * Handles the multi-step workflow for adjusting and reviewing bonus instances
  */
 angular.module('app')
-.controller('BonusInstanceWizardCtrl', ['$scope', '$rootScope', '$http', '$stateParams', '$state', '$ocLazyLoad', 'SweetAlert', '$mdDialog', 'toastr', '$timeout', '$window', '$injector',
-function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog, toastr, $timeout, $window, $injector) {
+.controller('BonusInstanceWizardCtrl', ['$scope', '$rootScope', '$http', '$stateParams', '$state', '$ocLazyLoad', 'SweetAlert', '$mdDialog', 'toastr', '$timeout', '$window', '$injector', 'gettextCatalog',
+function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAlert, $mdDialog, toastr, $timeout, $window, $injector, gettextCatalog) {
+    function t(msgid) {
+        return gettextCatalog.getString(msgid);
+    }
     const role = ($rootScope.account && $rootScope.account.role) ? String($rootScope.account.role) : '';
     $scope.permissions = {
         canAccessWizard: role === '1' || role === '3' || role === '4',
@@ -16,7 +19,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
     };
 
     if (!$scope.permissions.canAccessWizard) {
-        toastr.error('Not authorized');
+        toastr.error(t('Not authorized'));
         $state.go('home.bonus.instances');
         return;
     }
@@ -229,7 +232,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
             })
             .catch(function(error) {
                 console.error('Error loading allocations page', error);
-                toastr.error('Could not load allocations');
+                toastr.error(t('Could not load allocations'));
                 throw error;
             });
     };
@@ -358,7 +361,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
             })
             .catch(function(error) {
                 console.error('Error loading historical data', error);
-                toastr.error('Could not load historical snapshot data');
+                toastr.error(t('Could not load historical snapshot data'));
                 $scope.loadingHistory = false;
                 // Propagate error so chained .finally still runs
                 throw error;
@@ -378,15 +381,18 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
         // Get the historical data for this allocation
         const historicalData = $scope.getHistoricalDataForPersonnel(allocation.personnelId._id);
 
-        $mdDialog.show({
-            controller: function($scope, $mdDialog, allocation, historicalData) {
-                $scope.allocation = allocation;
-                $scope.historicalData = historicalData;
+	        $mdDialog.show({
+	            controller: function($scope, $mdDialog, allocation, historicalData) {
+	                $scope.allocation = allocation;
+	                $scope.historicalData = historicalData;
+	                $scope.naLabel = t('N/A');
+	                $scope.previousPeriodLabel = t('Previous Period');
+	                $scope.unknownLabel = t('Unknown');
 
-                $scope.closeDialog = function() {
-                    $mdDialog.hide();
-                };
-            },
+	                $scope.closeDialog = function() {
+	                    $mdDialog.hide();
+	                };
+	            },
             templateUrl: 'templates/bonus/modals/history-details.html',
             parent: angular.element(document.body),
             clickOutsideToClose: true,
@@ -462,11 +468,11 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                 }
             })
             .then(function(){
-                toastr.success('Moved to ' + step + ' step');
+                toastr.success(t('Moved to ') + step + t(' step'));
             })
             .catch(function(error) {
                 console.error('Error updating wizard step', error);
-                toastr.error('Could not update wizard step');
+                toastr.error(t('Could not update wizard step'));
             })
             .finally(function() {
                 $scope.updatingStep = false;
@@ -510,7 +516,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                     $scope.allocations[index] = updatedAllocation;
                 }
                 $scope.reloadPage();
-                toastr.success('Allocation adjusted successfully');
+                toastr.success(t('Allocation adjusted successfully'));
             });
         });
     };
@@ -521,7 +527,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
 
         // Validate required fields
         if (!$scope.selectedAllocation.calculationInputs.comment) {
-            toastr.error('Adjustment reason is required');
+            toastr.error(t('Adjustment reason is required'));
             return;
         }
 
@@ -545,11 +551,11 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                 $scope.adjusting = false;
                 $scope.reloadPage();
                 $('#adjustAllocationModal').modal('hide');
-                toastr.success('Allocation adjusted successfully');
+                toastr.success(t('Allocation adjusted successfully'));
             })
             .catch(function(error) {
                 console.error('Error adjusting allocation', error);
-                toastr.error((error.data && error.data.message) || 'Could not adjust allocation');
+                toastr.error((error.data && error.data.message) || t('Could not adjust allocation'));
                 $scope.adjusting = false;
             });
     };
@@ -572,7 +578,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                     $scope.allocations[index] = updatedAllocation;
                 }
                 $scope.reloadPage();
-                toastr.success('Allocation excluded successfully');
+                toastr.success(t('Allocation excluded successfully'));
             });
         });
     };
@@ -595,7 +601,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                     $scope.allocations[index] = updatedAllocation;
                 }
                 $scope.reloadPage();
-                toastr.success('Allocation included successfully');
+                toastr.success(t('Allocation included successfully'));
             });
         });
     };
@@ -611,7 +617,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
             })
             .catch(function(error) {
                 console.error('Error fetching allocation history', error);
-                toastr.error('Could not fetch allocation history');
+                toastr.error(t('Could not fetch allocation history'));
             });
     };
 
@@ -638,7 +644,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
             })
             .catch(function(error) {
                 console.error('Error loading allocation history', error);
-                toastr.error('Could not load allocation history');
+                toastr.error(t('Could not load allocation history'));
             });
     };
 
@@ -647,7 +653,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
         $scope.exporting = 'excel';
 
         // Show loading toast
-        toastr.info('Generating Excel export, please wait...');
+        toastr.info(t('Generating Excel export, please wait...'));
 
         $http({
             method: 'GET',
@@ -681,7 +687,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
 
             // Update UI
             $scope.exporting = null;
-            toastr.success('Excel export completed successfully!');
+            toastr.success(t('Excel export completed successfully!'));
 
             // Record the export in database
             const exportRecord = {
@@ -706,7 +712,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
         }).catch(function(error) {
             console.error('Error generating Excel export', error);
             $scope.exporting = null;
-            toastr.error('Could not generate Excel export');
+            toastr.error(t('Could not generate Excel export'));
         });
     };
 
@@ -715,7 +721,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
         $scope.exporting = 'pdf';
 
         // Show loading toast
-        toastr.info('Generating PDF report, please wait...');
+        toastr.info(t('Generating PDF report, please wait...'));
 
         $http({
             method: 'GET',
@@ -749,7 +755,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
 
             // Update UI
             $scope.exporting = null;
-            toastr.success('PDF export completed successfully!');
+            toastr.success(t('PDF export completed successfully!'));
 
             // Record the export in database
             const exportRecord = {
@@ -774,7 +780,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
         }).catch(function(error) {
             console.error('Error generating PDF export', error);
             $scope.exporting = null;
-            toastr.error('Could not generate PDF export');
+            toastr.error(t('Could not generate PDF export'));
         });
     };
 
@@ -793,48 +799,48 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
         console.log('Instance ID:', $scope.instanceId);
         console.log('Instance status:', $scope.instance.status);
 
-        // Using standard SweetAlert syntax instead of SweetAlert2
-        SweetAlert.swal({
-            title: "Approve Instance",
-            text: "Are you sure you want to approve this bonus instance? This will finalize all allocations.",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Yes, approve it",
-            cancelButtonText: "Cancel",
-            closeOnConfirm: false
-        }, function(isConfirmed) {
+	        // Using standard SweetAlert syntax instead of SweetAlert2
+	        SweetAlert.swal({
+	            title: t('Approve Instance'),
+	            text: t('Are you sure you want to approve this bonus instance? This will finalize all allocations.'),
+	            type: "warning",
+	            showCancelButton: true,
+	            confirmButtonColor: "#DD6B55",
+	            confirmButtonText: t('Yes, approve it'),
+	            cancelButtonText: t('Cancel'),
+	            closeOnConfirm: false
+	        }, function(isConfirmed) {
             if (isConfirmed) {
                 console.log('SweetAlert confirmation callback triggered');
 
                 $http.post('/api/bonus/instances/' + $scope.instanceId + '/approve')
-                    .then(function(response) {
-                        console.log('API call successful:', response.data);
-                        $scope.instance = response.data;
-                        SweetAlert.swal("Approved!", "The bonus instance has been approved.", "success");
-                        // Redirect to the instances list
-                        $state.go('home.bonus.instances');
-                    })
-                    .catch(function(error) {
-                        console.error('Error approving instance', error);
-                        SweetAlert.swal("Error!", "Could not approve instance.", "error");
-                    });
-            }
-        });
-    };
+	                    .then(function(response) {
+	                        console.log('API call successful:', response.data);
+	                        $scope.instance = response.data;
+	                        SweetAlert.swal(t('Approved!'), t('The bonus instance has been approved.'), "success");
+	                        // Redirect to the instances list
+	                        $state.go('home.bonus.instances');
+	                    })
+	                    .catch(function(error) {
+	                        console.error('Error approving instance', error);
+	                        SweetAlert.swal(t('Error!'), t('Could not approve instance.'), "error");
+	                    });
+	            }
+	        });
+	    };
 
     // Direct approve function (alternative implementation)
     $scope.directApproveInstance = function() {
         console.log('directApproveInstance function called');
 
         // Show loading toast
-        toastr.info('Processing approval request...');
+        toastr.info(t('Processing approval request...'));
 
         $http.post('/api/bonus/instances/' + $scope.instanceId + '/approve')
             .then(function(response) {
                 console.log('API call successful:', response.data);
                 $scope.instance = response.data;
-                toastr.success('The bonus instance has been approved.');
+                toastr.success(t('The bonus instance has been approved.'));
                 // Redirect to the instances list after a brief delay
                 setTimeout(function() {
                     $state.go('home.bonus.instances');
@@ -842,7 +848,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
             })
             .catch(function(error) {
                 console.error('Error approving instance', error);
-                toastr.error('Could not approve instance: ' + ((error.data && error.data.message) || 'Unknown error'));
+                toastr.error(t('Could not approve instance: ') + ((error.data && error.data.message) || t('Unknown error')));
             });
     };
 
@@ -867,12 +873,12 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                     if ($scope.updating) return;
 
                     if (!$scope.formData.newShareAmount) {
-                        toastr.error('Please enter a valid amount');
+                        toastr.error(t('Please enter a valid amount'));
                         return;
                     }
 
                     if (!$scope.formData.reason) {
-                        toastr.error('Please provide a reason for the change');
+                        toastr.error(t('Please provide a reason for the change'));
                         return;
                     }
 
@@ -887,7 +893,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                     })
                     .catch(function(error) {
                         console.error('Error updating share amount', error);
-                        toastr.error('Could not update share amount: ' + ((error.data && error.data.message) || 'Unknown error'));
+                        toastr.error(t('Could not update share amount: ') + ((error.data && error.data.message) || t('Unknown error')));
                         $scope.updating = false;
                     });
                 };
@@ -902,7 +908,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
         }).then(function(updatedInstance) {
             // Update the instance in the scope
             $scope.instance = updatedInstance;
-            toastr.success('Share amount updated successfully. Recalculation in progress.');
+            toastr.success(t('Share amount updated successfully. Recalculation in progress.'));
 
             // Start polling for recalculation progress
             $scope.startRecalculationPolling();
@@ -913,16 +919,18 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
     $scope.updateTaxConfig = function() {
         // Display modal for updating tax configuration
         $mdDialog.show({
-            controller: function($scope, $mdDialog, instance, currentTaxName, currentTaxPercentage) {
-                $scope.instance = instance;
-                $scope.formData = {
-                    currentTaxName: currentTaxName,
-                    currentTaxPercentage: currentTaxPercentage,
-                    newTaxName: currentTaxName,
-                    newTaxPercentage: currentTaxPercentage,
-                    reason: ''
-                };
-                $scope.updating = false;
+	            controller: function($scope, $mdDialog, instance, currentTaxName, currentTaxPercentage) {
+	                $scope.instance = instance;
+	                $scope.formData = {
+	                    currentTaxName: currentTaxName,
+	                    currentTaxPercentage: currentTaxPercentage,
+	                    newTaxName: currentTaxName,
+	                    newTaxPercentage: currentTaxPercentage,
+	                    reason: ''
+	                };
+	                $scope.taxImpactHigherLabel = t('Higher');
+	                $scope.taxImpactLowerLabel = t('Lower');
+	                $scope.updating = false;
 
                 $scope.cancel = function() {
                     $mdDialog.cancel();
@@ -932,17 +940,17 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                     if ($scope.updating) return;
 
                     if (!$scope.formData.newTaxName) {
-                        toastr.error('Please enter a valid tax name');
+                        toastr.error(t('Please enter a valid tax name'));
                         return;
                     }
 
                     if ($scope.formData.newTaxPercentage === undefined || $scope.formData.newTaxPercentage < 0 || $scope.formData.newTaxPercentage > 100) {
-                        toastr.error('Please enter a valid tax percentage (0-100%)');
+                        toastr.error(t('Please enter a valid tax percentage (0-100%)'));
                         return;
                     }
 
                     if (!$scope.formData.reason) {
-                        toastr.error('Please provide a reason for the change');
+                        toastr.error(t('Please provide a reason for the change'));
                         return;
                     }
 
@@ -958,7 +966,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                     })
                     .catch(function(error) {
                         console.error('Error updating tax configuration', error);
-                        toastr.error('Could not update tax configuration: ' + ((error.data && error.data.message) || 'Unknown error'));
+                        toastr.error(t('Could not update tax configuration: ') + ((error.data && error.data.message) || t('Unknown error')));
                         $scope.updating = false;
                     });
                 };
@@ -974,7 +982,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
         }).then(function(updatedInstance) {
             // Update the instance in the scope
             $scope.instance = updatedInstance;
-            toastr.success('Tax configuration updated successfully. Recalculation in progress.');
+            toastr.success(t('Tax configuration updated successfully. Recalculation in progress.'));
 
             // Start polling for recalculation progress
             $scope.startRecalculationPolling();
@@ -1000,7 +1008,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
                         // Reload allocations to get updated values
                         $scope.loading = true;
                         $scope.loadInstanceData();
-                        toastr.success('Allocation recalculation completed successfully.');
+                        toastr.success(t('Allocation recalculation completed successfully.'));
                     } else {
                         // Continue polling
                         $scope.recalculationPolling = $timeout(checkRecalculationProgress, 2000);
@@ -1048,7 +1056,7 @@ function($scope, $rootScope, $http, $stateParams, $state, $ocLazyLoad, SweetAler
             })
             .catch(function(error) {
                 console.error('Error loading instance data', error);
-                toastr.error('Could not load bonus instance data');
+                toastr.error(t('Could not load bonus instance data'));
                 $scope.loading = false;
                 $scope.kernel && ($scope.kernel.loading = 100);
             });

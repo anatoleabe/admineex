@@ -1,4 +1,4 @@
-angular.module('app').controller('BonusAllocationsController', ['$scope', '$http', 'toastr', '$uibModal', '$mdDialog', '$state', '$timeout', function($scope, $http, toastr, $uibModal, $mdDialog, $state, $timeout) {
+angular.module('app').controller('BonusAllocationsController', ['$scope', '$http', 'toastr', '$uibModal', '$mdDialog', '$state', '$timeout', 'gettextCatalog', function($scope, $http, toastr, $uibModal, $mdDialog, $state, $timeout, gettextCatalog) {
     // Ensure kernel exists for this scope so views using kernel.loading work
     $scope.kernel = $scope.kernel || { loading: 100 };
     $scope.allocations = [];
@@ -17,15 +17,33 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
         total: 0
     };
 
+    function t(msgid) {
+        return gettextCatalog.getString(msgid);
+    }
+
     // Status filter options
     $scope.statusOptions = [
-        { value: 'all', label: 'All Statuses' },
-        { value: 'eligible', label: 'Eligible' },
-        { value: 'excluded', label: 'Excluded' },
-        { value: 'adjusted', label: 'Adjusted' },
-        { value: 'paid', label: 'Paid' },
-        { value: 'cancelled', label: 'Cancelled' }
+        { value: 'all', label: t('All Statuses') },
+        { value: 'eligible', label: t('Eligible') },
+        { value: 'excluded', label: t('Excluded') },
+        { value: 'adjusted', label: t('Adjusted') },
+        { value: 'paid', label: t('Paid') },
+        { value: 'cancelled', label: t('Cancelled') }
     ];
+
+    var primeTypeLabels = {
+        with_parts: t('With Parts'),
+        without_parts: t('Without Parts'),
+        fixed_amount: t('Fixed Amount'),
+        calculated: t('Calculated')
+    };
+    var statusLabels = {
+        eligible: t('Eligible'),
+        excluded: t('Excluded'),
+        adjusted: t('Adjusted'),
+        paid: t('Paid'),
+        cancelled: t('Cancelled')
+    };
 
     // Load bonus instances for filter
     function loadInstances() {
@@ -34,7 +52,7 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
                 $scope.instances = response.data.items || response.data;
             })
             .catch(function() {
-                toastr.error('Failed to load bonus instances');
+                toastr.error(t('Failed to load bonus instances'));
             });
     }
 
@@ -84,11 +102,7 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
         }
         allocation.calculationInputs = allocation.calculationInputs || {};
         allocation._category = (allocation.templateId && allocation.templateId.category) || (allocation.instanceId && allocation.instanceId.templateId && allocation.instanceId.templateId.category) || null;
-        allocation._primeType = allocation._category === 'with_parts' ? 'With parts'
-            : allocation._category === 'without_parts' ? 'Without parts'
-            : allocation._category === 'fixed_amount' ? 'Fixed amount'
-            : allocation._category === 'calculated' ? 'Calculated'
-            : 'N/A';
+        allocation._primeType = primeTypeLabels[allocation._category] || t('N/A');
         return allocation;
     }
 
@@ -125,7 +139,7 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
                 }
             })
             .catch(function(error) {
-                toastr.error('Failed to load bonus allocations');
+                toastr.error(t('Failed to load bonus allocations'));
                 console.error('Error loading allocations:', error);
             })
             .finally(function() {
@@ -166,7 +180,7 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
 
     // Helper to display personnel
     $scope.getPersonnelDisplay = function(personnel) {
-        if (!personnel) return 'N/A';
+        if (!personnel) return t('N/A');
         try {
             if (personnel.name) {
                 if (personnel.name.text) return personnel.name.text;
@@ -176,9 +190,9 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
                 const combined = (family + ' ' + given).trim();
                 if (combined) return combined;
             }
-            return personnel.identifier || 'N/A';
+            return personnel.identifier || t('N/A');
         } catch (e) {
-            return personnel.identifier || 'N/A';
+            return personnel.identifier || t('N/A');
         }
     };
 
@@ -227,29 +241,29 @@ angular.module('app').controller('BonusAllocationsController', ['$scope', '$http
     };
 
     $scope.formatStatus = function(status) {
-        if (!status) return 'N/A';
-        return status.charAt(0).toUpperCase() + status.slice(1);
+        if (!status) return t('N/A');
+        return statusLabels[status] || status.charAt(0).toUpperCase() + status.slice(1);
     };
 
     $scope.getBonusName = function(allocation) {
-        if (!allocation) return 'N/A';
+        if (!allocation) return t('N/A');
         if (allocation.templateId && allocation.templateId.name) return allocation.templateId.name;
         if (allocation.instanceId && allocation.instanceId.templateId && allocation.instanceId.templateId.name) {
             return allocation.instanceId.templateId.name;
         }
-        return allocation.instanceId && allocation.instanceId.name ? allocation.instanceId.name : 'N/A';
+        return allocation.instanceId && allocation.instanceId.name ? allocation.instanceId.name : t('N/A');
     };
 
     $scope.formatInstanceLabel = function(instance) {
-        if (!instance) return 'N/A';
-        var bonusName = (instance.templateId && instance.templateId.name) || instance.name || 'Bonus';
+        if (!instance) return t('N/A');
+        var bonusName = (instance.templateId && instance.templateId.name) || instance.name || t('Bonus');
         var period = instance.referencePeriod || instance.reference || '';
         return period ? (bonusName + ' • ' + period) : bonusName;
     };
 
     $scope.formatCyclePeriod = function(instance) {
-        if (!instance) return 'N/A';
-        return instance.referencePeriod || instance.reference || 'N/A';
+        if (!instance) return t('N/A');
+        return instance.referencePeriod || instance.reference || t('N/A');
     };
 
     $scope.getCategory = getCategory;

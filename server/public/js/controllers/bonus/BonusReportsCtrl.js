@@ -1,4 +1,7 @@
-angular.module('app').controller('BonusReportsController', ['$scope', '$rootScope', '$http', 'toastr', '$timeout', '$q', function($scope, $rootScope, $http, toastr, $timeout, $q) {
+angular.module('app').controller('BonusReportsController', ['$scope', '$rootScope', '$http', 'toastr', '$timeout', '$q', 'gettextCatalog', function($scope, $rootScope, $http, toastr, $timeout, $q, gettextCatalog) {
+    function t(msgid) {
+        return gettextCatalog.getString(msgid);
+    }
     $scope.loading = false;          // main report loading (instances + allocations)
     $scope.exporting = false;        // PDF export in progress
     // Ensure kernel object exists on root scope for global progress indicator
@@ -37,17 +40,29 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         searchPersonnel: ''
     };
 
+    var instanceStatusLabels = {
+        draft: t('Draft'),
+        pending_generation: t('Pending Generation'),
+        generated: t('Generated'),
+        under_review: t('Under Review'),
+        approved: t('Approved'),
+        paid: t('Paid'),
+        cancelled: t('Cancelled')
+    };
+    function formatStatusLabel(status) {
+        return instanceStatusLabels[status] || String(status || '').replace(/_/g, ' ').replace(/\b\w/g, function(l){ return l.toUpperCase(); });
+    }
     const instanceStatuses = ['draft', 'pending_generation', 'generated', 'under_review', 'approved', 'paid', 'cancelled'];
-    $scope.statusOptions = [{ value: '', label: 'All statuses' }].concat(instanceStatuses.map(function(st) {
-        return { value: st, label: st.replace(/_/g, ' ').replace(/\b\w/g, function(l){ return l.toUpperCase(); }) };
+    $scope.statusOptions = [{ value: '', label: t('All Statuses') }].concat(instanceStatuses.map(function(st) {
+        return { value: st, label: formatStatusLabel(st) };
     }));
 
     $scope.categoryOptions = [
-        { value: '', label: 'All categories' },
-        { value: 'with_parts', label: 'Primes avec part' },
-        { value: 'without_parts', label: 'Primes sans part' },
-        { value: 'fixed_amount', label: 'Montant fixe' },
-        { value: 'calculated', label: 'Calculée' }
+        { value: '', label: t('All categories') },
+        { value: 'with_parts', label: t('With Parts') },
+        { value: 'without_parts', label: t('Without Parts') },
+        { value: 'fixed_amount', label: t('Fixed Amount') },
+        { value: 'calculated', label: t('Calculated') }
     ];
 
     function formatDate(date) {
@@ -94,7 +109,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
 
         const paymentDate = instance.paymentDate || instance.approvalDate || instance.updatedAt || instance.createdAt;
         const code = template && template.code ? template.code : '';
-        const name = template && template.name ? template.name : 'Bonus';
+        const name = template && template.name ? template.name : t('Bonus');
 
         return {
             _id: instance._id,
@@ -214,7 +229,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
             return grouped;
         }).catch(function(err) {
             console.error('Failed to load allocations by personnel', err);
-            toastr.error('Failed to load personnel allocations for report');
+            toastr.error(t('Failed to load personnel allocations for report'));
             return $q.when({});
         });
     }
@@ -237,7 +252,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
             })
             .catch(function(error) {
                 console.error('Failed to load bonus instances', error);
-                toastr.error('Failed to load bonus instances');
+                toastr.error(t('Failed to load bonus instances'));
                 return [];
             });
     }
@@ -355,7 +370,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
 
     $scope.exportPdf = function() {
         if (!$scope.filters.personnel || !$scope.filters.personnel._id) {
-            toastr.error('Sélectionnez un bénéficiaire pour exporter en PDF');
+            toastr.error(t('Sélectionnez un bénéficiaire pour exporter en PDF'));
             return;
         }
 
@@ -386,7 +401,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
             window.URL.revokeObjectURL(url);
         }).catch(function(err) {
             console.error('PDF export failed', err);
-            toastr.error('Impossible de générer le PDF. Réessayez plus tard.');
+            toastr.error(t('Impossible de générer le PDF. Réessayez plus tard.'));
         }).finally(function() {
             $scope.exporting = false;
         });
@@ -399,7 +414,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
             .then(function(response) {
                 $scope.templates = response.data || [];
             })
-            .catch(function() { toastr.error('Failed to load templates'); })
+            .catch(function() { toastr.error(t('Failed to load templates')); })
             .finally(function() {
                 scheduleRefresh(0);
             });

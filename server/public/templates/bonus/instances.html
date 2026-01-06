@@ -5,34 +5,34 @@
         <!-- Auto-generation alert -->
         <div class="alert alert-info alert-styled-left" ng-if="pendingAutoGenerations">
             <button type="button" class="close" data-dismiss="alert">×</button>
-            <span class="font-weight-semibold">{{pendingAutoGenerations}} bonuses</span> were auto-generated and need review.
-            <a href="#" ng-click="showPending()" class="alert-link">View pending instances</a>
+            <span class="font-weight-semibold" translate>{{pendingAutoGenerations}} bonuses</span> <span translate>were auto-generated and need review.</span>
+            <a href="#" ng-click="showPending()" class="alert-link" translate>View pending instances</a>
         </div>
 
         <!-- Content area -->
         <div class="content" ng-controller="BonusInstancesController">
             <!-- Basic card -->
-            <div class="card">
-                <div class="card-header header-elements-inline">
-                    <h5 class="card-title">Payout Cycles</h5>
+                <div class="card">
+                    <div class="card-header header-elements-inline">
+                    <h5 class="card-title" translate>Payout Cycles</h5>
                     <div class="header-elements">
                         <button type="button" class="btn btn-primary" ng-if="permissions.canCreateCycle" ng-click="createInstance()">
-                            <i class="mi-add mr-2"></i> Create New Cycle
+                            <i class="mi-add mr-2"></i> <span translate>Create New Cycle</span>
                         </button>
                         <div class="btn-group ml-2" ng-if="permissions.canBulkActions">
                             <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
-                                <i class="mi-playlist-add mr-2"></i> Bulk Actions
+                                <i class="mi-playlist-add mr-2"></i> <span translate>Bulk Actions</span>
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" ng-click="bulkApprove()">
-                                    <i class="mi-check-circle mr-2"></i> Approve Selected
+                                    <i class="mi-check-circle mr-2"></i> <span translate>Approve Selected</span>
                                 </a>
                                 <a class="dropdown-item" ng-click="bulkExport()">
-                                    <i class="mi-file-download mr-2"></i> Export Selected
+                                    <i class="mi-file-download mr-2"></i> <span translate>Export Selected</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" ng-click="bulkGeneratePayments()">
-                                    <i class="mi-payment mr-2"></i> Generate Payments
+                                    <i class="mi-payment mr-2"></i> <span translate>Generate Payments</span>
                                 </a>
                             </div>
                         </div>
@@ -52,21 +52,21 @@
                                     </div>
                                     <div class="flex-fill">
                                         <h6 class="mb-0">{{template.name}}</h6>
-                                        <span class="text-muted">{{template.periodicity | capitalize}}</span>
+                                        <span class="text-muted">{{getPeriodicityLabel(template.periodicity)}}</span>
                                         <span ng-if="template.periodicity !== 'on_demand'"
                                               class="badge badge-flat border-primary text-primary ml-2"
                                               title="Auto-generates {{template.periodicity}}ly">
-                                            <i class="mi-schedule"></i> Auto
+                                            <i class="mi-schedule"></i> <span translate>Auto</span>
                                         </span>
                                     </div>
                                     <div class="ml-3 text-right">
-                                        <div class="font-weight-semibold">{{template.instanceCount}} instances</div>
-                                        <span class="text-success">{{template.approvedPercentage}}% approved</span>
+                                        <div class="font-weight-semibold" translate>{{template.instanceCount}} instances</div>
+                                        <span class="text-success" translate>{{template.approvedPercentage}}% approved</span>
                                     </div>
                                 </div>
                                 <div class="mt-2">
                                     <button class="btn btn-sm btn-light" ng-if="permissions.canGenerateForTemplate" ng-click="generateForTemplate(template)">
-                                        <i class="mi-bolt mr-1"></i> Generate Now
+                                        <i class="mi-bolt mr-1"></i> <span translate>Generate Now</span>
                                     </button>
                                 </div>
                             </div>
@@ -78,44 +78,44 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Program</label>
-                                <select class="form-control" ng-model="filters.templateId" ng-change="loadInstances()">
-                                    <option value="">All Programs</option>
+	                            <div class="form-group">
+	                                <label translate>Program</label>
+	                                <select class="form-control" ng-model="filters.templateId" ng-change="loadInstances()">
+                                    <option value="" translate>All Programs</option>
                                     <option ng-repeat="template in templates" value="{{template._id}}">{{template.name}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="form-group">
-                                <label>Status</label>
-                                <select class="form-control" ng-model="filters.status" ng-change="loadInstances()">
-                                    <option value="">All Statuses</option>
-                                    <option value="draft">Draft</option>
-                                    <option value="under_review">Under Review</option>
-                                    <option value="approved">Approved</option>
-                                    <option value="paid">Paid</option>
-                                    <option value="cancelled">Cancelled</option>
+	                            <div class="form-group">
+	                                <label translate>Status</label>
+	                                <select class="form-control" ng-model="filters.status" ng-change="loadInstances()">
+                                    <option value="" translate>All Statuses</option>
+                                    <option value="draft" translate>Draft</option>
+                                    <option value="under_review" translate>Under Review</option>
+                                    <option value="approved" translate>Approved</option>
+                                    <option value="paid" translate>Paid</option>
+                                    <option value="cancelled" translate>Cancelled</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="form-group">
-                                <label>From Date</label>
-                                <input type="date" class="form-control" ng-model="filters.fromDate" ng-change="loadInstances()">
+	                            <div class="form-group">
+	                                <label translate>From Date</label>
+	                                <input type="date" class="form-control" ng-model="filters.fromDate" ng-change="loadInstances()">
                             </div>
                         </div>
                         <div class="col-md-2">
-                            <div class="form-group">
-                                <label>To Date</label>
-                                <input type="date" class="form-control" ng-model="filters.toDate" ng-change="loadInstances()">
+	                            <div class="form-group">
+	                                <label translate>To Date</label>
+	                                <input type="date" class="form-control" ng-model="filters.toDate" ng-change="loadInstances()">
                             </div>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
                                 <label>&nbsp;</label>
                                 <button class="btn btn-light btn-block" ng-click="resetFilters()">
-                                    <i class="mi-refresh mr-2"></i> Reset
+                                    <i class="mi-refresh mr-2"></i> <span translate>Reset</span>
                                 </button>
                             </div>
                         </div>
@@ -128,13 +128,13 @@
                         <thead>
                         <tr>
                             <th style="width: 5%;"></th> <!-- Checkbox column -->
-                            <th>Name</th>
-                            <th>Program</th>
-                            <th>Period</th>
-                            <th>Status</th>
-                            <th class="text-center">Allocations</th>
-                            <th class="text-right">Total Amount</th>
-                            <th class="text-center">Actions</th>
+                            <th translate>Name</th>
+                            <th translate>Program</th>
+                            <th translate>Period</th>
+                            <th translate>Status</th>
+                            <th class="text-center" translate>Allocations</th>
+                            <th class="text-right" translate>Total Amount</th>
+                            <th class="text-center" translate>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -163,7 +163,7 @@
                                             }"></div>
                                     </div>
                                     <div>
-                                        <span class="d-block font-weight-semibold">{{instance.status | capitalize}}</span>
+                                        <span class="d-block font-weight-semibold">{{getStatusLabel(instance.status)}}</span>
                                         <small class="text-muted" ng-if="instance.generationDate">
                                             {{getStatusTimeline(instance)}}
                                         </small>
@@ -178,34 +178,34 @@
                             <td class="text-center">
                                 <div class="dropdown">
                                     <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                        Actions
+                                        <span translate>Actions</span>
                                     </button>
                                     <div class="dropdown-menu dropdown-menu-right" style="z-index: 2050; position: fixed;">
                                         <a class="dropdown-item" ng-click="viewDetails(instance)">
-                                            <i class="mi-visibility mr-2"></i> View Details
+                                            <i class="mi-visibility mr-2"></i> <span translate>View Details</span>
                                         </a>
                                         <a class="dropdown-item" ng-if="permissions.canApproveInstance && (instance.status === 'generated' || instance.status === 'under_review')" ng-click="approve(instance)">
-                                            <i class="mi-check-circle mr-2"></i> Approve
+                                            <i class="mi-check-circle mr-2"></i> <span translate>Approve</span>
                                         </a>
                                         <a class="dropdown-item" ng-if="permissions.canGeneratePayments && instance.status === 'approved'" ng-click="generatePayments(instance)">
-                                            <i class="mi-payment mr-2"></i> Generate Payments
+                                            <i class="mi-payment mr-2"></i> <span translate>Generate Payments</span>
                                         </a>
                                         <div class="dropdown-divider" ng-if="permissions.canManageCycle || permissions.canNotify || permissions.canCancelInstance"></div>
                                         <a class="dropdown-item" ng-click="openWizard(instance)" ng-if="permissions.canManageCycle && instance.status !== 'cancelled'">
-                                            <i class="mi-assignment mr-2"></i> Manage in Wizard
+                                            <i class="mi-assignment mr-2"></i> <span translate>Manage in Wizard</span>
                                         </a>
                                         <a class="dropdown-item" ng-click="exportExcel(instance)">
-                                            <i class="mi-file-excel mr-2"></i> Export Excel
+                                            <i class="mi-file-excel mr-2"></i> <span translate>Export Excel</span>
                                         </a>
                                         <a class="dropdown-item" ng-click="exportPDF(instance)">
-                                            <i class="mi-picture-as-pdf mr-2"></i> Export PDF
+                                            <i class="mi-picture-as-pdf mr-2"></i> <span translate>Export PDF</span>
                                         </a>
                                         <div class="dropdown-divider" ng-if="permissions.canNotify || permissions.canCancelInstance"></div>
                                         <a class="dropdown-item" ng-if="permissions.canNotify" ng-click="notify(instance)">
-                                            <i class="mi-notifications mr-2"></i> Send Notifications
+                                            <i class="mi-notifications mr-2"></i> <span translate>Send Notifications</span>
                                         </a>
                                         <a class="dropdown-item text-danger" ng-if="permissions.canCancelInstance" ng-click="cancelInstance(instance)">
-                                            <i class="mi-delete mr-2"></i> Cancel Instance
+                                            <i class="mi-delete mr-2"></i> <span translate>Cancel Instance</span>
                                         </a>
                                     </div>
                                 </div>
@@ -214,13 +214,13 @@
                         <tr ng-if="!instances.length && !loading">
                             <td colspan="9" class="text-center text-muted p-4">
                                 <i class="mi-info-outline d-block mb-2" style="font-size: 2rem;"></i>
-                                <p class="mb-0">No bonus instances found</p>
+                                <p class="mb-0" translate>No bonus instances found</p>
                             </td>
                         </tr>
                         <tr ng-if="loading">
                             <td colspan="9" class="text-center p-4">
                                 <div class="spinner-border text-primary" role="status">
-                                    <span class="sr-only">Loading...</span>
+                                    <span class="sr-only" translate>Loading...</span>
                                 </div>
                             </td>
                         </tr>
@@ -230,18 +230,18 @@
 
                 <!-- Pagination -->
                 <div class="card-footer d-flex justify-content-between align-items-center">
-                    <span class="text-muted">
+                    <span class="text-muted" translate>
                         Showing {{(pagination.offset + 1)}} to {{Math.min(pagination.offset + pagination.limit, pagination.total)}} of {{pagination.total}} entries
                     </span>
                     <ul class="pagination pagination-flat mb-0">
                         <li class="page-item" ng-class="{disabled: pagination.offset === 0}">
                             <a class="page-link" href="#" ng-click="prevPage()">
-                                <i class="mi-chevron-left"></i> Previous
+                                <i class="mi-chevron-left"></i> <span translate>Previous</span>
                             </a>
                         </li>
                         <li class="page-item" ng-class="{disabled: (pagination.offset + pagination.limit) >= pagination.total}">
                             <a class="page-link" href="#" ng-click="nextPage()">
-                                Next <i class="mi-chevron-right"></i>
+                                <span translate>Next</span> <i class="mi-chevron-right"></i>
                             </a>
                         </li>
                     </ul>

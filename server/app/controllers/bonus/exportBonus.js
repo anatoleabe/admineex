@@ -4,12 +4,18 @@ const { PersonnelSnapshot } = require('../../models/bonus/personnelSnapshot');
 const { getActorStructureTokens, isSnapshotInStructures } = require('../../utils/structureScope');
 const { forbidden } = require('../../utils/ApiError');
 const audit = require('../../utils/audit-log');
+const dictionary = require('../../utils/dictionary');
 
 function getActorId(req) {
     if (req && req.actor && req.actor.id) return req.actor.id;
     if (req && req.user && req.user.id) return req.user.id;
     if (req && req.user && req.user._id) return req.user._id;
     return '[anonymous]';
+}
+
+function t(req, msgid) {
+    const language = (req && req.actor && req.actor.language) || (req && req.user && req.user.language) || '';
+    return dictionary.translator(language).gettext(msgid);
 }
 
 /**
@@ -27,21 +33,21 @@ exports.exportPersonnelBonusHistory = async (req, res) => {
 
         if (!personnelId) {
             return res.status(httpStatus.BAD_REQUEST).json({
-                message: 'Personnel ID is required'
+                message: t(req, 'Personnel ID is required')
             });
         }
 
         if (req.actor && String(req.actor.role) === '2') {
             const tokens = getActorStructureTokens(req.actor);
             if (!tokens.size) {
-                throw forbidden('Forbidden');
+                throw forbidden(t(req, 'Forbidden'));
             }
             const latestSnapshot = await PersonnelSnapshot.findOne({ personnelId })
                 .sort({ snapshotDate: -1 })
                 .select('_id data')
                 .lean();
             if (!latestSnapshot || !isSnapshotInStructures(latestSnapshot, tokens)) {
-                throw forbidden('Forbidden');
+                throw forbidden(t(req, 'Forbidden'));
             }
         }
 
@@ -49,7 +55,7 @@ exports.exportPersonnelBonusHistory = async (req, res) => {
         if (format === 'excel') {
             // Not implemented yet
             return res.status(httpStatus.NOT_IMPLEMENTED).json({
-                message: 'Excel export not implemented yet'
+                message: t(req, 'Excel export not implemented yet')
             });
         }
 
@@ -73,7 +79,7 @@ exports.exportPersonnelBonusHistory = async (req, res) => {
         console.error('Error exporting bonus history to PDF:', error);
         audit.logEvent(getActorId(req), 'bonus/exportBonus', 'export_pdf', 'PersonnelBonusHistory', (req.query && req.query.personnelId) || (req.params && req.params.personnelId) || '', 'failed', error && error.message ? error.message : String(error));
         res.status(500).json({
-            message: error.message || 'Failed to export bonus history to PDF'
+            message: (error && error.message) ? error.message : t(req, 'Failed to export bonus history to PDF')
         });
     }
 };

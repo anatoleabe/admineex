@@ -1,6 +1,7 @@
 const { exportBonusToExcel } = require('../../services/exportService');
 const { BonusInstance } = require('../../models/bonus/instance');
 const audit = require('../../utils/audit-log');
+const dictionary = require('../../utils/dictionary');
 
 function getActorId(req) {
     if (req && req.actor && req.actor.id) return req.actor.id;
@@ -9,11 +10,16 @@ function getActorId(req) {
     return '[anonymous]';
 }
 
+function t(req, msgid) {
+    const language = (req && req.actor && req.actor.language) || (req && req.user && req.user.language) || '';
+    return dictionary.translator(language).gettext(msgid);
+}
+
 exports.handleExcelExport = async (req, res) => {
     try {
         const instance = await BonusInstance.findById(req.params.id);
         if (!instance) {
-            return res.status(404).json({ message: 'Instance not found' });
+            return res.status(404).json({ message: t(req, 'Instance not found') });
         }
 
         const workbook = await exportBonusToExcel(instance, { actor: req.actor });
@@ -30,6 +36,6 @@ exports.handleExcelExport = async (req, res) => {
     } catch (error) {
         console.error('Export error:', error);
         audit.logEvent(getActorId(req), 'bonus/exportController', 'export_excel', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
-        res.status(500).json({ message: 'Export failed', error: error.message });
+        res.status(500).json({ message: t(req, 'Export failed'), error: error && error.message ? error.message : String(error) });
     }
 };

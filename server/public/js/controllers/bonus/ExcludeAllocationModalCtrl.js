@@ -1,5 +1,8 @@
 angular.module('app')
-.controller('ExcludeAllocationModalCtrl', ['$scope', '$http', '$mdDialog', 'toastr', 'allocation', function($scope, $http, $mdDialog, toastr, allocation) {
+.controller('ExcludeAllocationModalCtrl', ['$scope', '$http', '$mdDialog', 'toastr', 'allocation', 'gettextCatalog', function($scope, $http, $mdDialog, toastr, allocation, gettextCatalog) {
+    function t(msgid) {
+        return gettextCatalog.getString(msgid);
+    }
     function computeIsSansPart(data) {
         if (!data) return false;
         if (data.isSansPart === true) return true;
@@ -44,7 +47,7 @@ angular.module('app')
 
         var reason = getTrimmedReason();
         if (!reason || reason.length < $scope.minReasonLength) {
-            toastr.error('Please provide a reason (min ' + $scope.minReasonLength + ' characters).');
+            toastr.error(t('Please provide a reason (min ') + $scope.minReasonLength + t(' characters).'));
             return;
         }
 
@@ -60,19 +63,19 @@ angular.module('app')
         .then(function(response) {
             $scope.excluding = false;
             $mdDialog.hide(response.data); // return updated allocation to caller
-            toastr.success('Allocation excluded');
+            toastr.success(t('Allocation excluded'));
         })
         .catch(function(error) {
             console.error('Error excluding allocation', error);
             $scope.excluding = false;
             if (error.status === 403) {
-                toastr.error('Instance is approved or paid; exclusion not allowed');
+                toastr.error(t('Instance is approved or paid; exclusion not allowed'));
             } else if (error.status === 404) {
-                toastr.error('Allocation not found');
+                toastr.error(t('Allocation not found'));
             } else if (error.data && error.data.message) {
                 toastr.error(error.data.message);
             } else {
-                toastr.error('Could not exclude allocation');
+                toastr.error(t('Could not exclude allocation'));
             }
         });
     };

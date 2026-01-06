@@ -1,19 +1,19 @@
 <div class="modal-content">
     <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title"><i class="icon-coin-dollar mr-2"></i>Update Share Amount</h5>
+        <h5 class="modal-title"><i class="icon-coin-dollar mr-2"></i><span translate>Update Share Amount</span></h5>
         <button type="button" class="close text-white" ng-click="cancel()">&times;</button>
     </div>
 
     <div class="modal-body">
         <div class="alert alert-info mb-4">
             <i class="icon-info22 mr-2"></i>
-            <strong>Important:</strong> Changing the share amount will recalculate all allocations in this bonus instance.
-            This operation cannot be undone.
+            <strong translate>Important:</strong> <span translate>Changing the share amount will recalculate all allocations in this bonus instance.</span>
+            <span translate>This operation cannot be undone.</span>
         </div>
 
         <!-- Current Share Amount -->
         <div class="form-group">
-            <label class="font-weight-semibold">Current Share Amount:</label>
+            <label class="font-weight-semibold" translate>Current Share Amount:</label>
             <div class="form-control-plaintext bg-light rounded p-2 text-right font-weight-bold">
                 {{formData.currentShareAmount | number:0}} FCFA
             </div>
@@ -21,14 +21,14 @@
 
         <!-- New Share Amount -->
         <div class="form-group">
-            <label class="font-weight-semibold">New Share Amount:</label>
+            <label class="font-weight-semibold" translate>New Share Amount:</label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="icon-coin-dollar"></i></span>
                 </div>
                 <input type="number" class="form-control form-control-lg" ng-model="formData.newShareAmount" min="1" required>
                 <div class="input-group-append">
-                    <span class="input-group-text">FCFA</span>
+                    <span class="input-group-text" translate>FCFA</span>
                 </div>
             </div>
         </div>
@@ -42,10 +42,10 @@
             <div class="d-flex align-items-center">
                 <i class="icon-info22 mr-3" style="font-size: 1.5rem;"></i>
                 <div>
-                    <h6 class="font-weight-semibold mb-0">Change Summary</h6>
+                    <h6 class="font-weight-semibold mb-0" translate>Change Summary</h6>
                     <div ng-if="formData.newShareAmount != formData.currentShareAmount">
                         <div>
-                            Change Amount:
+                            <span translate>Change Amount:</span>
                             <span class="font-weight-bold" ng-class="{
                                 'text-success': formData.newShareAmount > formData.currentShareAmount,
                                 'text-danger': formData.newShareAmount < formData.currentShareAmount
@@ -54,7 +54,7 @@
                             </span>
                         </div>
                         <div>
-                            Change Percentage:
+                            <span translate>Change Percentage:</span>
                             <span class="font-weight-bold" ng-class="{
                                 'text-success': formData.newShareAmount > formData.currentShareAmount,
                                 'text-danger': formData.newShareAmount < formData.currentShareAmount
@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div ng-if="formData.newShareAmount == formData.currentShareAmount">
-                        No change in amount
+                        <span translate>No change in amount</span>
                     </div>
                 </div>
             </div>
@@ -73,13 +73,13 @@
         <!-- Reason for Change -->
         <div class="form-group mt-3">
             <label class="font-weight-semibold">
-                Reason for Change:
+                <span translate>Reason for Change:</span>
                 <span class="text-danger">*</span>
             </label>
             <textarea class="form-control" rows="3" ng-model="formData.reason"
                       placeholder="Enter reason for changing share amount... (required)" required></textarea>
             <small class="form-text text-muted">
-                Please provide a clear reason for this change. This will be recorded in the history.
+                <span translate>Please provide a clear reason for this change. This will be recorded in the history.</span>
             </small>
         </div>
 
@@ -87,7 +87,7 @@
         <div class="card shadow-sm mt-4" ng-if="instance.shareAmountHistory && instance.shareAmountHistory.length > 0">
             <div class="card-header bg-light">
                 <h6 class="mb-0 font-weight-semibold">
-                    <i class="icon-history mr-2"></i>Share Amount History
+                    <i class="icon-history mr-2"></i><span translate>Share Amount History</span>
                 </h6>
             </div>
             <div class="card-body p-0">
@@ -95,11 +95,11 @@
                     <table class="table table-sm table-striped mb-0">
                         <thead class="thead-light">
                             <tr>
-                                <th>Date</th>
-                                <th>Previous Amount</th>
-                                <th>New Amount</th>
-                                <th>Changed By</th>
-                                <th>Reason</th>
+                                <th translate>Date</th>
+                                <th translate>Previous Amount</th>
+                                <th translate>New Amount</th>
+                                <th translate>Changed By</th>
+                                <th translate>Reason</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -118,12 +118,12 @@
     </div>
 
     <div class="modal-footer bg-light">
-        <button type="button" class="btn btn-link" ng-click="cancel()">Cancel</button>
+        <button type="button" class="btn btn-link" ng-click="cancel()" translate>Cancel</button>
         <button type="button" class="btn btn-primary" ng-click="save()"
                 ng-disabled="updating || !formData.reason || !formData.newShareAmount || formData.newShareAmount <= 0">
             <i class="icon-spinner2 spinner mr-1" ng-if="updating"></i>
             <i class="icon-checkmark3 mr-1" ng-if="!updating"></i>
-            Update Share Amount
+            <span translate>Update Share Amount</span>
         </button>
     </div>
 </div>

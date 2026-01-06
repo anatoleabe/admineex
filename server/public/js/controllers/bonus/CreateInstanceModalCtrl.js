@@ -4,7 +4,11 @@ angular.module('app').controller('CreateInstanceModalCtrl', [
     'toastr',
     '$uibModalInstance',
     'templates',
-    function($scope, $http, toastr, $uibModalInstance, templates) {
+    'gettextCatalog',
+    function($scope, $http, toastr, $uibModalInstance, templates, gettextCatalog) {
+        function t(msgid) {
+            return gettextCatalog.getString(msgid);
+        }
         $scope.templates = templates;
         $scope.instance = {
             templateId: '',
@@ -22,7 +26,7 @@ angular.module('app').controller('CreateInstanceModalCtrl', [
                     $uibModalInstance.close(response.data);
                 })
                 .catch(function(error) {
-                    toastr.error('Failed to create bonus instance');
+                    toastr.error(t('Failed to create bonus instance'));
                 });
         };
 

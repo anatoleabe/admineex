@@ -1,26 +1,26 @@
 <div class="modal-content">
     <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title"><i class="icon-calculator mr-2"></i>Update Tax Configuration</h5>
+        <h5 class="modal-title"><i class="icon-calculator mr-2"></i><span translate>Update Tax Configuration</span></h5>
         <button type="button" class="close text-white" ng-click="cancel()">&times;</button>
     </div>
 
     <div class="modal-body">
         <div class="alert alert-info mb-4">
             <i class="icon-info22 mr-2"></i>
-            <strong>Important:</strong> Changing the tax configuration will affect the final amount for all allocations in this bonus instance.
-            This operation cannot be undone.
+            <strong translate>Important:</strong> <span translate>Changing the tax configuration will affect the final amount for all allocations in this bonus instance.</span>
+            <span translate>This operation cannot be undone.</span>
         </div>
 
         <!-- Current Tax Configuration -->
         <div class="form-group">
-            <label class="font-weight-semibold">Current Tax Name:</label>
+            <label class="font-weight-semibold" translate>Current Tax Name:</label>
             <div class="form-control-plaintext bg-light rounded p-2">
                 {{formData.currentTaxName}}
             </div>
         </div>
 
         <div class="form-group">
-            <label class="font-weight-semibold">Current Tax Percentage:</label>
+            <label class="font-weight-semibold" translate>Current Tax Percentage:</label>
             <div class="form-control-plaintext bg-light rounded p-2 text-right font-weight-bold">
                 {{formData.currentTaxPercentage | number:2}}%
             </div>
@@ -28,7 +28,7 @@
 
         <!-- New Tax Configuration -->
         <div class="form-group">
-            <label class="font-weight-semibold">New Tax Name:</label>
+            <label class="font-weight-semibold" translate>New Tax Name:</label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="icon-typewriter"></i></span>
@@ -38,7 +38,7 @@
         </div>
 
         <div class="form-group">
-            <label class="font-weight-semibold">New Tax Percentage:</label>
+            <label class="font-weight-semibold" translate>New Tax Percentage:</label>
             <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="icon-percent"></i></span>
@@ -59,10 +59,10 @@
             <div class="d-flex align-items-center">
                 <i class="icon-info22 mr-3" style="font-size: 1.5rem;"></i>
                 <div>
-                    <h6 class="font-weight-semibold mb-0">Change Summary</h6>
+                    <h6 class="font-weight-semibold mb-0" translate>Change Summary</h6>
                     <div ng-if="formData.newTaxPercentage != formData.currentTaxPercentage">
                         <div>
-                            Change Amount:
+                            <span translate>Change Amount:</span>
                             <span class="font-weight-bold" ng-class="{
                                 'text-success': formData.newTaxPercentage < formData.currentTaxPercentage,
                                 'text-danger': formData.newTaxPercentage > formData.currentTaxPercentage
@@ -71,17 +71,17 @@
                             </span>
                         </div>
                         <div>
-                            Impact on Net Amount:
+                            <span translate>Impact on Net Amount:</span>
                             <span class="font-weight-bold" ng-class="{
                                 'text-success': formData.newTaxPercentage < formData.currentTaxPercentage,
                                 'text-danger': formData.newTaxPercentage > formData.currentTaxPercentage
                             }">
-                                {{formData.newTaxPercentage < formData.currentTaxPercentage ? 'Higher' : 'Lower'}} net payments
+                                {{formData.newTaxPercentage < formData.currentTaxPercentage ? taxImpactHigherLabel : taxImpactLowerLabel}} <span translate>net payments</span>
                             </span>
                         </div>
                     </div>
                     <div ng-if="formData.newTaxPercentage == formData.currentTaxPercentage">
-                        No change in tax percentage
+                        <span translate>No change in tax percentage</span>
                     </div>
                 </div>
             </div>
@@ -90,13 +90,13 @@
         <!-- Reason for Change -->
         <div class="form-group mt-3">
             <label class="font-weight-semibold">
-                Reason for Change:
+                <span translate>Reason for Change:</span>
                 <span class="text-danger">*</span>
             </label>
             <textarea class="form-control" rows="3" ng-model="formData.reason"
                       placeholder="Enter reason for changing tax configuration... (required)" required></textarea>
             <small class="form-text text-muted">
-                Please provide a clear reason for this change. This will be recorded in the history.
+                <span translate>Please provide a clear reason for this change. This will be recorded in the history.</span>
             </small>
         </div>
 
@@ -104,7 +104,7 @@
         <div class="card shadow-sm mt-4" ng-if="instance.taxConfigHistory && instance.taxConfigHistory.length > 0">
             <div class="card-header bg-light">
                 <h6 class="mb-0 font-weight-semibold">
-                    <i class="icon-history mr-2"></i>Tax Configuration History
+                    <i class="icon-history mr-2"></i><span translate>Tax Configuration History</span>
                 </h6>
             </div>
             <div class="card-body p-0">
@@ -112,13 +112,13 @@
                     <table class="table table-sm table-striped mb-0">
                         <thead class="thead-light">
                             <tr>
-                                <th>Date</th>
-                                <th>Previous Name</th>
-                                <th>Previous %</th>
-                                <th>New Name</th>
-                                <th>New %</th>
-                                <th>Changed By</th>
-                                <th>Reason</th>
+                                <th translate>Date</th>
+                                <th translate>Previous Name</th>
+                                <th translate>Previous %</th>
+                                <th translate>New Name</th>
+                                <th translate>New %</th>
+                                <th translate>Changed By</th>
+                                <th translate>Reason</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -139,12 +139,12 @@
     </div>
 
     <div class="modal-footer bg-light">
-        <button type="button" class="btn btn-link" ng-click="cancel()">Cancel</button>
+        <button type="button" class="btn btn-link" ng-click="cancel()" translate>Cancel</button>
         <button type="button" class="btn btn-primary" ng-click="save()"
                 ng-disabled="updating || !formData.reason || !formData.newTaxName || formData.newTaxPercentage === undefined">
             <i class="icon-spinner2 spinner mr-1" ng-if="updating"></i>
             <i class="icon-checkmark3 mr-1" ng-if="!updating"></i>
-            Update Tax Configuration
+            <span translate>Update Tax Configuration</span>
         </button>
     </div>
 </div>

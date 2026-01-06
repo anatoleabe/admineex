@@ -5,9 +5,15 @@ const { BonusInstance } = require('../../models/bonus/instance');
 const { generateBonusesForPeriod, generateBonusesForTemplate } = require('../../services/bonusgeneration');
 const formidable = require('formidable');
 const audit = require('../../utils/audit-log');
-const { badRequest} = require('../../utils/ApiError');
+const dictionary = require('../../utils/dictionary');
+const { badRequest, notFound } = require('../../utils/ApiError');
 
 exports.api = {};
+
+function t(req, msgid) {
+    const language = (req && req.actor && req.actor.language) || (req && req.user && req.user.language) || '';
+    return dictionary.translator(language).gettext(msgid);
+}
 
 function getActorId(req) {
     if (req && req.actor && req.actor.id) return req.actor.id;
@@ -46,7 +52,7 @@ exports.api.generatePeriodicBonuses = async (req, res, next) => {
 
     const form = formidable({ multiples: true });
     form.parse(req, async (err, fields, files) => {
-        if (err) return next(badRequest('Form parsing failed'));
+        if (err) return next(badRequest(t(req, 'Form parsing failed')));
         return handleFields(fields);
     });
 };
@@ -60,20 +66,20 @@ exports.api.generateTemplateBonuses = async (req, res, next) => {
 
         // Validate templateId and referencePeriod
         if (!templateId || !referencePeriod) {
-            throw badRequest('templateId and referencePeriod are required');
+            throw badRequest(t(req, 'templateId and referencePeriod are required'));
         }
 
         if (!moment(referencePeriod, 'YYYY-MM', true).isValid()) {
-            throw badRequest('Invalid referencePeriod format. Expected format: YYYY-MM');
+            throw badRequest(t(req, 'Invalid referencePeriod format. Expected format: YYYY-MM'));
         }
 
         const template = await BonusTemplate.findById(templateId);
         if (!template) {
-            throw notFound('Bonus template not found');
+            throw notFound(t(req, 'Bonus template not found'));
         }
 
         if (!template.isActive) {
-            throw badRequest('Cannot generate bonuses for an inactive template');
+            throw badRequest(t(req, 'Cannot generate bonuses for an inactive template'));
         }
 
         const result = await generateBonusesForTemplate(templateId, referencePeriod);

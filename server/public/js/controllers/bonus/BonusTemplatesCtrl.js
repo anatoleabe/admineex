@@ -1,7 +1,11 @@
 angular.module('app')
-    .controller('BonusTemplatesController', ['$scope', '$rootScope', '$http', '$q', '$timeout', '$ocLazyLoad', '$injector', 'toastr', function($scope, $rootScope, $http, $q, $timeout, $ocLazyLoad, $injector, toastr) {
+    .controller('BonusTemplatesController', ['$scope', '$rootScope', '$http', '$q', '$timeout', '$ocLazyLoad', '$injector', 'toastr', 'gettextCatalog', function($scope, $rootScope, $http, $q, $timeout, $ocLazyLoad, $injector, toastr, gettextCatalog) {
         // Ensure kernel exists for this scope so views using kernel.loading work
         $scope.kernel = $scope.kernel || { loading: 100 };
+        function t(msgid) {
+            return gettextCatalog.getString(msgid);
+        }
+
         const role = ($rootScope.account && $rootScope.account.role) ? String($rootScope.account.role) : '';
         $scope.permissions = {
             canManageTemplates: role === '1'
@@ -20,6 +24,19 @@ angular.module('app')
         $scope.editingTemplate = null;
         $scope.viewedTemplate = null;
         $scope.templateFormData = null;
+
+        $scope.noDescriptionLabel = t('No description');
+        $scope.naLabel = t('N/A');
+        $scope.editTemplateLabel = t('Edit Template');
+        $scope.newTemplateLabel = t('New Template');
+        $scope.editBonusTemplateLabel = t('Edit Bonus Template');
+        $scope.createBonusTemplateLabel = t('Create New Bonus Template');
+        $scope.updateTemplateLabel = t('Update Template');
+        $scope.createTemplateLabel = t('Create Template');
+
+        $scope.getActiveLabel = function(isActive) {
+            return isActive ? t('Active') : t('Inactive');
+        };
 
         // Stats
         $scope.stats = { active: 0, inactive: 0 };
@@ -45,38 +62,38 @@ angular.module('app')
         // Constants for dropdown options
         $scope.constants = {
             categories: [
-                { value: 'with_parts', label: 'With Parts' },
-                { value: 'without_parts', label: 'Without Parts' },
-                { value: 'fixed_amount', label: 'Fixed Amount' },
-                { value: 'calculated', label: 'Calculated' }
+                { value: 'with_parts', label: t('With Parts') },
+                { value: 'without_parts', label: t('Without Parts') },
+                { value: 'fixed_amount', label: t('Fixed Amount') },
+                { value: 'calculated', label: t('Calculated') }
             ],
             periodicities: [
-                { value: 'daily', label: 'Daily' },
-                { value: 'weekly', label: 'Weekly' },
-                { value: 'monthly', label: 'Monthly' },
-                { value: 'quarterly', label: 'Quarterly' },
-                { value: 'semesterly', label: 'Semesterly' },
-                { value: 'yearly', label: 'Yearly' },
-                { value: 'on_demand', label: 'On Demand' }
+                { value: 'daily', label: t('Daily') },
+                { value: 'weekly', label: t('Weekly') },
+                { value: 'monthly', label: t('Monthly') },
+                { value: 'quarterly', label: t('Quarterly') },
+                { value: 'semesterly', label: t('Semesterly') },
+                { value: 'yearly', label: t('Yearly') },
+                { value: 'on_demand', label: t('On Demand') }
             ],
             formulaTypes: [
-                { value: 'fixed', label: 'Fixed Amount' },
-                { value: 'percentage', label: 'Percentage Based' },
-                { value: 'custom_formula', label: 'Custom Formula' },
-                { value: 'parts_based', label: 'Parts Based' }
+                { value: 'fixed', label: t('Fixed Amount') },
+                { value: 'percentage', label: t('Percentage Based') },
+                { value: 'custom_formula', label: t('Custom Formula') },
+                { value: 'parts_based', label: t('Parts Based') }
             ],
             operators: [
-                { value: 'equals', label: 'Equals' },
-                { value: 'not_equals', label: 'Not Equals' },
-                { value: 'contains', label: 'Contains' },
-                { value: 'greater_than', label: 'Greater Than' },
-                { value: 'less_than', label: 'Less Than' },
-                { value: 'in', label: 'In' },
-                { value: 'not_in', label: 'Not In' }
+                { value: 'equals', label: t('Equals') },
+                { value: 'not_equals', label: t('Not Equals') },
+                { value: 'contains', label: t('Contains') },
+                { value: 'greater_than', label: t('Greater Than') },
+                { value: 'less_than', label: t('Less Than') },
+                { value: 'in', label: t('In') },
+                { value: 'not_in', label: t('Not In') }
             ],
             approvalTypes: [
-                { value: 'sequential', label: 'Sequential' },
-                { value: 'parallel', label: 'Parallel' }
+                { value: 'sequential', label: t('Sequential') },
+                { value: 'parallel', label: t('Parallel') }
             ],
             ruleFields: [
                 { value: 'status', label: 'Statut' },
@@ -785,7 +802,7 @@ angular.module('app')
                     $scope.applyFilters(true);
                 })
                 .catch(function(err) {
-                    toastr.error('Failed to load bonus programs');
+                    toastr.error(t('Failed to load bonus programs'));
                     console.error('Error loading bonus templates:', err);
                 })
                 .finally(function() {
@@ -797,7 +814,7 @@ angular.module('app')
         // Toggle active status
         $scope.toggleActive = function(template) {
             if (!$scope.permissions.canManageTemplates) {
-                toastr.error('Not authorized');
+                toastr.error(t('Not authorized'));
                 template.isActive = !template.isActive;
                 return;
             }
@@ -811,11 +828,11 @@ angular.module('app')
                         template.isActive = res.data.isActive !== undefined ? res.data.isActive : template.isActive;
                     }
                     computeStats();
-                    toastr.success('Template ' + (template.isActive ? 'activated' : 'deactivated'), 'Success');
+                    toastr.success(t('Template ') + (template.isActive ? t('activated') : t('deactivated')), t('Success'));
                 })
                 .catch(function(err) {
                     console.error('Error updating status:', err);
-                    toastr.error('Failed to update status', 'Error');
+                    toastr.error(t('Failed to update status'), t('Error'));
                     // Revert toggle on error
                     template.isActive = !template.isActive;
                 })
@@ -844,7 +861,7 @@ angular.module('app')
         // Open create form
         $scope.openTemplateForm = function() {
             if (!$scope.permissions.canManageTemplates) {
-                toastr.error('Not authorized');
+                toastr.error(t('Not authorized'));
                 return;
             }
             $scope.editingTemplate = null;
@@ -856,7 +873,7 @@ angular.module('app')
         // Edit template
         $scope.editTemplate = function(template) {
             if (!$scope.permissions.canManageTemplates) {
-                toastr.error('Not authorized');
+                toastr.error(t('Not authorized'));
                 return;
             }
             $scope.editingTemplate = template;
@@ -998,12 +1015,12 @@ angular.module('app')
         // Save template
         $scope.saveTemplate = function() {
             if (!$scope.permissions.canManageTemplates) {
-                toastr.error('Not authorized');
+                toastr.error(t('Not authorized'));
                 return;
             }
             const validationErrors = validateTemplate($scope.templateFormData);
             if (validationErrors) {
-                validationErrors.forEach(error => toastr.warning(error, 'Validation Error'));
+                validationErrors.forEach(error => toastr.warning(error, t('Validation Error')));
                 return;
             }
 
@@ -1015,14 +1032,14 @@ angular.module('app')
 
             $http[method](url, cleanedData)
                 .then(function() {
-                    toastr.success('Template saved successfully', 'Success');
+                    toastr.success(t('Template saved successfully'), t('Success'));
                     loadTemplates();
                     $scope.closeTemplateForm();
                 })
                 .catch(function(error) {
                     console.error('Error saving template:', error);
-                    const errorMsg = error.data && error.data.message ? error.data.message : 'Error saving template';
-                    toastr.error(errorMsg, 'Error');
+                    const errorMsg = error.data && error.data.message ? error.data.message : t('Error saving template');
+                    toastr.error(errorMsg, t('Error'));
                 })
                 .finally(function() {
                     $scope.state.saving = false;
@@ -1032,10 +1049,10 @@ angular.module('app')
         // Delete template
         $scope.confirmDelete = function(template) {
             if (!$scope.permissions.canManageTemplates) {
-                toastr.error('Not authorized');
+                toastr.error(t('Not authorized'));
                 return;
             }
-            if (!confirm('Are you sure you want to delete this template? This action cannot be undone.')) {
+            if (!confirm(t('Are you sure you want to delete this template? This action cannot be undone.'))) {
                 return;
             }
 
@@ -1043,13 +1060,13 @@ angular.module('app')
 
             $http.delete('/api/bonus/templates/' + template._id)
                 .then(function() {
-                    toastr.success('Template deleted successfully', 'Success');
+                    toastr.success(t('Template deleted successfully'), t('Success'));
                     loadTemplates();
                 })
                 .catch(function(error) {
                     console.error('Error deleting template:', error);
-                    const errorMsg = error.data && error.data.message ? error.data.message : 'Error deleting template';
-                    toastr.error(errorMsg, 'Error');
+                    const errorMsg = error.data && error.data.message ? error.data.message : t('Error deleting template');
+                    toastr.error(errorMsg, t('Error'));
                 })
                 .finally(function() {
                     $scope.state.deleting = false;

@@ -19,6 +19,10 @@ msgstr ""
 msgid "% of required skills"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:273
+msgid "(Tous rangs)"
+msgstr ""
+
 #: public/js/controllers/projects/ProjectCtrl.js:20
 msgid "- Generic -"
 msgstr ""
@@ -119,6 +123,10 @@ msgstr ""
 msgid "?"
 msgstr ""
 
+#: public/templates/bonus/modals/exclude-allocation.html:102
+msgid "A brief reason is required (min 3 characters)."
+msgstr ""
+
 #: public/templates/welcome/welcome.html:10
 msgid "A clean workspace for bonus management, reporting, and secure exports — designed for speed and clarity."
 msgstr ""
@@ -162,12 +170,22 @@ msgstr ""
 msgid "Act"
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:819
 #: public/templates/staffs/staff/edit.html:462
 msgid "Action"
 msgstr ""
 
 #: public/templates/administration/positions/main.html:132
 #: public/templates/administration/structures/main.html:84
+#: public/templates/bonus/instance-wizard.html:450
+#: public/templates/bonus/instances.html:137
+#: public/templates/bonus/instances.html:181
+#: public/templates/bonus/partials/ift-table.html:12
+#: public/templates/bonus/partials/with-parts-table.html:12
+#: public/templates/bonus/partials/without-parts-table.html:14
+#: public/templates/bonus/template-form.html:266
+#: public/templates/bonus/templates.html:106
+#: public/templates/bonus/templates.html:133
 #: public/templates/dialogs/retireds.html:37
 #: public/templates/procrastinate/tasks/main.html:69
 #: public/templates/staffs/personnal_records.html:492
@@ -181,6 +199,12 @@ msgstr ""
 
 #: public/templates/users/main.html:19
 msgid "Activate"
+msgstr ""
+
+#: public/templates/bonus/template-form-modal.html:24
+#: public/templates/bonus/templates.html:20
+#: public/templates/bonus/templates.html:53
+msgid "Active"
 msgstr ""
 
 #: public/templates/users/main.html:39
@@ -212,6 +236,14 @@ msgstr ""
 msgid "Actual situation"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:389
+msgid "Add Rule"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:553
+msgid "Add Step"
+msgstr ""
+
 #: app/controllers/ui.js:199
 #: app/controllers/ui.js:200
 msgid "Add new position"
@@ -240,8 +272,39 @@ msgstr ""
 msgid "Add your credentials to login to your account"
 msgstr ""
 
+#: public/templates/bonus/instance-form.html:86
+msgid "Additional Options"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:549
+#: public/templates/bonus/modals/adjust-allocation.html:4
+msgid "Adjust Allocation"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:216
+#: public/templates/bonus/instance-wizard.html:78
+msgid "Adjust Allocations"
+msgstr ""
+
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:288
+#: public/templates/bonus/instance-wizard.html:266
+#: public/templates/bonus/instance-wizard.html:338
 msgid "Adjusted"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:581
+#: public/templates/bonus/modals/adjust-allocation.html:53
+msgid "Adjustment Details"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:677
+#: public/templates/bonus/modals/adjust-allocation.html:194
+msgid "Adjustment History"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:639
+#: public/templates/bonus/modals/adjust-allocation.html:157
+msgid "Adjustment Summary"
 msgstr ""
 
 #: public/templates/welcome/welcome.html:42
@@ -318,6 +381,14 @@ msgstr ""
 msgid "Age"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:320
+msgid "Ajouter"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:293
+msgid "Ajouter une règle"
+msgstr ""
+
 #: public/js/appFilters.js:402
 #: public/js/controllers/projects/ProjectCtrl.js:31
 msgid "Alics"
@@ -329,6 +400,7 @@ msgstr ""
 
 #: public/templates/administration/positions/main.html:101
 #: public/templates/administration/positions/main.html:87
+#: public/templates/bonus/templates.html:52
 #: public/templates/staffs/personnal_records.html:624
 #: public/templates/staffs/staff/export.html:34
 #: public/templates/staffs/staff/main.html:9
@@ -344,6 +416,20 @@ msgstr ""
 
 #: public/templates/statistics/procrastinate/directives/chart5.html:41
 msgid "All <i>invalid</i>, <i>error</i> and <i>no result</i> results are counted and priced at 10$ each."
+msgstr ""
+
+#: public/templates/bonus/allocations.html:29
+msgid "All Cycles"
+msgstr ""
+
+#: public/templates/bonus/instances.html:84
+msgid "All Programs"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:263
+#: public/templates/bonus/instance-wizard.html:335
+#: public/templates/bonus/instances.html:93
+msgid "All Statuses"
 msgstr ""
 
 #: public/templates/bonus/instance-wizard.html:274
@@ -417,8 +503,40 @@ msgstr ""
 msgid "All users"
 msgstr ""
 
+#: public/templates/bonus/modals/view-history.html:53
+msgid "Allocation Basis"
+msgstr ""
+
+#: public/templates/bonus/modals/exclude-allocation.html:50
+msgid "Allocation Details"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:800
+#: public/templates/bonus/modals/history-details.html:147
+#: public/templates/bonus/modals/view-history.html:4
+msgid "Allocation History"
+msgstr ""
+
+#: public/templates/bonus/instances.html:135
+msgid "Allocations"
+msgstr ""
+
+#: public/templates/bonus/allocations.html:73
 #: public/templates/bonus/dashboard.html:79
+#: public/templates/bonus/instance-wizard.html:687
+#: public/templates/bonus/instance-wizard.html:823
+#: public/templates/bonus/modals/adjust-allocation.html:203
+#: public/templates/bonus/modals/history-details.html:161
 msgid "Amount"
+msgstr ""
+
+#: public/templates/bonus/modals/history-details.html:128
+msgid "Amount Difference:"
+msgstr ""
+
+#: public/templates/bonus/modals/history-details.html:109
+#: public/templates/bonus/modals/history-details.html:77
+msgid "Amount:"
 msgstr ""
 
 #: public/js/controllers/sign/SigninCtrl.js:45
@@ -483,8 +601,41 @@ msgstr ""
 msgid "Appreciation"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:550
+msgid "Approval Steps"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:583
+msgid "Approval Type"
+msgstr ""
+
+#: public/templates/bonus/template-view.html:205
+msgid "Approval Workflow"
+msgstr ""
+
+#: public/templates/bonus/instances.html:188
+msgid "Approve"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:520
+msgid "Approve Bonus Instance"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:186
+msgid "Approve Instance"
+msgstr ""
+
+#: public/templates/bonus/instances.html:28
+msgid "Approve Selected"
+msgstr ""
+
+#: public/templates/bonus/instances.html:96
 #: public/templates/staffs/personnal_records.html:620
 msgid "Approved"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:574
+msgid "Approver Role"
 msgstr ""
 
 #: public/js/appFilters.js:5
@@ -564,6 +715,26 @@ msgstr ""
 msgid "Attach file(s)"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:366
+msgid "Aucun personnel ciblé"
+msgstr ""
+
+#: public/templates/bonus/reports.html:113
+msgid "Aucune prime avec part"
+msgstr ""
+
+#: public/templates/bonus/reports.html:157
+msgid "Aucune prime sans part"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:286
+msgid "Aucune règle définie"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:335
+msgid "Aucune structure ciblée"
+msgstr ""
+
 #: public/templates/audit.html:5
 #: resources/languages/extraDictionary.html:5
 msgid "Audit"
@@ -581,6 +752,18 @@ msgstr ""
 
 #: public/templates/staffs/staff/edit.html:423
 msgid "Authority"
+msgstr ""
+
+#: public/templates/bonus/instances.html:59
+msgid "Auto"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:111
+msgid "Auto-generate allocations"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:113
+msgid "Automatically create allocations based on template rules"
 msgstr ""
 
 #: public/templates/settings/main.html:6
@@ -615,6 +798,14 @@ msgstr ""
 msgid "Back to login"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:18
+msgid "Basic Info"
+msgstr ""
+
+#: public/templates/bonus/template-view.html:16
+msgid "Basic Information"
+msgstr ""
+
 #: public/templates/staffs/personnal_records.html:130
 #: public/templates/staffs/staff/edit.html:79
 msgid "Birth date"
@@ -630,19 +821,52 @@ msgstr ""
 msgid "Blocked"
 msgstr ""
 
+#: public/templates/bonus/allocations.html:67
+msgid "Bonus / Cycle"
+msgstr ""
+
+#: public/templates/bonus/modals/history-details.html:44
+msgid "Bonus Comparison"
+msgstr ""
+
 #: app/controllers/ui.js:280
 #: app/controllers/ui.js:281
+#: public/js/controllers/bonus/BonusManagementCtrl.js:2
 msgid "Bonus Management"
 msgstr ""
 
 #: app/controllers/ui.js:292
 #: app/controllers/ui.js:293
+#: public/templates/bonus/bonus.html:13
 #: public/templates/bonus/dashboard.html:10
+#: public/templates/bonus/templates.html:6
 msgid "Bonus Programs"
+msgstr ""
+
+#: public/templates/bonus/reports.html:9
+msgid "Bonus Reports"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:219
+#: public/templates/bonus/instance-wizard.html:491
+msgid "Bonus Review Complete"
+msgstr ""
+
+#: public/templates/bonus/rules.html:2
+msgid "Bonus Rules"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:24
+#: public/templates/bonus/modals/create-instance.html:26
+msgid "Bonus Template"
 msgstr ""
 
 #: public/templates/staffs/personnal_records.html:703
 msgid "Bonus Type"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:130
+msgid "Bonus ready for approval"
 msgstr ""
 
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:262
@@ -655,6 +879,18 @@ msgstr ""
 
 #: public/templates/statistics/procrastinate/directives/procras5.html:8
 msgid "Breakdown"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:380
+msgid "Build human-readable eligibility rules based on personnel snapshot fields (statut, grade, catégorie, rang, structure, sous-structure)."
+msgstr ""
+
+#: public/templates/bonus/instances.html:24
+msgid "Bulk Actions"
+msgstr ""
+
+#: public/templates/bonus/reports.html:81
+msgid "Bénéficiaire:"
 msgstr ""
 
 #: public/templates/staffs/staff/edit.html:173
@@ -671,6 +907,29 @@ msgstr ""
 
 #: public/templates/staffs/staff/edit.html:153
 msgid "CNI N°"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:73
+msgid "Calculated"
+msgstr ""
+
+#: public/templates/bonus/modals/exclude-allocation.html:61
+#: public/templates/bonus/modals/exclude-allocation.html:82
+#: public/templates/bonus/modals/view-history.html:62
+msgid "Calculated Amount"
+msgstr ""
+
+#: public/templates/bonus/modals/adjust-allocation.html:142
+#: public/templates/bonus/modals/adjust-allocation.html:61
+msgid "Calculated amount:"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:19
+msgid "Calculation"
+msgstr ""
+
+#: public/templates/bonus/template-view.html:83
+msgid "Calculation Configuration"
 msgstr ""
 
 #: public/js/controllers/monitor/EvaluationCtrl.js:158
@@ -703,6 +962,17 @@ msgstr ""
 #: public/js/controllers/users/UsersCtrl.js:107
 #: public/templates/administration/positions/edit.html:139
 #: public/templates/administration/structures/edit.html:111
+#: public/templates/bonus/instance-form.html:141
+#: public/templates/bonus/instance-wizard.html:734
+#: public/templates/bonus/instance-wizard.html:786
+#: public/templates/bonus/modals/adjust-allocation.html:224
+#: public/templates/bonus/modals/create-instance.html:145
+#: public/templates/bonus/modals/exclude-allocation.html:110
+#: public/templates/bonus/modals/include-allocation.html:34
+#: public/templates/bonus/modals/update-share-amount.html:121
+#: public/templates/bonus/modals/update-tax-config.html:142
+#: public/templates/bonus/template-form-modal.html:30
+#: public/templates/bonus/template-form.html:647
 #: public/templates/dialogs/affectation.html:221
 #: public/templates/dialogs/award.html:157
 #: public/templates/dialogs/evaluation.html:94
@@ -728,6 +998,10 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
+#: public/templates/bonus/instances.html:208
+msgid "Cancel Instance"
+msgstr ""
+
 #: public/js/controllers/staffs/staff/AssignmentHistoryCtrl.js:92
 #: public/js/controllers/staffs/staff/StaffCtrl.js:383
 #: public/templates/staffs/staff/assignmenthistory.html:111
@@ -744,6 +1018,10 @@ msgstr ""
 msgid "Canceled"
 msgstr ""
 
+#: public/templates/bonus/instances.html:98
+msgid "Cancelled"
+msgstr ""
+
 #: public/templates/statistics/procrastinate/directives/chart5.html:11
 msgid "Cash loss"
 msgstr ""
@@ -754,6 +1032,13 @@ msgstr ""
 msgid "Categories"
 msgstr ""
 
+#: public/templates/bonus/templates.html:57
+msgid "Categories:"
+msgstr ""
+
+#: public/templates/bonus/reports.html:21
+#: public/templates/bonus/template-view.html:33
+#: public/templates/bonus/templates.html:102
 #: public/templates/dialogs/physicalRecordDetails.html:36
 #: public/templates/procrastinate/tasks/dialogs/task.html:114
 #: public/templates/staffs/personnal_records.html:299
@@ -784,6 +1069,37 @@ msgstr ""
 msgid "Category:"
 msgstr ""
 
+#: public/templates/bonus/modals/update-share-amount.html:48
+#: public/templates/bonus/modals/update-tax-config.html:65
+msgid "Change Amount:"
+msgstr ""
+
+#: public/templates/bonus/modals/update-share-amount.html:57
+msgid "Change Percentage:"
+msgstr ""
+
+#: public/templates/bonus/modals/update-share-amount.html:45
+#: public/templates/bonus/modals/update-tax-config.html:62
+msgid "Change Summary"
+msgstr ""
+
+#: public/templates/bonus/modals/update-share-amount.html:101
+#: public/templates/bonus/modals/update-tax-config.html:120
+msgid "Changed By"
+msgstr ""
+
+#: public/templates/bonus/modals/update-share-amount.html:10
+msgid "Changing the share amount will recalculate all allocations in this bonus instance."
+msgstr ""
+
+#: public/templates/bonus/modals/update-tax-config.html:10
+msgid "Changing the tax configuration will affect the final amount for all allocations in this bonus instance."
+msgstr ""
+
+#: public/templates/bonus/template-form.html:317
+msgid "Choisir..."
+msgstr ""
+
 #: public/templates/settings/avatar.html:3
 msgid "Choose a color for your avatar"
 msgstr ""
@@ -800,15 +1116,31 @@ msgstr ""
 msgid "Choose profile"
 msgstr ""
 
+#: public/templates/bonus/reports.html:54
+msgid "Clear Personnel"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:856
+#: public/templates/bonus/modals/history-details.html:221
+#: public/templates/bonus/template-view.html:235
+msgid "Close"
+msgstr ""
+
 #: app/controllers/export.js:102
 #: app/controllers/export.js:177
 #: public/templates/administration/positions/main.html:128
 #: public/templates/administration/structures/edit.html:57
 #: public/templates/administration/structures/main.html:78
+#: public/templates/bonus/templates.html:101
+#: public/templates/bonus/templates.html:77
 #: public/templates/procrastinate/tasks/main.html:64
 #: resources/pdf/positions_nomenclature.html:189
 #: resources/pdf/positions_nomenclature_1.html:189
 msgid "Code"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:264
+msgid "Code rang"
 msgstr ""
 
 #: public/templates/procrastinate/tasks/dialogs/task.html:96
@@ -819,10 +1151,20 @@ msgstr ""
 msgid "Collapse"
 msgstr ""
 
+#: public/templates/bonus/modals/include-allocation.html:19
 #: public/templates/dialogs/situation.html:81
 msgid "Comment"
 msgstr ""
 
+#: public/templates/bonus/modals/include-allocation.html:26
+msgid "Comment is required"
+msgstr ""
+
+#: public/templates/bonus/modals/include-allocation.html:27
+msgid "Comment must be less than 500 characters"
+msgstr ""
+
+#: public/templates/bonus/modals/history-details.html:162
 #: public/templates/procrastinate/tasks/dialogs/task.html:61
 msgid "Comments"
 msgstr ""
@@ -835,16 +1177,25 @@ msgstr ""
 msgid "Community"
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:50
+msgid "Complete"
+msgstr ""
+
 #: public/js/appFilters.js:283
 #: public/js/appFilters.js:380
 #: public/js/controllers/projects/ProjectCtrl.js:10
 #: public/js/controllers/staffs/staff/ExportsCtrl.js:348
+#: public/templates/bonus/instance-wizard.html:129
 #: public/templates/statistics/procrastinate/directives/procras8_synthesis.html:31
 msgid "Completed"
 msgstr ""
 
 #: public/templates/staffs/mouvement/main.html:34
 msgid "Concerned"
+msgstr ""
+
+#: public/templates/bonus/template-view.html:143
+msgid "Condition"
 msgstr ""
 
 #: resources/languages/extraDictionary.html:8
@@ -857,6 +1208,19 @@ msgstr ""
 
 #: public/templates/installation/second.html:9
 msgid "Configuration is almost done, please setup your administrator account"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:544
+msgid "Configure the approval workflow for this bonus template"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:217
+#: public/templates/bonus/instance-wizard.html:95
+msgid "Confirm Allocations"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:788
+msgid "Confirm Exclusion"
 msgstr ""
 
 #: public/templates/installation/second.html:38
@@ -928,12 +1292,31 @@ msgstr ""
 msgid "Country:"
 msgstr ""
 
+#: public/templates/bonus/instance-form.html:4
+#: public/templates/bonus/modals/create-instance.html:6
+msgid "Create Bonus Instance"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:145
+#: public/templates/bonus/modals/create-instance.html:149
+msgid "Create Instance"
+msgstr ""
+
+#: public/templates/bonus/instances.html:20
+msgid "Create New Cycle"
+msgstr ""
+
+#: public/templates/bonus/template-view.html:41
 #: public/templates/dialogs/physicalRecordDetails.html:96
 #: public/templates/organizations/profile.html:33
 #: public/templates/projects/profile.html:93
 #: public/templates/staffs/personnal_records.html:430
 #: public/templates/users/profile.html:57
 msgid "Created"
+msgstr ""
+
+#: public/templates/bonus/allocations.html:74
+msgid "Created At"
 msgstr ""
 
 #: public/templates/procrastinate/tasks/dialogs/task.html:118
@@ -952,8 +1335,25 @@ msgstr ""
 msgid "Creation of new structure"
 msgstr ""
 
+#: public/templates/bonus/modals/history-details.html:169
 #: public/templates/settings/password.html:6
 msgid "Current"
+msgstr ""
+
+#: public/templates/bonus/modals/history-details.html:51
+msgid "Current Allocation"
+msgstr ""
+
+#: public/templates/bonus/modals/update-share-amount.html:16
+msgid "Current Share Amount:"
+msgstr ""
+
+#: public/templates/bonus/modals/update-tax-config.html:16
+msgid "Current Tax Name:"
+msgstr ""
+
+#: public/templates/bonus/modals/update-tax-config.html:23
+msgid "Current Tax Percentage:"
 msgstr ""
 
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:54
@@ -964,14 +1364,23 @@ msgstr ""
 msgid "Custom Date Range"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:130
+msgid "Custom Formula"
+msgstr ""
+
 #: app/controllers/export.js:78
 msgid "DGTCFM POSITIONS'S NOMENCLATURE"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:88
+msgid "Daily"
 msgstr ""
 
 #: app/controllers/ui.js:286
 #: app/controllers/ui.js:287
 #: app/controllers/ui.js:90
 #: app/controllers/ui.js:91
+#: public/templates/bonus/bonus.html:9
 #: resources/languages/extraDictionary.html:1
 msgid "Dashboard"
 msgstr ""
@@ -1003,6 +1412,13 @@ msgid "DataToCare"
 msgstr ""
 
 #: public/templates/bonus/dashboard.html:78
+#: public/templates/bonus/instance-wizard.html:446
+#: public/templates/bonus/instance-wizard.html:685
+#: public/templates/bonus/instance-wizard.html:818
+#: public/templates/bonus/modals/adjust-allocation.html:201
+#: public/templates/bonus/modals/update-share-amount.html:98
+#: public/templates/bonus/modals/update-tax-config.html:115
+#: public/templates/bonus/modals/view-history.html:101
 #: public/templates/dialogs/situation.html:71
 #: public/templates/staffs/discipline/edit.html:77
 #: public/templates/staffs/discipline/main.html:37
@@ -1016,6 +1432,11 @@ msgstr ""
 #: public/templates/staffs/staff/physicalrecords.html:67
 #: public/templates/staffs/status/edit.html:77
 msgid "Date"
+msgstr ""
+
+#: public/templates/bonus/reports.html:140
+#: public/templates/bonus/reports.html:96
+msgid "Date de paiement"
 msgstr ""
 
 #: public/templates/staffs/mouvement/edit.html:88
@@ -1033,6 +1454,20 @@ msgstr ""
 msgid "December"
 msgstr ""
 
+#: public/templates/bonus/template-view.html:129
+msgid "Default Parts"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:125
+#: public/templates/bonus/modals/create-instance.html:129
+msgid "Default Share"
+msgstr ""
+
+#: public/templates/bonus/template-form-modal.html:14
+#: public/templates/bonus/template-view.html:97
+msgid "Default Share Amount"
+msgstr ""
+
 #: public/js/controllers/procrastinate/tasks/TasksCtrl.js:353
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:735
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:973
@@ -1043,6 +1478,7 @@ msgstr ""
 #: public/js/controllers/staffs/staff/SanctionsManagementCtrl.js:223
 #: public/js/controllers/staffs/staff/StaffCtrl.js:385
 #: public/js/controllers/users/UsersCtrl.js:106
+#: public/templates/bonus/templates.html:139
 #: public/templates/dialogs/physicalRecordDetails.html:122
 #: public/templates/organizations/main.html:39
 #: public/templates/procrastinate/categories/main.html:34
@@ -1096,10 +1532,24 @@ msgid "Delete this task"
 msgstr ""
 
 #: public/templates/bonus/dashboard.html:80
+#: public/templates/bonus/instance-form.html:93
+#: public/templates/bonus/template-form-modal.html:18
+#: public/templates/bonus/template-form.html:592
+#: public/templates/bonus/template-view.html:180
+#: public/templates/bonus/template-view.html:216
+#: public/templates/bonus/template-view.html:69
 #: public/templates/procrastinate/tasks/dialogs/task.html:51
 #: public/templates/staffs/discipline/edit.html:87
 #: public/templates/staffs/status/edit.html:87
 msgid "Description"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:531
+msgid "Description (Optional)"
+msgstr ""
+
+#: public/templates/bonus/templates.html:8
+msgid "Design and maintain complete bonus programs (eligibility, calculation, approvals)"
 msgstr ""
 
 #: public/templates/procrastinate/tasks/edit.html:27
@@ -1134,6 +1584,8 @@ msgstr ""
 
 #: app/controllers/ui.js:304
 #: app/controllers/ui.js:305
+#: public/templates/bonus/allocations.html:2
+#: public/templates/bonus/bonus.html:21
 msgid "Distributions"
 msgstr ""
 
@@ -1185,12 +1637,24 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:415
+msgid "Download Excel"
+msgstr ""
+
 #: public/templates/staffs/personnal_records.html:479
 msgid "Download all"
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:413
+msgid "Download detailed data in Excel format for payroll processing"
+msgstr ""
+
 #: public/templates/dialogs/physicalRecordDetails.html:84
 msgid "Downloaded"
+msgstr ""
+
+#: public/templates/bonus/instances.html:94
+msgid "Draft"
 msgstr ""
 
 #: public/templates/procrastinate/tasks/main.html:80
@@ -1210,6 +1674,10 @@ msgstr ""
 msgid "Duplicate"
 msgstr ""
 
+#: public/templates/bonus/reports.html:79
+msgid "ETAT RECAPITULATIF ANNUEL DES AUTRES GAINS (PRIMES)"
+msgstr ""
+
 #: public/js/appFilters.js:361
 #: public/js/controllers/projects/ProjectCtrl.js:23
 msgid "Ebola"
@@ -1220,6 +1688,7 @@ msgstr ""
 #: public/templates/administration/positions/main.html:147
 #: public/templates/administration/structures/main.html:101
 #: public/templates/administration/structures/main.html:99
+#: public/templates/bonus/templates.html:137
 #: public/templates/dialogs/physicalRecordDetails.html:129
 #: public/templates/organizations/main.html:33
 #: public/templates/procrastinate/categories/main.html:28
@@ -1234,6 +1703,10 @@ msgstr ""
 #: public/templates/users/main.html:25
 #: public/templates/users/main.html:55
 msgid "Edit"
+msgstr ""
+
+#: public/templates/bonus/template-view.html:238
+msgid "Edit Template"
 msgstr ""
 
 #: public/templates/staffs/personnal_records.html:344
@@ -1257,7 +1730,14 @@ msgstr ""
 msgid "Eligibility"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:386
+#: public/templates/bonus/template-view.html:169
+msgid "Eligibility Rules"
+msgstr ""
+
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:286
+#: public/templates/bonus/instance-wizard.html:264
+#: public/templates/bonus/instance-wizard.html:336
 msgid "Eligible"
 msgstr ""
 
@@ -1270,6 +1750,12 @@ msgstr ""
 #: public/templates/users/edit.html:25
 #: public/templates/users/profile.html:29
 msgid "Email"
+msgstr ""
+
+#: public/templates/bonus/partials/ift-table.html:5
+#: public/templates/bonus/partials/with-parts-table.html:5
+#: public/templates/bonus/partials/without-parts-table.html:5
+msgid "Employee"
 msgstr ""
 
 #: public/js/controllers/DashboardCtrl.js:5
@@ -1362,8 +1848,23 @@ msgstr ""
 msgid "Error:  this Register Number already exist."
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:412
+msgid "Excel Export"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:751
+#: public/templates/bonus/modals/exclude-allocation.html:2
+msgid "Exclude Allocation"
+msgstr ""
+
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:287
+#: public/templates/bonus/instance-wizard.html:265
+#: public/templates/bonus/instance-wizard.html:337
 msgid "Excluded"
+msgstr ""
+
+#: public/templates/bonus/reports.html:80
+msgid "Exercice (période):"
 msgstr ""
 
 #: app/controllers/ui.js:147
@@ -1387,6 +1888,34 @@ msgstr ""
 #: public/templates/statistics/directives/card6.html:20
 #: public/templates/statistics/procrastinate/directives/chart5.html:22
 msgid "Export"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:112
+#: public/templates/bonus/instance-wizard.html:198
+#: public/templates/bonus/instance-wizard.html:523
+msgid "Export Data"
+msgstr ""
+
+#: public/templates/bonus/instances.html:198
+msgid "Export Excel"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:439
+msgid "Export History"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:218
+#: public/templates/bonus/instance-wizard.html:401
+msgid "Export Options"
+msgstr ""
+
+#: public/templates/bonus/instances.html:201
+#: public/templates/bonus/reports.html:10
+msgid "Export PDF"
+msgstr ""
+
+#: public/templates/bonus/instances.html:31
+msgid "Export Selected"
 msgstr ""
 
 #: public/templates/staffs/staff/export.html:26
@@ -1417,6 +1946,10 @@ msgstr ""
 msgid "Export to PDF"
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:113
+msgid "Export to PDF/Excel for payroll"
+msgstr ""
+
 #: public/js/controllers/staffs/staff/ExportsCtrl.js:22
 msgid "ExportStaff job not found, please check it existence."
 msgstr ""
@@ -1424,6 +1957,10 @@ msgstr ""
 #: public/templates/dialogs/retireds.html:52
 #: public/templates/staffs/staff/retireds.html:121
 msgid "Extend"
+msgstr ""
+
+#: public/templates/bonus/modals/update-share-amount.html:31
+msgid "FCFA"
 msgstr ""
 
 #: public/js/controllers/staffs/staff/ExportsCtrl.js:349
@@ -1465,6 +2002,15 @@ msgstr ""
 
 #: public/templates/staffs/personnal_records.html:37
 msgid "Fiche de suivi"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:410
+#: public/templates/bonus/template-view.html:177
+msgid "Field"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:449
+msgid "File Size"
 msgstr ""
 
 #: public/templates/dialogs/physicalRecordDetails.html:72
@@ -1553,6 +2099,11 @@ msgstr ""
 msgid "Filter more"
 msgstr ""
 
+#: public/templates/bonus/allocations.html:7
+#: public/templates/bonus/reports.html:16
+msgid "Filters"
+msgstr ""
+
 #: public/templates/staffs/staff/physicalrecords.html:41
 msgid "Filtre by category"
 msgstr ""
@@ -1580,6 +2131,17 @@ msgstr ""
 msgid "Filtre by year"
 msgstr ""
 
+#: public/templates/bonus/modals/adjust-allocation.html:130
+#: public/templates/bonus/modals/adjust-allocation.html:92
+#: public/templates/bonus/modals/view-history.html:66
+#: public/templates/bonus/modals/view-history.html:83
+msgid "Final Amount"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:615
+msgid "Final Amount:"
+msgstr ""
+
 #: public/templates/staffs/mouvement/edit.html:74
 msgid "Find position (by it name or code)..."
 msgstr ""
@@ -1597,8 +2159,24 @@ msgstr ""
 msgid "First name"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:128
+#: public/templates/bonus/template-form.html:179
+#: public/templates/bonus/template-form.html:72
+msgid "Fixed Amount"
+msgstr ""
+
 #: public/templates/sign/signin.html:60
 msgid "Forgot password?"
+msgstr ""
+
+#: public/templates/bonus/template-view.html:108
+msgid "Formula"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:129
+#: public/templates/bonus/modals/create-instance.html:133
+#: public/templates/bonus/template-view.html:90
+msgid "Formula Type"
 msgstr ""
 
 #: public/js/appFilters.js:308
@@ -1618,9 +2196,16 @@ msgstr ""
 msgid "From"
 msgstr ""
 
+#: public/templates/bonus/allocations.html:35
+#: public/templates/bonus/instances.html:104
+#: public/templates/bonus/reports.html:33
 #: public/templates/staffs/personnal_records.html:647
 #: public/templates/staffs/personnal_records.html:648
 msgid "From Date"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:414
+msgid "From PersonnelSnapshot"
 msgstr ""
 
 #: public/templates/staffs/staff/edit.html:474
@@ -1668,6 +2253,27 @@ msgstr ""
 msgid "General Directorate of the Treasury, Financial and Monetary Cooperation"
 msgstr ""
 
+#: public/templates/bonus/instances.html:69
+msgid "Generate Now"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:429
+msgid "Generate PDF"
+msgstr ""
+
+#: public/templates/bonus/instances.html:191
+#: public/templates/bonus/instances.html:35
+msgid "Generate Payments"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:427
+msgid "Generate professional PDF reports for approvals and records"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:402
+msgid "Generate reports and export data for payroll processing or approval workflows."
+msgstr ""
+
 #: public/js/appFilters.js:352
 msgid "Generic"
 msgstr ""
@@ -1707,6 +2313,13 @@ msgstr ""
 msgid "Grade"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:257
+msgid "Grille IFT (montant par rang)"
+msgstr ""
+
+#: public/templates/bonus/partials/ift-table.html:9
+#: public/templates/bonus/partials/with-parts-table.html:9
+#: public/templates/bonus/partials/without-parts-table.html:11
 #: public/templates/staffs/personnal_records.html:706
 msgid "Gross Amount"
 msgstr ""
@@ -1750,9 +2363,17 @@ msgstr ""
 msgid "Highest level of education"
 msgstr ""
 
+#: public/templates/bonus/modals/history-details.html:3
+msgid "Historical Bonus Data"
+msgstr ""
+
 #: public/templates/procrastinate/tasks/dialogs/task.html:67
 #: public/templates/staffs/personnal_records.html:447
 msgid "History"
+msgstr ""
+
+#: public/templates/bonus/modals/view-history.html:94
+msgid "History Details"
 msgstr ""
 
 #: public/templates/staffs/staff/edit.html:222
@@ -1765,6 +2386,26 @@ msgstr ""
 
 #: public/templates/menu/contentheader.html:6
 msgid "Home"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:567
+#: public/templates/bonus/instance-wizard.html:764
+#: public/templates/bonus/instance-wizard.html:810
+#: public/templates/bonus/modals/adjust-allocation.html:33
+#: public/templates/bonus/modals/history-details.html:30
+msgid "ID:"
+msgstr ""
+
+#: public/templates/bonus/modals/adjust-allocation.html:43
+msgid "IFT &middot; IRPP exempt"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:238
+msgid "IFT (IRPP pas prélevé)"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:249
+msgid "IFT: IRPP not deducted. Configure amounts by rank/function below."
 msgstr ""
 
 #: public/templates/staffs/staff/edit.html:13
@@ -1782,6 +2423,10 @@ msgstr ""
 msgid "If your email exists in our system, you will receive a password reset link."
 msgstr ""
 
+#: public/templates/bonus/modals/update-tax-config.html:74
+msgid "Impact on Net Amount:"
+msgstr ""
+
 #: public/templates/import_export.html:3
 #: public/templates/import_export.html:53
 msgid "Import"
@@ -1790,6 +2435,11 @@ msgstr ""
 #: public/templates/staffs/personnal_records.html:560
 #: public/templates/staffs/staff/physicalrecords.html:144
 msgid "Import file"
+msgstr ""
+
+#: public/templates/bonus/modals/update-share-amount.html:10
+#: public/templates/bonus/modals/update-tax-config.html:10
+msgid "Important:"
 msgstr ""
 
 #: public/js/appFilters.js:377
@@ -1802,12 +2452,30 @@ msgstr ""
 msgid "In talks"
 msgstr ""
 
+#: public/templates/bonus/template-form-modal.html:25
+#: public/templates/bonus/templates.html:26
+#: public/templates/bonus/templates.html:54
+msgid "Inactive"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:638
+msgid "Inactive templates cannot be used to create new bonuses"
+msgstr ""
+
+#: public/templates/bonus/modals/include-allocation.html:6
+msgid "Include Allocation"
+msgstr ""
+
 #: public/templates/staffs/staff/edit.html:332
 msgid "Index/Echelon"
 msgstr ""
 
 #: public/templates/staffs/personnal_records.html:305
 msgid "Index/Level"
+msgstr ""
+
+#: public/templates/bonus/partials/without-parts-table.html:6
+msgid "Indice/Cat"
 msgstr ""
 
 #: public/templates/staffs/staff/exports.html:28
@@ -1820,6 +2488,18 @@ msgstr ""
 
 #: public/templates/statistics/directives/card2.html:42
 msgid "Inspecteurs du Trésor"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:22
+msgid "Instance Details"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:499
+msgid "Instance ID:"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:618
+msgid "Instructions"
 msgstr ""
 
 #: public/templates/dialogs/physicalRecord.html:73
@@ -1883,6 +2563,11 @@ msgstr ""
 msgid "Last Modified"
 msgstr ""
 
+#: public/templates/bonus/template-view.html:59
+#: public/templates/bonus/templates.html:105
+msgid "Last Updated"
+msgstr ""
+
 #: public/templates/procrastinate/tasks/dialogs/task.html:126
 msgid "Last modification:"
 msgstr ""
@@ -1903,6 +2588,11 @@ msgstr ""
 
 #: public/templates/staffs/mouvement/main.html:37
 msgid "Last position"
+msgstr ""
+
+#: public/templates/bonus/reports.html:137
+#: public/templates/bonus/reports.html:93
+msgid "Libellé"
 msgstr ""
 
 #: public/templates/import_export.html:46
@@ -1929,8 +2619,32 @@ msgstr ""
 msgid "List of status codes:"
 msgstr ""
 
+#: public/templates/bonus/rules.html:5
+msgid "List, create, edit, activate/deactivate, validate, and test bonus rules."
+msgstr ""
+
 #: public/templates/staffs/personnal_records.html:754
 msgid "Loading bonus data..."
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:11
+msgid "Loading bonus instance data..."
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:313
+msgid "Loading historical data..."
+msgstr ""
+
+#: public/templates/bonus/templates.html:151
+msgid "Loading templates..."
+msgstr ""
+
+#: public/templates/bonus/allocations.html:56
+#: public/templates/bonus/instance-wizard.html:311
+#: public/templates/bonus/instance-wizard.html:9
+#: public/templates/bonus/instances.html:223
+#: public/templates/bonus/reports.html:72
+msgid "Loading..."
 msgstr ""
 
 #: public/js/controllers/ThresholdsCtrl.js:8
@@ -1959,6 +2673,10 @@ msgstr ""
 
 #: public/templates/statistics/directives/card4.html:37
 msgid "Man"
+msgstr ""
+
+#: public/templates/bonus/instances.html:195
+msgid "Manage in Wizard"
 msgstr ""
 
 #: public/js/appFilters.js:185
@@ -2007,12 +2725,24 @@ msgstr ""
 msgid "Meta information"
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:689
+msgid "Modified By"
+msgstr ""
+
 #: public/templates/thresholds.html:14
 #: public/templates/thresholds.html:27
 #: public/templates/thresholds.html:33
 #: public/templates/thresholds.html:46
 #: public/templates/thresholds.html:52
 msgid "Modify"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:243
+msgid "Modify allocation amounts, exclude individuals, or include previously excluded staff as needed."
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:608
+msgid "Modify this value to adjust the calculation"
 msgstr ""
 
 #: public/js/appFilters.js:47
@@ -2024,6 +2754,19 @@ msgstr ""
 #: app/controllers/ui.js:229
 #: app/controllers/ui.js:230
 msgid "Monitoring & Evaluation"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:265
+msgid "Montant (FCFA)"
+msgstr ""
+
+#: public/templates/bonus/reports.html:141
+#: public/templates/bonus/reports.html:97
+msgid "Montant brut"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:90
+msgid "Monthly"
 msgstr ""
 
 #: public/templates/staffs/personnal_records.html:512
@@ -2055,12 +2798,25 @@ msgstr ""
 msgid "N/A"
 msgstr ""
 
+#: public/templates/bonus/reports.html:143
+#: public/templates/bonus/reports.html:99
+msgid "NAP"
+msgstr ""
+
 #: public/templates/dialogs/physicalRecord.html:112
 msgid "NB: the time required to perform this task depends on the file size."
 msgstr ""
 
+#: public/templates/bonus/template-form.html:275
+msgid "NON_NOMME (CA/AG)"
+msgstr ""
+
 #: app/controllers/export.js:178
 #: public/templates/administration/structures/main.html:79
+#: public/templates/bonus/instances.html:131
+#: public/templates/bonus/template-form-modal.html:10
+#: public/templates/bonus/templates.html:100
+#: public/templates/bonus/templates.html:76
 msgid "Name"
 msgstr ""
 
@@ -2080,6 +2836,9 @@ msgstr ""
 msgid "Need help?"
 msgstr ""
 
+#: public/templates/bonus/partials/ift-table.html:10
+#: public/templates/bonus/partials/with-parts-table.html:10
+#: public/templates/bonus/partials/without-parts-table.html:12
 #: public/templates/staffs/personnal_records.html:708
 msgid "Net Amount"
 msgstr ""
@@ -2110,16 +2869,49 @@ msgstr ""
 msgid "New"
 msgstr ""
 
+#: public/templates/bonus/modals/update-tax-config.html:119
+msgid "New %"
+msgstr ""
+
+#: public/templates/bonus/modals/update-share-amount.html:100
+#: public/templates/bonus/modals/view-history.html:111
+msgid "New Amount"
+msgstr ""
+
 #: public/templates/staffs/staff/exports.html:52
 msgid "New Export Task"
+msgstr ""
+
+#: public/templates/bonus/modals/update-tax-config.html:118
+msgid "New Name"
+msgstr ""
+
+#: public/templates/bonus/modals/view-history.html:110
+msgid "New Parts"
 msgstr ""
 
 #: public/js/controllers/users/UserCtrl.js:48
 msgid "New Password"
 msgstr ""
 
+#: public/templates/bonus/templates.html:30
+msgid "New Program"
+msgstr ""
+
+#: public/templates/bonus/modals/update-share-amount.html:24
+msgid "New Share Amount:"
+msgstr ""
+
 #: public/templates/staffs/staff/export.html:5
 msgid "New Staff Export Task"
+msgstr ""
+
+#: public/templates/bonus/modals/update-tax-config.html:31
+msgid "New Tax Name:"
+msgstr ""
+
+#: public/templates/bonus/modals/update-tax-config.html:41
+msgid "New Tax Percentage:"
 msgstr ""
 
 #: public/templates/staffs/personnal_records.html:94
@@ -2169,6 +2961,13 @@ msgstr ""
 msgid "New task assigned - Procrastinate"
 msgstr ""
 
+#: public/templates/bonus/allocations.html:130
+#: public/templates/bonus/instance-wizard.html:230
+#: public/templates/bonus/instances.html:244
+#: public/templates/bonus/templates.html:219
+msgid "Next"
+msgstr ""
+
 #: public/js/controllers/ConfigurationCtrl.js:37
 msgid "No"
 msgstr ""
@@ -2179,6 +2978,20 @@ msgstr ""
 
 #: public/js/controllers/users/UsersCtrl.js:13
 msgid "No active account"
+msgstr ""
+
+#: public/templates/bonus/partials/ift-table.html:48
+#: public/templates/bonus/partials/with-parts-table.html:41
+#: public/templates/bonus/partials/without-parts-table.html:48
+msgid "No allocations found"
+msgstr ""
+
+#: public/templates/bonus/allocations.html:79
+msgid "No allocations found matching your filters."
+msgstr ""
+
+#: public/templates/bonus/template-form.html:559
+msgid "No approval steps defined. Bonuses using this template will not require approval."
 msgstr ""
 
 #: public/templates/staffs/directives/sanctions.html:68
@@ -2194,12 +3007,24 @@ msgstr ""
 msgid "No bonus data to export"
 msgstr ""
 
+#: public/templates/bonus/instances.html:217
+msgid "No bonus instances found"
+msgstr ""
+
 #: public/templates/staffs/personnal_records.html:759
 msgid "No bonus records found for the selected period."
 msgstr ""
 
 #: public/js/controllers/procrastinate/categories/CategoriesCtrl.js:5
 msgid "No category"
+msgstr ""
+
+#: public/templates/bonus/modals/update-share-amount.html:67
+msgid "No change in amount"
+msgstr ""
+
+#: public/templates/bonus/modals/update-tax-config.html:84
+msgid "No change in tax percentage"
 msgstr ""
 
 #: public/js/controllers/administration/positions/EligibilityCtrl.js:13
@@ -2216,8 +3041,28 @@ msgstr ""
 msgid "No data found."
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:474
+msgid "No export history"
+msgstr ""
+
 #: public/js/controllers/staffs/staff/ExportsCtrl.js:6
 msgid "No export task created yet"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:475
+msgid "No exports have been generated for this instance yet."
+msgstr ""
+
+#: public/templates/bonus/modals/history-details.html:209
+msgid "No historical allocation data available"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:847
+msgid "No historical records found for this allocation"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:846
+msgid "No history available"
 msgstr ""
 
 #: public/templates/staffs/mouvement/edit.html:32
@@ -2236,6 +3081,14 @@ msgstr ""
 
 #: public/js/controllers/administration/positions/PositionsCtrl.js:11
 msgid "No position"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:716
+msgid "No previous adjustments found"
+msgstr ""
+
+#: public/templates/bonus/modals/history-details.html:114
+msgid "No previous allocation data available"
 msgstr ""
 
 #: public/js/controllers/MonitorCtrl.js:7
@@ -2274,6 +3127,11 @@ msgstr ""
 msgid "No task"
 msgstr ""
 
+#: public/templates/bonus/templates.html:146
+#: public/templates/bonus/templates.html:194
+msgid "No templates match your filters."
+msgstr ""
+
 #: public/js/controllers/users/UsersCtrl.js:5
 msgid "No user"
 msgstr ""
@@ -2297,6 +3155,10 @@ msgstr ""
 #: public/js/appFilters.js:374
 #: public/templates/statistics/procrastinate/directives/procras8_synthesis.html:29
 msgid "Not started"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:824
+msgid "Notes"
 msgstr ""
 
 #: public/js/controllers/MenuCtrl.js:204
@@ -2415,8 +3277,17 @@ msgstr ""
 msgid "October"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:94
+msgid "On Demand"
+msgstr ""
+
 #: public/js/appFilters.js:333
 msgid "One Shot Sales"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:419
+#: public/templates/bonus/template-view.html:178
+msgid "Operator"
 msgstr ""
 
 #: public/templates/staffs/staff/edit.html:389
@@ -2451,12 +3322,29 @@ msgstr ""
 msgid "Origin of"
 msgstr ""
 
+#: public/templates/bonus/modals/adjust-allocation.html:84
+msgid "Original Amount"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:588
+#: public/templates/bonus/instance-wizard.html:771
+msgid "Original Amount:"
+msgstr ""
+
 #: public/templates/staffs/staff/edit.html:245
 msgid "Original administration"
 msgstr ""
 
 #: public/templates/statistics/directives/card1.html:51
 msgid "Other civil servant"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:311
+msgid "Ou parcourir la liste :"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:426
+msgid "PDF Report"
 msgstr ""
 
 #: public/js/controllers/AdministrationCtrl.js:31
@@ -2467,12 +3355,39 @@ msgid "Page"
 msgstr ""
 
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:289
+#: public/templates/bonus/instances.html:97
 #: public/templates/staffs/personnal_records.html:616
 msgid "Paid"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:586
+msgid "Parallel"
+msgstr ""
+
 #: public/templates/staffs/staff/edit.html:442
 msgid "Parcours professionnel"
+msgstr ""
+
+#: public/templates/bonus/allocations.html:70
+#: public/templates/bonus/instance-wizard.html:686
+#: public/templates/bonus/instance-wizard.html:822
+#: public/templates/bonus/modals/adjust-allocation.html:202
+#: public/templates/bonus/modals/history-details.html:157
+#: public/templates/bonus/partials/with-parts-table.html:8
+#: public/templates/bonus/template-view.html:144
+msgid "Parts"
+msgstr ""
+
+#: public/templates/bonus/modals/adjust-allocation.html:69
+#: public/templates/bonus/modals/exclude-allocation.html:55
+#: public/templates/bonus/modals/view-history.html:58
+msgid "Parts/Shares"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:600
+#: public/templates/bonus/modals/history-details.html:64
+#: public/templates/bonus/modals/history-details.html:96
+msgid "Parts/Shares:"
 msgstr ""
 
 #: public/js/controllers/sign/SigninCtrl.js:29
@@ -2522,9 +3437,15 @@ msgstr ""
 msgid "Payment Date"
 msgstr ""
 
+#: public/templates/bonus/allocations.html:27
+msgid "Payout Cycle"
+msgstr ""
+
 #: app/controllers/ui.js:298
 #: app/controllers/ui.js:299
+#: public/templates/bonus/bonus.html:17
 #: public/templates/bonus/dashboard.html:38
+#: public/templates/bonus/instances.html:17
 msgid "Payout Cycles"
 msgstr ""
 
@@ -2541,13 +3462,36 @@ msgstr ""
 msgid "People of retirement age"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:196
+msgid "Percentage"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:129
+msgid "Percentage Based"
+msgstr ""
+
 #: public/templates/statistics/procrastinate/directives/procras7.html:8
 msgid "Performance"
 msgstr ""
 
+#: public/templates/bonus/instances.html:133
+#: public/templates/bonus/modals/history-details.html:154
 #: public/templates/staffs/personnal_records.html:704
 #: public/templates/staffs/staff/edit.html:459
 msgid "Period"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:51
+msgid "Period Configuration"
+msgstr ""
+
+#: public/templates/bonus/template-view.html:51
+#: public/templates/bonus/templates.html:103
+msgid "Periodicity"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:41
+msgid "Periodicity:"
 msgstr ""
 
 #: public/templates/staffs/staff/edit.html:203
@@ -2575,6 +3519,8 @@ msgstr ""
 msgid "Personnal records"
 msgstr ""
 
+#: public/templates/bonus/allocations.html:66
+#: public/templates/bonus/reports.html:43
 #: public/templates/staffs/discipline/main.html:35
 #: public/templates/staffs/staff/assignmenthistory.html:68
 #: public/templates/staffs/staff/sanctionsmanagement.html:114
@@ -2634,14 +3580,29 @@ msgstr ""
 msgid "Please go to « <i>Users</i> » page to review his/her request."
 msgstr ""
 
+#: public/templates/bonus/modals/update-share-amount.html:82
+#: public/templates/bonus/modals/update-tax-config.html:99
+msgid "Please provide a clear reason for this change. This will be recorded in the history."
+msgstr ""
+
 #: public/templates/procrastinate/tasks/edit.html:104
 msgid "Please select the progress."
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:305
+msgid "Please verify each employee's allocation against their historical bonus data before proceeding."
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:12
+msgid "Please wait while we prepare your bonus instance"
 msgstr ""
 
 #: public/js/appFilters.js:221
 msgid "Portuguese"
 msgstr ""
 
+#: public/templates/bonus/partials/with-parts-table.html:6
+#: public/templates/bonus/partials/without-parts-table.html:7
 #: public/templates/dialogs/sedentary.html:33
 #: public/templates/monitor/main.html:77
 msgid "Position"
@@ -2703,8 +3664,54 @@ msgstr ""
 msgid "Predefined Periods"
 msgstr ""
 
+#: public/templates/bonus/templates.html:213
+msgid "Prev"
+msgstr ""
+
+#: public/templates/bonus/modals/view-history.html:104
+msgid "Prev Parts"
+msgstr ""
+
+#: public/templates/bonus/allocations.html:127
+#: public/templates/bonus/instance-wizard.html:226
+#: public/templates/bonus/instances.html:239
+#: public/templates/bonus/partials/ift-table.html:11
+#: public/templates/bonus/partials/with-parts-table.html:11
+#: public/templates/bonus/partials/without-parts-table.html:13
+msgid "Previous"
+msgstr ""
+
+#: public/templates/bonus/modals/update-tax-config.html:117
+msgid "Previous %"
+msgstr ""
+
+#: public/templates/bonus/modals/history-details.html:86
+msgid "Previous Allocation"
+msgstr ""
+
+#: public/templates/bonus/modals/update-share-amount.html:99
+#: public/templates/bonus/modals/view-history.html:108
+msgid "Previous Amount"
+msgstr ""
+
+#: public/templates/bonus/modals/update-tax-config.html:116
+msgid "Previous Name"
+msgstr ""
+
 #: public/js/controllers/staffs/PersonnalRecordsCtrl.js:55
 msgid "Previous Year"
+msgstr ""
+
+#: public/templates/bonus/allocations.html:68
+msgid "Prime Type"
+msgstr ""
+
+#: public/templates/bonus/reports.html:87
+msgid "Primes avec part"
+msgstr ""
+
+#: public/templates/bonus/reports.html:131
+msgid "Primes sans part"
 msgstr ""
 
 #: public/templates/administration/structures/main.html:46
@@ -2739,6 +3746,11 @@ msgstr ""
 msgid "Probability of Success"
 msgstr ""
 
+#: public/templates/bonus/instance-form.html:146
+#: public/templates/bonus/modals/create-instance.html:150
+msgid "Processing..."
+msgstr ""
+
 #: public/templates/projects/edit.html:83
 #: public/templates/projects/profile.html:81
 msgid "Product"
@@ -2763,6 +3775,15 @@ msgstr ""
 
 #: public/templates/staffs/personnal_records.html:338
 msgid "Profiles"
+msgstr ""
+
+#: public/templates/bonus/instances.html:132
+#: public/templates/bonus/instances.html:82
+msgid "Program"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:46
+msgid "Progress"
 msgstr ""
 
 #: public/templates/projects/profile.html:9
@@ -2809,6 +3830,10 @@ msgstr ""
 msgid "Proprietary"
 msgstr ""
 
+#: public/templates/bonus/modals/include-allocation.html:16
+msgid "Provide details for the allocation inclusion."
+msgstr ""
+
 #: public/templates/import_export.html:31
 msgid "ProviderID:"
 msgstr ""
@@ -2822,19 +3847,44 @@ msgstr ""
 msgid "Public access"
 msgstr ""
 
+#: public/templates/bonus/reports.html:138
+#: public/templates/bonus/reports.html:94
+msgid "Période"
+msgstr ""
+
 #: public/templates/monitor/main.html:23
 #: public/templates/monitor/main.html:79
 msgid "Quarter"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:91
+msgid "Quarterly"
 msgstr ""
 
 #: public/templates/menu/topnavbar.html:43
 msgid "Quick new"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:244
+msgid "R = SBI × 3 × TX, with TX = 45% for DIR/SD, otherwise 30%."
+msgstr ""
+
+#: public/templates/bonus/template-form.html:477
+msgid "Rang"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:436
+msgid "Rangs (select many)"
+msgstr ""
+
 #: public/templates/dialogs/affectation.html:125
 #: public/templates/staffs/personnal_records.html:269
 #: public/templates/staffs/staff/edit.html:342
 msgid "Rank"
+msgstr ""
+
+#: public/templates/bonus/partials/ift-table.html:6
+msgid "Rank / Function"
 msgstr ""
 
 #: public/templates/statistics/directives/card3.html:11
@@ -2865,9 +3915,31 @@ msgstr ""
 msgid "Rearch..."
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:690
+#: public/templates/bonus/modals/adjust-allocation.html:204
+#: public/templates/bonus/modals/update-share-amount.html:102
+#: public/templates/bonus/modals/update-tax-config.html:121
+#: public/templates/bonus/modals/view-history.html:112
 #: public/templates/dialogs/award.html:146
 #: public/templates/dialogs/sanction.html:147
 msgid "Reason"
+msgstr ""
+
+#: public/templates/bonus/modals/adjust-allocation.html:178
+msgid "Reason for Adjustment:"
+msgstr ""
+
+#: public/templates/bonus/modals/update-share-amount.html:76
+#: public/templates/bonus/modals/update-tax-config.html:93
+msgid "Reason for Change:"
+msgstr ""
+
+#: public/templates/bonus/modals/exclude-allocation.html:96
+msgid "Reason for Exclusion"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:778
+msgid "Reason for Exclusion:"
 msgstr ""
 
 #: public/templates/bonus/dashboard.html:68
@@ -2893,6 +3965,15 @@ msgstr ""
 #: public/templates/dialogs/physicalRecordDetails.html:42
 #: public/templates/staffs/staff/edit.html:456
 msgid "Reference"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:58
+msgid "Reference Period"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:503
+#: public/templates/bonus/modals/history-details.html:91
+msgid "Reference Period:"
 msgstr ""
 
 #: public/templates/dialogs/affectation.html:169
@@ -2933,6 +4014,15 @@ msgstr ""
 msgid "Remember me"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:237
+msgid "Remise sur salaire"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:404
+#: public/templates/bonus/template-form.html:568
+msgid "Remove"
+msgstr ""
+
 #: app/controllers/ui.js:236
 #: app/controllers/ui.js:237
 msgid "Reports"
@@ -2940,6 +4030,7 @@ msgstr ""
 
 #: app/controllers/ui.js:310
 #: app/controllers/ui.js:311
+#: public/templates/bonus/bonus.html:25
 msgid "Reports & Exports"
 msgstr ""
 
@@ -2966,8 +4057,17 @@ msgid "Research Consortium"
 msgstr ""
 
 #: public/js/controllers/ThresholdsCtrl.js:88
+#: public/templates/bonus/instances.html:118
 #: public/templates/thresholds.html:65
 msgid "Reset"
+msgstr ""
+
+#: public/templates/bonus/reports.html:55
+msgid "Reset All"
+msgstr ""
+
+#: public/templates/bonus/allocations.html:46
+msgid "Reset Filters"
 msgstr ""
 
 #: public/js/controllers/sign/SigninCtrl.js:44
@@ -2981,6 +4081,15 @@ msgstr ""
 
 #: public/templates/recovery/reset.html:9
 msgid "Reset your password"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:292
+msgid "Restaurer la grille par défaut"
+msgstr ""
+
+#: public/templates/bonus/reports.html:142
+#: public/templates/bonus/reports.html:98
+msgid "Retenues IR (5,28%)"
 msgstr ""
 
 #: app/controllers/ui.js:119
@@ -2997,11 +4106,32 @@ msgstr ""
 msgid "Retirement date"
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:526
+msgid "Return to Instances List"
+msgstr ""
+
 #: public/templates/projects/edit.html:58
 #: public/templates/projects/profile.html:63
 msgid "Revenue Type"
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:242
+msgid "Review and adjust allocations"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:79
+msgid "Review and modify bonus allocations"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:304
+msgid "Review historical data"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:96
+msgid "Review historical data and confirm"
+msgstr ""
+
+#: public/templates/bonus/template-view.html:214
 #: public/templates/settings/main.html:14
 #: public/templates/users/edit.html:29
 #: public/templates/users/profile.html:35
@@ -3015,8 +4145,20 @@ msgstr ""
 msgid "Rows per page"
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:378
+msgid "Rows per page:"
+msgstr ""
+
 #: public/templates/bonus/dashboard.html:24
 msgid "Rule Library"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:401
+msgid "Rule {{$index + 1}}"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:20
+msgid "Rules"
 msgstr ""
 
 #: public/js/controllers/staffs/staff/ExportsCtrl.js:350
@@ -3025,6 +4167,21 @@ msgstr ""
 
 #: public/js/appFilters.js:215
 msgid "Russian"
+msgstr ""
+
+#: public/templates/bonus/allocations.html:72
+#: public/templates/bonus/modals/adjust-allocation.html:119
+#: public/templates/bonus/modals/exclude-allocation.html:76
+#: public/templates/bonus/modals/history-details.html:160
+#: public/templates/bonus/modals/view-history.html:107
+#: public/templates/bonus/modals/view-history.html:76
+#: public/templates/bonus/partials/without-parts-table.html:9
+msgid "SBI"
+msgstr ""
+
+#: public/templates/bonus/modals/history-details.html:105
+#: public/templates/bonus/modals/history-details.html:73
+msgid "SBI:"
 msgstr ""
 
 #: public/templates/staffs/staff/sanctionsmanagement.html:111
@@ -3046,6 +4203,8 @@ msgstr ""
 
 #: public/js/controllers/ThresholdsCtrl.js:235
 #: public/templates/administration/structures/edit.html:112
+#: public/templates/bonus/modals/include-allocation.html:38
+#: public/templates/bonus/template-form-modal.html:31
 #: public/templates/configuration.html:20
 #: public/templates/dialogs/affectation.html:222
 #: public/templates/dialogs/award.html:158
@@ -3062,6 +4221,15 @@ msgstr ""
 #: public/templates/staffs/status/edit.html:95
 #: public/templates/thresholds.html:66
 msgid "Save"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:739
+#: public/templates/bonus/modals/adjust-allocation.html:230
+msgid "Save Changes"
+msgstr ""
+
+#: public/templates/bonus/modals/include-allocation.html:39
+msgid "Saving..."
 msgstr ""
 
 #: public/templates/staffs/staff/edit.html:357
@@ -3112,6 +4280,10 @@ msgstr ""
 msgid "Search amongs staff..."
 msgstr ""
 
+#: public/templates/bonus/allocations.html:13
+msgid "Search by employee"
+msgstr ""
+
 #: public/templates/staffs/staff/exports.html:3
 msgid "Search for an Export"
 msgstr ""
@@ -3154,6 +4326,11 @@ msgstr ""
 
 #: public/templates/dialogs/evaluation.html:49
 msgid "Select a quarter"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:33
+#: public/templates/bonus/modals/create-instance.html:35
+msgid "Select a template"
 msgstr ""
 
 #: public/templates/filterbar.html:45
@@ -3214,14 +4391,30 @@ msgstr ""
 msgid "Select the sanction"
 msgstr ""
 
+#: public/templates/bonus/reports.html:49
+msgid "Selected:"
+msgstr ""
+
 #: public/js/appFilters.js:399
 #: public/js/controllers/projects/ProjectCtrl.js:30
 msgid "Selfics"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:92
+msgid "Semesterly"
+msgstr ""
+
+#: public/templates/bonus/instances.html:205
+msgid "Send Notifications"
+msgstr ""
+
 #: public/js/appFilters.js:10
 #: public/js/appFilters.js:63
 msgid "September"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:585
+msgid "Sequential"
 msgstr ""
 
 #: public/templates/configuration.html:12
@@ -3241,6 +4434,18 @@ msgstr ""
 msgid "Sex"
 msgstr ""
 
+#: public/templates/bonus/modals/update-share-amount.html:90
+msgid "Share Amount History"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:166
+msgid "Share Amount:"
+msgstr ""
+
+#: public/templates/bonus/modals/adjust-allocation.html:79
+msgid "Share value:"
+msgstr ""
+
 #: public/templates/procrastinate/tasks/main.html:15
 #: public/templates/procrastinate/tasks/main.html:26
 #: public/templates/procrastinate/tasks/main.html:37
@@ -3258,6 +4463,25 @@ msgstr ""
 #: public/templates/procrastinate/tasks/dialogs/task.html:41
 #: public/templates/procrastinate/tasks/main.html:95
 msgid "Show more"
+msgstr ""
+
+#: public/templates/bonus/templates.html:201
+msgid "Showing {{(currentPage-1)*pageSize + 1}}–{{ Math.min(currentPage*pageSize, filteredTemplates.length) }} of {{filteredTemplates.length}}"
+msgstr ""
+
+#: public/templates/bonus/instances.html:233
+msgid "Showing {{(pagination.offset + 1)}} to {{Math.min(pagination.offset + pagination.limit, pagination.total)}} of {{pagination.total}} entries"
+msgstr ""
+
+#: public/templates/bonus/allocations.html:122
+msgid "Showing {{pagination.offset + 1}} to {{Math.min(pagination.offset + pagination.limit, pagination.total)}} of {{pagination.total}} entries"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:372
+msgid ""
+"Showing {{pagination.total ? (pagination.offset + 1) : 0}} -\n"
+"                                            {{Math.min(pagination.offset + (allocations ? allocations.length : 0), pagination.total || 0)}}\n"
+"                                            of {{pagination.total || 0}}"
 msgstr ""
 
 #: public/templates/projects/edit.html:75
@@ -3328,6 +4552,18 @@ msgstr ""
 msgid "Sorry, this page isn't available"
 msgstr ""
 
+#: public/templates/bonus/templates.html:73
+msgid "Sort by:"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:491
+msgid "Sous-structure"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:450
+msgid "Sous-structures (select many)"
+msgstr ""
+
 #: public/js/appFilters.js:218
 msgid "Spanish"
 msgstr ""
@@ -3339,6 +4575,10 @@ msgstr ""
 #: public/templates/staffs/personnal_records.html:155
 #: public/templates/staffs/staff/edit.html:68
 msgid "Spouse's name"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:758
+msgid "Staff Information:"
 msgstr ""
 
 #: app/controllers/ui.js:113
@@ -3375,7 +4615,23 @@ msgstr ""
 msgid "Start date:"
 msgstr ""
 
+#: public/templates/bonus/allocations.html:20
+#: public/templates/bonus/allocations.html:69
 #: public/templates/bonus/dashboard.html:76
+#: public/templates/bonus/instance-wizard.html:688
+#: public/templates/bonus/instance-wizard.html:821
+#: public/templates/bonus/instances.html:134
+#: public/templates/bonus/instances.html:91
+#: public/templates/bonus/modals/history-details.html:155
+#: public/templates/bonus/partials/ift-table.html:8
+#: public/templates/bonus/partials/with-parts-table.html:7
+#: public/templates/bonus/partials/without-parts-table.html:8
+#: public/templates/bonus/reports.html:139
+#: public/templates/bonus/reports.html:27
+#: public/templates/bonus/reports.html:95
+#: public/templates/bonus/template-form-modal.html:22
+#: public/templates/bonus/template-form.html:470
+#: public/templates/bonus/templates.html:104
 #: public/templates/procrastinate/tasks/edit.html:97
 #: public/templates/procrastinate/tasks/main.html:67
 #: public/templates/projects/profile.html:45
@@ -3390,6 +4646,23 @@ msgstr ""
 msgid "Status Filter"
 msgstr ""
 
+#: public/templates/bonus/modals/history-details.html:55
+#: public/templates/bonus/templates.html:50
+msgid "Status:"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:429
+msgid "Statuses (select many)"
+msgstr ""
+
+#: public/templates/bonus/template-view.html:213
+msgid "Step"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:565
+msgid "Step {{$index + 1}}"
+msgstr ""
+
 #: public/js/controllers/recovery/ResetCtrl.js:32
 #: public/templates/recovery/reset.html:73
 msgid "Strong"
@@ -3398,6 +4671,8 @@ msgstr ""
 #: public/templates/administration/positions/details.html:63
 #: public/templates/administration/positions/main.html:130
 #: public/templates/administration/structures/edit.html:42
+#: public/templates/bonus/partials/ift-table.html:7
+#: public/templates/bonus/template-form.html:484
 #: public/templates/dialogs/affectation.html:75
 #: public/templates/dialogs/evaluation.html:19
 #: public/templates/procrastinate/tasks/details.html:63
@@ -3432,6 +4707,10 @@ msgstr ""
 msgid "Structure éligible IFT"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:443
+msgid "Structures (select many)"
+msgstr ""
+
 #: app/controllers/ui.js:206
 #: app/controllers/ui.js:207
 msgid "Structures management"
@@ -3464,8 +4743,20 @@ msgstr ""
 msgid "Subsidy"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:233
+msgid "Subtype"
+msgstr ""
+
 #: public/templates/import_export.html:28
 msgid "Success Probaility:"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:71
+msgid "Suggest"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:142
+msgid "Summary"
 msgstr ""
 
 #: public/js/appFilters.js:46
@@ -3482,13 +4773,40 @@ msgstr ""
 msgid "Synthesis"
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:710
+msgid "System"
+msgstr ""
+
 #: public/templates/dialogs/physicalRecordDetails.html:23
 msgid "System ID"
+msgstr ""
+
+#: public/templates/bonus/allocations.html:71
+#: public/templates/bonus/modals/adjust-allocation.html:111
+#: public/templates/bonus/modals/exclude-allocation.html:70
+#: public/templates/bonus/modals/view-history.html:72
+#: public/templates/bonus/partials/without-parts-table.html:10
+msgid "TAUX (%)"
+msgstr ""
+
+#: public/templates/bonus/modals/history-details.html:101
+#: public/templates/bonus/modals/history-details.html:69
+msgid "TAUX (%):"
 msgstr ""
 
 #: public/js/appFilters.js:355
 #: public/js/controllers/projects/ProjectCtrl.js:21
 msgid "TB"
+msgstr ""
+
+#: public/templates/bonus/reports.html:118
+#: public/templates/bonus/reports.html:162
+msgid "TOTAL"
+msgstr ""
+
+#: public/templates/bonus/modals/history-details.html:159
+#: public/templates/bonus/modals/view-history.html:106
+msgid "TX (%)"
 msgstr ""
 
 #: public/templates/administration/positions/edit.html:127
@@ -3521,8 +4839,41 @@ msgstr ""
 msgid "Tax"
 msgstr ""
 
+#: public/templates/bonus/modals/update-tax-config.html:107
+msgid "Tax Configuration History"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:171
+msgid "Tax Rate:"
+msgstr ""
+
 #: public/js/appFilters.js:314
 msgid "Technical Agency"
+msgstr ""
+
+#: public/templates/bonus/template-view.html:26
+msgid "Template Code"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:17
+#: public/templates/bonus/modals/create-instance.html:19
+msgid "Template Configuration"
+msgstr ""
+
+#: public/templates/bonus/template-view.html:4
+msgid "Template Details:"
+msgstr ""
+
+#: public/templates/bonus/instance-form.html:120
+msgid "Template Preview"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:635
+msgid "Template is active"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:507
+msgid "Template:"
 msgstr ""
 
 #: public/js/controllers/staffs/staff/StaffsCtrl.js:327
@@ -3784,6 +5135,11 @@ msgstr ""
 msgid "This field is required to proceed on next step."
 msgstr ""
 
+#: public/templates/bonus/modals/update-share-amount.html:11
+#: public/templates/bonus/modals/update-tax-config.html:11
+msgid "This operation cannot be undone."
+msgstr ""
+
 #: public/templates/staffs/staff/edit.html:348
 msgid "This rank is editable only once if not set. To change it, please proceed with an affectation."
 msgstr ""
@@ -3827,6 +5183,9 @@ msgstr ""
 msgid "To"
 msgstr ""
 
+#: public/templates/bonus/allocations.html:39
+#: public/templates/bonus/instances.html:110
+#: public/templates/bonus/reports.html:37
 #: public/templates/staffs/personnal_records.html:653
 #: public/templates/staffs/personnal_records.html:654
 msgid "To Date"
@@ -3844,10 +5203,19 @@ msgstr ""
 msgid "To:"
 msgstr ""
 
+#: public/templates/bonus/templates.html:14
 #: public/templates/statistics/directives/card4.html:39
 #: public/templates/statistics/procrastinate/directives/procras8_synthesis.html:34
 #: public/templates/statistics/procrastinate/directives/procras8_synthesis.html:50
 msgid "Total"
+msgstr ""
+
+#: public/templates/bonus/instances.html:136
+msgid "Total Amount"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:511
+msgid "Total Amount:"
 msgstr ""
 
 #: public/templates/staffs/personnal_records.html:677
@@ -3874,8 +5242,36 @@ msgstr ""
 msgid "Total Treasure officials"
 msgstr ""
 
+#: public/templates/bonus/instance-wizard.html:156
+msgid "Total adjusted:"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:177
+msgid "Total bonus amount:"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:148
+msgid "Total eligible:"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:152
+msgid "Total excluded:"
+msgstr ""
+
+#: public/templates/bonus/reports.html:185
+msgid "Total gains (NAP)"
+msgstr ""
+
+#: public/templates/bonus/reports.html:177
+msgid "Total montant brut"
+msgstr ""
+
 #: public/templates/statistics/directives/card1.html:36
 msgid "Total number"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:161
+msgid "Total parts:"
 msgstr ""
 
 #: public/templates/dashboard/directives/chart5.html:23
@@ -3884,6 +5280,10 @@ msgstr ""
 
 #: public/templates/dashboard/directives/chart5.html:47
 msgid "Total positions"
+msgstr ""
+
+#: public/templates/bonus/reports.html:181
+msgid "Total retenues IR 5.28%"
 msgstr ""
 
 #: public/templates/dashboard/directives/chart5.html:41
@@ -3906,9 +5306,16 @@ msgstr ""
 #: app/controllers/export.js:180
 #: public/templates/administration/structures/main.html:81
 #: public/templates/bonus/dashboard.html:77
+#: public/templates/bonus/instance-wizard.html:447
+#: public/templates/bonus/template-view.html:215
 #: public/templates/staffs/mouvement/main.html:32
 #: public/templates/staffs/staff/sanctionsmanagement.html:110
 msgid "Type"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:258
+#: public/templates/bonus/instance-wizard.html:330
+msgid "Type at least 3 characters to search"
 msgstr ""
 
 #: public/templates/staffs/discipline/edit.html:14
@@ -3928,6 +5335,30 @@ msgstr ""
 msgid "Type of structure"
 msgstr ""
 
+#: public/templates/bonus/modals/adjust-allocation.html:58
+msgid "Type:"
+msgstr ""
+
+#: public/templates/bonus/instances.html:95
+msgid "Under Review"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:191
+#: public/templates/bonus/modals/update-share-amount.html:126
+#: public/templates/bonus/modals/update-share-amount.html:3
+msgid "Update Share Amount"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:195
+#: public/templates/bonus/modals/update-tax-config.html:147
+#: public/templates/bonus/modals/update-tax-config.html:3
+msgid "Update Tax Configuration"
+msgstr ""
+
+#: public/templates/bonus/templates.html:75
+msgid "Updated"
+msgstr ""
+
 #: public/templates/recovery/reset.html:25
 #: public/templates/settings/password.html:4
 msgid "Use at least 6 characters"
@@ -3942,8 +5373,18 @@ msgstr ""
 msgid "Use input to search for a personnal record"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:225
+msgid "Use mathematical expressions with available variables"
+msgstr ""
+
 #: public/templates/sign/signin.html:21
 msgid "Use your credentials to access your workspace securely."
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:448
+#: public/templates/bonus/instance-wizard.html:820
+#: public/templates/bonus/modals/view-history.html:102
+msgid "User"
 msgstr ""
 
 #: public/templates/users/profile.html:9
@@ -3967,18 +5408,40 @@ msgstr ""
 msgid "Vacancies (Excel)"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:510
+#: public/templates/bonus/template-view.html:179
+msgid "Value"
+msgstr ""
+
 #: public/templates/administration/positions/main.html:131
 msgid "Vancancy"
+msgstr ""
+
+#: public/templates/bonus/modals/history-details.html:126
+msgid "Variance Analysis"
 msgstr ""
 
 #: public/js/controllers/administration/positions/EligibilityCtrl.js:14
 msgid "Verify that the profile and skills required for the position have been completed"
 msgstr ""
 
+#: public/templates/bonus/templates.html:136
 #: public/templates/dialogs/physicalRecordDetails.html:125
 #: public/templates/staffs/personnal_records.html:519
 #: public/templates/staffs/staff/physicalrecords.html:100
 msgid "View"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:724
+msgid "View Complete History"
+msgstr ""
+
+#: public/templates/bonus/instances.html:185
+msgid "View Details"
+msgstr ""
+
+#: public/templates/bonus/instances.html:9
+msgid "View pending instances"
 msgstr ""
 
 #: public/templates/dialogs/physicalRecordDetails.html:78
@@ -4003,6 +5466,10 @@ msgstr ""
 msgid "Wednesday"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:89
+msgid "Weekly"
+msgstr ""
+
 #: public/templates/sign/signin.html:35
 msgid "Welcome back"
 msgstr ""
@@ -4023,6 +5490,14 @@ msgstr ""
 msgid "When a staff member has spent more than {{thresholds[0].values[0]}} years in the same post"
 msgstr ""
 
+#: public/templates/bonus/template-form.html:70
+msgid "With Parts"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:71
+msgid "Without Parts"
+msgstr ""
+
 #: public/templates/statistics/directives/card4.html:38
 msgid "Women"
 msgstr ""
@@ -4037,6 +5512,10 @@ msgstr ""
 
 #: public/js/controllers/staffs/staff/ExportsCtrl.js:363
 msgid "Work failed. The query is not correctly defined"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:21
+msgid "Workflow"
 msgstr ""
 
 #: public/templates/administration/positions/details.html:45
@@ -4055,6 +5534,10 @@ msgstr ""
 
 #: public/templates/monitor/main.html:13
 msgid "Year"
+msgstr ""
+
+#: public/templates/bonus/template-form.html:93
+msgid "Yearly"
 msgstr ""
 
 #: public/templates/staffs/personnal_records.html:125
@@ -4079,6 +5562,10 @@ msgstr ""
 
 #: app/controllers/tasks.js:687
 msgid "You have been assigned a new task!"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:492
+msgid "You have successfully reviewed and completed this bonus instance. It's now ready for approval."
 msgstr ""
 
 #: public/templates/recovery/lost.html:17
@@ -4163,6 +5650,10 @@ msgstr ""
 msgid "left"
 msgstr ""
 
+#: public/templates/bonus/modals/update-tax-config.html:79
+msgid "net payments"
+msgstr ""
+
 #: public/js/controllers/AdministrationCtrl.js:33
 #: public/js/controllers/MonitorCtrl.js:45
 #: public/js/controllers/procrastinate/ProcrastinateCtrl.js:47
@@ -4230,6 +5721,10 @@ msgstr ""
 msgid "unknown"
 msgstr ""
 
+#: public/templates/bonus/instances.html:8
+msgid "were auto-generated and need review."
+msgstr ""
+
 #: public/js/controllers/ThresholdsCtrl.js:15
 #: public/js/controllers/ThresholdsCtrl.js:21
 #: public/templates/dialogs/sedentary.html:45
@@ -4256,6 +5751,10 @@ msgstr ""
 msgid "{{header.type}}"
 msgstr ""
 
+#: public/templates/bonus/instances.html:8
+msgid "{{pendingAutoGenerations}} bonuses"
+msgstr ""
+
 #: public/templates/procrastinate/tasks/dialogs/task.html:115
 msgid "{{task.category.name}}"
 msgstr ""
@@ -4271,4 +5770,28 @@ msgstr ""
 
 #: public/templates/procrastinate/tasks/dialogs/task.html:107
 msgid "{{task.prioritybeautified}}"
+msgstr ""
+
+#: public/templates/bonus/instances.html:64
+msgid "{{template.approvedPercentage}}% approved"
+msgstr ""
+
+#: public/templates/bonus/instances.html:63
+msgid "{{template.instanceCount}} instances"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:157
+msgid "{{totals.adjusted || 0}} person(s)"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:149
+msgid "{{totals.eligible || 0}} person(s)"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:153
+msgid "{{totals.excluded || 0}} person(s)"
+msgstr ""
+
+#: public/templates/bonus/instance-wizard.html:162
+msgid "{{totals.parts || 0}} parts"
 msgstr ""

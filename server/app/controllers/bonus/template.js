@@ -2,11 +2,17 @@ const Template = require('../../models/bonus/template').BonusTemplate;
 const BonusRule = require('../../models/bonus/rule').BonusRule;
 const { badRequest, notFound } = require('../../utils/ApiError');
 const audit = require('../../utils/audit-log');
+const dictionary = require('../../utils/dictionary');
 const httpStatus = require('http-status');
 const formidable = require('formidable');
 
 // API
 exports.api = {};
+
+function t(req, msgid) {
+    const language = (req && req.actor && req.actor.language) || (req && req.user && req.user.language) || '';
+    return dictionary.translator(language).gettext(msgid);
+}
 
 function getActorId(req) {
     if (req && req.actor && req.actor.id) return req.actor.id;
@@ -36,19 +42,19 @@ exports.api.create = async (req, res, next) => {
 
             // Basic required fields
             if (!templateData.name) {
-                throw badRequest('Missing required field: name');
+                throw badRequest(t(req, 'Missing required field: name'));
             }
             if (!templateData.category) {
-                throw badRequest('Missing required field: category');
+                throw badRequest(t(req, 'Missing required field: category'));
             }
             if (!templateData.periodicity) {
-                throw badRequest('Missing required field: periodicity');
+                throw badRequest(t(req, 'Missing required field: periodicity'));
             }
             const cfg = templateData.calculationConfig || {};
             switch (templateData.category) {
                 case 'with_parts':
                     if (cfg.defaultShareAmount === undefined || cfg.defaultShareAmount === null || isNaN(Number(cfg.defaultShareAmount))) {
-                        throw badRequest('Default share amount is required for with-parts category');
+                        throw badRequest(t(req, 'Default share amount is required for with-parts category'));
                     }
                     break;
                 case 'without_parts': {
@@ -69,36 +75,36 @@ exports.api.create = async (req, res, next) => {
                         // For IFT forfaitaire, rely on amountRules; no rate required
                     } else {
                         if (cfg.rate === undefined || cfg.rate === null || isNaN(Number(cfg.rate))) {
-                            throw badRequest('Rate (TX) is required for without-parts category');
+                            throw badRequest(t(req, 'Rate (TX) is required for without-parts category'));
                         }
                     }
                     break;
                 }
                 case 'fixed_amount':
                     if (cfg.fixedAmount === undefined || cfg.fixedAmount === null || isNaN(Number(cfg.fixedAmount))) {
-                        throw badRequest('Fixed amount is required for fixed amount category');
+                        throw badRequest(t(req, 'Fixed amount is required for fixed amount category'));
                     }
                     break;
                 case 'calculated':
-                    if (!cfg.formulaType) throw badRequest('Formula type is required for calculated category');
+                    if (!cfg.formulaType) throw badRequest(t(req, 'Formula type is required for calculated category'));
                     if (cfg.formulaType === 'custom_formula') {
-                        if (!cfg.formula) throw badRequest('Formula is required for custom formula');
-                        if (!validateFormula(cfg.formula)) throw badRequest('Invalid formula syntax');
+                        if (!cfg.formula) throw badRequest(t(req, 'Formula is required for custom formula'));
+                        if (!validateFormula(cfg.formula)) throw badRequest(t(req, 'Invalid formula syntax'));
                     } else if (cfg.formulaType === 'percentage') {
-                        if (!cfg.baseField) throw badRequest('Base field is required for percentage formula');
+                        if (!cfg.baseField) throw badRequest(t(req, 'Base field is required for percentage formula'));
                         if (cfg.percentage === undefined || cfg.percentage === null || isNaN(Number(cfg.percentage))) {
-                            throw badRequest('Percentage is required for percentage formula');
+                            throw badRequest(t(req, 'Percentage is required for percentage formula'));
                         }
                     } else if (cfg.formulaType === 'fixed') {
                         if (cfg.fixedAmount === undefined || cfg.fixedAmount === null || isNaN(Number(cfg.fixedAmount))) {
-                            throw badRequest('Fixed amount is required for fixed formula');
+                            throw badRequest(t(req, 'Fixed amount is required for fixed formula'));
                         }
                     }
                     break;
             }
             if (templateData.calculationConfig?.formula) {
                 if (!validateFormula(templateData.calculationConfig.formula)) {
-                    throw badRequest('Invalid formula syntax');
+                    throw badRequest(t(req, 'Invalid formula syntax'));
                 }
             }
             const template = await Template.create(templateData);
@@ -114,7 +120,7 @@ exports.api.create = async (req, res, next) => {
     const form = formidable({ multiples: false });
     form.parse(req, async (err, fields, files) => {
         if (err) {
-            return next(badRequest('Form data parsing failed'));
+            return next(badRequest(t(req, 'Form data parsing failed')));
         }
         try {
             const templateData = fields;
@@ -128,15 +134,15 @@ exports.api.create = async (req, res, next) => {
             const cfg = templateData.calculationConfig || {};
 
             // Basic required fields
-            if (!templateData.name) throw badRequest('Missing required field: name');
-            if (!templateData.category) throw badRequest('Missing required field: category');
-            if (!templateData.periodicity) throw badRequest('Missing required field: periodicity');
+            if (!templateData.name) throw badRequest(t(req, 'Missing required field: name'));
+            if (!templateData.category) throw badRequest(t(req, 'Missing required field: category'));
+            if (!templateData.periodicity) throw badRequest(t(req, 'Missing required field: periodicity'));
 
             // Category-specific validation
             switch (templateData.category) {
                 case 'with_parts':
                     if (cfg.defaultShareAmount === undefined || cfg.defaultShareAmount === null || isNaN(Number(cfg.defaultShareAmount))) {
-                        throw badRequest('Default share amount is required for with-parts category');
+                        throw badRequest(t(req, 'Default share amount is required for with-parts category'));
                     }
                     break;
                 case 'without_parts': {
@@ -145,36 +151,36 @@ exports.api.create = async (req, res, next) => {
                         // For IFT forfaitaire, rely on amountRules; no rate required
                     } else {
                         if (cfg.rate === undefined || cfg.rate === null || isNaN(Number(cfg.rate))) {
-                            throw badRequest('Rate (TX) is required for without-parts category');
+                            throw badRequest(t(req, 'Rate (TX) is required for without-parts category'));
                         }
                     }
                     break;
                 }
                 case 'fixed_amount':
                     if (cfg.fixedAmount === undefined || cfg.fixedAmount === null || isNaN(Number(cfg.fixedAmount))) {
-                        throw badRequest('Fixed amount is required for fixed amount category');
+                        throw badRequest(t(req, 'Fixed amount is required for fixed amount category'));
                     }
                     break;
                 case 'calculated':
-                    if (!cfg.formulaType) throw badRequest('Formula type is required for calculated category');
+                    if (!cfg.formulaType) throw badRequest(t(req, 'Formula type is required for calculated category'));
                     if (cfg.formulaType === 'custom_formula') {
-                        if (!cfg.formula) throw badRequest('Formula is required for custom formula');
-                        if (!validateFormula(cfg.formula)) throw badRequest('Invalid formula syntax');
+                        if (!cfg.formula) throw badRequest(t(req, 'Formula is required for custom formula'));
+                        if (!validateFormula(cfg.formula)) throw badRequest(t(req, 'Invalid formula syntax'));
                     } else if (cfg.formulaType === 'percentage') {
-                        if (!cfg.baseField) throw badRequest('Base field is required for percentage formula');
+                        if (!cfg.baseField) throw badRequest(t(req, 'Base field is required for percentage formula'));
                         if (cfg.percentage === undefined || cfg.percentage === null || isNaN(Number(cfg.percentage))) {
-                            throw badRequest('Percentage is required for percentage formula');
+                            throw badRequest(t(req, 'Percentage is required for percentage formula'));
                         }
                     } else if (cfg.formulaType === 'fixed') {
                         if (cfg.fixedAmount === undefined || cfg.fixedAmount === null || isNaN(Number(cfg.fixedAmount))) {
-                            throw badRequest('Fixed amount is required for fixed formula');
+                            throw badRequest(t(req, 'Fixed amount is required for fixed formula'));
                         }
                     }
                     break;
             }
             if (templateData.calculationConfig?.formula) {
                 if (!validateFormula(templateData.calculationConfig.formula)) {
-                    throw badRequest('Invalid formula syntax');
+                    throw badRequest(t(req, 'Invalid formula syntax'));
                 }
             }
             const template = await Template.create(templateData);
@@ -221,7 +227,7 @@ exports.api.getById = async (req, res, next) => {
             .populate('approvalWorkflow.steps.role');
 
         if (!template) {
-            throw notFound('Bonus template not found');
+            throw notFound(t(req, 'Bonus template not found'));
         }
 
         res.json(template);
@@ -244,11 +250,11 @@ exports.api.update = async (req, res, next) => {
             if (updateData.code) delete updateData.code; // prevent code change
             if (updateData.calculationConfig?.formula) {
                 if (!validateFormula(updateData.calculationConfig.formula)) {
-                    throw badRequest('Invalid formula syntax');
+                    throw badRequest(t(req, 'Invalid formula syntax'));
                 }
             }
             const template = await Template.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
-            if (!template) throw notFound('Bonus template not found');
+            if (!template) throw notFound(t(req, 'Bonus template not found'));
             auditEvent(req, 'update', 'BonusTemplate', id, 'succeed', `Updated bonus template. code=${template.code || ''}`);
             return res.json(template);
         } catch (error) {
@@ -261,7 +267,7 @@ exports.api.update = async (req, res, next) => {
     const form = formidable({ multiples: false });
     form.parse(req, async (err, fields, files) => {
         if (err) {
-            return next(badRequest('Form data parsing failed'));
+            return next(badRequest(t(req, 'Form data parsing failed')));
         }
         try {
             const { id } = req.params;
@@ -271,11 +277,11 @@ exports.api.update = async (req, res, next) => {
             if (updateData.code) delete updateData.code;
             if (updateData.calculationConfig?.formula) {
                 if (!validateFormula(updateData.calculationConfig.formula)) {
-                    throw badRequest('Invalid formula syntax');
+                    throw badRequest(t(req, 'Invalid formula syntax'));
                 }
             }
             const template = await Template.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
-            if (!template) throw notFound('Bonus template not found');
+            if (!template) throw notFound(t(req, 'Bonus template not found'));
             auditEvent(req, 'update', 'BonusTemplate', id, 'succeed', `Updated bonus template (multipart). code=${template.code || ''}`);
             res.json(template);
         } catch (error) {
@@ -297,7 +303,7 @@ exports.api.delete = async (req, res, next) => {
         );
 
         if (!template) {
-            throw notFound('Bonus template not found');
+            throw notFound(t(req, 'Bonus template not found'));
         }
 
         auditEvent(req, 'deactivate', 'BonusTemplate', req.params.id, 'succeed', 'Deactivated bonus template');
@@ -320,7 +326,7 @@ exports.api.activate = async (req, res, next) => {
         );
 
         if (!template) {
-            throw notFound('Bonus template not found');
+            throw notFound(t(req, 'Bonus template not found'));
         }
 
         auditEvent(req, 'activate', 'BonusTemplate', req.params.id, 'succeed', 'Activated bonus template');
@@ -338,7 +344,7 @@ exports.api.clone = async (req, res, next) => {
     try {
         const original = await Template.findById(req.params.id);
         if (!original) {
-            throw ApiError.notFound('Bonus template not found');
+            throw notFound(t(req, 'Bonus template not found'));
         }
 
         const cloneData = original.toObject();
@@ -406,7 +412,7 @@ exports.api.testCalculation = async (req, res, next) => {
 
         const template = await Template.findById(templateId);
         if (!template) {
-            throw notFound('Bonus template not found');
+            throw notFound(t(req, 'Bonus template not found'));
         }
 
         const result = calculateTestBonus(template, personnelData);

@@ -2,14 +2,14 @@
   <table class="table table-hover table-bordered">
     <thead class="thead-light sticky-top">
       <tr>
-        <th width="22%">Employee</th>
-        <th width="12%">Rank / Function</th>
-        <th width="12%">Structure</th>
-        <th width="8%" class="text-center">Status</th>
-        <th width="12%" class="text-right">Gross Amount</th>
-        <th width="12%" class="text-right">Net Amount</th>
-        <th width="12%" class="text-right">Previous</th>
-        <th width="10%" class="text-center">Actions</th>
+        <th width="22%" translate>Employee</th>
+        <th width="12%" translate>Rank / Function</th>
+        <th width="12%" translate>Structure</th>
+        <th width="8%" class="text-center" translate>Status</th>
+        <th width="12%" class="text-right" translate>Gross Amount</th>
+        <th width="12%" class="text-right" translate>Net Amount</th>
+        <th width="12%" class="text-right" translate>Previous</th>
+        <th width="10%" class="text-center" translate>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -45,7 +45,7 @@
           </div>
         </td>
       </tr>
-      <tr ng-if="!allocations.length"><td colspan="8" class="text-center py-4">No allocations found</td></tr>
+      <tr ng-if="!allocations.length"><td colspan="8" class="text-center py-4" translate>No allocations found</td></tr>
     </tbody>
   </table>
 </div>
