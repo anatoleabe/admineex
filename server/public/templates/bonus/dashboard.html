@@ -1,104 +1,172 @@
-<div class="content-wrapper">
-    <div class="content">
-        <!-- Statistics cards -->
-        <div class="row">
-            <div class="col-sm-6 col-xl-3">
-                <div class="card card-body bg-blue-400 has-bg-image">
-                    <div class="media">
-                        <div class="media-body">
-                            <h3 class="mb-0">{{templates.length}}</h3>
-                            <span class="text-uppercase font-size-xs" translate>Bonus Programs</span>
-                        </div>
-                        <div class="ml-3 align-self-center">
-                            <i class="icon-files-empty icon-3x opacity-75"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="content">
 
-            <div class="col-sm-6 col-xl-3">
-                <div class="card card-body bg-danger-400 has-bg-image">
-                    <div class="media">
-                        <div class="media-body">
-                            <h3 class="mb-0">{{rules.length}}</h3>
-                            <span class="text-uppercase font-size-xs" translate>Rule Library</span>
-                        </div>
-                        <div class="ml-3 align-self-center">
-                            <i class="icon-list icon-3x opacity-75"></i>
-                        </div>
-                    </div>
+    <!-- Filters Toolbar -->
+    <div class="card mb-3">
+        <div class="card-body py-2 d-flex justify-content-between align-items-center">
+            <h6 class="mb-0 text-semibold" translate>Dashboard Overview</h6>
+            <div class="d-flex align-items-center">
+                <span class="mr-2 text-muted" translate>Show Metrics For:</span>
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" ng-model="filterStatus.approved"
+                            ng-change="toggleFilter()">
+                        <span translate>Approved</span>
+                    </label>
                 </div>
-            </div>
-
-            <div class="col-sm-6 col-xl-3">
-                <div class="card card-body bg-success-400 has-bg-image">
-                    <div class="media">
-                        <div class="media-body">
-                            <h3 class="mb-0">{{instances.length}}</h3>
-                            <span class="text-uppercase font-size-xs" translate>Payout Cycles</span>
-                        </div>
-                        <div class="ml-3 align-self-center">
-                            <i class="icon-stack icon-3x opacity-75"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6 col-xl-3">
-                <div class="card card-body bg-indigo-400 has-bg-image">
-                    <div class="media">
-                        <div class="media-body">
-                            <h3 class="mb-0">{{allocations.length}}</h3>
-                            <span class="text-uppercase font-size-xs" translate>Recent Distributions</span>
-                        </div>
-                        <div class="ml-3 align-self-center">
-                            <i class="icon-coin-dollar icon-3x opacity-75"></i>
-                        </div>
-                    </div>
+                <div class="form-check form-check-inline">
+                    <label class="form-check-label">
+                        <input type="checkbox" class="form-check-input" ng-model="filterStatus.paid"
+                            ng-change="toggleFilter()">
+                        <span translate>Paid</span>
+                    </label>
                 </div>
             </div>
         </div>
-        <!-- /statistics cards -->
-
-        <!-- Recent bonus activity -->
-        <div class="row">
-            <div class="col-xl-12">
-                <div class="card">
-                    <div class="card-header header-elements-inline">
-                        <h6 class="card-title" translate>Recent Bonus Activity</h6>
-                    </div>
-
-                    <div class="card-body py-0">
-                        <div class="table-responsive">
-                            <table class="table text-nowrap">
-                                <thead>
-                                    <tr>
-                                        <th translate>Status</th>
-                                        <th translate>Type</th>
-                                        <th translate>Date</th>
-                                        <th translate>Amount</th>
-                                        <th translate>Description</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="activity in recentActivity">
-                                        <td>
-                                            <span class="badge" ng-class="{'badge-success': activity.status === 'completed', 'badge-warning': activity.status === 'pending', 'badge-danger': activity.status === 'failed'}">
-                                                {{activity.status}}
-                                            </span>
-                                        </td>
-                                        <td>{{activity.type}}</td>
-                                        <td>{{activity.date | date:'medium'}}</td>
-                                        <td>{{activity.amount | currency}}</td>
-                                        <td>{{activity.description}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- /recent bonus activity -->
     </div>
+
+    <!-- KPI Cards -->
+    <div class="row">
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-body bg-blue-400 has-bg-image">
+                <div class="media">
+                    <div class="media-body">
+                        <h3 class="mb-0">{{ stats.totalPaid | xaf }}</h3>
+                        <span class="text-uppercase font-size-xs" translate>Total Paid (YTD)</span>
+                    </div>
+                    <div class="ml-3 align-self-center">
+                        <i class="icon-cash3 icon-3x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-body bg-success-400 has-bg-image">
+                <div class="media">
+                    <div class="media-body">
+                        <h3 class="mb-0">{{ stats.activeCyclesCount }}</h3>
+                        <span class="text-uppercase font-size-xs" translate>Active Cycles</span>
+                    </div>
+                    <div class="ml-3 align-self-center">
+                        <i class="icon-spinner11 icon-3x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <div class="card card-body bg-indigo-400 has-bg-image">
+                <div class="media">
+                    <div class="media-body">
+                        <h3 class="mb-0">{{ stats.uniqueBeneficiaries }}</h3>
+                        <span class="text-uppercase font-size-xs" translate>Beneficiaries (12M)</span>
+                    </div>
+                    <div class="ml-3 align-self-center">
+                        <i class="icon-users4 icon-3x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-6 col-md-3">
+            <!-- Quick Action Card -->
+            <div class="card card-body bg-orange-400 has-bg-image cursor-pointer" ng-click="navigate('instances')">
+                <div class="media">
+                    <div class="media-body">
+                        <h3 class="mb-0" translate>Manage</h3>
+                        <span class="text-uppercase font-size-xs" translate>Bonus Cycles</span>
+                    </div>
+                    <div class="ml-3 align-self-center">
+                        <i class="icon-arrow-right14 icon-3x opacity-75"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row">
+        <!-- Monthly Trends -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title" translate>Monthly Payout Trends</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                        <canvas id="line" class="chart chart-line" chart-data="trendsData" chart-labels="trendsLabels"
+                            chart-series="trendsSeries" chart-options="trendsOptions">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Distribution -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title" translate>Bonus Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                        <canvas id="doughnut" class="chart chart-doughnut" chart-data="distributionData"
+                            chart-labels="distributionLabels" chart-options="distributionOptions">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity & Shortcuts -->
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title" translate>Recent Activity</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th translate>Date</th>
+                                <th translate>User</th>
+                                <th translate>Action</th>
+                                <th translate>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="activity in recentActivity">
+                                <td>{{ activity.date | date:'medium' }}</td>
+                                <td>{{ activity.user }}</td>
+                                <td><span class="badge badge-info">{{ activity.action }}</span></td>
+                                <td>{{ activity.description }}</td>
+                            </tr>
+                            <tr ng-if="recentActivity.length === 0">
+                                <td colspan="4" class="text-center text-muted" translate>No recent activity found.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title" translate>Quick Links</h5>
+                </div>
+                <div class="list-group list-group-flush">
+                    <a href="" ng-click="navigate('instances')" class="list-group-item list-group-item-action">
+                        <i class="icon-list-unordered mr-3"></i> <span translate>View All Instances</span>
+                    </a>
+                    <a href="" ng-click="navigate('templates')" class="list-group-item list-group-item-action">
+                        <i class="icon-file-empty mr-3"></i> <span translate>Manage Templates</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>

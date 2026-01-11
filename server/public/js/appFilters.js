@@ -465,6 +465,20 @@ angular.module('mappingFilters', []).filter('address', function (gettextCatalog)
         }
         return toReturn;
     }
+}).filter('xaf', function () {
+    return function (value) {
+        if (value === null || value === undefined || value === '') {
+            return '';
+        }
+        var numberValue = Number(value);
+        if (!isFinite(numberValue)) {
+            return String(value);
+        }
+        var formatted = numberValue
+            .toFixed(0)
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+        return formatted + ' FCFA (XAF)';
+    };
 }).filter('capitalize', function() {
     return function(input) {
         if (input && typeof input === 'string') {
@@ -499,3 +513,21 @@ function addZero(str) {
     return str;
 }
 
+// Ensure `xaf` filter is available on the main app module even if module load order changes.
+try {
+    angular.module('app').filter('xaf', function () {
+        return function (value) {
+            if (value === null || value === undefined || value === '') {
+                return '';
+            }
+            var numberValue = Number(value);
+            if (!isFinite(numberValue)) {
+                return String(value);
+            }
+            var formatted = numberValue
+                .toFixed(0)
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+            return formatted + ' FCFA (XAF)';
+        };
+    });
+} catch (e) {}

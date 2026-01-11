@@ -59,6 +59,9 @@ var app = angular.module('app', [
     // Doughnut: label at center
     Chart.pluginService.register({
         beforeDraw: function(chart) {
+            if (chart && chart.config && chart.config.options && chart.config.options.centerText === false) {
+                return;
+            }
             var width = chart.chart.width,
                 height = chart.chart.height,
                 ctx = chart.chart.ctx,
@@ -66,6 +69,8 @@ var app = angular.module('app', [
                 heightLegend = chart.legend.height;
 
             if (type == 'doughnut'){
+                if (!chart.config.data || !chart.config.data.datasets || !chart.config.data.datasets[0]) return;
+                if (!Array.isArray(chart.config.data.datasets[0].data) || chart.config.data.datasets[0].data.length < 2) return;
                 // Values
                 var value1 = {
                     text: chart.config.data.datasets[0].data[1]+"",

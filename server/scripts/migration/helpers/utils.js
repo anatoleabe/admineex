@@ -76,7 +76,7 @@ function ensureConfigLoaded() {
 
 async function connectMongo() {
     ensureConfigLoaded();
-    const uri = process.env.MONGO_URI || process.env.MONGODB_URI || (nconf ? nconf.get('mongo') : null) || 'mongodb://127.0.0.1:27017/persabe31122025';
+    const uri = process.env.MONGO_URI || process.env.MONGODB_URI || (nconf ? nconf.get('mongo') : null) || 'mongodb://127.0.0.1:27017/persabe01092026';
     if (mongoose.connection.readyState === 1) return mongoose.connection;
     await mongoose.connect(uri, {
         useNewUrlParser: true,

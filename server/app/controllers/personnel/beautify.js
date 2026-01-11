@@ -60,7 +60,7 @@ exports.beautify = (options, personnels, callback) => {
 
 
                         personnels[a].status = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status.json', status, language);
-
+                        //console.log(personnels[a]._id, personnels[a]);
                         if (status !== "") {
                             personnels[a].grade = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/grades.json', parseInt(grade, 10), language);
                             personnels[a].category = dictionary.getValueFromJSON('../../resources/dictionary/personnel/status/' + status + '/categories.json', category, language);

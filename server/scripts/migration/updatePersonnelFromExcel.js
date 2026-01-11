@@ -106,8 +106,8 @@ async function main() {
 
         try {
             const res = await Personnel.updateOne({ _id: personnelId }, { $set: updatePayload });
-            const matched = res?.matchedCount ?? res?.n ?? 0;
-            const modified = res?.modifiedCount ?? res?.nModified ?? 0;
+            const matched = (res && (res.matchedCount != null ? res.matchedCount : (res.n != null ? res.n : 0))) || 0;
+            const modified = (res && (res.modifiedCount != null ? res.modifiedCount : (res.nModified != null ? res.nModified : 0))) || 0;
             console.log(updatePayload)
 
             if (!matched) {
