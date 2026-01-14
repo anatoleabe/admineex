@@ -11,8 +11,13 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
     }
     $scope.templates = [];
     $scope.instances = [];
-    $scope.filteredRows = { with_parts: [], without_parts: [] };
-    $scope.totals = { with_parts: { gross: 0, ir: 0, nap: 0 }, without_parts: { gross: 0, ir: 0, nap: 0 }, all: { gross: 0, ir: 0, nap: 0 } };
+    $scope.filteredRows = { with_parts: [], without_parts: [], others: [] };
+    $scope.totals = {
+        with_parts: { gross: 0, ir: 0, nap: 0 },
+        without_parts: { gross: 0, ir: 0, nap: 0 },
+        others: { gross: 0, ir: 0, nap: 0 },
+        all: { gross: 0, ir: 0, nap: 0 }
+    };
 
     // Internal state for debouncing and race-conditions protection
     var refreshDebouncePromise = null;
@@ -156,7 +161,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         return rows.reduce(function(acc, r) { return acc + Number(r[key] || 0); }, 0);
     }
 
-    function buildTotals(rowsWithParts, rowsWithoutParts) {
+    function buildTotals(rowsWithParts, rowsWithoutParts, rowsOthers) {
         $scope.totals.with_parts.gross = sumTotals(rowsWithParts, 'gross');
         $scope.totals.with_parts.ir = sumTotals(rowsWithParts, 'ir');
         $scope.totals.with_parts.nap = sumTotals(rowsWithParts, 'nap');
@@ -165,18 +170,24 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         $scope.totals.without_parts.ir = sumTotals(rowsWithoutParts, 'ir');
         $scope.totals.without_parts.nap = sumTotals(rowsWithoutParts, 'nap');
 
-        $scope.totals.all.gross = $scope.totals.with_parts.gross + $scope.totals.without_parts.gross;
-        $scope.totals.all.ir = $scope.totals.with_parts.ir + $scope.totals.without_parts.ir;
-        $scope.totals.all.nap = $scope.totals.with_parts.nap + $scope.totals.without_parts.nap;
+        $scope.totals.others.gross = sumTotals(rowsOthers, 'gross');
+        $scope.totals.others.ir = sumTotals(rowsOthers, 'ir');
+        $scope.totals.others.nap = sumTotals(rowsOthers, 'nap');
+
+        $scope.totals.all.gross = $scope.totals.with_parts.gross + $scope.totals.without_parts.gross + $scope.totals.others.gross;
+        $scope.totals.all.ir = $scope.totals.with_parts.ir + $scope.totals.without_parts.ir + $scope.totals.others.ir;
+        $scope.totals.all.nap = $scope.totals.with_parts.nap + $scope.totals.without_parts.nap + $scope.totals.others.nap;
     }
 
-    function attachAmountsToInstances(instances, allocationMap) {
+    function attachAmountsToInstances(instances, allocationMap, hasPersonnelFilter) {
         return instances.map(function(inst) {
             var totals;
             // If we have personnel-specific allocations for this instance, use them
             if (allocationMap && allocationMap[inst._id]) {
                 totals = allocationMap[inst._id];
             } else {
+                // When filtering by personnel, hide instances where they have no allocation
+                if (hasPersonnelFilter) return null;
                 // Otherwise use backend totals from the instance itself
                 var raw = inst.raw || {};
                 var gross = Number(raw.totalAmount != null ? raw.totalAmount : 0);
@@ -198,7 +209,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
                 };
             }
             return computeRow(inst, totals);
-        });
+        }).filter(Boolean);
     }
 
     // Fetch allocations for a single personnel to reduce per-instance figures
@@ -235,21 +246,31 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
     }
 
     function loadInstances() {
-        const params = {
-            limit: 100,
-            offset: 0,
+        const baseParams = {
             sortBy: 'createdAt:desc'
         };
-        if ($scope.filters.status) params.status = $scope.filters.status;
-        if ($scope.filters.fromDate) params.fromDate = formatDate($scope.filters.fromDate);
-        if ($scope.filters.toDate) params.toDate = formatDate($scope.filters.toDate);
+        // API validation caps limit at 100; keep within that and paginate.
+        const pageSize = 100;
+        if ($scope.filters.status) baseParams.status = $scope.filters.status;
+        if ($scope.filters.fromDate) baseParams.fromDate = formatDate($scope.filters.fromDate);
+        if ($scope.filters.toDate) baseParams.toDate = formatDate($scope.filters.toDate);
 
-        return $http.get('/api/bonus/instances', { params: params })
-            .then(function(response) {
-                console.log(response.data);
-                const items = response.data.items || [];
-                return items.map(normalizeInstance);
-            })
+        function fetchPage(offset, acc) {
+            const params = angular.extend({}, baseParams, { limit: pageSize, offset: offset });
+            return $http.get('/api/bonus/instances', { params: params })
+                .then(function(response) {
+                    const items = response.data.items || [];
+                    const normalized = items.map(normalizeInstance);
+                    const combined = acc.concat(normalized);
+                    // keep fetching while full page returned to ensure we list everything
+                    if (items.length === pageSize) {
+                        return fetchPage(offset + pageSize, combined);
+                    }
+                    return combined;
+                });
+        }
+
+        return fetchPage(0, [])
             .catch(function(error) {
                 console.error('Failed to load bonus instances', error);
                 toastr.error(t('Failed to load bonus instances'));
@@ -272,11 +293,13 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         }).then(function(result) {
             if (seq !== refreshSeq) return; // a newer refresh started, ignore this result
             const filtered = applyClientFilters(result.instances || []);
-            const rows = attachAmountsToInstances(filtered, result.allocations || {});
+            const rows = attachAmountsToInstances(filtered, result.allocations || {}, !!personnelId);
             const withParts = rows.filter(function(r){ return r.category === 'with_parts'; });
             const withoutParts = rows.filter(function(r){ return r.category === 'without_parts'; });
-            $scope.filteredRows = { with_parts: withParts, without_parts: withoutParts };
-            buildTotals(withParts, withoutParts);
+            const others = rows.filter(function(r){ return r.category !== 'with_parts' && r.category !== 'without_parts'; });
+            $scope.filteredRows = { with_parts: withParts, without_parts: withoutParts, others: others };
+            console.log($scope.filteredRows)
+            buildTotals(withParts, withoutParts, others);
             $scope.$applyAsync();
         }).finally(function() {
             activeRefreshes = Math.max(0, activeRefreshes - 1);
