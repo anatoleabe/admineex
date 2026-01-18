@@ -163,6 +163,14 @@ let routes = [
     },
 
     // === USERS ROUTES ==========================================================
+    // Get assignable roles for current user
+    {
+        path: _.findWhere(aclRoutes, { id: 250 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 250 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.users.api.assignableRoles],
+        access: _.findWhere(aclRoutes, { id: 250 }).roles
+    },
+
     // Users list
     {
         path: _.findWhere(aclRoutes, { id: 10 }).uri,
@@ -1096,25 +1104,25 @@ let routes = [
         path: '/api/bonus/dashboard/stats',
         httpMethod: 'GET',
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.dashboard.api.getStats],
-        access: [1, 2, 3, 4]
+        access: [1, 6, 7]
     },
     {
         path: '/api/bonus/dashboard/trends',
         httpMethod: 'GET',
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.dashboard.api.getTrends],
-        access: [1, 2, 3, 4]
+        access: [1, 6, 7]
     },
     {
         path: '/api/bonus/dashboard/distribution',
         httpMethod: 'GET',
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.dashboard.api.getDistribution],
-        access: [1, 2, 3, 4]
+        access: [1, 6, 7]
     },
     {
         path: '/api/bonus/dashboard/activity',
         httpMethod: 'GET',
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.dashboard.api.getActivity],
-        access: [1, 2, 3, 4]
+        access: [1, 6, 7]
     },
 
     // Personnel Bonus Export route - moved higher to avoid being overridden by wildcard routes
@@ -1124,7 +1132,7 @@ let routes = [
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, function (req, res, next) {
             next();
         }, controllers.bonus.export.exportPersonnelBonusHistory],
-        access: [1, 2, 3, 4] // Allow configured bonus roles to access this route
+        access: [1, 6, 7] // Allow bonus roles to access this route
     },
 
     // Bonus Config Permissions
@@ -1132,7 +1140,7 @@ let routes = [
         path: '/api/bonus/config/permissions',
         httpMethod: 'GET',
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.config.api.getPermissions],
-        access: [1, 2, 3, 4]
+        access: [1, 6, 7]
     },
 
     // FRONTEND ROUTES ========================================================
@@ -1158,7 +1166,7 @@ let routes = [
         path: '/api/personnel/:personnelId/bonus/export/:fromDate?/:toDate?',
         httpMethod: 'GET',
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.export.exportPersonnelBonusHistory],
-        access: [1, 2, 3, 4] // Allow configured bonus roles to access
+        access: [1, 6, 7] // Allow bonus roles to access
     },
 
 ];

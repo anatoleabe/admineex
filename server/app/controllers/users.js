@@ -4,6 +4,7 @@ var log             = require('../utils/log');
 var mail            = require('../utils/mail');
 var crypto          = require('crypto');
 var formidable      = require("formidable");
+var { canAssignRole, getAssignableRoles, SENSITIVE_ROLES } = require('../validations/users');
 
 // API
 exports.api = {};
@@ -31,6 +32,16 @@ exports.api.create = function(req, res) {
                 audit.logEvent(req.actor.id, 'Users', 'Create', '', '', 'failed',
                                'The actor could not create a user account because one or more params of the request was not correct');
                 return res.sendStatus(400);
+            }
+
+            // Check if actor can assign the requested role
+            if (!canAssignRole(req.actor.role, role)) {
+                var isSensitive = SENSITIVE_ROLES.includes(role);
+                var msg = isSensitive 
+                    ? 'Cannot assign sensitive role ' + role + '. Only Administrator can create this role.'
+                    : 'Not authorized to assign role ' + role + '. Allowed roles: ' + getAssignableRoles(req.actor.role).join(', ');
+                audit.logEvent(req.actor.id, 'Users', 'Create', 'role', role, 'failed', msg);
+                return res.status(403).json({ error: msg });
             } else {
                 var user = new User();
                 user.email = email;
@@ -137,6 +148,24 @@ exports.api.create = function(req, res) {
         });
     } else {
         audit.logEvent('[anonymous]', 'Users', 'search', '', '', 'failed', 'The actor was not authenticated');
+        return res.sendStatus(401);
+    }
+};
+
+/**
+ * Get the list of roles the current actor can assign to users
+ * This ensures the frontend dropdown only shows roles the user can create
+ */
+exports.api.assignableRoles = function(req, res) {
+    if (req.actor) {
+        var assignable = getAssignableRoles(req.actor.role);
+        // Load role definitions from dictionary
+        var roles = require('../../resources/dictionary/app/roles.json');
+        var filtered = roles.filter(function(r) {
+            return assignable.includes(String(r.id));
+        });
+        return res.json(filtered);
+    } else {
         return res.sendStatus(401);
     }
 };
@@ -282,7 +311,21 @@ exports.api.update = function(req, res) {
                                     audit.logEvent(req.actor.id, 'Users', 'Update', '', '', 'failed',
                                                    'The actor could not update the account of the user because one or more params of the request was not correct');
                                     return res.sendStatus(400);
-                                } else {
+                                }
+
+                                // Check role assignment permission if role is being changed
+                                if (role !== undefined && role !== '' && role !== user.role) {
+                                    if (!canAssignRole(req.actor.role, role)) {
+                                        var isSensitive = SENSITIVE_ROLES.includes(role);
+                                        var msg = isSensitive 
+                                            ? 'Cannot assign sensitive role ' + role + '. Only Administrator can assign this role.'
+                                            : 'Not authorized to assign role ' + role + '. Allowed roles: ' + getAssignableRoles(req.actor.role).join(', ');
+                                        audit.logEvent(req.actor.id, 'Users', 'Update', 'role', role, 'failed', msg);
+                                        return res.status(403).json({ error: msg });
+                                    }
+                                }
+
+                                {
                                     var alertHim = false;
                                     var toUpdate = {};
                                     var toRemove = {};

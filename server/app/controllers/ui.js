@@ -271,8 +271,8 @@ function buildNav(user, callback) {
         name: 'Audit'
     };
 
-    // Bonus Management Menu
-    var bonusManagement = {
+    // Bonus Management Menu - Full access for Bonus Manager (role 6)
+    var bonusManagementFull = {
         href: 'home.bonus.dashboard',
         sref: 'home.bonus',
         icon: 'card_giftcard',
@@ -309,6 +309,36 @@ function buildNav(user, callback) {
                 sref: 'home.bonus.reports',
                 label: gt.gettext('Reports & Exports'),
                 name: gt.gettext('Reports & Exports')
+            }
+        ]
+    };
+
+    // Bonus Management Menu - Limited access for Bonus Operator (role 7)
+    var bonusManagementOperator = {
+        href: 'home.bonus.dashboard',
+        sref: 'home.bonus',
+        icon: 'card_giftcard',
+        icomoon: 'icon-gift',
+        label: gt.gettext('Bonus Management'),
+        name: gt.gettext('Bonus Management'),
+        items: [
+            {
+                href: 'home.bonus.dashboard',
+                sref: 'home.bonus.dashboard',
+                label: gt.gettext('Dashboard'),
+                name: gt.gettext('Dashboard')
+            },
+            {
+                href: 'home.bonus.instances',
+                sref: 'home.bonus.instances',
+                label: gt.gettext('Payout Cycles'),
+                name: gt.gettext('Payout Cycles')
+            },
+            {
+                href: 'home.bonus.allocations',
+                sref: 'home.bonus.allocations',
+                label: gt.gettext('Distributions'),
+                name: gt.gettext('Distributions')
             }
         ]
     };
@@ -349,7 +379,7 @@ function buildNav(user, callback) {
             nav.left[1].items.push(users);
             nav.left[1].items.push(configuration);
             nav.left[1].items.push(audit);
-            nav.left[0].items.push(bonusManagement);
+            // Admin no longer has bonus menu - use role 6 or 7 for bonus access
             break;
         case '2'://Manager
             // LEFT MENU STAFF MANAGEMENT
@@ -372,7 +402,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
             
             nav.left[0].items.push(thresholds);
-            nav.left[0].items.push(bonusManagement);
+            // Manager no longer has bonus menu - use role 6 or 7 for bonus access
             break;
         case '3'://Supervisor
             // LEFT MENU STAFF MANAGEMENT
@@ -391,7 +421,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
             nav.left[1].items.push(users);
-            nav.left[0].items.push(bonusManagement);
+            // Supervisor no longer has bonus menu - use role 6 or 7 for bonus access
             break;
         case '4'://Editor
             // LEFT MENU STAFF MANAGEMENT
@@ -411,7 +441,7 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2_menu1);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(administrationTab2);
-            nav.left[0].items.push(bonusManagement);
+            // Editor no longer has bonus menu - use role 6 or 7 for bonus access
             break;
         case '5'://Task user
             // LEFT MENU TASK
@@ -420,6 +450,12 @@ function buildNav(user, callback) {
             nav.left[0].items[nav.left[0].items.length - 1].items.push(taskTab3);
             nav.left[0].items[nav.left[0].items.length - 1].items.push(taskCategoryTab4);
 
+            break;
+        case '6'://Bonus Manager - Full bonus access including approvals and payments
+            nav.left[0].items.push(bonusManagementFull);
+            break;
+        case '7'://Bonus Operator - Limited bonus access (create/adjust, no approve/payments)
+            nav.left[0].items.push(bonusManagementOperator);
             break;
     }
 

@@ -185,10 +185,19 @@ angular.module('mappingFilters', []).filter('address', function (gettextCatalog)
                 toReturn = gettextCatalog.getString("Manager");
                 break;
             case '3':
-                toReturn = gettextCatalog.getString("Global supervisor");
+                toReturn = gettextCatalog.getString("Supervisor");
                 break;
             case '4':
                 toReturn = gettextCatalog.getString("Editor");
+                break;
+            case '5':
+                toReturn = gettextCatalog.getString("Task Editor");
+                break;
+            case '6':
+                toReturn = gettextCatalog.getString("Bonus Manager");
+                break;
+            case '7':
+                toReturn = gettextCatalog.getString("Bonus Operator");
                 break;
         }
         return toReturn;

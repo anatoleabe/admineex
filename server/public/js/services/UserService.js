@@ -6,6 +6,9 @@ angular.module('UserService', []).factory('User', function($http) {
         contacts: function() {
             return $http.get('/api/users/contacts');
         },
+        assignableRoles: function() {
+            return $http.get('/api/users/assignable-roles');
+        },
         read: function(info) {
             return $http.get('/api/users/' + info.id);
         },

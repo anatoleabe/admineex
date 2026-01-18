@@ -30,7 +30,7 @@
         "id": 5,
         "uri": "/api/account/password/change",
         "method": "POST",
-        "roles": [1, 2, 3, 4, 5]
+        "roles": [1, 2, 3, 4, 5, 6, 7]
     },
     {
         "id": 6,
@@ -51,19 +51,19 @@
         "id": 9,
         "uri": "/api/account/profile",
         "method": "GET",
-        "roles": [1, 2, 3, 4, 5]
+        "roles": [1, 2, 3, 4, 5, 6, 7]
     },
     {
         "id": 10,
         "uri": "/api/users",
         "method": "GET",
-        "roles": [1, 3]
+        "roles": [1, 3, 6]
     },
     {
         "id": 11,
         "uri": "/api/users",
         "method": "POST",
-        "roles": [1, 3]
+        "roles": [1, 3, 6]
     },
     {
         "id": 12,
@@ -75,7 +75,7 @@
         "id": 13,
         "uri": "/api/users/:id",
         "method": "PUT",
-        "roles": [1, 3]
+        "roles": [1, 3, 6]
     },
     {
         "id": 14,
@@ -87,19 +87,19 @@
         "id": 15,
         "uri": "/api/users/:id",
         "method": "GET",
-        "roles": [1, 3]
+        "roles": [1, 3, 6]
     },
     {
         "id": 16,
         "uri": "/api/ui/nav",
         "method": "GET",
-        "roles": [1, 2, 3, 4, 5]
+        "roles": [1, 2, 3, 4, 5, 6, 7]
     },
     {
         "id": 17,
         "uri": "/api/ui/charts",
         "method": "GET",
-        "roles": [1, 2, 3, 4, 5]
+        "roles": [1, 2, 3, 4, 5, 6, 7]
     },
     {
         "id": 18,
@@ -166,7 +166,7 @@
         "id": 29,
         "uri": "/api/charts/:name/from/:from/to/:to/selecteduser/:selecteduser",
         "method": "GET",
-        "roles": [1, 2, 3, 4, 5]
+        "roles": [1, 2, 3, 4, 5, 6, 7]
     },
     {
         "id": 30,
@@ -177,13 +177,13 @@
         "id": 31,
         "uri": "/api/notifications",
         "method": "GET",
-        "roles": [1, 2, 3, 4, 5]
+        "roles": [1, 2, 3, 4, 5, 6, 7]
     },
     {
         "id": 32,
         "uri": "/api/notifications/:id",
         "method": "PUT",
-        "roles": [1, 2, 3, 4, 5]
+        "roles": [1, 2, 3, 4, 5, 6, 7]
     },
     {
         "id": 33,
@@ -255,13 +255,13 @@
         "id": 44,
         "uri": "/api/personnel/read/:id/:beautify",
         "method": "GET",
-        "roles": [1, 2, 3, 4, 5]
+        "roles": [1, 2, 3, 4, 5, 6, 7]
     },
     {
         "id": 45,
         "uri": "/api/personnel/:minify/:limit/:skip/:search/:filters",
         "method": "GET",
-        "roles": [1, 2, 3, 4, 5]
+        "roles": [1, 2, 3, 4, 5, 6, 7]
     },
     {
         "id": 46,
@@ -291,7 +291,7 @@
         "id": 50,
         "uri": "/api/personnel/search/:text",
         "method": "GET",
-        "roles": [1, 2, 3, 4, 5]
+        "roles": [1, 2, 3, 4, 5, 6, 7]
     },
     {
         "id": 51,
@@ -339,7 +339,7 @@
         "id": 58,
         "uri": "/api/structures/minimal/:structure",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 2, 3, 4, 6, 7]
     },
     {
         "id": 59,
@@ -579,244 +579,244 @@
         "id": 200,
         "uri": "/api/bonus/templates",
         "method": "POST",
-        "roles": [1]
+        "roles": [1, 6]
     },
     {
         "id": 201,
         "uri": "/api/bonus/templates",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 6, 7]
     },
     {
         "id": 202,
         "uri": "/api/bonus/templates/:id",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 6, 7]
     },
     {
         "id": 203,
         "uri": "/api/bonus/templates/:id",
         "method": "PUT",
-        "roles": [1]
+        "roles": [1, 6]
     },
     {
         "id": 204,
         "uri": "/api/bonus/templates/:id",
         "method": "DELETE",
-        "roles": [1]
+        "roles": [1, 6]
     },
     {
         "id": 205,
         "uri": "/api/bonus/templates/:id/activate",
         "method": "POST",
-        "roles": [1]
+        "roles": [1, 6]
     },
     {
         "id": 206,
         "uri": "/api/bonus/templates/:id/clone",
         "method": "POST",
-        "roles": [1]
+        "roles": [1, 6]
     },
     {
         "id": 207,
         "uri": "/api/bonus/templates/validate",
         "method": "POST",
-        "roles": [1]
+        "roles": [1, 6]
     },
     {
         "id": 208,
         "uri": "/api/bonus/templates/:id/test-calculation",
         "method": "POST",
-        "roles": [1]
+        "roles": [1, 6]
     },
     {
         "id": 209,
         "uri": "/api/bonus/templates/:id/usage",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 6, 7]
     },
 
     {
         "id": 210,
         "uri": "/api/bonus/rules",
         "method": "POST",
-        "roles": [1]
+        "roles": [1, 6]
     },
     {
         "id": 211,
         "uri": "/api/bonus/rules",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 6, 7]
     },
     {
         "id": 212,
         "uri": "/api/bonus/rules/:id",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 6, 7]
     },
     {
         "id": 213,
         "uri": "/api/bonus/rules/:id",
         "method": "PUT",
-        "roles": [1]
+        "roles": [1, 6]
     },
     {
         "id": 214,
         "uri": "/api/bonus/rules/:id",
         "method": "DELETE",
-        "roles": [1]
+        "roles": [1, 6]
     },
     {
         "id": 215,
         "uri": "/api/bonus/rules/:id/activate",
         "method": "POST",
-        "roles": [1]
+        "roles": [1, 6]
     },
     {
         "id": 216,
         "uri": "/api/bonus/rules/validate",
         "method": "POST",
-        "roles": [1]
+        "roles": [1, 6]
     },
     {
         "id": 217,
         "uri": "/api/bonus/rules/:id/test",
         "method": "POST",
-        "roles": [1]
+        "roles": [1, 6]
     },
 
     {
         "id": 220,
         "uri": "/api/bonus/instances",
         "method": "POST",
-        "roles": [1, 3]
+        "roles": [1, 6, 7]
     },
     {
         "id": 221,
         "uri": "/api/bonus/instances",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 6, 7]
     },
     {
         "id": 222,
         "uri": "/api/bonus/instances/:id",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 6, 7]
     },
     {
         "id": 223,
         "uri": "/api/bonus/instances/:id",
         "method": "PUT",
-        "roles": [1, 3]
+        "roles": [1, 6, 7]
     },
     {
         "id": 224,
         "uri": "/api/bonus/instances/:id/approve",
         "method": "POST",
-        "roles": [1]
+        "roles": [6]
     },
     {
         "id": 225,
         "uri": "/api/bonus/instances/:id/reject",
         "method": "POST",
-        "roles": [1]
+        "roles": [6]
     },
     {
         "id": 226,
         "uri": "/api/bonus/instances/:id/cancel",
         "method": "POST",
-        "roles": [1]
+        "roles": [6]
     },
     {
         "id": 227,
         "uri": "/api/bonus/instances/:id/generate-payments",
         "method": "POST",
-        "roles": [1]
+        "roles": [6]
     },
     {
         "id": 228,
         "uri": "/api/bonus/instances/:id/export",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 6, 7]
     },
     {
         "id": 229,
         "uri": "/api/bonus/instances/:id/notify",
         "method": "POST",
-        "roles": [1, 3]
+        "roles": [6, 7]
     },
     {
         "id": 244,
         "uri": "/api/bonus/instances/:id/wizard-step",
         "method": "POST",
-        "roles": [1, 3]
+        "roles": [6, 7]
     },
     {
         "id": 245,
         "uri": "/api/bonus/instances/:id/historical-data",
         "method": "GET",
-        "roles": [1, 3]
+        "roles": [6, 7]
     },
     {
         "id": 246,
         "uri": "/api/bonus/instances/:id/snapshots",
         "method": "GET",
-        "roles": [1, 3]
+        "roles": [6, 7]
     },
     {
         "id": 247,
         "uri": "/api/bonus/instances/:id/record-export",
         "method": "POST",
-        "roles": [1, 3]
+        "roles": [6, 7]
     },
     {
         "id": 248,
         "uri": "/api/bonus/instances/:id/update-share-amount",
         "method": "POST",
-        "roles": [1]
+        "roles": [6]
     },
     {
         "id": 249,
         "uri": "/api/bonus/instances/:id/update-tax-config",
         "method": "POST",
-        "roles": [1]
+        "roles": [6]
     },
 
     {
         "id": 230,
         "uri": "/api/bonus/allocations",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 6, 7]
     },
     {
         "id": 231,
         "uri": "/api/bonus/allocations/:id",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 6, 7]
     },
     {
         "id": 232,
         "uri": "/api/bonus/allocations/:id/adjust",
         "method": "POST",
-        "roles": [1, 3]
+        "roles": [6, 7]
     },
     {
         "id": 233,
         "uri": "/api/bonus/allocations/:id/exclude",
         "method": "POST",
-        "roles": [1, 3]
+        "roles": [6, 7]
     },
     {
         "id": 234,
         "uri": "/api/bonus/allocations/:id/include",
         "method": "POST",
-        "roles": [1, 3]
+        "roles": [6, 7]
     },
     {
         "id": 235,
         "uri": "/api/bonus/allocations/:id/history",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 6, 7]
     },
     {
         "id": 236,
@@ -852,18 +852,25 @@
         "id": 241,
         "uri": "/api/bonus/generation/periodic",
         "method": "POST",
-        "roles": [1, 3]
+        "roles": [6, 7]
     },
     {
         "id": 242,
         "uri": "/api/bonus/generation/template",
         "method": "POST",
-        "roles": [1, 3]
+        "roles": [6, 7]
     },
     {
         "id": 243,
         "uri": "/api/bonus/instances/:id/allocations/stats",
         "method": "GET",
-        "roles": [1, 2, 3, 4]
+        "roles": [1, 6, 7]
+    },
+    {
+        "id": 250,
+        "uri": "/api/users/assignable-roles",
+        "method": "GET",
+        "roles": [1, 3, 6],
+        "description": "Get list of roles the current user can assign"
     }
 ]

@@ -7,8 +7,9 @@ angular.module('app')
         }
 
         const role = ($rootScope.account && $rootScope.account.role) ? String($rootScope.account.role) : '';
+        // Role 1: Admin, Role 6: Bonus Manager - both can manage templates
         $scope.permissions = {
-            canManageTemplates: role === '1'
+            canManageTemplates: role === '1' || role === '6'
         };
         // State management
         $scope.state = {

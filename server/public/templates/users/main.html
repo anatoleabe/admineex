@@ -1,78 +1,235 @@
-<h3 data-ng-if="users.length > 0" class="md-headline" style="margin: 10px 0px 10px 0px;" translate>Pending accounts</h3>
-<div layout="column" layout-align="center center" data-ng-if="helperNA.length !== 0" style="opacity:0.2;">
-    <h2 class="md-title" style="margin: 0;">{{helperNA.title}}</h2>
+<!-- User Management Header -->
+<div class="user-management-header" layout="row" layout-align="space-between center" style="margin-bottom: 20px;">
+    <div>
+        <h2 class="md-headline" style="margin: 0;" translate>User Management</h2>
+        <p class="md-caption" style="margin: 5px 0 0 0; opacity: 0.7;">
+            <span translate>Manage system users and their access permissions</span>
+        </p>
+    </div>
+    <div layout="row" layout-align="end center">
+        <md-input-container md-no-float style="margin: 0; padding: 0;">
+            <md-icon>search</md-icon>
+            <input ng-model="searchQuery" placeholder="{{'Search users...' | translate}}" style="width: 200px;">
+        </md-input-container>
+    </div>
 </div>
-<md-card data-ng-if="helperNA.length === 0 && helper.length === 0" style="margin: 0;">
-    <md-card-content>
-        <md-list ng-cloak>
-            <md-list-item data-ng-repeat="user in users | filter:filterNotActivated" ui-sref="home.users.profile({id:user._id})">
-                <md-truncate flex>
-                    <div class="avatar avatar-md md-avatar" ng-style="{'background-color': user.avatar}">
-                        {{user.firstname.substr(0, 1).toUpperCase()}}
+
+<!-- Statistics Cards -->
+<div layout="row" layout-xs="column" layout-sm="column" layout-wrap style="margin-bottom: 20px;">
+    <div flex="25" flex-xs="100" flex-sm="50" style="padding: 5px;">
+        <md-card class="stat-card" style="margin: 0; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+            <md-card-content layout="row" layout-align="space-between center" style="padding: 16px; color: white;">
+                <div>
+                    <div class="stat-number" style="font-size: 28px; font-weight: 500;">{{users.length}}</div>
+                    <div class="stat-label" style="opacity: 0.9;" translate>Total Users</div>
+                </div>
+                <md-icon style="font-size: 48px; height: 48px; width: 48px; opacity: 0.8; color: white;">group</md-icon>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div flex="25" flex-xs="100" flex-sm="50" style="padding: 5px;">
+        <md-card class="stat-card" style="margin: 0; background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+            <md-card-content layout="row" layout-align="space-between center" style="padding: 16px; color: white;">
+                <div>
+                    <div class="stat-number" style="font-size: 28px; font-weight: 500;">{{(users | filter:filterActivated).length}}</div>
+                    <div class="stat-label" style="opacity: 0.9;" translate>Active</div>
+                </div>
+                <md-icon style="font-size: 48px; height: 48px; width: 48px; opacity: 0.8; color: white;">check_circle</md-icon>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div flex="25" flex-xs="100" flex-sm="50" style="padding: 5px;">
+        <md-card class="stat-card" style="margin: 0; background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);">
+            <md-card-content layout="row" layout-align="space-between center" style="padding: 16px; color: white;">
+                <div>
+                    <div class="stat-number" style="font-size: 28px; font-weight: 500;">{{(users | filter:filterNotActivated).length}}</div>
+                    <div class="stat-label" style="opacity: 0.9;" translate>Pending</div>
+                </div>
+                <md-icon style="font-size: 48px; height: 48px; width: 48px; opacity: 0.8; color: white;">pending</md-icon>
+            </md-card-content>
+        </md-card>
+    </div>
+    <div flex="25" flex-xs="100" flex-sm="50" style="padding: 5px;">
+        <md-card class="stat-card" style="margin: 0; background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+            <md-card-content layout="row" layout-align="space-between center" style="padding: 16px; color: white;">
+                <div>
+                    <div class="stat-number" style="font-size: 28px; font-weight: 500;">7</div>
+                    <div class="stat-label" style="opacity: 0.9;" translate>Roles</div>
+                </div>
+                <md-icon style="font-size: 48px; height: 48px; width: 48px; opacity: 0.8; color: white;">security</md-icon>
+            </md-card-content>
+        </md-card>
+    </div>
+</div>
+
+<!-- Pending Accounts Section -->
+<div ng-if="(users | filter:filterNotActivated).length > 0">
+    <div layout="row" layout-align="start center" style="margin: 20px 0 10px 0;">
+        <md-icon style="color: #ff9800; margin-right: 8px;">pending_actions</md-icon>
+        <h3 class="md-subhead" style="margin: 0; font-weight: 500;" translate>Pending Accounts</h3>
+        <span class="md-caption" style="margin-left: 10px; background: #fff3e0; color: #e65100; padding: 2px 8px; border-radius: 12px;">
+            {{(users | filter:filterNotActivated).length}}
+        </span>
+    </div>
+    <md-card style="margin: 0 0 20px 0;">
+        <md-card-content style="padding: 0;">
+            <md-list ng-cloak style="padding: 0;">
+                <md-list-item class="user-list-item" 
+                              data-ng-repeat="user in users | filter:filterNotActivated | filter:searchQuery" 
+                              style="border-left: 4px solid #ff9800;">
+                    <div class="avatar avatar-md md-avatar" ng-style="{'background-color': user.avatar || '#9e9e9e'}" style="margin-right: 16px;">
+                        {{user.firstname.substr(0, 1).toUpperCase()}}{{user.lastname.substr(0, 1).toUpperCase()}}
                     </div>
-                    {{kernel.namingOrder === 'lf' ? user.lastname + ' ' + user.firstname : user.firstname + ' ' + user.lastname}}
-                    <md-button class="md-secondary md-icon-button" aria-label="Status" ng-click="activate(user)" ng-if="account.role == '1' || account.role == '3'">
-                        <md-icon aria-label="Status" style="color: #F44336">
-                            radio_button_unchecked
-                        </md-icon>
-                        <md-tooltip>
-                            <span translate>Activate</span>
-                        </md-tooltip>
+                    <div class="md-list-item-text" flex>
+                        <h3 style="margin: 0; font-weight: 500;">
+                            {{kernel.namingOrder === 'lf' ? user.lastname + ' ' + user.firstname : user.firstname + ' ' + user.lastname}}
+                        </h3>
+                        <p style="margin: 4px 0; color: rgba(0,0,0,0.54);">
+                            <md-icon style="font-size: 14px; height: 14px; width: 14px; margin-right: 4px;">email</md-icon>
+                            {{user.email}}
+                        </p>
+                        <p style="margin: 0;">
+                            <span class="role-badge role-pending" style="font-size: 11px; padding: 2px 8px; border-radius: 12px; background: #fff3e0; color: #e65100;">
+                                <md-icon style="font-size: 12px; height: 12px; width: 12px;">hourglass_empty</md-icon>
+                                <span translate>Awaiting Activation</span>
+                            </span>
+                            <span class="role-badge" style="font-size: 11px; padding: 2px 8px; border-radius: 12px; background: #e3f2fd; color: #1565c0; margin-left: 8px;">
+                                {{user.role | role}}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="md-secondary" ng-if="account.role == '1' || account.role == '3' || account.role == '6'">
+                        <md-button class="md-icon-button" aria-label="Activate" ng-click="activate(user); $event.stopPropagation();">
+                            <md-icon style="color: #4caf50">check_circle</md-icon>
+                            <md-tooltip><span translate>Activate Account</span></md-tooltip>
+                        </md-button>
+                        <md-button class="md-icon-button" aria-label="Edit" ng-click="edit({id:user._id}); $event.stopPropagation();">
+                            <md-icon>edit</md-icon>
+                            <md-tooltip><span translate>Edit</span></md-tooltip>
+                        </md-button>
+                        <md-button class="md-icon-button" aria-label="Delete" ng-click="showConfirm(user); $event.stopPropagation();">
+                            <md-icon style="color: #f44336">delete</md-icon>
+                            <md-tooltip><span translate>Delete</span></md-tooltip>
+                        </md-button>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-card-content>
+    </md-card>
+</div>
+
+<!-- Active Accounts Section -->
+<div layout="row" layout-align="start center" style="margin: 20px 0 10px 0;">
+    <md-icon style="color: #4caf50; margin-right: 8px;">verified_user</md-icon>
+    <h3 class="md-subhead" style="margin: 0; font-weight: 500;" translate>Active Accounts</h3>
+    <span class="md-caption" style="margin-left: 10px; background: #e8f5e9; color: #2e7d32; padding: 2px 8px; border-radius: 12px;">
+        {{(users | filter:filterActivated).length}}
+    </span>
+</div>
+
+<div layout="column" layout-align="center center" data-ng-if="(users | filter:filterActivated).length === 0 && users.length > 0" style="opacity:0.4; padding: 40px;">
+    <md-icon style="font-size: 64px; height: 64px; width: 64px;">person_off</md-icon>
+    <h2 class="md-title" style="margin: 10px 0 0 0;" translate>No active accounts</h2>
+</div>
+
+<md-card data-ng-if="(users | filter:filterActivated).length > 0" style="margin: 0;">
+    <md-card-content style="padding: 0;">
+        <md-list ng-cloak style="padding: 0;">
+            <md-list-item class="user-list-item" 
+                          data-ng-repeat="user in users | filter:filterActivated | filter:searchQuery" 
+                          ui-sref="home.users.profile({id:user._id})"
+                          style="border-left: 4px solid #4caf50; cursor: pointer;">
+                <div class="avatar avatar-md md-avatar" ng-style="{'background-color': user.avatar || '#667eea'}" style="margin-right: 16px;">
+                    {{user.firstname.substr(0, 1).toUpperCase()}}{{user.lastname.substr(0, 1).toUpperCase()}}
+                </div>
+                <div class="md-list-item-text" flex>
+                    <h3 style="margin: 0; font-weight: 500;">
+                        {{kernel.namingOrder === 'lf' ? user.lastname + ' ' + user.firstname : user.firstname + ' ' + user.lastname}}
+                    </h3>
+                    <p style="margin: 4px 0; color: rgba(0,0,0,0.54);">
+                        <md-icon style="font-size: 14px; height: 14px; width: 14px; margin-right: 4px;">email</md-icon>
+                        {{user.email}}
+                    </p>
+                    <p style="margin: 0;">
+                        <span class="role-badge" ng-class="{
+                            'role-admin': user.role == '1',
+                            'role-manager': user.role == '2',
+                            'role-supervisor': user.role == '3',
+                            'role-editor': user.role == '4',
+                            'role-task': user.role == '5',
+                            'role-bonus-manager': user.role == '6',
+                            'role-bonus-operator': user.role == '7'
+                        }" style="font-size: 11px; padding: 2px 8px; border-radius: 12px;">
+                            <md-icon ng-if="user.role == '1'" style="font-size: 12px; height: 12px; width: 12px;">admin_panel_settings</md-icon>
+                            <md-icon ng-if="user.role == '2'" style="font-size: 12px; height: 12px; width: 12px;">business</md-icon>
+                            <md-icon ng-if="user.role == '3'" style="font-size: 12px; height: 12px; width: 12px;">supervisor_account</md-icon>
+                            <md-icon ng-if="user.role == '4'" style="font-size: 12px; height: 12px; width: 12px;">edit</md-icon>
+                            <md-icon ng-if="user.role == '5'" style="font-size: 12px; height: 12px; width: 12px;">assignment</md-icon>
+                            <md-icon ng-if="user.role == '6'" style="font-size: 12px; height: 12px; width: 12px;">payments</md-icon>
+                            <md-icon ng-if="user.role == '7'" style="font-size: 12px; height: 12px; width: 12px;">account_balance_wallet</md-icon>
+                            {{user.role | role}}
+                        </span>
+                        <span class="md-caption" style="margin-left: 8px; color: rgba(0,0,0,0.4);">
+                            <md-icon style="font-size: 12px; height: 12px; width: 12px;">language</md-icon>
+                            {{user.language | language}}
+                        </span>
+                    </p>
+                </div>
+                <div class="md-secondary" ng-if="account.role == '1' || account.role == '3' || account.role == '6'">
+                    <md-button class="md-icon-button" aria-label="Edit" ng-click="edit({id:user._id}); $event.stopPropagation();">
+                        <md-icon>edit</md-icon>
+                        <md-tooltip><span translate>Edit</span></md-tooltip>
                     </md-button>
-                    <md-button class="md-secondary md-icon-button" aria-label="Edit" ng-click="edit({id:user._id})" ng-if="account.role == '1' || account.role == '3'">
-                        <md-icon aria-label="Edit">edit</md-icon>
-                        <md-tooltip>
-                            <span translate>Edit</span>
-                        </md-tooltip>
+                    <md-button class="md-icon-button" aria-label="Delete" ng-click="showConfirm(user); $event.stopPropagation();">
+                        <md-icon style="color: #f44336">delete</md-icon>
+                        <md-tooltip><span translate>Delete</span></md-tooltip>
                     </md-button>
-                    <md-button class="md-secondary md-icon-button" aria-label="Delete" ng-click="showConfirm(user)" ng-if="account.role == '1' || account.role == '3'">
-                        <md-icon aria-label="Delete">delete</md-icon>
-                        <md-tooltip>
-                            <span translate>Delete</span>
-                        </md-tooltip>
-                    </md-button>
-                </md-truncate>
+                </div>
             </md-list-item>
         </md-list>
     </md-card-content>
 </md-card>
-<h3 data-ng-if="users.length > 0" class="md-headline" style="margin: 30px 0px 10px 0px;" translate>Active accounts</h3>
-<div layout="column" layout-align="center center" data-ng-if="helperA.length !== 0" style="opacity:0.2;">
-    <h2 class="md-title" style="margin: 0;">{{helperA.title}}</h2>
+
+<!-- Empty State -->
+<div layout="column" layout-align="center center" data-ng-if="users.length === 0" style="opacity:0.4; padding: 60px;">
+    <md-icon aria-label="No users" class="material-icons" style="font-size: 120px; height: 120px; width: 120px;">supervisor_account</md-icon>
+    <h2 class="md-title" translate>No users found</h2>
+    <p class="md-caption" translate>Create your first user to get started</p>
 </div>
-<md-card data-ng-if="helperA.length === 0 && helper.length === 0" style="margin: 0;">
-    <md-card-content>
-        <md-list ng-cloak>
-            <md-list-item data-ng-repeat="user in users | filter:filterActivated" ui-sref="home.users.profile({id:user._id})">
-                <md-truncate flex>
-                    <div class="avatar avatar-md md-avatar" ng-style="{'background-color': user.avatar}">
-                        {{user.firstname.substr(0, 1).toUpperCase()}}
-                    </div>
-                    {{kernel.namingOrder === 'lf' ? user.lastname + ' ' + user.firstname : user.firstname + ' ' + user.lastname}} <small class="diy-chip">{{user.email}}</small><small class="diy-chip">{{user.role | role}}</small>
-                    <md-button class="md-secondary md-icon-button" aria-label="Edit" ng-click="edit({id:user._id})" ng-if="account.role == '1' || account.role == '3'">
-                        <md-icon aria-label="Edit">edit</md-icon>
-                        <md-tooltip>
-                            <span translate>Edit</span>
-                        </md-tooltip>
-                    </md-button>
-                    <md-button class="md-secondary md-icon-button" aria-label="Delete" ng-click="showConfirm(user)" ng-if="account.role == '1' || account.role == '3'">
-                        <md-icon aria-label="Delete">delete</md-icon>
-                        <md-tooltip>
-                            <span translate>Delete</span>
-                        </md-tooltip>
-                    </md-button>
-                </md-truncate>
-            </md-list-item>
-        </md-list>
-    </md-card-content>
-</md-card>
-<div layout="column" layout-align="center center" data-ng-if="helper.length !== 0" style="opacity:0.2;">
-    <md-icon aria-label="{{helper.title}}" class="material-icons" style="font-size: 120px;height: 120px;width: 120px;">{{helper.icon}}</md-icon>
-    <h2 class="md-title">{{helper.title}}</h2>
-</div>
-<md-button class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ui-sref="home.users.new" ng-if="account.role == '1' || account.role == '3'">
-    <md-icon class="material-icons">add</md-icon>
-    <md-tooltip md-direction="top">
-        <span translate>New</span>
+
+<!-- FAB Button -->
+<md-button class="md-fab md-accent md-fab-bottom-right" aria-label="Add" ui-sref="home.users.new" 
+           ng-if="account.role == '1' || account.role == '3' || account.role == '6'">
+    <md-icon class="material-icons">person_add</md-icon>
+    <md-tooltip md-direction="left">
+        <span translate>Add New User</span>
     </md-tooltip>
 </md-button>
+
+<style>
+    .user-list-item {
+        transition: background-color 0.2s ease;
+    }
+    .user-list-item:hover {
+        background-color: rgba(0,0,0,0.04);
+    }
+    .role-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+    .role-admin { background: #ffebee; color: #c62828; }
+    .role-manager { background: #e3f2fd; color: #1565c0; }
+    .role-supervisor { background: #f3e5f5; color: #7b1fa2; }
+    .role-editor { background: #e8f5e9; color: #2e7d32; }
+    .role-task { background: #fff3e0; color: #e65100; }
+    .role-bonus-manager { background: #fce4ec; color: #c2185b; }
+    .role-bonus-operator { background: #e0f7fa; color: #00838f; }
+    .stat-card {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+</style>

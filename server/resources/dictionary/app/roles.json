@@ -1,22 +1,37 @@
 [
     {
         "id": 1,
-        "title": "Administrator"
+        "title": "Administrator",
+        "description": "System configuration, user management, audit logs"
     },
     {
         "id": 2,
-        "title": "Manager"
+        "title": "Manager",
+        "description": "Structure-scoped access to personnel and operations"
     },
     {
         "id": 3,
-        "title": "Supervisor"
+        "title": "Supervisor",
+        "description": "Personnel management and general operations"
     },
     {
         "id": 4,
-        "title": "Editor"
+        "title": "Editor",
+        "description": "Data entry access"
     },
     {
         "id": 5,
-        "title": "Task editor"
+        "title": "Task editor",
+        "description": "Task management only"
+    },
+    {
+        "id": 6,
+        "title": "Bonus Manager",
+        "description": "Approve/reject bonuses, generate payment files, configure bonus amounts"
+    },
+    {
+        "id": 7,
+        "title": "Bonus Operator",
+        "description": "Create bonus instances, adjust allocations (cannot approve or generate payments)"
     }
 ]
