@@ -5,10 +5,15 @@
         <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
     </div>
 
-    <div class="admx-auth__topbar">
+    <div class="admx-auth__topbar" layout="row" layout-align="space-between center">
         <md-button class="admx-auth__back" ui-sref="welcome" aria-label="Back to welcome">
             <i class="icon-arrow-left52" style="margin-right: 8px;"></i>
             <span translate>Back</span>
+        </md-button>
+        <md-button class="admx-auth__theme" type="button" ng-click="toggleDarkMode()" aria-label="Toggle color mode" aria-pressed="{{darkMode}}">
+            <span class="admx-auth__theme-dot" aria-hidden="true"></span>
+            <span ng-if="darkMode" translate>Light mode</span>
+            <span ng-if="!darkMode" translate>Dark mode</span>
         </md-button>
     </div>
 

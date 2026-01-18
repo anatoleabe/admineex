@@ -82,8 +82,9 @@ async function generateBonusesForPeriod(period) {
     let allocationsGenerated = 0;
 
     for (const template of templates) {
-        if (await shouldGenerate(template, currentDate)) {
-            const referencePeriod = formatPeriod(template.periodicity, currentDate);
+        const generation = await shouldGenerate(template, currentDate);
+        if (generation.shouldGenerate) {
+            const referencePeriod = generation.referencePeriod || formatPeriod(template.periodicity, currentDate);
 
             const bonusInstanceItem = {
                 templateId: template._id,
@@ -245,55 +246,143 @@ async function generateAllocationsForInstance(instanceId) {
  * Determines if a bonus should be generated based on template periodicity
  * @param {Object} template - BonusTemplate document
  * @param {moment} currentDate - Current date as moment object
- * @returns {Promise<boolean>} - Whether generation is needed
+ * @returns {Promise<{shouldGenerate: boolean, referencePeriod?: string}>}
  */
+function parseQuarterReference(reference) {
+    const match = /^(\d{4})-Q([1-4])$/.exec(reference);
+    if (!match) return null;
+    return {
+        year: parseInt(match[1], 10),
+        quarter: parseInt(match[2], 10)
+    };
+}
+
+function parseSemesterReference(reference) {
+    const match = /^(\d{4})-S([1-2])$/.exec(reference);
+    if (!match) return null;
+    return {
+        year: parseInt(match[1], 10),
+        semester: parseInt(match[2], 10)
+    };
+}
+
+function getNextReferencePeriod(periodicity, lastReference, currentDate) {
+    if (!lastReference) return formatPeriod(periodicity, currentDate);
+
+    switch (periodicity) {
+        case 'daily':
+            {
+                const parsed = moment(lastReference, getPeriodFormat('daily'), true);
+                if (!parsed.isValid()) return formatPeriod(periodicity, currentDate);
+                return parsed.add(1, 'day').format(getPeriodFormat('daily'));
+            }
+        case 'weekly':
+            {
+                const parsed = moment(lastReference, getPeriodFormat('weekly'), true);
+                if (!parsed.isValid()) return formatPeriod(periodicity, currentDate);
+                return parsed.add(1, 'week').format(getPeriodFormat('weekly'));
+            }
+        case 'monthly':
+            {
+                const parsed = moment(lastReference, getPeriodFormat('monthly'), true);
+                if (!parsed.isValid()) return formatPeriod(periodicity, currentDate);
+                return parsed.add(1, 'month').format(getPeriodFormat('monthly'));
+            }
+        case 'quarterly': {
+            const parsed = parseQuarterReference(lastReference);
+            if (!parsed) return formatPeriod(periodicity, currentDate);
+            const nextQuarter = parsed.quarter === 4 ? 1 : parsed.quarter + 1;
+            const nextYear = parsed.quarter === 4 ? parsed.year + 1 : parsed.year;
+            return `${nextYear}-Q${nextQuarter}`;
+        }
+        case 'semesterly': {
+            const parsed = parseSemesterReference(lastReference);
+            if (!parsed) return formatPeriod(periodicity, currentDate);
+            const nextSemester = parsed.semester === 2 ? 1 : parsed.semester + 1;
+            const nextYear = parsed.semester === 2 ? parsed.year + 1 : parsed.year;
+            return `${nextYear}-S${nextSemester}`;
+        }
+        case 'yearly':
+            {
+                const parsed = moment(lastReference, getPeriodFormat('yearly'), true);
+                if (!parsed.isValid()) return formatPeriod(periodicity, currentDate);
+                return parsed.add(1, 'year').format(getPeriodFormat('yearly'));
+            }
+        default:
+            return formatPeriod(periodicity, currentDate);
+    }
+}
+
+function getPeriodStart(periodicity, reference) {
+    switch (periodicity) {
+        case 'daily':
+            return moment(reference, getPeriodFormat('daily'), true).startOf('day');
+        case 'weekly':
+            return moment(reference, getPeriodFormat('weekly'), true).startOf('week');
+        case 'monthly':
+            return moment(reference, getPeriodFormat('monthly'), true).startOf('month');
+        case 'quarterly': {
+            const parsed = parseQuarterReference(reference);
+            if (!parsed) return null;
+            const startMonth = (parsed.quarter - 1) * 3;
+            return moment({ year: parsed.year, month: startMonth, day: 1 });
+        }
+        case 'semesterly': {
+            const parsed = parseSemesterReference(reference);
+            if (!parsed) return null;
+            const startMonth = parsed.semester === 1 ? 0 : 6;
+            return moment({ year: parsed.year, month: startMonth, day: 1 });
+        }
+        case 'yearly':
+            return moment(reference, getPeriodFormat('yearly'), true).startOf('year');
+        default:
+            return null;
+    }
+}
+
+function getPeriodTriggerDate(periodicity, reference) {
+    const start = getPeriodStart(periodicity, reference);
+    if (!start || !start.isValid()) return null;
+
+    switch (periodicity) {
+        case 'daily':
+            return start.clone().startOf('day');
+        case 'weekly':
+            return start.clone().endOf('week').startOf('day');
+        case 'monthly':
+            return start.clone().endOf('month').startOf('day');
+        case 'quarterly':
+            return start.clone().endOf('quarter').startOf('day');
+        case 'semesterly':
+            return start.clone().add(6, 'months').subtract(1, 'day').startOf('day');
+        case 'yearly':
+            return start.clone().endOf('year').startOf('day');
+        default:
+            return null;
+    }
+}
+
 async function shouldGenerate(template, currentDate) {
-    if (template.periodicity === 'on_demand') return false;
+    if (template.periodicity === 'on_demand') {
+        return { shouldGenerate: false };
+    }
 
     const lastInstance = await BonusInstance.findOne({
         templateId: template._id
     }).sort({ referencePeriod: -1 });
 
-    if (!lastInstance) return true; // First generation
+    const lastReference = lastInstance ? lastInstance.referencePeriod : null;
+    const nextReference = getNextReferencePeriod(template.periodicity, lastReference, currentDate);
+    const triggerDate = getPeriodTriggerDate(template.periodicity, nextReference);
 
-    // Calculate next expected generation date
-    let nextGenerationDate;
-    switch (template.periodicity) {
-        case 'daily':
-            nextGenerationDate = moment(lastInstance.referencePeriod, getPeriodFormat('daily')).add(1, 'day');
-            break;
-        case 'weekly':
-            nextGenerationDate = moment(lastInstance.referencePeriod, getPeriodFormat('weekly')).add(1, 'week');
-            break;
-        case 'monthly':
-            nextGenerationDate = moment(lastInstance.referencePeriod, getPeriodFormat('monthly')).add(1, 'month').startOf('month');
-            break;
-        case 'quarterly': {
-            // Parse like YYYY-Qn to a date at quarter start
-            const match = /^(\d{4})-Q([1-4])$/.exec(lastInstance.referencePeriod);
-            const year = match ? parseInt(match[1], 10) : currentDate.year();
-            const q = match ? parseInt(match[2], 10) : Math.ceil((currentDate.month() + 1) / 3);
-            const startMonth = (q - 1) * 3; // 0,3,6,9
-            nextGenerationDate = moment({ year, month: startMonth, day: 1 }).add(3, 'months').startOf('quarter');
-            break;
-        }
-        case 'semesterly': {
-            // Parse YYYY-Sn to a date at semester start
-            const match = /^(\d{4})-S([1-2])$/.exec(lastInstance.referencePeriod);
-            const year = match ? parseInt(match[1], 10) : currentDate.year();
-            const s = match ? parseInt(match[2], 10) : (currentDate.month() < 6 ? 1 : 2);
-            const startMonth = s === 1 ? 0 : 6;
-            nextGenerationDate = moment({ year, month: startMonth, day: 1 }).add(6, 'months');
-            break;
-        }
-        case 'yearly':
-            nextGenerationDate = moment(lastInstance.referencePeriod, getPeriodFormat('yearly')).add(1, 'year').startOf('year');
-            break;
-        default:
-            return false;
+    if (!nextReference || !triggerDate) {
+        return { shouldGenerate: false };
     }
 
-    return currentDate.isSameOrAfter(nextGenerationDate);
+    return {
+        shouldGenerate: currentDate.isSameOrAfter(triggerDate),
+        referencePeriod: nextReference
+    };
 }
 
 
@@ -656,6 +745,8 @@ function buildOperatorCondition(rule) {
 // Helper functions
 function formatPeriod(periodicity, date = moment()) {
     switch (periodicity) {
+        case 'daily': return date.format('YYYY-MM-DD');
+        case 'weekly': return date.format('YYYY-[W]WW');
         case 'monthly': return date.format('YYYY-MM');
         case 'quarterly': return `${date.year()}-Q${Math.ceil((date.month() + 1)/3)}`;
         case 'semesterly': {

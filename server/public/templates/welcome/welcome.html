@@ -2,6 +2,14 @@
     <div class="admx-welcome__bg" aria-hidden="true"></div>
 
     <div class="admx-welcome__content" layout="column" layout-align="center center">
+        <div class="admx-welcome__topbar" layout="row" layout-align="end center">
+            <md-button class="admx-welcome__theme" type="button" ng-click="toggleDarkMode()" aria-label="Toggle color mode" aria-pressed="{{darkMode}}">
+                <span class="admx-welcome__theme-dot" aria-hidden="true"></span>
+                <span ng-if="darkMode" translate>Light mode</span>
+                <span ng-if="!darkMode" translate>Dark mode</span>
+            </md-button>
+        </div>
+
         <div class="admx-welcome__shell" layout="row" layout-align="center start">
             <div class="admx-welcome__brand" flex="60" flex-xs="100">
                 <img class="admx-welcome__logo" ng-src="{{kernel.logo.apps}}" alt="Admineex logo">
@@ -45,4 +53,3 @@
         </div>
     </div>
 </div>
-

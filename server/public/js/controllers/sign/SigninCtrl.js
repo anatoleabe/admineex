@@ -1,7 +1,11 @@
 angular.module('SigninCtrl', []).controller('SigninController', function($scope, $state, $window, gettextCatalog, $ocLazyLoad, $injector, $stateParams, $mdToast, $mdDialog) {    
     $scope.loading = false;
     $scope.darkMode = localStorage.getItem('darkMode') === 'true';
-    if ($scope.darkMode) document.body.classList.add('dark-mode');
+    if ($scope.darkMode) {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
     $scope.toggleDarkMode = function() {
         $scope.darkMode = !$scope.darkMode;
         localStorage.setItem('darkMode', $scope.darkMode);

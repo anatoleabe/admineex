@@ -93,6 +93,11 @@
 	                                <option value="yearly" translate>Yearly</option>
 	                                <option value="on_demand" translate>On Demand</option>
 	                            </select>
+                            <div class="alert alert-info mt-2" ng-if="periodicitySchedule">
+                                <i class="icon-info22 mr-1"></i>
+                                <strong>Auto-execution:</strong> {{periodicitySchedule.description}}
+                                <span ng-if="periodicitySchedule.example">Example: {{periodicitySchedule.example}}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

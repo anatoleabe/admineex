@@ -356,6 +356,149 @@ angular.module('app')
             return found ? found.label : periodicity;
         };
 
+        function pad2(value) {
+            return value < 10 ? `0${value}` : String(value);
+        }
+
+        function formatExampleDate(date) {
+            return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())} 00:00`;
+        }
+
+        function startOfDay(date) {
+            return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+        }
+
+        function addDays(date, days) {
+            const next = new Date(date);
+            next.setDate(next.getDate() + days);
+            return startOfDay(next);
+        }
+
+        function endOfMonthAtStart(year, monthIndex) {
+            const end = new Date(year, monthIndex + 1, 0);
+            return startOfDay(end);
+        }
+
+        function getNextDailyExample(now) {
+            return addDays(startOfDay(now), 1);
+        }
+
+        function getNextWeeklyExample(now) {
+            const day = now.getDay(); // 0 = Sunday
+            const daysUntilSunday = (7 - day) % 7;
+            let candidate = addDays(startOfDay(now), daysUntilSunday);
+            if (now >= candidate) {
+                candidate = addDays(candidate, 7);
+            }
+            return candidate;
+        }
+
+        function getNextMonthlyExample(now) {
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            let candidate = endOfMonthAtStart(year, month);
+            if (now >= candidate) {
+                candidate = endOfMonthAtStart(year, month + 1);
+            }
+            return candidate;
+        }
+
+        function getNextQuarterlyExample(now) {
+            const year = now.getFullYear();
+            const month = now.getMonth();
+            const quarterEndMonth = Math.floor(month / 3) * 3 + 2;
+            let candidate = endOfMonthAtStart(year, quarterEndMonth);
+            if (now >= candidate) {
+                let nextEndMonth = quarterEndMonth + 3;
+                let nextYear = year;
+                if (nextEndMonth > 11) {
+                    nextEndMonth -= 12;
+                    nextYear += 1;
+                }
+                candidate = endOfMonthAtStart(nextYear, nextEndMonth);
+            }
+            return candidate;
+        }
+
+        function getNextSemesterlyExample(now) {
+            let year = now.getFullYear();
+            const month = now.getMonth();
+            let endMonth = month < 6 ? 5 : 11;
+            let candidate = endOfMonthAtStart(year, endMonth);
+            if (now >= candidate) {
+                if (endMonth === 5) {
+                    endMonth = 11;
+                } else {
+                    endMonth = 5;
+                    year += 1;
+                }
+                candidate = endOfMonthAtStart(year, endMonth);
+            }
+            return candidate;
+        }
+
+        function getNextYearlyExample(now) {
+            let year = now.getFullYear();
+            let candidate = endOfMonthAtStart(year, 11);
+            if (now >= candidate) {
+                year += 1;
+                candidate = endOfMonthAtStart(year, 11);
+            }
+            return candidate;
+        }
+
+        function buildPeriodicitySchedule(periodicity) {
+            if (!periodicity) return null;
+            const now = new Date();
+            switch (periodicity) {
+                case 'daily':
+                    return {
+                        description: t('Runs every day at 00:00.'),
+                        example: formatExampleDate(getNextDailyExample(now))
+                    };
+                case 'weekly':
+                    return {
+                        description: t('Runs at the end of the week at 00:00.'),
+                        example: formatExampleDate(getNextWeeklyExample(now))
+                    };
+                case 'monthly':
+                    return {
+                        description: t('Runs on the last day of each month at 00:00.'),
+                        example: formatExampleDate(getNextMonthlyExample(now))
+                    };
+                case 'quarterly':
+                    return {
+                        description: t('Runs on the last day of each quarter at 00:00.'),
+                        example: formatExampleDate(getNextQuarterlyExample(now))
+                    };
+                case 'semesterly':
+                    return {
+                        description: t('Runs on the last day of each semester at 00:00.'),
+                        example: formatExampleDate(getNextSemesterlyExample(now))
+                    };
+                case 'yearly':
+                    return {
+                        description: t('Runs on the last day of the year at 00:00.'),
+                        example: formatExampleDate(getNextYearlyExample(now))
+                    };
+                case 'on_demand':
+                    return {
+                        description: t('No automatic run. Execute manually.'),
+                        example: ''
+                    };
+                default:
+                    return {
+                        description: t('Runs at the end of each period at 00:00.'),
+                        example: ''
+                    };
+            }
+        }
+
+        $scope.periodicitySchedule = null;
+        $scope.$watch('templateFormData.periodicity', function(value) {
+            $scope.periodicitySchedule = buildPeriodicitySchedule(value);
+        });
+
         // Get label for formula type
         $scope.getFormulaTypeLabel = function(formulaType) {
             const found = $scope.constants.formulaTypes.find(f => f.value === formulaType);
