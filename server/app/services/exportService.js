@@ -1305,15 +1305,27 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, option
                 }
 
                 // Ensure footer does not trigger a new page
-                const footerY = doc.page.height - doc.page.margins.bottom - 30; // Adjusted position
+                const footerY = doc.page.height - doc.page.margins.bottom - 30;
                 if (footerY > doc.page.height - 20) {
                     continue; // Skip adding footer if it exceeds the page height
                 }
 
-                // Add footer text
-                const footerText = `Page ${i + 1} sur ${pageCount} | Généré par Admineex le ${moment().format('DD/MM/YYYY à HH:mm')}`;
-                doc.fontSize(8).fillColor(COLOR_LIGHT_TEXT)
-                    .text(footerText,
+                // Add contact information on first line
+                const contactInfo = 'www.dgtcfm.cm / Email : contact@dgtcfm.cm - Tél : (+237) 222 22 49 53 / Numéro vert : 1509';
+                doc.fontSize(7).fillColor(COLOR_LIGHT_TEXT)
+                    .text(contactInfo,
+                        doc.page.margins.left,
+                        footerY + 5,
+                        {
+                            align: 'center',
+                            width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
+                            lineBreak: false
+                        });
+
+                // Add page and generation info on second line
+                const pageInfo = `Page ${i + 1} sur ${pageCount} | Généré par Admineex le ${moment().format('DD/MM/YYYY à HH:mm')}`;
+                doc.fontSize(7).fillColor(COLOR_LIGHT_TEXT)
+                    .text(pageInfo,
                         doc.page.margins.left,
                         footerY + 15,
                         {
