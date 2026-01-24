@@ -1,36 +1,37 @@
 <div class="bonus-templates-page" ng-controller="BonusTemplatesController">
   <!-- Page Header with Stats -->
   <div class="d-flex justify-content-between align-items-center mb-4">
-	    <div>
-	      <h3 class="mb-0">
-	        <i class="icon-stack2 mr-2"></i> <span translate>Bonus Programs</span>
-	      </h3>
-	      <small class="text-muted" translate>Design and maintain complete bonus programs (eligibility, calculation, approvals)</small>
-	    </div>
-	    <div class="d-flex align-items-stretch">
+    <div>
+      <h3 class="mb-0">
+        <i class="icon-stack2 mr-2"></i> <span translate>Bonus Programs</span>
+      </h3>
+      <small class="text-muted" translate>Design and maintain complete bonus programs (eligibility, calculation,
+        approvals)</small>
+    </div>
+    <div class="d-flex align-items-stretch">
       <div class="mr-2">
         <div class="stat-card bg-primary-100 p-2 rounded text-center">
-	          <div class="text-primary font-weight-bold">{{templates.length || 0}}</div>
-	          <small class="text-muted" translate>Total</small>
-	        </div>
-	      </div>
+          <div class="text-primary font-weight-bold">{{templates.length || 0}}</div>
+          <small class="text-muted" translate>Total</small>
+        </div>
+      </div>
       <div class="mr-2">
         <div class="stat-card bg-success-100 p-2 rounded text-center">
-	          <div class="text-success font-weight-bold">{{stats.active}}</div>
-	          <small class="text-muted" translate>Active</small>
-	        </div>
-	      </div>
+          <div class="text-success font-weight-bold">{{stats.active}}</div>
+          <small class="text-muted" translate>Active</small>
+        </div>
+      </div>
       <div class="mr-3">
         <div class="stat-card bg-danger-100 p-2 rounded text-center">
-	          <div class="text-danger font-weight-bold">{{stats.inactive}}</div>
-	          <small class="text-muted" translate>Inactive</small>
-	        </div>
-	      </div>
-	      <button class="btn btn-primary" ng-if="permissions.canManageTemplates" ng-click="openTemplateForm()">
-	        <i class="icon-plus22 mr-1"></i> <span translate>New Program</span>
-	      </button>
-	    </div>
-	  </div>
+          <div class="text-danger font-weight-bold">{{stats.inactive}}</div>
+          <small class="text-muted" translate>Inactive</small>
+        </div>
+      </div>
+      <button class="btn btn-primary" ng-if="permissions.canManageTemplates" ng-click="openTemplateForm()">
+        <i class="icon-plus22 mr-1"></i> <span translate>New Program</span>
+      </button>
+    </div>
+  </div>
 
   <!-- Toolbar: Search, Filters, Sort, View Toggle -->
   <div class="card mb-3">
@@ -41,116 +42,156 @@
             <span class="input-group-prepend">
               <span class="input-group-text"><i class="icon-search4"></i></span>
             </span>
-            <input type="text" class="form-control" placeholder="Search by name, code, description" aria-label="Search templates" ng-model="searchQuery" ng-model-options="{ debounce: 300 }" ng-change="applyFilters(true)">
+            <input type="text" class="form-control" placeholder="Search by name, code, description"
+              aria-label="Search templates" ng-model="searchQuery" ng-model-options="{ debounce: 300 }"
+              ng-change="applyFilters(true)">
           </div>
         </div>
 
-	        <div class="col-lg-4 mb-2 mb-lg-0">
-	          <div class="d-flex align-items-center flex-wrap">
-	            <div class="mr-2 text-muted small" translate>Status:</div>
-	            <div class="btn-group btn-group-sm mr-3" role="group" aria-label="Status filter">
-	              <button type="button" class="btn" ng-class="{'btn-primary': statusFilter==='','btn-light': statusFilter!==''}" ng-click="setStatusFilter('')" translate>All</button>
-	              <button type="button" class="btn" ng-class="{'btn-primary': statusFilter==='true','btn-light': statusFilter!=='true'}" ng-click="setStatusFilter('true')" translate>Active</button>
-	              <button type="button" class="btn" ng-class="{'btn-primary': statusFilter==='false','btn-light': statusFilter!=='false'}" ng-click="setStatusFilter('false')" translate>Inactive</button>
-	            </div>
-	
-	            <div class="mr-2 text-muted small" translate>Categories:</div>
-	            <div class="d-flex flex-wrap" role="group" aria-label="Category filters">
-              <button type="button"
-                      class="btn btn-sm mr-1 mb-1 rounded-pill"
-                      ng-repeat="cat in constants.categories"
-                      ng-class="categoryFilters.indexOf(cat.value)!==-1 ? 'btn-primary' : 'btn-outline-secondary'"
-                      ng-click="toggleCategory(cat.value)"
-                      aria-pressed="{{categoryFilters.indexOf(cat.value)!==-1}}">
+        <div class="col-lg-4 mb-2 mb-lg-0">
+          <div class="d-flex align-items-center flex-wrap">
+            <div class="mr-2 text-muted small" translate>Status:</div>
+            <div class="btn-group btn-group-sm mr-3" role="group" aria-label="Status filter">
+              <button type="button" class="btn"
+                ng-class="{'btn-primary': statusFilter==='','btn-light': statusFilter!==''}"
+                ng-click="setStatusFilter('')" translate>All</button>
+              <button type="button" class="btn"
+                ng-class="{'btn-primary': statusFilter==='true','btn-light': statusFilter!=='true'}"
+                ng-click="setStatusFilter('true')" translate>Active</button>
+              <button type="button" class="btn"
+                ng-class="{'btn-primary': statusFilter==='false','btn-light': statusFilter!=='false'}"
+                ng-click="setStatusFilter('false')" translate>Inactive</button>
+            </div>
+
+            <div class="mr-2 text-muted small" translate>Categories:</div>
+            <div class="d-flex flex-wrap" role="group" aria-label="Category filters">
+              <button type="button" class="btn btn-sm mr-1 mb-1 rounded-pill" ng-repeat="cat in constants.categories"
+                ng-class="categoryFilters.indexOf(cat.value)!==-1 ? 'btn-primary' : 'btn-outline-secondary'"
+                ng-click="toggleCategory(cat.value)" aria-pressed="{{categoryFilters.indexOf(cat.value)!==-1}}">
                 <i class="icon-price-tag2 mr-1"></i>{{cat.label}}
               </button>
             </div>
           </div>
         </div>
 
-	        <div class="col-lg-4 d-flex align-items-center justify-content-lg-end">
-	          <div class="d-flex align-items-center mr-3">
-	            <span class="text-muted small mr-2" translate>Sort by:</span>
-	            <select class="form-control form-control-sm mr-2" style="width:auto;" aria-label="Sort by" ng-model="sortField" ng-change="applyFilters(true)">
-	              <option value="updatedAt" translate>Updated</option>
-	              <option value="name" translate>Name</option>
-	              <option value="code" translate>Code</option>
-	            </select>
+        <div class="col-lg-4 d-flex align-items-center justify-content-lg-end">
+          <div class="d-flex align-items-center mr-3">
+            <span class="text-muted small mr-2" translate>Sort by:</span>
+            <select class="form-control form-control-sm mr-2" style="width:auto;" aria-label="Sort by"
+              ng-model="sortField" ng-change="applyFilters(true)">
+              <option value="updatedAt" translate>Updated</option>
+              <option value="name" translate>Name</option>
+              <option value="code" translate>Code</option>
+            </select>
             <button class="btn btn-light btn-sm" ng-click="toggleSortDir()" title="Toggle sort order">
               <i class="icon-arrow-up7" ng-if="sortDir==='asc'"></i>
               <i class="icon-arrow-down7" ng-if="sortDir==='desc'"></i>
             </button>
           </div>
           <div class="btn-group btn-group-sm" role="group" aria-label="View mode">
-            <button class="btn" ng-class="{'btn-primary': viewMode==='list','btn-light': viewMode!=='list'}" ng-click="setViewMode('list')"><i class="icon-list"></i></button>
-            <button class="btn" ng-class="{'btn-primary': viewMode==='cards','btn-light': viewMode!=='cards'}" ng-click="setViewMode('cards')"><i class="icon-grid6"></i></button>
+            <button class="btn" ng-class="{'btn-primary': viewMode==='list','btn-light': viewMode!=='list'}"
+              ng-click="setViewMode('list')"><i class="icon-list"></i></button>
+            <button class="btn" ng-class="{'btn-primary': viewMode==='cards','btn-light': viewMode!=='cards'}"
+              ng-click="setViewMode('cards')"><i class="icon-grid6"></i></button>
           </div>
-          <button class="btn btn-light btn-sm ml-2" ng-click="resetFilters()" title="Reset filters"><i class="icon-reset"></i></button>
+          <button class="btn btn-light btn-sm ml-2" ng-click="resetFilters()" title="Reset filters"><i
+              class="icon-reset"></i></button>
         </div>
       </div>
     </div>
   </div>
 
   <!-- List View -->
-	  <div class="card" ng-if="viewMode==='list'">
-	    <div class="table-responsive">
-	      <table class="table table-hover table-bordered table-striped">
-	        <thead class="thead-dark">
-	        <tr>
-	          <th width="24%" translate>Name</th>
-	          <th width="12%" translate>Code</th>
-	          <th width="14%" translate>Category</th>
-	          <th width="14%" translate>Periodicity</th>
-	          <th width="12%" translate>Status</th>
-	          <th width="14%" translate>Last Updated</th>
-	          <th width="10%" class="text-center" translate>Actions</th>
-	        </tr>
-	        </thead>
+  <div class="card" ng-if="viewMode==='list'">
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th width="24%" translate>Name</th>
+            <th width="12%" translate>Code</th>
+            <th width="14%" translate>Category</th>
+            <th width="14%" translate>Periodicity</th>
+            <th width="12%" translate>Status</th>
+            <th width="14%" translate>Last Updated</th>
+            <th width="10%" class="text-center" translate>Actions</th>
+          </tr>
+        </thead>
         <tbody>
-        <tr ng-repeat="template in paginatedTemplates track by template._id">
-          <td>
-            <a href="javascript:void(0)" ng-click="viewTemplate(template)">
-              <strong>{{template.name}}</strong>
-            </a>
-            <div class="text-muted small">{{template.description | limitTo:80}}{{template.description && template.description.length > 80 ? '...' : ''}}</div>
-          </td>
-          <td><span >{{template.code}}</span></td>
-          <td>{{getCategoryLabel(template.category)}}</td>
-          <td>{{getPeriodicityLabel(template.periodicity)}}</td>
-	          <td>
-	            <label class="mb-0 d-inline-flex align-items-center" title="Toggle active">
-	              <input type="checkbox" ng-checked="template.isActive" ng-disabled="state.saving" ng-change="toggleActive(template)" ng-model="template.isActive">
-	              <span class="ml-2" ng-class="{'text-success': template.isActive, 'text-muted': !template.isActive}">{{getActiveLabel(template.isActive)}}</span>
-	            </label>
-	          </td>
-          <td>
-            <span class="d-block">{{template.updatedAt | date:'shortDate'}}</span>
-            <small class="text-muted">{{template.updatedAt | date:'shortTime'}}</small>
-          </td>
-          <td class="text-center">
-	            <div class="dropdown">
-	              <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-	                <span translate>Actions</span>
-	              </button>
-	              <div class="dropdown-menu dropdown-menu-right">
-	                <a class="dropdown-item" href="javascript:void(0)" ng-click="viewTemplate(template)"><i class="icon-eye mr-2"></i> <span translate>View</span></a>
-	                <a class="dropdown-item" ng-if="permissions.canManageTemplates" href="javascript:void(0)" ng-click="editTemplate(template)"><i class="icon-pencil7 mr-2"></i> <span translate>Edit</span></a>
-	                <div class="dropdown-divider" ng-if="permissions.canManageTemplates"></div>
-	                <a class="dropdown-item text-danger" ng-if="permissions.canManageTemplates" href="javascript:void(0)" ng-click="confirmDelete(template)"><i class="icon-trash mr-2"></i> <span translate>Delete</span></a>
-	              </div>
-	            </div>
-	          </td>
-	        </tr>
-	        <tr ng-if="!state.loading && filteredTemplates.length===0">
-	          <td colspan="7" class="text-center text-muted py-4">
-	            <span translate>No templates match your filters.</span>
-	          </td>
-	        </tr>
-	        <tr ng-if="state.loading">
-	          <td colspan="7" class="text-center py-4">
-	            <i class="icon-spinner4 spinner mr-2"></i> <span translate>Loading templates...</span>
-	          </td>
-	        </tr>
+          <tr ng-repeat="template in paginatedTemplates track by template._id">
+            <td>
+              <a href="javascript:void(0)" ng-click="viewTemplate(template)">
+                <strong>{{template.name}}</strong>
+                <span ng-if="template.isHistoricalTemplate" class="badge badge-warning badge-sm ml-1"
+                  title="{{'Imported from Excel - Read only' | translate}}"><i class="icon-upload2"></i> {{'Imported' |
+                  translate}}</span>
+              </a>
+              <div class="text-muted small">{{template.description | limitTo:80}}{{template.description &&
+                template.description.length > 80 ? '...' : ''}}</div>
+            </td>
+            <td><span>{{template.code}}</span></td>
+            <td>{{getCategoryLabel(template.category)}}</td>
+            <td>{{getPeriodicityLabel(template.periodicity)}}</td>
+            <td>
+              <label class="mb-0 d-inline-flex align-items-center"
+                title="{{template.isHistoricalTemplate ? ('Historical template - status locked' | translate) : 'Toggle active'}}">
+                <input type="checkbox" ng-checked="template.isActive"
+                  ng-disabled="state.saving || template.isHistoricalTemplate" ng-change="toggleActive(template)"
+                  ng-model="template.isActive">
+                <span class="ml-2"
+                  ng-class="{'text-success': template.isActive, 'text-muted': !template.isActive}">{{getActiveLabel(template.isActive)}}</span>
+                <i class="icon-lock2 ml-1 text-warning" ng-if="template.isHistoricalTemplate"></i>
+              </label>
+            </td>
+            <td>
+              <span class="d-block">{{template.updatedAt | date:'shortDate'}}</span>
+              <small class="text-muted">{{template.updatedAt | date:'shortTime'}}</small>
+            </td>
+            <td class="text-center">
+              <div class="dropdown">
+                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  <span translate>Actions</span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item" href="javascript:void(0)" ng-click="viewTemplate(template)"><i
+                      class="icon-eye mr-2"></i> <span translate>View</span></a>
+                  <a class="dropdown-item" ng-if="permissions.canManageTemplates && !template.isHistoricalTemplate"
+                    href="javascript:void(0)" ng-click="editTemplate(template)"><i class="icon-pencil7 mr-2"></i> <span
+                      translate>Edit</span></a>
+                  <a class="dropdown-item disabled text-muted"
+                    ng-if="permissions.canManageTemplates && template.isHistoricalTemplate" href="javascript:void(0)"
+                    title="{{'Historical templates cannot be edited' | translate}}"><i class="icon-pencil7 mr-2"></i>
+                    <span translate>Edit</span> <small class="text-warning"><i class="icon-lock2 ml-1"></i></small></a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="javascript:void(0)" ng-click="viewTemplateCycles(template)"><i
+                      class="icon-list mr-2"></i> <span translate>View Cycles</span></a>
+                  <a class="dropdown-item text-primary"
+                    ng-if="permissions.canAnticipateGeneration && template.isActive && template.periodicity !== 'on_demand'"
+                    href="javascript:void(0)" ng-click="anticipateGeneration(template)"><i class="icon-bolt mr-2"></i>
+                    <span translate>Generate Now</span></a>
+                  <div class="dropdown-divider" ng-if="permissions.canManageTemplates"></div>
+                  <a class="dropdown-item text-danger"
+                    ng-if="permissions.canManageTemplates && !template.isHistoricalTemplate" href="javascript:void(0)"
+                    ng-click="confirmDelete(template)"><i class="icon-trash mr-2"></i> <span translate>Delete</span></a>
+                  <a class="dropdown-item disabled text-muted"
+                    ng-if="permissions.canManageTemplates && template.isHistoricalTemplate" href="javascript:void(0)"
+                    title="{{'Historical templates cannot be deleted' | translate}}"><i class="icon-trash mr-2"></i>
+                    <span translate>Delete</span> <small class="text-warning"><i
+                        class="icon-lock2 ml-1"></i></small></a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr ng-if="!state.loading && filteredTemplates.length===0">
+            <td colspan="7" class="text-center text-muted py-4">
+              <span translate>No templates match your filters.</span>
+            </td>
+          </tr>
+          <tr ng-if="state.loading">
+            <td colspan="7" class="text-center py-4">
+              <i class="icon-spinner4 spinner mr-2"></i> <span translate>Loading templates...</span>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -158,17 +199,22 @@
 
   <!-- Cards View -->
   <div class="row" ng-if="viewMode==='cards'">
-	    <div class="col-md-4 mb-3" ng-repeat="template in paginatedTemplates track by template._id">
+    <div class="col-md-4 mb-3" ng-repeat="template in paginatedTemplates track by template._id">
       <div class="card h-100">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-start">
             <div>
-              <h6 class="mb-1">{{template.name}}</h6>
-              <span >{{template.code}}</span>
+              <h6 class="mb-1">
+                {{template.name}}
+                <span ng-if="template.isHistoricalTemplate" class="badge badge-warning badge-sm ml-1"
+                  title="{{'Imported from Excel - Read only' | translate}}"><i class="icon-upload2"></i></span>
+              </h6>
+              <span>{{template.code}}</span>
             </div>
-	            <span class="badge" ng-class="template.isActive ? 'badge-success' : 'badge-secondary'">{{getActiveLabel(template.isActive)}}</span>
-	          </div>
-	          <div class="mt-2 text-muted small">{{template.description || noDescriptionLabel}}</div>
+            <span class="badge"
+              ng-class="template.isActive ? 'badge-success' : 'badge-secondary'">{{getActiveLabel(template.isActive)}}</span>
+          </div>
+          <div class="mt-2 text-muted small">{{template.description || noDescriptionLabel}}</div>
           <div class="mt-3 d-flex flex-wrap small">
             <span class="mr-3"><i class="icon-price-tag2 mr-1"></i>{{getCategoryLabel(template.category)}}</span>
             <span class="mr-3"><i class="icon-calendar3 mr-1"></i>{{getPeriodicityLabel(template.periodicity)}}</span>
@@ -176,52 +222,73 @@
           </div>
         </div>
         <div class="card-footer d-flex justify-content-between align-items-center">
-          <label class="mb-0 small d-inline-flex align-items-center" title="Toggle active">
-            <input type="checkbox" ng-checked="template.isActive" ng-disabled="state.saving || !permissions.canManageTemplates" ng-change="toggleActive(template)" ng-model="template.isActive">
+          <label class="mb-0 small d-inline-flex align-items-center"
+            title="{{template.isHistoricalTemplate ? ('Historical template - status locked' | translate) : 'Toggle active'}}">
+            <input type="checkbox" ng-checked="template.isActive"
+              ng-disabled="state.saving || !permissions.canManageTemplates || template.isHistoricalTemplate"
+              ng-change="toggleActive(template)" ng-model="template.isActive">
             <span class="ml-2">{{template.isActive ? 'Active' : 'Inactive'}}</span>
+            <i class="icon-lock2 ml-1 text-warning" ng-if="template.isHistoricalTemplate"></i>
           </label>
           <div class="btn-group btn-group-sm">
-            <button class="btn btn-outline-info" ng-click="viewTemplate(template)" title="View"><i class="icon-eye"></i></button>
-            <button class="btn btn-outline-primary" ng-if="permissions.canManageTemplates" ng-click="editTemplate(template)" title="Edit"><i class="icon-pencil7"></i></button>
-            <button class="btn btn-outline-danger" ng-if="permissions.canManageTemplates" ng-click="confirmDelete(template)" title="Delete"><i class="icon-trash"></i></button>
+            <button class="btn btn-outline-info" ng-click="viewTemplate(template)" title="View"><i
+                class="icon-eye"></i></button>
+            <button class="btn btn-outline-secondary" ng-click="viewTemplateCycles(template)"
+              title="{{'View Cycles' | translate}}"><i class="icon-list"></i></button>
+            <button class="btn btn-outline-primary"
+              ng-if="permissions.canAnticipateGeneration && template.isActive && template.periodicity !== 'on_demand'"
+              ng-click="anticipateGeneration(template)" title="{{'Generate Now' | translate}}"><i
+                class="icon-bolt"></i></button>
+            <button class="btn btn-outline-primary"
+              ng-if="permissions.canManageTemplates && !template.isHistoricalTemplate" ng-click="editTemplate(template)"
+              title="Edit"><i class="icon-pencil7"></i></button>
+            <button class="btn btn-outline-secondary"
+              ng-if="permissions.canManageTemplates && template.isHistoricalTemplate" disabled
+              title="{{'Historical template - cannot edit' | translate}}"><i class="icon-lock2"></i></button>
+            <button class="btn btn-outline-danger"
+              ng-if="permissions.canManageTemplates && !template.isHistoricalTemplate"
+              ng-click="confirmDelete(template)" title="Delete"><i class="icon-trash"></i></button>
           </div>
         </div>
       </div>
     </div>
 
-	    <div class="col-12" ng-if="!state.loading && filteredTemplates.length===0">
-	      <div class="card">
-	        <div class="card-body text-center text-muted py-4" translate>No templates match your filters.</div>
-	      </div>
-	    </div>
+    <div class="col-12" ng-if="!state.loading && filteredTemplates.length===0">
+      <div class="card">
+        <div class="card-body text-center text-muted py-4" translate>No templates match your filters.</div>
+      </div>
+    </div>
   </div>
 
   <!-- Pagination -->
-	  <div class="d-flex justify-content-between align-items-center mt-3" ng-if="filteredTemplates.length > 0">
-	    <div class="text-muted small" translate>
-	      Showing {{(currentPage-1)*pageSize + 1}}–{{ Math.min(currentPage*pageSize, filteredTemplates.length) }} of {{filteredTemplates.length}}
-	    </div>
+  <div class="d-flex justify-content-between align-items-center mt-3" ng-if="filteredTemplates.length > 0">
+    <div class="text-muted small" translate>
+      Showing {{(currentPage-1)*pageSize + 1}}–{{ Math.min(currentPage*pageSize, filteredTemplates.length) }} of
+      {{filteredTemplates.length}}
+    </div>
     <div class="d-flex align-items-center">
-      <select class="form-control form-control-sm mr-2" style="width:auto;" aria-label="Page size" ng-model="pageSize" ng-change="applyFilters(true)">
+      <select class="form-control form-control-sm mr-2" style="width:auto;" aria-label="Page size" ng-model="pageSize"
+        ng-change="applyFilters(true)">
         <option value="10">10</option>
         <option value="20">20</option>
         <option value="50">50</option>
       </select>
       <nav aria-label="Templates pagination">
         <ul class="pagination pagination-sm mb-0">
-	          <li class="page-item" ng-class="{disabled: currentPage===1}">
-	            <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage-1)" translate>Prev</a>
-	          </li>
-          <li class="page-item" ng-repeat="p in [].constructor(pageCount) track by $index" ng-class="{active: ($index+1)===currentPage}">
+          <li class="page-item" ng-class="{disabled: currentPage===1}">
+            <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage-1)" translate>Prev</a>
+          </li>
+          <li class="page-item" ng-repeat="p in [].constructor(pageCount) track by $index"
+            ng-class="{active: ($index+1)===currentPage}">
             <a class="page-link" href="javascript:void(0)" ng-click="setPage($index+1)">{{$index+1}}</a>
           </li>
-	          <li class="page-item" ng-class="{disabled: currentPage===pageCount}">
-	            <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage+1)" translate>Next</a>
-	          </li>
-	        </ul>
-	      </nav>
-	    </div>
-	  </div>
+          <li class="page-item" ng-class="{disabled: currentPage===pageCount}">
+            <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage+1)" translate>Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 
   <!-- Modals -->
   <div id="modal_basic" class="modal fade">

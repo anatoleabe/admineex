@@ -4,13 +4,13 @@ const { BonusTemplate } = require('../models/bonus/template');
 const { BonusInstance } = require('../models/bonus/instance');
 const { PersonnelSnapshot } = require('../models/bonus/personnelSnapshot');
 const { BonusAllocation } = require('../models/bonus/allocation');
-const { bulkCreateSnapshots} = require('./snapshotService');
-const {Personnel} = require("../models/personnel");
+const { bulkCreateSnapshots } = require('./snapshotService');
+const { Personnel } = require("../models/personnel");
 const { Structure } = require("../models/structure");
 const dictionary = require('../utils/dictionary');
 const vm = require('vm');
 const fs = require('fs');
-const path  = require('path');
+const path = require('path');
 
 // Cache loaders for dictionary JSON files
 const _dictCache = {};
@@ -112,8 +112,12 @@ async function generateBonusesForPeriod(period) {
 
 /**
  * Generate bonuses for specific template
+ * @param {string} templateId - The template ID
+ * @param {string} referencePeriod - The reference period (e.g., "2024-01")
+ * @param {Object} options - Optional parameters
+ * @param {boolean} options.isAnticipated - Whether this is an early/anticipated generation
  */
-async function generateBonusesForTemplate(templateId, referencePeriod) {
+async function generateBonusesForTemplate(templateId, referencePeriod, options = {}) {
     const template = await BonusTemplate.findById(templateId);
     if (!template) throw new Error('Template not found');
 
@@ -124,7 +128,9 @@ async function generateBonusesForTemplate(templateId, referencePeriod) {
         shareAmount: template.calculationConfig?.defaultShareAmount,
         status: 'draft',
         taxName: template.taxConfig?.taxName,
-        taxPercentage: template.taxConfig?.taxPercentage
+        taxPercentage: template.taxConfig?.taxPercentage,
+        isAnticipated: options.isAnticipated || false,
+        generationDate: new Date()
     });
 
     // Generate allocations
@@ -469,7 +475,7 @@ async function calculateParts(template, snapshotData) {
             return partsByCategory.nonFonctionnaire[category];
         }
     }
-    
+
     // Step 4: Check if category has specific rules in the template
     // Process override rules
     for (const rule of config.partRules || []) {
@@ -599,11 +605,11 @@ async function calculateInputs(template, snapshotData, parts) {
             let catCode = '';
             const catId = catRaw;
             catCode = dictionary.getValueFromJSON(
-                    '../../resources/dictionary/personnel/status/2/categories.json',
-                    catId,
-                    'code'
-                ) || String(catRaw);
-            
+                '../../resources/dictionary/personnel/status/2/categories.json',
+                catId,
+                'code'
+            ) || String(catRaw);
+
             indiceCatDisplay = (catCode ? catCode : '') + (indexStr ? (' / ' + indexStr) : '');
         }
 
@@ -748,7 +754,7 @@ function formatPeriod(periodicity, date = moment()) {
         case 'daily': return date.format('YYYY-MM-DD');
         case 'weekly': return date.format('YYYY-[W]WW');
         case 'monthly': return date.format('YYYY-MM');
-        case 'quarterly': return `${date.year()}-Q${Math.ceil((date.month() + 1)/3)}`;
+        case 'quarterly': return `${date.year()}-Q${Math.ceil((date.month() + 1) / 3)}`;
         case 'semesterly': {
             const semester = date.month() < 6 ? 1 : 2;
             return `${date.year()}-S${semester}`;

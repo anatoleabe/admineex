@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 
 // Bonus Template schema
 const BonusTemplateSchema = new mongoose.Schema({
-    code: { 
-        type: String, 
-        required: true, 
-        unique: true, 
+    code: {
+        type: String,
+        required: true,
+        unique: true,
         match: /^[A-Z0-9_-]+$/ // Enforce alphanumeric codes with optional dashes/underscores
     },
     name: { type: String, required: true },
@@ -34,13 +34,13 @@ const BonusTemplateSchema = new mongoose.Schema({
         formulaType: {
             type: String,
             enum: ['fixed', 'percentage', 'custom_formula', 'parts_based'],
-            required: function() { return this.category === 'calculated'; }
+            required: function () { return this.category === 'calculated'; }
         },
         subType: {
             type: String,
             enum: ['remise', 'ift'],
             default: 'remise',
-            required: function() { return this.category === 'without_parts'; }
+            required: function () { return this.category === 'without_parts'; }
         },
         baseField: { type: String }, // e.g., "salary", "grade_points"
         formula: { type: String }, // e.g., "base * 0.03 * parts"
@@ -93,6 +93,9 @@ const BonusTemplateSchema = new mongoose.Schema({
     isHistoricalTemplate: { type: Boolean, default: false },
     deactivatedAt: { type: Date }, // Track when the template was deactivated
     deactivatedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Track who deactivated the template
+    isDeleted: { type: Boolean, default: false }, // Soft delete flag
+    deletedAt: { type: Date }, // Track when the template was deleted
+    deletedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, // Track who deleted the template
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },

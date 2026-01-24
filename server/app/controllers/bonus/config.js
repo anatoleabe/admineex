@@ -48,6 +48,7 @@ exports.api.getPermissions = (req, res, next) => {
             canManageCycle: hasBonusAccess,
             canGeneratePayments: isAdmin || isBonusManager,  // Critical - Manager only
             canCancelInstance: isAdmin || isBonusManager,    // Critical - Manager only
+            canDeleteInstance: isAdmin || isBonusManager,    // Critical - Manager only (draft/cancelled only)
             canNotify: hasBonusAccess,
             canGenerateForTemplate: isAdmin || isBonusManager || isBonusOperator,
             canBulkActions: isAdmin || isBonusManager

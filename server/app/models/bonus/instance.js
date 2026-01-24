@@ -48,6 +48,7 @@ let BonusInstanceSchema = new mongoose.Schema({
         totalAllocations: { type: Number, default: 0 },
         processedAllocations: { type: Number, default: 0 }
     },
+    isAnticipated: { type: Boolean, default: false }, // True if generated before scheduled trigger date
     generationDate: { type: Date },
     approvalDate: { type: Date },
     paymentDate: { type: Date },

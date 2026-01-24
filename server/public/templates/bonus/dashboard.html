@@ -2,23 +2,46 @@
 
     <!-- Filters Toolbar -->
     <div class="card mb-3">
-        <div class="card-body py-2 d-flex justify-content-between align-items-center">
-            <h6 class="mb-0 text-semibold" translate>Dashboard Overview</h6>
-            <div class="d-flex align-items-center">
-                <span class="mr-2 text-muted" translate>Show Metrics For:</span>
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" ng-model="filterStatus.approved"
-                            ng-change="toggleFilter()">
-                        <span translate>Approved</span>
-                    </label>
+        <div class="card-body py-2">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <h6 class="mb-0 text-semibold" translate>Dashboard Overview</h6>
                 </div>
-                <div class="form-check form-check-inline">
-                    <label class="form-check-label">
-                        <input type="checkbox" class="form-check-input" ng-model="filterStatus.paid"
-                            ng-change="toggleFilter()">
-                        <span translate>Paid</span>
-                    </label>
+                <div class="col-md-9">
+                    <div class="d-flex flex-wrap align-items-center justify-content-end">
+                        <!-- Date Range Selector -->
+                        <div class="mr-3 mb-2 mb-md-0">
+                            <select class="form-control form-control-sm" ng-model="selectedDateRange" ng-change="applyDateRange()">
+                                <option ng-repeat="opt in dateRangeOptions" ng-value="opt.value">{{opt.label}}</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Custom Date Range (shown when custom is selected) -->
+                        <div class="d-flex align-items-center mr-3 mb-2 mb-md-0" ng-show="selectedDateRange === 'custom'">
+                            <input type="date" class="form-control form-control-sm" ng-model="dateRange.startDate" 
+                                   ng-change="applyDateRange()" style="width: 130px;">
+                            <span class="mx-2 text-muted">-</span>
+                            <input type="date" class="form-control form-control-sm" ng-model="dateRange.endDate" 
+                                   ng-change="applyDateRange()" style="width: 130px;">
+                        </div>
+                        
+                        <!-- Status Filters -->
+                        <span class="mr-2 text-muted" translate>Status:</span>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="filterStatus.approved"
+                                    ng-change="toggleFilter()">
+                                <span translate>Approved</span>
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" ng-model="filterStatus.paid"
+                                    ng-change="toggleFilter()">
+                                <span translate>Paid</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -31,7 +54,7 @@
                 <div class="media">
                     <div class="media-body">
                         <h3 class="mb-0">{{ stats.totalPaid | xaf }}</h3>
-                        <span class="text-uppercase font-size-xs" translate>Total Paid (YTD)</span>
+                        <span class="text-uppercase font-size-xs" translate>Total Paid</span>
                     </div>
                     <div class="ml-3 align-self-center">
                         <i class="icon-cash3 icon-3x opacity-75"></i>

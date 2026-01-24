@@ -1,662 +1,1377 @@
-<div class="modal-header bg-primary py-2">
-	    <h4 class="modal-title font-weight-semibold text-white">
-	        <i class="icon-file-plus2 mr-2"></i>
-	        {{editingTemplate ? editBonusTemplateLabel : createBonusTemplateLabel}}
-	    </h4>
-    <button type="button" class="close text-white" ng-click="closeTemplateForm()">×</button>
-</div>
+<!-- Stunning Bonus Template Form - Modern Design -->
+<style>
+    .template-wizard .step-indicator {
+        display: flex;
+        justify-content: center;
+        padding: 1.5rem 2rem;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        position: relative;
+        overflow: hidden;
+    }
+    .template-wizard .step-indicator::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .template-wizard .step-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 1;
+        flex: 1;
+        max-width: 180px;
+    }
+    .template-wizard .step-item:not(:last-child)::after {
+        content: '';
+        position: absolute;
+        top: 20px;
+        left: calc(50% + 25px);
+        width: calc(100% - 50px);
+        height: 3px;
+        background: rgba(255,255,255,0.3);
+        border-radius: 3px;
+    }
+    .template-wizard .step-item.completed:not(:last-child)::after {
+        background: rgba(255,255,255,0.8);
+    }
+    .template-wizard .step-circle {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.2);
+        border: 3px solid rgba(255,255,255,0.4);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(255,255,255,0.7);
+        font-weight: 600;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    .template-wizard .step-item.active .step-circle {
+        background: #fff;
+        border-color: #fff;
+        color: #667eea;
+        transform: scale(1.15);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    }
+    .template-wizard .step-item.completed .step-circle {
+        background: rgba(255,255,255,0.9);
+        border-color: #fff;
+        color: #28a745;
+    }
+    .template-wizard .step-label {
+        margin-top: 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: rgba(255,255,255,0.7);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        text-align: center;
+    }
+    .template-wizard .step-item.active .step-label,
+    .template-wizard .step-item.completed .step-label {
+        color: #fff;
+    }
+    .template-wizard .modal-header-content {
+        text-align: center;
+        padding-bottom: 1rem;
+    }
+    .template-wizard .modal-title-main {
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-bottom: 0.25rem;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .template-wizard .modal-subtitle {
+        color: rgba(255,255,255,0.8);
+        font-size: 0.875rem;
+    }
+    .template-wizard .form-section {
+        background: #fff;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.25rem;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        border: 1px solid rgba(0,0,0,0.05);
+        transition: box-shadow 0.2s ease;
+    }
+    .template-wizard .form-section:hover {
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+    .template-wizard .section-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #f0f0f0;
+    }
+    .template-wizard .section-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        font-size: 1.1rem;
+    }
+    .template-wizard .section-icon.purple { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; }
+    .template-wizard .section-icon.blue { background: linear-gradient(135deg, #4facfe, #00f2fe); color: #fff; }
+    .template-wizard .section-icon.green { background: linear-gradient(135deg, #43e97b, #38f9d7); color: #fff; }
+    .template-wizard .section-icon.orange { background: linear-gradient(135deg, #fa709a, #fee140); color: #fff; }
+    .template-wizard .section-icon.teal { background: linear-gradient(135deg, #30cfd0, #330867); color: #fff; }
+    .template-wizard .section-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #2d3748;
+        margin: 0;
+    }
+    .template-wizard .section-subtitle {
+        font-size: 0.8rem;
+        color: #718096;
+        margin: 0;
+    }
+    .template-wizard .form-label-modern {
+        font-weight: 600;
+        color: #4a5568;
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+    }
+    .template-wizard .form-label-modern .required-star {
+        color: #e53e3e;
+        margin-left: 4px;
+    }
+    .template-wizard .form-label-modern .help-icon {
+        margin-left: 6px;
+        color: #a0aec0;
+        cursor: help;
+        font-size: 0.9rem;
+    }
+    .template-wizard .form-control-modern {
+        border: 2px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 0.65rem 1rem;
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        background: #f8fafc;
+    }
+    .template-wizard .form-control-modern:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        background: #fff;
+    }
+    .template-wizard .form-control-modern:disabled {
+        background: #edf2f7;
+        cursor: not-allowed;
+    }
+    .template-wizard .category-cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+    .template-wizard .category-card {
+        border: 2px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 1rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: #fff;
+        text-align: center;
+    }
+    .template-wizard .category-card:hover {
+        border-color: #667eea;
+        background: #f7f8ff;
+    }
+    .template-wizard .category-card.selected {
+        border-color: #667eea;
+        background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(118,75,162,0.1));
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+    }
+    .template-wizard .category-card .card-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: #667eea;
+    }
+    .template-wizard .category-card .card-title {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: #2d3748;
+    }
+    .template-wizard .category-card .card-desc {
+        font-size: 0.75rem;
+        color: #718096;
+        margin-top: 0.25rem;
+    }
+    .template-wizard .periodicity-pills {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+    .template-wizard .periodicity-pill {
+        padding: 0.5rem 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        background: #fff;
+        color: #4a5568;
+    }
+    .template-wizard .periodicity-pill:hover {
+        border-color: #667eea;
+        color: #667eea;
+    }
+    .template-wizard .periodicity-pill.selected {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border-color: transparent;
+        color: #fff;
+    }
+    .template-wizard .rule-card {
+        background: linear-gradient(135deg, #f8fafc, #edf2f7);
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid #667eea;
+        position: relative;
+    }
+    .template-wizard .rule-card .rule-number {
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.75rem;
+        font-weight: 700;
+        box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+    }
+    .template-wizard .rule-card .remove-rule {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        color: #e53e3e;
+        opacity: 0.6;
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+    .template-wizard .rule-card .remove-rule:hover {
+        opacity: 1;
+    }
+    .template-wizard .workflow-step-card {
+        display: flex;
+        align-items: flex-start;
+        background: #fff;
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        border: 2px solid #e2e8f0;
+        position: relative;
+    }
+    .template-wizard .workflow-step-card .step-number-badge {
+        width: 36px;
+        height: 36px;
+        background: linear-gradient(135deg, #43e97b, #38f9d7);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.9rem;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    .template-wizard .workflow-connector {
+        position: absolute;
+        left: 17px;
+        top: 60px;
+        bottom: -16px;
+        width: 3px;
+        background: linear-gradient(to bottom, #43e97b, #38f9d7);
+        border-radius: 3px;
+    }
+    .template-wizard .ift-grid-table {
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #e2e8f0;
+    }
+    .template-wizard .ift-grid-table thead th {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff;
+        font-weight: 600;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        padding: 0.75rem 1rem;
+        border: none;
+    }
+    .template-wizard .ift-grid-table tbody td {
+        padding: 0.75rem 1rem;
+        vertical-align: middle;
+        border-color: #f0f0f0;
+    }
+    .template-wizard .ift-grid-table tbody tr:hover {
+        background: #f8fafc;
+    }
+    .template-wizard .modal-footer-modern {
+        background: linear-gradient(to right, #f8fafc, #edf2f7);
+        border-top: 1px solid #e2e8f0;
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .template-wizard .btn-cancel {
+        background: #fff;
+        border: 2px solid #e2e8f0;
+        color: #4a5568;
+        padding: 0.6rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+    .template-wizard .btn-cancel:hover {
+        background: #f8fafc;
+        border-color: #cbd5e0;
+    }
+    .template-wizard .btn-save {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        border: none;
+        color: #fff;
+        padding: 0.6rem 2rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+    }
+    .template-wizard .btn-save:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    }
+    .template-wizard .btn-save:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+    .template-wizard .empty-state {
+        text-align: center;
+        padding: 2rem;
+        background: #f8fafc;
+        border-radius: 12px;
+        border: 2px dashed #e2e8f0;
+    }
+    .template-wizard .empty-state .empty-icon {
+        font-size: 2.5rem;
+        color: #cbd5e0;
+        margin-bottom: 0.75rem;
+    }
+    .template-wizard .empty-state .empty-text {
+        color: #718096;
+        font-size: 0.9rem;
+    }
+    .template-wizard .add-btn {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    .template-wizard .add-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    }
+    .template-wizard .status-toggle {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.25rem;
+        background: linear-gradient(135deg, rgba(67, 233, 123, 0.1), rgba(56, 249, 215, 0.1));
+        border-radius: 10px;
+        border: 1px solid rgba(67, 233, 123, 0.2);
+    }
+    .template-wizard .status-toggle.inactive {
+        background: linear-gradient(135deg, rgba(229, 62, 62, 0.1), rgba(252, 129, 129, 0.1));
+        border-color: rgba(229, 62, 62, 0.2);
+    }
+    .template-wizard .input-group-modern .input-group-prepend .input-group-text,
+    .template-wizard .input-group-modern .input-group-append .input-group-text {
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        color: #fff;
+        border: none;
+        font-weight: 600;
+    }
+    .template-wizard .chip-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        background: #f8fafc;
+        border-radius: 8px;
+        min-height: 60px;
+        border: 2px solid #e2e8f0;
+    }
+    .template-wizard .chip {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.4rem 0.75rem;
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        color: #4a5568;
+    }
+    .template-wizard .chip .chip-remove {
+        margin-left: 0.5rem;
+        color: #e53e3e;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+    .template-wizard .info-banner {
+        display: flex;
+        align-items: center;
+        padding: 1rem 1.25rem;
+        background: linear-gradient(135deg, rgba(79, 172, 254, 0.1), rgba(0, 242, 254, 0.1));
+        border-radius: 10px;
+        border-left: 4px solid #4facfe;
+        margin-bottom: 1.25rem;
+    }
+    .template-wizard .info-banner .info-icon {
+        font-size: 1.25rem;
+        color: #4facfe;
+        margin-right: 1rem;
+    }
+    .template-wizard .info-banner .info-text {
+        font-size: 0.875rem;
+        color: #4a5568;
+    }
+    .template-wizard .tab-content-area {
+        padding: 1.5rem;
+        background: #f8fafc;
+        min-height: 400px;
+    }
+    /* Tab navigation styles */
+    .template-wizard .tab-pane {
+        display: none;
+    }
+    .template-wizard .tab-pane.active {
+        display: block;
+    }
+    .template-wizard .btn-nav {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.6rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+</style>
 
-<form name="templateForm" ng-submit="templateForm.$valid && saveTemplate()" class="form-validate" novalidate>
-    <div class="modal-body" style="max-height: 75vh; overflow-y: auto;">
-        <!-- Progress Steps -->
-        <div class="card mb-3">
-            <div class="card-body p-0">
-                <div class="progress rounded-0" style="height: 0.375rem;">
-                    <div class="progress-bar bg-success" style="width: {{templateForm.$valid ? '100%' : '50%'}}"></div>
+<div class="template-wizard">
+    <!-- Gradient Header with Step Indicator -->
+    <div class="step-indicator">
+        <div class="modal-header-content w-100 mb-3">
+            <button type="button" class="close text-white position-absolute" style="top: 15px; right: 20px; opacity: 0.8;" ng-click="closeTemplateForm()">
+                <i class="icon-cross2"></i>
+            </button>
+            <h4 class="modal-title-main">
+                <i class="icon-file-plus2 mr-2"></i>
+                {{editingTemplate ? editBonusTemplateLabel : createBonusTemplateLabel}}
+            </h4>
+            <p class="modal-subtitle mb-0" translate>Configure your bonus template in 4 easy steps</p>
+        </div>
+        
+        <div class="d-flex justify-content-center w-100">
+            <div class="step-item" ng-class="{'active': activeTab === 'basic-info', 'completed': basicInfoComplete && activeTab !== 'basic-info'}">
+                <div class="step-circle" ng-click="goToTab('basic-info')">
+                    <i ng-if="basicInfoComplete && activeTab !== 'basic-info'" class="icon-checkmark3"></i>
+                    <span ng-if="!(basicInfoComplete && activeTab !== 'basic-info')">1</span>
                 </div>
-	                <ul class="nav nav-tabs nav-tabs-highlight nav-justified rounded-0 mb-0">
-	                    <li class="nav-item"><a href="#basic-info" class="nav-link rounded-0 active" data-toggle="tab" translate>Basic Info</a></li>
-	                    <li class="nav-item"><a href="#calculation" class="nav-link rounded-0" data-toggle="tab" translate>Calculation</a></li>
-	                    <li class="nav-item"><a href="#rules" class="nav-link rounded-0" data-toggle="tab" translate>Rules</a></li>
-	                    <li class="nav-item"><a href="#workflow" class="nav-link rounded-0" data-toggle="tab" translate>Workflow</a></li>
-	                </ul>
+                <span class="step-label" translate>Basic Info</span>
+            </div>
+            <div class="step-item" ng-class="{'active': activeTab === 'calculation', 'completed': calculationComplete && activeTab !== 'calculation'}">
+                <div class="step-circle" ng-click="goToTab('calculation')">
+                    <i ng-if="calculationComplete && activeTab !== 'calculation'" class="icon-checkmark3"></i>
+                    <span ng-if="!(calculationComplete && activeTab !== 'calculation')">2</span>
+                </div>
+                <span class="step-label" translate>Calculation</span>
+            </div>
+            <div class="step-item" ng-class="{'active': activeTab === 'rules'}">
+                <div class="step-circle" ng-click="goToTab('rules')">3</div>
+                <span class="step-label" translate>Rules</span>
+            </div>
+            <div class="step-item" ng-class="{'active': activeTab === 'workflow'}">
+                <div class="step-circle" ng-click="goToTab('workflow')">4</div>
+                <span class="step-label" translate>Workflow</span>
             </div>
         </div>
+    </div>
 
-        <div class="tab-content">
-            <!-- Basic Info Tab -->
-            <div class="tab-pane fade show active" id="basic-info">
-                <div class="form-group">
-                    <label class="d-flex align-items-center">
-                        <i class="icon-barcode2 mr-1"></i>Template Code
-                        <span class="text-danger ml-1">*</span>
-                        <i class="icon-help ml-1 text-muted"
-                           uib-tooltip="Unique identifier for this template. Use uppercase letters, numbers, underscores and dashes only."
-                           tooltip-placement="right"></i>
-                    </label>
-                    <input type="text" name="code" class="form-control"
-                           ng-model="templateFormData.code"
-                           ng-pattern="/^[A-Z0-9_-]+$/" required
-                           ng-change="onCodeChange()"
-                           ng-disabled="editingTemplate"
-                           placeholder="e.g., SALES_BONUS_2025">
-                    <div class="invalid-feedback" ng-show="templateForm.code.$error.pattern">
-                        Code must contain only uppercase letters, numbers, underscores and dashes
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="d-flex align-items-center">
-                        <i class="icon-pencil mr-1"></i>Name
-                        <span class="text-danger ml-1">*</span>
-                    </label>
-                    <input type="text" name="name" class="form-control"
-                           ng-model="templateFormData.name" required
-                           placeholder="Enter a descriptive name">
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="d-flex align-items-center">
-                                <i class="icon-tree5 mr-1"></i>Category
-                                <span class="text-danger ml-1">*</span>
-                                <i class="icon-help ml-1 text-muted"
-                                   uib-tooltip="Determines how the bonus will be calculated"
-                                   tooltip-placement="right"></i>
-                            </label>
-	                            <select class="form-control" name="category"
-	                                    ng-model="templateFormData.category" required>
-	                                <option value="with_parts" translate>With Parts</option>
-	                                <option value="without_parts" translate>Without Parts</option>
-	                                <option value="fixed_amount" translate>Fixed Amount</option>
-	                                <option value="calculated" translate>Calculated</option>
-	                            </select>
-                            <small class="form-text text-muted">
-                                {{getCategoryHelp(templateFormData.category)}}
-                            </small>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="d-flex align-items-center">
-                                <i class="icon-calendar mr-1"></i>Periodicity
-                                <span class="text-danger ml-1">*</span>
-                            </label>
-                            <select class="form-control" name="periodicity"
-                                    ng-model="templateFormData.periodicity" required>
-	                                <option value="daily" translate>Daily</option>
-	                                <option value="weekly" translate>Weekly</option>
-	                                <option value="monthly" translate>Monthly</option>
-	                                <option value="quarterly" translate>Quarterly</option>
-	                                <option value="semesterly" translate>Semesterly</option>
-	                                <option value="yearly" translate>Yearly</option>
-	                                <option value="on_demand" translate>On Demand</option>
-	                            </select>
-                            <div class="alert alert-info mt-2" ng-if="periodicitySchedule">
-                                <i class="icon-info22 mr-1"></i>
-                                <strong>Auto-execution:</strong> {{periodicitySchedule.description}}
-                                <span ng-if="periodicitySchedule.example">Example: {{periodicitySchedule.example}}</span>
+    <form name="templateForm" ng-submit="templateForm.$valid && saveTemplate()" class="form-validate" novalidate>
+        <div class="tab-content-area" style="max-height: 60vh; overflow-y: auto;">
+            <div class="tab-content">
+                
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- STEP 1: BASIC INFO -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <div class="tab-pane" ng-class="{'active': activeTab === 'basic-info'}" id="basic-info">
+                    
+                    <!-- Identity Section -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-icon purple">
+                                <i class="icon-profile"></i>
+                            </div>
+                            <div>
+                                <h6 class="section-title" translate>Template Identity</h6>
+                                <p class="section-subtitle" translate>Define the basic identification</p>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        <i class="icon-file-text2 mr-1"></i>Description
-                    </label>
-                    <textarea class="form-control" ng-model="templateFormData.description"
-                              rows="3" placeholder="Provide a detailed description"></textarea>
-                </div>
-            </div>
-
-            <!-- Calculation Tab -->
-            <div class="tab-pane fade" id="calculation">
-                <div class="alert alert-info bg-info-100 border-info">
-                    <i class="icon-info22 mr-2"></i>
-                    Configure how the bonus amount will be calculated
-                </div>
-
-                <div class="card border-0 shadow-sm">
-                    <div class="card-body">
+                        
                         <div class="row">
-                            <!-- Show Formula Type only for calculated category -->
-                            <div class="col-md-6" ng-if="templateFormData.category === 'calculated'">
+                            <div class="col-md-5">
                                 <div class="form-group">
-                                    <label class="d-flex align-items-center">
-                                        Formula Type
-                                        <span class="text-danger ml-1">*</span>
-                                    </label>
-                                    <select class="form-control" name="formulaType"
-                                            ng-model="templateFormData.calculationConfig.formulaType" required>
-	                                        <option value="fixed" translate>Fixed Amount</option>
-	                                        <option value="percentage" translate>Percentage Based</option>
-	                                        <option value="custom_formula" translate>Custom Formula</option>
-	                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Base Field for percentage in calculated mode -->
-                            <div class="col-md-6" ng-if="templateFormData.category === 'calculated' && templateFormData.calculationConfig.formulaType === 'percentage'">
-                                <div class="form-group">
-                                    <label class="d-flex align-items-center">
-                                        Base Field
-                                        <i class="icon-help ml-1 text-muted"
-                                           uib-tooltip="Field to use as calculation base (e.g., salary)"
+                                    <label class="form-label-modern">
+                                        <span translate>Template Code</span>
+                                        <span class="required-star">*</span>
+                                        <i class="icon-question3 help-icon"
+                                           uib-tooltip="Unique identifier. Use uppercase letters, numbers, underscores and dashes only."
                                            tooltip-placement="right"></i>
                                     </label>
-                                    <input type="text" class="form-control"
-                                           ng-model="templateFormData.calculationConfig.baseField"
-                                           placeholder="e.g., salary, grade_points">
+                                    <input type="text" name="code" class="form-control form-control-modern"
+                                           ng-model="templateFormData.code"
+                                           ng-pattern="/^[A-Z0-9_-]+$/" required
+                                           ng-change="onCodeChange()"
+                                           ng-disabled="editingTemplate"
+                                           placeholder="e.g., BONUS_Q1_2025">
+                                    <div class="text-danger mt-1" style="font-size: 0.8rem;" ng-show="templateForm.code.$error.pattern">
+                                        <i class="icon-warning2 mr-1"></i>Only uppercase letters, numbers, _ and - allowed
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label class="form-label-modern">
+                                        <span translate>Template Name</span>
+                                        <span class="required-star">*</span>
+                                    </label>
+                                    <input type="text" name="name" class="form-control form-control-modern"
+                                           ng-model="templateFormData.name" required
+                                           placeholder="Enter a descriptive name for this template">
                                 </div>
                             </div>
                         </div>
+                        
+                        <div class="form-group mb-0">
+                            <label class="form-label-modern">
+                                <i class="icon-file-text3 mr-1"></i>
+                                <span translate>Description</span>
+                            </label>
+                            <textarea class="form-control form-control-modern" ng-model="templateFormData.description"
+                                      rows="2" placeholder="Provide a detailed description of this bonus template..."></textarea>
+                        </div>
+                    </div>
 
-                        <!-- Default Share Amount (with parts) -->
-                        <div class="row" ng-if="templateFormData.category === 'with_parts'">
+                    <!-- Category Selection -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-icon blue">
+                                <i class="icon-grid6"></i>
+                            </div>
+                            <div>
+                                <h6 class="section-title" translate>Bonus Category</h6>
+                                <p class="section-subtitle" translate>Choose how the bonus will be calculated</p>
+                            </div>
+                        </div>
+                        
+                        <div class="category-cards">
+                            <div class="category-card" ng-class="{'selected': templateFormData.category === 'with_parts'}"
+                                 ng-click="templateFormData.category = 'with_parts'">
+                                <div class="card-icon"><i class="icon-stack3"></i></div>
+                                <div class="card-title" translate>With Parts</div>
+                                <div class="card-desc" translate>Amount × Number of parts</div>
+                            </div>
+                            <div class="category-card" ng-class="{'selected': templateFormData.category === 'without_parts'}"
+                                 ng-click="templateFormData.category = 'without_parts'">
+                                <div class="card-icon"><i class="icon-coins"></i></div>
+                                <div class="card-title" translate>Without Parts</div>
+                                <div class="card-desc" translate>Remise or IFT based</div>
+                            </div>
+                            <div class="category-card" ng-class="{'selected': templateFormData.category === 'fixed_amount'}"
+                                 ng-click="templateFormData.category = 'fixed_amount'">
+                                <div class="card-icon"><i class="icon-cash3"></i></div>
+                                <div class="card-title" translate>Fixed Amount</div>
+                                <div class="card-desc" translate>Same amount for everyone</div>
+                            </div>
+                            <div class="category-card" ng-class="{'selected': templateFormData.category === 'calculated'}"
+                                 ng-click="templateFormData.category = 'calculated'">
+                                <div class="card-icon"><i class="icon-calculator"></i></div>
+                                <div class="card-title" translate>Calculated</div>
+                                <div class="card-desc" translate>Custom formula-based</div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="category" ng-model="templateFormData.category" required>
+                    </div>
+
+                    <!-- Periodicity Selection -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-icon green">
+                                <i class="icon-calendar3"></i>
+                            </div>
+                            <div>
+                                <h6 class="section-title" translate>Payment Periodicity</h6>
+                                <p class="section-subtitle" translate>How often will this bonus be paid?</p>
+                            </div>
+                        </div>
+                        
+                        <div class="periodicity-pills">
+                            <span class="periodicity-pill" ng-class="{'selected': templateFormData.periodicity === 'daily'}"
+                                  ng-click="templateFormData.periodicity = 'daily'" translate>Daily</span>
+                            <span class="periodicity-pill" ng-class="{'selected': templateFormData.periodicity === 'weekly'}"
+                                  ng-click="templateFormData.periodicity = 'weekly'" translate>Weekly</span>
+                            <span class="periodicity-pill" ng-class="{'selected': templateFormData.periodicity === 'monthly'}"
+                                  ng-click="templateFormData.periodicity = 'monthly'" translate>Monthly</span>
+                            <span class="periodicity-pill" ng-class="{'selected': templateFormData.periodicity === 'quarterly'}"
+                                  ng-click="templateFormData.periodicity = 'quarterly'" translate>Quarterly</span>
+                            <span class="periodicity-pill" ng-class="{'selected': templateFormData.periodicity === 'semesterly'}"
+                                  ng-click="templateFormData.periodicity = 'semesterly'" translate>Semesterly</span>
+                            <span class="periodicity-pill" ng-class="{'selected': templateFormData.periodicity === 'yearly'}"
+                                  ng-click="templateFormData.periodicity = 'yearly'" translate>Yearly</span>
+                            <span class="periodicity-pill" ng-class="{'selected': templateFormData.periodicity === 'on_demand'}"
+                                  ng-click="templateFormData.periodicity = 'on_demand'" translate>On Demand</span>
+                        </div>
+                        <input type="hidden" name="periodicity" ng-model="templateFormData.periodicity" required>
+                        
+                        <div class="info-banner mt-3" ng-if="periodicitySchedule">
+                            <i class="icon-alarm info-icon"></i>
+                            <div class="info-text">
+                                <strong>Auto-execution:</strong> {{periodicitySchedule.description}}
+                                <span ng-if="periodicitySchedule.example">— Example: {{periodicitySchedule.example}}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="button" class="btn btn-save" ng-click="nextStep()">
+                            <span translate>Next: Calculation</span>
+                            <i class="icon-arrow-right7 ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- STEP 2: CALCULATION -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <div class="tab-pane" ng-class="{'active': activeTab === 'calculation'}" id="calculation">
+                    
+                    <div class="info-banner">
+                        <i class="icon-calculator info-icon"></i>
+                        <div class="info-text" translate>Configure the calculation method based on your selected category: <strong>{{templateFormData.category | translate}}</strong></div>
+                    </div>
+
+                    <!-- WITH PARTS Configuration -->
+                    <div class="form-section" ng-if="templateFormData.category === 'with_parts'">
+                        <div class="section-header">
+                            <div class="section-icon purple">
+                                <i class="icon-stack3"></i>
+                            </div>
+                            <div>
+                                <h6 class="section-title" translate>Parts Configuration</h6>
+                                <p class="section-subtitle" translate>Define the value per part</p>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
-                                    <label class="d-flex align-items-center">
-                                        <i class="icon-coins mr-1"></i>Default Share Amount
-                                        <span class="text-danger ml-1">*</span>
-                                        <i class="icon-help ml-1 text-muted"
-                                           uib-tooltip="Default amount per part used for calculations"
+                                <div class="form-group mb-0">
+                                    <label class="form-label-modern">
+                                        <span translate>Default Share Amount</span>
+                                        <span class="required-star">*</span>
+                                        <i class="icon-question3 help-icon"
+                                           uib-tooltip="Amount per part used in calculations"
                                            tooltip-placement="right"></i>
                                     </label>
-                                    <div class="input-group">
+                                    <div class="input-group input-group-modern">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text">$</span>
+                                            <span class="input-group-text">FCFA</span>
                                         </div>
-                                        <input type="number" class="form-control" name="defaultShareAmount"
+                                        <input type="number" class="form-control form-control-modern" name="defaultShareAmount"
                                                ng-model="templateFormData.calculationConfig.defaultShareAmount"
                                                min="0" required step="0.01"
                                                placeholder="0.00">
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="alert alert-light border w-100 mb-0">
+                                    <i class="icon-info22 text-primary mr-2"></i>
+                                    <span translate>Total = Share Amount × Number of Parts</span>
+                                </div>
+                            </div>
                         </div>
+                    </div>
 
-                        <!-- Fixed Amount -->
-                        <div class="row" ng-if="templateFormData.category === 'fixed_amount' || (templateFormData.category === 'calculated' && templateFormData.calculationConfig.formulaType === 'fixed')">
+                    <!-- FIXED AMOUNT Configuration -->
+                    <div class="form-section" ng-if="templateFormData.category === 'fixed_amount'">
+                        <div class="section-header">
+                            <div class="section-icon orange">
+                                <i class="icon-cash3"></i>
+                            </div>
+                            <div>
+                                <h6 class="section-title" translate>Fixed Amount</h6>
+                                <p class="section-subtitle" translate>Everyone receives the same amount</p>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
                             <div class="col-md-6">
-                                <div class="form-group">
-	                                    <label class="d-flex align-items-center"><span translate>Fixed Amount</span> <span class="text-danger ml-1">*</span></label>
-                                    <div class="input-group">
+                                <div class="form-group mb-0">
+                                    <label class="form-label-modern">
+                                        <span translate>Amount</span>
+                                        <span class="required-star">*</span>
+                                    </label>
+                                    <div class="input-group input-group-modern">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text">$</span>
+                                            <span class="input-group-text">FCFA</span>
                                         </div>
-                                        <input type="number" class="form-control" name="fixedAmount"
+                                        <input type="number" class="form-control form-control-modern" name="fixedAmount"
                                                ng-model="templateFormData.calculationConfig.fixedAmount"
                                                min="0" required step="0.01" placeholder="0.00">
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Percentage Amount -->
-                        <div class="row" ng-if="templateFormData.category === 'calculated' && templateFormData.calculationConfig.formulaType === 'percentage'">
-                            <div class="col-md-6">
-                                <div class="form-group">
-	                                    <label class="d-flex align-items-center"><span translate>Percentage</span> <span class="text-danger ml-1">*</span></label>
-                                    <div class="input-group">
-                                        <input type="number" class="form-control" name="percentage"
-                                               ng-model="templateFormData.calculationConfig.percentage"
-                                               min="0" step="0.01" required placeholder="e.g., 3 for 3%">
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">%</span>
+                    <!-- WITHOUT PARTS Configuration -->
+                    <div ng-if="templateFormData.category === 'without_parts'">
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon blue">
+                                    <i class="icon-list3"></i>
+                                </div>
+                                <div>
+                                    <h6 class="section-title" translate>Calculation Subtype</h6>
+                                    <p class="section-subtitle" translate>Choose between Remise or IFT</p>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="category-cards" style="grid-template-columns: 1fr 1fr;">
+                                        <div class="category-card" ng-class="{'selected': templateFormData.calculationConfig.subType === 'remise'}"
+                                             ng-click="templateFormData.calculationConfig.subType = 'remise'">
+                                            <div class="card-icon"><i class="icon-calculator"></i></div>
+                                            <div class="card-title" translate>Remise sur salaire</div>
+                                            <div class="card-desc" translate>R = SBI × 3 × TX</div>
                                         </div>
+                                        <div class="category-card" ng-class="{'selected': templateFormData.calculationConfig.subType === 'ift'}"
+                                             ng-click="templateFormData.calculationConfig.subType = 'ift'">
+                                            <div class="card-icon"><i class="icon-coins"></i></div>
+                                            <div class="card-title">IFT</div>
+                                            <div class="card-desc" translate>IRPP not deducted</div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="subType" ng-model="templateFormData.calculationConfig.subType" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="alert alert-info mb-0" ng-if="templateFormData.calculationConfig.subType === 'remise'">
+                                        <i class="icon-info22 mr-2"></i>
+                                        <span translate>R = SBI × 3 × TX, with TX = 45% for DIR/SD, otherwise 30%.</span>
+                                    </div>
+                                    <div class="alert alert-info mb-0" ng-if="templateFormData.calculationConfig.subType === 'ift'">
+                                        <i class="icon-info22 mr-2"></i>
+                                        <span translate>IFT: IRPP not deducted. Configure amounts by rank below.</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Custom Formula Editor -->
-                        <div ng-if="templateFormData.category === 'calculated' && templateFormData.calculationConfig.formulaType === 'custom_formula'" class="mt-3">
-                            <label class="d-flex align-items-center">
-                                <i class="icon-math mr-1"></i>Formula
-                                <span class="text-danger ml-1">*</span>
-                                <i class="icon-help ml-1 text-muted"
-                                   uib-tooltip="Available variables: base, parts, salary, grade_points"
-                                   tooltip-placement="right"></i>
-                            </label>
-                            <div class="formula-editor-container border rounded p-2 bg-light">
-                                <textarea class="form-control border-0 bg-transparent" name="formula"
-                                          ng-model="templateFormData.calculationConfig.formula"
-                                          rows="2" required
-                                          placeholder="e.g., base * 0.03 * parts"></textarea>
-                            </div>
-                            <div class="text-muted mt-1">
-	                                <small translate>Use mathematical expressions with available variables</small>
-                            </div>
-                        </div>
-
-                        <!-- Without parts: Subtype selector -->
-                        <div class="row" ng-if="templateFormData.category === 'without_parts'">
-                            <div class="col-md-6">
-                                <div class="form-group">
-	                                    <label class="d-flex align-items-center"><span translate>Subtype</span> <span class="text-danger ml-1">*</span>
-	                                        <i class="icon-help ml-1 text-muted" uib-tooltip="Choose Remise sur salaire or IFT (IRPP not deducted)" tooltip-placement="right"></i>
-	                                    </label>
-                                    <select class="form-control" name="subType" ng-model="templateFormData.calculationConfig.subType" required>
-	                                        <option value="remise" translate>Remise sur salaire</option>
-	                                        <option value="ift" translate>IFT (IRPP pas prélevé)</option>
-	                                    </select>
+                        <!-- IFT Grid Configuration -->
+                        <div class="form-section" ng-if="templateFormData.calculationConfig.subType === 'ift'">
+                            <div class="section-header">
+                                <div class="section-icon teal">
+                                    <i class="icon-table2"></i>
+                                </div>
+                                <div>
+                                    <h6 class="section-title" translate>IFT Amount Grid</h6>
+                                    <p class="section-subtitle" translate>Define amounts per rank</p>
                                 </div>
                             </div>
-	                            <div class="col-md-6" ng-if="templateFormData.calculationConfig.subType === 'remise'">
-	                                <div class="alert alert-secondary mb-0">
-	                                    <span translate>R = SBI × 3 × TX, with TX = 45% for DIR/SD, otherwise 30%.</span>
-	                                </div>
-	                            </div>
-	                            <div class="col-md-6" ng-if="templateFormData.calculationConfig.subType === 'ift'">
-	                                <div class="alert alert-secondary mb-0">
-	                                    <span translate>IFT: IRPP not deducted. Configure amounts by rank/function below.</span>
-	                                </div>
-	                            </div>
-                        </div>
 
-                        <!-- IFT amount rules editor -->
-	                        <div class="mt-3" ng-if="templateFormData.category === 'without_parts' && templateFormData.calculationConfig.subType === 'ift'">
-	                            <label class="d-flex align-items-center mb-1">
-	                                <i class="icon-table2 mr-1"></i><span translate>Grille IFT (montant par rang)</span>
-	                                <i class="icon-help ml-1 text-muted" uib-tooltip="Montants forfaitaires par rang (codes du dictionnaire des rangs). IRPP non prélevé." tooltip-placement="right"></i>
-	                            </label>
-                            <div class="table-responsive">
-                                <table class="table table-sm table-bordered mb-2">
-                                    <thead class="thead-light">
+                            <div class="table-responsive mb-3">
+                                <table class="table ift-grid-table mb-0">
+                                    <thead>
                                         <tr>
-                                            <th width="30%" translate>Code rang</th>
-                                            <th width="20%" class="text-right" translate>Montant (FCFA)</th>
-                                            <th width="8%" class="text-center" translate>Actions</th>
+                                            <th width="50%" translate>Rank Code</th>
+                                            <th width="35%" class="text-right" translate>Amount (FCFA)</th>
+                                            <th width="15%" class="text-center" translate>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="rule in templateFormData.iftConfig.amountRules track by $index">
                                             <td>
-                                                <select class="form-control form-control-sm" ng-model="rule.match.rankCode">
-                                                    <option value="" translate>(Tous rangs)</option>
+                                                <select class="form-control form-control-sm form-control-modern" ng-model="rule.match.rankCode">
+                                                    <option value="" translate>(All ranks)</option>
                                                     <option ng-repeat="r in ruleOptions.ranks" value="{{r.value}}">{{r.label}}</option>
                                                     <option value="NON_NOMME" translate>NON_NOMME (CA/AG)</option>
                                                 </select>
                                             </td>
                                             <td>
-                                                <input type="number" class="form-control form-control-sm text-right" ng-model="rule.amount" min="0" step="1" placeholder="0">
+                                                <input type="number" class="form-control form-control-sm form-control-modern text-right" 
+                                                       ng-model="rule.amount" min="0" step="1" placeholder="0">
                                             </td>
-                                            <td class="text-center align-middle">
-                                                <button type="button" class="btn btn-sm btn-outline-danger" ng-click="removeIftRule($index)"><i class="icon-trash"></i></button>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-sm btn-link text-danger" ng-click="removeIftRule($index)">
+                                                    <i class="icon-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
-	                                        <tr ng-if="!templateFormData.iftConfig.amountRules || !templateFormData.iftConfig.amountRules.length">
-	                                            <td colspan="5" class="text-center text-muted py-3" translate>Aucune règle définie</td>
-	                                        </tr>
+                                        <tr ng-if="!templateFormData.iftConfig.amountRules || !templateFormData.iftConfig.amountRules.length">
+                                            <td colspan="3">
+                                                <div class="empty-state">
+                                                    <div class="empty-icon"><i class="icon-table2"></i></div>
+                                                    <div class="empty-text" translate>No rules defined yet</div>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
-	                            </div>
-	                            <div class="d-flex justify-content-between">
-	                                <button type="button" class="btn btn-outline-secondary btn-sm" ng-click="resetIftDefaultRules()"><i class="icon-undo2 mr-1"></i><span translate>Restaurer la grille par défaut</span></button>
-	                                <button type="button" class="btn btn-primary btn-sm" ng-click="addIftRule()"><i class="icon-plus22 mr-1"></i><span translate>Ajouter une règle</span></button>
-	                            </div>
-                            <div class="row mt-3">
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <button type="button" class="btn btn-outline-secondary btn-sm" ng-click="resetIftDefaultRules()">
+                                    <i class="icon-undo2 mr-1"></i><span translate>Reset to defaults</span>
+                                </button>
+                                <button type="button" class="add-btn" ng-click="addIftRule()">
+                                    <i class="icon-plus22 mr-1"></i><span translate>Add Rule</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- IFT Targeting -->
+                        <div class="form-section" ng-if="templateFormData.calculationConfig.subType === 'ift'">
+                            <div class="section-header">
+                                <div class="section-icon green">
+                                    <i class="icon-target"></i>
+                                </div>
+                                <div>
+                                    <h6 class="section-title" translate>Targeting</h6>
+                                    <p class="section-subtitle" translate>Include specific structures or personnel</p>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-group mb-1">
-                                        <label class="d-flex align-items-center">
-                                            <i class="icon-office mr-1"></i>Structures à inclure
-                                            <i class="icon-help ml-1 text-muted" uib-tooltip="Ajoutez des structures même si elles n'ont pas le flag IFT." tooltip-placement="right"></i>
-                                        </label>
-                                        <input type="text"
-                                               class="form-control form-control-sm mb-2"
-                                               placeholder="Rechercher une structure ou sous-structure"
-                                               ng-model="selectedIftStructureId"
-                                               uib-typeahead="structure as structure.label for structure in searchIftStructures($viewValue)"
-                                               typeahead-editable="false"
-                                               typeahead-min-length="0"
-                                               typeahead-on-select="addIftStructure($item)">
-	                                        <div class="mb-2">
-	                                            <small class="text-muted" translate>Ou parcourir la liste :</small>
-	                                            <select class="form-control form-control-sm"
-                                                    size="6"
-                                                    ng-model="selectedIftStructureId"
-                                                    ng-options="s.id as s.label for s in iftStructureOptions"
-                                                    ng-change="addIftStructure(selectedIftStructureId)">
-	                                                <option value="" translate>Choisir...</option>
-	                                            </select>
-	                                        </div>
-	                                        <button type="button" class="btn btn-primary btn-sm mb-2" ng-click="addIftStructure()" ng-disabled="!selectedIftStructureId"><i class="icon-plus22 mr-1"></i><span translate>Ajouter</span></button>
-                                        <div class="border rounded" ng-if="iftSelectedStructures.length">
-                                            <div class="list-group list-group-flush">
-                                                <div class="list-group-item py-2 d-flex justify-content-between align-items-center"
-                                                     ng-repeat="structure in iftSelectedStructures track by structure.id">
-                                                    <div>
-                                                        <div class="font-weight-semibold">{{structure.name || structure.label}}</div>
-                                                        <small class="text-muted">{{structure.code || structure.id}}</small>
-                                                    </div>
-                                                    <a href="" class="text-danger" ng-click="removeIftStructure(structure.id); $event.preventDefault();">
-                                                        <i class="icon-cross2"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                    <label class="form-label-modern">
+                                        <i class="icon-office mr-1"></i><span translate>Structures to include</span>
+                                        <i class="icon-question3 help-icon"
+                                           uib-tooltip="Add structures even if they don't have the IFT flag"
+                                           tooltip-placement="right"></i>
+                                    </label>
+                                    <input type="text"
+                                           class="form-control form-control-modern mb-2"
+                                           placeholder="Search for a structure..."
+                                           ng-model="selectedIftStructureId"
+                                           uib-typeahead="structure as structure.label for structure in searchIftStructures($viewValue)"
+                                           typeahead-editable="false"
+                                           typeahead-min-length="0"
+                                           typeahead-on-select="addIftStructure($item)">
+                                    <div class="mb-2">
+                                        <small class="text-muted" translate>Or browse the list:</small>
+                                        <select class="form-control form-control-modern form-control-sm"
+                                                size="4"
+                                                ng-model="selectedIftStructureId"
+                                                ng-options="s.id as s.label for s in iftStructureOptions"
+                                                ng-change="addIftStructure(selectedIftStructureId)">
+                                            <option value="" translate>Choose...</option>
+                                        </select>
+                                    </div>
+                                    <div class="chip-list" ng-if="iftSelectedStructures.length">
+                                        <div class="chip" ng-repeat="structure in iftSelectedStructures track by structure.id">
+                                            <span>{{structure.name || structure.label}}</span>
+                                            <i class="icon-cross2 chip-remove" ng-click="removeIftStructure(structure.id)"></i>
                                         </div>
-	                                        <span class="text-muted" ng-if="!iftSelectedStructures.length" translate>Aucune structure ciblée</span>
+                                    </div>
+                                    <div class="text-muted text-center py-2" ng-if="!iftSelectedStructures.length" translate>
+                                        <i class="icon-info22 mr-1"></i>No structures selected
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="form-group mb-1">
-                                        <label class="d-flex align-items-center">
-                                            <i class="icon-user-check mr-1"></i>Personnel à inclure
-                                            <i class="icon-help ml-1 text-muted" uib-tooltip="Recherche par nom ou matricule; les doublons sont ignorés." tooltip-placement="right"></i>
-                                        </label>
-                                        <input type="text"
-                                               class="form-control form-control-sm mb-2"
-                                               placeholder="Rechercher un agent"
-                                               ng-model="iftPersonnelSearch"
-                                               uib-typeahead="person as getIftPersonnelLabel(person) for person in searchIftPersonnel($viewValue)"
-                                               typeahead-editable="false"
-                                               typeahead-min-length="2"
-                                               typeahead-on-select="onIftPersonnelSelected($item)">
-                                        <div class="border rounded" ng-if="iftSelectedPersonnel.length">
-                                            <div class="list-group list-group-flush">
-                                                <div class="list-group-item py-2 d-flex justify-content-between align-items-center"
-                                                     ng-repeat="person in iftSelectedPersonnel track by person.id">
-                                                    <div>
-                                                        <div class="font-weight-semibold">{{person.name || person.label}}</div>
-                                                        <small class="text-muted">{{person.identifier || person.id}}</small>
-                                                    </div>
-                                                    <a href="" class="text-danger" ng-click="removeIftPersonnel(person.id); $event.preventDefault();">
-                                                        <i class="icon-cross2"></i>
-                                                    </a>
-                                                </div>
-                                            </div>
+                                    <label class="form-label-modern">
+                                        <i class="icon-user-check mr-1"></i><span translate>Personnel to include</span>
+                                        <i class="icon-question3 help-icon"
+                                           uib-tooltip="Search by name or ID; duplicates are ignored"
+                                           tooltip-placement="right"></i>
+                                    </label>
+                                    <input type="text"
+                                           class="form-control form-control-modern mb-2"
+                                           placeholder="Search for personnel..."
+                                           ng-model="iftPersonnelSearch"
+                                           uib-typeahead="person as getIftPersonnelLabel(person) for person in searchIftPersonnel($viewValue)"
+                                           typeahead-editable="false"
+                                           typeahead-min-length="2"
+                                           typeahead-on-select="onIftPersonnelSelected($item)">
+                                    <div class="chip-list" style="min-height: 130px;">
+                                        <div class="chip" ng-repeat="person in iftSelectedPersonnel track by person.id" ng-if="iftSelectedPersonnel.length">
+                                            <span>{{person.name || person.label}}</span>
+                                            <i class="icon-cross2 chip-remove" ng-click="removeIftPersonnel(person.id)"></i>
                                         </div>
-	                                        <span class="text-muted" ng-if="!iftSelectedPersonnel.length" translate>Aucun personnel ciblé</span>
+                                        <div class="text-muted text-center w-100 py-3" ng-if="!iftSelectedPersonnel.length" translate>
+                                            <i class="icon-info22 mr-1"></i>No personnel selected
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
+                    <!-- CALCULATED Configuration -->
+                    <div ng-if="templateFormData.category === 'calculated'">
+                        <div class="form-section">
+                            <div class="section-header">
+                                <div class="section-icon purple">
+                                    <i class="icon-calculator"></i>
+                                </div>
+                                <div>
+                                    <h6 class="section-title" translate>Formula Configuration</h6>
+                                    <p class="section-subtitle" translate>Define how the bonus is calculated</p>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label-modern">
+                                            <span translate>Formula Type</span>
+                                            <span class="required-star">*</span>
+                                        </label>
+                                        <select class="form-control form-control-modern" name="formulaType"
+                                                ng-model="templateFormData.calculationConfig.formulaType" required>
+                                            <option value="fixed" translate>Fixed Amount</option>
+                                            <option value="percentage" translate>Percentage Based</option>
+                                            <option value="custom_formula" translate>Custom Formula</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6" ng-if="templateFormData.calculationConfig.formulaType === 'percentage'">
+                                    <div class="form-group">
+                                        <label class="form-label-modern">
+                                            <span translate>Base Field</span>
+                                            <i class="icon-question3 help-icon"
+                                               uib-tooltip="Field to use as calculation base"
+                                               tooltip-placement="right"></i>
+                                        </label>
+                                        <input type="text" class="form-control form-control-modern"
+                                               ng-model="templateFormData.calculationConfig.baseField"
+                                               placeholder="e.g., salary, grade_points">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Fixed amount for calculated -->
+                            <div class="row" ng-if="templateFormData.calculationConfig.formulaType === 'fixed'">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-0">
+                                        <label class="form-label-modern">
+                                            <span translate>Fixed Amount</span>
+                                            <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-group input-group-modern">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">FCFA</span>
+                                            </div>
+                                            <input type="number" class="form-control form-control-modern" name="fixedAmount"
+                                                   ng-model="templateFormData.calculationConfig.fixedAmount"
+                                                   min="0" required step="0.01" placeholder="0.00">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Percentage -->
+                            <div class="row" ng-if="templateFormData.calculationConfig.formulaType === 'percentage'">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-0">
+                                        <label class="form-label-modern">
+                                            <span translate>Percentage</span>
+                                            <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-group input-group-modern">
+                                            <input type="number" class="form-control form-control-modern" name="percentage"
+                                                   ng-model="templateFormData.calculationConfig.percentage"
+                                                   min="0" step="0.01" required placeholder="e.g., 3">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Custom Formula -->
+                            <div ng-if="templateFormData.calculationConfig.formulaType === 'custom_formula'">
+                                <div class="form-group mb-0">
+                                    <label class="form-label-modern">
+                                        <i class="icon-code mr-1"></i>
+                                        <span translate>Formula</span>
+                                        <span class="required-star">*</span>
+                                        <i class="icon-question3 help-icon"
+                                           uib-tooltip="Available variables: base, parts, salary, grade_points"
+                                           tooltip-placement="right"></i>
+                                    </label>
+                                    <div class="p-3 bg-dark rounded">
+                                        <textarea class="form-control bg-transparent text-white border-0" name="formula"
+                                                  ng-model="templateFormData.calculationConfig.formula"
+                                                  rows="2" required
+                                                  style="font-family: 'Monaco', 'Menlo', monospace; font-size: 0.9rem;"
+                                                  placeholder="e.g., base * 0.03 * parts"></textarea>
+                                    </div>
+                                    <small class="text-muted mt-1 d-block">
+                                        <i class="icon-info22 mr-1"></i><span translate>Use mathematical expressions with available variables</span>
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-cancel" ng-click="prevStep()">
+                            <i class="icon-arrow-left7 mr-2"></i>
+                            <span translate>Back</span>
+                        </button>
+                        <button type="button" class="btn btn-save" ng-click="nextStep()">
+                            <span translate>Next: Rules</span>
+                            <i class="icon-arrow-right7 ml-2"></i>
+                        </button>
                     </div>
                 </div>
-            </div>
 
-            <!-- Rules Tab -->
-	            <div class="tab-pane fade" id="rules">
-	                <div class="alert alert-info bg-info-100 border-info">
-	                    <i class="icon-info22 mr-2"></i>
-	                    <span translate>Build human-readable eligibility rules based on personnel snapshot fields (statut, grade, catégorie, rang, structure, sous-structure).</span>
-	                </div>
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- STEP 3: RULES -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <div class="tab-pane" ng-class="{'active': activeTab === 'rules'}" id="rules">
+                    
+                    <div class="info-banner">
+                        <i class="icon-shield-check info-icon"></i>
+                        <div class="info-text" translate>Build eligibility rules based on personnel snapshot fields (status, grade, category, rank, structure, sub-structure).</div>
+                    </div>
 
-                <div class="card border-0 shadow-sm">
-	                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
-	                        <h6 class="card-title mb-0">
-	                            <i class="icon-shield-check mr-1"></i><span translate>Eligibility Rules</span>
-	                        </h6>
-	                        <button type="button" class="btn btn-sm btn-primary" ng-click="addEligibilityRule()">
-	                            <i class="icon-plus22 mr-1"></i><span translate>Add Rule</span>
-	                        </button>
-	                    </div>
-
-                    <div class="card-body">
-                        <div class="alert alert-warning bg-warning-100 border-warning" ng-if="!templateFormData.eligibilityRules.length">
-                            No eligibility rules defined. This bonus will be available to all personnel.
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-icon green">
+                                <i class="icon-filter3"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="section-title" translate>Eligibility Rules</h6>
+                                <p class="section-subtitle" translate>Define who qualifies for this bonus</p>
+                            </div>
+                            <button type="button" class="add-btn" ng-click="addEligibilityRule()">
+                                <i class="icon-plus22 mr-1"></i><span translate>Add Rule</span>
+                            </button>
                         </div>
 
-	                        <div class="eligibility-rule mb-3 p-3 border rounded bg-light"
-	                             ng-repeat="rule in templateFormData.eligibilityRules track by $index">
-	                            <div class="d-flex align-items-center mb-2">
-	                                <div class="badge badge-primary mr-2" translate>Rule {{$index + 1}}</div>
-	                                <button type="button" class="btn btn-sm btn-link text-danger ml-auto"
-	                                        ng-click="removeEligibilityRule($index)">
-	                                    <i class="icon-cross2"></i> <span translate>Remove</span>
-	                                </button>
-	                            </div>
-                            <div class="row align-items-end">
-	                                <div class="col-md-3">
-	                                    <div class="form-group">
-	                                        <label class="font-weight-semibold" translate>Field</label>
-	                                        <select class="form-control" ng-model="rule.field"
-	                                                ng-options="f.value as f.label for f in constants.ruleFields" required>
-	                                        </select>
-	                                        <small class="text-muted" translate>From PersonnelSnapshot</small>
-	                                    </div>
-	                                </div>
-	                                <div class="col-md-3">
-	                                    <div class="form-group">
-	                                        <label class="font-weight-semibold" translate>Operator</label>
-	                                        <select class="form-control" ng-model="rule.operator"
-	                                                ng-options="op.value as op.label for op in constants.operators" required>
-	                                        </select>
-	                                    </div>
-	                                </div>
+                        <div class="empty-state" ng-if="!templateFormData.eligibilityRules.length">
+                            <div class="empty-icon"><i class="icon-users4"></i></div>
+                            <div class="empty-text" translate>No eligibility rules defined. This bonus will be available to all personnel.</div>
+                        </div>
+
+                        <div class="rule-card" ng-repeat="rule in templateFormData.eligibilityRules track by $index">
+                            <div class="rule-number">{{$index + 1}}</div>
+                            <a href="" class="remove-rule" ng-click="removeEligibilityRule($index); $event.preventDefault();">
+                                <i class="icon-cross2"></i>
+                            </a>
+                            
+                            <div class="row mt-2">
+                                <div class="col-md-3">
+                                    <div class="form-group mb-2">
+                                        <label class="form-label-modern" translate>Field</label>
+                                        <select class="form-control form-control-modern form-control-sm" ng-model="rule.field"
+                                                ng-options="f.value as f.label for f in constants.ruleFields" required>
+                                        </select>
+                                        <small class="text-muted" translate>From PersonnelSnapshot</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group mb-2">
+                                        <label class="form-label-modern" translate>Operator</label>
+                                        <select class="form-control form-control-modern form-control-sm" ng-model="rule.operator"
+                                                ng-options="op.value as op.label for op in constants.operators" required>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="col-md-5">
-                                    <div class="form-group" ng-switch="rule.field">
-	                                        <!-- Multi-select for IN/NOT IN -->
-	                                        <div ng-switch-when="status" ng-if="rule.operator === 'in' || rule.operator === 'not_in'">
-	                                            <label class="font-weight-semibold" translate>Statuses (select many)</label>
-	                                            <select class="form-control" multiple
-	                                                    ng-model="rule.valueList"
-	                                                    ng-options="opt.value as opt.label for opt in ruleOptions.statuses">
-	                                            </select>
-	                                        </div>
-	                                        <div ng-switch-when="rank" ng-if="rule.operator === 'in' || rule.operator === 'not_in'">
-	                                            <label class="font-weight-semibold" translate>Rangs (select many)</label>
-	                                            <select class="form-control" multiple
-	                                                    ng-model="rule.valueList"
-	                                                    ng-options="opt.value as opt.label for opt in ruleOptions.ranks">
-	                                            </select>
-	                                        </div>
-	                                        <div ng-switch-when="structure" ng-if="rule.operator === 'in' || rule.operator === 'not_in'">
-	                                            <label class="font-weight-semibold" translate>Structures (select many)</label>
-	                                            <select class="form-control" multiple
-	                                                    ng-model="rule.valueList"
-	                                                    ng-options="opt.value as opt.label for opt in ruleOptions.structuresMain">
-	                                            </select>
-	                                        </div>
-	                                        <div ng-switch-when="subStructure" ng-if="rule.operator === 'in' || rule.operator === 'not_in'">
-	                                            <label class="font-weight-semibold d-block" translate>Sous-structures (select many)</label>
-                                            <div class="form-row">
-                                                <div class="col-12 mb-1">
-                                                    <select class="form-control"
-                                                            ng-model="rule.parentStructureCode"
-                                                            ng-options="opt.value as opt.label for opt in ruleOptions.structuresMain"
-                                                            placeholder="Choisir une structure mère">
-                                                    </select>
-                                                </div>
-                                                <div class="col-12">
-                                                    <select class="form-control" multiple
-                                                            ng-model="rule.valueList"
-                                                            ng-options="opt.value as opt.label for opt in getSubStructuresForRule(rule)">
-                                                    </select>
-                                                </div>
-                                            </div>
+                                    <div class="form-group mb-2" ng-switch="rule.field">
+                                        <!-- Multi-select for IN/NOT IN -->
+                                        <div ng-switch-when="status" ng-if="rule.operator === 'in' || rule.operator === 'not_in'">
+                                            <label class="form-label-modern" translate>Statuses (select many)</label>
+                                            <select class="form-control form-control-modern form-control-sm" multiple style="height: 80px;"
+                                                    ng-model="rule.valueList"
+                                                    ng-options="opt.value as opt.label for opt in ruleOptions.statuses">
+                                            </select>
+                                        </div>
+                                        <div ng-switch-when="rank" ng-if="rule.operator === 'in' || rule.operator === 'not_in'">
+                                            <label class="form-label-modern" translate>Ranks (select many)</label>
+                                            <select class="form-control form-control-modern form-control-sm" multiple style="height: 80px;"
+                                                    ng-model="rule.valueList"
+                                                    ng-options="opt.value as opt.label for opt in ruleOptions.ranks">
+                                            </select>
+                                        </div>
+                                        <div ng-switch-when="structure" ng-if="rule.operator === 'in' || rule.operator === 'not_in'">
+                                            <label class="form-label-modern" translate>Structures (select many)</label>
+                                            <select class="form-control form-control-modern form-control-sm" multiple style="height: 80px;"
+                                                    ng-model="rule.valueList"
+                                                    ng-options="opt.value as opt.label for opt in ruleOptions.structuresMain">
+                                            </select>
+                                        </div>
+                                        <div ng-switch-when="subStructure" ng-if="rule.operator === 'in' || rule.operator === 'not_in'">
+                                            <label class="form-label-modern d-block" translate>Sub-structures (select many)</label>
+                                            <select class="form-control form-control-modern form-control-sm mb-1"
+                                                    ng-model="rule.parentStructureCode"
+                                                    ng-options="opt.value as opt.label for opt in ruleOptions.structuresMain">
+                                                <option value="" translate>Choose parent structure...</option>
+                                            </select>
+                                            <select class="form-control form-control-modern form-control-sm" multiple style="height: 60px;"
+                                                    ng-model="rule.valueList"
+                                                    ng-options="opt.value as opt.label for opt in getSubStructuresForRule(rule)">
+                                            </select>
                                         </div>
 
                                         <!-- Single select for equals/not_equals/etc -->
-	                                        <div ng-switch-when="status" ng-if="rule.operator !== 'in' && rule.operator !== 'not_in'">
-	                                            <label class="font-weight-semibold" translate>Status</label>
-                                            <select class="form-control"
+                                        <div ng-switch-when="status" ng-if="rule.operator !== 'in' && rule.operator !== 'not_in'">
+                                            <label class="form-label-modern" translate>Status</label>
+                                            <select class="form-control form-control-modern form-control-sm"
                                                     ng-model="rule.valueInput"
                                                     ng-options="opt.value as opt.label for opt in ruleOptions.statuses" required>
                                             </select>
                                         </div>
-	                                        <div ng-switch-when="rank" ng-if="rule.operator !== 'in' && rule.operator !== 'not_in'">
-	                                            <label class="font-weight-semibold" translate>Rang</label>
-                                            <select class="form-control"
+                                        <div ng-switch-when="rank" ng-if="rule.operator !== 'in' && rule.operator !== 'not_in'">
+                                            <label class="form-label-modern" translate>Rank</label>
+                                            <select class="form-control form-control-modern form-control-sm"
                                                     ng-model="rule.valueInput"
                                                     ng-options="opt.value as opt.label for opt in ruleOptions.ranks" required>
                                             </select>
                                         </div>
-	                                        <div ng-switch-when="structure" ng-if="rule.operator !== 'in' && rule.operator !== 'not_in'">
-	                                            <label class="font-weight-semibold" translate>Structure</label>
-                                            <select class="form-control"
+                                        <div ng-switch-when="structure" ng-if="rule.operator !== 'in' && rule.operator !== 'not_in'">
+                                            <label class="form-label-modern" translate>Structure</label>
+                                            <select class="form-control form-control-modern form-control-sm"
                                                     ng-model="rule.valueInput"
                                                     ng-options="opt.value as opt.label for opt in ruleOptions.structuresMain" required>
                                             </select>
                                         </div>
-	                                        <div ng-switch-when="subStructure" ng-if="rule.operator !== 'in' && rule.operator !== 'not_in'">
-	                                            <label class="font-weight-semibold d-block" translate>Sous-structure</label>
-                                            <div class="form-row">
-                                                <div class="col-12 mb-1">
-                                                    <select class="form-control"
-                                                            ng-model="rule.parentStructureCode"
-                                                            ng-options="opt.value as opt.label for opt in ruleOptions.structuresMain"
-                                                            placeholder="Choisir une structure mère">
-                                                    </select>
-                                                </div>
-                                                <div class="col-12">
-                                                    <select class="form-control"
-                                                            ng-model="rule.valueInput"
-                                                            ng-options="opt.value as opt.label for opt in getSubStructuresForRule(rule)" required>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                        <div ng-switch-when="subStructure" ng-if="rule.operator !== 'in' && rule.operator !== 'not_in'">
+                                            <label class="form-label-modern d-block" translate>Sub-structure</label>
+                                            <select class="form-control form-control-modern form-control-sm mb-1"
+                                                    ng-model="rule.parentStructureCode"
+                                                    ng-options="opt.value as opt.label for opt in ruleOptions.structuresMain">
+                                                <option value="" translate>Choose parent structure...</option>
+                                            </select>
+                                            <select class="form-control form-control-modern form-control-sm"
+                                                    ng-model="rule.valueInput"
+                                                    ng-options="opt.value as opt.label for opt in getSubStructuresForRule(rule)" required>
+                                            </select>
                                         </div>
-                                        <!-- Fallback text input for fields without predefined options (e.g., category) -->
-	                                        <div ng-switch-default>
-	                                            <label class="font-weight-semibold" translate>Value</label>
-	                                            <input type="text" class="form-control" ng-model="rule.valueInput"
-	                                                   placeholder="Enter value" required>
-	                                        </div>
+                                        <!-- Fallback text input -->
+                                        <div ng-switch-default>
+                                            <label class="form-label-modern" translate>Value</label>
+                                            <input type="text" class="form-control form-control-modern form-control-sm" ng-model="rule.valueInput"
+                                                   placeholder="Enter value" required>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-1 d-flex align-items-center">
-                                    <div class="btn-group-vertical w-100">
-                                        <button type="button" class="btn btn-light"
-                                                ng-click="moveEligibilityRule($index, 'up')" ng-if="$index > 0">
+                                <div class="col-md-1 d-flex align-items-center justify-content-center">
+                                    <div class="btn-group-vertical">
+                                        <button type="button" class="btn btn-sm btn-light" ng-click="moveEligibilityRule($index, 'up')" ng-if="$index > 0">
                                             <i class="icon-arrow-up2"></i>
                                         </button>
-                                        <button type="button" class="btn btn-light"
-                                                ng-click="moveEligibilityRule($index, 'down')"
+                                        <button type="button" class="btn btn-sm btn-light" ng-click="moveEligibilityRule($index, 'down')"
                                                 ng-if="$index < templateFormData.eligibilityRules.length - 1">
                                             <i class="icon-arrow-down2"></i>
                                         </button>
                                     </div>
                                 </div>
                             </div>
-	                            <div class="form-group mt-2">
-	                                <label translate>Description (Optional)</label>
-	                                <input type="text" class="form-control" ng-model="rule.description"
-	                                       placeholder="Rule description">
-	                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Workflow Tab -->
-	            <div class="tab-pane fade" id="workflow">
-	                <div class="alert alert-info bg-info-100 border-info">
-	                    <i class="icon-info22 mr-2"></i>
-	                    <span translate>Configure the approval workflow for this bonus template</span>
-	                </div>
-
-                <div class="card border-0 shadow-sm">
-	                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
-	                        <h6 class="card-title mb-0">
-	                            <i class="icon-flow-tree mr-1"></i><span translate>Approval Steps</span>
-	                        </h6>
-	                        <button type="button" class="btn btn-sm btn-primary" ng-click="addApprovalStep()">
-	                            <i class="icon-plus22 mr-1"></i><span translate>Add Step</span>
-	                        </button>
-	                    </div>
-
-                    <div class="card-body">
-	                        <div class="alert alert-warning bg-warning-100 border-warning" ng-if="!templateFormData.approvalWorkflow.steps.length">
-	                            <span translate>No approval steps defined. Bonuses using this template will not require approval.</span>
-	                        </div>
-
-	                        <div class="workflow-step mb-3 p-3 border rounded"
-	                             ng-repeat="step in templateFormData.approvalWorkflow.steps track by $index">
-	                            <div class="d-flex align-items-center mb-2">
-	                                <div class="badge badge-primary mr-2" translate>Step {{$index + 1}}</div>
-	                                <button type="button" class="btn btn-sm btn-link text-danger ml-auto"
-	                                        ng-click="removeApprovalStep($index)">
-	                                    <i class="icon-cross2"></i> <span translate>Remove</span>
-	                                </button>
-	                            </div>
-                            <div class="row">
-	                                <div class="col-md-5">
-	                                    <div class="form-group">
-	                                        <label translate>Approver Role</label>
-	                                        <input type="text" class="form-control" ng-model="step.role"
-	                                               placeholder="Role" required
-	                                               uib-tooltip="Role required for approval"
-	                                               tooltip-placement="top">
-	                                    </div>
-	                                </div>
-	                                <div class="col-md-3">
-	                                    <div class="form-group">
-	                                        <label translate>Approval Type</label>
-	                                        <select class="form-control" ng-model="step.approvalType">
-	                                            <option value="sequential" translate>Sequential</option>
-	                                            <option value="parallel" translate>Parallel</option>
-	                                        </select>
-	                                    </div>
-	                                </div>
-	                                <div class="col-md-3">
-	                                    <div class="form-group">
-	                                        <label translate>Description</label>
-	                                        <input type="text" class="form-control" ng-model="step.description"
-	                                               placeholder="Step description">
-	                                    </div>
-	                                </div>
-                                <div class="col-md-1 d-flex align-items-end">
-                                    <div class="form-group w-100">
-                                        <button type="button" class="btn btn-light btn-block"
-                                                ng-click="moveStepUp($index)" ng-if="$index > 0">
-                                            <i class="icon-arrow-up2"></i>
-                                        </button>
-                                        <button type="button" class="btn btn-light btn-block"
-                                                ng-click="moveStepDown($index)"
-                                                ng-if="$index < templateFormData.approvalWorkflow.steps.length - 1">
-                                            <i class="icon-arrow-down2"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                            <div class="form-group mb-0 mt-2">
+                                <label class="form-label-modern" style="font-size: 0.8rem;" translate>Description (Optional)</label>
+                                <input type="text" class="form-control form-control-modern form-control-sm" ng-model="rule.description"
+                                       placeholder="Describe this rule...">
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Documentation -->
-	                <div class="form-group mt-4">
-	                    <label class="d-flex align-items-center">
-	                        <i class="icon-book mr-1"></i><span translate>Instructions</span>
-	                        <i class="icon-help ml-1 text-muted"
-	                           uib-tooltip="Markdown formatting is supported"
-	                           tooltip-placement="right"></i>
-	                    </label>
-                    <div class="border rounded p-2 bg-light">
-                        <textarea class="form-control border-0 bg-transparent" ng-model="templateFormData.documentation"
-                                  rows="4" placeholder="Enter documentation or instructions..."></textarea>
+                    <!-- Navigation Buttons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-cancel" ng-click="prevStep()">
+                            <i class="icon-arrow-left7 mr-2"></i>
+                            <span translate>Back</span>
+                        </button>
+                        <button type="button" class="btn btn-save" ng-click="nextStep()">
+                            <span translate>Next: Workflow</span>
+                            <i class="icon-arrow-right7 ml-2"></i>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Status -->
-                <div class="form-group mt-4">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="templateActive"
-                               ng-model="templateFormData.isActive">
-	                        <label class="custom-control-label" for="templateActive">
-	                            <i class="icon-power mr-1"></i><span translate>Template is active</span>
-	                        </label>
-	                    </div>
-	                    <small class="form-text text-muted" translate>Inactive templates cannot be used to create new bonuses</small>
-	                </div>
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <!-- STEP 4: WORKFLOW -->
+                <!-- ═══════════════════════════════════════════════════════════ -->
+                <div class="tab-pane" ng-class="{'active': activeTab === 'workflow'}" id="workflow">
+                    
+                    <div class="info-banner">
+                        <i class="icon-flow-tree info-icon"></i>
+                        <div class="info-text" translate>Configure the approval workflow for this bonus template</div>
+                    </div>
+
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-icon orange">
+                                <i class="icon-user-check"></i>
+                            </div>
+                            <div class="flex-grow-1">
+                                <h6 class="section-title" translate>Approval Steps</h6>
+                                <p class="section-subtitle" translate>Define the approval chain</p>
+                            </div>
+                            <button type="button" class="add-btn" ng-click="addApprovalStep()">
+                                <i class="icon-plus22 mr-1"></i><span translate>Add Step</span>
+                            </button>
+                        </div>
+
+                        <div class="empty-state" ng-if="!templateFormData.approvalWorkflow.steps.length">
+                            <div class="empty-icon"><i class="icon-checkmark-circle"></i></div>
+                            <div class="empty-text" translate>No approval steps defined. Bonuses using this template will not require approval.</div>
+                        </div>
+
+                        <div class="position-relative" ng-if="templateFormData.approvalWorkflow.steps.length">
+                            <div class="workflow-step-card" ng-repeat="step in templateFormData.approvalWorkflow.steps track by $index">
+                                <div class="workflow-connector" ng-if="$index < templateFormData.approvalWorkflow.steps.length - 1"></div>
+                                <div class="step-number-badge">{{$index + 1}}</div>
+                                <div class="flex-grow-1">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group mb-2">
+                                                <label class="form-label-modern" translate>Approver Role</label>
+                                                <input type="text" class="form-control form-control-modern form-control-sm" ng-model="step.role"
+                                                       placeholder="e.g., Manager, Director" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group mb-2">
+                                                <label class="form-label-modern" translate>Type</label>
+                                                <select class="form-control form-control-modern form-control-sm" ng-model="step.approvalType">
+                                                    <option value="sequential" translate>Sequential</option>
+                                                    <option value="parallel" translate>Parallel</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group mb-2">
+                                                <label class="form-label-modern" translate>Description</label>
+                                                <input type="text" class="form-control form-control-modern form-control-sm" ng-model="step.description"
+                                                       placeholder="Step description">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1 d-flex align-items-end pb-2">
+                                            <div class="btn-group-vertical w-100">
+                                                <button type="button" class="btn btn-sm btn-light" ng-click="moveStepUp($index)" ng-if="$index > 0">
+                                                    <i class="icon-arrow-up2"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-light" ng-click="moveStepDown($index)"
+                                                        ng-if="$index < templateFormData.approvalWorkflow.steps.length - 1">
+                                                    <i class="icon-arrow-down2"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-link text-danger position-absolute" style="top: 8px; right: 8px;"
+                                        ng-click="removeApprovalStep($index)">
+                                    <i class="icon-cross2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Documentation -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <div class="section-icon blue">
+                                <i class="icon-book"></i>
+                            </div>
+                            <div>
+                                <h6 class="section-title" translate>Documentation</h6>
+                                <p class="section-subtitle" translate>Instructions and notes (Markdown supported)</p>
+                            </div>
+                        </div>
+                        
+                        <textarea class="form-control form-control-modern" ng-model="templateFormData.documentation"
+                                  rows="4" placeholder="Enter documentation, instructions, or notes for this template..."
+                                  style="font-family: 'Monaco', 'Menlo', monospace; font-size: 0.85rem;"></textarea>
+                    </div>
+
+                    <!-- Status Toggle -->
+                    <div class="form-section">
+                        <div class="status-toggle" ng-class="{'inactive': !templateFormData.isActive}">
+                            <div class="custom-control custom-switch mr-3">
+                                <input type="checkbox" class="custom-control-input" id="templateActive"
+                                       ng-model="templateFormData.isActive">
+                                <label class="custom-control-label" for="templateActive"></label>
+                            </div>
+                            <div>
+                                <div class="font-weight-semibold" ng-if="templateFormData.isActive">
+                                    <i class="icon-checkmark-circle text-success mr-1"></i><span translate>Template is Active</span>
+                                </div>
+                                <div class="font-weight-semibold" ng-if="!templateFormData.isActive">
+                                    <i class="icon-blocked text-danger mr-1"></i><span translate>Template is Inactive</span>
+                                </div>
+                                <small class="text-muted" translate>Inactive templates cannot be used to create new bonuses</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="button" class="btn btn-cancel" ng-click="prevStep()">
+                            <i class="icon-arrow-left7 mr-2"></i>
+                            <span translate>Back</span>
+                        </button>
+                        <span class="text-muted align-self-center" translate>Ready to save? Click the button below</span>
+                    </div>
+                </div>
+
             </div>
         </div>
-    </div>
 
-	    <div class="modal-footer bg-light d-flex justify-content-between">
-	        <div>
-	            <button type="button" class="btn btn-light" ng-click="closeTemplateForm()">
-	                <i class="icon-cross2 mr-1"></i><span translate>Cancel</span>
-	            </button>
-	        </div>
-	        <div>
-	            <button type="submit" class="btn btn-primary" ng-disabled="templateForm.$invalid">
-	                <i class="icon-paperplane mr-1"></i>
-	                {{editingTemplate ? updateTemplateLabel : createTemplateLabel}}
-	            </button>
-	        </div>
-	    </div>
-</form>
+        <!-- Modern Footer -->
+        <div class="modal-footer-modern">
+            <button type="button" class="btn btn-cancel" ng-click="closeTemplateForm()">
+                <i class="icon-cross2 mr-1"></i><span translate>Cancel</span>
+            </button>
+            <button type="submit" class="btn btn-save" ng-disabled="templateForm.$invalid">
+                <i class="icon-checkmark3 mr-1"></i>
+                {{editingTemplate ? updateTemplateLabel : createTemplateLabel}}
+            </button>
+        </div>
+    </form>
+</div>

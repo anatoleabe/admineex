@@ -327,16 +327,24 @@ exports.api.getAll = async (req, res, next) => {
                         eligible: { $sum: { $cond: [{ $eq: ['$status', 'eligible'] }, 1, 0] } },
                         excluded: { $sum: { $cond: [{ $eq: ['$status', 'excluded'] }, 1, 0] } },
                         adjusted: { $sum: { $cond: [{ $eq: ['$status', 'adjusted'] }, 1, 0] } },
-                        totalParts: { $sum: { $cond: [
-                            { $ne: ['$status', 'excluded'] },
-                            { $ifNull: ['$calculationInputs.parts', 0] },
-                            0
-                        ] } },
-                        totalAmount: { $sum: { $cond: [
-                            { $ne: ['$status', 'excluded'] },
-                            { $ifNull: ['$finalAmount', 0] },
-                            0
-                        ] } }
+                        totalParts: {
+                            $sum: {
+                                $cond: [
+                                    { $ne: ['$status', 'excluded'] },
+                                    { $ifNull: ['$calculationInputs.parts', 0] },
+                                    0
+                                ]
+                            }
+                        },
+                        totalAmount: {
+                            $sum: {
+                                $cond: [
+                                    { $ne: ['$status', 'excluded'] },
+                                    { $ifNull: ['$finalAmount', 0] },
+                                    0
+                                ]
+                            }
+                        }
                     }
                 }
             ])
@@ -437,11 +445,22 @@ exports.api.adjust = async (req, res, next) => {
             });
 
             // Update the main object with the latest adjustment
-            allocation.finalAmount = amount;
-            allocation.calculationInputs.parts = parts;
+            // Parse amount and parts as numbers (they come as strings from FormData)
+            const parsedAmount = parseFloat(amount) || 0;
+            const parsedParts = parseFloat(parts) || 0;
+
+            allocation.finalAmount = parsedAmount;
+            allocation.calculationInputs.parts = parsedParts;
             allocation.calculationInputs.comment = reason; // Update with the latest comment
             allocation.status = 'adjusted';
             allocation.updatedAt = new Date();
+
+            // Recalculate grossAmount, taxAmount, and netAmount
+            allocation.grossAmount = parsedAmount;
+            const taxRate = allocation.taxRate || 0;
+            const taxAmount = Math.round(parsedAmount * taxRate);
+            allocation.taxAmount = taxAmount;
+            allocation.netAmount = parsedAmount - taxAmount;
 
             await allocation.save();
 

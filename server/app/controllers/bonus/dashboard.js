@@ -70,19 +70,46 @@ function effectiveDateExpr() {
 }
 
 /**
+ * Parse date range from request query parameters
+ * @param {Object} req - Express request object
+ * @returns {Object} { startDate, endDate }
+ */
+function getDateRange(req) {
+    const now = new Date();
+    let startDate, endDate;
+
+    if (req.query.startDate) {
+        startDate = new Date(req.query.startDate);
+        if (isNaN(startDate.getTime())) {
+            startDate = new Date(now.getFullYear(), 0, 1); // Fallback to start of year
+        }
+    } else {
+        startDate = new Date(now.getFullYear(), 0, 1); // Default: start of year
+    }
+
+    if (req.query.endDate) {
+        endDate = new Date(req.query.endDate);
+        if (isNaN(endDate.getTime())) {
+            endDate = now;
+        }
+        // Set to end of day
+        endDate.setHours(23, 59, 59, 999);
+    } else {
+        endDate = now;
+    }
+
+    return { startDate, endDate };
+}
+
+/**
  * Get Key Performance Indicators (KPIs)
- * - Total Bonus Paid (YTD)
+ * - Total Bonus Paid (within date range)
  * - Number of Active Cycles (Under review/Draft)
- * - Total Employees Rewarded (Unique over last 12 months)
- * - Average Bonus Amount (Last 12 months)
+ * - Total Employees Rewarded (Unique within date range)
  */
 exports.api.getStats = async (req, res, next) => {
     try {
-        const now = new Date();
-        const startOfYear = new Date(now.getFullYear(), 0, 1);
-        const twelveMonthsAgo = new Date(now);
-        twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
-
+        const { startDate, endDate } = getDateRange(req);
         const instanceStatuses = getInstanceStatuses(req);
 
         const [totalPaidAgg, activeCyclesCount, uniqueBeneficiariesAgg] = await Promise.all([
@@ -104,7 +131,7 @@ exports.api.getStats = async (req, res, next) => {
                         effectiveDate: effectiveDateExpr()
                     }
                 },
-                { $match: { effectiveDate: { $gte: startOfYear, $lte: now } } },
+                { $match: { effectiveDate: { $gte: startDate, $lte: endDate } } },
                 { $group: { _id: null, total: { $sum: '$amount' } } }
             ]),
 
@@ -128,12 +155,10 @@ exports.api.getStats = async (req, res, next) => {
                         effectiveDate: effectiveDateExpr()
                     }
                 },
-                { $match: { effectiveDate: { $gte: twelveMonthsAgo, $lte: now } } },
+                { $match: { effectiveDate: { $gte: startDate, $lte: endDate } } },
                 { $group: { _id: '$personnelId' } }
             ])
         ]);
-
-        console.log(totalPaidAgg)
 
         const totalPaid = totalPaidAgg.length ? totalPaidAgg[0].total : 0;
         const uniqueBeneficiaries = uniqueBeneficiariesAgg.length;
@@ -142,7 +167,11 @@ exports.api.getStats = async (req, res, next) => {
             totalPaid,
             activeCyclesCount,
             uniqueBeneficiaries,
-            currency: 'XAF' // Or dynamic if multi-currency
+            currency: 'XAF',
+            dateRange: {
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString()
+            }
         });
 
     } catch (error) {
@@ -151,14 +180,13 @@ exports.api.getStats = async (req, res, next) => {
 };
 
 /**
- * Get Monthly Payout Trends (Last 12 Months)
+ * Get Monthly Payout Trends (within date range)
  */
 exports.api.getTrends = async (req, res, next) => {
     try {
-        const now = new Date();
-        const twelveMonthsAgo = new Date(now);
-        twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
-        twelveMonthsAgo.setDate(1); // Start of the month
+        const { startDate, endDate } = getDateRange(req);
+        // Ensure startDate is at the beginning of its month for proper grouping
+        const rangeStart = new Date(startDate.getFullYear(), startDate.getMonth(), 1);
 
         const instanceStatuses = getInstanceStatuses(req);
 
@@ -180,7 +208,7 @@ exports.api.getTrends = async (req, res, next) => {
                     effectiveDate: effectiveDateExpr()
                 }
             },
-            { $match: { effectiveDate: { $gte: twelveMonthsAgo, $lte: now } } },
+            { $match: { effectiveDate: { $gte: rangeStart, $lte: endDate } } },
             {
                 $group: {
                     _id: {
@@ -197,9 +225,9 @@ exports.api.getTrends = async (req, res, next) => {
         const labels = [];
         const data = [];
 
-        let currentDate = new Date(twelveMonthsAgo);
+        let currentDate = new Date(rangeStart);
 
-        while (currentDate <= now) {
+        while (currentDate <= endDate) {
             const year = currentDate.getFullYear();
             const month = currentDate.getMonth() + 1;
             const monthName = currentDate.toLocaleString('default', { month: 'short' });
@@ -220,10 +248,11 @@ exports.api.getTrends = async (req, res, next) => {
 };
 
 /**
- * Get Distribution by Bonus Template Category
+ * Get Distribution by Bonus Template Category (within date range)
  */
 exports.api.getDistribution = async (req, res, next) => {
     try {
+        const { startDate, endDate } = getDateRange(req);
         const instanceStatuses = getInstanceStatuses(req);
 
         const distribution = await BonusAllocation.aggregate([
@@ -238,7 +267,13 @@ exports.api.getDistribution = async (req, res, next) => {
             },
             { $unwind: '$instance' },
             { $match: { 'instance.status': { $in: instanceStatuses } } },
-            { $addFields: { amount: amountExpr() } },
+            {
+                $addFields: {
+                    amount: amountExpr(),
+                    effectiveDate: effectiveDateExpr()
+                }
+            },
+            { $match: { effectiveDate: { $gte: startDate, $lte: endDate } } },
             {
                 $lookup: {
                     from: 'bonustemplates',
@@ -257,7 +292,7 @@ exports.api.getDistribution = async (req, res, next) => {
             }
         ]);
 
-        const labels = distribution.map(d => d._id);
+        const labels = distribution.map(d => d._id || 'Uncategorized');
         const data = distribution.map(d => d.totalAmount);
 
         res.json({ labels, data });

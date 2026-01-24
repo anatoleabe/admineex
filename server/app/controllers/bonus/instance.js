@@ -283,6 +283,14 @@ exports.api.getAll = async (req, res, next) => {
             if (toDate) filter.createdAt.$lte = new Date(toDate);
         }
 
+        // Exclude instances from deleted templates
+        const deletedTemplateIds = await BonusTemplate.find({ isDeleted: true }).select('_id').lean();
+        if (deletedTemplateIds.length > 0) {
+            filter.templateId = filter.templateId
+                ? { $eq: filter.templateId, $nin: deletedTemplateIds.map(t => t._id) }
+                : { $nin: deletedTemplateIds.map(t => t._id) };
+        }
+
         const [sortField, sortOrder] = sortBy.split(':');
         const sort = { [sortField]: sortOrder === 'desc' ? -1 : 1 };
 
@@ -318,10 +326,10 @@ exports.api.getAll = async (req, res, next) => {
                     $group: {
                         _id: '$instanceId',
                         count: { $sum: 1 },
-                        totalAmount: { $sum: { $ifNull: [ '$finalAmount', 0 ] } },
-                        totalTax: { $sum: { $ifNull: [ '$taxAmount', 0 ] } },
-                        totalNet: { $sum: { $ifNull: [ '$netAmount', 0 ] } },
-                        totalParts: { $sum: { $ifNull: [ '$calculationInputs.parts', 0 ] } }
+                        totalAmount: { $sum: { $ifNull: ['$finalAmount', 0] } },
+                        totalTax: { $sum: { $ifNull: ['$taxAmount', 0] } },
+                        totalNet: { $sum: { $ifNull: ['$netAmount', 0] } },
+                        totalParts: { $sum: { $ifNull: ['$calculationInputs.parts', 0] } }
                     }
                 }
             ]);
@@ -362,10 +370,10 @@ exports.api.getAll = async (req, res, next) => {
                         $group: {
                             _id: null,
                             count: { $sum: 1 },
-                            totalAmount: { $sum: { $ifNull: [ '$finalAmount', 0 ] } },
-                            totalTax: { $sum: { $ifNull: [ '$taxAmount', 0 ] } },
-                            totalNet: { $sum: { $ifNull: [ '$netAmount', 0 ] } },
-                            totalParts: { $sum: { $ifNull: [ '$calculationInputs.parts', 0 ] } }
+                            totalAmount: { $sum: { $ifNull: ['$finalAmount', 0] } },
+                            totalTax: { $sum: { $ifNull: ['$taxAmount', 0] } },
+                            totalNet: { $sum: { $ifNull: ['$netAmount', 0] } },
+                            totalParts: { $sum: { $ifNull: ['$calculationInputs.parts', 0] } }
                         }
                     }
                 ]);
@@ -556,6 +564,40 @@ exports.api.cancel = async (req, res, next) => {
         res.json(instance);
     } catch (error) {
         auditEvent(req, 'cancel', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
+        next(error);
+    }
+};
+
+/**
+ * Delete bonus instance permanently
+ */
+exports.api.delete = async (req, res, next) => {
+    try {
+        const instance = await BonusInstance.findById(req.params.id);
+
+        if (!instance) {
+            throw notFound(t(req, 'Bonus instance not found'));
+        }
+
+        // Prevent deletion of paid instances
+        if (instance.status === 'paid') {
+            throw forbidden(t(req, 'Cannot delete a paid instance. Use cancel instead.'));
+        }
+
+        // Delete all associated allocations first
+        const deletedAllocations = await BonusAllocation.deleteMany({ instanceId: req.params.id });
+
+        // Delete the instance
+        await BonusInstance.findByIdAndDelete(req.params.id);
+
+        auditEvent(req, 'delete', 'BonusInstance', req.params.id, 'succeed', `Deleted bonus instance and ${deletedAllocations.deletedCount} allocations`);
+        res.json({
+            success: true,
+            message: t(req, 'Instance deleted successfully'),
+            deletedAllocations: deletedAllocations.deletedCount
+        });
+    } catch (error) {
+        auditEvent(req, 'delete', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };

@@ -1,0 +1,400 @@
+<!-- Bonus Instance Details Page -->
+<div class="page-content">
+    <div class="content-wrapper">
+        <div class="content">
+
+            <!-- Loading State -->
+            <div class="text-center p-5" ng-if="loading">
+                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only" translate>Loading...</span>
+                </div>
+                <h5 class="mt-3 text-muted" translate>Loading instance details...</h5>
+            </div>
+
+            <!-- Main Content -->
+            <div ng-if="!loading && instance">
+
+                <!-- Header Card -->
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start flex-wrap">
+                            <div class="d-flex align-items-center mb-2">
+                                <button class="btn btn-light btn-sm mr-3" ng-click="goBack()">
+                                    <i class="icon-arrow-left7"></i>
+                                </button>
+                                <div>
+                                    <h4 class="mb-1">{{instance.templateId.name}} - {{instance.referencePeriod}}</h4>
+                                    <div class="d-flex align-items-center text-muted">
+                                        <span class="mr-3">
+                                            <i class="icon-calendar3 mr-1"></i>
+                                            <span translate>Created:</span> {{formatDate(instance.createdAt)}}
+                                        </span>
+                                        <span ng-if="instance.isAnticipated" class="badge badge-flat border-info text-info">
+                                            <i class="icon-bolt mr-1"></i><span translate>Anticipated</span>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-wrap">
+                                <!-- Status Badge -->
+                                <span class="badge badge-{{getStatusConfig(instance.status).color}} badge-lg mr-2 mb-2"
+                                      style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+                                    <i class="{{getStatusConfig(instance.status).icon}} mr-1"></i>
+                                    {{getStatusConfig(instance.status).label}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!-- Left Column - Details -->
+                    <div class="col-lg-8">
+
+                        <!-- Summary Stats Cards -->
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <div class="text-primary mb-2">
+                                            <i class="icon-users4" style="font-size: 2rem;"></i>
+                                        </div>
+                                        <h3 class="mb-0 font-weight-bold">{{allocationStats.count || 0}}</h3>
+                                        <span class="text-muted" translate>Allocations</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <div class="text-success mb-2">
+                                            <i class="icon-coin-dollar" style="font-size: 2rem;"></i>
+                                        </div>
+                                        <h3 class="mb-0 font-weight-bold">{{formatAmount(allocationStats.totalAmount)}}</h3>
+                                        <span class="text-muted">FCFA <span translate>Total</span></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card">
+                                    <div class="card-body text-center">
+                                        <div class="text-info mb-2">
+                                            <i class="icon-stack2" style="font-size: 2rem;"></i>
+                                        </div>
+                                        <h3 class="mb-0 font-weight-bold">{{allocationStats.totalParts || 0}}</h3>
+                                        <span class="text-muted" translate>Total Parts</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Instance Information Card -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0 font-weight-semibold">
+                                    <i class="icon-info22 mr-2"></i><span translate>Instance Information</span>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table class="table table-borderless table-sm mb-0">
+                                            <tbody>
+                                            <tr>
+                                                <td class="text-muted" style="width: 40%;" translate>Program</td>
+                                                <td class="font-weight-semibold">{{instance.templateId.name}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted" translate>Period</td>
+                                                <td class="font-weight-semibold">{{instance.referencePeriod}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted" translate>Periodicity</td>
+                                                <td>{{getPeriodicityLabel(instance.templateId.periodicity)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted" translate>Calculation Type</td>
+                                                <td>
+                                                    <span ng-if="instance.templateId.calculationType === 'with_parts'" translate>With Parts</span>
+                                                    <span ng-if="instance.templateId.calculationType === 'fixed_amount'" translate>Fixed Amount</span>
+                                                    <span ng-if="instance.templateId.calculationType === 'custom'" translate>Custom</span>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <table class="table table-borderless table-sm mb-0">
+                                            <tbody>
+                                            <tr>
+                                                <td class="text-muted" style="width: 40%;" translate>Status</td>
+                                                <td>
+                                                    <span class="badge badge-{{getStatusConfig(instance.status).color}}">
+                                                        {{getStatusConfig(instance.status).label}}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-muted" translate>Created</td>
+                                                <td>{{formatDate(instance.createdAt)}}</td>
+                                            </tr>
+                                            <tr ng-if="instance.generationDate">
+                                                <td class="text-muted" translate>Generated</td>
+                                                <td>{{formatDate(instance.generationDate)}}</td>
+                                            </tr>
+                                            <tr ng-if="instance.approvalDate">
+                                                <td class="text-muted" translate>Approved</td>
+                                                <td>{{formatDate(instance.approvalDate)}}</td>
+                                            </tr>
+                                            <tr ng-if="instance.paymentDate">
+                                                <td class="text-muted" translate>Payment Date</td>
+                                                <td>{{formatDate(instance.paymentDate)}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Notes -->
+                                <div class="mt-3 pt-3 border-top" ng-if="instance.notes">
+                                    <h6 class="font-weight-semibold mb-2" translate>Notes</h6>
+                                    <p class="text-muted mb-0">{{instance.notes}}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Allocations Card -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                <h6 class="mb-0 font-weight-semibold">
+                                    <i class="icon-list-unordered mr-2"></i><span translate>Recent Allocations</span>
+                                </h6>
+                                <a class="btn btn-link btn-sm" ui-sref="home.bonus.allocations({instanceId: instance._id})">
+                                    <span translate>View All</span> <i class="icon-arrow-right7 ml-1"></i>
+                                </a>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover mb-0">
+                                    <thead class="bg-light">
+                                    <tr>
+                                        <th translate>Personnel</th>
+                                        <th translate>Structure</th>
+                                        <th class="text-center" translate>Parts</th>
+                                        <th class="text-right" translate>Amount</th>
+                                        <th class="text-center" translate>Status</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="allocation in allocations track by allocation._id">
+                                        <td>
+                                            <div class="font-weight-semibold">
+                                                {{allocation.snapshot.data.firstname}} {{allocation.snapshot.data.lastname}}
+                                            </div>
+                                            <small class="text-muted">{{allocation.snapshot.data.identifier}}</small>
+                                        </td>
+                                        <td>
+                                            <span ng-if="allocation.snapshot.data.structure">
+                                                {{allocation.snapshot.data.structure.name || allocation.snapshot.data.structure.code}}
+                                            </span>
+                                        </td>
+                                        <td class="text-center">{{allocation.parts || 0}}</td>
+                                        <td class="text-right font-weight-semibold">{{formatAmount(allocation.finalAmount)}} FCFA</td>
+                                        <td class="text-center">
+                                            <span class="badge" ng-class="{
+                                                'badge-success': allocation.status === 'included',
+                                                'badge-danger': allocation.status === 'excluded',
+                                                'badge-warning': allocation.status === 'adjusted'
+                                            }">{{allocation.status}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="!allocations || allocations.length === 0">
+                                        <td colspan="5" class="text-center text-muted py-4">
+                                            <i class="icon-info22 d-block mb-2" style="font-size: 1.5rem;"></i>
+                                            <span translate>No allocations found</span>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column - Actions & Timeline -->
+                    <div class="col-lg-4">
+
+                        <!-- Quick Actions Card -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0 font-weight-semibold">
+                                    <i class="icon-cog3 mr-2"></i><span translate>Quick Actions</span>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group list-group-flush">
+                                    <!-- Manage in Wizard -->
+                                    <a href="javascript:void(0)" class="list-group-item list-group-item-action d-flex align-items-center"
+                                       ng-if="permissions.canManageCycle && instance.status !== 'cancelled' && instance.status !== 'paid'"
+                                       ng-click="openWizard()">
+                                        <i class="icon-magic-wand text-primary mr-3"></i>
+                                        <div>
+                                            <div class="font-weight-semibold" translate>Manage in Wizard</div>
+                                            <small class="text-muted" translate>Adjust allocations step by step</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Approve -->
+                                    <a href="javascript:void(0)" class="list-group-item list-group-item-action d-flex align-items-center"
+                                       ng-if="permissions.canApproveInstance && (instance.status === 'generated' || instance.status === 'under_review')"
+                                       ng-click="approve()">
+                                        <i class="icon-checkmark-circle text-success mr-3"></i>
+                                        <div>
+                                            <div class="font-weight-semibold" translate>Approve Instance</div>
+                                            <small class="text-muted" translate>Mark ready for payment</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Generate Payments -->
+                                    <a href="javascript:void(0)" class="list-group-item list-group-item-action d-flex align-items-center"
+                                       ng-if="permissions.canGeneratePayments && instance.status === 'approved'"
+                                       ng-click="generatePayments()">
+                                        <i class="icon-coin-dollar text-warning mr-3"></i>
+                                        <div>
+                                            <div class="font-weight-semibold" translate>Generate Payments</div>
+                                            <small class="text-muted" translate>Create payment files for treasury</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Export Excel -->
+                                    <a href="javascript:void(0)" class="list-group-item list-group-item-action d-flex align-items-center"
+                                       ng-if="permissions.canExport"
+                                       ng-click="exportExcel()">
+                                        <i class="icon-file-excel text-success mr-3"></i>
+                                        <div>
+                                            <div class="font-weight-semibold" translate>Export to Excel</div>
+                                            <small class="text-muted" translate>Download allocation data</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Export PDF -->
+                                    <a href="javascript:void(0)" class="list-group-item list-group-item-action d-flex align-items-center"
+                                       ng-if="permissions.canExport"
+                                       ng-click="exportPDF()">
+                                        <i class="icon-file-pdf text-danger mr-3"></i>
+                                        <div>
+                                            <div class="font-weight-semibold" translate>Export to PDF</div>
+                                            <small class="text-muted" translate>Download formatted report</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Cancel -->
+                                    <a href="javascript:void(0)" class="list-group-item list-group-item-action d-flex align-items-center text-danger"
+                                       ng-if="permissions.canCancelInstance && instance.status !== 'cancelled' && instance.status !== 'paid'"
+                                       ng-click="cancelInstance()">
+                                        <i class="icon-cross2 mr-3"></i>
+                                        <div>
+                                            <div class="font-weight-semibold" translate>Cancel Instance</div>
+                                            <small class="text-muted" translate>Mark as cancelled</small>
+                                        </div>
+                                    </a>
+
+                                    <!-- Delete -->
+                                    <a href="javascript:void(0)" class="list-group-item list-group-item-action d-flex align-items-center text-danger"
+                                       ng-if="permissions.canDeleteInstance && (instance.status === 'draft' || instance.status === 'cancelled')"
+                                       ng-click="deleteInstance()">
+                                        <i class="icon-trash mr-3"></i>
+                                        <div>
+                                            <div class="font-weight-semibold" translate>Delete Permanently</div>
+                                            <small class="text-muted" translate>Remove instance and all allocations</small>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Timeline Card -->
+                        <div class="card mb-3">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0 font-weight-semibold">
+                                    <i class="icon-history mr-2"></i><span translate>Timeline</span>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="media-list media-list-linked">
+                                    <li class="media" ng-repeat="event in getTimelineEvents() track by $index">
+                                        <div class="mr-3">
+                                            <span class="btn btn-{{event.color}} rounded-circle btn-icon btn-sm">
+                                                <i class="{{event.icon}}"></i>
+                                            </span>
+                                        </div>
+                                        <div class="media-body">
+                                            <div class="font-weight-semibold">{{event.label}}</div>
+                                            <span class="text-muted font-size-sm">{{formatDate(event.date)}}</span>
+                                        </div>
+                                    </li>
+                                    <li class="media" ng-if="getTimelineEvents().length === 0">
+                                        <div class="text-center text-muted w-100 py-3">
+                                            <i class="icon-history d-block mb-2" style="font-size: 1.5rem;"></i>
+                                            <span translate>No timeline events</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Template Configuration Card -->
+                        <div class="card">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0 font-weight-semibold">
+                                    <i class="icon-file-text2 mr-2"></i><span translate>Program Configuration</span>
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-borderless table-sm mb-0">
+                                    <tbody>
+                                    <tr>
+                                        <td class="text-muted" translate>Code</td>
+                                        <td class="font-weight-semibold">{{instance.templateId.code}}</td>
+                                    </tr>
+                                    <tr ng-if="instance.templateId.shareAmount">
+                                        <td class="text-muted" translate>Share Amount</td>
+                                        <td>{{formatAmount(instance.templateId.shareAmount)}} FCFA</td>
+                                    </tr>
+                                    <tr ng-if="instance.templateId.fixedAmount">
+                                        <td class="text-muted" translate>Fixed Amount</td>
+                                        <td>{{formatAmount(instance.templateId.fixedAmount)}} FCFA</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-muted" translate>Tax Applied</td>
+                                        <td>
+                                            <span ng-if="instance.templateId.applyTax" class="text-success">
+                                                <i class="icon-checkmark2 mr-1"></i><span translate>Yes</span>
+                                            </span>
+                                            <span ng-if="!instance.templateId.applyTax" class="text-muted">
+                                                <i class="icon-cross2 mr-1"></i><span translate>No</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr ng-if="instance.templateId.applyTax && instance.templateId.taxConfig">
+                                        <td class="text-muted" translate>Tax Rate</td>
+                                        <td>{{instance.templateId.taxConfig.itsRate || 0}}%</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Not Found State -->
+            <div class="text-center p-5" ng-if="!loading && !instance">
+                <i class="icon-warning2 text-warning d-block mb-3" style="font-size: 3rem;"></i>
+                <h5 class="text-muted" translate>Instance not found</h5>
+                <button class="btn btn-primary mt-3" ng-click="goBack()">
+                    <i class="icon-arrow-left7 mr-2"></i><span translate>Back to Instances</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>

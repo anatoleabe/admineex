@@ -1,5 +1,5 @@
 angular.module('app')
-    .controller('BonusTemplatesController', ['$scope', '$rootScope', '$http', '$q', '$timeout', '$ocLazyLoad', '$injector', 'toastr', 'gettextCatalog', function($scope, $rootScope, $http, $q, $timeout, $ocLazyLoad, $injector, toastr, gettextCatalog) {
+    .controller('BonusTemplatesController', ['$scope', '$rootScope', '$http', '$q', '$timeout', '$ocLazyLoad', '$injector', 'toastr', 'gettextCatalog', function ($scope, $rootScope, $http, $q, $timeout, $ocLazyLoad, $injector, toastr, gettextCatalog) {
         // Ensure kernel exists for this scope so views using kernel.loading work
         $scope.kernel = $scope.kernel || { loading: 100 };
         function t(msgid) {
@@ -9,7 +9,8 @@ angular.module('app')
         const role = ($rootScope.account && $rootScope.account.role) ? String($rootScope.account.role) : '';
         // Role 1: Admin, Role 6: Bonus Manager - both can manage templates
         $scope.permissions = {
-            canManageTemplates: role === '1' || role === '6'
+            canManageTemplates: role === '1' || role === '6',
+            canAnticipateGeneration: role === '1' || role === '6'
         };
         // State management
         $scope.state = {
@@ -35,7 +36,7 @@ angular.module('app')
         $scope.updateTemplateLabel = t('Update Template');
         $scope.createTemplateLabel = t('Create Template');
 
-        $scope.getActiveLabel = function(isActive) {
+        $scope.getActiveLabel = function (isActive) {
             return isActive ? t('Active') : t('Inactive');
         };
 
@@ -259,7 +260,7 @@ angular.module('app')
         }
 
         // Apply filters to templates, then sort and paginate
-        $scope.applyFilters = function(resetPage) {
+        $scope.applyFilters = function (resetPage) {
             const list = $scope.templates || [];
 
             const query = ($scope.searchQuery || '').toLowerCase();
@@ -307,18 +308,18 @@ angular.module('app')
             $scope.paginatedTemplates = $scope.filteredTemplates.slice(start, end);
         };
 
-        $scope.setPage = function(page) {
+        $scope.setPage = function (page) {
             if (!page || page < 1 || page > $scope.pageCount) return;
             $scope.currentPage = page;
             $scope.applyFilters(false);
         };
 
-        $scope.setStatusFilter = function(value) {
+        $scope.setStatusFilter = function (value) {
             $scope.statusFilter = value;
             $scope.applyFilters(true);
         };
 
-        $scope.toggleCategory = function(value) {
+        $scope.toggleCategory = function (value) {
             if (!$scope.categoryFilters) $scope.categoryFilters = [];
             const idx = $scope.categoryFilters.indexOf(value);
             if (idx === -1) $scope.categoryFilters.push(value);
@@ -326,17 +327,17 @@ angular.module('app')
             $scope.applyFilters(true);
         };
 
-        $scope.setViewMode = function(mode) {
+        $scope.setViewMode = function (mode) {
             $scope.viewMode = mode;
         };
 
-        $scope.toggleSortDir = function() {
+        $scope.toggleSortDir = function () {
             $scope.sortDir = $scope.sortDir === 'asc' ? 'desc' : 'asc';
             $scope.applyFilters(false);
         };
 
         // Reset all filters
-        $scope.resetFilters = function() {
+        $scope.resetFilters = function () {
             $scope.searchQuery = '';
             $scope.statusFilter = '';
             $scope.categoryFilter = '';
@@ -346,13 +347,13 @@ angular.module('app')
         };
 
         // Get label for category
-        $scope.getCategoryLabel = function(category) {
+        $scope.getCategoryLabel = function (category) {
             const found = $scope.constants.categories.find(c => c.value === category);
             return found ? found.label : category;
         };
 
         // Get label for periodicity
-        $scope.getPeriodicityLabel = function(periodicity) {
+        $scope.getPeriodicityLabel = function (periodicity) {
             const found = $scope.constants.periodicities.find(p => p.value === periodicity);
             return found ? found.label : periodicity;
         };
@@ -496,12 +497,12 @@ angular.module('app')
         }
 
         $scope.periodicitySchedule = null;
-        $scope.$watch('templateFormData.periodicity', function(value) {
+        $scope.$watch('templateFormData.periodicity', function (value) {
             $scope.periodicitySchedule = buildPeriodicitySchedule(value);
         });
 
         // Get label for formula type
-        $scope.getFormulaTypeLabel = function(formulaType) {
+        $scope.getFormulaTypeLabel = function (formulaType) {
             const found = $scope.constants.formulaTypes.find(f => f.value === formulaType);
             return found ? found.label : formulaType;
         };
@@ -546,7 +547,7 @@ angular.module('app')
             };
         }
 
-        $scope.getSubStructuresForRule = function(rule) {
+        $scope.getSubStructuresForRule = function (rule) {
             if (!rule) return $scope.ruleOptions.subStructures;
             const parent = rule.parentStructureCode || '';
             if (parent && subStructuresByParent[parent]) return subStructuresByParent[parent];
@@ -632,7 +633,7 @@ angular.module('app')
             return val;
         }
 
-        $scope.addIftStructure = function(optionOrId) {
+        $scope.addIftStructure = function (optionOrId) {
             const id = normalizeStructureId(optionOrId || $scope.selectedIftStructureId);
             if (!id) return;
             ensureIftConfig();
@@ -647,14 +648,14 @@ angular.module('app')
             $scope.selectedIftStructureId = '';
         };
 
-        $scope.removeIftStructure = function(id) {
+        $scope.removeIftStructure = function (id) {
             ensureIftConfig();
             const cfg = $scope.templateFormData.iftConfig;
             cfg.includedStructureIds = (cfg.includedStructureIds || []).filter(structId => structId !== id);
             $scope.iftSelectedStructures = ($scope.iftSelectedStructures || []).filter(s => s.id !== id);
         };
 
-        $scope.searchIftPersonnel = function(query) {
+        $scope.searchIftPersonnel = function (query) {
             if (iftPersonnelSearchTimeout) {
                 $timeout.cancel(iftPersonnelSearchTimeout);
                 iftPersonnelSearchTimeout = null;
@@ -671,7 +672,7 @@ angular.module('app')
             return deferred.promise;
         };
 
-        $scope.searchIftStructures = function(query) {
+        $scope.searchIftStructures = function (query) {
             const term = (query || '').toLowerCase().trim();
             const list = $scope.iftStructureOptions || [];
             if (!term) return $q.when(list.slice(0, 50));
@@ -682,7 +683,7 @@ angular.module('app')
             return $q.when(filtered.slice(0, 50));
         };
 
-        $scope.onIftPersonnelSelected = function(person) {
+        $scope.onIftPersonnelSelected = function (person) {
             if (!person) return;
             ensureIftConfig();
             const cfg = $scope.templateFormData.iftConfig;
@@ -697,7 +698,7 @@ angular.module('app')
             $scope.iftPersonnelSearch = '';
         };
 
-        $scope.removeIftPersonnel = function(id) {
+        $scope.removeIftPersonnel = function (id) {
             ensureIftConfig();
             const cfg = $scope.templateFormData.iftConfig;
             cfg.includePersonnelIds = (cfg.includePersonnelIds || []).filter(pid => pid !== id);
@@ -705,17 +706,83 @@ angular.module('app')
         };
 
         // View template details
-        $scope.viewTemplate = function(template) {
+        $scope.viewTemplate = function (template) {
             $scope.state.viewing = true;
             $scope.viewedTemplate = angular.copy(template);
             $('#modal_view_template').modal('show');
         };
 
         // Close view modal
-        $scope.closeViewModal = function() {
+        $scope.closeViewModal = function () {
             $('#modal_view_template').modal('hide');
             $scope.state.viewing = false;
             $scope.viewedTemplate = null;
+        };
+
+        // Navigate to instances page filtered by this template
+        $scope.viewTemplateCycles = function (template) {
+            if (!template || !template._id) return;
+            // Get $state service via injector
+            $ocLazyLoad.load('js/controllers/bonus/BonusInstancesCtrl.js').then(function () {
+                const $state = $injector.get('$state');
+                $state.go('home.bonus.instances', { templateId: template._id });
+            });
+        };
+
+        // Anticipate/early generate bonuses for a template
+        $scope.anticipateGeneration = function (template) {
+            if (!template || !template._id) return;
+            if (!$scope.permissions.canAnticipateGeneration) {
+                toastr.error(t('Not authorized'));
+                return;
+            }
+            if (!template.isActive) {
+                toastr.error(t('Cannot generate bonuses for an inactive template'));
+                return;
+            }
+            if (template.periodicity === 'on_demand') {
+                toastr.error(t('On-demand templates cannot be anticipated. Use manual generation instead.'));
+                return;
+            }
+
+            // Get periodicity label for display
+            var periodicityLabel = $scope.getPeriodicityLabel(template.periodicity) || template.periodicity;
+
+            // Use native confirm dialog for compatibility
+            var confirmMessage = t('This will immediately generate bonus allocations for the current period.') + '\n\n' +
+                t('Template') + ': ' + template.name + '\n' +
+                t('Periodicity') + ': ' + periodicityLabel + '\n\n' +
+                t('Note: You can only generate once per period. This action cannot be undone.') + '\n\n' +
+                t('Do you want to continue?');
+
+            if (!confirm(confirmMessage)) {
+                return;
+            }
+
+            console.log('Generate Now: User confirmed, calling API...');
+            $scope.state.saving = true;
+            $http.post('/api/bonus/generation/anticipate', { templateId: template._id })
+                .then(function (response) {
+                    console.log('Generate Now: API response', response);
+                    $scope.state.saving = false;
+                    var data = response.data || {};
+                    var message = data.message || t('Bonus instance generated successfully');
+                    if (data.referencePeriod) {
+                        message += ' (' + data.referencePeriod + ')';
+                    }
+                    if (data.allocationsGenerated !== undefined) {
+                        message += ' - ' + data.allocationsGenerated + ' allocations created';
+                    }
+                    toastr.success(message);
+                    alert(t('Success!') + '\n' + message);
+                })
+                .catch(function (error) {
+                    console.error('Generate Now: API error', error);
+                    $scope.state.saving = false;
+                    var errMsg = (error.data && error.data.message) || t('Failed to generate bonuses');
+                    toastr.error(errMsg);
+                    alert(t('Error') + '\n' + errMsg);
+                });
         };
 
         // Deep clean object before saving (remove empty arrays/objects)
@@ -939,24 +1006,24 @@ angular.module('app')
             $scope.state.loading = true;
             $scope.kernel.loading = 0;
             return $http.get('/api/bonus/templates', { params: { limit: 500, offset: 0, envelope: true } })
-                .then(function(response) {
+                .then(function (response) {
                     var data = response.data;
                     $scope.templates = (data && data.items) ? data.items : (Array.isArray(data) ? data : []);
                     computeStats();
                     $scope.applyFilters(true);
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     toastr.error(t('Failed to load bonus programs'));
                     console.error('Error loading bonus templates:', err);
                 })
-                .finally(function() {
+                .finally(function () {
                     $scope.state.loading = false;
                     $scope.kernel.loading = 100;
                 });
         }
 
         // Toggle active status
-        $scope.toggleActive = function(template) {
+        $scope.toggleActive = function (template) {
             if (!$scope.permissions.canManageTemplates) {
                 toastr.error(t('Not authorized'));
                 template.isActive = !template.isActive;
@@ -965,7 +1032,7 @@ angular.module('app')
             const updated = { isActive: !!template.isActive };
             $scope.state.saving = true;
             $http.put('/api/bonus/templates/' + template._id, updated)
-                .then(function(res) {
+                .then(function (res) {
                     // Update updatedAt from server if returned
                     if (res && res.data) {
                         template.updatedAt = res.data.updatedAt || template.updatedAt;
@@ -974,13 +1041,13 @@ angular.module('app')
                     computeStats();
                     toastr.success(t('Template ') + (template.isActive ? t('activated') : t('deactivated')), t('Success'));
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     console.error('Error updating status:', err);
                     toastr.error(t('Failed to update status'), t('Error'));
                     // Revert toggle on error
                     template.isActive = !template.isActive;
                 })
-                .finally(function() {
+                .finally(function () {
                     $scope.state.saving = false;
                 });
         };
@@ -989,11 +1056,11 @@ angular.module('app')
         loadTemplates();
 
         // Helper function for category descriptions
-        $scope.getCategoryHelp = function(category) {
+        $scope.getCategoryHelp = function (category) {
             const cat = $scope.constants.categories.find(c => c.value === category);
             if (!cat) return 'Select a category';
 
-            switch(category) {
+            switch (category) {
                 case 'with_parts': return 'Bonus calculated using a configurable parts system';
                 case 'without_parts': return 'Simple bonus without parts calculation';
                 case 'fixed_amount': return 'Fixed amount bonus for all eligible personnel';
@@ -1002,20 +1069,97 @@ angular.module('app')
             }
         };
 
+        // Tab navigation for wizard
+        $scope.wizardTabs = ['basic-info', 'calculation', 'rules', 'workflow'];
+        $scope.activeTab = 'basic-info';
+        $scope.basicInfoComplete = false;
+        $scope.calculationComplete = false;
+
+        $scope.goToTab = function (tabId) {
+            $scope.activeTab = tabId;
+            // Update completion status
+            $scope.updateCompletionStatus();
+            // Scroll to top of content area
+            $timeout(function () {
+                var contentArea = document.querySelector('.tab-content-area');
+                if (contentArea) {
+                    contentArea.scrollTop = 0;
+                }
+            }, 50);
+        };
+
+        $scope.nextStep = function () {
+            var currentIndex = $scope.wizardTabs.indexOf($scope.activeTab);
+            if (currentIndex < $scope.wizardTabs.length - 1) {
+                $scope.goToTab($scope.wizardTabs[currentIndex + 1]);
+            }
+        };
+
+        $scope.prevStep = function () {
+            var currentIndex = $scope.wizardTabs.indexOf($scope.activeTab);
+            if (currentIndex > 0) {
+                $scope.goToTab($scope.wizardTabs[currentIndex - 1]);
+            }
+        };
+
+        $scope.isFirstStep = function () {
+            return $scope.activeTab === $scope.wizardTabs[0];
+        };
+
+        $scope.isLastStep = function () {
+            return $scope.activeTab === $scope.wizardTabs[$scope.wizardTabs.length - 1];
+        };
+
+        $scope.updateCompletionStatus = function () {
+            if ($scope.templateFormData) {
+                // Basic info complete if code, name, category and periodicity are filled
+                $scope.basicInfoComplete = !!($scope.templateFormData.code &&
+                    $scope.templateFormData.name &&
+                    $scope.templateFormData.category &&
+                    $scope.templateFormData.periodicity);
+
+                // Calculation complete depends on category
+                var calc = $scope.templateFormData.calculationConfig || {};
+                switch ($scope.templateFormData.category) {
+                    case 'with_parts':
+                        $scope.calculationComplete = !!(calc.defaultShareAmount > 0);
+                        break;
+                    case 'fixed_amount':
+                        $scope.calculationComplete = !!(calc.fixedAmount > 0);
+                        break;
+                    case 'without_parts':
+                        $scope.calculationComplete = !!calc.subType;
+                        break;
+                    case 'calculated':
+                        $scope.calculationComplete = !!calc.formulaType;
+                        break;
+                    default:
+                        $scope.calculationComplete = false;
+                }
+            }
+        };
+
+        // Watch for changes to update completion status
+        $scope.$watch('templateFormData', function () {
+            $scope.updateCompletionStatus();
+        }, true);
+
         // Open create form
-        $scope.openTemplateForm = function() {
+        $scope.openTemplateForm = function () {
             if (!$scope.permissions.canManageTemplates) {
                 toastr.error(t('Not authorized'));
                 return;
             }
             $scope.editingTemplate = null;
+            $scope.activeTab = 'basic-info';
+            $scope.basicInfoComplete = false;
+            $scope.calculationComplete = false;
             initializeTemplateForm();
             $('#modal_basic').modal('show');
-            $('a[href="#basic-info"]').tab('show');
         };
 
         // Edit template
-        $scope.editTemplate = function(template) {
+        $scope.editTemplate = function (template) {
             if (!$scope.permissions.canManageTemplates) {
                 toastr.error(t('Not authorized'));
                 return;
@@ -1024,6 +1168,7 @@ angular.module('app')
             $scope.templateFormData = angular.copy(template);
             $scope.selectedIftStructureId = '';
             $scope.iftPersonnelSearch = '';
+            $scope.activeTab = 'basic-info';
 
             // Ensure nested objects exist
             $scope.templateFormData.calculationConfig = $scope.templateFormData.calculationConfig || {};
@@ -1040,19 +1185,21 @@ angular.module('app')
             $scope.templateFormData.approvalWorkflow = $scope.templateFormData.approvalWorkflow || { steps: [] };
             $scope.templateFormData.eligibilityRules = normalizeEligibilityRules($scope.templateFormData.eligibilityRules || []);
 
+            // Update completion status for existing template
+            $scope.updateCompletionStatus();
+
             $('#modal_basic').modal('show');
-            $('a[href="#basic-info"]').tab('show');
         };
 
         // Close form modal
-        $scope.closeTemplateForm = function() {
+        $scope.closeTemplateForm = function () {
             $('#modal_basic').modal('hide');
             $scope.editingTemplate = null;
             $scope.templateFormData = null;
         };
 
         // Helper functions for eligibility rules
-        $scope.addEligibilityRule = function() {
+        $scope.addEligibilityRule = function () {
             if (!$scope.templateFormData.eligibilityRules) {
                 $scope.templateFormData.eligibilityRules = [];
             }
@@ -1067,11 +1214,11 @@ angular.module('app')
             });
         };
 
-        $scope.removeEligibilityRule = function(index) {
+        $scope.removeEligibilityRule = function (index) {
             $scope.templateFormData.eligibilityRules.splice(index, 1);
         };
 
-        $scope.moveEligibilityRule = function(index, direction) {
+        $scope.moveEligibilityRule = function (index, direction) {
             if (direction === 'up' && index > 0) {
                 const temp = $scope.templateFormData.eligibilityRules[index - 1];
                 $scope.templateFormData.eligibilityRules[index - 1] = $scope.templateFormData.eligibilityRules[index];
@@ -1084,7 +1231,7 @@ angular.module('app')
         };
 
         // Helper functions for approval workflow
-        $scope.addApprovalStep = function() {
+        $scope.addApprovalStep = function () {
             if (!$scope.templateFormData.approvalWorkflow) {
                 $scope.templateFormData.approvalWorkflow = { steps: [] };
             }
@@ -1099,7 +1246,7 @@ angular.module('app')
         };
 
         // IFT helpers
-        $scope.addIftRule = function() {
+        $scope.addIftRule = function () {
             $scope.templateFormData.iftConfig = $scope.templateFormData.iftConfig || { amountRules: [] };
             $scope.templateFormData.iftConfig.amountRules.push({
                 match: { rankCode: '' },
@@ -1108,12 +1255,12 @@ angular.module('app')
             });
         };
 
-        $scope.removeIftRule = function(index) {
+        $scope.removeIftRule = function (index) {
             if (!$scope.templateFormData.iftConfig || !$scope.templateFormData.iftConfig.amountRules) return;
             $scope.templateFormData.iftConfig.amountRules.splice(index, 1);
         };
 
-        $scope.resetIftDefaultRules = function() {
+        $scope.resetIftDefaultRules = function () {
             ensureIftConfig();
             $scope.templateFormData.iftConfig.amountRules = [
                 { match: { rankCode: 'NON_NOMME' }, amount: 60000, description: 'Non nommé / CA / AG' },
@@ -1126,11 +1273,11 @@ angular.module('app')
             ];
         };
 
-        $scope.removeApprovalStep = function(index) {
+        $scope.removeApprovalStep = function (index) {
             $scope.templateFormData.approvalWorkflow.steps.splice(index, 1);
         };
 
-        $scope.moveApprovalStep = function(index, direction) {
+        $scope.moveApprovalStep = function (index, direction) {
             if (!$scope.templateFormData.approvalWorkflow.steps) return;
 
             if (direction === 'up' && index > 0) {
@@ -1145,7 +1292,7 @@ angular.module('app')
         };
 
         // Normalize template code: uppercase, replace whitespace with underscores, keep allowed chars
-        $scope.onCodeChange = function() {
+        $scope.onCodeChange = function () {
             var v = ($scope.templateFormData && $scope.templateFormData.code) ? String($scope.templateFormData.code) : '';
             // Replace any whitespace with underscore
             v = v.replace(/\s+/g, '_');
@@ -1157,7 +1304,7 @@ angular.module('app')
         };
 
         // Save template
-        $scope.saveTemplate = function() {
+        $scope.saveTemplate = function () {
             if (!$scope.permissions.canManageTemplates) {
                 toastr.error(t('Not authorized'));
                 return;
@@ -1175,23 +1322,23 @@ angular.module('app')
             const url = '/api/bonus/templates' + ($scope.editingTemplate ? '/' + $scope.editingTemplate._id : '');
 
             $http[method](url, cleanedData)
-                .then(function() {
+                .then(function () {
                     toastr.success(t('Template saved successfully'), t('Success'));
                     loadTemplates();
                     $scope.closeTemplateForm();
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     console.error('Error saving template:', error);
                     const errorMsg = error.data && error.data.message ? error.data.message : t('Error saving template');
                     toastr.error(errorMsg, t('Error'));
                 })
-                .finally(function() {
+                .finally(function () {
                     $scope.state.saving = false;
                 });
         };
 
         // Delete template
-        $scope.confirmDelete = function(template) {
+        $scope.confirmDelete = function (template) {
             if (!$scope.permissions.canManageTemplates) {
                 toastr.error(t('Not authorized'));
                 return;
@@ -1203,16 +1350,16 @@ angular.module('app')
             $scope.state.deleting = true;
 
             $http.delete('/api/bonus/templates/' + template._id)
-                .then(function() {
+                .then(function () {
                     toastr.success(t('Template deleted successfully'), t('Success'));
                     loadTemplates();
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     console.error('Error deleting template:', error);
                     const errorMsg = error.data && error.data.message ? error.data.message : t('Error deleting template');
                     toastr.error(errorMsg, t('Error'));
                 })
-                .finally(function() {
+                .finally(function () {
                     $scope.state.deleting = false;
                 });
         };

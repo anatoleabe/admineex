@@ -728,6 +728,13 @@
         "roles": [6]
     },
     {
+        "id": 251,
+        "uri": "/api/bonus/instances/:id",
+        "method": "DELETE",
+        "roles": [1, 6],
+        "description": "Delete a draft or cancelled bonus instance permanently"
+    },
+    {
         "id": 227,
         "uri": "/api/bonus/instances/:id/generate-payments",
         "method": "POST",

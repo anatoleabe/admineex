@@ -1,4 +1,5 @@
-<md-dialog aria-label="Adjust Allocation" class="modal-lg adjust-allocation-modal" style="min-width: 600px; width: 60%;">
+<md-dialog aria-label="Adjust Allocation" class="modal-lg adjust-allocation-modal"
+    style="min-width: 600px; width: 60%;">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2 translate>Adjust Allocation</h2>
@@ -14,23 +15,26 @@
         <div class="card border-left border-primary shadow-sm mb-4">
             <div class="card-body p-3">
                 <div class="media">
-                    <img ng-if="selectedAllocation.personnelId.photo"
-                         ng-src="{{selectedAllocation.personnelId.photo}}"
-                         class="rounded-circle mr-3" width="60" height="60" alt="">
+                    <img ng-if="selectedAllocation.personnelId.photo" ng-src="{{selectedAllocation.personnelId.photo}}"
+                        class="rounded-circle mr-3" width="60" height="60" alt="">
                     <div ng-if="!selectedAllocation.personnelId.photo"
-                         class="rounded-circle mr-3 d-flex align-items-center justify-content-center bg-secondary text-white"
-                         style="width:60px; height:60px; font-size:2rem;">
-                        {{ (selectedAllocation.personnelId.name.text && selectedAllocation.personnelId.name.text.charAt(0).toUpperCase())
-                        || (selectedAllocation.personnelId.name.family[0] && selectedAllocation.personnelId.name.family[0].charAt(0).toUpperCase())
+                        class="rounded-circle mr-3 d-flex align-items-center justify-content-center bg-secondary text-white"
+                        style="width:60px; height:60px; font-size:2rem;">
+                        {{ (selectedAllocation.personnelId.name.text &&
+                        selectedAllocation.personnelId.name.text.charAt(0).toUpperCase())
+                        || (selectedAllocation.personnelId.name.family[0] &&
+                        selectedAllocation.personnelId.name.family[0].charAt(0).toUpperCase())
                         || '?' }}
                     </div>
                     <div class="media-body">
                         <h5 class="font-weight-semibold mb-0">
                             {{selectedAllocation.personnelId.name.text ||
-                              selectedAllocation.personnelId.name.use ||
-                              (selectedAllocation.personnelId.name.family[0] + ' ' + selectedAllocation.personnelId.name.given[0])}}
+                            selectedAllocation.personnelId.name.use ||
+                            (selectedAllocation.personnelId.name.family[0] + ' ' +
+                            selectedAllocation.personnelId.name.given[0])}}
                         </h5>
-                        <p class="text-muted mb-0"><span translate>ID:</span> {{selectedAllocation.personnelId.identifier}}</p>
+                        <p class="text-muted mb-0"><span translate>ID:</span>
+                            {{selectedAllocation.personnelId.identifier}}</p>
                         <span class=" badge-pill mt-2" ng-class="{
                             'badge-success': selectedAllocation.status === 'eligible',
                             'badge-danger': selectedAllocation.status === 'excluded',
@@ -39,9 +43,10 @@
                         <span class="badge badge-secondary mt-2 ml-2">
                             {{selectedAllocation.isWithParts ? 'Prime avec part' : 'Prime sans part'}}
                         </span>
-	                        <span class="badge badge-info mt-2 ml-2" ng-if="selectedAllocation.calculationInputs.subType === 'ift'">
-	                            <span translate>IFT &middot; IRPP exempt</span>
-	                        </span>
+                        <span class="badge badge-info mt-2 ml-2"
+                            ng-if="selectedAllocation.calculationInputs.subType === 'ift'">
+                            <span translate>IFT &middot; IRPP exempt</span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -50,38 +55,41 @@
         <!-- Adjustment Details Card -->
         <div class="card shadow-sm mb-4">
             <div class="card-header bg-light">
-                <h6 class="mb-0 font-weight-semibold"><i class="icon-calculator3 mr-2"></i><span translate>Adjustment Details</span></h6>
+                <h6 class="mb-0 font-weight-semibold"><i class="icon-calculator3 mr-2"></i><span translate>Adjustment
+                        Details</span></h6>
             </div>
             <div class="card-body p-3">
-	                <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-	                    <div class="text-muted">
-	                        <span translate>Type:</span> <span class="font-weight-semibold">{{selectedAllocation.isWithParts ? 'Avec part (Parts x part share)' : 'Sans part (TX/SBI fixes)'}}</span>
-	                    </div>
-	                    <div class="text-muted">
-	                        <span translate>Calculated amount:</span> <span class="font-weight-semibold">{{selectedAllocation.calculatedAmount | number:0}} FCFA</span>
-	                    </div>
-	                </div>
+                <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+                    <div class="text-muted">
+                        <span translate>Type:</span> <span class="font-weight-semibold">{{selectedAllocation.isWithParts
+                            ? 'Avec part (Parts x part share)' : 'Sans part (TX/SBI fixes)'}}</span>
+                    </div>
+                    <div class="text-muted">
+                        <span translate>Calculated amount:</span> <span
+                            class="font-weight-semibold">{{selectedAllocation.calculatedAmount | number:0}} FCFA</span>
+                    </div>
+                </div>
 
                 <!-- With parts layout -->
                 <div class="row" ng-if="selectedAllocation.isWithParts">
                     <div class="col-md-4">
                         <div class="form-group">
-	                            <label class="font-weight-semibold" translate>Parts/Shares</label>
+                            <label class="font-weight-semibold" translate>Parts/Shares</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="icon-stack"></i></span>
                                 </div>
-                                <input type="number"
-                                       class="form-control form-control-lg"
-                                       ng-model="selectedAllocation.calculationInputs.parts"
-                                       ng-change="updateFinalAmount()">
+                                <input type="number" class="form-control form-control-lg"
+                                    ng-model="selectedAllocation.calculationInputs.parts"
+                                    ng-model-options="{ debounce: 100 }" ng-change="updateFinalAmount()" min="0">
                             </div>
-	                            <small class="form-text text-muted"><span translate>Share value:</span> {{selectedAllocation.shareAmount | number:0}} FCFA</small>
+                            <small class="form-text text-muted"><span translate>Share value:</span>
+                                {{selectedAllocation.shareAmount | number:0}} FCFA</small>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-	                            <label class="font-weight-semibold" translate>Original Amount</label>
+                            <label class="font-weight-semibold" translate>Original Amount</label>
                             <div class="form-control-plaintext bg-light rounded p-2 text-right">
                                 {{selectedAllocation.calculatedAmount | number:0}} FCFA
                             </div>
@@ -89,13 +97,13 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-	                            <label class="font-weight-semibold" translate>Final Amount</label>
+                            <label class="font-weight-semibold" translate>Final Amount</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="icon-coin-dollar"></i></span>
                                 </div>
                                 <input type="number" class="form-control form-control-lg"
-                                       ng-model="selectedAllocation.finalAmount">
+                                    ng-model="selectedAllocation.finalAmount">
                                 <div class="input-group-append">
                                     <span class="input-group-text">FCFA</span>
                                 </div>
@@ -108,7 +116,7 @@
                 <div class="row" ng-if="!selectedAllocation.isWithParts">
                     <div class="col-md-4">
                         <div class="form-group mb-2">
-	                            <label class="font-weight-semibold mb-1" translate>TAUX (%)</label>
+                            <label class="font-weight-semibold mb-1" translate>TAUX (%)</label>
                             <div class="form-control-plaintext bg-light rounded p-2 text-center">
                                 {{ (selectedAllocation.calculationInputs.txPercent || 0) | number:0 }}
                             </div>
@@ -120,7 +128,8 @@
                             <div class="form-control-plaintext bg-light rounded p-2 text-right">
                                 {{ (selectedAllocation.calculationInputs.sbi || 0) | number:0 }} FCFA
                             </div>
-                            <small class="text-muted d-block" ng-if="selectedAllocation.calculationInputs.subType === 'ift'">
+                            <small class="text-muted d-block"
+                                ng-if="selectedAllocation.calculationInputs.subType === 'ift'">
                                 IFT allocations are paid without IRPP deduction.
                             </small>
                         </div>
@@ -133,13 +142,14 @@
                                     <span class="input-group-text"><i class="icon-coin-dollar"></i></span>
                                 </div>
                                 <input type="number" class="form-control form-control-lg"
-                                       ng-model="selectedAllocation.finalAmount">
+                                    ng-model="selectedAllocation.finalAmount">
                                 <div class="input-group-append">
                                     <span class="input-group-text">FCFA</span>
                                 </div>
                             </div>
                             <small class="form-text text-muted">
-                                <span translate>Calculated amount:</span> {{selectedAllocation.calculatedAmount | number:0}} FCFA
+                                <span translate>Calculated amount:</span> {{selectedAllocation.calculatedAmount |
+                                number:0}} FCFA
                             </small>
                         </div>
                     </div>
@@ -161,8 +171,10 @@
                                     'text-success': selectedAllocation.finalAmount > selectedAllocation.calculatedAmount,
                                     'text-danger': selectedAllocation.finalAmount < selectedAllocation.calculatedAmount
                                 }">
-                                    {{selectedAllocation.finalAmount - selectedAllocation.calculatedAmount | number:0}} FCFA
-                                    ({{((selectedAllocation.finalAmount - selectedAllocation.calculatedAmount) / (selectedAllocation.calculatedAmount || 1) * 100) | number:1}}%)
+                                    {{selectedAllocation.finalAmount - selectedAllocation.calculatedAmount | number:0}}
+                                    FCFA
+                                    ({{((selectedAllocation.finalAmount - selectedAllocation.calculatedAmount) /
+                                    (selectedAllocation.calculatedAmount || 1) * 100) | number:1}}%)
                                 </span>
                             </div>
                             <div ng-if="selectedAllocation.finalAmount == selectedAllocation.calculatedAmount">
@@ -178,9 +190,8 @@
                         <span translate>Reason for Adjustment:</span>
                         <span class="text-danger">*</span>
                     </label>
-                    <textarea class="form-control" rows="3"
-                              ng-model="selectedAllocation.calculationInputs.comment"
-                              placeholder="Enter adjustment reason... (required)" required></textarea>
+                    <textarea class="form-control" rows="3" ng-model="selectedAllocation.calculationInputs.comment"
+                        placeholder="Enter adjustment reason... (required)" required></textarea>
                     <small class="form-text text-muted">
                         Please provide a clear reason for this adjustment. This will be recorded in the history.
                     </small>
@@ -218,17 +229,18 @@
         </div>
     </md-dialog-content>
 
-	    <md-dialog-actions layout="row" class="border-top p-3">
-	        <span flex></span>
-	            <button type="button" class="btn btn-light" data-dismiss="modal" ng-click="cancel()">
-	                <i class="icon-cross2 mr-1"></i> <span translate>Cancel</span>
-	            </button>
-	            <button type="button" class="btn btn-primary" ng-click="save()"
-	                    ng-disabled="adjusting || !selectedAllocation.calculationInputs.comment">
-	                <md-progress-circular md-mode="indeterminate" md-diameter="16" ng-if="adjusting" class="md-accent md-hue-1 mr-2"></md-progress-circular>
-	                <i class="icon-spinner2 spinner mr-2" ng-if="adjusting"></i>
-	                <i class="icon-checkmark3 mr-1" ng-if="!adjusting"></i> <span translate>Save Changes</span>
-	            </button>
+    <md-dialog-actions layout="row" class="border-top p-3">
+        <span flex></span>
+        <button type="button" class="btn btn-light" data-dismiss="modal" ng-click="cancel()">
+            <i class="icon-cross2 mr-1"></i> <span translate>Cancel</span>
+        </button>
+        <button type="button" class="btn btn-primary" ng-click="save()"
+            ng-disabled="adjusting || !selectedAllocation.calculationInputs.comment">
+            <md-progress-circular md-mode="indeterminate" md-diameter="16" ng-if="adjusting"
+                class="md-accent md-hue-1 mr-2"></md-progress-circular>
+            <i class="icon-spinner2 spinner mr-2" ng-if="adjusting"></i>
+            <i class="icon-checkmark3 mr-1" ng-if="!adjusting"></i> <span translate>Save Changes</span>
+        </button>
 
-	    </md-dialog-actions>
-	</md-dialog>
+    </md-dialog-actions>
+</md-dialog>

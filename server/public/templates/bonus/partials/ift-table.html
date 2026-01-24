@@ -8,44 +8,57 @@
         <th width="8%" class="text-center" translate>Status</th>
         <th width="12%" class="text-right" translate>Gross Amount</th>
         <th width="12%" class="text-right" translate>Net Amount</th>
-        <th width="12%" class="text-right" translate>Previous</th>
+        <th width="12%" class="text-right" translate>Tax Amount</th>
         <th width="10%" class="text-center" translate>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="allocation in allocations">
         <td>
-          <div class="font-weight-semibold">{{allocation.personnelId.name.text || allocation.personnelId.name.use || allocation.personnelId.name.family[0] + ' ' + allocation.personnelId.name.given[0]}}</div>
+          <div class="font-weight-semibold">{{allocation.personnelId.name.text || allocation.personnelId.name.use ||
+            allocation.personnelId.name.family[0] + ' ' + allocation.personnelId.name.given[0]}}</div>
           <div class="text-muted font-size-sm">{{allocation.personnelId.identifier || 'N/A'}}</div>
         </td>
         <td>
           <div>{{allocation.calculationInputs.rankCode || allocation.personnelSnapshotId.data.rank || 'N/A'}}</div>
-          <div class="text-muted font-size-sm" ng-if="allocation.calculationInputs.functionCode">{{allocation.calculationInputs.functionCode}}</div>
+          <div class="text-muted font-size-sm" ng-if="allocation.calculationInputs.functionCode">
+            {{allocation.calculationInputs.functionCode}}</div>
         </td>
         <td>
-          <div>{{allocation.personnelSnapshotId.data.structure && (allocation.personnelSnapshotId.data.structure.name || allocation.personnelSnapshotId.data.structure.code) || 'N/A'}}</div>
-          <div class="text-muted font-size-sm" ng-if="allocation.personnelSnapshotId.data.subStructure && allocation.personnelSnapshotId.data.subStructure.name">{{allocation.personnelSnapshotId.data.subStructure.name}}</div>
+          <div>{{allocation.personnelSnapshotId.data.structure && (allocation.personnelSnapshotId.data.structure.name ||
+            allocation.personnelSnapshotId.data.structure.code) || 'N/A'}}</div>
+          <div class="text-muted font-size-sm"
+            ng-if="allocation.personnelSnapshotId.data.subStructure && allocation.personnelSnapshotId.data.subStructure.name">
+            {{allocation.personnelSnapshotId.data.subStructure.name}}</div>
         </td>
         <td class="text-center">
-          <span class="badge-pill" ng-class="{'badge-success': allocation.status==='eligible','badge-danger':allocation.status==='excluded','badge-warning':allocation.status==='adjusted'}">{{allocation.status | capitalize}}</span>
+          <span class="badge-pill"
+            ng-class="{'badge-success': allocation.status==='eligible','badge-danger':allocation.status==='excluded','badge-warning':allocation.status==='adjusted'}">{{allocation.status
+            | capitalize}}</span>
           <span class="badge badge-info ml-1">IFT</span>
         </td>
         <td class="text-right font-weight-semibold">{{allocation.grossAmount | number:0}} FCFA</td>
         <td class="text-right font-weight-semibold">{{allocation.netAmount | number:0}} FCFA</td>
-        <td class="text-right">
-          <span ng-if="getHistoricalDataForPersonnel(allocation.personnelId._id)">{{getHistoricalDataForPersonnel(allocation.personnelId._id).amount | number:0}} FCFA</span>
-          <span ng-if="!getHistoricalDataForPersonnel(allocation.personnelId._id)" class="text-muted">N/A</span>
-        </td>
+        <td class="text-right">{{allocation.taxAmount | number:0}} FCFA</td>
         <td class="text-center">
           <div class="btn-group">
-            <button class="btn btn-icon btn-primary" ng-if="permissions.canModifyPersonnelBonus && tableMode==='adjust' && allocation.status!=='excluded'" ng-click="adjustAllocation(allocation)"><i class="mi-edit"></i></button>
-            <button class="btn btn-icon btn-danger" ng-if="permissions.canModifyPersonnelBonus && tableMode==='adjust' && allocation.status!=='excluded'" ng-click="excludeAllocation(allocation)"><i class="mi-not-interested"></i></button>
-            <button class="btn btn-icon btn-success" ng-if="permissions.canModifyPersonnelBonus && tableMode==='adjust' && allocation.status==='excluded'" ng-click="includeAllocation(allocation)"><i class="mi-check"></i></button>
-            <button class="btn btn-icon btn-info" ng-click="openViewHistory(allocation)"><i class="mi-history"></i></button>
+            <button class="btn btn-icon btn-primary"
+              ng-if="permissions.canModifyPersonnelBonus && tableMode==='adjust' && allocation.status!=='excluded'"
+              ng-click="adjustAllocation(allocation)"><i class="mi-edit"></i></button>
+            <button class="btn btn-icon btn-danger"
+              ng-if="permissions.canModifyPersonnelBonus && tableMode==='adjust' && allocation.status!=='excluded'"
+              ng-click="excludeAllocation(allocation)"><i class="mi-not-interested"></i></button>
+            <button class="btn btn-icon btn-success"
+              ng-if="permissions.canModifyPersonnelBonus && tableMode==='adjust' && allocation.status==='excluded'"
+              ng-click="includeAllocation(allocation)"><i class="mi-check"></i></button>
+            <button class="btn btn-icon btn-info" ng-click="openViewHistory(allocation)"><i
+                class="mi-history"></i></button>
           </div>
         </td>
       </tr>
-      <tr ng-if="!allocations.length"><td colspan="8" class="text-center py-4" translate>No allocations found</td></tr>
+      <tr ng-if="!allocations.length">
+        <td colspan="8" class="text-center py-4" translate>No allocations found</td>
+      </tr>
     </tbody>
   </table>
 </div>

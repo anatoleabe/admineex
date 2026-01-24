@@ -1,4 +1,4 @@
-angular.module('app').controller('BonusInstancesController', ['$scope', '$rootScope', '$http', 'toastr', '$uibModal', '$ocLazyLoad', '$mdDialog', '$state', 'gettextCatalog', function ($scope, $rootScope, $http, toastr, $uibModal, $ocLazyLoad, $mdDialog, $state, gettextCatalog) {
+angular.module('app').controller('BonusInstancesController', ['$scope', '$rootScope', '$http', 'toastr', '$uibModal', '$ocLazyLoad', '$mdDialog', '$state', '$stateParams', 'gettextCatalog', function ($scope, $rootScope, $http, toastr, $uibModal, $ocLazyLoad, $mdDialog, $state, $stateParams, gettextCatalog) {
     function t(msgid) {
         return gettextCatalog.getString(msgid);
     }
@@ -42,9 +42,13 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$rootSc
     });
     $scope.instances = [];
     $scope.loading = false;
+
+    // Check for templateId from route params (from View Cycles navigation)
+    var initialTemplateId = ($stateParams && $stateParams.templateId) ? $stateParams.templateId : '';
+
     $scope.filters = {
         status: '',
-        templateId: '',
+        templateId: initialTemplateId,
         fromDate: '',
         toDate: ''
     };
@@ -310,6 +314,41 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$rootSc
             });
     };
 
+    // Delete instance permanently
+    $scope.deleteInstance = function (instance) {
+        if (!$scope.permissions.canDeleteInstance) {
+            toastr.error(t('Not authorized'));
+            return;
+        }
+        if (!instance || !instance._id) return;
+
+        // Use SweetAlert for confirmation
+        swal({
+            title: t('Delete Instance?'),
+            text: t('This will permanently delete this bonus instance and all its allocations. This action cannot be undone.'),
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: t('Yes, Delete'),
+            cancelButtonText: t('Cancel')
+        }).then(function (result) {
+            if (result.value || result === true) {
+                $http.delete('/api/bonus/instances/' + instance._id)
+                    .then(function () {
+                        toastr.success(t('Instance deleted successfully'));
+                        $scope.loadInstances();
+                    })
+                    .catch(function (error) {
+                        var errMsg = (error.data && error.data.message) || t('Failed to delete instance');
+                        toastr.error(errMsg);
+                    });
+            }
+        }).catch(function () {
+            // User cancelled - do nothing
+        });
+    };
+
     function getSelectedInstances() {
         return ($scope.instances || []).filter(function (inst) { return !!inst.selected; });
     }
@@ -422,6 +461,12 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$rootSc
             return;
         }
         $state.go('home.bonus.instance.wizard', { instanceId: instance._id });
+    };
+
+    // Navigate to instance details page
+    $scope.viewDetails = function (instance) {
+        if (!instance || !instance._id) return;
+        $state.go('home.bonus.instance.details', { instanceId: instance._id });
     };
 
     // Add Math to the scope for use in the template

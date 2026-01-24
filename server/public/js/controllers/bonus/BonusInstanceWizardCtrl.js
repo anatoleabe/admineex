@@ -497,6 +497,8 @@ angular.module('app')
             // Adjust allocation parts/amount
             $scope.adjustAllocation = function (allocation) {
                 setAllocationType(allocation);
+                // Get shareAmount from instance
+                var instanceShareAmount = ($scope.instance && $scope.instance.shareAmount) || 0;
                 $ocLazyLoad.load('js/controllers/bonus/AdjustAllocationModalCtrl.js').then(function () {
                     $mdDialog.show({
                         controller: 'AdjustAllocationModalCtrl',
@@ -504,7 +506,8 @@ angular.module('app')
                         parent: angular.element(document.body),
                         clickOutsideToClose: false,
                         locals: {
-                            allocation: allocation
+                            allocation: allocation,
+                            instanceShareAmount: instanceShareAmount
                         }
                     }).then(function (updatedAllocation) {
                         // Update the allocation in the list

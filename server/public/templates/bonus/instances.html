@@ -16,10 +16,7 @@
                     <div class="card-header header-elements-inline">
                     <h5 class="card-title" translate>Payout Cycles</h5>
                     <div class="header-elements">
-                        <button type="button" class="btn btn-primary" ng-if="permissions.canCreateCycle" ng-click="createInstance()">
-                            <i class="mi-add mr-2"></i> <span translate>Create New Cycle</span>
-                        </button>
-                        <div class="btn-group ml-2" ng-if="permissions.canBulkActions">
+                        <div class="btn-group" ng-if="permissions.canBulkActions">
                             <button type="button" class="btn btn-light dropdown-toggle" data-toggle="dropdown">
                                 <i class="mi-playlist-add mr-2"></i> <span translate>Bulk Actions</span>
                             </button>
@@ -143,7 +140,7 @@
                                 <input type="checkbox" class="form-check-input" ng-if="permissions.canBulkActions" ng-model="instance.selected">
                             </td>
                             <td>
-                                <a ui-sref="bonus.instance.details({id: instance._id})" class="text-blue font-weight-semibold">
+                                <a ui-sref="home.bonus.instance.details({instanceId: instance._id})" class="text-blue font-weight-semibold">
                                     {{instance.templateId.name}} - {{instance.referencePeriod}}
                                 </a>
                             </td>
@@ -200,12 +197,15 @@
                                         <a class="dropdown-item" ng-click="exportPDF(instance)">
                                             <i class="mi-picture-as-pdf mr-2"></i> <span translate>Export PDF</span>
                                         </a>
-                                        <div class="dropdown-divider" ng-if="permissions.canNotify || permissions.canCancelInstance"></div>
+                                        <div class="dropdown-divider" ng-if="permissions.canNotify || permissions.canCancelInstance || permissions.canDeleteInstance"></div>
                                         <a class="dropdown-item" ng-if="permissions.canNotify" ng-click="notify(instance)">
                                             <i class="mi-notifications mr-2"></i> <span translate>Send Notifications</span>
                                         </a>
-                                        <a class="dropdown-item text-danger" ng-if="permissions.canCancelInstance" ng-click="cancelInstance(instance)">
-                                            <i class="mi-delete mr-2"></i> <span translate>Cancel Instance</span>
+                                        <a class="dropdown-item text-danger" ng-if="permissions.canCancelInstance && instance.status !== 'cancelled'" ng-click="cancelInstance(instance)">
+                                            <i class="mi-cancel mr-2"></i> <span translate>Cancel Instance</span>
+                                        </a>
+                                        <a class="dropdown-item text-danger" ng-if="permissions.canDeleteInstance && (instance.status === 'draft' || instance.status === 'cancelled')" ng-click="deleteInstance(instance)">
+                                            <i class="mi-delete-forever mr-2"></i> <span translate>Delete Permanently</span>
                                         </a>
                                     </div>
                                 </div>

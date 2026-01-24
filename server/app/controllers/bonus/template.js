@@ -1,5 +1,6 @@
 const Template = require('../../models/bonus/template').BonusTemplate;
 const BonusRule = require('../../models/bonus/rule').BonusRule;
+const { BonusInstance } = require('../../models/bonus/instance');
 const { badRequest, notFound } = require('../../utils/ApiError');
 const audit = require('../../utils/audit-log');
 const dictionary = require('../../utils/dictionary');
@@ -129,7 +130,7 @@ exports.api.create = async (req, res, next) => {
 
             // Normalize nested object if sent as JSON strings
             if (typeof templateData.calculationConfig === 'string') {
-                try { templateData.calculationConfig = JSON.parse(templateData.calculationConfig); } catch(e) {}
+                try { templateData.calculationConfig = JSON.parse(templateData.calculationConfig); } catch (e) { }
             }
             const cfg = templateData.calculationConfig || {};
 
@@ -205,6 +206,9 @@ exports.api.getAll = async (req, res, next) => {
         if (activeOnly === 'true') filter.isActive = true;
         if (category) filter.category = category;
 
+        // By default, exclude deleted templates
+        filter.isDeleted = { $ne: true };
+
         const templates = await Template.find(filter)
             .populate('createdBy', 'firstname lastname')
             .sort({ createdAt: -1 })
@@ -244,6 +248,14 @@ exports.api.update = async (req, res, next) => {
     if ((req.is && req.is('application/json')) || (req.body && Object.keys(req.body).length > 0)) {
         try {
             const { id } = req.params;
+
+            // Check if template is historical (imported from Excel) - cannot be edited
+            const existingTemplate = await Template.findById(id);
+            if (!existingTemplate) throw notFound(t(req, 'Bonus template not found'));
+            if (existingTemplate.isHistoricalTemplate) {
+                throw badRequest(t(req, 'Historical templates imported from Excel cannot be edited'));
+            }
+
             const updateData = req.body || {};
             updateData.updatedAt = new Date();
             normalizeIftConfigPayload(updateData.iftConfig);
@@ -271,6 +283,14 @@ exports.api.update = async (req, res, next) => {
         }
         try {
             const { id } = req.params;
+
+            // Check if template is historical (imported from Excel) - cannot be edited
+            const existingTemplate = await Template.findById(id);
+            if (!existingTemplate) throw notFound(t(req, 'Bonus template not found'));
+            if (existingTemplate.isHistoricalTemplate) {
+                throw badRequest(t(req, 'Historical templates imported from Excel cannot be edited'));
+            }
+
             const updateData = fields;
             updateData.updatedAt = new Date();
             normalizeIftConfigPayload(updateData.iftConfig);
@@ -292,24 +312,49 @@ exports.api.update = async (req, res, next) => {
 }
 
 /**
- * Delete bonus template (soft delete)
+ * Delete bonus template
+ * Hard delete if no instances exist, soft delete otherwise
  */
 exports.api.delete = async (req, res, next) => {
     try {
-        const template = await Template.findByIdAndUpdate(
-            req.params.id,
-            { isActive: false, deactivatedAt: new Date(), deactivatedBy: req.user.id },
-            { new: true }
-        );
-
-        if (!template) {
+        // Check if template exists
+        const existingTemplate = await Template.findById(req.params.id);
+        if (!existingTemplate) {
             throw notFound(t(req, 'Bonus template not found'));
         }
+        if (existingTemplate.isHistoricalTemplate) {
+            throw badRequest(t(req, 'Historical templates imported from Excel cannot be deleted'));
+        }
+        if (existingTemplate.isDeleted) {
+            throw badRequest(t(req, 'Template is already deleted'));
+        }
 
-        auditEvent(req, 'deactivate', 'BonusTemplate', req.params.id, 'succeed', 'Deactivated bonus template');
-        res.status(httpStatus.NO_CONTENT).send();
+        // Check if template has any instances (payment cycles)
+        const instanceCount = await BonusInstance.countDocuments({ templateId: req.params.id });
+
+        if (instanceCount === 0) {
+            // No instances - hard delete (permanently remove)
+            await Template.findByIdAndDelete(req.params.id);
+            auditEvent(req, 'delete', 'BonusTemplate', req.params.id, 'succeed', 'Permanently deleted bonus template (no instances)');
+            res.status(200).json({ success: true, message: 'Template permanently deleted', permanent: true });
+        } else {
+            // Has instances - soft delete
+            const template = await Template.findByIdAndUpdate(
+                req.params.id,
+                {
+                    isDeleted: true,
+                    deletedAt: new Date(),
+                    deletedBy: req.user?.id || req.actor?.id,
+                    isActive: false
+                },
+                { new: true }
+            );
+
+            auditEvent(req, 'delete', 'BonusTemplate', req.params.id, 'succeed', `Soft deleted bonus template (${instanceCount} instances exist)`);
+            res.status(200).json({ success: true, message: 'Template deleted (archived)', permanent: false, instanceCount });
+        }
     } catch (error) {
-        auditEvent(req, 'deactivate', 'BonusTemplate', req.params.id, 'failed', error && error.message ? error.message : String(error));
+        auditEvent(req, 'delete', 'BonusTemplate', req.params.id, 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 }
@@ -319,6 +364,15 @@ exports.api.delete = async (req, res, next) => {
  */
 exports.api.activate = async (req, res, next) => {
     try {
+        // Check if template is historical (imported from Excel) - cannot toggle status
+        const existingTemplate = await Template.findById(req.params.id);
+        if (!existingTemplate) {
+            throw notFound(t(req, 'Bonus template not found'));
+        }
+        if (existingTemplate.isHistoricalTemplate) {
+            throw badRequest(t(req, 'Historical templates imported from Excel cannot have their status changed'));
+        }
+
         const template = await Template.findByIdAndUpdate(
             req.params.id,
             { isActive: true, activatedAt: new Date(), activatedBy: req.user.id },

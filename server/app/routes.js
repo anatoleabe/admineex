@@ -934,6 +934,13 @@ let routes = [
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.cancel],
         access: _.findWhere(aclRoutes, { id: 226 }).roles
     },
+    // Delete bonus instance (Admin and Bonus Manager only)
+    {
+        path: _.findWhere(aclRoutes, { id: 251 }).uri,
+        httpMethod: _.findWhere(aclRoutes, { id: 251 }).method,
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.delete],
+        access: _.findWhere(aclRoutes, { id: 251 }).roles
+    },
     {
         path: _.findWhere(aclRoutes, { id: 227 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 227 }).method,
@@ -957,7 +964,7 @@ let routes = [
         path: _.findWhere(aclRoutes, { id: 244 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 244 }).method,
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.updateWizardStep],
-        access: [1, 3, 4]
+        access: [1, 3, 4, 6] // Added role 6 (Bonus Manager)
     },
     {
         path: _.findWhere(aclRoutes, { id: 245 }).uri,
@@ -1082,6 +1089,14 @@ let routes = [
         httpMethod: _.findWhere(aclRoutes, { id: 242 }).method,
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusGenerationValidation.generateTemplate), controllers.bonus.generation.api.generateTemplateBonuses],
         access: _.findWhere(aclRoutes, { id: 242 }).roles
+    },
+
+    // Anticipate/early generate bonuses for a template (bonus managers only)
+    {
+        path: '/api/bonus/generation/anticipate',
+        httpMethod: 'POST',
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusGenerationValidation.anticipateTemplate), controllers.bonus.generation.api.anticipateTemplateBonuses],
+        access: [1, 6] // Admin and Bonus Manager only
     },
 
     // === OTHER ROUTES ==========================================================

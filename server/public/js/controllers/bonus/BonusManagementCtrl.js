@@ -10,6 +10,71 @@ angular.module('app').controller('BonusManagementController', function ($scope, 
 
   $scope.recentActivity = [];
 
+  // Date Range Filter
+  var now = new Date();
+  var twelveMonthsAgo = new Date(now);
+  twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+  $scope.dateRange = {
+    startDate: twelveMonthsAgo,
+    endDate: now
+  };
+
+  // Predefined date range options
+  $scope.dateRangeOptions = [
+    { label: gettextCatalog.getString('Last 12 Months'), value: '12m' },
+    { label: gettextCatalog.getString('Year to Date'), value: 'ytd' },
+    { label: gettextCatalog.getString('Last 6 Months'), value: '6m' },
+    { label: gettextCatalog.getString('Last 3 Months'), value: '3m' },
+    { label: gettextCatalog.getString('This Quarter'), value: 'quarter' },
+    { label: gettextCatalog.getString('Last Year'), value: 'lastyear' },
+    { label: gettextCatalog.getString('All Time'), value: 'all' },
+    { label: gettextCatalog.getString('Custom'), value: 'custom' }
+  ];
+  $scope.selectedDateRange = '12m';
+
+  $scope.applyDateRange = function() {
+    var now = new Date();
+    var start, end = now;
+
+    switch ($scope.selectedDateRange) {
+      case 'ytd':
+        start = new Date(now.getFullYear(), 0, 1);
+        break;
+      case '12m':
+        start = new Date(now);
+        start.setMonth(start.getMonth() - 12);
+        break;
+      case '6m':
+        start = new Date(now);
+        start.setMonth(start.getMonth() - 6);
+        break;
+      case '3m':
+        start = new Date(now);
+        start.setMonth(start.getMonth() - 3);
+        break;
+      case 'quarter':
+        var quarter = Math.floor(now.getMonth() / 3);
+        start = new Date(now.getFullYear(), quarter * 3, 1);
+        break;
+      case 'lastyear':
+        start = new Date(now.getFullYear() - 1, 0, 1);
+        end = new Date(now.getFullYear() - 1, 11, 31);
+        break;
+      case 'all':
+        start = new Date(2000, 0, 1); // Far past date
+        break;
+      case 'custom':
+        // Use existing dateRange values
+        return loadDashboardData();
+      default:
+        start = new Date(now.getFullYear(), 0, 1);
+    }
+
+    $scope.dateRange.startDate = start;
+    $scope.dateRange.endDate = end;
+    loadDashboardData();
+  };
+
   // Charts Data
   $scope.trendsLabels = [];
   $scope.trendsData = [];
@@ -99,30 +164,48 @@ angular.module('app').controller('BonusManagementController', function ($scope, 
     return statuses.join(',');
   }
 
+  function formatDateParam(date) {
+    if (!date) return '';
+    var d = new Date(date);
+    return d.toISOString().split('T')[0]; // YYYY-MM-DD
+  }
+
   // Load dashboard data
   function loadDashboardData() {
-    var params = { status: getStatusParams() };
+    var params = {
+      status: getStatusParams(),
+      startDate: formatDateParam($scope.dateRange.startDate),
+      endDate: formatDateParam($scope.dateRange.endDate)
+    };
 
     // 1. Key Statistics
     $http.get('/api/bonus/dashboard/stats', { params: params }).then(function (response) {
       $scope.stats = response.data;
+    }).catch(function(err) {
+      console.error('Error loading stats:', err);
     });
 
     // 2. Trends Chart
     $http.get('/api/bonus/dashboard/trends', { params: params }).then(function (response) {
       $scope.trendsLabels = response.data.labels;
       $scope.trendsData = [response.data.data]; // Chart.js expects array of arrays for line charts
+    }).catch(function(err) {
+      console.error('Error loading trends:', err);
     });
 
     // 3. Distribution Chart
     $http.get('/api/bonus/dashboard/distribution', { params: params }).then(function (response) {
       $scope.distributionLabels = response.data.labels;
       $scope.distributionData = response.data.data;
+    }).catch(function(err) {
+      console.error('Error loading distribution:', err);
     });
 
     // 4. Recent Activity
     $http.get('/api/bonus/dashboard/activity').then(function (response) {
       $scope.recentActivity = response.data;
+    }).catch(function(err) {
+      console.error('Error loading activity:', err);
     });
   }
 

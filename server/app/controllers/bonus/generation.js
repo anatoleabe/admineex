@@ -33,7 +33,7 @@ exports.api.generatePeriodicBonuses = async (req, res, next) => {
     const handleFields = async (fields) => {
         try {
             const { period } = fields;// Optional: 'monthly', 'quarterly', etc.
-            
+
             console.log(fields)
 
             const result = await generateBonusesForPeriod(period);
@@ -88,6 +88,86 @@ exports.api.generateTemplateBonuses = async (req, res, next) => {
     } catch (error) {
         console.error('Template bonus generation failed:', error);
         auditEvent(req, 'generate_template', 'BonusTemplate', (req.body && req.body.templateId) || '', 'failed', error && error.message ? error.message : String(error));
+        next(error);
+    }
+};
+
+/**
+ * Calculate current reference period based on template periodicity
+ */
+function getCurrentReferencePeriod(periodicity) {
+    const now = moment();
+    switch (periodicity) {
+        case 'daily':
+            return now.format('YYYY-MM-DD');
+        case 'weekly':
+            return now.format('YYYY-[W]WW');
+        case 'monthly':
+            return now.format('YYYY-MM');
+        case 'quarterly':
+            const quarter = Math.ceil((now.month() + 1) / 3);
+            return `${now.year()}-Q${quarter}`;
+        case 'semesterly':
+            const semester = now.month() < 6 ? 1 : 2;
+            return `${now.year()}-S${semester}`;
+        case 'yearly':
+            return now.format('YYYY');
+        default:
+            return now.format('YYYY-MM');
+    }
+}
+
+/**
+ * Anticipate/early generate bonuses for a template (before scheduled trigger)
+ * Can only be done once per period
+ */
+exports.api.anticipateTemplateBonuses = async (req, res, next) => {
+    try {
+        console.log('anticipateTemplateBonuses called with body:', req.body);
+        const { templateId } = req.body;
+
+        if (!templateId) {
+            throw badRequest(t(req, 'templateId is required'));
+        }
+
+        const template = await BonusTemplate.findById(templateId);
+        if (!template) {
+            throw notFound(t(req, 'Bonus template not found'));
+        }
+
+        if (!template.isActive) {
+            throw badRequest(t(req, 'Cannot generate bonuses for an inactive template'));
+        }
+
+        if (template.periodicity === 'on_demand') {
+            throw badRequest(t(req, 'On-demand templates cannot be anticipated. Use manual generation instead.'));
+        }
+
+        // Calculate current reference period based on template periodicity
+        const currentPeriod = getCurrentReferencePeriod(template.periodicity);
+
+        // Check if instance already exists for current period
+        const existingInstance = await BonusInstance.findOne({
+            templateId: template._id,
+            referencePeriod: currentPeriod
+        });
+
+        if (existingInstance) {
+            throw badRequest(t(req, 'A bonus instance already exists for the current period') + `: ${currentPeriod}`);
+        }
+
+        // Generate with isAnticipated flag
+        const result = await generateBonusesForTemplate(templateId, currentPeriod, { isAnticipated: true });
+
+        auditEvent(req, 'anticipate_template', 'BonusTemplate', templateId, 'succeed', `Anticipated generation for template. period=${currentPeriod}`);
+        res.status(201).json({
+            ...result,
+            referencePeriod: currentPeriod,
+            message: t(req, 'Bonus instance generated successfully for current period')
+        });
+    } catch (error) {
+        console.error('Anticipated template bonus generation failed:', error);
+        auditEvent(req, 'anticipate_template', 'BonusTemplate', (req.body && req.body.templateId) || '', 'failed', error && error.message ? error.message : String(error));
         next(error);
     }
 };
