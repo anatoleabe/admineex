@@ -81,7 +81,7 @@ exports.exportBonusToExcel = async (instance, options = {}) => {
             }
         }
 
-    // 3. Create workbook
+        // 3. Create workbook
         const workbook = new excel.Workbook();
         const worksheet = workbook.addWorksheet('Bonus Allocations');
 
@@ -147,15 +147,15 @@ exports.exportBonusToExcel = async (instance, options = {}) => {
             return null;
         }
 
-    const logoBuffer = tryLoadLogoBuffer();
-    addDgtcfmBonusHeader(worksheet, logoBuffer || undefined);
+        const logoBuffer = tryLoadLogoBuffer();
+        addDgtcfmBonusHeader(worksheet, logoBuffer || undefined);
 
         // After header insertion, base row offset is 33 rows
         const baseRow = 33;
 
-    // Define columns after inserting header so our widths override header defaults,
-    // but DO NOT set 'header' here to avoid ExcelJS auto-creating row 1 headers.
-    worksheet.columns = chosenHeaders.map(h => ({ key: h.key, width: h.width }));
+        // Define columns after inserting header so our widths override header defaults,
+        // but DO NOT set 'header' here to avoid ExcelJS auto-creating row 1 headers.
+        worksheet.columns = chosenHeaders.map(h => ({ key: h.key, width: h.width }));
 
         // Add title and section headers (MERGED CELLS), shifted by baseRow
         worksheet.mergeCells(`A${1 + baseRow}:${lastCol}${1 + baseRow}`);
@@ -561,7 +561,7 @@ exports.exportBonusToExcel = async (instance, options = {}) => {
                     ];
 
                     const dataRow = worksheet.addRow(isIFT ? rowValuesIft : (isWithoutParts ? rowValuesSansPart : rowValuesWithParts));
-                    const colsForNumbers = isIFT ? ['F'] : (isWithoutParts ? ['H','I','J'] : ['F','G','H']);
+                    const colsForNumbers = isIFT ? ['F'] : (isWithoutParts ? ['H', 'I', 'J'] : ['F', 'G', 'H']);
                     colsForNumbers.forEach(col => worksheet.getCell(`${col}${dataRow.number}`).numFmt = '#,##0');
 
                     dataRow.eachCell((cell) => {
@@ -588,7 +588,7 @@ exports.exportBonusToExcel = async (instance, options = {}) => {
                     cell.font = { bold: true };
                     cell.border = { top: { style: 'thin' }, bottom: { style: 'double' } };
                 });
-                const subtotalCols = isIFT ? ['F'] : (isWithoutParts ? ['H','I','J'] : ['E','F','G','H']);
+                const subtotalCols = isIFT ? ['F'] : (isWithoutParts ? ['H', 'I', 'J'] : ['E', 'F', 'G', 'H']);
                 subtotalCols.forEach(col => worksheet.getCell(`${col}${subtotalRow.number}`).numFmt = '#,##0');
 
                 structureRunningTotals.parts += subTotals.parts;
@@ -610,7 +610,7 @@ exports.exportBonusToExcel = async (instance, options = {}) => {
                 cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF5F5F5' } };
                 cell.border = { top: { style: 'thin' }, bottom: { style: 'double' } };
             });
-            const structSubtotalCols = isIFT ? ['F'] : (isWithoutParts ? ['H','I','J'] : ['E','F','G','H']);
+            const structSubtotalCols = isIFT ? ['F'] : (isWithoutParts ? ['H', 'I', 'J'] : ['E', 'F', 'G', 'H']);
             structSubtotalCols.forEach(col => worksheet.getCell(`${col}${structureSubtotalRow.number}`).numFmt = '#,##0');
 
             grandTotals.parts += structureRunningTotals.parts;
@@ -632,7 +632,7 @@ exports.exportBonusToExcel = async (instance, options = {}) => {
             cell.font = { bold: true, size: 12 };
             cell.border = { top: { style: 'thin' }, bottom: { style: 'double' } };
         });
-        const grandCols = isIFT ? ['F'] : (isWithoutParts ? ['H','I','J'] : ['E','F','G','H']);
+        const grandCols = isIFT ? ['F'] : (isWithoutParts ? ['H', 'I', 'J'] : ['E', 'F', 'G', 'H']);
         grandCols.forEach(col => {
             worksheet.getCell(`${col}${grandTotalRow.number}`).numFmt = '#,##0';
             worksheet.getCell(`${col}${grandTotalRow.number}`).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFEBEBEB' } };
@@ -731,15 +731,15 @@ exports.exportBonusToPdf = async (instance, options = {}) => {
 
                 // 7. Add title and header
                 doc.fontSize(14) // Reduced from 16
-                   .font('Helvetica-Bold')
-                   .text(`ETAT DE REPARTITION D'${bonusInstance.templateId.name} ${bonusInstance.referencePeriod}`, { align: 'center' })
-                   .moveDown(0.5); // Reduced from 1
+                    .font('Helvetica-Bold')
+                    .text(`ETAT DE REPARTITION D'${bonusInstance.templateId.name} ${bonusInstance.referencePeriod}`, { align: 'center' })
+                    .moveDown(0.5); // Reduced from 1
 
                 doc.fontSize(10) // Reduced from 12
-                   .text('I: PAIEMENTS PAR VIREMENT', { align: 'left' })
-                   .font('Helvetica-Oblique')
-                   .text('a: Services centraux, agences comptables et autres services', { align: 'left' })
-                   .moveDown(0.5); // Reduced from 1
+                    .text('I: PAIEMENTS PAR VIREMENT', { align: 'left' })
+                    .font('Helvetica-Oblique')
+                    .text('a: Services centraux, agences comptables et autres services', { align: 'left' })
+                    .moveDown(0.5); // Reduced from 1
 
                 // 8. Define table dimensions - Adjusted column widths for better fit
                 const startX = 40;
@@ -761,13 +761,13 @@ exports.exportBonusToPdf = async (instance, options = {}) => {
 
                 // 9. Draw table header
                 doc.font('Helvetica-Bold')
-                   .fontSize(8); // Reduced from default size
+                    .fontSize(8); // Reduced from default size
 
                 // Draw header background
                 doc.fillColor('#D3D3D3')
-                   .rect(startX, startY,
-                         colWidths.reduce((sum, w) => sum + w, 0), 25) // Increased from 20 to 25
-                   .fill();
+                    .rect(startX, startY,
+                        colWidths.reduce((sum, w) => sum + w, 0), 25) // Increased from 20 to 25
+                    .fill();
 
                 // Draw header text
                 doc.fillColor('black');
@@ -797,11 +797,11 @@ exports.exportBonusToPdf = async (instance, options = {}) => {
 
                         // Add table header on new page
                         doc.font('Helvetica-Bold')
-                           .fontSize(8); // Reduced font size for header
+                            .fontSize(8); // Reduced font size for header
                         doc.fillColor('#D3D3D3')
-                           .rect(startX, startY,
+                            .rect(startX, startY,
                                 colWidths.reduce((sum, w) => sum + w, 0), 25) // Increased from 20 to 25
-                           .fill();
+                            .fill();
 
                         doc.fillColor('black');
                         currentX = startX;
@@ -819,16 +819,16 @@ exports.exportBonusToPdf = async (instance, options = {}) => {
                     // Add structure header row
                     const headerHeight = 20; // Reduced from 25
                     doc.fillColor('#E06B21')
-                       .rect(startX, startY,
+                        .rect(startX, startY,
                             colWidths.reduce((sum, w) => sum + w, 0), headerHeight)
-                       .fill();
+                        .fill();
 
                     doc.fillColor('white')
-                       .fontSize(11) // Reduced from 14
-                       .font('Helvetica-Bold')
-                       .text(`${structureInfo.name} - ${structureInfo.code}`,
-                             startX, startY + 4,
-                             { width: colWidths.reduce((sum, w) => sum + w, 0), align: 'center' });
+                        .fontSize(11) // Reduced from 14
+                        .font('Helvetica-Bold')
+                        .text(`${structureInfo.name} - ${structureInfo.code}`,
+                            startX, startY + 4,
+                            { width: colWidths.reduce((sum, w) => sum + w, 0), align: 'center' });
 
                     startY += headerHeight;
 
@@ -849,11 +849,11 @@ exports.exportBonusToPdf = async (instance, options = {}) => {
 
                             // Add table header on new page
                             doc.font('Helvetica-Bold')
-                               .fontSize(8); // Reduced font size for header
+                                .fontSize(8); // Reduced font size for header
                             doc.fillColor('#D3D3D3')
-                               .rect(startX, startY,
+                                .rect(startX, startY,
                                     colWidths.reduce((sum, w) => sum + w, 0), 25) // Increased from 20 to 25
-                               .fill();
+                                .fill();
 
                             doc.fillColor('black');
                             currentX = startX;
@@ -871,9 +871,9 @@ exports.exportBonusToPdf = async (instance, options = {}) => {
                         // Add light background to alternating rows for better readability
                         if (rowIndex % 2 === 0) {
                             doc.fillColor('#F9F9F9')
-                               .rect(startX, startY,
+                                .rect(startX, startY,
                                     colWidths.reduce((sum, w) => sum + w, 0), 20)
-                               .fill();
+                                .fill();
                         }
 
                         // Beautify grade based on status (same as Excel)
@@ -924,7 +924,7 @@ exports.exportBonusToPdf = async (instance, options = {}) => {
 
                         // Draw the data row
                         doc.font('Helvetica')
-                           .fontSize(7); // Smaller font size for data
+                            .fontSize(7); // Smaller font size for data
 
                         // Set text color to red for excluded employees
                         if (allocation.status === 'excluded' || parts === 0) {
@@ -989,49 +989,49 @@ exports.exportBonusToPdf = async (instance, options = {}) => {
 
                     // Add structure subtotal row
                     doc.font('Helvetica-Bold')
-                       .fontSize(8) // Reduced font size
-                       .fillColor('black');
+                        .fontSize(8) // Reduced font size
+                        .fillColor('black');
 
                     // Draw subtotal background
                     doc.fillColor('#EBEBEB')
-                       .rect(startX, startY,
+                        .rect(startX, startY,
                             colWidths.reduce((sum, w) => sum + w, 0), 20) // Reduced from 25
-                       .fill();
+                        .fill();
 
                     // Draw subtotal text
                     doc.fillColor('black');
 
                     // Add subtotal label
                     doc.text('SOUS-TOTAL',
-                          startX + colWidths[0] + colWidths[1] + colWidths[2],
-                          startY + 6, // Adjusted for smaller height
-                          { width: colWidths[3] });
+                        startX + colWidths[0] + colWidths[1] + colWidths[2],
+                        startY + 6, // Adjusted for smaller height
+                        { width: colWidths[3] });
 
                     // Add subtotal values
                     doc.text(structureTotalParts.toString(),
-                          startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3],
-                          startY + 6, // Adjusted for smaller height
-                          { width: colWidths[4], align: 'right' });
+                        startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3],
+                        startY + 6, // Adjusted for smaller height
+                        { width: colWidths[4], align: 'right' });
 
                     doc.text(Math.round(structureTotalBrut).toLocaleString(),
-                          startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4],
-                          startY + 6, // Adjusted for smaller height
-                          { width: colWidths[5], align: 'right' });
+                        startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4],
+                        startY + 6, // Adjusted for smaller height
+                        { width: colWidths[5], align: 'right' });
 
                     doc.text(Math.round(structureTotalTax).toLocaleString(),
-                          startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4] + colWidths[5],
-                          startY + 6, // Adjusted for smaller height
-                          { width: colWidths[6], align: 'right' });
+                        startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4] + colWidths[5],
+                        startY + 6, // Adjusted for smaller height
+                        { width: colWidths[6], align: 'right' });
 
                     doc.text(Math.round(structureTotalNet).toLocaleString(),
-                          startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4] + colWidths[5] + colWidths[6],
-                          startY + 6, // Adjusted for smaller height
-                          { width: colWidths[7], align: 'right' });
+                        startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4] + colWidths[5] + colWidths[6],
+                        startY + 6, // Adjusted for smaller height
+                        { width: colWidths[7], align: 'right' });
 
                     // Draw subtotal border
                     doc.rect(startX, startY, colWidths.reduce((sum, w) => sum + w, 0), 25)
-                       .lineWidth(1)
-                       .stroke();
+                        .lineWidth(1)
+                        .stroke();
 
                     startY += 25; // Reduced from 35 to save space
                 }
@@ -1044,49 +1044,49 @@ exports.exportBonusToPdf = async (instance, options = {}) => {
 
                 // Add grand total row - with stronger styling
                 doc.font('Helvetica-Bold')
-                   .fontSize(10) // Reduced from 13
-                   .fillColor('black');
+                    .fontSize(10) // Reduced from 13
+                    .fillColor('black');
 
                 // Draw grand total background
                 doc.fillColor('#D3D3D3')
-                   .rect(startX, startY,
+                    .rect(startX, startY,
                         colWidths.reduce((sum, w) => sum + w, 0), 22) // Reduced from 30
-                   .fill();
+                    .fill();
 
                 // Draw grand total text
                 doc.fillColor('black');
 
                 // Add grand total label
                 doc.text('TOTAL GENERAL',
-                      startX + colWidths[0] + colWidths[1] + colWidths[2],
-                      startY + 7, // Adjusted for smaller height
-                      { width: colWidths[3] });
+                    startX + colWidths[0] + colWidths[1] + colWidths[2],
+                    startY + 7, // Adjusted for smaller height
+                    { width: colWidths[3] });
 
                 // Add grand total values
                 doc.text(grandTotalParts.toString(),
-                      startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3],
-                      startY + 7, // Adjusted for smaller height
-                      { width: colWidths[4], align: 'right' });
+                    startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3],
+                    startY + 7, // Adjusted for smaller height
+                    { width: colWidths[4], align: 'right' });
 
                 doc.text(Math.round(grandTotalBrut).toLocaleString(),
-                      startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4],
-                      startY + 7, // Adjusted for smaller height
-                      { width: colWidths[5], align: 'right' });
+                    startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4],
+                    startY + 7, // Adjusted for smaller height
+                    { width: colWidths[5], align: 'right' });
 
                 doc.text(Math.round(grandTotalTax).toLocaleString(),
-                      startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4] + colWidths[5],
-                      startY + 7, // Adjusted for smaller height
-                      { width: colWidths[6], align: 'right' });
+                    startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4] + colWidths[5],
+                    startY + 7, // Adjusted for smaller height
+                    { width: colWidths[6], align: 'right' });
 
                 doc.text(Math.round(grandTotalNet).toLocaleString(),
-                      startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4] + colWidths[5] + colWidths[6],
-                      startY + 7, // Adjusted for smaller height
-                      { width: colWidths[7], align: 'right' });
+                    startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3] + colWidths[4] + colWidths[5] + colWidths[6],
+                    startY + 7, // Adjusted for smaller height
+                    { width: colWidths[7], align: 'right' });
 
                 // Draw grand total border
                 doc.rect(startX, startY, colWidths.reduce((sum, w) => sum + w, 0), 22) // Reduced from 30
-                   .lineWidth(2)
-                   .stroke();
+                    .lineWidth(2)
+                    .stroke();
 
                 // Add signature area
                 startY += 80; // Reduced from 100 to save space
@@ -1096,8 +1096,8 @@ exports.exportBonusToPdf = async (instance, options = {}) => {
                 }
 
                 doc.fontSize(10) // Reduced from 12
-                   .font('Helvetica-Bold')
-                   .text('Signature Responsable', doc.page.width - 200, startY, { align: 'center' });
+                    .font('Helvetica-Bold')
+                    .text('Signature Responsable', doc.page.width - 200, startY, { align: 'center' });
 
                 // Add footer with date and page numbers
                 const totalPages = doc.bufferedPageRange().count;
@@ -1106,8 +1106,8 @@ exports.exportBonusToPdf = async (instance, options = {}) => {
 
                     const footer = `Document généré le ${new Date().toLocaleDateString('fr-FR')} | Page ${i + 1}/${totalPages}`;
                     doc.fontSize(7) // Reduced from 8
-                       .font('Helvetica')
-                       .text(footer, 40, doc.page.height - 25, { align: 'center', width: doc.page.width - 80 });
+                        .font('Helvetica')
+                        .text(footer, 40, doc.page.height - 25, { align: 'center', width: doc.page.width - 80 });
                 }
 
                 // Finalize the PDF
@@ -1289,6 +1289,21 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, option
             for (let i = 0; i < pageCount; i++) {
                 doc.switchToPage(i);
 
+                // Add watermark logo in the center of the page
+                try {
+                    const logoPath = __dirname + '/../../public/img/logos/logo-dgtcfm.jpeg';
+                    const logoSize = 300; // Adjust size as needed
+                    const logoX = (doc.page.width - logoSize) / 2;
+                    const logoY = (doc.page.height - logoSize) / 2;
+
+                    doc.save();
+                    doc.opacity(0.1); // Very light watermark
+                    doc.image(logoPath, logoX, logoY, { width: logoSize, height: logoSize });
+                    doc.restore();
+                } catch (error) {
+                    console.warn('Could not add watermark logo:', error.message);
+                }
+
                 // Ensure footer does not trigger a new page
                 const footerY = doc.page.height - doc.page.margins.bottom - 30; // Adjusted position
                 if (footerY > doc.page.height - 20) {
@@ -1422,7 +1437,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, option
             return sum + infoRowHeight;
         }, 0);
         const infoContentHeight = Math.max(calcInfoColumnHeight(infoLeftFields), calcInfoColumnHeight(infoRightFields));
-        const infoBoxHeight = infoContentHeight ;
+        const infoBoxHeight = infoContentHeight;
 
         doc.save();
         doc.roundedRect(infoBoxX, infoBoxY, infoBoxWidth, infoBoxHeight, 6).fillAndStroke(COLOR_HEADER_BG, COLOR_BORDER);
