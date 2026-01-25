@@ -678,7 +678,7 @@ exports.exportBonusToPdf = async (instance, options = {}) => {
         // 3. Use PDF generation library (PDFKit) with landscape orientation
         const PDFDocument = require('pdfkit');
         const doc = new PDFDocument({
-            margins: { top: 50, bottom: 50, left: 40, right: 40 },
+            margins: { top: 50, bottom: 100, left: 40, right: 40 },
             size: 'A4',
             layout: 'landscape', // Use landscape orientation
             bufferPages: true    // Enable page buffering to handle page numbers
@@ -1166,7 +1166,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, option
         }
 
         // --- PDF Generation Setup ---
-        const FIRST_PAGE_MARGINS = { top: 180, bottom: 40, left: 50, right: 50 };
+        const FIRST_PAGE_MARGINS = { top: 180, bottom: 50, left: 50, right: 50 };
         const OTHER_PAGE_MARGINS = { top: 40, bottom: 40, left: 50, right: 50 };
 
         const doc = new PDFDocument({
@@ -1315,7 +1315,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, option
                 doc.fontSize(7).fillColor(COLOR_LIGHT_TEXT)
                     .text(contactInfo,
                         doc.page.margins.left,
-                        footerY + 5,
+                        footerY + 14,
                         {
                             align: 'center',
                             width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
@@ -1327,7 +1327,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, option
                 doc.fontSize(7).fillColor(COLOR_LIGHT_TEXT)
                     .text(pageInfo,
                         doc.page.margins.left,
-                        footerY + 15,
+                        footerY + 21,
                         {
                             align: 'center',
                             width: doc.page.width - doc.page.margins.left - doc.page.margins.right,
