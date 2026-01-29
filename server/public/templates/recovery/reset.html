@@ -1,12 +1,12 @@
 <div class="loading" layout="row" layout-sm="column" layout-align="space-around" ng-if="loading">
     <md-progress-circular md-mode="indeterminate" md-diameter="30" class="md-accent"></md-progress-circular>
 </div>
-<div layout="column" layout-align="center center" style="min-height: 100vh; background: #f5f7fa;">
+<div layout="column" layout-align="center center" style="min-height: 100vh; background: linear-gradient(140deg, #faf5f8 0%, #ffffff 45%, #f0e8ed 100%);">
     <md-card class="signupBox md-whiteframe-z2" style="margin-top: 40px; max-width: 400px; width: 100%;">
         <md-card-content>
             <div style="text-align:center; margin-bottom: 16px;">
-                <img src="/assets/img/logos/logo.png" alt="Logo" style="width: 80px; margin-bottom: 8px;" />
-                <h3 class="md-title" style="margin-bottom: 0;" translate>Reset your password</h3>
+                <img ng-src="{{kernel.logo.apps}}" alt="Logo" style="width: 80px; margin-bottom: 8px;" />
+                <h3 class="md-title" style="margin-bottom: 0; color: #63003A;" translate>Reset your password</h3>
                 <p class="md-subhead" style="color: #666; margin-top: 4px;" translate>Enter a new password for your Core account.</p>
                 <md-button class="md-icon-button" ng-click="toggleDarkMode()" aria-label="Toggle dark mode" style="float:right; margin-top:-40px;">
                     <md-icon md-svg-icon="{{darkMode ? 'brightness_7' : 'brightness_4'}}"></md-icon>

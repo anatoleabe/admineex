@@ -957,10 +957,11 @@ angular.module('routes', []).config(['$stateProvider', '$urlRouterProvider', '$h
         $rootScope.kernel.background = 'world';
         $rootScope.kernel.title = 'Admineex - DGTCFM';
         $rootScope.kernel.logo = {
-            large: '../img/logos/logo-full.png',
-            small: '../img/logos/logo-small.png',
-            apps: '../img/logos/logo.png',
-            dark: '../img/logos/logo-dark.png'
+            large: '../img/logos/newLogo/admineex-v3-large-light.svg',
+            small: '../img/logos/newLogo/admineex-v3-small-light.svg',
+            apps: '../img/logos/newLogo/admineex-v3-icon-512.svg',
+            dark: '../img/logos/newLogo/admineex-v3-medium-dark.svg',
+            icon: '../img/logos/newLogo/admineex-v3-icon-filled-512.svg'
         };
 
         // Personalize index.html

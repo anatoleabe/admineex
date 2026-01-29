@@ -19,30 +19,30 @@ var app = angular.module('app', [
     'toastr',
     'oitozero.ngSweetAlert'  // Add SweetAlert dependency
 ]).config(function($mdThemingProvider) {
-    $mdThemingProvider.definePalette('savics', {
-        '50': 'ffffff',
-        '100': 'F3DACD',
-        '200': 'E8B9A0',
-        '300': 'DB8E66',
-        '400': 'D57B4E',
-        '500': 'CF6935',
-        '600': 'B95C2C',
-        '700': 'cd6531',
-        '800': '884320',
-        '900': '6F371A',
-        'A100': 'FFFFFF',
-        'A200': 'F3DACD',
-        'A400': 'D57B4E',
-        'A700': 'A15026',
+    $mdThemingProvider.definePalette('admineex', {
+        '50': 'faf5f8',
+        '100': 'f0e8ed',
+        '200': 'd4a5c3',
+        '300': 'C89AB8',
+        '400': 'a8708d',
+        '500': '8B0052',
+        '600': '7a0048',
+        '700': '63003A',
+        '800': '520030',
+        '900': '3d0024',
+        'A100': 'f0b8dc',
+        'A200': 'd4a5c3',
+        'A400': '8B0052',
+        'A700': '63003A',
         'contrastDefaultColor': 'light', 
         'contrastDarkColors': ['50', '100','200', '300', '400', 'A100'],
         'contrastLightColors': undefined
     });
-    $mdThemingProvider.theme('default').primaryPalette('blue-grey',{
-        'default': '900'
-    }).accentPalette('savics', {
-        'default': '700',
-        'hue-1': '500'
+    $mdThemingProvider.theme('default').primaryPalette('admineex',{
+        'default': '700'
+    }).accentPalette('admineex', {
+        'default': '500',
+        'hue-1': '300'
     });
 }).config(function($mdDateLocaleProvider) {
     $mdDateLocaleProvider.formatDate = function(date) {

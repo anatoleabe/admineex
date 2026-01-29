@@ -24,13 +24,13 @@
 
 /* Colorful hover states with better contrast */
 .btn-outline-primary {
-    color: #2196F3;
-    border-color: #2196F3;
+    color: #63003A;
+    border-color: #63003A;
 }
 .btn-outline-primary:hover {
     color: #fff;
-    background-color: #2196F3;
-    border-color: #2196F3;
+    background-color: #63003A;
+    border-color: #63003A;
 }
 
 .btn-outline-danger {

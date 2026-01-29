@@ -108,145 +108,145 @@
  *
  * ---------------------------------------------------------------------------- */
 .alpha-primary {
-  background-color: #E3F2FD; }
+  background-color: #faf5f8; }
 
 .text-primary {
-  color: #2196F3; }
+  color: #63003A; }
   .text-primary[href]:hover, .text-primary[href]:focus {
-    color: #0c83e2; }
+    color: #8B0052; }
 
 .bg-primary {
-  background-color: #2196F3; }
+  background-color: #63003A; }
 
 .border-primary {
-  border-color: #2196F3; }
+  border-color: #63003A; }
 
 .border-top-primary {
-  border-top-color: #2196F3; }
+  border-top-color: #63003A; }
 
 .border-bottom-primary {
-  border-bottom-color: #2196F3; }
+  border-bottom-color: #63003A; }
 
 .border-left-primary {
-  border-left-color: #2196F3; }
+  border-left-color: #63003A; }
 
 .border-right-primary {
-  border-right-color: #2196F3; }
+  border-right-color: #63003A; }
 
 .text-primary-300 {
-  color: #64B5F6; }
+  color: #C89AB8; }
   .text-primary-300[href]:hover, .text-primary-300[href]:focus {
-    color: #40a4f4; }
+    color: #d4a5c3; }
 
 .bg-primary-300 {
-  background-color: #64B5F6; }
+  background-color: #C89AB8; }
 
 .border-primary-300 {
-  border-color: #64B5F6; }
+  border-color: #C89AB8; }
 
 .border-top-primary-300 {
-  border-top-color: #64B5F6; }
+  border-top-color: #C89AB8; }
 
 .border-bottom-primary-300 {
-  border-bottom-color: #64B5F6; }
+  border-bottom-color: #C89AB8; }
 
 .border-left-primary-300 {
-  border-left-color: #64B5F6; }
+  border-left-color: #C89AB8; }
 
 .border-right-primary-300 {
-  border-right-color: #64B5F6; }
+  border-right-color: #C89AB8; }
 
 .text-primary-400 {
-  color: #42A5F5; }
+  color: #a8708d; }
   .text-primary-400[href]:hover, .text-primary-400[href]:focus {
-    color: #1e94f3; }
+    color: #8B0052; }
 
 .bg-primary-400 {
-  background-color: #42A5F5; }
+  background-color: #a8708d; }
 
 .border-primary-400 {
-  border-color: #42A5F5; }
+  border-color: #a8708d; }
 
 .border-top-primary-400 {
-  border-top-color: #42A5F5; }
+  border-top-color: #a8708d; }
 
 .border-bottom-primary-400 {
-  border-bottom-color: #42A5F5; }
+  border-bottom-color: #a8708d; }
 
 .border-left-primary-400 {
-  border-left-color: #42A5F5; }
+  border-left-color: #a8708d; }
 
 .border-right-primary-400 {
-  border-right-color: #42A5F5; }
+  border-right-color: #a8708d; }
 
 .text-primary-600 {
-  color: #1E88E5; }
+  color: #8B0052; }
   .text-primary-600[href]:hover, .text-primary-600[href]:focus {
-    color: #1774c6; }
+    color: #63003A; }
 
 .bg-primary-600 {
-  background-color: #1E88E5; }
+  background-color: #8B0052; }
 
 .border-primary-600 {
-  border-color: #1E88E5; }
+  border-color: #8B0052; }
 
 .border-top-primary-600 {
-  border-top-color: #1E88E5; }
+  border-top-color: #8B0052; }
 
 .border-bottom-primary-600 {
-  border-bottom-color: #1E88E5; }
+  border-bottom-color: #8B0052; }
 
 .border-left-primary-600 {
-  border-left-color: #1E88E5; }
+  border-left-color: #8B0052; }
 
 .border-right-primary-600 {
-  border-right-color: #1E88E5; }
+  border-right-color: #8B0052; }
 
 .text-primary-700 {
-  color: #1976D2; }
+  color: #7a0048; }
   .text-primary-700[href]:hover, .text-primary-700[href]:focus {
-    color: #1563b0; }
+    color: #63003A; }
 
 .bg-primary-700 {
-  background-color: #1976D2; }
+  background-color: #7a0048; }
 
 .border-primary-700 {
-  border-color: #1976D2; }
+  border-color: #7a0048; }
 
 .border-top-primary-700 {
-  border-top-color: #1976D2; }
+  border-top-color: #7a0048; }
 
 .border-bottom-primary-700 {
-  border-bottom-color: #1976D2; }
+  border-bottom-color: #7a0048; }
 
 .border-left-primary-700 {
-  border-left-color: #1976D2; }
+  border-left-color: #7a0048; }
 
 .border-right-primary-700 {
-  border-right-color: #1976D2; }
+  border-right-color: #7a0048; }
 
 .text-primary-800 {
-  color: #1565C0; }
+  color: #520030; }
   .text-primary-800[href]:hover, .text-primary-800[href]:focus {
-    color: #11539e; }
+    color: #3d0024; }
 
 .bg-primary-800 {
-  background-color: #1565C0; }
+  background-color: #520030; }
 
 .border-primary-800 {
-  border-color: #1565C0; }
+  border-color: #520030; }
 
 .border-top-primary-800 {
-  border-top-color: #1565C0; }
+  border-top-color: #520030; }
 
 .border-bottom-primary-800 {
-  border-bottom-color: #1565C0; }
+  border-bottom-color: #520030; }
 
 .border-left-primary-800 {
-  border-left-color: #1565C0; }
+  border-left-color: #520030; }
 
 .border-right-primary-800 {
-  border-right-color: #1565C0; }
+  border-right-color: #520030; }
 
 .alpha-danger {
   background-color: #FFEBEE; }

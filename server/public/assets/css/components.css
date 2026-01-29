@@ -525,7 +525,7 @@ input[type=text].noui-height-helper:not(.noUi-target)[data-fouc] {
     display: -ms-flexbox;
     display: flex;
     position: relative;
-    color: #2196F3;
+    color: #63003A;
     transition: all ease-in-out 0.15s; }
     @media (prefers-reduced-motion: reduce) {
       .slinky-menu .header {

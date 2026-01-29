@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="350" height="250" viewBox="0 0 350 250" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(125, 25)">
+        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+              fill="none" stroke="#d4a5c3" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M 30 56 L 40 28 L 50 56" stroke="#d4a5c3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="34" y1="48" x2="46" y2="48" stroke="#d4a5c3" stroke-width="5" stroke-linecap="round"/>
+        <rect x="29" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+        <rect x="48" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+        <circle cx="40" cy="18" r="3" fill="#f0b8dc"/>
+        <circle cx="60" cy="38" r="3" fill="#f0b8dc"/>
+        <circle cx="20" cy="38" r="3" fill="#f0b8dc"/>
+    </g>
+    <text x="175" y="155" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="48" fill="#ffffff" text-anchor="middle">Admineex</text>
+    <text x="175" y="178" font-family="Outfit, sans-serif" font-weight="600" font-size="12" fill="#d4a5c3" text-anchor="middle" letter-spacing="2.5">GESTION PUBLIQUE DIGITALE</text>
+</svg>
