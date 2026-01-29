@@ -283,14 +283,6 @@ exports.api.getAll = async (req, res, next) => {
             if (toDate) filter.createdAt.$lte = new Date(toDate);
         }
 
-        // Exclude instances from deleted templates
-        const deletedTemplateIds = await BonusTemplate.find({ isDeleted: true }).select('_id').lean();
-        if (deletedTemplateIds.length > 0) {
-            filter.templateId = filter.templateId
-                ? { $eq: filter.templateId, $nin: deletedTemplateIds.map(t => t._id) }
-                : { $nin: deletedTemplateIds.map(t => t._id) };
-        }
-
         const [sortField, sortOrder] = sortBy.split(':');
         const sort = { [sortField]: sortOrder === 'desc' ? -1 : 1 };
 
@@ -326,10 +318,10 @@ exports.api.getAll = async (req, res, next) => {
                     $group: {
                         _id: '$instanceId',
                         count: { $sum: 1 },
-                        totalAmount: { $sum: { $ifNull: ['$finalAmount', 0] } },
-                        totalTax: { $sum: { $ifNull: ['$taxAmount', 0] } },
-                        totalNet: { $sum: { $ifNull: ['$netAmount', 0] } },
-                        totalParts: { $sum: { $ifNull: ['$calculationInputs.parts', 0] } }
+                        totalAmount: { $sum: { $ifNull: [ '$finalAmount', 0 ] } },
+                        totalTax: { $sum: { $ifNull: [ '$taxAmount', 0 ] } },
+                        totalNet: { $sum: { $ifNull: [ '$netAmount', 0 ] } },
+                        totalParts: { $sum: { $ifNull: [ '$calculationInputs.parts', 0 ] } }
                     }
                 }
             ]);
@@ -370,10 +362,10 @@ exports.api.getAll = async (req, res, next) => {
                         $group: {
                             _id: null,
                             count: { $sum: 1 },
-                            totalAmount: { $sum: { $ifNull: ['$finalAmount', 0] } },
-                            totalTax: { $sum: { $ifNull: ['$taxAmount', 0] } },
-                            totalNet: { $sum: { $ifNull: ['$netAmount', 0] } },
-                            totalParts: { $sum: { $ifNull: ['$calculationInputs.parts', 0] } }
+                            totalAmount: { $sum: { $ifNull: [ '$finalAmount', 0 ] } },
+                            totalTax: { $sum: { $ifNull: [ '$taxAmount', 0 ] } },
+                            totalNet: { $sum: { $ifNull: [ '$netAmount', 0 ] } },
+                            totalParts: { $sum: { $ifNull: [ '$calculationInputs.parts', 0 ] } }
                         }
                     }
                 ]);
@@ -570,31 +562,42 @@ exports.api.cancel = async (req, res, next) => {
 
 /**
  * Delete bonus instance permanently
+ * Only allowed for draft or cancelled instances
+ * Deletes the instance and all related allocations
  */
 exports.api.delete = async (req, res, next) => {
     try {
-        const instance = await BonusInstance.findById(req.params.id);
+        const instanceId = req.params.id;
+        
+        if (!mongoose.Types.ObjectId.isValid(instanceId)) {
+            throw badRequest(t(req, 'Invalid instance ID'));
+        }
+
+        const instance = await BonusInstance.findById(instanceId);
 
         if (!instance) {
             throw notFound(t(req, 'Bonus instance not found'));
         }
 
-        // Prevent deletion of paid instances
-        if (instance.status === 'paid') {
-            throw forbidden(t(req, 'Cannot delete a paid instance. Use cancel instead.'));
+        // Only allow deletion of draft or cancelled instances
+        const allowedStatuses = ['draft', 'cancelled'];
+        if (!allowedStatuses.includes(instance.status)) {
+            throw badRequest(t(req, 'Only draft or cancelled instances can be deleted'));
         }
 
-        // Delete all associated allocations first
-        const deletedAllocations = await BonusAllocation.deleteMany({ instanceId: req.params.id });
-
+        // Delete all related allocations first
+        const deleteAllocationsResult = await BonusAllocation.deleteMany({ instanceId: instanceId });
+        
         // Delete the instance
-        await BonusInstance.findByIdAndDelete(req.params.id);
+        await BonusInstance.findByIdAndDelete(instanceId);
 
-        auditEvent(req, 'delete', 'BonusInstance', req.params.id, 'succeed', `Deleted bonus instance and ${deletedAllocations.deletedCount} allocations`);
+        auditEvent(req, 'delete', 'BonusInstance', instanceId, 'succeed', 
+            `Deleted bonus instance and ${deleteAllocationsResult.deletedCount} allocations. referencePeriod=${instance.referencePeriod || ''}`);
+        
         res.json({
             success: true,
             message: t(req, 'Instance deleted successfully'),
-            deletedAllocations: deletedAllocations.deletedCount
+            deletedAllocations: deleteAllocationsResult.deletedCount
         });
     } catch (error) {
         auditEvent(req, 'delete', 'BonusInstance', req.params.id, 'failed', error && error.message ? error.message : String(error));

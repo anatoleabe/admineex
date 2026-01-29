@@ -1,4 +1,4 @@
-angular.module('app').controller('BonusReportsController', ['$scope', '$rootScope', '$http', 'toastr', '$timeout', '$q', 'gettextCatalog', function($scope, $rootScope, $http, toastr, $timeout, $q, gettextCatalog) {
+angular.module('app').controller('BonusReportsController', ['$scope', '$rootScope', '$http', 'toastr', '$timeout', '$q', 'gettextCatalog', function ($scope, $rootScope, $http, toastr, $timeout, $q, gettextCatalog) {
     function t(msgid) {
         return gettextCatalog.getString(msgid);
     }
@@ -55,10 +55,10 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         cancelled: t('Cancelled')
     };
     function formatStatusLabel(status) {
-        return instanceStatusLabels[status] || String(status || '').replace(/_/g, ' ').replace(/\b\w/g, function(l){ return l.toUpperCase(); });
+        return instanceStatusLabels[status] || String(status || '').replace(/_/g, ' ').replace(/\b\w/g, function (l) { return l.toUpperCase(); });
     }
     const instanceStatuses = ['draft', 'pending_generation', 'generated', 'under_review', 'approved', 'paid', 'cancelled'];
-    $scope.statusOptions = [{ value: '', label: t('All Statuses') }].concat(instanceStatuses.map(function(st) {
+    $scope.statusOptions = [{ value: '', label: t('All Statuses') }].concat(instanceStatuses.map(function (st) {
         return { value: st, label: formatStatusLabel(st) };
     }));
 
@@ -86,7 +86,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
                 cur = cur[parts[i]];
             }
             return (cur === undefined || cur === null) ? fallback : cur;
-        } catch(e) { return fallback; }
+        } catch (e) { return fallback; }
     }
 
     function normalizeInstance(instance) {
@@ -151,14 +151,14 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
     }
 
     function applyClientFilters(instances) {
-        return instances.filter(function(inst) {
+        return instances.filter(function (inst) {
             if ($scope.filters.category && inst.category !== $scope.filters.category) return false;
             return true;
         });
     }
 
     function sumTotals(rows, key) {
-        return rows.reduce(function(acc, r) { return acc + Number(r[key] || 0); }, 0);
+        return rows.reduce(function (acc, r) { return acc + Number(r[key] || 0); }, 0);
     }
 
     function buildTotals(rowsWithParts, rowsWithoutParts, rowsOthers) {
@@ -180,7 +180,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
     }
 
     function attachAmountsToInstances(instances, allocationMap, hasPersonnelFilter) {
-        return instances.map(function(inst) {
+        return instances.map(function (inst) {
             var totals;
             // If we have personnel-specific allocations for this instance, use them
             if (allocationMap && allocationMap[inst._id]) {
@@ -223,10 +223,10 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         if ($scope.filters.fromDate) params.fromDate = formatDate($scope.filters.fromDate);
         if ($scope.filters.toDate) params.toDate = formatDate($scope.filters.toDate);
 
-        return $http.get('/api/bonus/allocations', { params: params }).then(function(response) {
+        return $http.get('/api/bonus/allocations', { params: params }).then(function (response) {
             const items = response.data.items || [];
             const grouped = {};
-            items.forEach(function(allocation) {
+            items.forEach(function (allocation) {
                 const instId = allocation.instanceId && (allocation.instanceId._id || allocation.instanceId);
                 if (!instId) return;
                 const net = Number(allocation.netAmount || allocation.finalAmount || 0);
@@ -238,7 +238,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
                 grouped[instId].net += net;
             });
             return grouped;
-        }).catch(function(err) {
+        }).catch(function (err) {
             console.error('Failed to load allocations by personnel', err);
             toastr.error(t('Failed to load personnel allocations for report'));
             return $q.when({});
@@ -258,7 +258,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         function fetchPage(offset, acc) {
             const params = angular.extend({}, baseParams, { limit: pageSize, offset: offset });
             return $http.get('/api/bonus/instances', { params: params })
-                .then(function(response) {
+                .then(function (response) {
                     const items = response.data.items || [];
                     const normalized = items.map(normalizeInstance);
                     const combined = acc.concat(normalized);
@@ -271,7 +271,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         }
 
         return fetchPage(0, [])
-            .catch(function(error) {
+            .catch(function (error) {
                 console.error('Failed to load bonus instances', error);
                 toastr.error(t('Failed to load bonus instances'));
                 return [];
@@ -290,21 +290,21 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         return $q.all({
             instances: loadInstances(),
             allocations: loadAllocationsByPersonnel(personnelId)
-        }).then(function(result) {
+        }).then(function (result) {
             if (seq !== refreshSeq) return; // a newer refresh started, ignore this result
             const filtered = applyClientFilters(result.instances || []);
             const rows = attachAmountsToInstances(filtered, result.allocations || {}, !!personnelId);
-            const withParts = rows.filter(function(r){ return r.category === 'with_parts'; });
-            const withoutParts = rows.filter(function(r){ return r.category === 'without_parts'; });
-            const others = rows.filter(function(r){ return r.category !== 'with_parts' && r.category !== 'without_parts'; });
+            const withParts = rows.filter(function (r) { return r.category === 'with_parts'; });
+            const withoutParts = rows.filter(function (r) { return r.category === 'without_parts'; });
+            const others = rows.filter(function (r) { return r.category !== 'with_parts' && r.category !== 'without_parts'; });
             $scope.filteredRows = { with_parts: withParts, without_parts: withoutParts, others: others };
             console.log($scope.filteredRows)
             buildTotals(withParts, withoutParts, others);
             $scope.$applyAsync();
-        }).finally(function() {
+        }).finally(function () {
             activeRefreshes = Math.max(0, activeRefreshes - 1);
             if (activeRefreshes === 0) {
-                $scope.$applyAsync(function() {
+                $scope.$applyAsync(function () {
                     $scope.loading = false;
                     $rootScope.kernel.loading = 100; // mark global spinner as finished
                 });
@@ -314,14 +314,16 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
 
     function scheduleRefresh(delay) {
         if (refreshDebouncePromise) $timeout.cancel(refreshDebouncePromise);
-        refreshDebouncePromise = $timeout(function() {
+        refreshDebouncePromise = $timeout(function () {
             refreshDebouncePromise = null;
             refreshReport();
         }, typeof delay === 'number' ? delay : 150);
     }
 
     // Debounced personnel autocomplete
-    $scope.searchPersonnel = function(query) {
+    $scope.searchingPersonnel = false; // Loading indicator flag
+
+    $scope.searchPersonnel = function (query) {
         if (personnelSearchTimeout) {
             $timeout.cancel(personnelSearchTimeout);
             personnelSearchTimeout = null;
@@ -329,47 +331,61 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
 
         // If query is empty or whitespace, resolve immediately with empty list
         if (!query || !query.trim()) {
+            $scope.searchingPersonnel = false;
             return $q.when([]);
         }
 
         var deferred = $q.defer();
 
-        personnelSearchTimeout = $timeout(function() {
+        // Set loading flag
+        $scope.searchingPersonnel = true;
+
+        personnelSearchTimeout = $timeout(function () {
             $http.get('/api/personnel/search/' + encodeURIComponent(query.trim()))
-                .then(function(response) {
-                    deferred.resolve(response.data || []);
+                .then(function (response) {
+                    var results = response.data || [];
+                    // Sort results alphabetically by fname
+                    results.sort(function (a, b) {
+                        var nameA = (a.fname || '').toLowerCase();
+                        var nameB = (b.fname || '').toLowerCase();
+                        return nameA.localeCompare(nameB);
+                    });
+                    deferred.resolve(results);
                 })
-                .catch(function() {
+                .catch(function () {
                     deferred.resolve([]);
+                })
+                .finally(function () {
+                    $scope.searchingPersonnel = false;
                 });
         }, 800); // wait 800ms after last keystroke
 
         return deferred.promise;
     };
 
-    $scope.onPersonnelSelected = function(personnel) {
+    $scope.onPersonnelSelected = function (personnel) {
         $scope.filters.personnel = personnel;
         scheduleRefresh(50);
     };
 
-    $scope.resetPersonnel = function() {
+    $scope.resetPersonnel = function () {
         $scope.filters.personnel = null;
         $scope.filters.searchPersonnel = '';
         scheduleRefresh(50);
     };
 
-    $scope.getPersonnelLabel = function(person) {
+    $scope.getPersonnelLabel = function (person) {
         if (!person) return 'N/A';
         const displayName = person.fname;
         const identifier = person.identifier || '';
         return [displayName || 'Personnel', identifier].filter(Boolean).join(' • ');
     };
 
-    $scope.applyFilters = function() {
+    $scope.applyFilters = function () {
         scheduleRefresh(100);
     };
 
-    $scope.getPeriodLabel = function() {
+    $scope.getPeriodLabel = function () {
         const from = formatDate($scope.filters.fromDate);
         const to = formatDate($scope.filters.toDate);
         if (from || to) {
@@ -378,7 +394,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         return 'Toutes périodes';
     };
 
-    $scope.resetFilters = function() {
+    $scope.resetFilters = function () {
         const range = getCurrentYearRange();
         $scope.filters = {
             category: '',
@@ -391,7 +407,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         scheduleRefresh(0);
     };
 
-    $scope.exportPdf = function() {
+    $scope.exportPdf = function () {
         if (!$scope.filters.personnel || !$scope.filters.personnel._id) {
             toastr.error(t('Sélectionnez un bénéficiaire pour exporter en PDF'));
             return;
@@ -411,7 +427,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
             params: params,
             responseType: 'arraybuffer',
             headers: { Accept: 'application/pdf' }
-        }).then(function(response) {
+        }).then(function (response) {
             const blob = new Blob([response.data], { type: 'application/pdf' });
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -422,10 +438,10 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
             link.click();
             document.body.removeChild(link);
             window.URL.revokeObjectURL(url);
-        }).catch(function(err) {
+        }).catch(function (err) {
             console.error('PDF export failed', err);
             toastr.error(t('Impossible de générer le PDF. Réessayez plus tard.'));
-        }).finally(function() {
+        }).finally(function () {
             $scope.exporting = false;
         });
     };
@@ -434,11 +450,11 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         // When entering the report page, reset global loading to 0 until first refresh completes
         $rootScope.kernel.loading = 0;
         $http.get('/api/bonus/templates')
-            .then(function(response) {
+            .then(function (response) {
                 $scope.templates = response.data || [];
             })
-            .catch(function() { toastr.error(t('Failed to load templates')); })
-            .finally(function() {
+            .catch(function () { toastr.error(t('Failed to load templates')); })
+            .finally(function () {
                 scheduleRefresh(0);
             });
     }

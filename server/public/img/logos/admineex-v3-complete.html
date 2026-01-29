@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admineex - Version 3 Complète</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, #faf5f8 0%, #f0e8ed 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            color: #63003A;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #8B0052;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #63003A;
+            font-weight: 800;
+            margin: 3rem 0 1.5rem 0;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #63003A;
+        }
+
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .logo-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 20px rgba(99, 0, 58, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 320px;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .logo-card:hover {
+            border-color: #63003A;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(99, 0, 58, 0.2);
+        }
+
+        .logo-card.dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+        }
+
+        .logo-card.gradient {
+            background: linear-gradient(135deg, #63003A 0%, #8B0052 100%);
+        }
+
+        .card-label {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: #63003A;
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logo-card.dark .card-label {
+            background: #d4a5c3;
+            color: #1a1a2e;
+        }
+
+        .logo-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.2rem;
+            text-align: center;
+        }
+
+        .logo-icon-small {
+            width: 70px;
+            height: 70px;
+        }
+
+        .logo-icon-medium {
+            width: 100px;
+            height: 100px;
+        }
+
+        .logo-icon-large {
+            width: 130px;
+            height: 130px;
+        }
+
+        .logo-icon-xlarge {
+            width: 160px;
+            height: 160px;
+        }
+
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text.size-small {
+            font-size: 1.8rem;
+        }
+
+        .logo-text.size-medium {
+            font-size: 2.4rem;
+        }
+
+        .logo-text.size-large {
+            font-size: 3rem;
+        }
+
+        .logo-text.light {
+            color: #63003A;
+        }
+
+        .logo-text.dark {
+            color: #ffffff;
+        }
+
+        .logo-tagline {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 600;
+            margin-top: 0.3rem;
+        }
+
+        .logo-tagline.size-small {
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+        }
+
+        .logo-tagline.size-medium {
+            font-size: 0.7rem;
+            letter-spacing: 2.5px;
+        }
+
+        .logo-tagline.size-large {
+            font-size: 0.85rem;
+            letter-spacing: 3px;
+        }
+
+        .logo-tagline.light {
+            color: #C89AB8;
+        }
+
+        .logo-tagline.dark {
+            color: #d4a5c3;
+        }
+
+        /* Download Section */
+        .download-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 4px 20px rgba(99, 0, 58, 0.1);
+            margin-top: 3rem;
+        }
+
+        .download-section h2 {
+            color: #63003A;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            text-align: center;
+        }
+
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #63003A 0%, #8B0052 100%);
+            color: white;
+            padding: 1.2rem 1.5rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(99, 0, 58, 0.3);
+        }
+
+        .download-btn.secondary {
+            background: linear-gradient(135deg, #C89AB8 0%, #d4a5c3 100%);
+            color: #63003A;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .spec-card {
+            background: linear-gradient(135deg, #faf5f8 0%, #f0e8ed 100%);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid #63003A;
+        }
+
+        .spec-card h4 {
+            color: #63003A;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            font-weight: 800;
+        }
+
+        .spec-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .spec-card li {
+            padding: 0.4rem 0;
+            color: #555;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .spec-card li::before {
+            content: "●";
+            color: #63003A;
+            font-size: 0.8rem;
+            flex-shrink: 0;
+            margin-top: 0.2rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .logo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Admineex - Version 3 Complète</h1>
+            <p>Toutes les variations et formats pour tous les usages</p>
+        </div>
+
+        <!-- SECTION: Fonds Clairs -->
+        <h2 class="section-title">📱 Fonds Clairs</h2>
+        <div class="logo-grid">
+            <!-- Small -->
+            <div class="logo-card">
+                <span class="card-label">Small</span>
+                <div class="logo-vertical">
+                    <svg class="logo-icon-small" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                              fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+                        <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+                        <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+                        <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+                        <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+                    </svg>
+                    <div>
+                        <div class="logo-text size-small light">Admineex</div>
+                        <div class="logo-tagline size-small light">Gestion Publique Digitale</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medium -->
+            <div class="logo-card">
+                <span class="card-label">Medium</span>
+                <div class="logo-vertical">
+                    <svg class="logo-icon-medium" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                              fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+                        <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+                        <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+                        <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+                        <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+                    </svg>
+                    <div>
+                        <div class="logo-text size-medium light">Admineex</div>
+                        <div class="logo-tagline size-medium light">Gestion Publique Digitale</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Large -->
+            <div class="logo-card">
+                <span class="card-label">Large</span>
+                <div class="logo-vertical">
+                    <svg class="logo-icon-large" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                              fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+                        <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+                        <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+                        <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+                        <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+                    </svg>
+                    <div>
+                        <div class="logo-text size-large light">Admineex</div>
+                        <div class="logo-tagline size-large light">Gestion Publique Digitale</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: Fonds Sombres -->
+        <h2 class="section-title">🌙 Fonds Sombres</h2>
+        <div class="logo-grid">
+            <!-- Small Dark -->
+            <div class="logo-card dark">
+                <span class="card-label">Small Dark</span>
+                <div class="logo-vertical">
+                    <svg class="logo-icon-small" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                              fill="none" stroke="#d4a5c3" stroke-width="3.5" stroke-linejoin="round"/>
+                        <path d="M 30 56 L 40 28 L 50 56" stroke="#d4a5c3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="34" y1="48" x2="46" y2="48" stroke="#d4a5c3" stroke-width="5" stroke-linecap="round"/>
+                        <rect x="29" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+                        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+                        <rect x="48" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+                        <circle cx="40" cy="18" r="3" fill="#f0b8dc"/>
+                        <circle cx="60" cy="38" r="3" fill="#f0b8dc"/>
+                        <circle cx="20" cy="38" r="3" fill="#f0b8dc"/>
+                    </svg>
+                    <div>
+                        <div class="logo-text size-small dark">Admineex</div>
+                        <div class="logo-tagline size-small dark">Gestion Publique Digitale</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Medium Dark -->
+            <div class="logo-card dark">
+                <span class="card-label">Medium Dark</span>
+                <div class="logo-vertical">
+                    <svg class="logo-icon-medium" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                              fill="none" stroke="#d4a5c3" stroke-width="3.5" stroke-linejoin="round"/>
+                        <path d="M 30 56 L 40 28 L 50 56" stroke="#d4a5c3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="34" y1="48" x2="46" y2="48" stroke="#d4a5c3" stroke-width="5" stroke-linecap="round"/>
+                        <rect x="29" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+                        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+                        <rect x="48" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+                        <circle cx="40" cy="18" r="3" fill="#f0b8dc"/>
+                        <circle cx="60" cy="38" r="3" fill="#f0b8dc"/>
+                        <circle cx="20" cy="38" r="3" fill="#f0b8dc"/>
+                    </svg>
+                    <div>
+                        <div class="logo-text size-medium dark">Admineex</div>
+                        <div class="logo-tagline size-medium dark">Gestion Publique Digitale</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Large Dark -->
+            <div class="logo-card dark">
+                <span class="card-label">Large Dark</span>
+                <div class="logo-vertical">
+                    <svg class="logo-icon-large" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                              fill="none" stroke="#d4a5c3" stroke-width="3.5" stroke-linejoin="round"/>
+                        <path d="M 30 56 L 40 28 L 50 56" stroke="#d4a5c3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="34" y1="48" x2="46" y2="48" stroke="#d4a5c3" stroke-width="5" stroke-linecap="round"/>
+                        <rect x="29" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+                        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+                        <rect x="48" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+                        <circle cx="40" cy="18" r="3" fill="#f0b8dc"/>
+                        <circle cx="60" cy="38" r="3" fill="#f0b8dc"/>
+                        <circle cx="20" cy="38" r="3" fill="#f0b8dc"/>
+                    </svg>
+                    <div>
+                        <div class="logo-text size-large dark">Admineex</div>
+                        <div class="logo-tagline size-large dark">Gestion Publique Digitale</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION: Icônes Seules -->
+        <h2 class="section-title">🎯 Icônes Seules (App, Favicon, Profile)</h2>
+        <div class="logo-grid">
+            <!-- Icon Only - Standard -->
+            <div class="logo-card">
+                <span class="card-label">Icon - Standard</span>
+                <svg class="logo-icon-xlarge" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                          fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+                    <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+                    <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                    <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                    <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                    <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+                    <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+                    <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+                </svg>
+            </div>
+
+            <!-- Icon Only - Filled -->
+            <div class="logo-card dark">
+                <span class="card-label">Icon - Filled</span>
+                <svg class="logo-icon-xlarge" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#63003A;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#8B0052;stop-opacity:1" />
+                        </linearGradient>
+                    </defs>
+                    <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" fill="url(#hexGrad)"/>
+                    <path d="M 30 56 L 40 28 L 50 56" stroke="white" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="34" y1="48" x2="46" y2="48" stroke="white" stroke-width="5.5" stroke-linecap="round"/>
+                    <rect x="29" y="52" width="3" height="6" rx="1" fill="white"/>
+                    <rect x="38.5" y="52" width="3" height="6" rx="1" fill="white"/>
+                    <rect x="48" y="52" width="3" height="6" rx="1" fill="white"/>
+                    <circle cx="40" cy="18" r="3.5" fill="#f0b8dc"/>
+                    <circle cx="60" cy="38" r="3" fill="#f0b8dc" opacity="0.8"/>
+                    <circle cx="20" cy="38" r="3" fill="#f0b8dc" opacity="0.8"/>
+                </svg>
+            </div>
+
+            <!-- Icon Only - Monochrome -->
+            <div class="logo-card dark">
+                <span class="card-label">Icon - Mono</span>
+                <svg class="logo-icon-xlarge" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                          fill="none" stroke="white" stroke-width="3.5" stroke-linejoin="round"/>
+                    <path d="M 30 56 L 40 28 L 50 56" stroke="white" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="34" y1="48" x2="46" y2="48" stroke="white" stroke-width="5" stroke-linecap="round"/>
+                    <rect x="29" y="52" width="3" height="6" rx="1" fill="white"/>
+                    <rect x="38.5" y="52" width="3" height="6" rx="1" fill="white"/>
+                    <rect x="48" y="52" width="3" height="6" rx="1" fill="white"/>
+                    <circle cx="40" cy="18" r="3" fill="white" opacity="0.7"/>
+                    <circle cx="60" cy="38" r="3" fill="white" opacity="0.7"/>
+                    <circle cx="20" cy="38" r="3" fill="white" opacity="0.7"/>
+                </svg>
+            </div>
+        </div>
+
+        <!-- SECTION: Versions Spéciales -->
+        <h2 class="section-title">✨ Versions Spéciales</h2>
+        <div class="logo-grid">
+            <!-- Sans Tagline -->
+            <div class="logo-card">
+                <span class="card-label">Sans Tagline</span>
+                <div class="logo-vertical">
+                    <svg class="logo-icon-medium" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                              fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+                        <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+                        <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+                        <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+                        <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+                    </svg>
+                    <div class="logo-text size-medium light">Admineex</div>
+                </div>
+            </div>
+
+            <!-- Tagline Français -->
+            <div class="logo-card">
+                <span class="card-label">Tagline FR</span>
+                <div class="logo-vertical">
+                    <svg class="logo-icon-medium" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                              fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+                        <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+                        <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+                        <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+                        <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+                    </svg>
+                    <div>
+                        <div class="logo-text size-medium light">Admineex</div>
+                        <div class="logo-tagline size-medium light">Administration Numérique</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tagline Anglais -->
+            <div class="logo-card">
+                <span class="card-label">Tagline EN</span>
+                <div class="logo-vertical">
+                    <svg class="logo-icon-medium" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                              fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+                        <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+                        <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+                        <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+                        <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+                    </svg>
+                    <div>
+                        <div class="logo-text size-medium light">Admineex</div>
+                        <div class="logo-tagline size-medium light">Digital Public Management</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Version Extra Large -->
+            <div class="logo-card">
+                <span class="card-label">Extra Large</span>
+                <div class="logo-vertical">
+                    <svg class="logo-icon-xlarge" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                              fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+                        <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+                        <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+                        <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+                        <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+                    </svg>
+                    <div>
+                        <div class="logo-text size-large light">Admineex</div>
+                        <div class="logo-tagline size-large light">Gestion Publique Digitale</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sur Gradient -->
+            <div class="logo-card gradient">
+                <span class="card-label" style="background: white; color: #63003A;">Sur Gradient</span>
+                <div class="logo-vertical">
+                    <svg class="logo-icon-medium" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                              fill="none" stroke="white" stroke-width="3.5" stroke-linejoin="round"/>
+                        <path d="M 30 56 L 40 28 L 50 56" stroke="white" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="34" y1="48" x2="46" y2="48" stroke="white" stroke-width="5" stroke-linecap="round"/>
+                        <rect x="29" y="52" width="3" height="6" rx="1" fill="white"/>
+                        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="white"/>
+                        <rect x="48" y="52" width="3" height="6" rx="1" fill="white"/>
+                        <circle cx="40" cy="18" r="3" fill="#f0b8dc"/>
+                        <circle cx="60" cy="38" r="3" fill="#f0b8dc"/>
+                        <circle cx="20" cy="38" r="3" fill="#f0b8dc"/>
+                    </svg>
+                    <div>
+                        <div class="logo-text size-medium dark">Admineex</div>
+                        <div class="logo-tagline size-medium" style="color: rgba(255,255,255,0.9)">Gestion Publique Digitale</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Minimal (sans points) -->
+            <div class="logo-card">
+                <span class="card-label">Minimal</span>
+                <div class="logo-vertical">
+                    <svg class="logo-icon-medium" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+                              fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+                        <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+                        <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                        <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+                    </svg>
+                    <div>
+                        <div class="logo-text size-medium light">Admineex</div>
+                        <div class="logo-tagline size-medium light">Gestion Publique Digitale</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Download Section -->
+        <div class="download-section">
+            <h2>📥 Télécharger Tous les Formats</h2>
+            
+            <div class="btn-grid">
+                <button class="download-btn" onclick="downloadSVG('small-light')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Small - Fond Clair
+                </button>
+                
+                <button class="download-btn" onclick="downloadSVG('medium-light')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Medium - Fond Clair
+                </button>
+                
+                <button class="download-btn" onclick="downloadSVG('large-light')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Large - Fond Clair
+                </button>
+                
+                <button class="download-btn" onclick="downloadSVG('small-dark')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Small - Fond Sombre
+                </button>
+                
+                <button class="download-btn" onclick="downloadSVG('medium-dark')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Medium - Fond Sombre
+                </button>
+                
+                <button class="download-btn" onclick="downloadSVG('large-dark')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Large - Fond Sombre
+                </button>
+                
+                <button class="download-btn secondary" onclick="downloadSVG('icon-standard')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Icône Standard
+                </button>
+                
+                <button class="download-btn secondary" onclick="downloadSVG('icon-filled')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Icône Remplie (App)
+                </button>
+                
+                <button class="download-btn secondary" onclick="downloadSVG('icon-mono')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Icône Monochrome
+                </button>
+                
+                <button class="download-btn secondary" onclick="downloadSVG('no-tagline')">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Sans Tagline
+                </button>
+            </div>
+
+            <div class="specs-grid">
+                <div class="spec-card">
+                    <h4>📐 Tailles Disponibles</h4>
+                    <ul>
+                        <li>Small: 70px - Sites web, emails</li>
+                        <li>Medium: 100px - En-têtes, bannières</li>
+                        <li>Large: 130px - Présentations, print</li>
+                        <li>XLarge: 160px - Affiches, grands formats</li>
+                        <li>Icon: 512x512px - Apps, favicons</li>
+                    </ul>
+                </div>
+
+                <div class="spec-card">
+                    <h4>🎨 Variations de Couleurs</h4>
+                    <ul>
+                        <li>Fond Clair: #63003A (bordeaux)</li>
+                        <li>Fond Sombre: #d4a5c3 (rose pâle)</li>
+                        <li>Icône Remplie: Dégradé #63003A → #8B0052</li>
+                        <li>Monochrome: Blanc pur</li>
+                        <li>Points: #C89AB8 et #f0b8dc</li>
+                    </ul>
+                </div>
+
+                <div class="spec-card">
+                    <h4>💼 Cas d'Usage</h4>
+                    <ul>
+                        <li>Site Web: Medium/Large fond clair</li>
+                        <li>App Mobile: Icon filled 512px</li>
+                        <li>Email Signature: Small fond clair</li>
+                        <li>Présentation: Large avec tagline</li>
+                        <li>Réseaux Sociaux: Icon standard</li>
+                        <li>Print: Large/XLarge SVG</li>
+                    </ul>
+                </div>
+
+                <div class="spec-card">
+                    <h4>✅ Formats Techniques</h4>
+                    <ul>
+                        <li>Format: SVG vectoriel scalable</li>
+                        <li>Typographie: Space Grotesk Bold</li>
+                        <li>Compatible: Web, Print, Mobile</li>
+                        <li>Résolution: Infinie (vectoriel)</li>
+                        <li>Poids: ~2-5 KB par fichier</li>
+                        <li>Export PNG: Possible à n'importe quelle taille</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function downloadSVG(type) {
+            let svgContent = '';
+            let filename = '';
+            
+            const svgTemplates = {
+                'small-light': {
+                    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="280" height="200" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(105, 20)">
+        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+              fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+        <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+        <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+        <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+        <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+        <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+    </g>
+    <text x="140" y="125" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="36" fill="#63003A" text-anchor="middle">Admineex</text>
+    <text x="140" y="145" font-family="Outfit, sans-serif" font-weight="600" font-size="10" fill="#C89AB8" text-anchor="middle" letter-spacing="2">GESTION PUBLIQUE DIGITALE</text>
+</svg>`,
+                    filename: 'admineex-v3-small-light.svg'
+                },
+                'medium-light': {
+                    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="350" height="250" viewBox="0 0 350 250" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(125, 25)">
+        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+              fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+        <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+        <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+        <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+        <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+        <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+    </g>
+    <text x="175" y="155" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="48" fill="#63003A" text-anchor="middle">Admineex</text>
+    <text x="175" y="178" font-family="Outfit, sans-serif" font-weight="600" font-size="12" fill="#C89AB8" text-anchor="middle" letter-spacing="2.5">GESTION PUBLIQUE DIGITALE</text>
+</svg>`,
+                    filename: 'admineex-v3-medium-light.svg'
+                },
+                'large-light': {
+                    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="420" height="300" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(145, 30)">
+        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+              fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+        <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+        <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+        <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+        <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+        <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+    </g>
+    <text x="210" y="195" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="60" fill="#63003A" text-anchor="middle">Admineex</text>
+    <text x="210" y="223" font-family="Outfit, sans-serif" font-weight="600" font-size="14" fill="#C89AB8" text-anchor="middle" letter-spacing="3">GESTION PUBLIQUE DIGITALE</text>
+</svg>`,
+                    filename: 'admineex-v3-large-light.svg'
+                },
+                'small-dark': {
+                    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="280" height="200" viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(105, 20)">
+        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+              fill="none" stroke="#d4a5c3" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M 30 56 L 40 28 L 50 56" stroke="#d4a5c3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="34" y1="48" x2="46" y2="48" stroke="#d4a5c3" stroke-width="5" stroke-linecap="round"/>
+        <rect x="29" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+        <rect x="48" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+        <circle cx="40" cy="18" r="3" fill="#f0b8dc"/>
+        <circle cx="60" cy="38" r="3" fill="#f0b8dc"/>
+        <circle cx="20" cy="38" r="3" fill="#f0b8dc"/>
+    </g>
+    <text x="140" y="125" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="36" fill="#ffffff" text-anchor="middle">Admineex</text>
+    <text x="140" y="145" font-family="Outfit, sans-serif" font-weight="600" font-size="10" fill="#d4a5c3" text-anchor="middle" letter-spacing="2">GESTION PUBLIQUE DIGITALE</text>
+</svg>`,
+                    filename: 'admineex-v3-small-dark.svg'
+                },
+                'medium-dark': {
+                    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="350" height="250" viewBox="0 0 350 250" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(125, 25)">
+        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+              fill="none" stroke="#d4a5c3" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M 30 56 L 40 28 L 50 56" stroke="#d4a5c3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="34" y1="48" x2="46" y2="48" stroke="#d4a5c3" stroke-width="5" stroke-linecap="round"/>
+        <rect x="29" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+        <rect x="48" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+        <circle cx="40" cy="18" r="3" fill="#f0b8dc"/>
+        <circle cx="60" cy="38" r="3" fill="#f0b8dc"/>
+        <circle cx="20" cy="38" r="3" fill="#f0b8dc"/>
+    </g>
+    <text x="175" y="155" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="48" fill="#ffffff" text-anchor="middle">Admineex</text>
+    <text x="175" y="178" font-family="Outfit, sans-serif" font-weight="600" font-size="12" fill="#d4a5c3" text-anchor="middle" letter-spacing="2.5">GESTION PUBLIQUE DIGITALE</text>
+</svg>`,
+                    filename: 'admineex-v3-medium-dark.svg'
+                },
+                'large-dark': {
+                    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="420" height="300" viewBox="0 0 420 300" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(145, 30)">
+        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+              fill="none" stroke="#d4a5c3" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M 30 56 L 40 28 L 50 56" stroke="#d4a5c3" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="34" y1="48" x2="46" y2="48" stroke="#d4a5c3" stroke-width="5" stroke-linecap="round"/>
+        <rect x="29" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+        <rect x="48" y="52" width="3" height="6" rx="1" fill="#d4a5c3"/>
+        <circle cx="40" cy="18" r="3" fill="#f0b8dc"/>
+        <circle cx="60" cy="38" r="3" fill="#f0b8dc"/>
+        <circle cx="20" cy="38" r="3" fill="#f0b8dc"/>
+    </g>
+    <text x="210" y="195" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="60" fill="#ffffff" text-anchor="middle">Admineex</text>
+    <text x="210" y="223" font-family="Outfit, sans-serif" font-weight="600" font-size="14" fill="#d4a5c3" text-anchor="middle" letter-spacing="3">GESTION PUBLIQUE DIGITALE</text>
+</svg>`,
+                    filename: 'admineex-v3-large-dark.svg'
+                },
+                'icon-standard': {
+                    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+          fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+    <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+    <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+    <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+    <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+    <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+    <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+</svg>`,
+                    filename: 'admineex-v3-icon-512.svg'
+                },
+                'icon-filled': {
+                    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#63003A;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#8B0052;stop-opacity:1" />
+        </linearGradient>
+    </defs>
+    <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" fill="url(#hexGrad)"/>
+    <path d="M 30 56 L 40 28 L 50 56" stroke="white" stroke-width="5.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="34" y1="48" x2="46" y2="48" stroke="white" stroke-width="5.5" stroke-linecap="round"/>
+    <rect x="29" y="52" width="3" height="6" rx="1" fill="white"/>
+    <rect x="38.5" y="52" width="3" height="6" rx="1" fill="white"/>
+    <rect x="48" y="52" width="3" height="6" rx="1" fill="white"/>
+    <circle cx="40" cy="18" r="3.5" fill="#f0b8dc"/>
+    <circle cx="60" cy="38" r="3" fill="#f0b8dc" opacity="0.8"/>
+    <circle cx="20" cy="38" r="3" fill="#f0b8dc" opacity="0.8"/>
+</svg>`,
+                    filename: 'admineex-v3-icon-filled-512.svg'
+                },
+                'icon-mono': {
+                    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+          fill="none" stroke="white" stroke-width="3.5" stroke-linejoin="round"/>
+    <path d="M 30 56 L 40 28 L 50 56" stroke="white" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="34" y1="48" x2="46" y2="48" stroke="white" stroke-width="5" stroke-linecap="round"/>
+    <rect x="29" y="52" width="3" height="6" rx="1" fill="white"/>
+    <rect x="38.5" y="52" width="3" height="6" rx="1" fill="white"/>
+    <rect x="48" y="52" width="3" height="6" rx="1" fill="white"/>
+    <circle cx="40" cy="18" r="3" fill="white" opacity="0.7"/>
+    <circle cx="60" cy="38" r="3" fill="white" opacity="0.7"/>
+    <circle cx="20" cy="38" r="3" fill="white" opacity="0.7"/>
+</svg>`,
+                    filename: 'admineex-v3-icon-mono-512.svg'
+                },
+                'no-tagline': {
+                    content: `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="350" height="220" viewBox="0 0 350 220" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(125, 30)">
+        <path d="M 40 6 L 68 22 L 68 54 L 40 70 L 12 54 L 12 22 Z" 
+              fill="none" stroke="#63003A" stroke-width="3.5" stroke-linejoin="round"/>
+        <path d="M 30 56 L 40 28 L 50 56" stroke="#63003A" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="34" y1="48" x2="46" y2="48" stroke="#63003A" stroke-width="5" stroke-linecap="round"/>
+        <rect x="29" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+        <rect x="38.5" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+        <rect x="48" y="52" width="3" height="6" rx="1" fill="#63003A"/>
+        <circle cx="40" cy="18" r="3" fill="#C89AB8"/>
+        <circle cx="60" cy="38" r="3" fill="#C89AB8"/>
+        <circle cx="20" cy="38" r="3" fill="#C89AB8"/>
+    </g>
+    <text x="175" y="150" font-family="Space Grotesk, sans-serif" font-weight="700" font-size="48" fill="#63003A" text-anchor="middle">Admineex</text>
+</svg>`,
+                    filename: 'admineex-v3-no-tagline.svg'
+                }
+            };
+            
+            const template = svgTemplates[type];
+            if (!template) return;
+            
+            const blob = new Blob([template.content], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = template.filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Success feedback
+            const btn = event.target.closest('button');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '✓ Téléchargé !';
+            btn.style.background = 'linear-gradient(135deg, #059669 0%, #047857 100%)';
+            setTimeout(() => {
+                btn.innerHTML = originalHTML;
+                btn.style.background = btn.classList.contains('secondary') 
+                    ? 'linear-gradient(135deg, #C89AB8 0%, #d4a5c3 100%)'
+                    : 'linear-gradient(135deg, #63003A 0%, #8B0052 100%)';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

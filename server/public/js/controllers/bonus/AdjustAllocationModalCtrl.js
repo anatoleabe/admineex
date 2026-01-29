@@ -13,22 +13,44 @@ angular.module('app').controller('AdjustAllocationModalCtrl', ['$scope', '$http'
 
         // Get shareAmount - prioritize passed instanceShareAmount from wizard
         function getShareAmount(allocation, passedShareAmount) {
+            console.log('[AdjustAllocationModal] getShareAmount inputs:', {
+                passedShareAmount: passedShareAmount,
+                allocationShareAmount: allocation.shareAmount,
+                instanceIdShareAmount: allocation.instanceId && typeof allocation.instanceId === 'object' ? allocation.instanceId.shareAmount : null,
+                templateShareAmount: allocation.templateId && allocation.templateId.calculationConfig ? allocation.templateId.calculationConfig.defaultShareAmount : null,
+                calculatedAmount: allocation.calculatedAmount,
+                parts: allocation.calculationInputs && allocation.calculationInputs.parts
+            });
+
             // 1. From passed instanceShareAmount (from wizard scope)
             if (passedShareAmount && passedShareAmount > 0) {
+                console.log('[AdjustAllocationModal] Using passedShareAmount:', passedShareAmount);
                 return passedShareAmount;
             }
             // 2. From populated instanceId object
             if (allocation.instanceId && typeof allocation.instanceId === 'object' && allocation.instanceId.shareAmount) {
+                console.log('[AdjustAllocationModal] Using instanceId.shareAmount:', allocation.instanceId.shareAmount);
                 return allocation.instanceId.shareAmount;
             }
             // 3. From instance directly on allocation (older pattern)
             if (allocation.shareAmount) {
+                console.log('[AdjustAllocationModal] Using allocation.shareAmount:', allocation.shareAmount);
                 return allocation.shareAmount;
             }
             // 4. From template calculationConfig defaultShareAmount
             if (allocation.templateId && allocation.templateId.calculationConfig && allocation.templateId.calculationConfig.defaultShareAmount) {
+                console.log('[AdjustAllocationModal] Using templateId.calculationConfig.defaultShareAmount:', allocation.templateId.calculationConfig.defaultShareAmount);
                 return allocation.templateId.calculationConfig.defaultShareAmount;
             }
+            // 5. FALLBACK: Derive from calculatedAmount / parts if both exist and parts > 0
+            var parts = allocation.calculationInputs && allocation.calculationInputs.parts;
+            var calculatedAmount = allocation.calculatedAmount;
+            if (calculatedAmount && parts && parts > 0) {
+                var derivedShare = Math.round(calculatedAmount / parts);
+                console.log('[AdjustAllocationModal] DERIVED shareAmount from calculatedAmount/parts:', derivedShare);
+                return derivedShare;
+            }
+            console.log('[AdjustAllocationModal] No shareAmount found, returning 0');
             return 0;
         }
 
