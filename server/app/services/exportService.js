@@ -1199,9 +1199,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, option
         };
 
         const formatRate = (r) => (Number(r || 0) * 100).toFixed(2).replace(/\.00$/, '');
-        const defaultTaxRate = bonusAllocations[0]?.taxRate ||
-            (bonusAllocations[0]?.instanceId?.taxPercentage ? bonusAllocations[0].instanceId.taxPercentage / 100 : 0.0528);
-        const taxHeaderLabel = `Retenue (${formatRate(defaultTaxRate)}%)`;
+        const taxHeaderLabel = 'Retenue'; // No percentage since different instances may have different tax rates
         const formattedName = `${personnel.name?.family?.join(' ') || ''} ${personnel.name?.given?.join(' ') || ''}`.trim();
 
         // --- Generate Official Header ---
