@@ -284,7 +284,6 @@
                                                 </div>
                                                 <input type="text" class="form-control border-left-0"
                                                     placeholder="Search by employee name..." ng-model="searchTerm"
-                                                    ng-model-options="{ debounce: 300 }" onStatusFilterChange
                                                     ng-change="onSearchInputChange(searchTerm)">
                                                 <small class="text-muted"
                                                     ng-if="(searchTerm||'').trim().length < 3 && (searchTerm||'').trim().length > 0"
@@ -329,7 +328,35 @@
                                     <!-- IFT TABLE (partial) -->
                                     <div ng-if="isIFT()" ng-init="tableMode='adjust'"
                                         ng-include="'templates/bonus/partials/ift-table.html'"></div>
-                                </div>
+                                    <!-- Pagination controls -->
+                                    <div class="wizard-pagination mt-3 pt-3 border-top">
+                                        <div class="wizard-pagination__summary text-muted font-size-sm" translate>
+                                            Showing {{pagination.total ? (pagination.offset + 1) : 0}} -
+                                            {{Math.min(pagination.offset + (allocations ? allocations.length : 0),
+                                            pagination.total || 0)}}
+                                            of {{pagination.total || 0}}
+                                        </div>
+                                        <div class="wizard-pagination__controls">
+                                            <label class="mr-2 mb-0 text-muted font-size-sm" translate>Rows per
+                                                page:</label>
+                                            <select class="form-control form-control-sm wizard-pagination__select"
+                                                ng-model="pagination.limit" ng-change="goToPage(1)">
+                                                <option value="25">25</option>
+                                                <option value="50">50</option>
+                                                <option value="100">100</option>
+                                            </select>
+                                            <div class="btn-group ml-md-3 mt-2 mt-md-0">
+                                                <button class="btn btn-sm btn-outline-secondary" ng-click="prevPage()"
+                                                    ng-disabled="!canPrevPage()" aria-label="Previous page">
+                                                    <i class="mi-chevron-left"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-secondary" ng-click="nextPage()"
+                                                    ng-disabled="!canNextPage()" aria-label="Next page">
+                                                    <i class="mi-chevron-right"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>                                </div>
                             </div>
 
                             <!-- Confirm step - Enhanced -->

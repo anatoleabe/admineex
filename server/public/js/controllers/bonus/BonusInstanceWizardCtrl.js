@@ -47,6 +47,7 @@ angular.module('app')
             function getActiveSearchTerm() {
                 return normalizeSearchTerm($scope.searchTerm);
             }
+            let searchDebouncePromise = null;
             function persistWizardStep(instanceId, step) {
                 try {
                     if (!$window.sessionStorage || !instanceId || !step) return;
@@ -327,9 +328,10 @@ angular.module('app')
                 $scope.loading = true;
                 var hasActiveFilters = filtersAreActive();
                 $scope.loadAllocationsPage()
-                    .then(function () {
-                        // Only load global stats when no active filters
-                        if (!hasActiveFilters) {
+                    .then(function (statsFromFiltered) {
+                        // If we have active filters, the filtered stats should already be loaded
+                        // Only load global stats when no active filters OR if no stats came back from filtered results
+                        if (!hasActiveFilters || !statsFromFiltered) {
                             return $scope.refreshGlobalStats();
                         }
                     })
@@ -1073,7 +1075,6 @@ angular.module('app')
             // Explicit handler for template ng-change (mirrors watcher logic; helpful when select2 or other plugins alter events)
             $scope.onSearchInputChange = function (st) {
                 console.log('Search input changed:', st);
-                if (!watchersReady) return;
                 const term = normalizeSearchTerm(st);
                 const last = $scope._lastAppliedSearch;
                 const shouldTrigger = (term.length === 0) || (term.length >= 3) || (last.length >= 3 && term.length < 3);
