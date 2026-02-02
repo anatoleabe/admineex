@@ -17,7 +17,9 @@ angular.module('app')
             loading: false,
             saving: false,
             deleting: false,
-            viewing: false
+            viewing: false,
+            generating: false,
+            generatingTemplateId: null
         };
 
         $scope.templates = [];
@@ -732,6 +734,10 @@ angular.module('app')
         // Anticipate/early generate bonuses for a template
         $scope.anticipateGeneration = function (template) {
             if (!template || !template._id) return;
+            if ($scope.state.generating) {
+                toastr.warning(t('A generation is already in progress. Please wait.'));
+                return;
+            }
             if (!$scope.permissions.canAnticipateGeneration) {
                 toastr.error(t('Not authorized'));
                 return;
@@ -760,11 +766,13 @@ angular.module('app')
             }
 
             console.log('Generate Now: User confirmed, calling API...');
-            $scope.state.saving = true;
+            $scope.state.generating = true;
+            $scope.state.generatingTemplateId = template._id;
             $http.post('/api/bonus/generation/anticipate', { templateId: template._id })
                 .then(function (response) {
                     console.log('Generate Now: API response', response);
-                    $scope.state.saving = false;
+                    $scope.state.generating = false;
+                    $scope.state.generatingTemplateId = null;
                     var data = response.data || {};
                     var message = data.message || t('Bonus instance generated successfully');
                     if (data.referencePeriod) {
@@ -778,7 +786,8 @@ angular.module('app')
                 })
                 .catch(function (error) {
                     console.error('Generate Now: API error', error);
-                    $scope.state.saving = false;
+                    $scope.state.generating = false;
+                    $scope.state.generatingTemplateId = null;
                     var errMsg = (error.data && error.data.message) || t('Failed to generate bonuses');
                     toastr.error(errMsg);
                     alert(t('Error') + '\n' + errMsg);

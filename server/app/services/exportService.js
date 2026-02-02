@@ -1430,12 +1430,26 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, option
             || latestAllocation.personnelSnapshotId?.data?.rank
             || personnel.rank
             || 'N/A';
+
+        const statusId = latestAllocation.personnelSnapshotId?.data?.status;
+
+        const grade = latestAllocation.personnelSnapshotId?.data?.grade || '';
+        let gradeTxt = "N/A"
+        if (statusId && grade) {
+            gradeTxt = dictionary.getValueFromJSON(
+                `../../resources/dictionary/personnel/status/${statusId}/grades.json`,
+                parseInt(latestAllocation.personnelSnapshotId?.data?.grade, 10),
+                'fr'
+            );
+            gradeCode = gradeTxt || String(grade);
+        }
+        
         const infoRightFields = [
             {
                 label: 'Période du rapport',
                 value: `${moment(startDate).format('DD/MM/YYYY')} au ${moment(endDate).format('DD/MM/YYYY')}`
             },
-            { label: 'Grade', value: rankLabel },
+            { label: 'Grade', value: gradeTxt },
             { type: 'qr', value: qrImage }
         ];
 

@@ -1,6 +1,22 @@
 <!-- Bonus Instance Wizard Template -->
 <div class="page-content">
     <div class="content-wrapper">
+        <!-- Recalculation Overlay -->
+        <div class="recalculation-overlay" ng-if="instance.recalculationStatus.inProgress || recalculationPolling">
+            <div class="recalculation-overlay-backdrop"></div>
+            <div class="recalculation-overlay-content">
+                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+                <h5 class="mt-3 mb-2" translate>Recalculating Allocations</h5>
+                <p class="text-muted mb-1" translate>Please wait while we recalculate all allocations...</p>
+                <p class="text-muted small mb-0" translate>This may take a few moments depending on the number of personnel.</p>
+                <div class="progress mt-3" style="width: 200px; height: 6px;">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 100%"></div>
+                </div>
+            </div>
+        </div>
+
         <!-- Content area -->
         <div class="content">
             <!-- Enhanced Loading Indicator -->
@@ -189,19 +205,23 @@
 
                             <div class="text-center action-buttons">
                                 <button class="btn btn-success btn-block mb-2" ng-click="directApproveInstance()"
+                                    ng-disabled="instance.recalculationStatus.inProgress || recalculationPolling"
                                     ng-if="permissions.canApproveInstance && currentStep === 'completed' && instance.status !== 'approved' && instance.status !== 'paid'">
                                     <i class="mi-check-circle mr-1"></i> <span translate>Approve Instance</span>
                                 </button>
                                 <!-- Hide update share for Sans Part -->
                                 <button class="btn btn-warning btn-block mb-2" ng-click="updateShareAmount()"
+                                    ng-disabled="instance.recalculationStatus.inProgress || recalculationPolling"
                                     ng-if="permissions.canUpdateShareAmount && !isSansPart() && instance.status !== 'approved' && instance.status !== 'paid'">
                                     <i class="mi-attach-money mr-1"></i> <span translate>Update Share Amount</span>
                                 </button>
                                 <button class="btn btn-info btn-block mb-2" ng-click="updateTaxConfig()"
+                                    ng-disabled="instance.recalculationStatus.inProgress || recalculationPolling"
                                     ng-if="permissions.canUpdateTaxConfig && instance.status !== 'approved' && instance.status !== 'paid'">
                                     <i class="mi-percent mr-1"></i> <span translate>Update Tax Configuration</span>
                                 </button>
-                                <button class="btn btn-primary btn-block" ng-click="exportInstance()">
+                                <button class="btn btn-primary btn-block" ng-click="exportInstance()"
+                                    ng-disabled="instance.recalculationStatus.inProgress || recalculationPolling">
                                     <i class="mi-file-download mr-1"></i> <span translate>Export Data</span>
                                 </button>
                             </div>
@@ -230,11 +250,11 @@
                                 <div class="list-icons ml-3">
                                     <button type="button" class="btn btn-outline-secondary mr-2"
                                         ng-click="previousStep()"
-                                        ng-disabled="currentStep === 'adjust' || updatingStep || stepTransitioning">
+                                        ng-disabled="currentStep === 'adjust' || updatingStep || stepTransitioning || instance.recalculationStatus.inProgress || recalculationPolling">
                                         <i class="mi-arrow-back mr-1"></i> <span translate>Previous</span>
                                     </button>
                                     <button type="button" class="btn btn-primary" ng-click="nextStep()"
-                                        ng-disabled="currentStep === 'completed' || updatingStep || stepTransitioning">
+                                        ng-disabled="currentStep === 'completed' || updatingStep || stepTransitioning || instance.recalculationStatus.inProgress || recalculationPolling">
                                         <span translate>Next</span> <i class="mi-arrow-forward ml-1"></i>
                                     </button>
                                 </div>
@@ -931,3 +951,33 @@
         </div>
     </div>
 </div>
+
+<style>
+    .recalculation-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .recalculation-overlay-backdrop {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255, 255, 255, 0.9);
+    }
+    .recalculation-overlay-content {
+        position: relative;
+        text-align: center;
+        padding: 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+</style>
