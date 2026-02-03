@@ -964,7 +964,7 @@ let routes = [
         path: _.findWhere(aclRoutes, { id: 244 }).uri,
         httpMethod: _.findWhere(aclRoutes, { id: 244 }).method,
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.instance.api.updateWizardStep],
-        access: [1, 3, 4]
+        access: _.findWhere(aclRoutes, { id: 244 }).roles
     },
     {
         path: _.findWhere(aclRoutes, { id: 245 }).uri,
