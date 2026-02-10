@@ -1077,57 +1077,234 @@
                 <div class="section-number">3</div>
                 <div class="section-title-group">
                     <h2>Programmes de Primes</h2>
-                    <p>Configuration des règles de calcul</p>
+                    <p>Configuration des règles de calcul et modèles</p>
                 </div>
             </div>
 
-            <p>Les programmes définissent les règles de calcul des primes.</p>
+            <p>Les programmes (ou modèles) définissent les règles de calcul des primes. Ils servent de base pour créer
+                des cycles de paiement récurrents ou ponctuels.</p>
 
             <h3>Accès aux Programmes</h3>
             <p><strong>Navigation :</strong> Menu principal → Primes et Gratifications → Programmes</p>
 
-            <h3>Types de Programmes</h3>
-
-            <h4>1️⃣ IFT (IRPP non prélevé)</h4>
-            <p>Prime basée sur le rang hiérarchique, sans prélèvement d'impôt.</p>
-
-            <div class="code-block">
-                Rang 1 (Directeur) : 500 000 FCFA
-                Rang 2 (Sous-directeur) : 400 000 FCFA
-                Rang 3 (Chef de service) : 300 000 FCFA
+            <div class="screenshot-container" style="margin: 24px 0; text-align: center;">
+                <img src="screenshots/programmes_list.png" alt="Liste des programmes de primes"
+                    style="max-width: 100%; border-radius: 12px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+                <p style="font-size: 13px; color: var(--text-light); margin-top: 12px; font-style: italic;">
+                    Figure 1 : Liste des programmes de primes avec filtres et statistiques
+                </p>
             </div>
 
-            <h4>2️⃣ Primes avec Parts</h4>
-            <p>Prime calculée en fonction du nombre de parts attribuées.</p>
+            <h3>Interface de la Liste des Programmes</h3>
+            <p>L'écran principal affiche :</p>
+            <ul>
+                <li>📊 <strong>Statistiques en temps réel</strong> — Total, Actifs, Inactifs</li>
+                <li>🔍 <strong>Barre de recherche</strong> — Par nom, code ou description</li>
+                <li>🏷️ <strong>Filtres par catégorie</strong> — Avec parts, Sans parts, Montant fixe, Calculé</li>
+                <li>📋 <strong>Vue Liste ou Cartes</strong> — Changez le mode d'affichage</li>
+                <li>🔄 <strong>Tri</strong> — Par date de mise à jour, nom ou code</li>
+            </ul>
 
+            <h3>Les 4 Catégories de Calcul</h3>
+
+            <h4>1️⃣ Primes avec Parts</h4>
+            <p>Prime calculée en fonction du nombre de parts attribuées à chaque bénéficiaire.</p>
             <div class="formula">
                 <strong>Montant Brut</strong> = Nombre de parts × Montant de la part<br>
-                <strong>Retenue IR</strong> = Montant Brut × Taux de taxe<br>
-                <strong>Montant Net</strong> = Montant Brut - Retenue IR
+                <strong>Retenue IR</strong> = Montant Brut × Taux de taxe (ex: 5,28%)<br>
+                <strong>Montant Net (NAP)</strong> = Montant Brut - Retenue IR
             </div>
+            <p><strong>Exemple :</strong> Prime trimestrielle avec part à 50 000 FCFA. Un agent avec 3 parts reçoit 150
+                000 FCFA brut.</p>
+
+            <h4>2️⃣ Primes sans Parts (Remise sur Salaire / IFT)</h4>
+            <p>Deux sous-types disponibles :</p>
+            <ul>
+                <li><strong>Remise sur Salaire :</strong> Calcul basé sur le SBI (Salaire de Base Indiciaire)</li>
+            </ul>
+            <div class="formula">
+                <strong>Remise</strong> = SBI × 3 × Taux applicable
+            </div>
+            <ul>
+                <li><strong>IFT (Indemnité de Fonction et de Technicité) :</strong> Montant fixe selon le rang
+                    hiérarchique, IRPP non prélevé</li>
+            </ul>
+            <div class="code-block">
+                Grille IFT type :
+                ├── Rang 1 (Directeur) : 500 000 FCFA
+                ├── Rang 2 (Sous-directeur) : 400 000 FCFA
+                ├── Rang 3 (Chef de service) : 300 000 FCFA
+                ├── Rang 4 (Chef de bureau) : 200 000 FCFA
+                └── Autres : 100 000 FCFA</div>
 
             <h4>3️⃣ Montant Fixe</h4>
-            <p>Montant identique pour tous les bénéficiaires éligibles.</p>
+            <p>Montant identique pour tous les bénéficiaires éligibles. Idéal pour les primes exceptionnelles ou
+                uniformes.</p>
+            <p><strong>Exemple :</strong> Prime de fin d'année de 100 000 FCFA pour tout le personnel.</p>
 
             <h4>4️⃣ Calcul Personnalisé</h4>
-            <p>Formule mathématique personnalisée utilisant des variables (SBI, rang, ancienneté, etc.)</p>
+            <p>Formule mathématique personnalisée utilisant des variables dynamiques (SBI, rang, ancienneté, grade,
+                etc.)</p>
 
-            <h3>Créer un Programme</h3>
+            <h3>Périodicités Disponibles</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Périodicité</th>
+                        <th>Fréquence</th>
+                        <th>Génération Auto</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Quotidienne</td>
+                        <td>Chaque jour</td>
+                        <td>✅ Oui</td>
+                    </tr>
+                    <tr>
+                        <td>Hebdomadaire</td>
+                        <td>Chaque semaine</td>
+                        <td>✅ Oui</td>
+                    </tr>
+                    <tr>
+                        <td>Mensuelle</td>
+                        <td>Chaque mois</td>
+                        <td>✅ Oui</td>
+                    </tr>
+                    <tr>
+                        <td>Trimestrielle</td>
+                        <td>Chaque 3 mois</td>
+                        <td>✅ Oui</td>
+                    </tr>
+                    <tr>
+                        <td>Semestrielle</td>
+                        <td>Chaque 6 mois</td>
+                        <td>✅ Oui</td>
+                    </tr>
+                    <tr>
+                        <td>Annuelle</td>
+                        <td>Chaque année</td>
+                        <td>✅ Oui</td>
+                    </tr>
+                    <tr>
+                        <td>À la demande</td>
+                        <td>Manuel uniquement</td>
+                        <td>❌ Non</td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <ol>
-                <li><strong>Accéder à la création</strong> — Cliquez sur « + Nouveau Programme »</li>
-                <li><strong>Informations de base</strong> — Nom descriptif, Code unique, Périodicité</li>
-                <li><strong>Type de calcul</strong> — Sélectionnez le type approprié</li>
-                <li><strong>Règles d'éligibilité</strong> — Définissez les critères</li>
-                <li><strong>Configuration fiscale</strong> — Taux de taxe si applicable</li>
-                <li><strong>Enregistrer</strong> — Validez la création</li>
-            </ol>
+            <h3>Créer un Programme — Assistant en 4 Étapes</h3>
+
+            <div class="workflow">
+                <div class="workflow-step">
+                    <div class="workflow-bubble">1</div>
+                    <span class="workflow-label">Infos<br>de base</span>
+                </div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">
+                    <div class="workflow-bubble">2</div>
+                    <span class="workflow-label">Calcul</span>
+                </div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">
+                    <div class="workflow-bubble">3</div>
+                    <span class="workflow-label">Règles</span>
+                </div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">
+                    <div class="workflow-bubble">4</div>
+                    <span class="workflow-label">Workflow</span>
+                </div>
+            </div>
+
+            <div class="screenshot-container" style="margin: 24px 0; text-align: center;">
+                <img src="screenshots/template_form.png" alt="Formulaire de création de programme"
+                    style="max-width: 100%; border-radius: 12px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+                <p style="font-size: 13px; color: var(--text-light); margin-top: 12px; font-style: italic;">
+                    Figure 2 : Assistant de création de programme - Étape 1 (Informations de base)
+                </p>
+            </div>
+
+            <h4>Étape 1 : Informations de Base</h4>
+            <ul>
+                <li><strong>Code</strong> — Identifiant unique (majuscules, chiffres, tirets). Ex:
+                    <code>BONUS_Q1_2026</code>
+                </li>
+                <li><strong>Nom</strong> — Nom descriptif du programme</li>
+                <li><strong>Description</strong> — Détails et notes</li>
+                <li><strong>Catégorie</strong> — Avec parts, Sans parts, Montant fixe, ou Calculé</li>
+                <li><strong>Périodicité</strong> — Fréquence de génération</li>
+            </ul>
+
+            <h4>Étape 2 : Configuration du Calcul</h4>
+            <p>Selon la catégorie choisie :</p>
+            <ul>
+                <li><strong>Avec parts :</strong> Montant par défaut de la part</li>
+                <li><strong>Sans parts :</strong> Choix entre Remise ou IFT, configuration de la grille</li>
+                <li><strong>Montant fixe :</strong> Valeur fixe en FCFA</li>
+                <li><strong>Calculé :</strong> Formule personnalisée</li>
+            </ul>
+
+            <h4>Étape 3 : Règles d'Éligibilité</h4>
+            <p>Définissez les critères pour déterminer qui reçoit la prime :</p>
+            <ul>
+                <li>Type de contrat (CDI, CDD, etc.)</li>
+                <li>Ancienneté minimale</li>
+                <li>Structure ou direction</li>
+                <li>Grade ou catégorie</li>
+            </ul>
+
+            <h4>Étape 4 : Workflow d'Approbation</h4>
+            <p>Configurez le circuit de validation si nécessaire.</p>
+
+            <h3>Actions sur les Programmes</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>👁️ Voir</td>
+                        <td>Consulter les détails du programme</td>
+                    </tr>
+                    <tr>
+                        <td>✏️ Modifier</td>
+                        <td>Éditer la configuration</td>
+                    </tr>
+                    <tr>
+                        <td>📋 Voir Cycles</td>
+                        <td>Lister tous les cycles associés</td>
+                    </tr>
+                    <tr>
+                        <td>⚡ Générer Maintenant</td>
+                        <td>Créer un cycle anticipé immédiatement</td>
+                    </tr>
+                    <tr>
+                        <td>🗑️ Supprimer</td>
+                        <td>Supprimer le programme (si non utilisé)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="alert alert-warning">
+                <span class="alert-icon">📥</span>
+                <div class="alert-content">
+                    <h5>Programmes Importés</h5>
+                    <p>Les programmes importés depuis Excel sont marqués avec un badge "Importé" et sont en lecture
+                        seule. Ils ne peuvent pas être modifiés ni supprimés.</p>
+                </div>
+            </div>
 
             <div class="alert alert-success">
                 <span class="alert-icon">💡</span>
                 <div class="alert-content">
                     <h5>Conseil</h5>
-                    <p>Testez toujours vos règles d'éligibilité avec des cas réels avant de lancer un cycle complet.</p>
+                    <p>Utilisez le bouton "Générer Maintenant" pour créer un cycle de test avant d'activer la génération
+                        automatique.</p>
                 </div>
             </div>
         </section>
@@ -1146,6 +1323,14 @@
 
             <h3>Accès aux Cycles</h3>
             <p><strong>Navigation :</strong> Menu principal → Primes et Gratifications → Cycles de Paiement</p>
+
+            <div class="screenshot-container" style="margin: 24px 0; text-align: center;">
+                <img src="screenshots/cycles_list.png" alt="Liste des cycles de paiement"
+                    style="max-width: 100%; border-radius: 12px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+                <p style="font-size: 13px; color: var(--text-light); margin-top: 12px; font-style: italic;">
+                    Figure 3 : Liste des cycles de paiement avec filtres et statuts
+                </p>
+            </div>
 
             <h3>Statuts des Cycles</h3>
 
@@ -1254,101 +1439,209 @@
             </ul>
         </section>
 
-        <!-- SECTION 5 : Gestion des Attributions -->
+        <!-- SECTION 5 : Gestion des Attributions et Assistant de Gestion -->
         <section class="section" id="attributions">
             <div class="section-header">
                 <div class="section-number">5</div>
                 <div class="section-title-group">
                     <h2>Gestion des Attributions</h2>
-                    <p>Ajustements et modifications individuels</p>
+                    <p>Assistant de gestion (Wizard) et ajustements individuels</p>
                 </div>
             </div>
 
-            <h3>Vue d'Ensemble</h3>
-            <p><strong>Navigation :</strong> Cycle → Vue Détails → Onglet "Distributions"</p>
+            <p>L'Assistant de Gestion (Wizard) est l'interface principale pour gérer les allocations d'un cycle de
+                paiement. Il guide l'utilisateur à travers 4 étapes pour réviser, ajuster, exporter et finaliser les
+                attributions.</p>
 
-            <h3>Informations Affichées</h3>
+            <h3>Accès à l'Assistant</h3>
+            <p><strong>Navigation :</strong> Cycles de Paiement → Actions → "Gérer dans l'Assistant"</p>
 
+            <div class="screenshot-container" style="margin: 24px 0; text-align: center;">
+                <img src="screenshots/wizard_allocations.png" alt="Assistant de gestion des allocations"
+                    style="max-width: 100%; border-radius: 12px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+                <p style="font-size: 13px; color: var(--text-light); margin-top: 12px; font-style: italic;">
+                    Figure 4 : Assistant de gestion - Étape Ajuster les allocations
+                </p>
+            </div>
+
+            <h3>Les 4 Étapes de l'Assistant</h3>
+
+            <div class="workflow">
+                <div class="workflow-step">
+                    <div class="workflow-bubble">1</div>
+                    <span class="workflow-label">Ajuster<br>Allocations</span>
+                </div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">
+                    <div class="workflow-bubble">2</div>
+                    <span class="workflow-label">Confirmer<br>Allocations</span>
+                </div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">
+                    <div class="workflow-bubble">3</div>
+                    <span class="workflow-label">Exporter<br>Données</span>
+                </div>
+                <span class="workflow-arrow">→</span>
+                <div class="workflow-step">
+                    <div class="workflow-bubble">✓</div>
+                    <span class="workflow-label">Terminé</span>
+                </div>
+            </div>
+
+            <h4>Étape 1 : Ajuster les Allocations</h4>
+            <p>Revoyez et modifiez les attributions de primes pour chaque bénéficiaire :</p>
+            <ul>
+                <li>✏️ <strong>Modifier</strong> — Ajustez le nombre de parts ou le montant final</li>
+                <li>❌ <strong>Exclure</strong> — Retirez un bénéficiaire avec motif obligatoire</li>
+                <li>✅ <strong>Inclure</strong> — Réintégrez un bénéficiaire précédemment exclu</li>
+                <li>📜 <strong>Historique</strong> — Consultez les modifications passées</li>
+            </ul>
+
+            <h4>Étape 2 : Confirmer les Allocations</h4>
+            <p>Vérifiez les données historiques et validez les calculs :</p>
+            <ul>
+                <li>Comparez avec les cycles précédents</li>
+                <li>Identifiez les anomalies ou écarts</li>
+                <li>Validez les montants finaux</li>
+            </ul>
+
+            <h4>Étape 3 : Exporter les Données</h4>
+            <p>Générez les documents pour traitement :</p>
+            <ul>
+                <li>📊 <strong>Export Excel</strong> — Liste détaillée pour la trésorerie/paie</li>
+                <li>📄 <strong>Export PDF</strong> — Document officiel pour archivage et signatures</li>
+                <li>📜 <strong>Historique des exports</strong> — Liste de tous les fichiers générés</li>
+            </ul>
+
+            <h4>Étape 4 : Terminé</h4>
+            <p>L'instance est prête pour approbation. Actions disponibles :</p>
+            <ul>
+                <li>✅ Approuver l'instance</li>
+                <li>📥 Exporter les données finales</li>
+                <li>↩️ Retourner à la liste des cycles</li>
+            </ul>
+
+            <h3>Panneau de Résumé (Sidebar)</h3>
+            <p>Le panneau latéral affiche en temps réel :</p>
             <table>
                 <thead>
                     <tr>
-                        <th>Colonne</th>
+                        <th>Information</th>
                         <th>Description</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Personnel</strong></td>
-                        <td>Nom complet et matricule</td>
+                        <td><strong>Période de référence</strong></td>
+                        <td>Ex: 2026-Q1, Janvier 2026</td>
                     </tr>
                     <tr>
-                        <td><strong>Structure</strong></td>
-                        <td>Direction/Sous-direction</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Parts</strong></td>
-                        <td>Nombre de parts (si applicable)</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Montant Brut</strong></td>
-                        <td>Avant retenues</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Retenue IR</strong></td>
-                        <td>Impôt calculé</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Montant Net</strong></td>
-                        <td>À payer</td>
+                        <td><strong>Programme</strong></td>
+                        <td>Nom du modèle de prime</td>
                     </tr>
                     <tr>
                         <td><strong>Statut</strong></td>
-                        <td>Inclus, Exclu, Ajusté</td>
+                        <td>État actuel du cycle</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Progrès</strong></td>
+                        <td>Barre de progression (25%, 50%, 75%, 100%)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total éligibles</strong></td>
+                        <td>Nombre de bénéficiaires</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total exclus</strong></td>
+                        <td>Personnes exclues du cycle</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total ajustés</strong></td>
+                        <td>Allocations modifiées manuellement</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total parts</strong></td>
+                        <td>Somme des parts (si applicable)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Montant de la part</strong></td>
+                        <td>Valeur unitaire</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Taux de taxe</strong></td>
+                        <td>% de retenue IR</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Montant total</strong></td>
+                        <td>Somme globale à payer</td>
                     </tr>
                 </tbody>
             </table>
 
-            <h3>Filtres Disponibles</h3>
+            <h3>Actions Rapides du Panneau</h3>
             <ul>
-                <li>🔍 <strong>Recherche</strong> — Par nom ou matricule</li>
-                <li>🏢 <strong>Structure</strong> — Direction spécifique</li>
-                <li>📊 <strong>Statut</strong> — Tous, Inclus, Exclus, Ajustés</li>
-                <li>📈 <strong>Tri</strong> — Par nom, montant, structure</li>
+                <li>✅ <strong>Approuver l'Instance</strong> — Valide définitivement le cycle</li>
+                <li>💰 <strong>Modifier Montant Part</strong> — Recalcule toutes les allocations</li>
+                <li>📊 <strong>Modifier Configuration Taxe</strong> — Ajuste le taux IR</li>
+                <li>� <strong>Exporter Données</strong> — Télécharge Excel ou PDF</li>
             </ul>
 
-            <h3>Ajuster une Attribution</h3>
+            <div class="alert alert-info">
+                <span class="alert-icon">🔄</span>
+                <div class="alert-content">
+                    <h5>Recalcul Automatique</h5>
+                    <p>Lorsque vous modifiez le montant de la part ou le taux de taxe, le système recalcule
+                        automatiquement toutes les allocations. Une animation de chargement s'affiche pendant le
+                        traitement.</p>
+                </div>
+            </div>
 
-            <h4>Méthode 1 : Modification Rapide</h4>
-            <ol>
-                <li>Cliquez sur l'icône ✏️</li>
-                <li>Modifiez les valeurs</li>
-                <li>Enregistrez</li>
-            </ol>
-
-            <h4>Méthode 2 : Assistant de Gestion</h4>
-            <ol>
-                <li>Accédez au cycle</li>
-                <li>Cliquez sur « Gérer dans l'Assistant »</li>
-                <li>Suivez les étapes guidées</li>
-            </ol>
-
-            <h3>Exclure un Bénéficiaire</h3>
-            <ol>
-                <li>Trouvez le personnel concerné</li>
-                <li>Cliquez sur « Exclure »</li>
-                <li>Saisissez le motif (obligatoire)</li>
-                <li>Confirmez</li>
-            </ol>
-
-            <h3>Historique des Modifications</h3>
-            <p>Informations tracées :</p>
+            <h3>Filtres et Recherche</h3>
             <ul>
-                <li>📅 Date et heure</li>
-                <li>👤 Utilisateur</li>
-                <li>🔄 Type de modification</li>
-                <li>💰 Valeurs avant/après</li>
-                <li>📝 Raison du changement</li>
+                <li>🔍 <strong>Recherche</strong> — Par nom d'employé (minimum 3 caractères)</li>
+                <li>📊 <strong>Statut</strong> — Tous, Éligibles, Exclus, Ajustés</li>
+                <li>🏢 <strong>Structure</strong> — Filtrer par direction</li>
+                <li>🏛️ <strong>Sous-structure</strong> — Filtrer par sous-direction</li>
             </ul>
+
+            <h3>Tableaux selon le Type de Prime</h3>
+
+            <h4>Primes avec Parts</h4>
+            <p>Colonnes affichées : Personnel, Structure, Nb Parts, Montant Brut, Retenue IR, NAP, Actions</p>
+
+            <h4>Primes sans Parts</h4>
+            <p>Colonnes affichées : Personnel, Structure, SBI, Taux, Montant Brut, Retenue, NAP, Actions</p>
+
+            <h4>IFT (Indemnité de Fonction)</h4>
+            <p>Colonnes affichées : Personnel, Structure, Rang, Montant IFT, Actions</p>
+
+            <h3>Pagination</h3>
+            <p>Pour les grandes listes, utilisez la pagination :</p>
+            <ul>
+                <li>Affichage : 25, 50 ou 100 lignes par page</li>
+                <li>Navigation : Page précédente / suivante</li>
+                <li>Indicateur : "Affichage 1-25 sur 250"</li>
+            </ul>
+
+            <h3>Fenêtre d'Ajustement</h3>
+            <p>En cliquant sur "Modifier" pour une allocation :</p>
+            <ol>
+                <li><strong>Informations employé</strong> — Photo, nom, matricule, statut actuel</li>
+                <li><strong>Montant original</strong> — Calculé automatiquement</li>
+                <li><strong>Nombre de parts</strong> — Modifiable si prime avec parts</li>
+                <li><strong>Montant final</strong> — Peut être saisi manuellement</li>
+                <li><strong>Résumé de l'ajustement</strong> — Affiche la différence (+ ou -)</li>
+                <li><strong>Raison</strong> — Obligatoire pour justifier le changement</li>
+            </ol>
+
+            <div class="alert alert-warning">
+                <span class="alert-icon">📜</span>
+                <div class="alert-content">
+                    <h5>Traçabilité</h5>
+                    <p>Toutes les modifications sont enregistrées avec la date, l'utilisateur et le motif. L'historique
+                        complet est visible dans la fenêtre d'ajustement.</p>
+                </div>
+            </div>
         </section>
 
         <!-- SECTION 6 : Approbations et Workflow -->
@@ -1417,22 +1710,192 @@
                 <div class="section-number">7</div>
                 <div class="section-title-group">
                     <h2>Rapports et Exports</h2>
-                    <p>Extraction et archivage des données</p>
+                    <p>Génération de rapports récapitulatifs et exports</p>
                 </div>
             </div>
 
-            <h3>Types d'Exports</h3>
+            <p>Le module de rapports permet de générer des synthèses consolidées des primes versées, filtrées par
+                période, catégorie et personnel.</p>
 
-            <h4>📊 Export Excel — Détails Complets</h4>
-            <p><strong>Usage :</strong> Traitement trésorerie, analyse</p>
-            <p>Colonnes incluses : Identité complète, Structure, Montants détaillés, Statut</p>
+            <h3>Accès aux Rapports</h3>
+            <p><strong>Navigation :</strong> Menu principal → Primes et Gratifications → Rapports</p>
+
+            <div class="screenshot-container" style="margin: 24px 0; text-align: center;">
+                <img src="screenshots/reports_page.png" alt="Page des rapports de primes"
+                    style="max-width: 100%; border-radius: 12px; box-shadow: var(--shadow-md); border: 1px solid var(--border-color);">
+                <p style="font-size: 13px; color: var(--text-light); margin-top: 12px; font-style: italic;">
+                    Figure 5 : Page des rapports et exports avec filtres
+                </p>
+            </div>
+
+            <h3>Filtres Disponibles</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Filtre</th>
+                        <th>Options</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Catégorie</strong></td>
+                        <td>Toutes, Avec parts, Sans parts</td>
+                        <td>Type de calcul de prime</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Statut</strong></td>
+                        <td>Tous, Approuvé, Payé</td>
+                        <td>État du cycle</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Période</strong></td>
+                        <td>Date début / Date fin</td>
+                        <td>Plage de dates pour le rapport</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Personnel</strong></td>
+                        <td>Recherche par nom</td>
+                        <td>Générer un rapport individuel</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Structure du Rapport</h3>
+            <p>Le rapport est organisé en sections selon le type de prime :</p>
+
+            <h4>📊 Section : Primes avec Parts</h4>
+            <p>Affiche toutes les primes calculées sur base de parts :</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Colonne</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Programme</td>
+                        <td>Nom du modèle de prime</td>
+                    </tr>
+                    <tr>
+                        <td>Période</td>
+                        <td>Référence du cycle (ex: 2026-Q1)</td>
+                    </tr>
+                    <tr>
+                        <td>Total Parts</td>
+                        <td>Somme des parts attribuées</td>
+                    </tr>
+                    <tr>
+                        <td>Montant Brut</td>
+                        <td>Total avant retenues</td>
+                    </tr>
+                    <tr>
+                        <td>Retenue IR</td>
+                        <td>Total des impôts retenus</td>
+                    </tr>
+                    <tr>
+                        <td>Montant Net</td>
+                        <td>Total à payer (NAP)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>📋 Section : Primes sans Parts</h4>
+            <p>Affiche les primes de type Remise ou IFT :</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Colonne</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Programme</td>
+                        <td>Nom du modèle de prime</td>
+                    </tr>
+                    <tr>
+                        <td>Type</td>
+                        <td>Remise sur salaire ou IFT</td>
+                    </tr>
+                    <tr>
+                        <td>Période</td>
+                        <td>Référence du cycle</td>
+                    </tr>
+                    <tr>
+                        <td>Montant Brut</td>
+                        <td>Total avant retenues</td>
+                    </tr>
+                    <tr>
+                        <td>Retenue</td>
+                        <td>IR prélevé (0 pour IFT)</td>
+                    </tr>
+                    <tr>
+                        <td>Montant Net</td>
+                        <td>Total à payer</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>📈 Totaux Généraux</h4>
+            <p>En bas du rapport, un récapitulatif global :</p>
+            <ul>
+                <li><strong>Total Brut Global</strong> — Somme de tous les montants bruts</li>
+                <li><strong>Total Retenues</strong> — Somme de tous les impôts</li>
+                <li><strong>Total Net Global</strong> — Somme de tous les NAP</li>
+            </ul>
+
+            <h3>Impression</h3>
+            <p>Cliquez sur le bouton <strong>🖨️ Imprimer</strong> en haut de la page pour générer une version
+                imprimable du rapport. Le format est optimisé pour l'impression avec :</p>
+            <ul>
+                <li>En-tête avec logo et date</li>
+                <li>Tableaux formatés</li>
+                <li>Totaux mis en évidence</li>
+                <li>Zone pour signatures</li>
+            </ul>
+
+            <h3>Types d'Exports depuis les Cycles</h3>
+
+            <h4>📊 Export Excel — Liste Détaillée</h4>
+            <p><strong>Usage :</strong> Traitement trésorerie, analyse, intégration paie</p>
+            <p>Colonnes incluses :</p>
+            <ul>
+                <li>Matricule et nom complet</li>
+                <li>Structure (Direction/Sous-direction)</li>
+                <li>Nombre de parts (si applicable)</li>
+                <li>Montant brut, retenue IR, montant net</li>
+                <li>Statut de l'allocation</li>
+            </ul>
 
             <h4>📄 Export PDF — Document Officiel</h4>
-            <p><strong>Usage :</strong> Archivage, validation</p>
-            <p>Sections : Page de garde, Tableaux des primes, Récapitulatifs, Signatures</p>
+            <p><strong>Usage :</strong> Archivage légal, validation hiérarchique</p>
+            <p>Sections du document :</p>
+            <ul>
+                <li>Page de garde avec informations du cycle</li>
+                <li>Liste nominative des bénéficiaires</li>
+                <li>Récapitulatif par structure</li>
+                <li>Totaux et zone de signatures</li>
+            </ul>
 
-            <h4>📈 Rapport Récapitulatif Annuel</h4>
-            <p><strong>Accès :</strong> Menu → Rapports → Rapports de Primes</p>
+            <div class="alert alert-success">
+                <span class="alert-icon">📥</span>
+                <div class="alert-content">
+                    <h5>Historique des Exports</h5>
+                    <p>Tous les fichiers générés sont conservés et accessibles depuis l'étape "Exporter Données" du
+                        Wizard. Vous pouvez télécharger à nouveau un export précédent sans le régénérer.</p>
+                </div>
+            </div>
+
+            <h3>Rapport Individuel par Personnel</h3>
+            <p>Pour générer un rapport pour un agent spécifique :</p>
+            <ol>
+                <li>Utilisez le filtre "Personnel" et saisissez le nom</li>
+                <li>Sélectionnez l'agent dans la liste</li>
+                <li>Le rapport affiche uniquement ses primes</li>
+                <li>Imprimez pour archivage individuel</li>
+            </ol>
         </section>
 
         <!-- SECTION 8 : FAQ et Dépannage -->
