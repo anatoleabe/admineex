@@ -325,7 +325,7 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$rootSc
         // Use SweetAlert for confirmation
         swal({
             title: t('Delete Instance?'),
-            text: t('This will permanently delete this bonus instance and all its allocations. This action cannot be undone.'),
+            text: t('This will permanently delete this DRAFT bonus instance and all its allocations. This action cannot be undone.'),
             type: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#d33',

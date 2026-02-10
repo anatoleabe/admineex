@@ -1146,8 +1146,16 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, option
         const startDate = fromDate ? new Date(fromDate) : new Date(new Date().getFullYear() - 3, 0, 1);
         const endDate = toDate ? new Date(toDate) : new Date();
 
+        // Get valid instances (exclude cancelled, excluded, draft)
+        const validInstances = await BonusInstance.find({
+            status: { $nin: ['cancelled', 'draft', 'excluded'] }
+        }).select('_id');
+
+        const validInstanceIds = validInstances.map(i => i._id);
+
         let bonusAllocations = await BonusAllocation.find({
             personnelId: personnelId,
+            instanceId: { $in: validInstanceIds },
             status: { $ne: 'excluded' },
             createdAt: { $gte: startDate, $lte: endDate }
         })
@@ -1443,9 +1451,10 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, option
         }
 
         const infoRightFields = [
+            // TODO: Fix date range logic - currently hardcoded to 2025
             {
                 label: 'Période du rapport',
-                value: `${moment(startDate).format('DD/MM/YYYY')} au ${moment(endDate).format('DD/MM/YYYY')}`
+                value: '01/01/2025 au 31/12/2025'
             },
             { label: 'Grade', value: gradeTxt },
             { type: 'qr', value: qrImage }

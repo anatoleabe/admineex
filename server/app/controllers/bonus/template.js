@@ -338,20 +338,8 @@ exports.api.delete = async (req, res, next) => {
             auditEvent(req, 'delete', 'BonusTemplate', req.params.id, 'succeed', 'Permanently deleted bonus template (no instances)');
             res.status(200).json({ success: true, message: 'Template permanently deleted', permanent: true });
         } else {
-            // Has instances - soft delete
-            const template = await Template.findByIdAndUpdate(
-                req.params.id,
-                {
-                    isDeleted: true,
-                    deletedAt: new Date(),
-                    deletedBy: req.user?.id || req.actor?.id,
-                    isActive: false
-                },
-                { new: true }
-            );
-
-            auditEvent(req, 'delete', 'BonusTemplate', req.params.id, 'succeed', `Soft deleted bonus template (${instanceCount} instances exist)`);
-            res.status(200).json({ success: true, message: 'Template deleted (archived)', permanent: false, instanceCount });
+            // Has instances - prevent deletion entirely
+            throw badRequest(t(req, `Cannot delete template: ${instanceCount} cycle(s) exist. Please delete all cycles first.`));
         }
     } catch (error) {
         auditEvent(req, 'delete', 'BonusTemplate', req.params.id, 'failed', error && error.message ? error.message : String(error));

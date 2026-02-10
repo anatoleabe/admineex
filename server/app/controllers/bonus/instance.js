@@ -318,10 +318,10 @@ exports.api.getAll = async (req, res, next) => {
                     $group: {
                         _id: '$instanceId',
                         count: { $sum: 1 },
-                        totalAmount: { $sum: { $ifNull: [ '$finalAmount', 0 ] } },
-                        totalTax: { $sum: { $ifNull: [ '$taxAmount', 0 ] } },
-                        totalNet: { $sum: { $ifNull: [ '$netAmount', 0 ] } },
-                        totalParts: { $sum: { $ifNull: [ '$calculationInputs.parts', 0 ] } }
+                        totalAmount: { $sum: { $ifNull: ['$finalAmount', 0] } },
+                        totalTax: { $sum: { $ifNull: ['$taxAmount', 0] } },
+                        totalNet: { $sum: { $ifNull: ['$netAmount', 0] } },
+                        totalParts: { $sum: { $ifNull: ['$calculationInputs.parts', 0] } }
                     }
                 }
             ]);
@@ -362,10 +362,10 @@ exports.api.getAll = async (req, res, next) => {
                         $group: {
                             _id: null,
                             count: { $sum: 1 },
-                            totalAmount: { $sum: { $ifNull: [ '$finalAmount', 0 ] } },
-                            totalTax: { $sum: { $ifNull: [ '$taxAmount', 0 ] } },
-                            totalNet: { $sum: { $ifNull: [ '$netAmount', 0 ] } },
-                            totalParts: { $sum: { $ifNull: [ '$calculationInputs.parts', 0 ] } }
+                            totalAmount: { $sum: { $ifNull: ['$finalAmount', 0] } },
+                            totalTax: { $sum: { $ifNull: ['$taxAmount', 0] } },
+                            totalNet: { $sum: { $ifNull: ['$netAmount', 0] } },
+                            totalParts: { $sum: { $ifNull: ['$calculationInputs.parts', 0] } }
                         }
                     }
                 ]);
@@ -568,7 +568,7 @@ exports.api.cancel = async (req, res, next) => {
 exports.api.delete = async (req, res, next) => {
     try {
         const instanceId = req.params.id;
-        
+
         if (!mongoose.Types.ObjectId.isValid(instanceId)) {
             throw badRequest(t(req, 'Invalid instance ID'));
         }
@@ -579,21 +579,21 @@ exports.api.delete = async (req, res, next) => {
             throw notFound(t(req, 'Bonus instance not found'));
         }
 
-        // Only allow deletion of draft or cancelled instances
-        const allowedStatuses = ['draft', 'cancelled'];
+        // Only allow deletion of draft instances
+        const allowedStatuses = ['draft'];
         if (!allowedStatuses.includes(instance.status)) {
-            throw badRequest(t(req, 'Only draft or cancelled instances can be deleted'));
+            throw badRequest(t(req, 'Cannot delete this instance. Only DRAFT instances can be deleted. For approved/paid instances, use the Cancel action instead.'));
         }
 
         // Delete all related allocations first
         const deleteAllocationsResult = await BonusAllocation.deleteMany({ instanceId: instanceId });
-        
+
         // Delete the instance
         await BonusInstance.findByIdAndDelete(instanceId);
 
-        auditEvent(req, 'delete', 'BonusInstance', instanceId, 'succeed', 
+        auditEvent(req, 'delete', 'BonusInstance', instanceId, 'succeed',
             `Deleted bonus instance and ${deleteAllocationsResult.deletedCount} allocations. referencePeriod=${instance.referencePeriod || ''}`);
-        
+
         res.json({
             success: true,
             message: t(req, 'Instance deleted successfully'),
