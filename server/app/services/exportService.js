@@ -1441,7 +1441,7 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, option
             );
             gradeCode = gradeTxt || String(grade);
         }
-        
+
         const infoRightFields = [
             {
                 label: 'Période du rapport',
@@ -1675,6 +1675,37 @@ exports.exportPersonnelBonusToPdf = async (personnelId, fromDate, toDate, option
             grandX += cell.width;
         });
         currentY += tableRowHeight;
+
+        // --- Add Official Signature ---
+        try {
+            const signaturePath = __dirname + '/../../public/img/dg_official_2.png';
+            const signatureWidth = 180; // Increased size for more realistic signature
+            const signatureHeight = 120; // Maintain aspect ratio
+
+            // Position signature 50px from the right, immediately after the table (no space)
+            const signatureX = doc.page.width - signatureWidth - 70;
+            const signatureY = currentY; // No space after the table
+
+            // Check if we need a new page for the signature
+            if (signatureY + signatureHeight > doc.page.height - doc.page.margins.bottom) {
+                doc.addPage({ margins: OTHER_PAGE_MARGINS });
+                generateHeader(doc);
+                const newSignatureY = doc.y;
+                doc.image(signaturePath, signatureX, newSignatureY, {
+                    width: signatureWidth,
+                    height: signatureHeight
+                });
+                currentY = newSignatureY + signatureHeight;
+            } else {
+                doc.image(signaturePath, signatureX, signatureY, {
+                    width: signatureWidth,
+                    height: signatureHeight
+                });
+                currentY += signatureHeight;
+            }
+        } catch (error) {
+            console.warn('Could not add signature image:', error.message);
+        }
 
         // --- Finalization ---
         generateFooter();
