@@ -1372,4 +1372,166 @@ angular.module('app')
                     $scope.state.deleting = false;
                 });
         };
+
+        // ================================== IMPORT BONUS DATA ==================================
+
+        $scope.importState = {
+            loading: false,
+            error: null,
+            result: null,
+            showMissingDetails: false,
+            form: {
+                file: null,
+                fileName: '',
+                templateName: '',
+                templateCode: '',
+                category: '',
+                periodicity: 'quarterly',
+                referencePeriod: '',
+                status: 'validated'
+            }
+        };
+
+        $scope.openImportModal = function () {
+            // Reset state
+            $scope.importState = {
+                loading: false,
+                error: null,
+                result: null,
+                showMissingDetails: false,
+                form: {
+                    file: null,
+                    fileName: '',
+                    templateName: '',
+                    templateCode: '',
+                    category: '',
+                    periodicity: 'quarterly',
+                    referencePeriod: '',
+                    status: 'validated'
+                }
+            };
+            // Reset file input
+            var fileInput = document.getElementById('bonusImportFile');
+            if (fileInput) fileInput.value = '';
+            $('#modal_import_bonus').modal('show');
+        };
+
+        $scope.closeImportModal = function () {
+            $('#modal_import_bonus').modal('hide');
+            // If import was successful, reload templates
+            if ($scope.importState.result) {
+                loadTemplates();
+            }
+        };
+
+        $scope.onImportFileSelected = function (files) {
+            $scope.$apply(function () {
+                if (files && files.length > 0) {
+                    var file = files[0];
+                    var ext = file.name.split('.').pop().toLowerCase();
+                    if (ext !== 'xlsx' && ext !== 'xls') {
+                        $scope.importState.error = t('Invalid file format. Only .xlsx and .xls files are accepted.');
+                        $scope.importState.form.file = null;
+                        $scope.importState.form.fileName = '';
+                        return;
+                    }
+                    $scope.importState.error = null;
+                    $scope.importState.form.file = file;
+                    $scope.importState.form.fileName = file.name;
+                } else {
+                    $scope.importState.form.file = null;
+                    $scope.importState.form.fileName = '';
+                }
+            });
+        };
+
+        $scope.importBonusData = function () {
+            var form = $scope.importState.form;
+
+            // Client-side validation
+            if (!form.file) {
+                $scope.importState.error = t('Please select an Excel file.');
+                return;
+            }
+            if (!form.templateName || !form.templateCode || !form.category || !form.referencePeriod) {
+                $scope.importState.error = t('Please fill in all required fields.');
+                return;
+            }
+
+            // Validate reference period format
+            var periodRegex = /^\d{4}-Q[1-4]$|^\d{4}-(0[1-9]|1[0-2])$/;
+            if (!periodRegex.test(form.referencePeriod)) {
+                $scope.importState.error = t('Invalid reference period format. Use YYYY-Qn (e.g. 2024-Q1) or YYYY-MM (e.g. 2024-01).');
+                return;
+            }
+
+            $scope.importState.loading = true;
+            $scope.importState.error = null;
+
+            // Build FormData
+            var formData = new FormData();
+            formData.append('file', form.file);
+            formData.append('templateCode', form.templateCode);
+            formData.append('templateName', form.templateName);
+            formData.append('category', form.category);
+            formData.append('periodicity', form.periodicity);
+            formData.append('referencePeriod', form.referencePeriod);
+            formData.append('status', form.status);
+
+            $http.post('/api/bonus/import', formData, {
+                transformRequest: angular.identity,
+                headers: { 'Content-Type': undefined }
+            }).then(function (response) {
+                $scope.importState.result = response.data.summary;
+                toastr.success(
+                    t('Import completed') + ': ' + response.data.summary.created + ' ' + t('allocations created'),
+                    t('Success')
+                );
+            }).catch(function (error) {
+                console.error('Import error:', error);
+                var errorMsg = t('Import failed');
+                if (error.data && error.data.error) {
+                    errorMsg = error.data.error;
+                } else if (error.data && error.data.message) {
+                    errorMsg = error.data.message;
+                }
+                $scope.importState.error = errorMsg;
+                toastr.error(errorMsg, t('Error'));
+            }).finally(function () {
+                $scope.importState.loading = false;
+            });
+        };
+
+        $scope.exportMissingPersonnelToExcel = function () {
+            var details = $scope.importState.result && $scope.importState.result.missingDetails;
+            if (!details || details.length === 0) return;
+
+            // Build CSV content (Excel-compatible with BOM for UTF-8)
+            var BOM = '\uFEFF';
+            var rows = [
+                [t('Row'), t('Matricule'), t('Name')].join(';')
+            ];
+            details.forEach(function (d) {
+                rows.push([
+                    d.rowIndex || '',
+                    d.identifier || '',
+                    (d.name || '').replace(/;/g, ',')
+                ].join(';'));
+            });
+            var csvContent = BOM + rows.join('\r\n');
+
+            // Create download
+            var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            var link = document.createElement('a');
+            var url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', 'missing_personnel_' + ($scope.importState.form.referencePeriod || 'import') + '.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+
+            toastr.success(t('Missing personnel list exported'), t('Success'));
+        };
+
     }]);

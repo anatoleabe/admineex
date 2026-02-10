@@ -43,6 +43,9 @@
       <button class="btn btn-primary" ng-if="permissions.canManageTemplates" ng-click="openTemplateForm()">
         <i class="icon-plus22 mr-1"></i> <span translate>New Program</span>
       </button>
+      <button class="btn btn-outline-primary ml-2" ng-if="permissions.canManageTemplates" ng-click="openImportModal()">
+        <i class="icon-upload2 mr-1"></i> <span translate>Import Data</span>
+      </button>
     </div>
   </div>
 
@@ -180,12 +183,14 @@
                       class="icon-list mr-2"></i> <span translate>View Cycles</span></a>
                   <a class="dropdown-item text-primary"
                     ng-if="permissions.canAnticipateGeneration && template.isActive && template.periodicity !== 'on_demand'"
-                    ng-class="{'disabled': state.generating}"
-                    href="javascript:void(0)" ng-click="!state.generating && anticipateGeneration(template)">
+                    ng-class="{'disabled': state.generating}" href="javascript:void(0)"
+                    ng-click="!state.generating && anticipateGeneration(template)">
                     <i class="icon-spinner2 spinner mr-2" ng-if="state.generatingTemplateId === template._id"></i>
                     <i class="icon-bolt mr-2" ng-if="state.generatingTemplateId !== template._id"></i>
                     <span translate>Generate Now</span>
-                    <small class="text-muted ml-1" ng-if="state.generating && state.generatingTemplateId !== template._id" translate>(in progress)</small>
+                    <small class="text-muted ml-1"
+                      ng-if="state.generating && state.generatingTemplateId !== template._id" translate>(in
+                      progress)</small>
                   </a>
                   <div class="dropdown-divider" ng-if="permissions.canManageTemplates"></div>
                   <a class="dropdown-item text-danger"
@@ -255,8 +260,8 @@
               title="{{'View Cycles' | translate}}"><i class="icon-list"></i></button>
             <button class="btn btn-outline-primary"
               ng-if="permissions.canAnticipateGeneration && template.isActive && template.periodicity !== 'on_demand'"
-              ng-disabled="state.generating"
-              ng-click="anticipateGeneration(template)" title="{{'Generate Now' | translate}}">
+              ng-disabled="state.generating" ng-click="anticipateGeneration(template)"
+              title="{{'Generate Now' | translate}}">
               <i class="icon-spinner2 spinner" ng-if="state.generatingTemplateId === template._id"></i>
               <i class="icon-bolt" ng-if="state.generatingTemplateId !== template._id"></i>
             </button>
@@ -328,6 +333,182 @@
     </div>
   </div>
 
+  <!-- Import Bonus Data Modal -->
+  <div id="modal_import_bonus" class="modal fade">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title"><i class="icon-upload2 mr-2"></i> <span translate>Import Bonus Data</span></h5>
+          <button type="button" class="close text-white" data-dismiss="modal"
+            ng-click="closeImportModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- Success Result -->
+          <div ng-if="importState.result" class="mb-3">
+            <div class="alert alert-success">
+              <i class="icon-checkmark3 mr-2"></i>
+              <strong translate>Import completed successfully!</strong>
+            </div>
+            <div class="row text-center mb-3">
+              <div class="col-3">
+                <div class="p-2 bg-success-100 rounded">
+                  <div class="font-weight-bold text-success h5 mb-0">{{importState.result.created}}</div>
+                  <small class="text-muted" translate>Created</small>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="p-2 bg-info-100 rounded">
+                  <div class="font-weight-bold text-info h5 mb-0">{{importState.result.skippedExisting}}</div>
+                  <small class="text-muted" translate>Skipped</small>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="p-2 bg-warning-100 rounded">
+                  <div class="font-weight-bold text-warning h5 mb-0">{{importState.result.missingPersonnel}}</div>
+                  <small class="text-muted" translate>Missing Personnel</small>
+                </div>
+              </div>
+              <div class="col-3">
+                <div class="p-2 bg-danger-100 rounded">
+                  <div class="font-weight-bold text-danger h5 mb-0">{{importState.result.invalidRows}}</div>
+                  <small class="text-muted" translate>Invalid Rows</small>
+                </div>
+              </div>
+            </div>
+            <!-- Missing Details -->
+            <div ng-if="importState.result.missingDetails.length > 0">
+              <div class="d-flex align-items-center justify-content-between">
+                <a href="javascript:void(0)"
+                  ng-click="importState.showMissingDetails = !importState.showMissingDetails">
+                  <i class="mr-1"
+                    ng-class="importState.showMissingDetails ? 'icon-arrow-down7' : 'icon-arrow-right7'"></i>
+                  <span translate>Show missing personnel details</span> ({{importState.result.missingDetails.length}})
+                </a>
+                <button class="btn btn-sm btn-outline-success" ng-click="exportMissingPersonnelToExcel()">
+                  <i class="icon-file-excel mr-1"></i> <span translate>Export to Excel</span>
+                </button>
+              </div>
+              <div ng-if="importState.showMissingDetails" class="mt-2" style="max-height: 200px; overflow-y: auto;">
+                <table class="table table-sm table-bordered">
+                  <thead class="thead-light">
+                    <tr>
+                      <th translate>Row</th>
+                      <th translate>Matricule</th>
+                      <th translate>Name</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="d in importState.result.missingDetails">
+                      <td>{{d.rowIndex}}</td>
+                      <td>{{d.identifier}}</td>
+                      <td>{{d.name}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error -->
+          <div ng-if="importState.error" class="alert alert-danger">
+            <i class="icon-warning2 mr-2"></i> {{importState.error}}
+          </div>
+
+          <!-- Import Form -->
+          <form ng-if="!importState.result" name="importForm">
+            <!-- File Upload -->
+            <div class="form-group">
+              <label translate>Excel File</label> <span class="text-danger">*</span>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="bonusImportFile" accept=".xlsx,.xls"
+                  onchange="angular.element(this).scope().onImportFileSelected(this.files)">
+                <label class="custom-file-label" for="bonusImportFile">
+                  {{importState.form.fileName || 'Choose .xlsx file...'}}
+                </label>
+              </div>
+              <small class="form-text text-muted" translate>The Excel file must have MATRICULE in column C and NOM(S) in
+                column B.</small>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label translate>Template Name</label> <span class="text-danger">*</span>
+                  <input type="text" class="form-control" ng-model="importState.form.templateName"
+                    placeholder="e.g. Prime Trimestrielle Q1 2024" required>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label translate>Template Code</label> <span class="text-danger">*</span>
+                  <input type="text" class="form-control" ng-model="importState.form.templateCode"
+                    placeholder="e.g. PRIME_TRIM_Q1_24" required>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label translate>Category</label> <span class="text-danger">*</span>
+                  <select class="form-control" ng-model="importState.form.category" required>
+                    <option value="" disabled translate>-- Select --</option>
+                    <option value="with_parts" translate>With Parts</option>
+                    <option value="without_parts" translate>Without Parts</option>
+                    <option value="ift" translate>IFT</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label translate>Periodicity</label>
+                  <select class="form-control" ng-model="importState.form.periodicity">
+                    <option value="quarterly" translate>Quarterly</option>
+                    <option value="monthly" translate>Monthly</option>
+                    <option value="yearly" translate>Yearly</option>
+                    <option value="semesterly" translate>Semesterly</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label translate>Status</label>
+                  <select class="form-control" ng-model="importState.form.status">
+                    <option value="validated" translate>Validated</option>
+                    <option value="approved" translate>Approved</option>
+                    <option value="paid" translate>Paid</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label translate>Reference Period</label> <span class="text-danger">*</span>
+              <input type="text" class="form-control" ng-model="importState.form.referencePeriod"
+                placeholder="YYYY-Qn (e.g. 2024-Q1) or YYYY-MM (e.g. 2024-01)" required>
+              <small class="form-text text-muted" translate>Format: YYYY-Q1 to YYYY-Q4 for quarters, or YYYY-MM for
+                months.</small>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-dismiss="modal" ng-click="closeImportModal()"
+            translate>Close</button>
+          <button type="button" class="btn btn-primary" ng-if="!importState.result"
+            ng-disabled="importState.loading || !importState.form.file || !importState.form.templateName || !importState.form.templateCode || !importState.form.category || !importState.form.referencePeriod"
+            ng-click="importBonusData()">
+            <i class="icon-spinner2 spinner mr-1" ng-if="importState.loading"></i>
+            <i class="icon-upload2 mr-1" ng-if="!importState.loading"></i>
+            <span ng-if="!importState.loading" translate>Import</span>
+            <span ng-if="importState.loading" translate>Importing...</span>
+          </button>
+          <button type="button" class="btn btn-primary" ng-if="importState.result" ng-click="closeImportModal()"
+            translate>Done</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <style>
     .generating-overlay {
       position: fixed;
@@ -340,6 +521,7 @@
       align-items: center;
       justify-content: center;
     }
+
     .generating-overlay-backdrop {
       position: absolute;
       top: 0;
@@ -348,20 +530,28 @@
       bottom: 0;
       background: rgba(255, 255, 255, 0.9);
     }
+
     .generating-overlay-content {
       position: relative;
       text-align: center;
       padding: 2rem;
       background: white;
       border-radius: 8px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
     }
+
     .icon-spinner2.spinner {
       animation: spin 1s linear infinite;
     }
+
     @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </div>

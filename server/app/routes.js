@@ -38,6 +38,7 @@ controllers.bonus = {
     export: require('./controllers/bonus/exportBonus'),
     dashboard: require('./controllers/bonus/dashboard'),
     config: require('./controllers/bonus/config'),
+    import: require('./controllers/bonus/importBonus'),
 }
 controllers.sanctions = require('./controllers/sanctions');
 controllers.organizations = require('./controllers/organizations');
@@ -1096,6 +1097,14 @@ let routes = [
         path: '/api/bonus/generation/anticipate',
         httpMethod: 'POST',
         middleware: [jwt({ secret: secret }), tokenManager.verifyToken, validate(bonusGenerationValidation.anticipateTemplate), controllers.bonus.generation.api.anticipateTemplateBonuses],
+        access: [1, 6] // Admin and Bonus Manager only
+    },
+
+    // Import bonus data from Excel (Admin and Bonus Manager only)
+    {
+        path: '/api/bonus/import',
+        httpMethod: 'POST',
+        middleware: [jwt({ secret: secret }), tokenManager.verifyToken, controllers.bonus.import.api.importBonusData],
         access: [1, 6] // Admin and Bonus Manager only
     },
 
