@@ -405,6 +405,29 @@ angular.module('app')
             return found ? found.label : periodicity;
         };
 
+        // Display-only labels for subtype/tax badges in template view
+        $scope.getSubtypeLabel = function (template) {
+            const subType = template && template.calculationConfig ? template.calculationConfig.subType : '';
+            return subType === 'ift' ? t('IFT') : t('Salary Remise');
+        };
+
+        $scope.getSubtypeBadgeClass = function (template) {
+            const subType = template && template.calculationConfig ? template.calculationConfig.subType : '';
+            return subType === 'ift' ? 'tag subtype-ift' : 'tag subtype-remise';
+        };
+
+        $scope.getTaxTreatmentLabel = function (template) {
+            const isTaxExempt = template && template.category === 'without_parts' &&
+                template.calculationConfig && template.calculationConfig.subType === 'ift';
+            return isTaxExempt ? t('Tax Exempt (IRPP not deducted)') : t('Tax Applied');
+        };
+
+        $scope.getTaxBadgeClass = function (template) {
+            const isTaxExempt = template && template.category === 'without_parts' &&
+                template.calculationConfig && template.calculationConfig.subType === 'ift';
+            return isTaxExempt ? 'tag tax-exempt' : 'tag tax-applied';
+        };
+
         function pad2(value) {
             return value < 10 ? `0${value}` : String(value);
         }

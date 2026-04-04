@@ -1,4 +1,14 @@
 <div class="bonus-templates-page" ng-controller="BonusTemplatesController">
+  <style>
+    .bonus-templates-page .template-desc-clamp {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      white-space: normal;
+      word-break: break-word;
+    }
+  </style>
   <!-- Generating Overlay -->
   <div class="generating-overlay" ng-if="state.generating">
     <div class="generating-overlay-backdrop"></div>
@@ -141,8 +151,9 @@
                   title="{{'Imported from Excel - Read only' | translate}}"><i class="icon-upload2"></i> {{'Imported' |
                   translate}}</span>
               </a>
-              <div class="text-muted small">{{template.description | limitTo:80}}{{template.description &&
-                template.description.length > 80 ? '...' : ''}}</div>
+              <div class="text-muted small template-desc-clamp" title="{{template.description || noDescriptionLabel}}">
+                {{template.description || noDescriptionLabel}}
+              </div>
             </td>
             <td><span>{{template.code}}</span></td>
             <td>{{getCategoryLabel(template.category)}}</td>
@@ -237,7 +248,9 @@
             <span class="badge"
               ng-class="template.isActive ? 'badge-success' : 'badge-secondary'">{{getActiveLabel(template.isActive)}}</span>
           </div>
-          <div class="mt-2 text-muted small">{{template.description || noDescriptionLabel}}</div>
+          <div class="mt-2 text-muted small template-desc-clamp" title="{{template.description || noDescriptionLabel}}">
+            {{template.description || noDescriptionLabel}}
+          </div>
           <div class="mt-3 d-flex flex-wrap small">
             <span class="mr-3"><i class="icon-price-tag2 mr-1"></i>{{getCategoryLabel(template.category)}}</span>
             <span class="mr-3"><i class="icon-calendar3 mr-1"></i>{{getPeriodicityLabel(template.periodicity)}}</span>

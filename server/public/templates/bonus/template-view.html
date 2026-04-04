@@ -110,6 +110,27 @@
         background: #eff6ff;
         color: #1d4ed8;
     }
+    .template-view-modal .tag.subtype-ift {
+        background: #eef2ff;
+        color: #3730a3;
+    }
+    .template-view-modal .tag.subtype-remise {
+        background: #eff6ff;
+        color: #1d4ed8;
+    }
+    .template-view-modal .tag.tax-exempt {
+        background: #dcfce7;
+        color: #166534;
+    }
+    .template-view-modal .tag.tax-applied {
+        background: #ffedd5;
+        color: #9a3412;
+    }
+    .template-view-modal .wrap-value {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
     .template-view-modal .amount-value {
         font-size: 1.1rem;
         font-weight: 600;
@@ -368,7 +389,7 @@
             
             <div ng-if="viewedTemplate.description">
                 <div class="info-label mt-3" translate>Description</div>
-                <div class="description-text">{{viewedTemplate.description}}</div>
+                <div class="description-text wrap-value">{{viewedTemplate.description}}</div>
             </div>
         </div>
 
@@ -378,13 +399,13 @@
                 <div class="section-icon calc">
                     <i class="icon-calculator"></i>
                 </div>
-                <h6 class="section-title" translate>Calculation Configuration</h6>
+                <h6 class="section-title" translate>Calculation Details</h6>
             </div>
             
             <!-- With Parts -->
             <div ng-if="viewedTemplate.category === 'with_parts'">
                 <div class="info-item">
-                    <div class="info-label" translate>Share Amount</div>
+                    <div class="info-label" translate>Share Amount (per part)</div>
                     <div class="info-value">
                         <span class="amount-value">{{viewedTemplate.calculationConfig.defaultShareAmount | number}} FCFA</span>
                     </div>
@@ -406,13 +427,14 @@
                 <div class="info-item">
                     <div class="info-label" translate>Subtype</div>
                     <div class="info-value">
-                        <span class="tag">{{viewedTemplate.calculationConfig.subType === 'ift' ? 'IFT (IRPP non prélevé)' : 'Remise sur salaire'}}</span>
+                        <span ng-class="getSubtypeBadgeClass(viewedTemplate)">{{getSubtypeLabel(viewedTemplate)}}</span>
+                        <span class="ml-2" ng-class="getTaxBadgeClass(viewedTemplate)">{{getTaxTreatmentLabel(viewedTemplate)}}</span>
                     </div>
                 </div>
                 
                 <!-- IFT Amount Rules -->
                 <div ng-if="viewedTemplate.calculationConfig.subType === 'ift' && viewedTemplate.iftConfig.amountRules.length > 0">
-                    <div class="info-label mt-3" translate>IFT Amount Grid</div>
+                    <div class="info-label mt-3" translate>IFT Amounts by Rank</div>
                     <table class="data-table">
                         <thead>
                             <tr>
@@ -422,7 +444,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="rule in viewedTemplate.iftConfig.amountRules">
-                                <td>{{rule.match.rankCode || '(All ranks)'}}</td>
+                                <td class="wrap-value" title="{{rule.match.rankCode || '(All ranks)'}}">{{rule.match.rankCode || '(All ranks)'}}</td>
                                 <td class="text-right font-weight-semibold">{{rule.amount | number}}</td>
                             </tr>
                         </tbody>
@@ -505,7 +527,9 @@
                         </div>
                         <div class="rule-field-group">
                             <div class="rule-field-label" translate>Value</div>
-                            <div class="rule-field-value">{{rule.value || rule.valueInput || (rule.valueList | json)}}</div>
+                            <div class="rule-field-value wrap-value" title="{{rule.value || rule.valueInput || (rule.valueList | json)}}">
+                                {{rule.value || rule.valueInput || (rule.valueList | json)}}
+                            </div>
                         </div>
                     </div>
                 </div>
