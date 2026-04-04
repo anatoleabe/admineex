@@ -1,11 +1,11 @@
 <div class="md-dialog-container">
-    <md-dialog aria-label="Include Allocation" ng-class="{'md-dialog-loading': including}">
+    <md-dialog aria-label="{{'Include Allocation' | translate}}" ng-class="{'md-dialog-loading': including}">
         <form name="includeAllocationForm" ng-submit="save()" novalidate>
             <md-toolbar class="md-primary">
                 <div class="md-toolbar-tools">
                     <h2 translate>Include Allocation</h2>
                     <span flex></span>
-                    <md-button class="md-icon-button" ng-click="cancel()" aria-label="Close dialog">
+                    <md-button class="md-icon-button" ng-click="cancel()" aria-label="{{'Close dialog' | translate}}">
                         <md-icon>close</md-icon>
                     </md-button>
                 </div>

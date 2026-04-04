@@ -5,7 +5,8 @@
         <div class="card-body py-2">
             <div class="row align-items-center">
                 <div class="col-md-3">
-                    <h6 class="mb-0 text-semibold" translate>Dashboard Overview</h6>
+                    <h6 class="mb-0 text-semibold" translate>Bonus Performance Overview</h6>
+                    <small class="text-muted" translate>Metrics are based on selected period and statuses</small>
                 </div>
                 <div class="col-md-9">
                     <div class="d-flex flex-wrap align-items-center justify-content-end">
@@ -26,19 +27,19 @@
                         </div>
                         
                         <!-- Status Filters -->
-                        <span class="mr-2 text-muted" translate>Status:</span>
+                        <span class="mr-2 text-muted" translate>Include statuses:</span>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
                                 <input type="checkbox" class="form-check-input" ng-model="filterStatus.approved"
                                     ng-change="toggleFilter()">
-                                <span translate>Approved</span>
+                                <span translate>Approved (validated)</span>
                             </label>
                         </div>
                         <div class="form-check form-check-inline">
                             <label class="form-check-label">
                                 <input type="checkbox" class="form-check-input" ng-model="filterStatus.paid"
                                     ng-change="toggleFilter()">
-                                <span translate>Paid</span>
+                                <span translate>Paid (disbursed)</span>
                             </label>
                         </div>
                     </div>
@@ -54,7 +55,7 @@
                 <div class="media">
                     <div class="media-body">
                         <h3 class="mb-0">{{ stats.totalPaid | xaf }}</h3>
-                        <span class="text-uppercase font-size-xs" translate>Total Paid</span>
+                        <span class="text-uppercase font-size-xs" translate>Total Disbursed</span>
                     </div>
                     <div class="ml-3 align-self-center">
                         <i class="icon-cash3 icon-3x opacity-75"></i>
@@ -68,7 +69,7 @@
                 <div class="media">
                     <div class="media-body">
                         <h3 class="mb-0">{{ stats.activeCyclesCount }}</h3>
-                        <span class="text-uppercase font-size-xs" translate>Active Cycles</span>
+                        <span class="text-uppercase font-size-xs" translate>Open Cycles</span>
                     </div>
                     <div class="ml-3 align-self-center">
                         <i class="icon-spinner11 icon-3x opacity-75"></i>
@@ -82,7 +83,7 @@
                 <div class="media">
                     <div class="media-body">
                         <h3 class="mb-0">{{ stats.uniqueBeneficiaries }}</h3>
-                        <span class="text-uppercase font-size-xs" translate>Beneficiaries (12M)</span>
+                        <span class="text-uppercase font-size-xs" translate>Beneficiaries (Selected Period)</span>
                     </div>
                     <div class="ml-3 align-self-center">
                         <i class="icon-users4 icon-3x opacity-75"></i>
@@ -96,7 +97,7 @@
             <div class="card card-body bg-orange-400 has-bg-image cursor-pointer" ng-click="navigate('instances')">
                 <div class="media">
                     <div class="media-body">
-                        <h3 class="mb-0" translate>Manage</h3>
+                        <h3 class="mb-0" translate>Open</h3>
                         <span class="text-uppercase font-size-xs" translate>Bonus Cycles</span>
                     </div>
                     <div class="ml-3 align-self-center">
@@ -178,7 +179,7 @@
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header header-elements-inline">
-                    <h5 class="card-title" translate>Quick Links</h5>
+                    <h5 class="card-title" translate>Shortcuts</h5>
                 </div>
                 <div class="list-group list-group-flush">
                     <a href="" ng-click="navigate('instances')" class="list-group-item list-group-item-action">

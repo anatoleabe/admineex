@@ -1,4 +1,4 @@
-<md-dialog aria-label="Adjust Allocation" class="modal-lg adjust-allocation-modal"
+<md-dialog aria-label="{{'Adjust Allocation' | translate}}" class="modal-lg adjust-allocation-modal"
     style="min-width: 600px; width: 60%;">
     <md-toolbar>
         <div class="md-toolbar-tools">
@@ -191,7 +191,7 @@
                         <span class="text-danger">*</span>
                     </label>
                     <textarea class="form-control" rows="3" ng-model="selectedAllocation.calculationInputs.comment"
-                        placeholder="Enter adjustment reason... (required)" required></textarea>
+                        placeholder="{{'Enter adjustment reason... (required)' | translate}}" required></textarea>
                     <small class="form-text text-muted">
                         Please provide a clear reason for this adjustment. This will be recorded in the history.
                     </small>

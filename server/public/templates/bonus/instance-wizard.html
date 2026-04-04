@@ -6,7 +6,7 @@
             <div class="recalculation-overlay-backdrop"></div>
             <div class="recalculation-overlay-content">
                 <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only" translate>Loading...</span>
                 </div>
                 <h5 class="mt-3 mb-2" translate>Recalculating Allocations</h5>
                 <p class="text-muted mb-1" translate>Please wait while we recalculate all allocations...</p>
@@ -283,7 +283,7 @@
                                                             class="icon-search4"></i></span>
                                                 </div>
                                                 <input type="text" class="form-control border-left-0"
-                                                    placeholder="Search by employee name..." ng-model="searchTerm"
+                                                    placeholder="{{'Search by employee name...' | translate}}" ng-model="searchTerm"
                                                     ng-change="onSearchInputChange(searchTerm)">
                                                 <small class="text-muted"
                                                     ng-if="(searchTerm||'').trim().length < 3 && (searchTerm||'').trim().length > 0"
@@ -347,11 +347,11 @@
                                             </select>
                                             <div class="btn-group ml-md-3 mt-2 mt-md-0">
                                                 <button class="btn btn-sm btn-outline-secondary" ng-click="prevPage()"
-                                                    ng-disabled="!canPrevPage()" aria-label="Previous page">
+                                                    ng-disabled="!canPrevPage()" aria-label="{{'Previous page' | translate}}">
                                                     <i class="mi-chevron-left"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-secondary" ng-click="nextPage()"
-                                                    ng-disabled="!canNextPage()" aria-label="Next page">
+                                                    ng-disabled="!canNextPage()" aria-label="{{'Next page' | translate}}">
                                                     <i class="mi-chevron-right"></i>
                                                 </button>
                                             </div>
@@ -390,7 +390,7 @@
                                                                 class="icon-search4"></i></span>
                                                     </div>
                                                     <input type="text" class="form-control border-left-0"
-                                                        placeholder="Search by employee name..." ng-model="searchTerm"
+                                                        placeholder="{{'Search by employee name...' | translate}}" ng-model="searchTerm"
                                                         ng-model-options="{ debounce: 300 }"
                                                         ng-change="onSearchInputChange(searchTerm)">
                                                     <small class="text-muted"
@@ -455,11 +455,11 @@
                                             </select>
                                             <div class="btn-group ml-md-3 mt-2 mt-md-0">
                                                 <button class="btn btn-sm btn-outline-secondary" ng-click="prevPage()"
-                                                    ng-disabled="!canPrevPage()" aria-label="Previous page">
+                                                    ng-disabled="!canPrevPage()" aria-label="{{'Previous page' | translate}}">
                                                     <i class="mi-chevron-left"></i>
                                                 </button>
                                                 <button class="btn btn-sm btn-outline-secondary" ng-click="nextPage()"
-                                                    ng-disabled="!canNextPage()" aria-label="Next page">
+                                                    ng-disabled="!canNextPage()" aria-label="{{'Next page' | translate}}">
                                                     <i class="mi-chevron-right"></i>
                                                 </button>
                                             </div>
@@ -769,7 +769,7 @@
                                     </label>
                                     <textarea class="form-control" rows="3"
                                         ng-model="selectedAllocation.calculationInputs.comment"
-                                        placeholder="Enter adjustment reason... (required)" required></textarea>
+                                        placeholder="{{'Enter adjustment reason... (required)' | translate}}" required></textarea>
                                     <small class="form-text text-muted">
                                         Please provide a clear reason for this adjustment. This will be recorded in the
                                         history.
@@ -891,7 +891,7 @@
                             <label class="font-weight-semibold" translate>Reason for Exclusion:</label>
                             <textarea class="form-control" rows="4"
                                 ng-model="selectedAllocation.calculationInputs.comment"
-                                placeholder="Please provide a detailed reason for exclusion..."></textarea>
+                                placeholder="{{'Please provide a detailed reason for exclusion...' | translate}}"></textarea>
                         </div>
                     </form>
                 </div>

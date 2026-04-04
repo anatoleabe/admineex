@@ -5792,6 +5792,267 @@ msgstr ""
 msgid "{{totals.excluded || 0}} person(s)"
 msgstr ""
 
+msgid "(All ranks)"
+msgstr ""
+
+msgid "Amount based on share value and parts"
+msgstr ""
+
+msgid "Amount based on salary adjustment or IFT"
+msgstr ""
+
+msgid "Same fixed amount for all eligible personnel"
+msgstr ""
+
+msgid "Amount based on configured formula"
+msgstr ""
+
+msgid "Configured bonus calculation"
+msgstr ""
+
+msgid "Salary Remise"
+msgstr ""
+
+msgid "Total Disbursed"
+msgstr ""
+
+msgid "Bonus Performance Overview"
+msgstr ""
+
+msgid "Metrics are based on selected period and statuses"
+msgstr ""
+
+msgid "Include statuses:"
+msgstr ""
+
+msgid "Approved (validated)"
+msgstr ""
+
+msgid "Paid (disbursed)"
+msgstr ""
+
+msgid "Open Cycles"
+msgstr ""
+
+msgid "Beneficiaries (Selected Period)"
+msgstr ""
+
+msgid "Open"
+msgstr ""
+
+msgid "Shortcuts"
+msgstr ""
+
+msgid "Overview"
+msgstr ""
+
+msgid "Template Overview"
+msgstr ""
+
+msgid "Define program identity and business context"
+msgstr ""
+
+msgid "Salary adjustment or IFT"
+msgstr ""
+
+msgid "Compensation Type"
+msgstr ""
+
+msgid "Choose salary adjustment or IFT"
+msgstr ""
+
+msgid "Based on salary and rate"
+msgstr ""
+
+msgid "Tax exempt fixed amounts"
+msgstr ""
+
+msgid "Salary remise is taxable and uses configured salary/rate inputs."
+msgstr ""
+
+msgid "IFT is tax exempt. Configure fixed amounts by rank below."
+msgstr ""
+
+msgid "IFT Amounts by Rank"
+msgstr ""
+
+msgid "Set fixed amount for each rank"
+msgstr ""
+
+msgid "Optionally include specific structures or personnel"
+msgstr ""
+
+msgid "Use this only for exceptions. Default IFT eligibility still applies."
+msgstr ""
+
+msgid "Search by name or identifier. Selected entries are included as exceptions."
+msgstr ""
+
+msgid "Build eligibility rules using personnel information (status, category, rank, structure, sub-structure)."
+msgstr ""
+
+msgid "Uses personnel information captured for the cycle."
+msgstr ""
+
+msgid "Calculation Method"
+msgstr ""
+
+msgid "IFT uses rank-based fixed amounts and is tax exempt."
+msgstr ""
+
+msgid "Salary remise uses salary-based calculation and applies tax settings."
+msgstr ""
+
+msgid "Included Structures"
+msgstr ""
+
+msgid "Included Personnel"
+msgstr ""
+
+msgid "Rules below are shown in business language. Technical rule details remain available."
+msgstr ""
+
+msgid "Tax Exempt"
+msgstr ""
+
+msgid "Tax Applied"
+msgstr ""
+
+msgid "Search by program name, code, or description"
+msgstr ""
+
 #: public/templates/bonus/instance-wizard.html:162
 msgid "{{totals.parts || 0}} parts"
+msgstr ""
+
+msgid "Optional description for this instance"
+msgstr ""
+
+msgid "Name or identifier"
+msgstr ""
+
+msgid "Type to search personnel"
+msgstr ""
+
+msgid "Search templates"
+msgstr ""
+
+msgid "Status filter"
+msgstr ""
+
+msgid "Category filters"
+msgstr ""
+
+msgid "Toggle sort order"
+msgstr ""
+
+msgid "View mode"
+msgstr ""
+
+msgid "Reset filters"
+msgstr ""
+
+msgid "Toggle active"
+msgstr ""
+
+msgid "Page size"
+msgstr ""
+
+msgid "Templates pagination"
+msgstr ""
+
+msgid "Choose .xlsx file..."
+msgstr ""
+
+msgid "e.g. Prime Trimestrielle Q1 2024"
+msgstr ""
+
+msgid "e.g. PRIME_TRIM_Q1_24"
+msgstr ""
+
+msgid "YYYY-Qn (e.g. 2024-Q1) or YYYY-MM (e.g. 2024-01)"
+msgstr ""
+
+msgid "Unique identifier. Use uppercase letters, numbers, underscores and dashes only."
+msgstr ""
+
+msgid "e.g., BONUS_Q1_2025"
+msgstr ""
+
+msgid "Only uppercase letters, numbers, _ and - allowed"
+msgstr ""
+
+msgid "Enter a descriptive name for this template"
+msgstr ""
+
+msgid "Provide a detailed description of this bonus template..."
+msgstr ""
+
+msgid "Amount per part used in calculations"
+msgstr ""
+
+msgid "Search for a structure..."
+msgstr ""
+
+msgid "Search by name or ID; duplicates are ignored"
+msgstr ""
+
+msgid "Search for personnel..."
+msgstr ""
+
+msgid "Field to use as calculation base"
+msgstr ""
+
+msgid "e.g., salary, grade_points"
+msgstr ""
+
+msgid "e.g., 3"
+msgstr ""
+
+msgid "Available variables: base, parts, salary, grade_points"
+msgstr ""
+
+msgid "e.g., base * 0.03 * parts"
+msgstr ""
+
+msgid "Enter value"
+msgstr ""
+
+msgid "Describe this rule..."
+msgstr ""
+
+msgid "e.g., Manager, Director"
+msgstr ""
+
+msgid "Step description"
+msgstr ""
+
+msgid "Enter documentation, instructions, or notes for this template..."
+msgstr ""
+
+msgid "Please provide a detailed reason for exclusion..."
+msgstr ""
+
+msgid "Close dialog"
+msgstr ""
+
+msgid "Enter reason for changing share amount... (required)"
+msgstr ""
+
+msgid "Enter reason for changing tax configuration... (required)"
+msgstr ""
+
+msgid "Auto-generates"
+msgstr ""
+
+msgid "Search by employee name..."
+msgstr ""
+
+msgid "Previous page"
+msgstr ""
+
+msgid "Next page"
+msgstr ""
+
+msgid "Enter adjustment reason... (required)"
 msgstr ""

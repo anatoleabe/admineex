@@ -11,6 +11,9 @@
         font-weight: 600;
         color: #1f2937;
         margin: 0 0 0.25rem 0;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
     }
     .template-view-modal .template-code {
         display: inline-block;
@@ -125,6 +128,12 @@
     .template-view-modal .tag.tax-applied {
         background: #ffedd5;
         color: #9a3412;
+    }
+    .template-view-modal .inline-help {
+        margin-top: 0.5rem;
+        color: #6b7280;
+        font-size: 0.8rem;
+        line-height: 1.35;
     }
     .template-view-modal .wrap-value {
         white-space: normal;
@@ -404,7 +413,7 @@
                 <div class="section-icon info">
                     <i class="icon-info3"></i>
                 </div>
-                <h6 class="section-title" translate>Basic Information</h6>
+                <h6 class="section-title" translate>Template Overview</h6>
             </div>
             
             <div class="info-grid">
@@ -419,6 +428,10 @@
                     <div class="info-value">
                         <span class="tag blue">{{getPeriodicityLabel(viewedTemplate.periodicity)}}</span>
                     </div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label" translate>Calculation Method</div>
+                    <div class="info-value">{{getCategorySummaryLabel(viewedTemplate.category)}}</div>
                 </div>
                 <div class="info-item">
                     <div class="info-label" translate>Created</div>
@@ -468,15 +481,17 @@
             <!-- Without Parts -->
             <div ng-if="viewedTemplate.category === 'without_parts'">
                 <div class="info-item">
-                    <div class="info-label" translate>Subtype</div>
+                    <div class="info-label" translate>Compensation Type</div>
                     <div class="info-value">
                         <span ng-class="getSubtypeBadgeClass(viewedTemplate)">{{getSubtypeLabel(viewedTemplate)}}</span>
                         <span class="ml-2" ng-class="getTaxBadgeClass(viewedTemplate)">{{getTaxTreatmentLabel(viewedTemplate)}}</span>
                     </div>
+                    <div class="inline-help" ng-if="viewedTemplate.calculationConfig.subType === 'ift'" translate>IFT uses rank-based fixed amounts and is tax exempt.</div>
+                    <div class="inline-help" ng-if="viewedTemplate.calculationConfig.subType !== 'ift'" translate>Salary remise uses salary-based calculation and applies tax settings.</div>
                 </div>
                 
                 <!-- IFT Amount Rules -->
-                <div ng-if="viewedTemplate.calculationConfig.subType === 'ift' && viewedTemplate.iftConfig.amountRules.length > 0">
+                <div ng-if="viewedTemplate.calculationConfig.subType === 'ift' && viewedTemplate.iftConfig && viewedTemplate.iftConfig.amountRules && viewedTemplate.iftConfig.amountRules.length > 0">
                     <div class="info-label mt-3" translate>IFT Amounts by Rank</div>
                     <table class="data-table">
                         <thead>
@@ -487,11 +502,21 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="rule in viewedTemplate.iftConfig.amountRules">
-                                <td class="wrap-value" title="{{rule.match.rankCode || '(All ranks)'}}">{{rule.match.rankCode || '(All ranks)'}}</td>
+                                <td class="wrap-value" title="{{getIftRankDisplayLabel(rule.match && rule.match.rankCode)}}">{{getIftRankDisplayLabel(rule.match && rule.match.rankCode)}}</td>
                                 <td class="text-right font-weight-semibold">{{rule.amount | number}}</td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="info-grid mt-3" ng-if="viewedTemplate.calculationConfig.subType === 'ift'">
+                    <div class="info-item">
+                        <div class="info-label" translate>Included Structures</div>
+                        <div class="info-value">{{((viewedTemplate.iftConfig && viewedTemplate.iftConfig.includedStructureIds) || []).length}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-label" translate>Included Personnel</div>
+                        <div class="info-value">{{((viewedTemplate.iftConfig && viewedTemplate.iftConfig.includePersonnelIds) || []).length}}</div>
+                    </div>
                 </div>
             </div>
 
@@ -554,6 +579,7 @@
                 </div>
                 <h6 class="section-title" translate>Eligibility Rules</h6>
             </div>
+            <div class="inline-help mb-2" translate>Rules below are shown in business language. Technical rule details remain available.</div>
             
             <div ng-if="viewedTemplate.eligibilityRules.length > 0">
                 <div class="rule-card" ng-repeat="rule in viewedTemplate.eligibilityRules">

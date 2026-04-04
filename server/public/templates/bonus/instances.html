@@ -52,7 +52,7 @@
                                         <span class="text-muted">{{getPeriodicityLabel(template.periodicity)}}</span>
                                         <span ng-if="template.periodicity !== 'on_demand'"
                                               class="badge badge-flat border-primary text-primary ml-2"
-                                              title="Auto-generates {{template.periodicity}}ly">
+                                              title="{{'Auto-generates' | translate}} {{template.periodicity}}ly">
                                             <i class="mi-schedule"></i> <span translate>Auto</span>
                                         </span>
                                     </div>

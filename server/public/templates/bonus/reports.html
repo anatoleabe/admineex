@@ -49,7 +49,7 @@
 				<div class="col-md-6 mb-3">
 					<label translate>Personnel</label>
 					<div class="input-group">
-						<input type="text" class="form-control" placeholder="Type to search personnel"
+						<input type="text" class="form-control" placeholder="{{'Type to search personnel' | translate}}"
 							ng-model="filters.searchPersonnel"
 							uib-typeahead="person as getPersonnelLabel(person) for person in searchPersonnel($viewValue)"
 							typeahead-on-select="onPersonnelSelected($item)" typeahead-editable="false"

@@ -145,11 +145,11 @@ angular.module('app')
                 { value: 'parallel', label: t('Parallel') }
             ],
             ruleFields: [
-                { value: 'status', label: 'Statut' },
-                { value: 'category', label: 'Catégorie' },
-                { value: 'rank', label: 'Rang' },
-                { value: 'structure', label: 'Structure' },
-                { value: 'subStructure', label: 'Sous-structure' }
+                { value: 'status', label: t('Status') },
+                { value: 'category', label: t('Category') },
+                { value: 'rank', label: t('Rank') },
+                { value: 'structure', label: t('Structure') },
+                { value: 'subStructure', label: t('Sub-structure') }
             ]
         };
 
@@ -405,6 +405,21 @@ angular.module('app')
             return found ? found.label : periodicity;
         };
 
+        $scope.getCategorySummaryLabel = function (category) {
+            switch (category) {
+                case 'with_parts':
+                    return t('Amount based on share value and parts');
+                case 'without_parts':
+                    return t('Amount based on salary adjustment or IFT');
+                case 'fixed_amount':
+                    return t('Same fixed amount for all eligible personnel');
+                case 'calculated':
+                    return t('Amount based on configured formula');
+                default:
+                    return t('Configured bonus calculation');
+            }
+        };
+
         // Display-only labels for subtype/tax badges in template view
         $scope.getSubtypeLabel = function (template) {
             const subType = template && template.calculationConfig ? template.calculationConfig.subType : '';
@@ -426,6 +441,24 @@ angular.module('app')
             const isTaxExempt = template && template.category === 'without_parts' &&
                 template.calculationConfig && template.calculationConfig.subType === 'ift';
             return isTaxExempt ? 'tag tax-exempt' : 'tag tax-applied';
+        };
+
+        $scope.getIftRankDisplayLabel = function (rankCode) {
+            if (!rankCode) return t('(All ranks)');
+            if (rankCode === 'NON_NOMME') return t('NON_NOMME (CA/AG)');
+            const option = ($scope.ruleOptions.ranks || []).find(r => r.value === rankCode);
+            if (option && option.label) return `${option.label} (${rankCode})`;
+            return rankCode;
+        };
+
+        $scope.getTemplateSubtypeLabel = function (template) {
+            if (!template || template.category !== 'without_parts' || !template.calculationConfig) return '';
+            return template.calculationConfig.subType === 'ift' ? t('IFT') : t('Salary Remise');
+        };
+
+        $scope.getTemplateSubtypeBadgeClass = function (template) {
+            if (!template || template.category !== 'without_parts' || !template.calculationConfig) return '';
+            return template.calculationConfig.subType === 'ift' ? 'badge-success' : 'badge-info';
         };
 
         function findOptionLabel(list, value) {
@@ -705,7 +738,7 @@ angular.module('app')
                 person.name ||
                 '';
             const identifier = person.identifier || person.matricule || '';
-            return [displayName || 'Personnel', identifier].filter(Boolean).join(' • ');
+            return [displayName || t('Personnel'), identifier].filter(Boolean).join(' • ');
         }
 
         function normalizePersonnelSelection(person, fallbackId) {
@@ -716,7 +749,7 @@ angular.module('app')
                 (person && person.name && person.name.text) ||
                 (person && person.name) ||
                 label ||
-                'Personnel';
+                t('Personnel');
             const identifier = (person && (person.identifier || person.matricule)) || '';
             return { id, label, name, identifier: identifier || id };
         }

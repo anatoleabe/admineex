@@ -1,5 +1,10 @@
 <div class="bonus-templates-page" ng-controller="BonusTemplatesController">
   <style>
+    .bonus-templates-page .template-name-wrap {
+      white-space: normal;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+    }
     .bonus-templates-page .template-desc-clamp {
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -8,13 +13,31 @@
       white-space: normal;
       word-break: break-word;
     }
+    .bonus-templates-page .template-badge {
+      display: inline-block;
+      margin-top: 0.2rem;
+      margin-right: 0.35rem;
+      padding: 0.12rem 0.45rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    .bonus-templates-page .template-badge.tax-exempt {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .bonus-templates-page .template-badge.tax-applied {
+      background: #ffedd5;
+      color: #9a3412;
+    }
   </style>
   <!-- Generating Overlay -->
   <div class="generating-overlay" ng-if="state.generating">
     <div class="generating-overlay-backdrop"></div>
     <div class="generating-overlay-content">
       <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-        <span class="sr-only">Loading...</span>
+        <span class="sr-only" translate>Loading...</span>
       </div>
       <h5 class="mt-3 mb-2" translate>Generating Bonus Allocations</h5>
       <p class="text-muted mb-0" translate>Please wait while we process your request...</p>
@@ -68,8 +91,8 @@
             <span class="input-group-prepend">
               <span class="input-group-text"><i class="icon-search4"></i></span>
             </span>
-            <input type="text" class="form-control" placeholder="Search by name, code, description"
-              aria-label="Search templates" ng-model="searchQuery" ng-model-options="{ debounce: 300 }"
+            <input type="text" class="form-control" placeholder="{{'Search by program name, code, or description' | translate}}"
+              aria-label="{{'Search templates' | translate}}" ng-model="searchQuery" ng-model-options="{ debounce: 300 }"
               ng-change="applyFilters(true)">
           </div>
         </div>
@@ -77,7 +100,7 @@
         <div class="col-lg-4 mb-2 mb-lg-0">
           <div class="d-flex align-items-center flex-wrap">
             <div class="mr-2 text-muted small" translate>Status:</div>
-            <div class="btn-group btn-group-sm mr-3" role="group" aria-label="Status filter">
+            <div class="btn-group btn-group-sm mr-3" role="group" aria-label="{{'Status filter' | translate}}">
               <button type="button" class="btn"
                 ng-class="{'btn-primary': statusFilter==='','btn-light': statusFilter!==''}"
                 ng-click="setStatusFilter('')" translate>All</button>
@@ -90,7 +113,7 @@
             </div>
 
             <div class="mr-2 text-muted small" translate>Categories:</div>
-            <div class="d-flex flex-wrap" role="group" aria-label="Category filters">
+            <div class="d-flex flex-wrap" role="group" aria-label="{{'Category filters' | translate}}">
               <button type="button" class="btn btn-sm mr-1 mb-1 rounded-pill" ng-repeat="cat in constants.categories"
                 ng-class="categoryFilters.indexOf(cat.value)!==-1 ? 'btn-primary' : 'btn-outline-secondary'"
                 ng-click="toggleCategory(cat.value)" aria-pressed="{{categoryFilters.indexOf(cat.value)!==-1}}">
@@ -103,24 +126,24 @@
         <div class="col-lg-4 d-flex align-items-center justify-content-lg-end">
           <div class="d-flex align-items-center mr-3">
             <span class="text-muted small mr-2" translate>Sort by:</span>
-            <select class="form-control form-control-sm mr-2" style="width:auto;" aria-label="Sort by"
+            <select class="form-control form-control-sm mr-2" style="width:auto;" aria-label="{{'Sort by' | translate}}"
               ng-model="sortField" ng-change="applyFilters(true)">
               <option value="updatedAt" translate>Updated</option>
               <option value="name" translate>Name</option>
               <option value="code" translate>Code</option>
             </select>
-            <button class="btn btn-light btn-sm" ng-click="toggleSortDir()" title="Toggle sort order">
+            <button class="btn btn-light btn-sm" ng-click="toggleSortDir()" title="{{'Toggle sort order' | translate}}">
               <i class="icon-arrow-up7" ng-if="sortDir==='asc'"></i>
               <i class="icon-arrow-down7" ng-if="sortDir==='desc'"></i>
             </button>
           </div>
-          <div class="btn-group btn-group-sm" role="group" aria-label="View mode">
+          <div class="btn-group btn-group-sm" role="group" aria-label="{{'View mode' | translate}}">
             <button class="btn" ng-class="{'btn-primary': viewMode==='list','btn-light': viewMode!=='list'}"
               ng-click="setViewMode('list')"><i class="icon-list"></i></button>
             <button class="btn" ng-class="{'btn-primary': viewMode==='cards','btn-light': viewMode!=='cards'}"
               ng-click="setViewMode('cards')"><i class="icon-grid6"></i></button>
           </div>
-          <button class="btn btn-light btn-sm ml-2" ng-click="resetFilters()" title="Reset filters"><i
+          <button class="btn btn-light btn-sm ml-2" ng-click="resetFilters()" title="{{'Reset filters' | translate}}"><i
               class="icon-reset"></i></button>
         </div>
       </div>
@@ -146,7 +169,7 @@
           <tr ng-repeat="template in paginatedTemplates track by template._id">
             <td>
               <a href="javascript:void(0)" ng-click="viewTemplate(template)">
-                <strong>{{template.name}}</strong>
+                <strong class="template-name-wrap d-inline-block">{{template.name}}</strong>
                 <span ng-if="template.isHistoricalTemplate" class="badge badge-warning badge-sm ml-1"
                   title="{{'Imported from Excel - Read only' | translate}}"><i class="icon-upload2"></i> {{'Imported' |
                   translate}}</span>
@@ -154,13 +177,19 @@
               <div class="text-muted small template-desc-clamp" title="{{template.description || noDescriptionLabel}}">
                 {{template.description || noDescriptionLabel}}
               </div>
+              <div ng-if="template.category === 'without_parts' && getTemplateSubtypeLabel(template)">
+                <span class="template-badge" ng-class="getTemplateSubtypeBadgeClass(template)">{{getTemplateSubtypeLabel(template)}}</span>
+                <span class="template-badge" ng-class="template.calculationConfig && template.calculationConfig.subType === 'ift' ? 'tax-exempt' : 'tax-applied'">
+                  {{template.calculationConfig && template.calculationConfig.subType === 'ift' ? ('Tax Exempt' | translate) : ('Tax Applied' | translate)}}
+                </span>
+              </div>
             </td>
             <td><span>{{template.code}}</span></td>
             <td>{{getCategoryLabel(template.category)}}</td>
             <td>{{getPeriodicityLabel(template.periodicity)}}</td>
             <td>
               <label class="mb-0 d-inline-flex align-items-center"
-                title="{{template.isHistoricalTemplate ? ('Historical template - status locked' | translate) : 'Toggle active'}}">
+                title="{{template.isHistoricalTemplate ? ('Historical template - status locked' | translate) : ('Toggle active' | translate)}}">
                 <input type="checkbox" ng-checked="template.isActive"
                   ng-disabled="state.saving || template.isHistoricalTemplate" ng-change="toggleActive(template)"
                   ng-model="template.isActive">
@@ -239,7 +268,7 @@
           <div class="d-flex justify-content-between align-items-start">
             <div>
               <h6 class="mb-1">
-                {{template.name}}
+                <span class="template-name-wrap d-inline-block">{{template.name}}</span>
                 <span ng-if="template.isHistoricalTemplate" class="badge badge-warning badge-sm ml-1"
                   title="{{'Imported from Excel - Read only' | translate}}"><i class="icon-upload2"></i></span>
               </h6>
@@ -251,6 +280,12 @@
           <div class="mt-2 text-muted small template-desc-clamp" title="{{template.description || noDescriptionLabel}}">
             {{template.description || noDescriptionLabel}}
           </div>
+          <div ng-if="template.category === 'without_parts' && getTemplateSubtypeLabel(template)">
+            <span class="template-badge" ng-class="getTemplateSubtypeBadgeClass(template)">{{getTemplateSubtypeLabel(template)}}</span>
+            <span class="template-badge" ng-class="template.calculationConfig && template.calculationConfig.subType === 'ift' ? 'tax-exempt' : 'tax-applied'">
+              {{template.calculationConfig && template.calculationConfig.subType === 'ift' ? ('Tax Exempt' | translate) : ('Tax Applied' | translate)}}
+            </span>
+          </div>
           <div class="mt-3 d-flex flex-wrap small">
             <span class="mr-3"><i class="icon-price-tag2 mr-1"></i>{{getCategoryLabel(template.category)}}</span>
             <span class="mr-3"><i class="icon-calendar3 mr-1"></i>{{getPeriodicityLabel(template.periodicity)}}</span>
@@ -259,15 +294,15 @@
         </div>
         <div class="card-footer d-flex justify-content-between align-items-center">
           <label class="mb-0 small d-inline-flex align-items-center"
-            title="{{template.isHistoricalTemplate ? ('Historical template - status locked' | translate) : 'Toggle active'}}">
+            title="{{template.isHistoricalTemplate ? ('Historical template - status locked' | translate) : ('Toggle active' | translate)}}">
             <input type="checkbox" ng-checked="template.isActive"
               ng-disabled="state.saving || !permissions.canManageTemplates || template.isHistoricalTemplate"
               ng-change="toggleActive(template)" ng-model="template.isActive">
-            <span class="ml-2">{{template.isActive ? 'Active' : 'Inactive'}}</span>
+            <span class="ml-2">{{template.isActive ? ('Active' | translate) : ('Inactive' | translate)}}</span>
             <i class="icon-lock2 ml-1 text-warning" ng-if="template.isHistoricalTemplate"></i>
           </label>
           <div class="btn-group btn-group-sm">
-            <button class="btn btn-outline-info" ng-click="viewTemplate(template)" title="View"><i
+            <button class="btn btn-outline-info" ng-click="viewTemplate(template)" title="{{'View' | translate}}"><i
                 class="icon-eye"></i></button>
             <button class="btn btn-outline-secondary" ng-click="viewTemplateCycles(template)"
               title="{{'View Cycles' | translate}}"><i class="icon-list"></i></button>
@@ -280,13 +315,13 @@
             </button>
             <button class="btn btn-outline-primary"
               ng-if="permissions.canManageTemplates && !template.isHistoricalTemplate" ng-click="editTemplate(template)"
-              title="Edit"><i class="icon-pencil7"></i></button>
+              title="{{'Edit' | translate}}"><i class="icon-pencil7"></i></button>
             <button class="btn btn-outline-secondary"
               ng-if="permissions.canManageTemplates && template.isHistoricalTemplate" disabled
               title="{{'Historical template - cannot edit' | translate}}"><i class="icon-lock2"></i></button>
             <button class="btn btn-outline-danger"
               ng-if="permissions.canManageTemplates && !template.isHistoricalTemplate"
-              ng-click="confirmDelete(template)" title="Delete"><i class="icon-trash"></i></button>
+              ng-click="confirmDelete(template)" title="{{'Delete' | translate}}"><i class="icon-trash"></i></button>
           </div>
         </div>
       </div>
@@ -306,13 +341,13 @@
       {{filteredTemplates.length}}
     </div>
     <div class="d-flex align-items-center">
-      <select class="form-control form-control-sm mr-2" style="width:auto;" aria-label="Page size" ng-model="pageSize"
+      <select class="form-control form-control-sm mr-2" style="width:auto;" aria-label="{{'Page size' | translate}}" ng-model="pageSize"
         ng-change="applyFilters(true)">
         <option value="10">10</option>
         <option value="20">20</option>
         <option value="50">50</option>
       </select>
-      <nav aria-label="Templates pagination">
+      <nav aria-label="{{'Templates pagination' | translate}}">
         <ul class="pagination pagination-sm mb-0">
           <li class="page-item" ng-class="{disabled: currentPage===1}">
             <a class="page-link" href="javascript:void(0)" ng-click="setPage(currentPage-1)" translate>Prev</a>
@@ -436,7 +471,7 @@
                 <input type="file" class="custom-file-input" id="bonusImportFile" accept=".xlsx,.xls"
                   onchange="angular.element(this).scope().onImportFileSelected(this.files)">
                 <label class="custom-file-label" for="bonusImportFile">
-                  {{importState.form.fileName || 'Choose .xlsx file...'}}
+                  {{importState.form.fileName || ('Choose .xlsx file...' | translate)}}
                 </label>
               </div>
               <small class="form-text text-muted" translate>The Excel file must have MATRICULE in column C and NOM(S) in
@@ -448,14 +483,14 @@
                 <div class="form-group">
                   <label translate>Template Name</label> <span class="text-danger">*</span>
                   <input type="text" class="form-control" ng-model="importState.form.templateName"
-                    placeholder="e.g. Prime Trimestrielle Q1 2024" required>
+                    placeholder="{{'e.g. Prime Trimestrielle Q1 2024' | translate}}" required>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label translate>Template Code</label> <span class="text-danger">*</span>
                   <input type="text" class="form-control" ng-model="importState.form.templateCode"
-                    placeholder="e.g. PRIME_TRIM_Q1_24" required>
+                    placeholder="{{'e.g. PRIME_TRIM_Q1_24' | translate}}" required>
                 </div>
               </div>
             </div>
@@ -498,7 +533,7 @@
             <div class="form-group">
               <label translate>Reference Period</label> <span class="text-danger">*</span>
               <input type="text" class="form-control" ng-model="importState.form.referencePeriod"
-                placeholder="YYYY-Qn (e.g. 2024-Q1) or YYYY-MM (e.g. 2024-01)" required>
+                placeholder="{{'YYYY-Qn (e.g. 2024-Q1) or YYYY-MM (e.g. 2024-01)' | translate}}" required>
               <small class="form-text text-muted" translate>Format: YYYY-Q1 to YYYY-Q4 for quarters, or YYYY-MM for
                 months.</small>
             </div>

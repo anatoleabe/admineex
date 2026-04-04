@@ -1,4 +1,4 @@
-<md-dialog aria-label="View History" class="modal-lg" ng-init="isSansPart = typeof isSansPart !== 'undefined' ? isSansPart : (currentAllocation && currentAllocation.templateId && currentAllocation.templateId.category === 'without_parts'); isWithParts = typeof isWithParts !== 'undefined' ? isWithParts : !isSansPart">
+<md-dialog aria-label="{{'View History' | translate}}" class="modal-lg" ng-init="isSansPart = typeof isSansPart !== 'undefined' ? isSansPart : (currentAllocation && currentAllocation.templateId && currentAllocation.templateId.category === 'without_parts'); isWithParts = typeof isWithParts !== 'undefined' ? isWithParts : !isSansPart">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2 translate>Allocation History</h2>
@@ -30,7 +30,7 @@
                               currentAllocation.personnelId.name.use ||
                               (currentAllocation.personnelId.name.family[0] + ' ' + currentAllocation.personnelId.name.given[0])}}
                         </h5>
-                        <p class="text-muted mb-0">ID: {{currentAllocation.personnelId.identifier}}</p>
+                        <p class="text-muted mb-0"><span translate>ID:</span> {{currentAllocation.personnelId.identifier}}</p>
                         <span class=" badge-pill mt-2" ng-class="{
                             'badge-success': currentAllocation.status === 'eligible',
                             'badge-danger': currentAllocation.status === 'excluded',

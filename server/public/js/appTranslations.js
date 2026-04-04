@@ -6,3 +6,106 @@ angular.module('gettext').run(['gettextCatalog', function (gettextCatalog) {
     gettextCatalog.setStrings('ru', {":":" :","?":" ?","Account":"Аккаунт","Account Recovery":"Восстановление аккаунта","Account not activated":"Аккаунт не активирован","Activate":"Активировать  ","Active accounts":"Активные аккаунты ","Administration":"Администрация  ","An email has been sent to your email address that includes a password reset link.":"Ссылка для восстановления пароля была отправлена на ваш адрес эл. почты. ","An error occurred, please try again later":"Произошла ошибка, пожалуйста, попробуйте позже ","April":"Aпрель ","Are you sure you want to delete the account of":"Вы действительно хотите удалить аккаунт ","Audit":"Aудит","August":"Август","Avatar":"Аватар","Back":"Вернуться назад","Cancel":"Отменить","Choose a color for your avatar":"Выберите цвет для вашего аватара","Configuration":"Настройки","Configuration has been saved":"Конфигурация сохранена.","Confirmation":"Подтверждение","Created":"созданный","Current":"Текущий","Dashboard":"Панель управления","December":"Декабрь ","Delete":"Удалить","Delete this account":"Удалить данный аккаунт ","Done":"Готово","Edit":"Редактировать","Email":"Адрес эл. почты ","Empty dashboard":"Панель управления пуста","Enable widgets you want to see on dashbaord.":"Пожалуйста, активируйте виджеты которые желайте увидеть на панели управления.","English":"Английский ","February":"Февраль","Fill out the form correctly":"Пожалуйста, правильно заполните  формуляр","First name":"Имя","French":"Французский","Friday":"Пятница","Full name":"Имя ","Give us your email address and we will send you a link to reset your password.":"Напишите ваш адрес эл. почты и мы вышлем ссылку для восстановления пароля.","Got it!":"Принято!","Having trouble signing in?":"Возникли проблемы при входе в систему? ","January":"Январь","July":"Июль","June":"Июнь","Language":"Язык","Last name":"Фамилия","March":"Март","May":"Май","Monday":"Понедельник","Need help?":"Нужна помощь?","New":"Новый","New Password":"Новый пароль","No account found with that email address":"Аккаунт с данным адресом эл. почты не найден.","No user":"Пользователь  не найден ","Nothing to report!":"Нечего доложить ! ","Notification":"Уведомление","Notifications":"Уведомления","Notify me by email":"Отправить уведомления на эл. почту","November":"Ноябрь","OFF":"ВЫКЛ","OK":"OK","ON":"ВКЛ","October":"Октябрь","Password":"Пароль","Password resetted":"Пароль восстановлен  ","Passwords don't match.":"Пароли не совпадают.","Pending accounts":"Аккаунты в ожидании ","Phone number":"Номер телефона","Please fill all required fields":"Пожалуйста, заполните все необходимые поля.","Profile":"Профиль ","Public access":"Общий доступ","Re-type new":"Подтвердите новый пароль","Reset password":"Восстановить ","Reset your password":"Восстановить пароль ","Role":"Роль","Saturday":"Суббота","Save":"Сохранить","September":"Сентябрь","Settings":"Настройки","Sign in":"Войти  ","Sign out":"Выйти","Sorry, this content isn't available right now":"Извините, данное содержание не доступно в данный момент","Sorry, this page isn't available":"Извините, данная страница недоступна","Submit":"Отправить","Sunday":"Воскресенье","The current password you entered is incorrect":"Введенный вами пароль неверный ","The email or password is empty.":"Поле для эл. почты или пароля пуст. ","The email or password you entered is incorrect.":"Неверный адрес эл. почты или пароль.","The link has expired":"Срок действия ссылки истек","The link you followed may be broken, or the page may have been removed.":"Ссылка, по которой вы перешли не работает, или страница выла удалена. ","The link you followed may have expired, or the page may only be visible to an audience you're not in.":"Срок действия ссылки истек или вы не входите в аудиторию для просмотра данной страницы.","The user has been created":"Пользователь создан","The user has been deleted":"Пользователь удалён","The user has been updated":"Пользователь обновлён ","These passwords don't match":"Пароли не совпадают","This email is already used":"Данный адрес эл. почты уже используется","Thursday":"Четверг","To turn off a specific feature, just click the toggle.":"Чтобы выключить определенную функцию, нажмите  на соответствующую кнопку.","Tuesday":"Вторник","Use at least 6 characters":"Используйте не менее 6 символов","Use at least 6 characters for your password":"Используйте не менее 6 символов для пароля","Wednesday":"Среда","Yesterday":"Вчера","Your password has been changed":"Ваш пароль был изменен.","Your password has been changed with success. You can now sign in.":"Ваш пароль был успешно изменён. Вы можете войти в сайт.","unknown":"неизвестно ","widgets":"виджетов "});
 /* jshint +W100 */
 }]);
+
+// Incremental bonus module strings (safe append, keeps existing catalog behavior)
+angular.module('gettext').run(['gettextCatalog', function (gettextCatalog) {
+/* jshint -W100 */
+    gettextCatalog.setStrings('fr', {
+        "(All ranks)": "(Tous rangs)",
+        "Amount based on share value and parts": "Montant basé sur la valeur de la part et le nombre de parts",
+        "Amount based on salary adjustment or IFT": "Montant basé sur la remise sur salaire ou l’IFT",
+        "Same fixed amount for all eligible personnel": "Même montant fixe pour tout le personnel éligible",
+        "Amount based on configured formula": "Montant basé sur la formule configurée",
+        "Configured bonus calculation": "Calcul de la prime et gratification configuré",
+        "Salary Remise": "Remise sur salaire",
+        "Total Disbursed": "Total décaissé",
+        "Bonus Performance Overview": "Vue d’ensemble des performances des primes et gratifications",
+        "Metrics are based on selected period and statuses": "Les indicateurs sont basés sur la période et les statuts sélectionnés",
+        "Include statuses:": "Inclure les statuts :",
+        "Approved (validated)": "Approuvé (validé)",
+        "Paid (disbursed)": "Payé (décaissé)",
+        "Open Cycles": "Cycles ouverts",
+        "Beneficiaries (Selected Period)": "Bénéficiaires (période sélectionnée)",
+        "Open": "Ouvrir",
+        "Shortcuts": "Raccourcis",
+        "Overview": "Aperçu",
+        "Template Overview": "Aperçu du modèle",
+        "Define program identity and business context": "Définir l’identité du programme et son contexte métier",
+        "Salary adjustment or IFT": "Remise sur salaire ou IFT",
+        "Compensation Type": "Type de rémunération",
+        "Choose salary adjustment or IFT": "Choisir la remise sur salaire ou l’IFT",
+        "Based on salary and rate": "Basé sur le salaire et le taux",
+        "Tax exempt fixed amounts": "Montants fixes exonérés d’impôt",
+        "Salary remise is taxable and uses configured salary/rate inputs.": "La remise sur salaire est imposable et utilise les paramètres de salaire/taux configurés.",
+        "IFT is tax exempt. Configure fixed amounts by rank below.": "L’IFT est exonérée d’impôt. Configurez ci-dessous les montants fixes par rang.",
+        "IFT Amounts by Rank": "Montants IFT par rang",
+        "Set fixed amount for each rank": "Définir un montant fixe pour chaque rang",
+        "Optionally include specific structures or personnel": "Inclure éventuellement des structures ou du personnel spécifiques",
+        "Use this only for exceptions. Default IFT eligibility still applies.": "À utiliser uniquement pour les exceptions. Les règles d’éligibilité IFT par défaut restent applicables.",
+        "Search by name or identifier. Selected entries are included as exceptions.": "Rechercher par nom ou identifiant. Les éléments sélectionnés sont inclus comme exceptions.",
+        "Build eligibility rules using personnel information (status, category, rank, structure, sub-structure).": "Construire des règles d’éligibilité en utilisant les informations du personnel (statut, catégorie, rang, structure, sous-structure).",
+        "Uses personnel information captured for the cycle.": "Utilise les informations du personnel capturées pour le cycle.",
+        "Calculation Method": "Méthode de calcul",
+        "IFT uses rank-based fixed amounts and is tax exempt.": "L’IFT utilise des montants fixes par rang et est exonérée d’impôt.",
+        "Salary remise uses salary-based calculation and applies tax settings.": "La remise sur salaire utilise un calcul basé sur le salaire et applique la configuration fiscale.",
+        "Included Structures": "Structures incluses",
+        "Included Personnel": "Personnel inclus",
+        "Rules below are shown in business language. Technical rule details remain available.": "Les règles ci-dessous sont affichées en langage métier. Les détails techniques restent disponibles.",
+        "Tax Exempt": "Exonéré d’impôt",
+        "Tax Applied": "Impôt appliqué",
+        "Search by program name, code, or description": "Rechercher par nom du programme, code ou description"
+    });
+/* jshint +W100 */
+}]);
+
+// Incremental bonus module strings - full UI attribute i18n
+angular.module('gettext').run(['gettextCatalog', function (gettextCatalog) {
+/* jshint -W100 */
+    gettextCatalog.setStrings('fr', {
+        "Optional description for this instance": "Description facultative pour cette instance",
+        "Name or identifier": "Nom ou identifiant",
+        "Type to search personnel": "Saisissez pour rechercher un personnel",
+        "Search templates": "Rechercher des modèles",
+        "Status filter": "Filtre de statut",
+        "Category filters": "Filtres de catégorie",
+        "Toggle sort order": "Basculer l’ordre de tri",
+        "View mode": "Mode d’affichage",
+        "Reset filters": "Réinitialiser les filtres",
+        "Toggle active": "Activer/Désactiver",
+        "Page size": "Taille de page",
+        "Templates pagination": "Pagination des modèles",
+        "Choose .xlsx file...": "Choisir un fichier .xlsx...",
+        "e.g. Prime Trimestrielle Q1 2024": "ex. Prime Trimestrielle Q1 2024",
+        "e.g. PRIME_TRIM_Q1_24": "ex. PRIME_TRIM_Q1_24",
+        "YYYY-Qn (e.g. 2024-Q1) or YYYY-MM (e.g. 2024-01)": "YYYY-Qn (ex. 2024-Q1) ou YYYY-MM (ex. 2024-01)",
+        "Unique identifier. Use uppercase letters, numbers, underscores and dashes only.": "Identifiant unique. Utilisez uniquement des lettres majuscules, des chiffres, des tirets bas et des tirets.",
+        "e.g., BONUS_Q1_2025": "ex., BONUS_Q1_2025",
+        "Only uppercase letters, numbers, _ and - allowed": "Seules les lettres majuscules, les chiffres, _ et - sont autorisés",
+        "Enter a descriptive name for this template": "Saisissez un nom descriptif pour ce modèle",
+        "Provide a detailed description of this bonus template...": "Fournissez une description détaillée de ce modèle de primes et gratifications...",
+        "Amount per part used in calculations": "Montant par part utilisé dans les calculs",
+        "Search for a structure...": "Rechercher une structure...",
+        "Search by name or ID; duplicates are ignored": "Rechercher par nom ou identifiant ; les doublons sont ignorés",
+        "Search for personnel...": "Rechercher du personnel...",
+        "Field to use as calculation base": "Champ à utiliser comme base de calcul",
+        "e.g., salary, grade_points": "ex., salary, grade_points",
+        "e.g., 3": "ex., 3",
+        "Available variables: base, parts, salary, grade_points": "Variables disponibles : base, parts, salary, grade_points",
+        "e.g., base * 0.03 * parts": "ex., base * 0.03 * parts",
+        "Enter value": "Saisir une valeur",
+        "Describe this rule...": "Décrire cette règle...",
+        "e.g., Manager, Director": "ex., Manager, Director",
+        "Step description": "Description de l’étape",
+        "Enter documentation, instructions, or notes for this template...": "Saisissez la documentation, les instructions ou les notes pour ce modèle...",
+        "Please provide a detailed reason for exclusion...": "Veuillez fournir un motif d’exclusion détaillé...",
+        "Close dialog": "Fermer la boîte de dialogue",
+        "Enter reason for changing share amount... (required)": "Saisissez le motif du changement du montant de la part... (obligatoire)",
+        "Enter reason for changing tax configuration... (required)": "Saisissez le motif du changement de configuration fiscale... (obligatoire)",
+        "Auto-generates": "Génère automatiquement",
+        "Search by employee name...": "Rechercher par nom de personnel...",
+        "Previous page": "Page précédente",
+        "Next page": "Page suivante",
+        "Enter adjustment reason... (required)": "Saisissez le motif de l’ajustement... (obligatoire)"
+    });
+/* jshint +W100 */
+}]);

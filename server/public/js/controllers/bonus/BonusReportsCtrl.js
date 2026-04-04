@@ -378,7 +378,7 @@ angular.module('app').controller('BonusReportsController', ['$scope', '$rootScop
         if (!person) return 'N/A';
         const displayName = person.fname;
         const identifier = person.identifier || '';
-        return [displayName || 'Personnel', identifier].filter(Boolean).join(' • ');
+        return [displayName || t('Personnel'), identifier].filter(Boolean).join(' • ');
     };
 
     $scope.applyFilters = function () {

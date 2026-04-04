@@ -315,6 +315,15 @@
         overflow-wrap: anywhere;
         word-break: break-word;
     }
+    .template-wizard .helper-text-muted {
+        color: #718096;
+        font-size: 0.78rem;
+        line-height: 1.35;
+    }
+    .template-wizard .select-compact {
+        max-height: 92px;
+        overflow-y: auto;
+    }
     .template-wizard .workflow-step-card {
         display: flex;
         align-items: flex-start;
@@ -548,7 +557,7 @@
                     <i ng-if="basicInfoComplete && activeTab !== 'basic-info'" class="icon-checkmark3"></i>
                     <span ng-if="!(basicInfoComplete && activeTab !== 'basic-info')">1</span>
                 </div>
-                <span class="step-label" translate>Basic Info</span>
+                <span class="step-label" translate>Overview</span>
             </div>
             <div class="step-item" ng-class="{'active': activeTab === 'calculation', 'completed': calculationComplete && activeTab !== 'calculation'}">
                 <div class="step-circle" ng-click="goToTab('calculation')">
@@ -584,8 +593,8 @@
                                 <i class="icon-profile"></i>
                             </div>
                             <div>
-                                <h6 class="section-title" translate>Template Identity</h6>
-                                <p class="section-subtitle" translate>Define the basic identification</p>
+                                <h6 class="section-title" translate>Template Overview</h6>
+                                <p class="section-subtitle" translate>Define program identity and business context</p>
                             </div>
                         </div>
                         
@@ -596,7 +605,7 @@
                                         <span translate>Template Code</span>
                                         <span class="required-star">*</span>
                                         <i class="icon-question3 help-icon"
-                                           uib-tooltip="Unique identifier. Use uppercase letters, numbers, underscores and dashes only."
+                                           uib-tooltip="{{'Unique identifier. Use uppercase letters, numbers, underscores and dashes only.' | translate}}"
                                            tooltip-placement="right"></i>
                                     </label>
                                     <input type="text" name="code" class="form-control form-control-modern"
@@ -604,9 +613,9 @@
                                            ng-pattern="/^[A-Z0-9_-]+$/" required
                                            ng-change="onCodeChange()"
                                            ng-disabled="editingTemplate"
-                                           placeholder="e.g., BONUS_Q1_2025">
+                                           placeholder="{{'e.g., BONUS_Q1_2025' | translate}}">
                                     <div class="text-danger mt-1" style="font-size: 0.8rem;" ng-show="templateForm.code.$error.pattern">
-                                        <i class="icon-warning2 mr-1"></i>Only uppercase letters, numbers, _ and - allowed
+                                        <i class="icon-warning2 mr-1"></i><span translate>Only uppercase letters, numbers, _ and - allowed</span>
                                     </div>
                                 </div>
                             </div>
@@ -618,7 +627,7 @@
                                     </label>
                                     <input type="text" name="name" class="form-control form-control-modern"
                                            ng-model="templateFormData.name" required
-                                           placeholder="Enter a descriptive name for this template">
+                                           placeholder="{{'Enter a descriptive name for this template' | translate}}">
                                 </div>
                             </div>
                         </div>
@@ -629,7 +638,7 @@
                                 <span translate>Description</span>
                             </label>
                             <textarea class="form-control form-control-modern" ng-model="templateFormData.description"
-                                      rows="2" placeholder="Provide a detailed description of this bonus template..."></textarea>
+                                      rows="2" placeholder="{{'Provide a detailed description of this bonus template...' | translate}}"></textarea>
                         </div>
                     </div>
 
@@ -656,7 +665,7 @@
                                  ng-click="templateFormData.category = 'without_parts'">
                                 <div class="card-icon"><i class="icon-coins"></i></div>
                                 <div class="card-title" translate>Without Parts</div>
-                                <div class="card-desc" translate>Remise or IFT based</div>
+                                <div class="card-desc" translate>Salary adjustment or IFT</div>
                             </div>
                             <div class="category-card" ng-class="{'selected': templateFormData.category === 'fixed_amount'}"
                                  ng-click="templateFormData.category = 'fixed_amount'">
@@ -751,7 +760,7 @@
                                         <span translate>Default Share Amount</span>
                                         <span class="required-star">*</span>
                                         <i class="icon-question3 help-icon"
-                                           uib-tooltip="Amount per part used in calculations"
+                                           uib-tooltip="{{'Amount per part used in calculations' | translate}}"
                                            tooltip-placement="right"></i>
                                     </label>
                                     <div class="input-group input-group-modern">
@@ -814,8 +823,8 @@
                                     <i class="icon-list3"></i>
                                 </div>
                                 <div>
-                                    <h6 class="section-title" translate>Calculation Subtype</h6>
-                                    <p class="section-subtitle" translate>Choose between Remise or IFT</p>
+                                    <h6 class="section-title" translate>Compensation Type</h6>
+                                    <p class="section-subtitle" translate>Choose salary adjustment or IFT</p>
                                 </div>
                             </div>
                             
@@ -825,14 +834,14 @@
                                         <div class="category-card" ng-class="{'selected': templateFormData.calculationConfig.subType === 'remise'}"
                                              ng-click="templateFormData.calculationConfig.subType = 'remise'">
                                             <div class="card-icon"><i class="icon-calculator"></i></div>
-                                            <div class="card-title" translate>Remise sur salaire</div>
-                                            <div class="card-desc" translate>R = SBI × 3 × TX</div>
+                                            <div class="card-title" translate>Salary Remise</div>
+                                            <div class="card-desc" translate>Based on salary and rate</div>
                                         </div>
                                         <div class="category-card" ng-class="{'selected': templateFormData.calculationConfig.subType === 'ift'}"
                                              ng-click="templateFormData.calculationConfig.subType = 'ift'">
                                             <div class="card-icon"><i class="icon-coins"></i></div>
                                             <div class="card-title">IFT</div>
-                                            <div class="card-desc" translate>IRPP not deducted</div>
+                                            <div class="card-desc" translate>Tax exempt fixed amounts</div>
                                         </div>
                                     </div>
                                     <input type="hidden" name="subType" ng-model="templateFormData.calculationConfig.subType" required>
@@ -840,11 +849,11 @@
                                 <div class="col-md-6">
                                     <div class="alert alert-info mb-0" ng-if="templateFormData.calculationConfig.subType === 'remise'">
                                         <i class="icon-info22 mr-2"></i>
-                                        <span translate>R = SBI × 3 × TX, with TX = 45% for DIR/SD, otherwise 30%.</span>
+                                        <span translate>Salary remise is taxable and uses configured salary/rate inputs.</span>
                                     </div>
                                     <div class="alert alert-info mb-0" ng-if="templateFormData.calculationConfig.subType === 'ift'">
                                         <i class="icon-info22 mr-2"></i>
-                                        <span translate>IFT: IRPP not deducted. Configure amounts by rank below.</span>
+                                        <span translate>IFT is tax exempt. Configure fixed amounts by rank below.</span>
                                     </div>
                                 </div>
                             </div>
@@ -857,8 +866,8 @@
                                     <i class="icon-table2"></i>
                                 </div>
                                 <div>
-                                    <h6 class="section-title" translate>IFT Amount Grid</h6>
-                                    <p class="section-subtitle" translate>Define amounts per rank</p>
+                                    <h6 class="section-title" translate>IFT Amounts by Rank</h6>
+                                    <p class="section-subtitle" translate>Set fixed amount for each rank</p>
                                 </div>
                             </div>
 
@@ -920,7 +929,7 @@
                                 </div>
                                 <div>
                                     <h6 class="section-title" translate>Targeting</h6>
-                                    <p class="section-subtitle" translate>Include specific structures or personnel</p>
+                                    <p class="section-subtitle" translate>Optionally include specific structures or personnel</p>
                                 </div>
                             </div>
                             
@@ -934,7 +943,7 @@
                                     </label>
                                     <input type="text"
                                            class="form-control form-control-modern mb-2"
-                                           placeholder="Search for a structure..."
+                                           placeholder="{{'Search for a structure...' | translate}}"
                                            ng-model="selectedIftStructureId"
                                            uib-typeahead="structure as structure.label for structure in searchIftStructures($viewValue)"
                                            typeahead-editable="false"
@@ -942,7 +951,7 @@
                                            typeahead-on-select="addIftStructure($item)">
                                     <div class="mb-2">
                                         <small class="text-muted" translate>Or browse the list:</small>
-                                        <select class="form-control form-control-modern form-control-sm"
+                                        <select class="form-control form-control-modern form-control-sm select-compact"
                                                 size="4"
                                                 ng-model="selectedIftStructureId"
                                                 ng-options="s.id as s.label for s in iftStructureOptions"
@@ -957,19 +966,20 @@
                                         </div>
                                     </div>
                                     <div class="text-muted text-center py-2" ng-if="!iftSelectedStructures.length" translate>
-                                        <i class="icon-info22 mr-1"></i>No structures selected
+                                            <i class="icon-info22 mr-1"></i>No structures selected
                                     </div>
+                                    <div class="helper-text-muted mt-2" translate>Use this only for exceptions. Default IFT eligibility still applies.</div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label-modern">
                                         <i class="icon-user-check mr-1"></i><span translate>Personnel to include</span>
                                         <i class="icon-question3 help-icon"
-                                           uib-tooltip="Search by name or ID; duplicates are ignored"
+                                           uib-tooltip="{{'Search by name or ID; duplicates are ignored' | translate}}"
                                            tooltip-placement="right"></i>
                                     </label>
                                     <input type="text"
                                            class="form-control form-control-modern mb-2"
-                                           placeholder="Search for personnel..."
+                                           placeholder="{{'Search for personnel...' | translate}}"
                                            ng-model="iftPersonnelSearch"
                                            uib-typeahead="person as getIftPersonnelLabel(person) for person in searchIftPersonnel($viewValue)"
                                            typeahead-editable="false"
@@ -984,6 +994,7 @@
                                             <i class="icon-info22 mr-1"></i>No personnel selected
                                         </div>
                                     </div>
+                                    <div class="helper-text-muted mt-2" translate>Search by name or identifier. Selected entries are included as exceptions.</div>
                                 </div>
                             </div>
                         </div>
@@ -1022,12 +1033,12 @@
                                         <label class="form-label-modern">
                                             <span translate>Base Field</span>
                                             <i class="icon-question3 help-icon"
-                                               uib-tooltip="Field to use as calculation base"
+                                               uib-tooltip="{{'Field to use as calculation base' | translate}}"
                                                tooltip-placement="right"></i>
                                         </label>
                                         <input type="text" class="form-control form-control-modern"
                                                ng-model="templateFormData.calculationConfig.baseField"
-                                               placeholder="e.g., salary, grade_points">
+                                               placeholder="{{'e.g., salary, grade_points' | translate}}">
                                     </div>
                                 </div>
                             </div>
@@ -1063,7 +1074,7 @@
                                         <div class="input-group input-group-modern">
                                             <input type="number" class="form-control form-control-modern" name="percentage"
                                                    ng-model="templateFormData.calculationConfig.percentage"
-                                                   min="0" step="0.01" required placeholder="e.g., 3">
+                                                   min="0" step="0.01" required placeholder="{{'e.g., 3' | translate}}">
                                             <div class="input-group-append">
                                                 <span class="input-group-text">%</span>
                                             </div>
@@ -1080,7 +1091,7 @@
                                         <span translate>Formula</span>
                                         <span class="required-star">*</span>
                                         <i class="icon-question3 help-icon"
-                                           uib-tooltip="Available variables: base, parts, salary, grade_points"
+                                           uib-tooltip="{{'Available variables: base, parts, salary, grade_points' | translate}}"
                                            tooltip-placement="right"></i>
                                     </label>
                                     <div class="p-3 bg-dark rounded">
@@ -1088,7 +1099,7 @@
                                                   ng-model="templateFormData.calculationConfig.formula"
                                                   rows="2" required
                                                   style="font-family: 'Monaco', 'Menlo', monospace; font-size: 0.9rem;"
-                                                  placeholder="e.g., base * 0.03 * parts"></textarea>
+                                                  placeholder="{{'e.g., base * 0.03 * parts' | translate}}"></textarea>
                                     </div>
                                     <small class="text-muted mt-1 d-block">
                                         <i class="icon-info22 mr-1"></i><span translate>Use mathematical expressions with available variables</span>
@@ -1118,7 +1129,7 @@
                     
                     <div class="info-banner">
                         <i class="icon-shield-check info-icon"></i>
-                        <div class="info-text" translate>Build eligibility rules based on personnel snapshot fields (status, grade, category, rank, structure, sub-structure).</div>
+                        <div class="info-text" translate>Build eligibility rules using personnel information (status, category, rank, structure, sub-structure).</div>
                     </div>
 
                     <div class="form-section">
@@ -1153,7 +1164,7 @@
                                         <select class="form-control form-control-modern form-control-sm" ng-model="rule.field"
                                                 ng-options="f.value as f.label for f in constants.ruleFields" required>
                                         </select>
-                                        <small class="text-muted" translate>From PersonnelSnapshot</small>
+                                        <small class="text-muted" translate>Uses personnel information captured for the cycle.</small>
                                     </div>
                                 </div>
                                 <div class="col-md-3">
@@ -1169,21 +1180,21 @@
                                         <!-- Multi-select for IN/NOT IN -->
                                         <div ng-switch-when="status" ng-if="rule.operator === 'in' || rule.operator === 'not_in'">
                                             <label class="form-label-modern" translate>Statuses (select many)</label>
-                                            <select class="form-control form-control-modern form-control-sm" multiple style="height: 80px;"
+                                            <select class="form-control form-control-modern form-control-sm select-compact" multiple style="height: 80px;"
                                                     ng-model="rule.valueList"
                                                     ng-options="opt.value as opt.label for opt in ruleOptions.statuses">
                                             </select>
                                         </div>
                                         <div ng-switch-when="rank" ng-if="rule.operator === 'in' || rule.operator === 'not_in'">
                                             <label class="form-label-modern" translate>Ranks (select many)</label>
-                                            <select class="form-control form-control-modern form-control-sm" multiple style="height: 80px;"
+                                            <select class="form-control form-control-modern form-control-sm select-compact" multiple style="height: 80px;"
                                                     ng-model="rule.valueList"
                                                     ng-options="opt.value as opt.label for opt in ruleOptions.ranks">
                                             </select>
                                         </div>
                                         <div ng-switch-when="structure" ng-if="rule.operator === 'in' || rule.operator === 'not_in'">
                                             <label class="form-label-modern" translate>Structures (select many)</label>
-                                            <select class="form-control form-control-modern form-control-sm" multiple style="height: 80px;"
+                                            <select class="form-control form-control-modern form-control-sm select-compact" multiple style="height: 80px;"
                                                     ng-model="rule.valueList"
                                                     ng-options="opt.value as opt.label for opt in ruleOptions.structuresMain">
                                             </select>
@@ -1195,7 +1206,7 @@
                                                     ng-options="opt.value as opt.label for opt in ruleOptions.structuresMain">
                                                 <option value="" translate>Choose parent structure...</option>
                                             </select>
-                                            <select class="form-control form-control-modern form-control-sm" multiple style="height: 60px;"
+                                            <select class="form-control form-control-modern form-control-sm select-compact" multiple style="height: 60px;"
                                                     ng-model="rule.valueList"
                                                     ng-options="opt.value as opt.label for opt in getSubStructuresForRule(rule)">
                                             </select>
@@ -1239,7 +1250,7 @@
                                         <div ng-switch-default>
                                             <label class="form-label-modern" translate>Value</label>
                                             <input type="text" class="form-control form-control-modern form-control-sm" ng-model="rule.valueInput"
-                                                   placeholder="Enter value" required>
+                                                   placeholder="{{'Enter value' | translate}}" required>
                                         </div>
                                     </div>
                                 </div>
@@ -1258,7 +1269,7 @@
                             <div class="form-group mb-0 mt-2">
                                 <label class="form-label-modern" style="font-size: 0.8rem;" translate>Description (Optional)</label>
                                 <input type="text" class="form-control form-control-modern form-control-sm" ng-model="rule.description"
-                                       placeholder="Describe this rule...">
+                                       placeholder="{{'Describe this rule...' | translate}}">
                             </div>
                             <div class="rule-preview">
                                 <div class="rule-preview-label" translate>Preview</div>
@@ -1322,7 +1333,7 @@
                                             <div class="form-group mb-2">
                                                 <label class="form-label-modern" translate>Approver Role</label>
                                                 <input type="text" class="form-control form-control-modern form-control-sm" ng-model="step.role"
-                                                       placeholder="e.g., Manager, Director" required>
+                                                       placeholder="{{'e.g., Manager, Director' | translate}}" required>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
@@ -1338,7 +1349,7 @@
                                             <div class="form-group mb-2">
                                                 <label class="form-label-modern" translate>Description</label>
                                                 <input type="text" class="form-control form-control-modern form-control-sm" ng-model="step.description"
-                                                       placeholder="Step description">
+                                                       placeholder="{{'Step description' | translate}}">
                                             </div>
                                         </div>
                                         <div class="col-md-1 d-flex align-items-end pb-2">
@@ -1375,7 +1386,7 @@
                         </div>
                         
                         <textarea class="form-control form-control-modern" ng-model="templateFormData.documentation"
-                                  rows="4" placeholder="Enter documentation, instructions, or notes for this template..."
+                                  rows="4" placeholder="{{'Enter documentation, instructions, or notes for this template...' | translate}}"
                                   style="font-family: 'Monaco', 'Menlo', monospace; font-size: 0.85rem;"></textarea>
                     </div>
 

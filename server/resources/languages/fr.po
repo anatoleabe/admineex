@@ -6095,6 +6095,135 @@ msgstr "{{totals.eligible || 0}} personne(s)"
 msgid "{{totals.excluded || 0}} person(s)"
 msgstr "{{totals.excluded || 0}} personne(s)"
 
+msgid "(All ranks)"
+msgstr "(Tous rangs)"
+
+msgid "Amount based on share value and parts"
+msgstr "Montant basé sur la valeur de la part et le nombre de parts"
+
+msgid "Amount based on salary adjustment or IFT"
+msgstr "Montant basé sur la remise sur salaire ou l’IFT"
+
+msgid "Same fixed amount for all eligible personnel"
+msgstr "Même montant fixe pour tout le personnel éligible"
+
+msgid "Amount based on configured formula"
+msgstr "Montant basé sur la formule configurée"
+
+msgid "Configured bonus calculation"
+msgstr "Calcul de la prime et gratification configuré"
+
+msgid "Salary Remise"
+msgstr "Remise sur salaire"
+
+msgid "Total Disbursed"
+msgstr "Total décaissé"
+
+msgid "Bonus Performance Overview"
+msgstr "Vue d’ensemble des performances des primes et gratifications"
+
+msgid "Metrics are based on selected period and statuses"
+msgstr "Les indicateurs sont basés sur la période et les statuts sélectionnés"
+
+msgid "Include statuses:"
+msgstr "Inclure les statuts :"
+
+msgid "Approved (validated)"
+msgstr "Approuvé (validé)"
+
+msgid "Paid (disbursed)"
+msgstr "Payé (décaissé)"
+
+msgid "Open Cycles"
+msgstr "Cycles ouverts"
+
+msgid "Beneficiaries (Selected Period)"
+msgstr "Bénéficiaires (période sélectionnée)"
+
+msgid "Open"
+msgstr "Ouvrir"
+
+msgid "Shortcuts"
+msgstr "Raccourcis"
+
+msgid "Overview"
+msgstr "Aperçu"
+
+msgid "Template Overview"
+msgstr "Aperçu du modèle"
+
+msgid "Define program identity and business context"
+msgstr "Définir l’identité du programme et son contexte métier"
+
+msgid "Salary adjustment or IFT"
+msgstr "Remise sur salaire ou IFT"
+
+msgid "Compensation Type"
+msgstr "Type de rémunération"
+
+msgid "Choose salary adjustment or IFT"
+msgstr "Choisir la remise sur salaire ou l’IFT"
+
+msgid "Based on salary and rate"
+msgstr "Basé sur le salaire et le taux"
+
+msgid "Tax exempt fixed amounts"
+msgstr "Montants fixes exonérés d’impôt"
+
+msgid "Salary remise is taxable and uses configured salary/rate inputs."
+msgstr "La remise sur salaire est imposable et utilise les paramètres de salaire/taux configurés."
+
+msgid "IFT is tax exempt. Configure fixed amounts by rank below."
+msgstr "L’IFT est exonérée d’impôt. Configurez ci-dessous les montants fixes par rang."
+
+msgid "IFT Amounts by Rank"
+msgstr "Montants IFT par rang"
+
+msgid "Set fixed amount for each rank"
+msgstr "Définir un montant fixe pour chaque rang"
+
+msgid "Optionally include specific structures or personnel"
+msgstr "Inclure éventuellement des structures ou du personnel spécifiques"
+
+msgid "Use this only for exceptions. Default IFT eligibility still applies."
+msgstr "À utiliser uniquement pour les exceptions. Les règles d’éligibilité IFT par défaut restent applicables."
+
+msgid "Search by name or identifier. Selected entries are included as exceptions."
+msgstr "Rechercher par nom ou identifiant. Les éléments sélectionnés sont inclus comme exceptions."
+
+msgid "Build eligibility rules using personnel information (status, category, rank, structure, sub-structure)."
+msgstr "Construire des règles d’éligibilité en utilisant les informations du personnel (statut, catégorie, rang, structure, sous-structure)."
+
+msgid "Uses personnel information captured for the cycle."
+msgstr "Utilise les informations du personnel capturées pour le cycle."
+
+msgid "Calculation Method"
+msgstr "Méthode de calcul"
+
+msgid "IFT uses rank-based fixed amounts and is tax exempt."
+msgstr "L’IFT utilise des montants fixes par rang et est exonérée d’impôt."
+
+msgid "Salary remise uses salary-based calculation and applies tax settings."
+msgstr "La remise sur salaire utilise un calcul basé sur le salaire et applique la configuration fiscale."
+
+msgid "Included Structures"
+msgstr "Structures incluses"
+
+msgid "Included Personnel"
+msgstr "Personnel inclus"
+
+msgid "Rules below are shown in business language. Technical rule details remain available."
+msgstr "Les règles ci-dessous sont affichées en langage métier. Les détails techniques restent disponibles."
+
+msgid "Tax Exempt"
+msgstr "Exonéré d’impôt"
+
+msgid "Tax Applied"
+msgstr "Impôt appliqué"
+
+msgid "Search by program name, code, or description"
+msgstr "Rechercher par nom du programme, code ou description"
+
 #: public/templates/bonus/instance-wizard.html:162
 #, fuzzy
 #| msgid "{{totals.adjusted || 0}} person(s)"
@@ -6255,3 +6384,135 @@ msgstr "{{totals.adjusted || 0}} personne(s)"
 
 #~ msgid "Notation"
 #~ msgstr "Notation"
+
+msgid "Optional description for this instance"
+msgstr "Description facultative pour cette instance"
+
+msgid "Name or identifier"
+msgstr "Nom ou identifiant"
+
+msgid "Type to search personnel"
+msgstr "Saisissez pour rechercher un personnel"
+
+msgid "Search templates"
+msgstr "Rechercher des modèles"
+
+msgid "Status filter"
+msgstr "Filtre de statut"
+
+msgid "Category filters"
+msgstr "Filtres de catégorie"
+
+msgid "Toggle sort order"
+msgstr "Basculer l’ordre de tri"
+
+msgid "View mode"
+msgstr "Mode d’affichage"
+
+msgid "Reset filters"
+msgstr "Réinitialiser les filtres"
+
+msgid "Toggle active"
+msgstr "Activer/Désactiver"
+
+msgid "Page size"
+msgstr "Taille de page"
+
+msgid "Templates pagination"
+msgstr "Pagination des modèles"
+
+msgid "Choose .xlsx file..."
+msgstr "Choisir un fichier .xlsx..."
+
+msgid "e.g. Prime Trimestrielle Q1 2024"
+msgstr "ex. Prime Trimestrielle Q1 2024"
+
+msgid "e.g. PRIME_TRIM_Q1_24"
+msgstr "ex. PRIME_TRIM_Q1_24"
+
+msgid "YYYY-Qn (e.g. 2024-Q1) or YYYY-MM (e.g. 2024-01)"
+msgstr "YYYY-Qn (ex. 2024-Q1) ou YYYY-MM (ex. 2024-01)"
+
+msgid "Unique identifier. Use uppercase letters, numbers, underscores and dashes only."
+msgstr "Identifiant unique. Utilisez uniquement des lettres majuscules, des chiffres, des tirets bas et des tirets."
+
+msgid "e.g., BONUS_Q1_2025"
+msgstr "ex., BONUS_Q1_2025"
+
+msgid "Only uppercase letters, numbers, _ and - allowed"
+msgstr "Seules les lettres majuscules, les chiffres, _ et - sont autorisés"
+
+msgid "Enter a descriptive name for this template"
+msgstr "Saisissez un nom descriptif pour ce modèle"
+
+msgid "Provide a detailed description of this bonus template..."
+msgstr "Fournissez une description détaillée de ce modèle de primes et gratifications..."
+
+msgid "Amount per part used in calculations"
+msgstr "Montant par part utilisé dans les calculs"
+
+msgid "Search for a structure..."
+msgstr "Rechercher une structure..."
+
+msgid "Search by name or ID; duplicates are ignored"
+msgstr "Rechercher par nom ou identifiant ; les doublons sont ignorés"
+
+msgid "Search for personnel..."
+msgstr "Rechercher du personnel..."
+
+msgid "Field to use as calculation base"
+msgstr "Champ à utiliser comme base de calcul"
+
+msgid "e.g., salary, grade_points"
+msgstr "ex., salary, grade_points"
+
+msgid "e.g., 3"
+msgstr "ex., 3"
+
+msgid "Available variables: base, parts, salary, grade_points"
+msgstr "Variables disponibles : base, parts, salary, grade_points"
+
+msgid "e.g., base * 0.03 * parts"
+msgstr "ex., base * 0.03 * parts"
+
+msgid "Enter value"
+msgstr "Saisir une valeur"
+
+msgid "Describe this rule..."
+msgstr "Décrire cette règle..."
+
+msgid "e.g., Manager, Director"
+msgstr "ex., Manager, Director"
+
+msgid "Step description"
+msgstr "Description de l’étape"
+
+msgid "Enter documentation, instructions, or notes for this template..."
+msgstr "Saisissez la documentation, les instructions ou les notes pour ce modèle..."
+
+msgid "Please provide a detailed reason for exclusion..."
+msgstr "Veuillez fournir un motif d’exclusion détaillé..."
+
+msgid "Close dialog"
+msgstr "Fermer la boîte de dialogue"
+
+msgid "Enter reason for changing share amount... (required)"
+msgstr "Saisissez le motif du changement du montant de la part... (obligatoire)"
+
+msgid "Enter reason for changing tax configuration... (required)"
+msgstr "Saisissez le motif du changement de configuration fiscale... (obligatoire)"
+
+msgid "Auto-generates"
+msgstr "Génère automatiquement"
+
+msgid "Search by employee name..."
+msgstr "Rechercher par nom de personnel..."
+
+msgid "Previous page"
+msgstr "Page précédente"
+
+msgid "Next page"
+msgstr "Page suivante"
+
+msgid "Enter adjustment reason... (required)"
+msgstr "Saisissez le motif de l’ajustement... (obligatoire)"

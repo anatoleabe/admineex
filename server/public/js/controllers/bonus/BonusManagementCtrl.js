@@ -78,7 +78,7 @@ angular.module('app').controller('BonusManagementController', function ($scope, 
   // Charts Data
   $scope.trendsLabels = [];
   $scope.trendsData = [];
-  $scope.trendsSeries = [gettextCatalog.getString('Total Payout')];
+  $scope.trendsSeries = [gettextCatalog.getString('Total Disbursed')];
 
   $scope.distributionLabels = [];
   $scope.distributionData = [];
