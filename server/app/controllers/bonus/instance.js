@@ -939,7 +939,8 @@ exports.api.updateShareAmount = async (req, res, next) => {
             }
 
             // Find the instance
-            const instance = await BonusInstance.findById(instanceId);
+            const instance = await BonusInstance.findById(instanceId)
+                .populate('templateId', 'category');
             if (!instance) {
                 return next(notFound(t(req, 'Bonus instance not found')));
             }
@@ -947,6 +948,15 @@ exports.api.updateShareAmount = async (req, res, next) => {
             // Check if the instance can be modified
             if (['approved', 'paid', 'cancelled'].includes(instance.status)) {
                 return next(forbidden(t(req, 'Cannot update share amount for instances with status: ') + instance.status));
+            }
+
+            if (!instance.templateId || !instance.templateId.category) {
+                return next(badRequest(t(req, 'Bonus instance template is missing or invalid')));
+            }
+
+            const templateCategory = instance.templateId && instance.templateId.category;
+            if (templateCategory !== 'with_parts') {
+                return next(badRequest(t(req, 'Share amount update is only allowed for with-parts bonuses')));
             }
 
             // Store the previous amount for history
@@ -1231,7 +1241,8 @@ exports.api.updateTaxConfig = async (req, res, next) => {
             }
 
             // Find the instance
-            const instance = await BonusInstance.findById(instanceId);
+            const instance = await BonusInstance.findById(instanceId)
+                .populate('templateId', 'category calculationConfig.subType');
             if (!instance) {
                 return next(notFound(t(req, 'Bonus instance not found')));
             }
@@ -1239,6 +1250,18 @@ exports.api.updateTaxConfig = async (req, res, next) => {
             // Check if the instance can be modified
             if (['approved', 'paid', 'cancelled'].includes(instance.status)) {
                 return next(forbidden(t(req, 'Cannot update tax configuration for instances with status: ') + instance.status));
+            }
+
+            if (!instance.templateId || !instance.templateId.category) {
+                return next(badRequest(t(req, 'Bonus instance template is missing or invalid')));
+            }
+
+            const templateCategory = instance.templateId && instance.templateId.category;
+            const templateSubType = instance.templateId && instance.templateId.calculationConfig
+                ? instance.templateId.calculationConfig.subType
+                : null;
+            if (templateCategory === 'without_parts' && templateSubType === 'ift') {
+                return next(badRequest(t(req, 'Tax configuration update is not allowed for IFT bonuses')));
             }
 
             // Store the previous values for history
