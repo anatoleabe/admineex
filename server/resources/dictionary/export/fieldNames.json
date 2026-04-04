@@ -32,6 +32,10 @@
         "en": "Arrondissement",
         "fr": "Arrondissement"
     },{
+        "id": "rank",
+        "en": "Rang",
+        "fr": "Rang"
+    },{
         "id": "grade",
         "en": "Grade",
         "fr": "Grade"

@@ -562,7 +562,7 @@ exports.api.cancel = async (req, res, next) => {
 
 /**
  * Delete bonus instance permanently
- * Only allowed for draft or cancelled instances
+ * Only allowed for draft instances
  * Deletes the instance and all related allocations
  */
 exports.api.delete = async (req, res, next) => {

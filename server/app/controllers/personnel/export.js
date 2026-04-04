@@ -577,7 +577,7 @@ const JobDefinition = async (job, done) => {
             return done();
         }
 
-        const chunkSize = nconf.get('export:maxRowsOnFetch') || 100;
+        const chunkSize = nconf.get('export:maxRowsOnFetch') || 500;
         const workPlan = Array.from({ length: Math.ceil(totalCount / chunkSize) }, (_, i) => ({
             start: i * chunkSize,
             end: Math.min((i + 1) * chunkSize, totalCount),
@@ -597,6 +597,8 @@ const JobDefinition = async (job, done) => {
         if (!fs.existsSync('./tmp')) fs.mkdirSync('./tmp');
         if (!fs.existsSync(exportOptions.excelPath)) fs.mkdirSync(exportOptions.excelPath);
 
+        // Phase 1: collect all personnel across all chunks
+        const allPersonnels = [];
         for (const step of workPlan) {
             if (!(await checkJobStillExists())) {
                 endJobNow = true;
@@ -610,7 +612,21 @@ const JobDefinition = async (job, done) => {
             personnelOptions.skip = step.start;
 
             const personnels = await getPersonnelList(personnelOptions);
-            //job.attrs.data.staffsCount = job.attrs.data.staffsCount + personnels.length;
+            allPersonnels.push(...personnels);
+
+            progress.emit('jobProgress', {
+                job: jobName,
+                id: jobId,
+                exportName,
+                progress: `${step.end}/${totalCount}`,
+                percentage: step.progress,
+                staffsCount: totalCount,
+                elapsedTimeMs: performance.now() - startTime
+            });
+        }
+
+        // Phase 2: build structure grouping once from all collected personnel
+        if (!endJobNow) {
             let structuresForExport;
             if (filters.staffOnly === false || filters.staffOnly === "false") {
                 structuresForExport = [{
@@ -619,7 +635,7 @@ const JobDefinition = async (job, done) => {
                     children: [{
                         code: "000 - 0",
                         fr: "Inconnue",
-                        personnels: personnels
+                        personnels: allPersonnels
                     }]
                 }];
             } else {
@@ -687,7 +703,7 @@ const JobDefinition = async (job, done) => {
                     return child;
                 };
 
-                for (const person of personnels) {
+                for (const person of allPersonnels) {
                     const { parentId, parentCode, parentName, subId, subCode, subName } = resolvePersonnelStructure(person);
                     if (!subId && !subCode && !subName) {
                         unknown.push(person);
@@ -712,21 +728,10 @@ const JobDefinition = async (job, done) => {
                 }
             }
 
-            progress.emit('jobProgress', {
-                job: jobName,
-                id: jobId,
-                exportName,
-                progress: `${step.end}/${totalCount}`,
-                percentage: step.progress,
-                staffsCount: totalCount,
-                fileSize: fs.existsSync(exportOptions.xlsxPath) ? fs.statSync(exportOptions.xlsxPath).size : 0,
-                elapsedTimeMs: performance.now() - startTime
-            });
-
+            // Phase 3: generate a single Excel file from all collected data
             exportOptions.data = structuresForExport;
             const summary = await exports.exportToXLSX(exportOptions);
             exportSummariesArray.push(summary);
-
         }
 
         if (!endJobNow) {
@@ -819,10 +824,11 @@ const createExportJob = async function(query, runImmediatly) {
 
 exports.downloadExportAPI = async function(req, res) {
     if (req.actor) {
+        const agenda = new Agenda({ db: { address: nconf.get('mongo') } });
         try{
-            const agenda = new Agenda({ db: { address: nconf.get('mongo') } }); // Connect to MongoDB
             await agenda.start();
             const JobArray = await agenda.jobs({ '_id': (new ObjectId(req.params.id))})
+            await agenda.stop();
             if (JobArray && JobArray.length>0){
                 const currentJob = JobArray[0];
                 var filePath = currentJob.attrs.data.file;
@@ -838,7 +844,8 @@ exports.downloadExportAPI = async function(req, res) {
                 return res.sendStatus(404);
             }
         } catch (err) {
-            log.error('Error in zipDirectory:', err);
+            await agenda.stop().catch(() => {});
+            log.error('Error in downloadExport:', err);
             audit.logEvent(req.actor.id, "Export", "downloadExport", "", "", "failed", "An error occured while downloading the export zip file");
         }
     } else {
@@ -854,25 +861,33 @@ exports.deleteExportAPI = async function(req, res) {
                     log.error("Formidable attempted to parse deleteExport fields",err);
                     return res.status(500).send(err);
                 } else {
-                    const agenda = new Agenda({ db: { address: nconf.get('mongo') } }); // Connect to MongoDB
-                    await agenda.start();
-                    const ids=fields.ids;
-                    if (ids && ids.length>0){
-                        for (let i = 0; i < ids.length; i++) {
-                            const JobArray = await agenda.jobs({ '_id': (new ObjectId(ids[i]))})
-                            if (JobArray && JobArray.length>0){
-                                const currentJob = JobArray[0];
-                                await deleteJob(currentJob);
-                                audit.logEvent(req.actor.id, "Export", "deleteExport", "", "", "succeed", 'Export job deleted with success');
-                                return res.sendStatus(200);
-                            } else {
-                                audit.logEvent(req.actor.id, "Export", "deleteExport", "", "", "failed", "Export job not found");
-                                return res.sendStatus(404);
+                    const agenda = new Agenda({ db: { address: nconf.get('mongo') } });
+                    try {
+                        await agenda.start();
+                        const ids=fields.ids;
+                        if (ids && ids.length>0){
+                            for (let i = 0; i < ids.length; i++) {
+                                const JobArray = await agenda.jobs({ '_id': (new ObjectId(ids[i]))})
+                                if (JobArray && JobArray.length>0){
+                                    const currentJob = JobArray[0];
+                                    await deleteJob(currentJob);
+                                    await agenda.stop();
+                                    audit.logEvent(req.actor.id, "Export", "deleteExport", "", "", "succeed", 'Export job deleted with success');
+                                    return res.sendStatus(200);
+                                } else {
+                                    audit.logEvent(req.actor.id, "Export", "deleteExport", "", "", "failed", "Export job not found");
+                                    await agenda.stop();
+                                    return res.sendStatus(404);
+                                }
                             }
+                        } else {
+                            audit.logEvent(req.actor.id, "Export", "deleteExport", "", "", "failed", "No export id provided");
+                            await agenda.stop();
+                            res.status(400).send({code: "invalid_request_param", message: "Missing job id in request parameters"});
                         }
-                    } else {
-                        audit.logEvent(req.actor.id, "Export", "deleteExport", "", "", "failed", "No export id provided");
-                        res.status(400).send({code: "invalid_request_param", message: "Missing job id in request parameters"});
+                    } catch (agendaErr) {
+                        await agenda.stop().catch(() => {});
+                        throw agendaErr;
                     }
                 }
             }
@@ -933,17 +948,15 @@ exports.replanIncompletedJobs = async function (io) {
 };
 
 const triggerNextExportJob =  async () =>{
+    const agenda = new Agenda({
+        db: {
+            address: nconf.get('mongo'),
+            options: { useUnifiedTopology: true },
+        }
+    });
     try{
         const maxJobAllowed =nconf.get('export:maxRunningJobs') || 1;
-        // establised a connection to our mongoDB database.
-        const agenda = new Agenda({
-            db: {
-                address: nconf.get('mongo'),
-                options: { useUnifiedTopology: true },
-            }
-        });
         await agenda.start();
-        //const runningJobs = await agenda.jobs({ lockedAt: { $exists: true }, lastRunAt: { $exists: true }, lastFinishedAt: { $exists: false } });
         const runningJobs = await agenda.jobs({
             lockedAt: { $exists: true },
             lastFinishedAt: { $exists: false }
@@ -952,6 +965,7 @@ const triggerNextExportJob =  async () =>{
             nextRunAt: { $exists: true },
             lastRunAt: { $exists: false }
         });
+        await agenda.stop();
 
         const jobsNeeded = (maxJobAllowed - runningJobs.length);
         if (pendingJobs.length > 0 && jobsNeeded >0 && runningJobs.length < maxJobAllowed){
@@ -970,6 +984,7 @@ const triggerNextExportJob =  async () =>{
             reload: true,
         });
     } catch (err) {
+        await agenda.stop().catch(() => {});
         log.error(`Error in triggerNextExportJob:`, err);
     }
 };
@@ -1126,7 +1141,7 @@ exports.exportToXLSX = async (options) => {
         });
         if (ws.columns[0]) ws.columns[0].width = 50;
 
-        const tmpFile = `${options.xlsxPathNoExt}${keyGenerator.generateKey()}.xlsx`;
+        const tmpFile = options.xlsxPath;
         if (!fs.existsSync('./tmp')) {
             fs.mkdirSync('./tmp');
         }

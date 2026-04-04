@@ -1,9 +1,54 @@
 angular.module('app')
-    .controller('BonusTemplatesController', ['$scope', '$rootScope', '$http', '$q', '$timeout', '$ocLazyLoad', '$injector', 'toastr', 'gettextCatalog', function ($scope, $rootScope, $http, $q, $timeout, $ocLazyLoad, $injector, toastr, gettextCatalog) {
+    .controller('BonusTemplatesController', ['$scope', '$rootScope', '$http', '$q', '$timeout', '$ocLazyLoad', '$injector', 'SweetAlert', 'toastr', 'gettextCatalog', function ($scope, $rootScope, $http, $q, $timeout, $ocLazyLoad, $injector, SweetAlert, toastr, gettextCatalog) {
         // Ensure kernel exists for this scope so views using kernel.loading work
         $scope.kernel = $scope.kernel || { loading: 100 };
         function t(msgid) {
             return gettextCatalog.getString(msgid);
+        }
+
+        function showConfirmDialog(config, onConfirm) {
+            if (window.Swal && typeof window.Swal.fire === 'function') {
+                window.Swal.fire({
+                    title: config.title,
+                    text: config.text,
+                    icon: config.icon || 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: config.confirmButtonColor || '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: config.confirmButtonText || t('Confirm'),
+                    cancelButtonText: t('Cancel')
+                }).then(function (result) {
+                    if (result && result.isConfirmed) {
+                        onConfirm();
+                    }
+                });
+                return;
+            }
+
+            if (SweetAlert && typeof SweetAlert.swal === 'function') {
+                try {
+                    SweetAlert.swal({
+                        title: config.title,
+                        text: config.text,
+                        type: config.icon || 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: config.confirmButtonColor || '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: config.confirmButtonText || t('Confirm'),
+                        cancelButtonText: t('Cancel')
+                    }, function (confirmed) {
+                        if (confirmed) {
+                            onConfirm();
+                        }
+                    });
+                    return;
+                } catch (e) {
+                }
+            }
+
+            if (window.confirm(config.text)) {
+                onConfirm();
+            }
         }
 
         const role = ($rootScope.account && $rootScope.account.role) ? String($rootScope.account.role) : '';
@@ -754,44 +799,45 @@ angular.module('app')
             // Get periodicity label for display
             var periodicityLabel = $scope.getPeriodicityLabel(template.periodicity) || template.periodicity;
 
-            // Use native confirm dialog for compatibility
             var confirmMessage = t('This will immediately generate bonus allocations for the current period.') + '\n\n' +
                 t('Template') + ': ' + template.name + '\n' +
                 t('Periodicity') + ': ' + periodicityLabel + '\n\n' +
                 t('Note: You can only generate once per period. This action cannot be undone.') + '\n\n' +
                 t('Do you want to continue?');
 
-            if (!confirm(confirmMessage)) {
-                return;
-            }
-
-            console.log('Generate Now: User confirmed, calling API...');
-            $scope.state.generating = true;
-            $scope.state.generatingTemplateId = template._id;
-            $http.post('/api/bonus/generation/anticipate', { templateId: template._id })
-                .then(function (response) {
-                    console.log('Generate Now: API response', response);
-                    $scope.state.generating = false;
-                    $scope.state.generatingTemplateId = null;
-                    var data = response.data || {};
-                    var message = data.message || t('Bonus instance generated successfully');
-                    if (data.referencePeriod) {
-                        message += ' (' + data.referencePeriod + ')';
-                    }
-                    if (data.allocationsGenerated !== undefined) {
-                        message += ' - ' + data.allocationsGenerated + ' allocations created';
-                    }
-                    toastr.success(message);
-                    alert(t('Success!') + '\n' + message);
-                })
-                .catch(function (error) {
-                    console.error('Generate Now: API error', error);
-                    $scope.state.generating = false;
-                    $scope.state.generatingTemplateId = null;
-                    var errMsg = (error.data && error.data.message) || t('Failed to generate bonuses');
-                    toastr.error(errMsg);
-                    alert(t('Error') + '\n' + errMsg);
-                });
+            showConfirmDialog({
+                title: t('Generate Now?'),
+                text: confirmMessage,
+                icon: 'warning',
+                confirmButtonColor: '#28a745',
+                confirmButtonText: t('Yes, Generate')
+            }, function () {
+                console.log('Generate Now: User confirmed, calling API...');
+                $scope.state.generating = true;
+                $scope.state.generatingTemplateId = template._id;
+                $http.post('/api/bonus/generation/anticipate', { templateId: template._id })
+                    .then(function (response) {
+                        console.log('Generate Now: API response', response);
+                        $scope.state.generating = false;
+                        $scope.state.generatingTemplateId = null;
+                        var data = response.data || {};
+                        var message = data.message || t('Bonus instance generated successfully');
+                        if (data.referencePeriod) {
+                            message += ' (' + data.referencePeriod + ')';
+                        }
+                        if (data.allocationsGenerated !== undefined) {
+                            message += ' - ' + data.allocationsGenerated + ' allocations created';
+                        }
+                        toastr.success(message);
+                    })
+                    .catch(function (error) {
+                        console.error('Generate Now: API error', error);
+                        $scope.state.generating = false;
+                        $scope.state.generatingTemplateId = null;
+                        var errMsg = (error.data && error.data.message) || t('Failed to generate bonuses');
+                        toastr.error(errMsg);
+                    });
+            });
         };
 
         // Deep clean object before saving (remove empty arrays/objects)
@@ -1352,25 +1398,29 @@ angular.module('app')
                 toastr.error(t('Not authorized'));
                 return;
             }
-            if (!confirm(t('Are you sure you want to delete this template? This action cannot be undone.'))) {
-                return;
-            }
+            showConfirmDialog({
+                title: t('Delete Template?'),
+                text: t('Are you sure you want to delete this template? This action cannot be undone.'),
+                icon: 'warning',
+                confirmButtonColor: '#d33',
+                confirmButtonText: t('Yes, Delete')
+            }, function () {
+                $scope.state.deleting = true;
 
-            $scope.state.deleting = true;
-
-            $http.delete('/api/bonus/templates/' + template._id)
-                .then(function () {
-                    toastr.success(t('Template deleted successfully'), t('Success'));
-                    loadTemplates();
-                })
-                .catch(function (error) {
-                    console.error('Error deleting template:', error);
-                    const errorMsg = error.data && error.data.message ? error.data.message : t('Error deleting template');
-                    toastr.error(errorMsg, t('Error'));
-                })
-                .finally(function () {
-                    $scope.state.deleting = false;
-                });
+                $http.delete('/api/bonus/templates/' + template._id)
+                    .then(function () {
+                        toastr.success(t('Template deleted successfully'), t('Success'));
+                        loadTemplates();
+                    })
+                    .catch(function (error) {
+                        console.error('Error deleting template:', error);
+                        const errorMsg = error.data && error.data.message ? error.data.message : t('Error deleting template');
+                        toastr.error(errorMsg, t('Error'));
+                    })
+                    .finally(function () {
+                        $scope.state.deleting = false;
+                    });
+            });
         };
 
         // ================================== IMPORT BONUS DATA ==================================

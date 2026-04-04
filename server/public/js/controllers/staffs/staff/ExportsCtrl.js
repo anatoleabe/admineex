@@ -46,6 +46,10 @@ angular.module('ExportsCtrl', []).controller('ExportsController', ['$mdDialog', 
         }
         getExports();
 
+        $scope.refreshExports = function() {
+            getExports();
+        };
+
         $scope.newExport = function() {
             $scope.startDate;
             $scope.endDate;
@@ -329,7 +333,6 @@ angular.module('ExportsCtrl', []).controller('ExportsController', ['$mdDialog', 
             $mdDialog.show(confirm).then(function() {
                 ExportStaff.delete({ids:[exportJob._id]}).then(function(response){
                     getExports();
-                    
                     $rootScope.kernel.alerts.push({
                         type: 3,
                         msg: gettextCatalog.getString('The export has been deleted'),
@@ -341,6 +344,32 @@ angular.module('ExportsCtrl', []).controller('ExportsController', ['$mdDialog', 
                 });
             }, function() {
                 // Cancel
+            });
+        }
+
+        $scope.retryExport = function (exportJob) {
+            const query = exportJob.data && exportJob.data.query;
+            if (!query) return;
+            const payload = {
+                name: query.exportName,
+                structure: query.filters && query.filters.structure,
+                staffOnly: query.staffOnly,
+                filters: query.filters
+            };
+            ExportStaff.create(payload).then(function() {
+                $rootScope.kernel.alerts.push({
+                    type: 3,
+                    msg: gettextCatalog.getString('Export has been re-queued'),
+                    priority: 4
+                });
+                getExports();
+            }).catch(function(err) {
+                console.error(err);
+                $rootScope.kernel.alerts.push({
+                    type: 1,
+                    msg: gettextCatalog.getString('An error occurred while retrying the export.'),
+                    priority: 1
+                });
             });
         }
 
@@ -407,10 +436,10 @@ angular.module('ExportsCtrl', []).controller('ExportsController', ['$mdDialog', 
                             $scope.exports[index].data.remainingTime= (((progressArray[1]-progressArray[0]) * status.elapsedTimeMs)/progressArray[0]);
                         }
 
-                        if (status.percentage === 100){
-                                $rootScope.kernel.alerts.push({
-                                type: 1,
-                                msg: status.exportName + gettextCatalog.getString(' export completed with success!'),
+                        if (status.percentage === 100 && status.success){
+                            $rootScope.kernel.alerts.push({
+                                type: 3,
+                                msg: status.exportName + ' — ' + gettextCatalog.getString('export completed, ready to download!'),
                                 priority: 2
                             });
                         }

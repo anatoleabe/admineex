@@ -204,7 +204,7 @@
                                         <a class="dropdown-item text-danger" ng-if="permissions.canCancelInstance && instance.status !== 'cancelled'" ng-click="cancelInstance(instance)">
                                             <i class="mi-cancel mr-2"></i> <span translate>Cancel Instance</span>
                                         </a>
-                                        <a class="dropdown-item text-danger" ng-if="permissions.canDeleteInstance && (instance.status === 'draft' || instance.status === 'cancelled')" ng-click="deleteInstance(instance)">
+                                        <a class="dropdown-item text-danger" ng-if="permissions.canDeleteInstance && instance.status === 'draft'" ng-click="deleteInstance(instance)">
                                             <i class="mi-delete-forever mr-2"></i> <span translate>Delete Permanently</span>
                                         </a>
                                     </div>

@@ -1,4 +1,4 @@
-angular.module('app').controller('BonusInstancesController', ['$scope', '$rootScope', '$http', 'toastr', '$uibModal', '$ocLazyLoad', '$mdDialog', '$state', '$stateParams', 'gettextCatalog', function ($scope, $rootScope, $http, toastr, $uibModal, $ocLazyLoad, $mdDialog, $state, $stateParams, gettextCatalog) {
+angular.module('app').controller('BonusInstancesController', ['$scope', '$rootScope', '$http', 'toastr', '$uibModal', '$ocLazyLoad', '$mdDialog', '$state', '$stateParams', 'SweetAlert', 'gettextCatalog', function ($scope, $rootScope, $http, toastr, $uibModal, $ocLazyLoad, $mdDialog, $state, $stateParams, SweetAlert, gettextCatalog) {
     function t(msgid) {
         return gettextCatalog.getString(msgid);
     }
@@ -297,21 +297,73 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$rootSc
         window.location.href = '/api/bonus/instances/' + instance._id + '/export?format=pdf';
     };
 
+    function showConfirmDialog(config, onConfirm) {
+        if (window.Swal && typeof window.Swal.fire === 'function') {
+            window.Swal.fire({
+                title: config.title,
+                text: config.text,
+                icon: config.icon || 'warning',
+                showCancelButton: true,
+                confirmButtonColor: config.confirmButtonColor || '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: config.confirmButtonText || t('Confirm'),
+                cancelButtonText: t('Cancel')
+            }).then(function (result) {
+                if (result && result.isConfirmed) {
+                    onConfirm();
+                }
+            });
+            return;
+        }
+
+        if (SweetAlert && typeof SweetAlert.swal === 'function') {
+            try {
+                SweetAlert.swal({
+                    title: config.title,
+                    text: config.text,
+                    type: config.icon || 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: config.confirmButtonColor || '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: config.confirmButtonText || t('Confirm'),
+                    cancelButtonText: t('Cancel')
+                }, function (confirmed) {
+                    if (confirmed) {
+                        onConfirm();
+                    }
+                });
+                return;
+            } catch (e) {
+            }
+        }
+
+        if (window.confirm(config.text)) {
+            onConfirm();
+        }
+    }
+
     $scope.cancelInstance = function (instance) {
         if (!$scope.permissions.canCancelInstance) {
             toastr.error(t('Not authorized'));
             return;
         }
         if (!instance || !instance._id) return;
-        if (!confirm(t('Cancel this instance?'))) return;
-        $http.post('/api/bonus/instances/' + instance._id + '/cancel')
-            .then(function () {
-                toastr.success(t('Instance cancelled'));
-                $scope.loadInstances();
-            })
-            .catch(function () {
-                toastr.error(t('Failed to cancel instance'));
-            });
+        showConfirmDialog({
+            title: t('Cancel Instance?'),
+            text: t('This will cancel this bonus instance. This action cannot be undone.'),
+            icon: 'warning',
+            confirmButtonColor: '#d33',
+            confirmButtonText: t('Yes, Cancel')
+        }, function () {
+            $http.post('/api/bonus/instances/' + instance._id + '/cancel')
+                .then(function () {
+                    toastr.success(t('Instance cancelled'));
+                    $scope.loadInstances();
+                })
+                .catch(function () {
+                    toastr.error(t('Failed to cancel instance'));
+                });
+        });
     };
 
     // Delete instance permanently
@@ -321,32 +373,30 @@ angular.module('app').controller('BonusInstancesController', ['$scope', '$rootSc
             return;
         }
         if (!instance || !instance._id) return;
+        if (instance.status !== 'draft') {
+            toastr.error(t('Only draft instances can be deleted'));
+            return;
+        }
 
-        // Use SweetAlert for confirmation
-        swal({
+        var performDelete = function () {
+            $http.delete('/api/bonus/instances/' + instance._id)
+                .then(function () {
+                    toastr.success(t('Instance deleted successfully'));
+                    $scope.loadInstances();
+                })
+                .catch(function (error) {
+                    var errMsg = (error.data && error.data.message) || t('Failed to delete instance');
+                    toastr.error(errMsg);
+                });
+        };
+
+        showConfirmDialog({
             title: t('Delete Instance?'),
             text: t('This will permanently delete this DRAFT bonus instance and all its allocations. This action cannot be undone.'),
-            type: 'warning',
-            showCancelButton: true,
+            icon: 'warning',
             confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: t('Yes, Delete'),
-            cancelButtonText: t('Cancel')
-        }).then(function (result) {
-            if (result.value || result === true) {
-                $http.delete('/api/bonus/instances/' + instance._id)
-                    .then(function () {
-                        toastr.success(t('Instance deleted successfully'));
-                        $scope.loadInstances();
-                    })
-                    .catch(function (error) {
-                        var errMsg = (error.data && error.data.message) || t('Failed to delete instance');
-                        toastr.error(errMsg);
-                    });
-            }
-        }).catch(function () {
-            // User cancelled - do nothing
-        });
+            confirmButtonText: t('Yes, Delete')
+        }, performDelete);
     };
 
     function getSelectedInstances() {

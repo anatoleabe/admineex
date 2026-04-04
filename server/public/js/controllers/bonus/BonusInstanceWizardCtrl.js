@@ -8,6 +8,51 @@ angular.module('app')
             function t(msgid) {
                 return gettextCatalog.getString(msgid);
             }
+
+            function showConfirmDialog(config, onConfirm) {
+                if (window.Swal && typeof window.Swal.fire === 'function') {
+                    window.Swal.fire({
+                        title: config.title,
+                        text: config.text,
+                        icon: config.icon || 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: config.confirmButtonColor || '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: config.confirmButtonText || t('Confirm'),
+                        cancelButtonText: t('Cancel')
+                    }).then(function (result) {
+                        if (result && result.isConfirmed) {
+                            onConfirm();
+                        }
+                    });
+                    return;
+                }
+
+                if (SweetAlert && typeof SweetAlert.swal === 'function') {
+                    try {
+                        SweetAlert.swal({
+                            title: config.title,
+                            text: config.text,
+                            type: config.icon || 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: config.confirmButtonColor || '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: config.confirmButtonText || t('Confirm'),
+                            cancelButtonText: t('Cancel')
+                        }, function (confirmed) {
+                            if (confirmed) {
+                                onConfirm();
+                            }
+                        });
+                        return;
+                    } catch (e) {
+                    }
+                }
+
+                if (window.confirm(config.text)) {
+                    onConfirm();
+                }
+            }
             // Load permissions from backend
             $http.get('/api/bonus/config/permissions').then(function (response) {
                 $scope.permissions = response.data;
@@ -801,33 +846,24 @@ angular.module('app')
                 console.log('Instance ID:', $scope.instanceId);
                 console.log('Instance status:', $scope.instance.status);
 
-                // Using standard SweetAlert syntax instead of SweetAlert2
-                SweetAlert.swal({
-                    title: t('Approve Instance'),
+                showConfirmDialog({
+                    title: t('Approve Instance?'),
                     text: t('Are you sure you want to approve this bonus instance? This will finalize all allocations.'),
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#DD6B55",
-                    confirmButtonText: t('Yes, approve it'),
-                    cancelButtonText: t('Cancel'),
-                    closeOnConfirm: false
-                }, function (isConfirmed) {
-                    if (isConfirmed) {
-                        console.log('SweetAlert confirmation callback triggered');
-
-                        $http.post('/api/bonus/instances/' + $scope.instanceId + '/approve')
-                            .then(function (response) {
-                                console.log('API call successful:', response.data);
-                                $scope.instance = response.data;
-                                SweetAlert.swal(t('Approved!'), t('The bonus instance has been approved.'), "success");
-                                // Redirect to the instances list
-                                $state.go('home.bonus.instances');
-                            })
-                            .catch(function (error) {
-                                console.error('Error approving instance', error);
-                                SweetAlert.swal(t('Error!'), t('Could not approve instance.'), "error");
-                            });
-                    }
+                    icon: 'warning',
+                    confirmButtonColor: '#28a745',
+                    confirmButtonText: t('Yes, Approve')
+                }, function () {
+                    $http.post('/api/bonus/instances/' + $scope.instanceId + '/approve')
+                        .then(function (response) {
+                            console.log('API call successful:', response.data);
+                            $scope.instance = response.data;
+                            toastr.success(t('The bonus instance has been approved.'));
+                            $state.go('home.bonus.instances');
+                        })
+                        .catch(function (error) {
+                            console.error('Error approving instance', error);
+                            toastr.error(t('Could not approve instance.'));
+                        });
                 });
             };
 

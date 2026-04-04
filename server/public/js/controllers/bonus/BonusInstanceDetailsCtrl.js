@@ -14,6 +14,51 @@ angular.module('app')
                 return gettextCatalog.getString(msgid);
             }
 
+            function showConfirmDialog(config, onConfirm) {
+                if (window.Swal && typeof window.Swal.fire === 'function') {
+                    window.Swal.fire({
+                        title: config.title,
+                        text: config.text,
+                        icon: config.icon || 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: config.confirmButtonColor || '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: config.confirmButtonText || t('Confirm'),
+                        cancelButtonText: t('Cancel')
+                    }).then(function (result) {
+                        if (result && result.isConfirmed) {
+                            onConfirm();
+                        }
+                    });
+                    return;
+                }
+
+                if (SweetAlert && typeof SweetAlert.swal === 'function') {
+                    try {
+                        SweetAlert.swal({
+                            title: config.title,
+                            text: config.text,
+                            type: config.icon || 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: config.confirmButtonColor || '#d33',
+                            cancelButtonColor: '#3085d6',
+                            confirmButtonText: config.confirmButtonText || t('Confirm'),
+                            cancelButtonText: t('Cancel')
+                        }, function (confirmed) {
+                            if (confirmed) {
+                                onConfirm();
+                            }
+                        });
+                        return;
+                    } catch (e) {
+                    }
+                }
+
+                if (window.confirm(config.text)) {
+                    onConfirm();
+                }
+            }
+
             // Initialize
             $scope.loading = true;
             $scope.instance = null;
@@ -143,26 +188,22 @@ angular.module('app')
                     return;
                 }
 
-                SweetAlert.swal({
+                showConfirmDialog({
                     title: t('Approve Instance?'),
                     text: t('This will approve the bonus instance for payment.'),
-                    type: 'warning',
-                    showCancelButton: true,
+                    icon: 'warning',
                     confirmButtonColor: '#28a745',
-                    confirmButtonText: t('Yes, Approve'),
-                    cancelButtonText: t('Cancel')
-                }, function (confirmed) {
-                    if (confirmed) {
-                        $http.post('/api/bonus/instances/' + $scope.instance._id + '/approve')
-                            .then(function (response) {
-                                toastr.success(t('Instance approved successfully'));
-                                $scope.instance = response.data;
-                            })
-                            .catch(function (error) {
-                                var msg = (error.data && error.data.message) || t('Failed to approve instance');
-                                toastr.error(msg);
-                            });
-                    }
+                    confirmButtonText: t('Yes, Approve')
+                }, function () {
+                    $http.post('/api/bonus/instances/' + $scope.instance._id + '/approve')
+                        .then(function (response) {
+                            toastr.success(t('Instance approved successfully'));
+                            $scope.instance = response.data;
+                        })
+                        .catch(function (error) {
+                            var msg = (error.data && error.data.message) || t('Failed to approve instance');
+                            toastr.error(msg);
+                        });
                 });
             };
 
@@ -172,25 +213,22 @@ angular.module('app')
                     return;
                 }
 
-                SweetAlert.swal({
+                showConfirmDialog({
                     title: t('Generate Payment Files?'),
                     text: t('This will generate payment files for the treasury.'),
-                    type: 'info',
-                    showCancelButton: true,
-                    confirmButtonText: t('Yes, Generate'),
-                    cancelButtonText: t('Cancel')
-                }, function (confirmed) {
-                    if (confirmed) {
-                        $http.post('/api/bonus/instances/' + $scope.instance._id + '/generate-payments')
-                            .then(function (response) {
-                                toastr.success(t('Payment files generated successfully'));
-                                $scope.instance = response.data.instance;
-                            })
-                            .catch(function (error) {
-                                var msg = (error.data && error.data.message) || t('Failed to generate payments');
-                                toastr.error(msg);
-                            });
-                    }
+                    icon: 'warning',
+                    confirmButtonColor: '#28a745',
+                    confirmButtonText: t('Yes, Generate')
+                }, function () {
+                    $http.post('/api/bonus/instances/' + $scope.instance._id + '/generate-payments')
+                        .then(function (response) {
+                            toastr.success(t('Payment files generated successfully'));
+                            $scope.instance = response.data.instance;
+                        })
+                        .catch(function (error) {
+                            var msg = (error.data && error.data.message) || t('Failed to generate payments');
+                            toastr.error(msg);
+                        });
                 });
             };
 
@@ -216,26 +254,22 @@ angular.module('app')
                     return;
                 }
 
-                SweetAlert.swal({
+                showConfirmDialog({
                     title: t('Cancel Instance?'),
                     text: t('This will cancel the bonus instance. This action cannot be undone.'),
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#dc3545',
-                    confirmButtonText: t('Yes, Cancel'),
-                    cancelButtonText: t('No, Keep')
-                }, function (confirmed) {
-                    if (confirmed) {
-                        $http.post('/api/bonus/instances/' + $scope.instance._id + '/cancel')
-                            .then(function (response) {
-                                toastr.success(t('Instance cancelled'));
-                                $scope.instance = response.data;
-                            })
-                            .catch(function (error) {
-                                var msg = (error.data && error.data.message) || t('Failed to cancel instance');
-                                toastr.error(msg);
-                            });
-                    }
+                    icon: 'warning',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: t('Yes, Cancel')
+                }, function () {
+                    $http.post('/api/bonus/instances/' + $scope.instance._id + '/cancel')
+                        .then(function (response) {
+                            toastr.success(t('Instance cancelled'));
+                            $scope.instance = response.data;
+                        })
+                        .catch(function (error) {
+                            var msg = (error.data && error.data.message) || t('Failed to cancel instance');
+                            toastr.error(msg);
+                        });
                 });
             };
 
@@ -250,26 +284,22 @@ angular.module('app')
                     return;
                 }
 
-                SweetAlert.swal({
+                showConfirmDialog({
                     title: t('Delete Instance?'),
                     text: t('This will permanently delete this bonus instance and all its allocations. This action cannot be undone.'),
-                    type: 'error',
-                    showCancelButton: true,
-                    confirmButtonColor: '#dc3545',
-                    confirmButtonText: t('Yes, Delete'),
-                    cancelButtonText: t('Cancel')
-                }, function (confirmed) {
-                    if (confirmed) {
-                        $http.delete('/api/bonus/instances/' + $scope.instance._id)
-                            .then(function () {
-                                toastr.success(t('Instance deleted successfully'));
-                                $state.go('home.bonus.instances');
-                            })
-                            .catch(function (error) {
-                                var msg = (error.data && error.data.message) || t('Failed to delete instance');
-                                toastr.error(msg);
-                            });
-                    }
+                    icon: 'warning',
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: t('Yes, Delete')
+                }, function () {
+                    $http.delete('/api/bonus/instances/' + $scope.instance._id)
+                        .then(function () {
+                            toastr.success(t('Instance deleted successfully'));
+                            $state.go('home.bonus.instances');
+                        })
+                        .catch(function (error) {
+                            var msg = (error.data && error.data.message) || t('Failed to delete instance');
+                            toastr.error(msg);
+                        });
                 });
             };
 
