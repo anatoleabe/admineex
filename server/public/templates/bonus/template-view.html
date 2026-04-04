@@ -187,6 +187,49 @@
         padding: 0.75rem 1rem;
         margin-bottom: 0.5rem;
     }
+    .template-view-modal .rule-sentence {
+        font-size: 0.9rem;
+        color: #1f2937;
+        font-weight: 500;
+        line-height: 1.4;
+    }
+    .template-view-modal .rule-values {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin-top: 0.45rem;
+        padding-left: 28px;
+    }
+    .template-view-modal .rule-chip {
+        display: inline-block;
+        padding: 0.2rem 0.5rem;
+        border-radius: 999px;
+        background: #eef2ff;
+        color: #3730a3;
+        font-size: 0.75rem;
+        line-height: 1.2;
+    }
+    .template-view-modal .rule-technical {
+        margin-top: 0.5rem;
+        padding-left: 28px;
+    }
+    .template-view-modal .rule-technical summary {
+        cursor: pointer;
+        font-size: 0.75rem;
+        color: #6b7280;
+        outline: none;
+    }
+    .template-view-modal .rule-technical pre {
+        margin-top: 0.4rem;
+        margin-bottom: 0;
+        padding: 0.45rem 0.6rem;
+        background: #f3f4f6;
+        border-radius: 4px;
+        color: #374151;
+        font-size: 0.72rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
     .template-view-modal .rule-card:last-child {
         margin-bottom: 0;
     }
@@ -516,21 +559,15 @@
                 <div class="rule-card" ng-repeat="rule in viewedTemplate.eligibilityRules">
                     <span class="rule-number">{{$index + 1}}</span>
                     <span class="text-muted" ng-if="rule.description">{{rule.description}}</span>
-                    <div class="rule-fields">
-                        <div class="rule-field-group">
-                            <div class="rule-field-label" translate>Field</div>
-                            <div class="rule-field-value">{{rule.field}}</div>
-                        </div>
-                        <div class="rule-field-group">
-                            <div class="rule-field-label" translate>Operator</div>
-                            <div class="rule-field-value">{{rule.operator}}</div>
-                        </div>
-                        <div class="rule-field-group">
-                            <div class="rule-field-label" translate>Value</div>
-                            <div class="rule-field-value wrap-value" title="{{rule.value || rule.valueInput || (rule.valueList | json)}}">
-                                {{rule.value || rule.valueInput || (rule.valueList | json)}}
-                            </div>
-                        </div>
+                    <div class="rule-sentence">{{getEligibilityRuleSentence(rule)}}</div>
+                    <div class="rule-values" ng-if="getRuleDisplayValues(rule).length > 1">
+                        <span class="rule-chip" ng-repeat="item in getRuleDisplayValues(rule) track by $index">{{item.label}}</span>
+                    </div>
+                    <div class="rule-technical">
+                        <details>
+                            <summary translate>Technical details</summary>
+                            <pre>{{getEligibilityRuleTechnicalSummary(rule)}}</pre>
+                        </details>
                     </div>
                 </div>
             </div>

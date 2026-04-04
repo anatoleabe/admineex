@@ -428,6 +428,68 @@ angular.module('app')
             return isTaxExempt ? 'tag tax-exempt' : 'tag tax-applied';
         };
 
+        function findOptionLabel(list, value) {
+            if (!Array.isArray(list)) return null;
+            const found = list.find(item => item && item.value === value);
+            return found && found.label ? found.label : null;
+        }
+
+        function getEligibilityRuleRawValue(rule) {
+            if (!rule) return '';
+            if (Array.isArray(rule.value)) return rule.value;
+            if (rule.value !== undefined && rule.value !== null && rule.value !== '') return rule.value;
+            if (Array.isArray(rule.valueList)) return rule.valueList;
+            if (rule.valueInput !== undefined && rule.valueInput !== null) return rule.valueInput;
+            return '';
+        }
+
+        $scope.getRuleFieldLabel = function (field) {
+            const found = ($scope.constants.ruleFields || []).find(f => f.value === field);
+            return found ? found.label : (field || t('Unknown field'));
+        };
+
+        $scope.getRuleOperatorLabel = function (operator) {
+            const found = ($scope.constants.operators || []).find(op => op.value === operator);
+            return found ? found.label : (operator || t('Unknown operator'));
+        };
+
+        $scope.getRuleDisplayValues = function (rule) {
+            const raw = getEligibilityRuleRawValue(rule);
+            const rawList = Array.isArray(raw) ? raw : [raw];
+            const field = rule && rule.field ? rule.field : '';
+            const mapped = rawList
+                .filter(v => v !== undefined && v !== null && String(v).trim() !== '')
+                .map(v => {
+                    let label = null;
+                    if (field === 'status') label = findOptionLabel($scope.ruleOptions.statuses, v);
+                    else if (field === 'rank') label = findOptionLabel($scope.ruleOptions.ranks, v);
+                    else if (field === 'structure') label = findOptionLabel($scope.ruleOptions.structuresMain, v);
+                    else if (field === 'subStructure') label = findOptionLabel($scope.ruleOptions.subStructures, v);
+                    if (!label) label = String(v);
+                    return { value: v, label: label };
+                });
+            return mapped;
+        };
+
+        $scope.getEligibilityRuleSentence = function (rule) {
+            if (!rule) return t('Incomplete rule');
+            const fieldLabel = $scope.getRuleFieldLabel(rule.field);
+            const operatorLabel = $scope.getRuleOperatorLabel(rule.operator);
+            const values = $scope.getRuleDisplayValues(rule);
+            if (!values.length) {
+                return t('Eligible when') + ' ' + fieldLabel + ' ' + operatorLabel;
+            }
+            const valueText = values.map(v => v.label).join(', ');
+            return t('Eligible when') + ' ' + fieldLabel + ' ' + operatorLabel + ': ' + valueText;
+        };
+
+        $scope.getEligibilityRuleTechnicalSummary = function (rule) {
+            if (!rule) return '';
+            const raw = getEligibilityRuleRawValue(rule);
+            const rawValue = Array.isArray(raw) ? JSON.stringify(raw) : String(raw);
+            return `field=${rule.field || ''}, operator=${rule.operator || ''}, value=${rawValue}`;
+        };
+
         function pad2(value) {
             return value < 10 ? `0${value}` : String(value);
         }

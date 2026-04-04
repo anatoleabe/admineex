@@ -273,6 +273,48 @@
     .template-wizard .rule-card .remove-rule:hover {
         opacity: 1;
     }
+    .template-wizard .rule-preview {
+        margin-top: 0.6rem;
+        padding: 0.55rem 0.7rem;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.65);
+        border: 1px dashed #cbd5e0;
+    }
+    .template-wizard .rule-preview-label {
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #718096;
+        margin-bottom: 0.25rem;
+    }
+    .template-wizard .rule-preview-text {
+        font-size: 0.82rem;
+        line-height: 1.35;
+        color: #4a5568;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+    .template-wizard .rule-preview-values {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        margin-top: 0.35rem;
+    }
+    .template-wizard .rule-preview-chip {
+        display: inline-block;
+        padding: 0.14rem 0.45rem;
+        border-radius: 999px;
+        background: #edf2f7;
+        color: #4a5568;
+        font-size: 0.72rem;
+        line-height: 1.2;
+        max-width: 100%;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
     .template-wizard .workflow-step-card {
         display: flex;
         align-items: flex-start;
@@ -1217,6 +1259,13 @@
                                 <label class="form-label-modern" style="font-size: 0.8rem;" translate>Description (Optional)</label>
                                 <input type="text" class="form-control form-control-modern form-control-sm" ng-model="rule.description"
                                        placeholder="Describe this rule...">
+                            </div>
+                            <div class="rule-preview">
+                                <div class="rule-preview-label" translate>Preview</div>
+                                <div class="rule-preview-text">{{getEligibilityRuleSentence(rule)}}</div>
+                                <div class="rule-preview-values" ng-if="getRuleDisplayValues(rule).length > 1">
+                                    <span class="rule-preview-chip" ng-repeat="item in getRuleDisplayValues(rule) track by $index">{{item.label}}</span>
+                                </div>
                             </div>
                         </div>
                     </div>
