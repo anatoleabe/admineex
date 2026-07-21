@@ -1,0 +1,15 @@
+{
+  "intent": "count fully-validated tests performed in calendar year 2024",
+  "collection": "tests",
+  "pipeline": [
+    { "$match": {
+        "testDate": { "$gte": "2024-01-01T00:00:00.000Z", "$lt": "2025-01-01T00:00:00.000Z" },
+        "validation.currentStatus": "Fully-Validated"
+    }}
+  ],
+  "resultShape": { "type": "singleNumber", "label": "Total tests done in 2024" },
+  "assumptions": ["'Done' = validation.currentStatus == 'Fully-Validated'", "Year boundary uses testDate"],
+  "needsClarification": [],
+  "confidence": 0.95,
+  "explain": "Counts tests whose testDate falls in 2024 and whose validation status is Fully-Validated."
+}
